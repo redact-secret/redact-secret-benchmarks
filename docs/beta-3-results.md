@@ -54,3 +54,21 @@ are replaced by the beta.3 run.
 This comparison preserves the original 243-file corpus. The subsequent
 [all-detector expansion](../fixtures/generated/README.md#all-detector-expansion)
 adds 248 files and has separately reported results.
+
+## Range-scoring correction
+
+The table above is the historical exact-range observation on the original
+243-file corpus, not a neutral product ranking. Its source document is now
+committed. Report schema v2 separately exposes expected-span containment and
+broader-only findings without changing exact-range labels or trimming scanner
+output to ground truth. The [v2 run summary](range-scoring-v2-results.json)
+records the original eight suites plus the subsequent detector-coverage suite,
+including hashes, versions, timestamps, and draft status. Do not combine the
+expanded corpus with the original 128-span denominator.
+
+The detector-coverage suite follows Redact Secret's own 25-family registry and
+is structural regression evidence, not an independent sample. In the v2 run,
+TruffleHog contains 54 of its 198 expected spans, including 6 broader-only
+findings; its exact-range result remains 48 TP / 6 FP / 150 FN. Containment is
+not a redaction-success or precision rate. All three scanners completed all
+nine suites with verification disabled for TruffleHog.

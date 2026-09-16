@@ -1,3 +1,5 @@
+import { containment } from "../benchmarks/lib/containment.mjs";
+
 /** Pure catalog and report projections shared by the UI and tests. */
 export const fixtureSlug = (category, id) => `${category}--${id}`;
 
@@ -28,16 +30,26 @@ export function parseRoute(pathname) {
 
 // Never join a report's ranges to different fixture bytes.
 export function reportProblem(report, category, hash, fixtures) {
-  if (!report || report.schemaVersion !== 1 || report.category !== category || !Array.isArray(report.scanners)) return 'Missing or invalid report';
+  if (report?.schemaVersion === 1) return 'Report schema v1: rerun npm run bench';
+  if (!report || report.schemaVersion !== 2 || report.category !== category || !Array.isArray(report.scanners)) return 'Missing or invalid report';
   if (report.corpusHash !== hash) return 'Stale report: fixture corpus changed';
   const source = fixtures.filter(f => f.category === category);
   for (const scanner of report.scanners) {
     if (scanner.status !== 'complete') continue;
     if (!Array.isArray(scanner.rows) || scanner.rows.length !== source.length || new Set(scanner.rows.map(r => r.id)).size !== source.length) return 'Invalid report rows';
+    let contained = 0, broader = 0;
     for (const f of source) {
       const row = scanner.rows.find(r => r.id === f.id);
       if (!row || row.path !== f.path || JSON.stringify(row.expected) !== JSON.stringify(f.expected.map(({start,end}) => ({start,end})))) return 'Report ground truth does not match fixture';
+      if (!Array.isArray(row.actual)) return 'Invalid report ranges';
+      const boundaries = new Set([0]); let offset = 0;
+      for (const char of f.content) { offset += new TextEncoder().encode(char).length; boundaries.add(offset); }
+      if (row.actual.some(a => !a || !Number.isInteger(a.start) || !Number.isInteger(a.end) || a.start >= a.end || !boundaries.has(a.start) || !boundaries.has(a.end))) return 'Invalid report ranges';
+      const counts = containment(row.expected, row.actual);
+      if (row.contained !== counts.contained || row.broader !== counts.broader) return 'Invalid containment counts';
+      contained += counts.contained; broader += counts.broader;
     }
+    if (scanner.contained !== contained || scanner.broader !== broader) return 'Invalid containment totals';
   }
   return null;
 }
@@ -48,16 +60,17 @@ export function summarize(fixtures, reports) {
   for (const report of reports) for (const scanner of report.scanners) {
     // Different versions, modes, dependencies or matching protocols are separate observations.
     const key = JSON.stringify([scanner.id, scanner.version, scanner.mode, report.lockHash, report.matching]);
-    if (!groups.has(key)) groups.set(key, { ...scanner, lockHash: report.lockHash, matching: report.matching, rows: [], tp: 0, fp: 0, fn: 0, tn: 0, sources: [], statuses: [] });
+    if (!groups.has(key)) groups.set(key, { ...scanner, lockHash: report.lockHash, matching: report.matching, rows: [], tp: 0, fp: 0, fn: 0, tn: 0, contained: 0, broader: 0, sources: [], statuses: [], reviews: [] });
     const group = groups.get(key);
     group.statuses.push(scanner.status);
+    group.reviews.push(report.reviewStatus);
     group.sources.push(report.category);
     if (scanner.status !== 'complete') continue;
     for (const row of scanner.rows ?? []) {
       const slug = fixtureSlug(report.category, row.id);
       if (!selected.has(slug)) continue;
       group.rows.push({ ...row, slug });
-      for (const count of ['tp', 'fp', 'fn', 'tn']) group[count] += row[count];
+      for (const count of ['tp', 'fp', 'fn', 'tn', 'contained', 'broader']) group[count] += row[count];
     }
   }
   return [...groups.values()].map(g => ({ ...g,

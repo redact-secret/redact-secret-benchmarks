@@ -94,7 +94,7 @@ for (const category of registry.filter(
       );
     } catch {}
     const report = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       category: category.id,
       generatedAt: new Date().toISOString(),
       reviewStatus: corpus.reviewStatus,
@@ -109,7 +109,7 @@ for (const category of registry.filter(
       fixtureCount: corpus.fixtures.length,
       expectedCount: corpus.fixtures.reduce((n, f) => n + f.expected.length, 0),
       matching:
-        "Exact UTF-8 byte ranges [start, end); identical findings deduplicated.",
+        "Exact UTF-8 byte ranges [start, end); identical findings deduplicated. Containment counts each expected span fully enclosed by any finding once; broader counts containment without an exact match.",
       scanners: results,
     };
     const temporary = path.join(
@@ -126,12 +126,14 @@ for (const category of registry.filter(
         Scanner: result.name,
         Version: result.version ?? "—",
         Status: result.status,
-        TP: result.tp ?? "—",
-        FP: result.fp ?? "—",
-        Missed: result.fn ?? "—",
-        Precision: percentage(result.precision),
-        Recall: percentage(result.recall),
-        F1: percentage(result.f1),
+        Contained: result.contained ?? "—",
+        Broader: result.broader ?? "—",
+        ExactTP: result.tp ?? "—",
+        ExactFP: result.fp ?? "—",
+        ExactFN: result.fn ?? "—",
+        ExactPrecision: percentage(result.precision),
+        ExactRecall: percentage(result.recall),
+        ExactF1: percentage(result.f1),
       })),
     );
   } finally {

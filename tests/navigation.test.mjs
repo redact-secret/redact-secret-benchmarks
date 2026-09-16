@@ -40,9 +40,12 @@ test('UTF-8 highlighting round-trips every input including BOM, Unicode, CRLF an
 });
 const source = fixtures.filter(f => f.category === 'accuracy');
 const rowScore = score(corpora.accuracy.fixtures, []);
-const report = {schemaVersion:1,category:'accuracy',corpusHash:'hash',lockHash:'lock',matching:'exact',scanners:[{id:'test',name:'Test scanner',mode:'offline',version:'1',status:'complete',...rowScore}]};
+const report = {schemaVersion:2,category:'accuracy',corpusHash:'hash',lockHash:'lock',matching:'exact',scanners:[{id:'test',name:'Test scanner',mode:'offline',version:'1',status:'complete',...rowScore}]};
 test('reports require matching bytes, fixture identity and complete ground truth before joining', () => {
   assert.equal(reportProblem(report,'accuracy','hash',fixtures),null);
+  assert.match(reportProblem({...report,schemaVersion:1},'accuracy','hash',fixtures),/rerun/);
+  const badCounts = structuredClone(report); badCounts.scanners[0].contained = 999;
+  assert.match(reportProblem(badCounts,'accuracy','hash',fixtures),/totals/);
   assert.match(reportProblem(report,'accuracy','changed',fixtures),/Stale/);
   assert.match(reportProblem({...report,category:'other'},'accuracy','hash',fixtures),/invalid/);
   const changed = structuredClone(report); changed.scanners[0].rows[0].expected=[];
@@ -92,6 +95,13 @@ test('page renderers expose every fixture, escape input markup, and preserve neg
     assert.ok(pages.overview([]).includes('/benchmark/openai-token'));
     const corpusReport = {...report,fixtureCount:10,expectedCount:5,reviewStatus:'draft'};
     assert.ok(accuracy(corpusReport).includes('/fixture/accuracy--github-token'));
+    assert.ok(accuracy(corpusReport).includes('Contained / expected'));
+    assert.ok(accuracy(corpusReport).includes('draft'));
+    assert.ok(pages.comparison(source,[corpusReport]).includes('Corpus review: draft'));
+    assert.ok(pages.comparison(source,[corpusReport]).includes('Broader only'));
+    const [aggregate] = summarize(source,[corpusReport]);
+    assert.equal(aggregate.contained,corpusReport.scanners[0].contained);
+    assert.equal(aggregate.broader,corpusReport.scanners[0].broader);
     const bom = fixtures.find(f => f.slug==='context-edges--bom');
     assert.ok(pages.fixturePage(bom,[]).includes('\\uFEFF'));
     assert.ok(pages.fixturePage(fixtures.find(f => f.slug==='negative-controls--empty'),[]).includes('(empty file)'));

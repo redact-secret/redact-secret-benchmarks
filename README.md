@@ -1,6 +1,6 @@
 # redact-secret-benchmarks
 
-Independent, reproducible accuracy benchmarks comparing
+Project-maintained, reproducible synthetic benchmarks comparing
 [redact-secret](https://github.com/redact-secret/redact-secret) against
 established secret-scanning tools on identical fixture sets.
 
@@ -18,19 +18,18 @@ This work is deliberately kept out of `redact-secret/redact-secret`:
   which explicitly places "comparisons against competing products" out of
   scope. Doing this work here avoids reopening or amending that decision.
 - **Real external-consumer testing.** This repo depends on redact-secret only
-  through its published packages (`@redact-secret/core` on npm,
-  `redact-secret` on PyPI) — never through internal APIs or a path import
+  through its published package (`@redact-secret/core` on npm) — never through internal APIs or a path import
   into the main repo's source tree. That means every benchmark run also
   exercises the actual installed-package experience any other consumer gets.
 
 ## What this measures
 
 The same question, asked identically of every tool: given a fixed set of
-input files with independently reviewed ground truth (a secret is present or
+input files with authored, draft ground truth (a secret is present or
 absent, at a known byte range), what does each scanner report?
 
 - [**redact-secret**](https://github.com/redact-secret/redact-secret) — via
-  its published CLI/npm/PyPI packages.
+  its published npm package. CLI and PyPI are not measured here.
 - [**Gitleaks**](https://github.com/gitleaks/gitleaks) — MIT, regex/pattern-based,
   local.
 - [**TruffleHog**](https://github.com/trufflesecurity/trufflehog) —
@@ -125,6 +124,21 @@ with explicit failure status. Optional missing binaries are nonfatal unless
 `--strict` is supplied. Run `npm run bench` **before** building to include
 current results in the static site. Generated reports and build output are
 gitignored; no example numbers masquerade as a real run.
+
+## Interpretation
+
+These are project-maintained regression and structural-coverage corpora, including
+fixtures generated from Redact Secret's own detector registry. They are not an
+independently reviewed, neutral sample and cannot establish that one product is
+better than another. Corpus review status remains draft.
+
+Report schema v2 preserves exact-range TP/FP/FN and adds `contained` and `broader`
+counts per row and scanner. `contained` counts each expected span fully enclosed
+by any finding once; partial overlap does not count. `broader` counts contained
+spans for which no exact finding exists. A finding can enclose multiple secrets.
+These observations are not precision or redaction-success rates: even an entire
+file finding may contain a secret. Database URL findings keep their original
+scope. Regenerate v1 reports with `npm run bench`.
 
 ## Measurement protocol
 

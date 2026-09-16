@@ -1,3 +1,5 @@
+import { containment } from "./containment.mjs";
+
 function byteBoundaries(content) {
   const boundaries = new Set([0]);
   let offset = 0;
@@ -90,6 +92,7 @@ export function score(fixtures, findings) {
       group: f.group,
       expected,
       actual,
+      ...containment(expected, actual),
       tp,
       fp: actual.length - tp,
       fn: expected.length - tp,
@@ -98,12 +101,14 @@ export function score(fixtures, findings) {
   });
   const totals = rows.reduce(
     (t, r) => ({
+      contained: t.contained + r.contained,
+      broader: t.broader + r.broader,
       tp: t.tp + r.tp,
       fp: t.fp + r.fp,
       fn: t.fn + r.fn,
       tn: t.tn + r.tn,
     }),
-    { tp: 0, fp: 0, fn: 0, tn: 0 },
+    { tp: 0, fp: 0, fn: 0, tn: 0, contained: 0, broader: 0 },
   );
   const { tp, fp, fn } = totals;
   return {

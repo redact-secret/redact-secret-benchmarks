@@ -52,7 +52,7 @@ no live credential verification or TruffleHog implementation vendoring.
 
 ## False-positive test issues
 
-These are independent-benchmark test-depth gaps, not newly confirmed
+These are synthetic-benchmark test-depth gaps, not newly confirmed
 production defects or assertions that upstream has no relevant tests.
 Acceptance starts with an upstream test audit and adds missing cases plus
 positive guards. The 10 issues cover 24 existing detector families.

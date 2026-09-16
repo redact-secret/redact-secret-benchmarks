@@ -4,6 +4,8 @@ export interface Row {
   group: string;
   expected: { start: number; end: number }[];
   actual: { start: number; end: number }[];
+  contained: number;
+  broader: number;
   tp: number;
   fp: number;
   fn: number;
@@ -20,6 +22,8 @@ export interface Scanner {
   precision?: number | null;
   recall?: number | null;
   f1?: number | null;
+  contained?: number;
+  broader?: number;
   tp?: number;
   fp?: number;
   fn?: number;

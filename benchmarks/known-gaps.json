@@ -1,0 +1,119 @@
+{
+  "measuredVersion": "0.1.0-beta.3",
+  "milestone": "v0.1.0-beta.4",
+  "milestoneUrl": "https://github.com/redact-secret/redact-secret/milestone/7",
+  "reviewedAt": "2026-09-16",
+  "issues": [
+    {
+      "title": "Preserve Windows environment references and SQL bind parameters in contextual detection",
+      "url": "https://github.com/redact-secret/redact-secret/issues/292",
+      "number": 292,
+      "fixtures": [
+        "reference-syntax--windows-env",
+        "reference-syntax--sql-bind"
+      ],
+      "kind": "false-positive",
+      "evidence": [
+        {
+          "fixture": "reference-syntax--windows-env",
+          "corpusHash": "2788a206fdc04b281d6fa58dcf0bb4b6718d6bb96a76aa2759e9bcb85da944fa",
+          "expected": [],
+          "actual": [
+            {
+              "start": 9,
+              "end": 22,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "reference-syntax--sql-bind",
+          "corpusHash": "2788a206fdc04b281d6fa58dcf0bb4b6718d6bb96a76aa2759e9bcb85da944fa",
+          "expected": [],
+          "actual": [
+            {
+              "start": 11,
+              "end": 29,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Preserve Azure App Service Key Vault references in contextual detection",
+      "url": "https://github.com/redact-secret/redact-secret/issues/293",
+      "number": 293,
+      "fixtures": [
+        "reference-syntax--azure-keyvault"
+      ],
+      "kind": "false-positive",
+      "evidence": [
+        {
+          "fixture": "reference-syntax--azure-keyvault",
+          "corpusHash": "2788a206fdc04b281d6fa58dcf0bb4b6718d6bb96a76aa2759e9bcb85da944fa",
+          "expected": [],
+          "actual": [
+            {
+              "start": 10,
+              "end": 82,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Define and fix contextual secret detection inside nested quoted text",
+      "url": "https://github.com/redact-secret/redact-secret/issues/294",
+      "number": 294,
+      "fixtures": [
+        "detector-coverage--generic-token-api-key-quoted",
+        "detector-coverage--generic-token-password-quoted",
+        "detector-coverage--generic-token-client-secret-quoted"
+      ],
+      "kind": "false-negative",
+      "evidence": [
+        {
+          "fixture": "detector-coverage--generic-token-api-key-quoted",
+          "corpusHash": "4d4b8d4530a780321b18ffb07f317054fdf71ba759543dc2260a9b4d3540b824",
+          "expected": [
+            {
+              "start": 16,
+              "end": 44
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--generic-token-password-quoted",
+          "corpusHash": "4d4b8d4530a780321b18ffb07f317054fdf71ba759543dc2260a9b4d3540b824",
+          "expected": [
+            {
+              "start": 17,
+              "end": 45
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--generic-token-client-secret-quoted",
+          "corpusHash": "4d4b8d4530a780321b18ffb07f317054fdf71ba759543dc2260a9b4d3540b824",
+          "expected": [
+            {
+              "start": 22,
+              "end": 50
+            }
+          ],
+          "actual": []
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@ export function buildCatalog(categories, corpora, assignments, detectors) {
 export function parseRoute(pathname) {
   const path = pathname.replace(/\/+$/, '') || '/';
   if (path === '/' || path === '/benchmark') return { kind: 'overview', id: '' };
+  if (path === '/coverage-gaps') return { kind: 'coverage-gaps', id: '' };
   if (path === '/methodology') return { kind: 'methodology', id: '' };
   const match = /^\/(benchmark|fixture)\/([a-z0-9-]+)$/.exec(path);
   return match ? { kind: match[1], id: match[2] } : { kind: 'missing', id: '' };

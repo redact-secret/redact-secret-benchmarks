@@ -674,3 +674,16 @@ nav .nav-group a { padding: 9px 12px; font-size: 12px; }
   header > a { flex-shrink: 0; }
   .category-grid { grid-template-columns: 1fr; }
 }
+
+/* Searchable competitor inventory. */
+.inventory-filters { display: grid; grid-template-columns: minmax(200px, 2fr) 1fr 1.5fr; gap: 16px; margin: 22px 0; }
+.inventory-filters label { display: grid; gap: 8px; color: #53675e; font-size: 12px; }
+.inventory-filters input, .inventory-filters select { width: 100%; min-width: 0; border: 1px solid #d8e2dc; border-radius: 5px; background: white; padding: 11px; color: #20392d; font: inherit; }
+.inventory-filters :focus-visible { outline: 2px solid #277b60; outline-offset: 3px; }
+.inventory-table { table-layout: fixed; width: 100%; }
+.inventory-table th:first-child { width: 37%; }
+.inventory-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
+.inventory-pagination button { cursor: pointer; }
+.inventory-pagination button:disabled { opacity: .4; cursor: default; }
+.gap-fixture { display: block; overflow-wrap: anywhere; font-size: 12px; margin-top: 12px; }
+@media (max-width: 850px) { .inventory-filters { grid-template-columns: 1fr; } }

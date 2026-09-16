@@ -72,7 +72,9 @@ raw text.
 
 ## Run it
 
-Use Node.js 22.12+ (22.x) or 24.x and npm. From a fresh checkout:
+Use Node.js 22.12+ (22.x) or 24.x and npm. Python 3.11+ is also required
+for inventory-parser tests and inventory refresh; refreshing upstream metadata
+requires authenticated `gh`. From a fresh checkout:
 
 ```sh
 npm ci
@@ -173,17 +175,19 @@ src/pages/accuracy.ts          Accuracy visualization and fixture explorer
 
 The dashboard uses these bookmarkable routes:
 
-- `/benchmark`: overview statistics, scanner comparisons, all 24 detector families,
-  and the eight case suites.
+- `/benchmark`: overview statistics, scanner comparisons, all 25 detector families,
+  and the nine case suites.
 - `/benchmark/github-token` (or another detector ID): fixtures targeting that
   detector across case suites. Detectors with no assigned fixtures explicitly
   show no coverage. Positive and negative fixture counts are separate.
 - `/benchmark/reference-syntax` (or another case ID): the original complete
   suite, including regression context and source report provenance. SendGrid
-  remains a case suite because it is not in the inspected core registry.
+  has both a regression case suite and a `/benchmark/sendgrid-token` detector page.
 - `/fixture/context-edges--unicode`: the exact synthetic input, highlighted
   expected spans, escaped whitespace, per-scanner findings, and a byte-preserving
   fixture download. Slugs are `<case-id>--<fixture-id>` to avoid collisions.
+- `/coverage-gaps`: searchable Gitleaks/TruffleHog detector inventory and
+  the six beta.3 fixture failures tracked in beta.4 issues #292–294.
 - `/methodology`: scoring and reproduction details.
 
 Vite supports direct links and reloads on these paths. A production static
@@ -264,17 +268,30 @@ The three original SendGrid misses are tracked in
 milestone 6 after checking existing issues and PRs. See the
 [investigation notes](docs/sendgrid-investigation.md) for the reproducer,
 source inspection, and the distinction between the installed npm release
-and unreleased milestone work. The benchmark remains pinned to the published
-`0.1.0-beta.1` package; it does not claim to test beta.3 fixes from source.
+and the earlier milestone source review. The benchmark is now pinned to the
+published `0.1.0-beta.3` package. See the [release comparison](docs/beta-3-results.md)
+for measurements against the same beta.1 fixtures.
 
-**Unreleased fixes** adds another **92 fixtures** for the 11 detection-related
+**Beta.3 regressions** adds another **92 fixtures** for the 11 detection-related
 closed issues reviewed in milestone 6. The full suite now contains **243 files,
 128 expected secret spans, and eight category pages**. Each issue includes
 negative examples and positive controls that should survive its exclusion fix.
 The [closed-issue coverage matrix](docs/milestone-6-closed-coverage.md) records
 the reviewed source revision and separately identifies the three closed issues
 requiring Linux acceptance or Python conformance validation. Issue closure is
-not treated as runtime verification of unreleased code.
+not treated as runtime verification; published npm results provide the local
+whole-input measurements.
+
+**Detector coverage** adds **248 fixtures** (198 positive spans and 50
+negative controls) across all **25 registered detector families**, including
+the 15 previously without assigned fixtures. The current catalog contains
+**491 files, 326 expected spans, and nine case suites**. Open
+`/benchmark/detector-coverage` or any detector page to inspect the new cases.
+Provider prefix variants, six PEM labels, JWT, Bearer headers, five database
+schemes, OTP URIs, and generic fields have bare, quoted, and Unicode/CRLF
+contexts. All expectations are constructed independently of scanner output.
+See [the coverage notes](fixtures/generated/README.md#all-detector-expansion)
+for safety, policy scope, and measured limitations.
 
 The published npm redaction tests run `scan`, `redact`, and `scanAndRedact`
 over all registered fixtures. They verify pipeline agreement, expected default
@@ -288,3 +305,40 @@ validated here. Detection expectations remain the independent corpus ranges.
 MIT — see [LICENSE](./LICENSE). This license covers this repository's own
 code and fixtures only; it does not extend to, and this repo does not
 redistribute, any third-party scanner's source.
+
+
+## Competitor detector inventory
+
+`/coverage-gaps` compares the **222 Gitleaks 8.30.1 rules** and **892
+TruffleHog 3.97.4 registrations** with the pinned 25-family redact-secret
+registry. There are **162** and **843** entries, respectively, with no named
+dedicated equivalent. Entries are not deduplicated across tools, providers,
+or versions. Commented-out TruffleHog entries are excluded; feature-gated
+registrations remain explicitly labeled rather than assumed active.
+
+`benchmarks/detector-inventory.json` stores identifiers, immutable source
+links, source hashes, and conservative provider-family mappings. It contains
+no external implementation code. A missing dedicated detector does not prove
+a runtime false negative: generic/contextual detection may apply. A related
+family also does not prove format parity. This registry comparison is separate
+from measured fixture failures and is not a product ranking.
+
+```sh
+npm run detectors:refresh # Fetch pinned release registries and regenerate metadata
+npm run detectors:check   # Fetch the same immutable sources and reject snapshot drift
+```
+
+Both commands use Python 3.11+ and `gh`; review the explicit family mappings
+in `scripts/refresh-detector-inventory.py` when upgrading versions. The web app
+loads only the checked-in snapshot and performs no external scanner queries.
+
+`benchmarks/known-gaps.json` records the beta.3 measurements and links six
+fixtures to the [beta.4 milestone](https://github.com/redact-secret/redact-secret/milestone/7):
+
+- [#292](https://github.com/redact-secret/redact-secret/issues/292): Windows environment references and SQL bind parameters (two false positives).
+- [#293](https://github.com/redact-secret/redact-secret/issues/293): Azure App Service Key Vault references (one false positive).
+- [#294](https://github.com/redact-secret/redact-secret/issues/294): nested quoted assignments in plain text (three missed spans; malformed-input scope is explicit).
+
+Issue cards are a historical measurement snapshot, not live GitHub state.
+Corresponding fixture pages retain their original context and add beta.4
+follow-up links.

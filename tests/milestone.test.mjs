@@ -9,7 +9,7 @@ import { score, validateCorpus } from "../benchmarks/lib/scoring.mjs";
 import { normalizeTrufflehog } from "../scanners/index.mjs";
 
 const corpus = buildCorpora()["milestone-6-closed"];
-test("closed milestone snapshot maps every reviewed issue without claiming unreleased validation", () => {
+test("closed milestone snapshot maps every reviewed issue without claiming cross-surface validation", () => {
   validateCorpus(corpus);
   assert.equal(corpus.fixtures.length, 92);
   assert.equal(
@@ -25,7 +25,7 @@ test("closed milestone snapshot maps every reviewed issue without claiming unrel
   assert.equal(new Set([...closedBehaviorIssues, ...excluded]).size, 14);
   assert.match(
     milestoneSnapshot.validation,
-    /unreleased fixes not runtime-validated/i,
+    /published npm whole-input detection/i,
   );
   for (const issue of closedBehaviorIssues) {
     const cases = corpus.fixtures.filter((f) => f.issue === issue);

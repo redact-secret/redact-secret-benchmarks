@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { buildRegressions } from "./regressions.mjs";
+import { buildDetectorCoverage } from "./detector-coverage.mjs";
 import { buildClosedMilestone } from "./closed-milestone.mjs";
 
 // Public, deterministic benchmark seed. These values were never provider-issued.
@@ -203,5 +204,6 @@ export function buildCorpora() {
     "negative-controls": wrap(negatives),
     ...buildRegressions({ fixture, synthetic, wrap }),
     ...buildClosedMilestone({ fixture, synthetic, wrap }),
+    ...buildDetectorCoverage({ fixture, synthetic, wrap }),
   };
 }

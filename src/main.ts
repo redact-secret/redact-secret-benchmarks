@@ -16,7 +16,7 @@ function shell(content: string, label: string) {
   document.title = `${label} · Secret Benchmarks`;
   const covered = registry.detectors.filter(d => fixtures.some(f => f.detectors.includes(d.id)));
   const uncovered = registry.detectors.filter(d => !covered.includes(d));
-  app.innerHTML = `<aside><a class="brand" href="/benchmark"><span class="brand-icon">▥</span>secret<span>benchmarks</span></a><nav aria-label="Benchmarks"><div class="nav-label">WORKSPACE</div>${link('', 'Overview')}<details open><summary>Detectors <small>${covered.length} covered</small></summary><div class="nav-group">${covered.map(d => link(d.id,d.title,fixtures.filter(f => f.detectors.includes(d.id)).length)).join('')}<details ${uncovered.some(d => d.id === route().id) ? 'open' : ''}><summary>Not covered (${uncovered.length})</summary><div class="nav-group">${uncovered.map(d => link(d.id,d.title,0)).join('')}</div></details></div></details><details ${categories.some(c => c.id === route().id) || route().kind === 'fixture' ? 'open' : ''}><summary>Cases & regressions</summary><div class="nav-group">${categories.map(c => link(c.id,c.title)).join('')}</div></details><a href="/methodology" ${route().kind === 'methodology' ? 'aria-current="page"' : ''}>Methodology</a></nav><div class="sidebar-bottom"><span class="dot"></span> Independent benchmarks<p>Shared inputs. Inspectable results.</p><code>npm run bench</code></div></aside><main><header><span><a href="/benchmark">BENCHMARK LAB</a> <b>/</b> ${e(label)}</span><a href="https://github.com/redact-secret/redact-secret-benchmarks">Repository ↗</a></header><div class="content">${content}</div><footer>Independent evaluation · Synthetic fixtures only<span>Refreshes every 5s</span></footer></main>`;
+  app.innerHTML = `<aside><a class="brand" href="/benchmark"><span class="brand-icon">▥</span>secret<span>benchmarks</span></a><nav aria-label="Benchmarks"><div class="nav-label">WORKSPACE</div>${link('', 'Overview')}<a href="/coverage-gaps" ${route().kind === 'coverage-gaps' ? 'aria-current="page"' : ''}>Coverage gaps</a><details open><summary>Detectors <small>${covered.length} covered</small></summary><div class="nav-group">${covered.map(d => link(d.id,d.title,fixtures.filter(f => f.detectors.includes(d.id)).length)).join('')}<details ${uncovered.some(d => d.id === route().id) ? 'open' : ''}><summary>Not covered (${uncovered.length})</summary><div class="nav-group">${uncovered.map(d => link(d.id,d.title,0)).join('')}</div></details></div></details><details ${categories.some(c => c.id === route().id) || route().kind === 'fixture' ? 'open' : ''}><summary>Cases & regressions</summary><div class="nav-group">${categories.map(c => link(c.id,c.title)).join('')}</div></details><a href="/methodology" ${route().kind === 'methodology' ? 'aria-current="page"' : ''}>Methodology</a></nav><div class="sidebar-bottom"><span class="dot"></span> Independent benchmarks<p>Shared inputs. Inspectable results.</p><code>npm run bench</code></div></aside><main><header><span><a href="/benchmark">BENCHMARK LAB</a> <b>/</b> ${e(label)}</span><a href="https://github.com/redact-secret/redact-secret-benchmarks">Repository ↗</a></header><div class="content">${content}</div><footer>Independent evaluation · Synthetic fixtures only<span>Refreshes every 5s</span></footer></main>`;
 }
 
 function bindFilter(value: string, focused: boolean) {
@@ -38,7 +38,20 @@ function bindFilter(value: string, focused: boolean) {
 }
 
 async function refresh(force = false) {
-  const token = ++request, path = location.pathname, current = route();
+  const current = route();
+  if (current.kind === 'coverage-gaps' && !force) return;
+  const token = ++request, path = location.pathname;
+  if (current.kind === 'coverage-gaps') {
+    if (force) {
+      shell('<p role="status">Loading detector inventory…</p>', 'Coverage gaps');
+      try {
+        const { coverageGaps, bindInventory } = await import('./pages/gaps');
+        if (token !== request || location.pathname !== path) return;
+        shell(coverageGaps(), 'Coverage gaps'); bindInventory();
+      } catch { if (token === request) shell('<h1>Unable to load detector inventory.</h1><p>Reload to try again.</p>', 'Coverage gaps'); }
+    }
+    return;
+  }
   if (current.kind === 'methodology') { if (force) shell(methodology(), 'Methodology'); return; }
   const detector = current.kind === 'benchmark' ? registry.detectors.find(d => d.id === current.id) : undefined;
   const category = current.kind === 'benchmark' ? categories.find(c => c.id === current.id) : undefined;
@@ -106,7 +119,7 @@ document.addEventListener('click', event => {
   const anchor = (event.target as Element).closest<HTMLAnchorElement>('a[href]');
   if (!anchor || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || anchor.hasAttribute('download') || anchor.target) return;
   const url = new URL(anchor.href);
-  if (url.origin !== location.origin || !/^\/(benchmark|fixture|methodology)(\/|$)/.test(url.pathname)) return;
+  if (url.origin !== location.origin || !/^\/(benchmark|fixture|methodology|coverage-gaps)(\/|$)/.test(url.pathname)) return;
   event.preventDefault(); navigate(url.pathname);
 });
 window.addEventListener('popstate', () => { lastPayload = ''; void refresh(true); });

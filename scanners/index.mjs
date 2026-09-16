@@ -55,6 +55,35 @@ function versionNumber(output) {
   return output.match(/\d+\.\d+\.\d+(?:-[\w.]+)?/)?.[0] ?? "unknown";
 }
 
+// Gitleaks can emit a second PEM finding after decoding its base64 body.
+// Recover only this explicit, single-line-body transformation; never consult
+// ground truth or silently accept arbitrary decoded output.
+export function normalizeGitleaks(fixtures, root, row) {
+  if (!row.Tags?.includes("decoded:base64"))
+    return locate(fixtures, root, row.File, row.Secret, row.StartLine);
+  if (row.RuleID !== "private-key" || !row.Tags.includes("decode-depth:1") ||
+      typeof row.File !== "string" || typeof row.Secret !== "string")
+    throw new Error("Unsupported decoded Gitleaks finding");
+  const relative = path.isAbsolute(row.File)
+    ? path.relative(root, row.File) : row.File.replace(/^\.\//, "");
+  const fixture = fixtures.find(f => f.path === relative);
+  if (!fixture) throw new Error("Unknown scanner path");
+  const matches = [];
+  const pem = /-----BEGIN ((?:(?:RSA|DSA|EC|OPENSSH|ENCRYPTED) )?PRIVATE KEY)-----(\r?\n)([A-Za-z0-9+/]+={0,2})(\r?\n)-----END \1-----/g;
+  for (const match of fixture.content.matchAll(pem)) {
+    const decoded = Buffer.from(match[3], "base64");
+    if (decoded.toString("base64") !== match[3] ||
+        !Buffer.from(decoded.toString("utf8")).equals(decoded)) continue;
+    const transformed = `-----BEGIN ${match[1]}-----${match[2]}${decoded.toString("utf8")}${match[4]}-----END ${match[1]}-----`;
+    const line = fixture.content.slice(0, match.index).split("\n").length;
+    if (transformed !== row.Secret || line !== row.StartLine) continue;
+    const start = Buffer.byteLength(fixture.content.slice(0, match.index));
+    matches.push({ path: relative, start, end: start + Buffer.byteLength(match[0]) });
+  }
+  if (matches.length !== 1) throw new Error("Ambiguous or unmappable decoded PEM finding");
+  return matches[0];
+}
+
 // Postgres detector 968 exports a normalized Raw URI with a default port
 // and no database path. Recover the original whole URI, never an expected
 // password range. Contract: TruffleHog v3.97.4 pkg/detectors/postgres/postgres.go.
@@ -166,9 +195,7 @@ export const scanners = [
       );
       const rows = JSON.parse(output);
       if (!Array.isArray(rows)) throw new Error("Invalid scanner output");
-      return rows.map((r) =>
-        locate(fixtures, root, r.File, r.Secret, r.StartLine),
-      );
+      return rows.map((r) => normalizeGitleaks(fixtures, root, r));
     },
   },
   {

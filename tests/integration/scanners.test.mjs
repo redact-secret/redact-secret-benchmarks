@@ -86,3 +86,19 @@ test("TruffleHog Postgres output normalizes to the original whole URI without li
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("Gitleaks maps original and base64-decoded PEM findings to one source range", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "benchmark-pem-"));
+  const body = Buffer.from("Public benchmark text. This is not cryptographic key material.").toString("base64");
+  const pem = `-----BEGIN PRIVATE KEY-----\n${body}\n-----END PRIVATE KEY-----`;
+  const fixture = {
+    id: "pem", path: "key.txt", content: `🔑\r\n${pem}\n`,
+    expected: [{ start: 6, end: 6 + Buffer.byteLength(pem) }],
+  };
+  try {
+    await writeFile(path.join(root, fixture.path), fixture.content, { mode: 0o600 });
+    const findings = await scanners.find(s => s.id === "gitleaks").scan(root, [fixture]);
+    const result = score([fixture], findings);
+    assert.deepEqual([result.tp, result.fp, result.fn], [1, 0, 0]);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

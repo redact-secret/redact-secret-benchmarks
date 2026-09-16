@@ -9,7 +9,7 @@ export const milestoneSnapshot = {
   reviewedAt: "2026-09-16",
   sourceRevision: "530cafe9737eb5abc9702945394584aeb701d8c1",
   validation:
-    "Published-package baseline only; unreleased fixes not runtime-validated.",
+    "Published npm whole-input detection; measured scanner versions and outcomes are recorded in each report.",
   outOfScopeIssues: [
     {
       issue: 273,
@@ -28,7 +28,6 @@ export const milestoneSnapshot = {
     },
   ],
   unverifiedSurfaces: [
-    "Unreleased main",
     "Python",
     "Browser WASM",
     "CLI stdin/file parity",
@@ -328,7 +327,7 @@ export function buildClosedMilestone({ fixture, synthetic, wrap }) {
     "milestone-6-closed": {
       ...wrap(fixtures),
       scope:
-        "Regression expectations for closed milestone-6 fixes targeting beta.3. This run uses published packages, not unreleased code; failures are baseline gaps, not evidence that the fixes failed. Some placeholder expectations follow redact-secret's documented exclusions rather than universal credential policy. Connection-string positives label the password only; whole-URL reports count as a range mismatch (FP + FN). Whole-input detection only; streaming, Python, and release acceptance are not evaluated.",
+        "Regression expectations for closed milestone-6 fixes targeting beta.3. This cohort measures the installed published packages; misses and false positives remain visible against the independent expectations. Some placeholder expectations follow redact-secret's documented exclusions rather than universal credential policy. Connection-string positives label the password only; whole-URL reports count as a range mismatch (FP + FN). Whole-input detection only; streaming, Python, and release acceptance are not evaluated.",
       references: closedBehaviorIssues.map(
         (id) => `https://github.com/redact-secret/redact-secret/issues/${id}`,
       ),

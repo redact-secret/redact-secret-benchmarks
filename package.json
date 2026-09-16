@@ -18,7 +18,9 @@
     "test:redaction": "node --test tests/redaction.test.mjs",
     "fixtures:generate": "node scripts/generate-fixtures.mjs",
     "fixtures:check": "node scripts/generate-fixtures.mjs --check",
-    "test:coverage": "node --experimental-test-coverage --test-coverage-include='benchmarks/lib/**' --test-coverage-include='scanners/**' --test tests/*.test.mjs tests/integration/*.test.mjs"
+    "test:coverage": "node --experimental-test-coverage --test-coverage-include='benchmarks/lib/**' --test-coverage-include='scanners/**' --test tests/*.test.mjs tests/integration/*.test.mjs",
+    "detectors:refresh": "python3 scripts/refresh-detector-inventory.py",
+    "detectors:check": "python3 scripts/refresh-detector-inventory.py --check"
   },
   "description": "Independent accuracy benchmarks comparing redact-secret against Gitleaks and TruffleHog on identical fixture sets.",
   "license": "MIT",
@@ -27,7 +29,7 @@
     "url": "git+https://github.com/redact-secret/redact-secret-benchmarks.git"
   },
   "dependencies": {
-    "@redact-secret/core": "0.1.0-beta.1"
+    "@redact-secret/core": "0.1.0-beta.3"
   },
   "devDependencies": {
     "@types/node": "22.20.3",

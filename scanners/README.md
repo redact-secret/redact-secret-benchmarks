@@ -24,7 +24,7 @@ compatibility with every binary release.
 ## Validated releases
 
 The local comparison has been exercised with Gitleaks **8.30.1**,
-TruffleHog **3.97.4**, and `@redact-secret/core` **0.1.0-beta.1** on macOS
+TruffleHog **3.97.4**, and `@redact-secret/core` **0.1.0-beta.3** on macOS
 arm64. Install the external tools using `brew install gitleaks trufflehog`.
 Other systems can use the upstream installation instructions above.
 
@@ -48,3 +48,17 @@ Unit tests cover malformed/mismatching output and ambiguity; a real-binary
 integration test covers Unicode/CRLF and the normalized URI transformation.
 The external output contract was inspected in
 [TruffleHog's v3.97.4 Postgres detector](https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/postgres/postgres.go).
+
+
+## Gitleaks decoded PEM normalization
+
+Gitleaks 8.30.1 can report a PEM twice: once with its encoded body and once
+tagged `decoded:base64` / `decode-depth:1`, with public fixture prose replacing
+that body. The adapter reconstructs the latter only when a single-line
+canonical base64 PEM body, decoded text, matching delimiter pair, source file,
+and start line uniquely identify the original range. It never reads expected
+ranges. Both findings then deduplicate under the existing scorer.
+
+Other decoded transformations remain explicit normalization failures.
+Unit tests cover mismatched/unsupported output and missing source lines; a
+real-binary integration check covers the encoded and decoded PEM path.

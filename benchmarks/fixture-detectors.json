@@ -102,9 +102,15 @@
   "credential-formats--npm-3": [
     "npm-token"
   ],
-  "credential-formats--sendgrid-1": [],
-  "credential-formats--sendgrid-2": [],
-  "credential-formats--sendgrid-3": [],
+  "credential-formats--sendgrid-1": [
+    "sendgrid-token"
+  ],
+  "credential-formats--sendgrid-2": [
+    "sendgrid-token"
+  ],
+  "credential-formats--sendgrid-3": [
+    "sendgrid-token"
+  ],
   "credential-formats--slack-1": [
     "slack-token"
   ],
@@ -217,7 +223,9 @@
   "negative-controls--short-npm": [
     "npm-token"
   ],
-  "negative-controls--short-sendgrid": [],
+  "negative-controls--short-sendgrid": [
+    "sendgrid-token"
+  ],
   "negative-controls--short-slack": [
     "slack-token"
   ],
@@ -225,56 +233,126 @@
   "negative-controls--pem-label-only": [
     "private-key"
   ],
-  "sendgrid-regressions--base62-bare": [],
-  "sendgrid-regressions--base62-env-token": [],
-  "sendgrid-regressions--base62-env-key": [],
+  "sendgrid-regressions--base62-bare": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--base62-env-token": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--base62-env-key": [
+    "sendgrid-token"
+  ],
   "sendgrid-regressions--base62-generic-key": [
+    "sendgrid-token",
     "generic-token"
   ],
-  "sendgrid-regressions--base62-json": [],
-  "sendgrid-regressions--base62-quoted-env": [],
-  "sendgrid-regressions--base62-unicode": [],
-  "sendgrid-regressions--base62-crlf": [],
-  "sendgrid-regressions--base62-markdown": [],
+  "sendgrid-regressions--base62-json": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--base62-quoted-env": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--base62-unicode": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--base62-crlf": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--base62-markdown": [
+    "sendgrid-token"
+  ],
   "sendgrid-regressions--base62-bearer": [
+    "sendgrid-token",
     "bearer-token"
   ],
-  "sendgrid-regressions--url-safe-bare": [],
-  "sendgrid-regressions--url-safe-env-token": [],
-  "sendgrid-regressions--url-safe-env-key": [],
+  "sendgrid-regressions--url-safe-bare": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--url-safe-env-token": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--url-safe-env-key": [
+    "sendgrid-token"
+  ],
   "sendgrid-regressions--url-safe-generic-key": [
+    "sendgrid-token",
     "generic-token"
   ],
-  "sendgrid-regressions--url-safe-json": [],
-  "sendgrid-regressions--url-safe-quoted-env": [],
-  "sendgrid-regressions--url-safe-unicode": [],
-  "sendgrid-regressions--url-safe-crlf": [],
-  "sendgrid-regressions--url-safe-markdown": [],
+  "sendgrid-regressions--url-safe-json": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--url-safe-quoted-env": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--url-safe-unicode": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--url-safe-crlf": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--url-safe-markdown": [
+    "sendgrid-token"
+  ],
   "sendgrid-regressions--url-safe-bearer": [
+    "sendgrid-token",
     "bearer-token"
   ],
-  "sendgrid-regressions--trailing-dash-bare": [],
-  "sendgrid-regressions--trailing-dash-env-token": [],
-  "sendgrid-regressions--trailing-dash-env-key": [],
+  "sendgrid-regressions--trailing-dash-bare": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--trailing-dash-env-token": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--trailing-dash-env-key": [
+    "sendgrid-token"
+  ],
   "sendgrid-regressions--trailing-dash-generic-key": [
+    "sendgrid-token",
     "generic-token"
   ],
-  "sendgrid-regressions--trailing-dash-json": [],
-  "sendgrid-regressions--trailing-dash-quoted-env": [],
-  "sendgrid-regressions--trailing-dash-unicode": [],
-  "sendgrid-regressions--trailing-dash-crlf": [],
-  "sendgrid-regressions--trailing-dash-markdown": [],
+  "sendgrid-regressions--trailing-dash-json": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--trailing-dash-quoted-env": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--trailing-dash-unicode": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--trailing-dash-crlf": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--trailing-dash-markdown": [
+    "sendgrid-token"
+  ],
   "sendgrid-regressions--trailing-dash-bearer": [
+    "sendgrid-token",
     "bearer-token"
   ],
-  "sendgrid-regressions--short-id": [],
-  "sendgrid-regressions--short-secret": [],
-  "sendgrid-regressions--missing-separator": [],
-  "sendgrid-regressions--wrong-separator": [],
-  "sendgrid-regressions--wrong-prefix": [],
-  "sendgrid-regressions--prefix-only": [],
-  "sendgrid-regressions--masked": [],
-  "sendgrid-regressions--documentation": [],
+  "sendgrid-regressions--short-id": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--short-secret": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--missing-separator": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--wrong-separator": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--wrong-prefix": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--prefix-only": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--masked": [
+    "sendgrid-token"
+  ],
+  "sendgrid-regressions--documentation": [
+    "sendgrid-token"
+  ],
   "reference-syntax--python-settings": [
     "generic-token"
   ],
@@ -627,6 +705,750 @@
     "generic-token"
   ],
   "milestone-6-closed--issue-280-arn-account": [
+    "generic-token"
+  ],
+  "detector-coverage--aws-access-key-shape-1-bare": [
+    "aws-access-key"
+  ],
+  "detector-coverage--aws-access-key-shape-1-quoted": [
+    "aws-access-key"
+  ],
+  "detector-coverage--aws-access-key-shape-1-unicode-crlf": [
+    "aws-access-key"
+  ],
+  "detector-coverage--aws-access-key-shape-2-bare": [
+    "aws-access-key"
+  ],
+  "detector-coverage--aws-access-key-shape-2-quoted": [
+    "aws-access-key"
+  ],
+  "detector-coverage--aws-access-key-shape-2-unicode-crlf": [
+    "aws-access-key"
+  ],
+  "detector-coverage--aws-access-key-prefix-only": [
+    "aws-access-key"
+  ],
+  "detector-coverage--aws-access-key-short-body": [
+    "aws-access-key"
+  ],
+  "detector-coverage--github-token-shape-1-bare": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-1-quoted": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-1-unicode-crlf": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-2-bare": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-2-quoted": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-2-unicode-crlf": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-3-bare": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-3-quoted": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-3-unicode-crlf": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-4-bare": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-4-quoted": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-4-unicode-crlf": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-5-bare": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-5-quoted": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-shape-5-unicode-crlf": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-prefix-only": [
+    "github-token"
+  ],
+  "detector-coverage--github-token-short-body": [
+    "github-token"
+  ],
+  "detector-coverage--gitlab-token-shape-1-bare": [
+    "gitlab-token"
+  ],
+  "detector-coverage--gitlab-token-shape-1-quoted": [
+    "gitlab-token"
+  ],
+  "detector-coverage--gitlab-token-shape-1-unicode-crlf": [
+    "gitlab-token"
+  ],
+  "detector-coverage--gitlab-token-prefix-only": [
+    "gitlab-token"
+  ],
+  "detector-coverage--gitlab-token-short-body": [
+    "gitlab-token"
+  ],
+  "detector-coverage--openai-token-shape-1-bare": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-shape-1-quoted": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-shape-1-unicode-crlf": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-shape-2-bare": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-shape-2-quoted": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-shape-2-unicode-crlf": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-shape-3-bare": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-shape-3-quoted": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-shape-3-unicode-crlf": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-prefix-only": [
+    "openai-token"
+  ],
+  "detector-coverage--openai-token-short-body": [
+    "openai-token"
+  ],
+  "detector-coverage--anthropic-token-shape-1-bare": [
+    "anthropic-token"
+  ],
+  "detector-coverage--anthropic-token-shape-1-quoted": [
+    "anthropic-token"
+  ],
+  "detector-coverage--anthropic-token-shape-1-unicode-crlf": [
+    "anthropic-token"
+  ],
+  "detector-coverage--anthropic-token-prefix-only": [
+    "anthropic-token"
+  ],
+  "detector-coverage--anthropic-token-short-body": [
+    "anthropic-token"
+  ],
+  "detector-coverage--shopify-token-shape-1-bare": [
+    "shopify-token"
+  ],
+  "detector-coverage--shopify-token-shape-1-quoted": [
+    "shopify-token"
+  ],
+  "detector-coverage--shopify-token-shape-1-unicode-crlf": [
+    "shopify-token"
+  ],
+  "detector-coverage--shopify-token-shape-2-bare": [
+    "shopify-token"
+  ],
+  "detector-coverage--shopify-token-shape-2-quoted": [
+    "shopify-token"
+  ],
+  "detector-coverage--shopify-token-shape-2-unicode-crlf": [
+    "shopify-token"
+  ],
+  "detector-coverage--shopify-token-prefix-only": [
+    "shopify-token"
+  ],
+  "detector-coverage--shopify-token-short-body": [
+    "shopify-token"
+  ],
+  "detector-coverage--vault-token-shape-1-bare": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-shape-1-quoted": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-shape-1-unicode-crlf": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-shape-2-bare": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-shape-2-quoted": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-shape-2-unicode-crlf": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-shape-3-bare": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-shape-3-quoted": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-shape-3-unicode-crlf": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-prefix-only": [
+    "vault-token"
+  ],
+  "detector-coverage--vault-token-short-body": [
+    "vault-token"
+  ],
+  "detector-coverage--stripe-token-shape-1-bare": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-1-quoted": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-1-unicode-crlf": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-2-bare": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-2-quoted": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-2-unicode-crlf": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-3-bare": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-3-quoted": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-3-unicode-crlf": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-4-bare": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-4-quoted": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-4-unicode-crlf": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-5-bare": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-5-quoted": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-5-unicode-crlf": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-6-bare": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-6-quoted": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-shape-6-unicode-crlf": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-prefix-only": [
+    "stripe-token"
+  ],
+  "detector-coverage--stripe-token-short-body": [
+    "stripe-token"
+  ],
+  "detector-coverage--slack-token-shape-1-bare": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-1-quoted": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-1-unicode-crlf": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-2-bare": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-2-quoted": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-2-unicode-crlf": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-3-bare": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-3-quoted": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-3-unicode-crlf": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-4-bare": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-4-quoted": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-4-unicode-crlf": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-5-bare": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-5-quoted": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-5-unicode-crlf": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-6-bare": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-6-quoted": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-6-unicode-crlf": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-7-bare": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-7-quoted": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-shape-7-unicode-crlf": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-prefix-only": [
+    "slack-token"
+  ],
+  "detector-coverage--slack-token-short-body": [
+    "slack-token"
+  ],
+  "detector-coverage--pypi-token-shape-1-bare": [
+    "pypi-token"
+  ],
+  "detector-coverage--pypi-token-shape-1-quoted": [
+    "pypi-token"
+  ],
+  "detector-coverage--pypi-token-shape-1-unicode-crlf": [
+    "pypi-token"
+  ],
+  "detector-coverage--pypi-token-prefix-only": [
+    "pypi-token"
+  ],
+  "detector-coverage--pypi-token-short-body": [
+    "pypi-token"
+  ],
+  "detector-coverage--huggingface-token-shape-1-bare": [
+    "huggingface-token"
+  ],
+  "detector-coverage--huggingface-token-shape-1-quoted": [
+    "huggingface-token"
+  ],
+  "detector-coverage--huggingface-token-shape-1-unicode-crlf": [
+    "huggingface-token"
+  ],
+  "detector-coverage--huggingface-token-prefix-only": [
+    "huggingface-token"
+  ],
+  "detector-coverage--huggingface-token-short-body": [
+    "huggingface-token"
+  ],
+  "detector-coverage--docker-token-shape-1-bare": [
+    "docker-token"
+  ],
+  "detector-coverage--docker-token-shape-1-quoted": [
+    "docker-token"
+  ],
+  "detector-coverage--docker-token-shape-1-unicode-crlf": [
+    "docker-token"
+  ],
+  "detector-coverage--docker-token-shape-2-bare": [
+    "docker-token"
+  ],
+  "detector-coverage--docker-token-shape-2-quoted": [
+    "docker-token"
+  ],
+  "detector-coverage--docker-token-shape-2-unicode-crlf": [
+    "docker-token"
+  ],
+  "detector-coverage--docker-token-prefix-only": [
+    "docker-token"
+  ],
+  "detector-coverage--docker-token-short-body": [
+    "docker-token"
+  ],
+  "detector-coverage--cloudflare-token-shape-1-bare": [
+    "cloudflare-token"
+  ],
+  "detector-coverage--cloudflare-token-shape-1-quoted": [
+    "cloudflare-token"
+  ],
+  "detector-coverage--cloudflare-token-shape-1-unicode-crlf": [
+    "cloudflare-token"
+  ],
+  "detector-coverage--cloudflare-token-prefix-only": [
+    "cloudflare-token"
+  ],
+  "detector-coverage--cloudflare-token-short-body": [
+    "cloudflare-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-1-bare": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-1-quoted": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-1-unicode-crlf": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-2-bare": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-2-quoted": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-2-unicode-crlf": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-3-bare": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-3-quoted": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-shape-3-unicode-crlf": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-prefix-only": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--digitalocean-token-short-body": [
+    "digitalocean-token"
+  ],
+  "detector-coverage--linear-token-shape-1-bare": [
+    "linear-token"
+  ],
+  "detector-coverage--linear-token-shape-1-quoted": [
+    "linear-token"
+  ],
+  "detector-coverage--linear-token-shape-1-unicode-crlf": [
+    "linear-token"
+  ],
+  "detector-coverage--linear-token-shape-2-bare": [
+    "linear-token"
+  ],
+  "detector-coverage--linear-token-shape-2-quoted": [
+    "linear-token"
+  ],
+  "detector-coverage--linear-token-shape-2-unicode-crlf": [
+    "linear-token"
+  ],
+  "detector-coverage--linear-token-prefix-only": [
+    "linear-token"
+  ],
+  "detector-coverage--linear-token-short-body": [
+    "linear-token"
+  ],
+  "detector-coverage--supabase-token-shape-1-bare": [
+    "supabase-token"
+  ],
+  "detector-coverage--supabase-token-shape-1-quoted": [
+    "supabase-token"
+  ],
+  "detector-coverage--supabase-token-shape-1-unicode-crlf": [
+    "supabase-token"
+  ],
+  "detector-coverage--supabase-token-prefix-only": [
+    "supabase-token"
+  ],
+  "detector-coverage--supabase-token-short-body": [
+    "supabase-token"
+  ],
+  "detector-coverage--vercel-token-shape-1-bare": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-1-quoted": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-1-unicode-crlf": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-2-bare": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-2-quoted": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-2-unicode-crlf": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-3-bare": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-3-quoted": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-3-unicode-crlf": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-4-bare": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-4-quoted": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-4-unicode-crlf": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-5-bare": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-5-quoted": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-shape-5-unicode-crlf": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-prefix-only": [
+    "vercel-token"
+  ],
+  "detector-coverage--vercel-token-short-body": [
+    "vercel-token"
+  ],
+  "detector-coverage--npm-token-shape-1-bare": [
+    "npm-token"
+  ],
+  "detector-coverage--npm-token-shape-1-quoted": [
+    "npm-token"
+  ],
+  "detector-coverage--npm-token-shape-1-unicode-crlf": [
+    "npm-token"
+  ],
+  "detector-coverage--npm-token-prefix-only": [
+    "npm-token"
+  ],
+  "detector-coverage--npm-token-short-body": [
+    "npm-token"
+  ],
+  "detector-coverage--sendgrid-token-segmented-bare": [
+    "sendgrid-token"
+  ],
+  "detector-coverage--sendgrid-token-segmented-quoted": [
+    "sendgrid-token"
+  ],
+  "detector-coverage--sendgrid-token-segmented-unicode-crlf": [
+    "sendgrid-token"
+  ],
+  "detector-coverage--sendgrid-token-prefix-only": [
+    "sendgrid-token"
+  ],
+  "detector-coverage--sendgrid-token-short-body": [
+    "sendgrid-token"
+  ],
+  "detector-coverage--private-key-private-key-bare": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-private-key-quoted": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-private-key-unicode-crlf": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-rsa-private-key-bare": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-rsa-private-key-quoted": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-rsa-private-key-unicode-crlf": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-dsa-private-key-bare": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-dsa-private-key-quoted": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-dsa-private-key-unicode-crlf": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-ec-private-key-bare": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-ec-private-key-quoted": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-ec-private-key-unicode-crlf": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-openssh-private-key-bare": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-openssh-private-key-quoted": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-openssh-private-key-unicode-crlf": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-encrypted-private-key-bare": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-encrypted-private-key-quoted": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-encrypted-private-key-unicode-crlf": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-public-block": [
+    "private-key"
+  ],
+  "detector-coverage--private-key-label-prose": [
+    "private-key"
+  ],
+  "detector-coverage--jwt-expired-fabricated-bare": [
+    "jwt"
+  ],
+  "detector-coverage--jwt-expired-fabricated-quoted": [
+    "jwt"
+  ],
+  "detector-coverage--jwt-expired-fabricated-unicode-crlf": [
+    "jwt"
+  ],
+  "detector-coverage--jwt-missing-signature": [
+    "jwt"
+  ],
+  "detector-coverage--jwt-ordinary-dotted-name": [
+    "jwt"
+  ],
+  "detector-coverage--bearer-token-header-bare": [
+    "bearer-token"
+  ],
+  "detector-coverage--bearer-token-header-quoted": [
+    "bearer-token"
+  ],
+  "detector-coverage--bearer-token-header-unicode-crlf": [
+    "bearer-token"
+  ],
+  "detector-coverage--bearer-token-missing-value": [
+    "bearer-token"
+  ],
+  "detector-coverage--bearer-token-ordinary-prose": [
+    "bearer-token"
+  ],
+  "detector-coverage--connection-string-postgres-bare": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-postgres-quoted": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-postgres-unicode-crlf": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mysql-bare": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mysql-quoted": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mysql-unicode-crlf": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mariadb-bare": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mariadb-quoted": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mariadb-unicode-crlf": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-redis-bare": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-redis-quoted": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-redis-unicode-crlf": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mongodb-bare": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mongodb-quoted": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-mongodb-unicode-crlf": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-no-password": [
+    "connection-string"
+  ],
+  "detector-coverage--connection-string-public-url": [
+    "connection-string"
+  ],
+  "detector-coverage--otpauth-uri-totp-bare": [
+    "otpauth-uri"
+  ],
+  "detector-coverage--otpauth-uri-totp-quoted": [
+    "otpauth-uri"
+  ],
+  "detector-coverage--otpauth-uri-totp-unicode-crlf": [
+    "otpauth-uri"
+  ],
+  "detector-coverage--otpauth-uri-hotp-bare": [
+    "otpauth-uri"
+  ],
+  "detector-coverage--otpauth-uri-hotp-quoted": [
+    "otpauth-uri"
+  ],
+  "detector-coverage--otpauth-uri-hotp-unicode-crlf": [
+    "otpauth-uri"
+  ],
+  "detector-coverage--otpauth-uri-missing-secret": [
+    "otpauth-uri"
+  ],
+  "detector-coverage--otpauth-uri-short-secret": [
+    "otpauth-uri"
+  ],
+  "detector-coverage--generic-token-api-key-bare": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-api-key-quoted": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-api-key-unicode-crlf": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-password-bare": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-password-quoted": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-password-unicode-crlf": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-client-secret-bare": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-client-secret-quoted": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-client-secret-unicode-crlf": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-reference": [
+    "generic-token"
+  ],
+  "detector-coverage--generic-token-mask": [
     "generic-token"
   ]
 }

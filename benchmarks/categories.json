@@ -50,9 +50,16 @@
   },
   {
     "id": "milestone-6-closed",
-    "title": "Unreleased fixes",
+    "title": "Beta.3 regressions",
     "description": "Closed milestone-6 regression expectations, measured against the installed published scanners.",
     "kind": "accuracy",
     "corpus": "fixtures/generated/milestone-6-closed.json"
+  },
+  {
+    "id": "detector-coverage",
+    "title": "Detector coverage",
+    "description": "Synthetic positive shapes, prefix variants, and negative controls for every registered beta.3 detector.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/detector-coverage.json"
   }
 ]

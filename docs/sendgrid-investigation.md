@@ -55,3 +55,11 @@ example, a range that includes Markdown backticks or drops the final token
 character receives one FP and one FN under the documented protocol. These
 synthetic shape tests do not establish provider validity or overall scanner
 quality. Do not aggregate the two new categories into a product ranking.
+
+## Published beta.3 follow-up
+
+The benchmark now pins published `@redact-secret/core@0.1.0-beta.3`.
+All 30 SendGrid regression positives match exactly and all eight negatives
+remain clean. The three original format fixtures also match exactly.
+The earlier beta.1 investigation above is retained as historical evidence.
+See the [release comparison](beta-3-results.md) for the complete results.

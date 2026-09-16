@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "draft — independent human review required",
+  "fixtures": [
+    {
+      "id": "github-token",
+      "path": "github-token.txt",
+      "group": "Token formats",
+      "content": "GITHUB_TOKEN=ghp_SYNTHETIC000000000000000000000000000\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 53,
+          "note": "Synthetic credential-shaped test value; never issued by a provider."
+        }
+      ]
+    },
+    {
+      "id": "aws-id",
+      "path": "aws-id.txt",
+      "group": "Token formats",
+      "content": "AWS_ACCESS_KEY_ID=AKIASYNTHETICAAAAAAA\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 38,
+          "note": "Synthetic credential-shaped test value; never issued by a provider."
+        }
+      ]
+    },
+    {
+      "id": "bearer-header",
+      "path": "bearer-header.txt",
+      "group": "Context",
+      "content": "Authorization: Bearer SYNTHETIC_BENCHMARK_TOKEN_00000000\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 56,
+          "note": "Synthetic credential-shaped test value; never issued by a provider."
+        }
+      ]
+    },
+    {
+      "id": "unicode-prefix",
+      "path": "unicode-prefix.txt",
+      "group": "Context",
+      "content": "🔑 GITHUB_TOKEN=ghp_SYNTHETIC000000000000000000000000000\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 58,
+          "note": "Synthetic credential-shaped test value; never issued by a provider."
+        }
+      ]
+    },
+    {
+      "id": "quoted-token",
+      "path": "quoted-token.txt",
+      "group": "Context",
+      "content": "const token = \"ghp_SYNTHETIC000000000000000000000000000\";\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 55,
+          "note": "Synthetic credential-shaped test value; never issued by a provider."
+        }
+      ]
+    },
+    {
+      "id": "empty-config",
+      "path": "empty-config.txt",
+      "group": "Negative controls",
+      "content": "API_KEY=\n",
+      "expected": []
+    },
+    {
+      "id": "placeholder",
+      "path": "placeholder.txt",
+      "group": "Negative controls",
+      "content": "API_KEY=${API_KEY}\n",
+      "expected": []
+    },
+    {
+      "id": "documentation",
+      "path": "documentation.txt",
+      "group": "Negative controls",
+      "content": "Set your API key in the environment before running.\n",
+      "expected": []
+    },
+    {
+      "id": "public-id",
+      "path": "public-id.txt",
+      "group": "Negative controls",
+      "content": "request_id=12345678-1234-1234-1234-123456789abc\n",
+      "expected": []
+    },
+    {
+      "id": "ordinary-text",
+      "path": "ordinary-text.txt",
+      "group": "Negative controls",
+      "content": "Hello, benchmark. No credentials here.\n",
+      "expected": []
+    }
+  ]
+}

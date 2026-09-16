@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "draft — independent human review required",
+  "provenance": "Synthetic token: ghp_ + first 36 hexadecimal characters of SHA-256 of redact-secret-benchmarks:never-issued-positive-control:v1. No provider-issued credential. Verification must remain disabled.",
+  "fixtures": [
+    {
+      "id": "env",
+      "path": "env.txt",
+      "group": "Environment",
+      "content": "GITHUB_TOKEN=ghp_2531045c2c196a55f71e50a2d300118630e2\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 53,
+          "note": "Deterministically constructed synthetic token; never issued by GitHub."
+        }
+      ]
+    },
+    {
+      "id": "json",
+      "path": "json.txt",
+      "group": "JSON",
+      "content": "{\"github_token\":\"ghp_2531045c2c196a55f71e50a2d300118630e2\"}\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 57,
+          "note": "Deterministically constructed synthetic token; never issued by GitHub."
+        }
+      ]
+    },
+    {
+      "id": "unicode",
+      "path": "unicode.txt",
+      "group": "Unicode",
+      "content": "🔑 github_token=\"ghp_2531045c2c196a55f71e50a2d300118630e2\"\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 59,
+          "note": "Deterministically constructed synthetic token; never issued by GitHub."
+        }
+      ]
+    },
+    {
+      "id": "crlf",
+      "path": "crlf.txt",
+      "group": "CRLF",
+      "content": "# Windows line endings\r\nGITHUB_TOKEN=ghp_2531045c2c196a55f71e50a2d300118630e2\r\n",
+      "expected": [
+        {
+          "start": 37,
+          "end": 77,
+          "note": "Deterministically constructed synthetic token; never issued by GitHub."
+        }
+      ]
+    },
+    {
+      "id": "env-reference",
+      "path": "env-reference.txt",
+      "group": "Negative controls",
+      "content": "GITHUB_TOKEN=${GITHUB_TOKEN}\n",
+      "expected": []
+    },
+    {
+      "id": "ordinary-text",
+      "path": "ordinary-text.txt",
+      "group": "Negative controls",
+      "content": "This document describes how to configure GitHub access.\n",
+      "expected": []
+    }
+  ]
+}

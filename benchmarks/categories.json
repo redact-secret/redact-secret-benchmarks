@@ -1,0 +1,58 @@
+[
+  {
+    "id": "accuracy",
+    "title": "Detection accuracy",
+    "description": "Exact secret detection across identical, synthetic files.",
+    "kind": "accuracy",
+    "corpus": "fixtures/accuracy/corpus.json"
+  },
+  {
+    "id": "token-contexts",
+    "title": "GitHub token contexts",
+    "description": "One never-issued, credential-shaped token across four text contexts and two negative controls.",
+    "kind": "accuracy",
+    "corpus": "fixtures/token-contexts/corpus.json"
+  },
+  {
+    "id": "credential-formats",
+    "title": "Credential formats",
+    "description": "Nine synthetic credential shapes, three deterministic samples per shape.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/credential-formats.json"
+  },
+  {
+    "id": "context-edges",
+    "title": "Context & boundaries",
+    "description": "Quoting, encoding, line endings, multiple spans, and long-input detection.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/context-edges.json"
+  },
+  {
+    "id": "negative-controls",
+    "title": "Negative controls",
+    "description": "Benign identifiers, placeholders, incomplete shapes, and ordinary text.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/negative-controls.json"
+  },
+  {
+    "id": "sendgrid-regressions",
+    "title": "SendGrid regressions",
+    "description": "SendGrid shapes across ten contexts, with URL-safe punctuation and near-miss controls.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/sendgrid-regressions.json"
+  },
+  {
+    "id": "reference-syntax",
+    "title": "Reference syntax",
+    "description": "Code expressions, interpolation, and secret-manager references with paired literal-secret controls.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/reference-syntax.json"
+  },
+  {
+    "id": "milestone-6-closed",
+    "title": "Unreleased fixes",
+    "description": "Closed milestone-6 regression expectations, measured against the installed published scanners.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/milestone-6-closed.json"
+  }
+]

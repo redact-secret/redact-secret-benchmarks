@@ -1,0 +1,632 @@
+{
+  "accuracy--github-token": [
+    "github-token"
+  ],
+  "accuracy--aws-id": [
+    "aws-access-key"
+  ],
+  "accuracy--bearer-header": [
+    "bearer-token"
+  ],
+  "accuracy--unicode-prefix": [
+    "github-token"
+  ],
+  "accuracy--quoted-token": [
+    "github-token"
+  ],
+  "accuracy--empty-config": [
+    "generic-token"
+  ],
+  "accuracy--placeholder": [
+    "generic-token"
+  ],
+  "accuracy--documentation": [],
+  "accuracy--public-id": [],
+  "accuracy--ordinary-text": [],
+  "token-contexts--env": [
+    "github-token"
+  ],
+  "token-contexts--json": [
+    "github-token"
+  ],
+  "token-contexts--unicode": [
+    "github-token"
+  ],
+  "token-contexts--crlf": [
+    "github-token"
+  ],
+  "token-contexts--env-reference": [
+    "generic-token"
+  ],
+  "token-contexts--ordinary-text": [],
+  "credential-formats--ghp-1": [
+    "github-token"
+  ],
+  "credential-formats--ghp-2": [
+    "github-token"
+  ],
+  "credential-formats--ghp-3": [
+    "github-token"
+  ],
+  "credential-formats--gho-1": [
+    "github-token"
+  ],
+  "credential-formats--gho-2": [
+    "github-token"
+  ],
+  "credential-formats--gho-3": [
+    "github-token"
+  ],
+  "credential-formats--ghu-1": [
+    "github-token"
+  ],
+  "credential-formats--ghu-2": [
+    "github-token"
+  ],
+  "credential-formats--ghu-3": [
+    "github-token"
+  ],
+  "credential-formats--ghs-1": [
+    "github-token"
+  ],
+  "credential-formats--ghs-2": [
+    "github-token"
+  ],
+  "credential-formats--ghs-3": [
+    "github-token"
+  ],
+  "credential-formats--ghr-1": [
+    "github-token"
+  ],
+  "credential-formats--ghr-2": [
+    "github-token"
+  ],
+  "credential-formats--ghr-3": [
+    "github-token"
+  ],
+  "credential-formats--gitlab-1": [
+    "gitlab-token"
+  ],
+  "credential-formats--gitlab-2": [
+    "gitlab-token"
+  ],
+  "credential-formats--gitlab-3": [
+    "gitlab-token"
+  ],
+  "credential-formats--npm-1": [
+    "npm-token"
+  ],
+  "credential-formats--npm-2": [
+    "npm-token"
+  ],
+  "credential-formats--npm-3": [
+    "npm-token"
+  ],
+  "credential-formats--sendgrid-1": [],
+  "credential-formats--sendgrid-2": [],
+  "credential-formats--sendgrid-3": [],
+  "credential-formats--slack-1": [
+    "slack-token"
+  ],
+  "credential-formats--slack-2": [
+    "slack-token"
+  ],
+  "credential-formats--slack-3": [
+    "slack-token"
+  ],
+  "context-edges--bare": [
+    "github-token"
+  ],
+  "context-edges--no-final-newline": [
+    "github-token"
+  ],
+  "context-edges--single-quotes": [
+    "github-token"
+  ],
+  "context-edges--double-quotes": [
+    "github-token"
+  ],
+  "context-edges--json": [
+    "github-token"
+  ],
+  "context-edges--yaml": [
+    "github-token"
+  ],
+  "context-edges--toml": [
+    "github-token"
+  ],
+  "context-edges--javascript": [
+    "github-token"
+  ],
+  "context-edges--python": [
+    "github-token"
+  ],
+  "context-edges--markdown": [
+    "github-token"
+  ],
+  "context-edges--comment": [
+    "github-token"
+  ],
+  "context-edges--unicode": [
+    "github-token"
+  ],
+  "context-edges--combining-mark": [
+    "github-token"
+  ],
+  "context-edges--bom": [
+    "github-token"
+  ],
+  "context-edges--crlf": [
+    "github-token"
+  ],
+  "context-edges--blank-lines": [
+    "github-token"
+  ],
+  "context-edges--two-secrets": [
+    "github-token"
+  ],
+  "context-edges--repeated-lines": [
+    "github-token"
+  ],
+  "context-edges--same-line-distinct": [
+    "github-token"
+  ],
+  "context-edges--long-prefix": [
+    "github-token"
+  ],
+  "negative-controls--empty": [],
+  "negative-controls--whitespace": [],
+  "negative-controls--empty-assignment": [
+    "generic-token"
+  ],
+  "negative-controls--shell-reference": [
+    "generic-token"
+  ],
+  "negative-controls--template-reference": [
+    "generic-token"
+  ],
+  "negative-controls--redacted": [
+    "generic-token"
+  ],
+  "negative-controls--masked": [
+    "generic-token"
+  ],
+  "negative-controls--null-json": [
+    "generic-token"
+  ],
+  "negative-controls--sha256": [],
+  "negative-controls--commit-hash": [],
+  "negative-controls--uuid": [],
+  "negative-controls--public-url": [],
+  "negative-controls--public-email": [],
+  "negative-controls--base64-text": [],
+  "negative-controls--unicode-prose": [],
+  "negative-controls--token-variable": [],
+  "negative-controls--prefix-only": [
+    "github-token",
+    "gitlab-token",
+    "npm-token",
+    "slack-token"
+  ],
+  "negative-controls--short-github": [
+    "github-token"
+  ],
+  "negative-controls--short-gitlab": [
+    "gitlab-token"
+  ],
+  "negative-controls--short-npm": [
+    "npm-token"
+  ],
+  "negative-controls--short-sendgrid": [],
+  "negative-controls--short-slack": [
+    "slack-token"
+  ],
+  "negative-controls--numbers": [],
+  "negative-controls--pem-label-only": [
+    "private-key"
+  ],
+  "sendgrid-regressions--base62-bare": [],
+  "sendgrid-regressions--base62-env-token": [],
+  "sendgrid-regressions--base62-env-key": [],
+  "sendgrid-regressions--base62-generic-key": [
+    "generic-token"
+  ],
+  "sendgrid-regressions--base62-json": [],
+  "sendgrid-regressions--base62-quoted-env": [],
+  "sendgrid-regressions--base62-unicode": [],
+  "sendgrid-regressions--base62-crlf": [],
+  "sendgrid-regressions--base62-markdown": [],
+  "sendgrid-regressions--base62-bearer": [
+    "bearer-token"
+  ],
+  "sendgrid-regressions--url-safe-bare": [],
+  "sendgrid-regressions--url-safe-env-token": [],
+  "sendgrid-regressions--url-safe-env-key": [],
+  "sendgrid-regressions--url-safe-generic-key": [
+    "generic-token"
+  ],
+  "sendgrid-regressions--url-safe-json": [],
+  "sendgrid-regressions--url-safe-quoted-env": [],
+  "sendgrid-regressions--url-safe-unicode": [],
+  "sendgrid-regressions--url-safe-crlf": [],
+  "sendgrid-regressions--url-safe-markdown": [],
+  "sendgrid-regressions--url-safe-bearer": [
+    "bearer-token"
+  ],
+  "sendgrid-regressions--trailing-dash-bare": [],
+  "sendgrid-regressions--trailing-dash-env-token": [],
+  "sendgrid-regressions--trailing-dash-env-key": [],
+  "sendgrid-regressions--trailing-dash-generic-key": [
+    "generic-token"
+  ],
+  "sendgrid-regressions--trailing-dash-json": [],
+  "sendgrid-regressions--trailing-dash-quoted-env": [],
+  "sendgrid-regressions--trailing-dash-unicode": [],
+  "sendgrid-regressions--trailing-dash-crlf": [],
+  "sendgrid-regressions--trailing-dash-markdown": [],
+  "sendgrid-regressions--trailing-dash-bearer": [
+    "bearer-token"
+  ],
+  "sendgrid-regressions--short-id": [],
+  "sendgrid-regressions--short-secret": [],
+  "sendgrid-regressions--missing-separator": [],
+  "sendgrid-regressions--wrong-separator": [],
+  "sendgrid-regressions--wrong-prefix": [],
+  "sendgrid-regressions--prefix-only": [],
+  "sendgrid-regressions--masked": [],
+  "sendgrid-regressions--documentation": [],
+  "reference-syntax--python-settings": [
+    "generic-token"
+  ],
+  "reference-syntax--typescript-config": [
+    "generic-token"
+  ],
+  "reference-syntax--terraform-resource": [
+    "generic-token"
+  ],
+  "reference-syntax--python-environ": [
+    "generic-token"
+  ],
+  "reference-syntax--rust-type": [
+    "generic-token"
+  ],
+  "reference-syntax--go-config": [
+    "generic-token"
+  ],
+  "reference-syntax--azure-macro": [
+    "generic-token"
+  ],
+  "reference-syntax--shell-command": [
+    "generic-token"
+  ],
+  "reference-syntax--ruby-interpolation": [
+    "generic-token"
+  ],
+  "reference-syntax--env-substitution": [
+    "generic-token"
+  ],
+  "reference-syntax--windows-env": [
+    "generic-token"
+  ],
+  "reference-syntax--sql-bind": [
+    "generic-token"
+  ],
+  "reference-syntax--onepassword": [
+    "generic-token"
+  ],
+  "reference-syntax--litellm-env": [
+    "generic-token"
+  ],
+  "reference-syntax--gcp-resource": [
+    "generic-token"
+  ],
+  "reference-syntax--vault-reference": [
+    "generic-token"
+  ],
+  "reference-syntax--aws-reference": [
+    "generic-token"
+  ],
+  "reference-syntax--azure-keyvault": [
+    "generic-token"
+  ],
+  "reference-syntax--jinja": [
+    "generic-token"
+  ],
+  "reference-syntax--shell-env": [
+    "generic-token"
+  ],
+  "reference-syntax--api-key": [
+    "generic-token"
+  ],
+  "reference-syntax--password": [
+    "generic-token"
+  ],
+  "reference-syntax--dotted-password": [
+    "generic-token"
+  ],
+  "reference-syntax--quoted-password": [
+    "generic-token"
+  ],
+  "reference-syntax--client-secret": [
+    "generic-token"
+  ],
+  "reference-syntax--unicode-crlf": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-254-id-bare": [
+    "aws-access-key"
+  ],
+  "milestone-6-closed--issue-254-id-env": [
+    "aws-access-key"
+  ],
+  "milestone-6-closed--issue-254-secret-quoted": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-254-secret-json": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-254-changed-id": [
+    "aws-access-key"
+  ],
+  "milestone-6-closed--issue-254-changed-secret": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-255-postgres-default": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-postgres-literal": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-mysql-default": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-mysql-literal": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-mariadb-default": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-mariadb-literal": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-redis-default": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-redis-literal": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-mongodb-default": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-255-mongodb-literal": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-placeholder-1": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-placeholder-2": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-placeholder-3": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-placeholder-4": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-placeholder-5": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-placeholder-6": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-placeholder-7": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-filler-near-miss": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-embedded-word": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-256-unrelated-suffix": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-257-leading-space": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-257-trailing-digit": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-257-compound": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-257-url-digit": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-257-replace-me": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-257-password-digit": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-257-secret-digit": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-257-unlisted-word": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-257-embedded-word": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-257-url-embedded": [
+    "connection-string"
+  ],
+  "milestone-6-closed--issue-262-yaml-block": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-262-prompt": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-262-ssh-prompt": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-262-crlf-tabs": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-262-blank-line": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-262-korean-prompt": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-262-same-line": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-262-horizontal-tab": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-263-jinja-double": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-263-jinja-single": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-263-json": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-263-helm": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-263-go-template": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-263-unquoted": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-263-prefix-only": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-263-embedded": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-264-stars": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-264-bullets": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-264-env": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-264-quoted-bullets": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-264-mixed-stars": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-264-mixed-bullets": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-265-properties": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-265-secret-key-ref": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-265-database": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-265-auth": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-265-deep": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-266-flow-object": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-266-array": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-266-flow-crlf": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-266-block-literal": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-266-quoted-brace": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-settings": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-config": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-terraform": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-subscript": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-generic-type": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-go-config": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-rust-call": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-terraform-data": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-dotted-literal": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-underscored-literal": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-278-root-near-miss": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-onepassword": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-litellm": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-gcp-version": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-gcp-no-version": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-vals": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-bank-vaults": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-aws": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-azure-uri": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-azure-fields": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-onepassword-shape": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-litellm-identifier": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-vault-missing-selector": [
+    "generic-token"
+  ],
+  "milestone-6-closed--issue-280-arn-account": [
+    "generic-token"
+  ]
+}

@@ -9,3 +9,6 @@ public/results/.*.json
 
 # graft's local graph cache — regenerable, not committed (run `graft build`).
 /graft/
+
+# Deterministic scanner inputs are materialized locally, never committed.
+/fixtures/generated/*.json

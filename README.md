@@ -10,6 +10,13 @@ Unreviewed formats appear in an additional **unscored review queue**. There is
 no mixed overall score. See the [25-family corpus audit](docs/corpus-audit.md)
 for the input defects found, source evidence, remaining gaps and new controls.
 
+Generated credential JSON is **local build output**, excluded from Git.
+`npm ci`, development, builds and tests materialize it automatically from public
+deterministic seeds. Commit generator changes and the SHA-256 manifest in
+`benchmarks/generated-corpora.json`; never force-add generated JSON. CI rejects
+tracked generated inputs. This avoids recurring push-protection false positives
+without changing the bytes scanners receive or weakening their test cases.
+
 ## Why this is a separate repository
 
 This work is deliberately kept out of `redact-secret/redact-secret`:

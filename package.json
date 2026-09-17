@@ -7,6 +7,15 @@
     "node": ">=22.12.0 <23 || >=24 <25"
   },
   "scripts": {
+    "prepare": "node scripts/generate-fixtures.mjs --ensure",
+    "prebench": "node scripts/generate-fixtures.mjs --ensure",
+    "predev": "node scripts/generate-fixtures.mjs --ensure",
+    "prebuild": "node scripts/generate-fixtures.mjs --ensure",
+    "pretest": "node scripts/generate-fixtures.mjs --ensure",
+    "pretest:integration": "node scripts/generate-fixtures.mjs --ensure",
+    "pretest:coverage": "node scripts/generate-fixtures.mjs --ensure",
+    "pretest:redaction": "node scripts/generate-fixtures.mjs --ensure",
+    "precompare": "node scripts/generate-fixtures.mjs --ensure",
     "bench": "node benchmarks/run.mjs",
     "start": "npm run bench && vite --host 127.0.0.1",
     "dev": "vite --host 127.0.0.1",
@@ -17,7 +26,7 @@
     "compare": "npm run fixtures:check && npm test && npm run test:integration && npm run bench -- --strict",
     "test:redaction": "node --test tests/redaction.test.mjs",
     "fixtures:generate": "node scripts/generate-fixtures.mjs",
-    "fixtures:check": "node scripts/generate-fixtures.mjs --check",
+    "fixtures:check": "node scripts/generate-fixtures.mjs --check && node scripts/check-fixture-storage.mjs",
     "test:coverage": "node --experimental-test-coverage --test-coverage-include='benchmarks/lib/**' --test-coverage-include='scanners/**' --test tests/*.test.mjs tests/integration/*.test.mjs",
     "detectors:refresh": "python3 scripts/refresh-detector-inventory.py",
     "detectors:check": "python3 scripts/refresh-detector-inventory.py --check"

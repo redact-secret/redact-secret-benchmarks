@@ -7,6 +7,7 @@ export interface Fixture {
   id: string; slug: string; category: string; path: string; group: string;
   content: string; expected: { start: number; end: number; note?: string }[];
   detectors: string[]; issue?: number;
+  assessment: { cohort: 'common-format' | 'masking' | 'malformed-example' | 'unreviewed'; reason: string; contract?: string; sources: string[] };
 }
 const files = import.meta.glob('../fixtures/**/*.json', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 export const rawCorpora = Object.fromEntries(categories.map(c => [c.id, files[`../${c.corpus}`]]));

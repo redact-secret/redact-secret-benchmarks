@@ -14,6 +14,23 @@ Ambiguous mappings fail closed rather than manufacturing a range. TruffleHog
 verification and update checks are disabled. Missing binaries and execution
 failures remain distinct from successful scans with no findings.
 
+Schema-v3 reporting separates reviewed formats, standalone masking policy,
+malformed/example controls and unscored review. Scanner adapters never select
+cohorts or change expectations based on their results.
+
+## Composite credential findings
+
+TruffleHog 3.97.4 AWS findings put the ID in `Raw` and `ID:secret` in `RawV2`.
+The adapter maps both reported secret components to unique source ranges.
+Shopify findings concatenate `token + shop-domain` in `Raw`; the adapter maps
+the token and checks the companion domain exists, without marking the public
+domain secret. Neither transformation reads expected ranges. Unknown layouts
+and ambiguous occurrences fail explicitly. Real-binary integration tests use
+Anthropic, AWS pairs and Shopify with Unicode/CRLF and empty adapter expectations.
+
+Output contracts: [AWS](https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/aws/access_keys/accesskey.go),
+[Shopify](https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/shopify/shopify.go).
+
 The external command contracts follow the upstream
 [Gitleaks README](https://github.com/gitleaks/gitleaks#usage) and
 [TruffleHog README](https://github.com/trufflesecurity/trufflehog#usage).
@@ -24,7 +41,7 @@ compatibility with every binary release.
 ## Validated releases
 
 The local comparison has been exercised with Gitleaks **8.30.1**,
-TruffleHog **3.97.4**, and `@redact-secret/core` **0.1.0-beta.3** on macOS
+TruffleHog **3.97.4**, and `@redact-secret/core` **0.1.0-beta.4** on macOS
 arm64. Install the external tools using `brew install gitleaks trufflehog`.
 Other systems can use the upstream installation instructions above.
 

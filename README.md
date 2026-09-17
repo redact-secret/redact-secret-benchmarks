@@ -4,6 +4,12 @@ Project-maintained, reproducible synthetic benchmarks comparing
 [redact-secret](https://github.com/redact-secret/redact-secret) against
 established secret-scanning tools on identical fixture sets.
 
+The dashboard now separates **reviewed credential formats**, **standalone
+values / masking policy**, and **malformed / example / benign controls**.
+Unreviewed formats appear in an additional **unscored review queue**. There is
+no mixed overall score. See the [25-family corpus audit](docs/corpus-audit.md)
+for the input defects found, source evidence, remaining gaps and new controls.
+
 ## Why this is a separate repository
 
 This work is deliberately kept out of `redact-secret/redact-secret`:
@@ -38,36 +44,36 @@ absent, at a known byte range), what does each scanner report?
 
 ## Ground-truth schema (tool-agnostic)
 
-Unlike `redact-secret`'s own `assessment/fixtures/accuracy-corpus.json`,
-which carries a `policyOutcome` (`block`/`redact`/`warn`) specific to its own
-policy model, ground truth here is reduced to what every scanner can be
-judged against without favoring one tool's concepts over another's:
+Ranges use a common representation, but expectations are not automatically
+tool-neutral. Each fixture must declare its measurement purpose and rationale;
+reviewed format fixtures also require a source-backed contract:
 
 ```json
 {
   "id": "fixture-id",
   "path": "relative/file/path",
-  "expected": [
-    { "start": 0, "end": 0, "note": "human-readable, no matched value" }
-  ]
+  "content": "password=example-only",
+  "expected": [],
+  "assessment": {
+    "cohort": "malformed-example",
+    "reason": "Authored example/placeholder control; project policy.",
+    "sources": []
+  }
 }
 ```
 
-An empty `expected` array is a negative (false-positive trap) fixture.
-Fixtures are materialized as real files in a scratch directory (and, where a
-scanner requires it, a scratch git repository with real commits) rather than
-fed as in-memory strings, since Gitleaks and TruffleHog scan files/repos, not
-raw text.
+An empty `expected` array is an authored negative control. Example filtering
+and generic masking are policy choices, so disagreements are not automatically
+scanner defects. Fixtures are materialized in a scratch filesystem directory.
 
 ## Non-goals
 
 - Not a release gate for `redact-secret`, and not affiliated with or a
   criticism of the Gitleaks or TruffleHog projects.
 - No live-credential validation against real provider APIs.
-- No real, active, or reconstructable credentials anywhere in fixtures,
-  results, logs, or commit history — synthetic or explicitly revoked values
-  only, on the same terms as the main repo's `SECURITY.md` and
-  `conformance/README.md#fixture-safety-review`.
+- No active or provider-issued credentials. Cryptographic controls use a fixed
+  public test seed to create a parseable, never-deployed private key and locally
+  signed JWT. These public test values must never be used for real systems.
 
 ## Run it
 
@@ -132,13 +138,15 @@ fixtures generated from Redact Secret's own detector registry. They are not an
 independently reviewed, neutral sample and cannot establish that one product is
 better than another. Corpus review status remains draft.
 
-Report schema v2 preserves exact-range TP/FP/FN and adds `contained` and `broader`
-counts per row and scanner. `contained` counts each expected span fully enclosed
-by any finding once; partial overlap does not count. `broader` counts contained
-spans for which no exact finding exists. A finding can enclose multiple secrets.
-These observations are not precision or redaction-success rates: even an entire
-file finding may contain a secret. Database URL findings keep their original
-scope. Regenerate v1 reports with `npm run bench`.
+Report schema v3 exports separate `scanner.cohorts` summaries and classified
+rows. There are no scanner-wide totals or rates. Pending-review rows preserve
+actual ranges but have no TP/FP/FN, containment or rate scores. Legacy v1/v2
+reports are rejected; regenerate with `npm run bench`.
+
+`contained` counts each expected span fully enclosed by any finding once;
+partial overlap does not count. `broader` counts containment without an exact
+match. These are not precision or redaction-success rates: an entire-file
+finding may contain a secret. Database URL findings retain their original scope.
 
 ## Measurement protocol
 
@@ -157,7 +165,9 @@ scope. Regenerate v1 reports with `npm run bench`.
   count once, even when multiple detectors report them.
 - Precision = TP / (TP + FP), recall = TP / (TP + FN), and
   F1 = 2TP / (2TP + FP + FN). Zero denominators are `null` (shown as `—`).
-  True negatives count clean negative files, not arbitrary non-secret bytes.
+  These diagnostic JSON rates are computed within scored cohorts only. The UI
+  shows counts instead of ranking charts; positive-only format samples cannot
+  establish balanced precision/F1. True negatives count clean control files.
 - Gitleaks uses default directory rules; environment rule overrides are removed.
   TruffleHog uses `--no-verification --no-update` and includes unverified
   results. No credential verification is requested. These flags are not an
@@ -177,6 +187,9 @@ benchmarks/detectors.json      Core detector taxonomy snapshot
 benchmarks/fixture-detectors.json Explicit fixture-to-detector assignments
 benchmarks/run.mjs             Materialization, execution, provenance, atomic reports
 benchmarks/lib/scoring.mjs     Ground-truth validation and exact-range scoring
+benchmarks/lib/cohorts.mjs     Input classification and pinned format evidence
+benchmarks/lib/reporting.mjs   Separate cohort summaries; no mixed overall score
+benchmarks/lib/validate-structures.mjs Offline key/JWT validation
 scanners/index.mjs             Published-package / external-process adapters
 fixtures/<category>/          Versioned corpus and independent expected ranges
 public/results/<category>.json Generated report per category (gitignored)
@@ -190,7 +203,7 @@ src/pages/accuracy.ts          Accuracy visualization and fixture explorer
 The dashboard uses these bookmarkable routes:
 
 - `/benchmark`: overview statistics, scanner comparisons, all 25 detector families,
-  and the nine case suites.
+  and the ten case suites.
 - `/benchmark/github-token` (or another detector ID): fixtures targeting that
   detector across case suites. Detectors with no assigned fixtures explicitly
   show no coverage. Positive and negative fixture counts are separate.
@@ -201,7 +214,7 @@ The dashboard uses these bookmarkable routes:
   expected spans, escaped whitespace, per-scanner findings, and a byte-preserving
   fixture download. Slugs are `<case-id>--<fixture-id>` to avoid collisions.
 - `/coverage-gaps`: searchable Gitleaks/TruffleHog detector inventory and
-  the six beta.3 fixture failures tracked in beta.4 issues #292–294.
+  the six beta.3 fixture failures resolved by beta.4 issues #292–294.
 - `/methodology`: scoring and reproduction details.
 
 Vite supports direct links and reloads on these paths. A production static
@@ -213,7 +226,9 @@ To add an accuracy case, create a corpus and register a unique URL-safe `id`,
 `title`, `description`, `kind: "accuracy"`, and `corpus` path in
 `benchmarks/categories.json`. Add every fixture slug to
 `benchmarks/fixture-detectors.json` with its detector IDs (or `[]` for a shared
-case without a detector assignment). Classification describes authored test
+case without a detector assignment). Add an assessment rule in
+`benchmarks/lib/cohorts.mjs` and regenerate/check fixtures. Unknown formats
+default to the unscored review queue. Classification describes authored test
 intent and never depends on which scanner detects a value. Ground truth must
 also be authored independently of scanner results. The catalog tests reject
 missing, orphaned, or unknown assignments. Registry detector IDs and case IDs
@@ -283,8 +298,10 @@ milestone 6 after checking existing issues and PRs. See the
 [investigation notes](docs/sendgrid-investigation.md) for the reproducer,
 source inspection, and the distinction between the installed npm release
 and the earlier milestone source review. The benchmark is now pinned to the
-published `0.1.0-beta.3` package. See the [release comparison](docs/beta-3-results.md)
-for measurements against the same beta.1 fixtures.
+published `0.1.0-beta.4` package. See the
+[beta.4 release comparison](docs/beta-4-results.md) for measurements against
+the unchanged 491-file corpus, or the historical
+[beta.3 comparison](docs/beta-3-results.md) for the earlier 243-file cohort.
 
 **Beta.3 regressions** adds another **92 fixtures** for the 11 detection-related
 closed issues reviewed in milestone 6. The full suite now contains **243 files,
@@ -346,13 +363,15 @@ Both commands use Python 3.11+ and `gh`; review the explicit family mappings
 in `scripts/refresh-detector-inventory.py` when upgrading versions. The web app
 loads only the checked-in snapshot and performs no external scanner queries.
 
-`benchmarks/known-gaps.json` records the beta.3 measurements and links six
-fixtures to the [beta.4 milestone](https://github.com/redact-secret/redact-secret/milestone/7):
+`benchmarks/known-gaps.json` preserves the beta.3 measurements and links six
+fixtures to the [beta.4 milestone](https://github.com/redact-secret/redact-secret/milestone/7).
+All six now pass with the published beta.4 npm package:
 
 - [#292](https://github.com/redact-secret/redact-secret/issues/292): Windows environment references and SQL bind parameters (two false positives).
 - [#293](https://github.com/redact-secret/redact-secret/issues/293): Azure App Service Key Vault references (one false positive).
 - [#294](https://github.com/redact-secret/redact-secret/issues/294): nested quoted assignments in plain text (three missed spans; malformed-input scope is explicit).
 
-Issue cards are a historical measurement snapshot, not live GitHub state.
-Corresponding fixture pages retain their original context and add beta.4
-follow-up links.
+Issue cards are a historical beta.3 measurement snapshot, not live GitHub
+state. Corresponding fixture pages retain their original context and beta.4
+follow-up links; current beta.4 results are summarized in
+[docs/beta-4-results.md](docs/beta-4-results.md).

@@ -6,6 +6,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { scanners } from "../../scanners/index.mjs";
 import { score } from "../../benchmarks/lib/scoring.mjs";
+import { buildCorpora } from '../../fixtures/generated/build.mjs';
+import { mkdir } from 'node:fs/promises';
 
 // Constructed locally, never issued by a provider. Never enable verification.
 const token =
@@ -14,6 +16,20 @@ const token =
     .update("redact-secret-benchmarks:never-issued-positive-control:v1")
     .digest("hex")
     .slice(0, 36);
+
+test('TruffleHog detects source-shaped Anthropic, AWS pairs and Shopify with shop context', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'benchmark-reviewed-'));
+  const selected = buildCorpora()['common-formats'].fixtures.filter(f => /^(?:anthropic-token-api03|aws-access-key-pair|shopify-token-shpat)-unicode-crlf$/.test(f.id));
+  assert.equal(selected.length, 3);
+  try {
+    await mkdir(path.join(root, 'cases'));
+    for (const f of selected) await writeFile(path.join(root, f.path), f.content, { mode: 0o600 });
+    // Remove expectations before calling the adapter: output mapping must be independent.
+    const actual = await scanners.find(s => s.id === 'trufflehog').scan(root, selected.map(f => ({ ...f, expected: [] })));
+    const result = score(selected, actual);
+    assert.deepEqual([result.tp, result.fp, result.fn], [4, 0, 0]);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
 
 for (const scanner of scanners) {
   test(`${scanner.name}: released scanner finds a synthetic control and accepts a clean file`, async () => {

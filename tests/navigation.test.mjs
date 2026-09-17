@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'vite';
 import { buildCatalog, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments } from '../src/model.mjs';
-import { score } from '../benchmarks/lib/scoring.mjs';
+import { scoreCohorts } from '../benchmarks/lib/reporting.mjs';
 const read = async path => JSON.parse(await readFile(new URL('../'+path,import.meta.url),'utf8'));
 const categories = await read('benchmarks/categories.json');
 const registry = await read('benchmarks/detectors.json');
@@ -12,7 +12,7 @@ const corpora = Object.fromEntries(await Promise.all(categories.map(async c => [
 const fixtures = buildCatalog(categories,corpora,assignments,registry.detectors);
 
 test('all corpus fixtures have unique, routable slugs and explicit detector assignments', () => {
-  assert.equal(fixtures.length,491);
+  assert.equal(fixtures.length,549);
   assert.equal(registry.detectors.length,25);
   for (const f of fixtures) {
     assert.equal(parseRoute('/fixture/'+f.slug).id,f.slug);
@@ -39,12 +39,12 @@ test('UTF-8 highlighting round-trips every input including BOM, Unicode, CRLF an
   }
 });
 const source = fixtures.filter(f => f.category === 'accuracy');
-const rowScore = score(corpora.accuracy.fixtures, []);
-const report = {schemaVersion:2,category:'accuracy',corpusHash:'hash',lockHash:'lock',matching:'exact',scanners:[{id:'test',name:'Test scanner',mode:'offline',version:'1',status:'complete',...rowScore}]};
+const rowScore = scoreCohorts(corpora.accuracy.fixtures, []);
+const report = {schemaVersion:3,category:'accuracy',corpusHash:'hash',lockHash:'lock',matching:'exact',scanners:[{id:'test',name:'Test scanner',mode:'offline',version:'1',status:'complete',...rowScore}]};
 test('reports require matching bytes, fixture identity and complete ground truth before joining', () => {
   assert.equal(reportProblem(report,'accuracy','hash',fixtures),null);
   assert.match(reportProblem({...report,schemaVersion:1},'accuracy','hash',fixtures),/rerun/);
-  const badCounts = structuredClone(report); badCounts.scanners[0].contained = 999;
+  const badCounts = structuredClone(report); badCounts.scanners[0].cohorts['malformed-example'].contained = 999;
   assert.match(reportProblem(badCounts,'accuracy','hash',fixtures),/totals/);
   assert.match(reportProblem(report,'accuracy','changed',fixtures),/Stale/);
   assert.match(reportProblem({...report,category:'other'},'accuracy','hash',fixtures),/invalid/);
@@ -99,9 +99,18 @@ test('page renderers expose every fixture, escape input markup, and preserve neg
     assert.ok(accuracy(corpusReport).includes('draft'));
     assert.ok(pages.comparison(source,[corpusReport]).includes('Corpus review: draft'));
     assert.ok(pages.comparison(source,[corpusReport]).includes('Broader only'));
+    const overview = pages.overview([corpusReport]);
+    const detector = pages.comparison(fixtures.filter(f => f.detectors.includes('anthropic-token')), [corpusReport]);
+    for (const html of [overview, detector, accuracy(corpusReport)]) {
+      for (const cohort of ['common-format', 'masking', 'malformed-example', 'unreviewed']) assert.ok(html.includes(`data-cohort="${cohort}"`));
+      assert.ok(!html.includes('Exact F1'));
+      assert.ok(!html.includes('Exact-range scores'));
+    }
+    const pending = fixtures.find(f => f.assessment.cohort === 'unreviewed');
+    assert.ok(pages.fixturePage(pending, []).includes('Excluded from comparative scores'));
     const [aggregate] = summarize(source,[corpusReport]);
-    assert.equal(aggregate.contained,corpusReport.scanners[0].contained);
-    assert.equal(aggregate.broader,corpusReport.scanners[0].broader);
+    assert.equal(aggregate.contained,corpusReport.scanners[0].cohorts['malformed-example'].contained);
+    assert.equal(aggregate.broader,corpusReport.scanners[0].cohorts['malformed-example'].broader);
     const bom = fixtures.find(f => f.slug==='context-edges--bom');
     assert.ok(pages.fixturePage(bom,[]).includes('\\uFEFF'));
     assert.ok(pages.fixturePage(fixtures.find(f => f.slug==='negative-controls--empty'),[]).includes('(empty file)'));

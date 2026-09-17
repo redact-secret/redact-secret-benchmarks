@@ -1,15 +1,16 @@
 export interface Row {
+  assessment: { cohort: string; reason: string; contract?: string; sources: string[] };
   id: string;
   path: string;
   group: string;
   expected: { start: number; end: number }[];
   actual: { start: number; end: number }[];
-  contained: number;
-  broader: number;
-  tp: number;
-  fp: number;
-  fn: number;
-  tn: number;
+  contained?: number;
+  broader?: number;
+  tp?: number;
+  fp?: number;
+  fn?: number;
+  tn?: number;
 }
 export interface Scanner {
   id: string;
@@ -29,6 +30,7 @@ export interface Scanner {
   fn?: number;
   tn?: number;
   rows?: Row[];
+  cohorts?: Record<string, { fixtureCount: number; expectedCount: number; scored: boolean; tp?: number; fp?: number; fn?: number; tn?: number; contained?: number; broader?: number; precision?: number | null; recall?: number | null; f1?: number | null }>;
 }
 export interface Report {
   schemaVersion: number;

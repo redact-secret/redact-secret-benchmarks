@@ -14,7 +14,16 @@
           "end": 53,
           "note": "Deterministically constructed synthetic token; never issued by GitHub."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "common-format",
+        "reason": "Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.",
+        "contract": "github-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
     },
     {
       "id": "json",
@@ -27,7 +36,16 @@
           "end": 57,
           "note": "Deterministically constructed synthetic token; never issued by GitHub."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "common-format",
+        "reason": "Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.",
+        "contract": "github-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
     },
     {
       "id": "unicode",
@@ -40,7 +58,16 @@
           "end": 59,
           "note": "Deterministically constructed synthetic token; never issued by GitHub."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "common-format",
+        "reason": "Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.",
+        "contract": "github-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
     },
     {
       "id": "crlf",
@@ -53,21 +80,40 @@
           "end": 77,
           "note": "Deterministically constructed synthetic token; never issued by GitHub."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "common-format",
+        "reason": "Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.",
+        "contract": "github-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
     },
     {
       "id": "env-reference",
       "path": "env-reference.txt",
       "group": "Negative controls",
       "content": "GITHUB_TOKEN=${GITHUB_TOKEN}\n",
-      "expected": []
+      "expected": [],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "sources": []
+      }
     },
     {
       "id": "ordinary-text",
       "path": "ordinary-text.txt",
       "group": "Negative controls",
       "content": "This document describes how to configure GitHub access.\n",
-      "expected": []
+      "expected": [],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "sources": []
+      }
     }
   ]
 }

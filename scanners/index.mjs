@@ -89,6 +89,14 @@ export function normalizeGitleaks(fixtures, root, row) {
 // password range. Contract: TruffleHog v3.97.4 pkg/detectors/postgres/postgres.go.
 export function normalizeTrufflehog(fixtures, root, row) {
   const metadata = row.SourceMetadata?.Data?.Filesystem;
+  // v3.97.4 Shopify Raw concatenates token + shop domain; it is not a
+  // contiguous source span. Recover only the documented token component.
+  if (row.DetectorName === 'Shopify') {
+    const parts = /^(shp(?:at|pa)_[a-fA-F0-9]{32})([a-zA-Z0-9-]+\.myshopify\.com)$/.exec(row.Raw);
+    if (!parts) throw new Error('Unsupported Shopify composite finding');
+    locate(fixtures, root, metadata?.file, parts[2]);
+    return locate(fixtures, root, metadata?.file, parts[1], metadata?.line);
+  }
   if (row.DetectorType !== 968)
     return locate(fixtures, root, metadata?.file, row.Raw, metadata?.line);
   const file = metadata?.file;
@@ -142,6 +150,19 @@ export function normalizeTrufflehog(fixtures, root, row) {
   if (matches.length !== 1)
     throw new Error("Ambiguous or unmappable Postgres finding");
   return matches[0];
+}
+
+// A credential-pair result reports the access key in Raw and both components
+// in RawV2. Preserve both secret components; never infer them from ground truth.
+export function normalizeTrufflehogFindings(fixtures, root, row) {
+  if (row.DetectorName !== 'AWS') return [normalizeTrufflehog(fixtures, root, row)];
+  const pair = /^((?:AKIA|ABIA|ACCA)[A-Z0-9]{16}):([A-Za-z0-9/+]{40})$/.exec(row.RawV2 ?? '');
+  if (!pair || row.Raw !== pair[1]) throw new Error('Unsupported AWS composite finding');
+  const metadata = row.SourceMetadata?.Data?.Filesystem;
+  return [
+    locate(fixtures, root, metadata?.file, pair[1], metadata?.line),
+    locate(fixtures, root, metadata?.file, pair[2]),
+  ];
 }
 
 export const scanners = [
@@ -221,8 +242,8 @@ export const scanners = [
       return output
         .split("\n")
         .filter((l) => l.trim())
-        .map((l) => {
-          return normalizeTrufflehog(fixtures, root, JSON.parse(l));
+        .flatMap((l) => {
+          return normalizeTrufflehogFindings(fixtures, root, JSON.parse(l));
         });
     },
   },

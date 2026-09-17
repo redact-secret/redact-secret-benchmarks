@@ -13,7 +13,12 @@
           "end": 53,
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
+        "sources": []
+      }
     },
     {
       "id": "aws-id",
@@ -26,7 +31,12 @@
           "end": 38,
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
+        "sources": []
+      }
     },
     {
       "id": "bearer-header",
@@ -39,7 +49,12 @@
           "end": 56,
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
+        "sources": []
+      }
     },
     {
       "id": "unicode-prefix",
@@ -52,7 +67,12 @@
           "end": 58,
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
+        "sources": []
+      }
     },
     {
       "id": "quoted-token",
@@ -65,42 +85,72 @@
           "end": 55,
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
-      ]
+      ],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
+        "sources": []
+      }
     },
     {
       "id": "empty-config",
       "path": "empty-config.txt",
       "group": "Negative controls",
       "content": "API_KEY=\n",
-      "expected": []
+      "expected": [],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "sources": []
+      }
     },
     {
       "id": "placeholder",
       "path": "placeholder.txt",
       "group": "Negative controls",
       "content": "API_KEY=${API_KEY}\n",
-      "expected": []
+      "expected": [],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "sources": []
+      }
     },
     {
       "id": "documentation",
       "path": "documentation.txt",
       "group": "Negative controls",
       "content": "Set your API key in the environment before running.\n",
-      "expected": []
+      "expected": [],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "sources": []
+      }
     },
     {
       "id": "public-id",
       "path": "public-id.txt",
       "group": "Negative controls",
       "content": "request_id=12345678-1234-1234-1234-123456789abc\n",
-      "expected": []
+      "expected": [],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "sources": []
+      }
     },
     {
       "id": "ordinary-text",
       "path": "ordinary-text.txt",
       "group": "Negative controls",
       "content": "Hello, benchmark. No credentials here.\n",
-      "expected": []
+      "expected": [],
+      "assessment": {
+        "cohort": "malformed-example",
+        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "sources": []
+      }
     }
   ]
 }

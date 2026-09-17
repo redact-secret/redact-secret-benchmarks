@@ -90,6 +90,7 @@ export function score(fixtures, findings) {
       id: f.id,
       path: f.path,
       group: f.group,
+      ...(f.assessment ? { assessment: f.assessment } : {}),
       expected,
       actual,
       ...containment(expected, actual),

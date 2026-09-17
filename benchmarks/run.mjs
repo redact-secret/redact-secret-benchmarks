@@ -12,7 +12,10 @@ import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { scanners } from "../scanners/index.mjs";
-import { validateCorpus, score } from "./lib/scoring.mjs";
+import { validateCorpus } from "./lib/scoring.mjs";
+import { classifyFixture, validateAssessment } from './lib/cohorts.mjs';
+import { scoreCohorts } from './lib/reporting.mjs';
+import { validateStructures } from './lib/validate-structures.mjs';
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const hash = (value) => createHash("sha256").update(value).digest("hex");
@@ -28,7 +31,7 @@ if (
   console.error("Usage: npm run bench -- [--category=accuracy] [--strict]");
   process.exit(1);
 }
-const handlers = { accuracy: { validate: validateCorpus, score } };
+const handlers = { accuracy: { validate: validateCorpus, score: scoreCohorts } };
 const outputDir = path.join(root, "public/results");
 await mkdir(outputDir, { recursive: true });
 let failed = false;
@@ -39,6 +42,11 @@ for (const category of registry.filter(
     throw new Error("Invalid category registration");
   const source = await readFile(path.join(root, category.corpus), "utf8");
   const corpus = handlers[category.kind].validate(JSON.parse(source));
+  for (const f of corpus.fixtures) {
+    validateAssessment(f);
+    if (JSON.stringify(f.assessment) !== JSON.stringify(classifyFixture(category.id, f))) throw new Error(`Stale fixture assessment: ${f.id}; regenerate fixtures`);
+  }
+  validateStructures(corpus.fixtures);
   const scratch = await mkdtemp(path.join(tmpdir(), "secret-benchmark-"));
   try {
     for (const f of corpus.fixtures) {
@@ -94,7 +102,7 @@ for (const category of registry.filter(
       );
     } catch {}
     const report = {
-      schemaVersion: 2,
+      schemaVersion: 3,
       category: category.id,
       generatedAt: new Date().toISOString(),
       reviewStatus: corpus.reviewStatus,
@@ -109,7 +117,7 @@ for (const category of registry.filter(
       fixtureCount: corpus.fixtures.length,
       expectedCount: corpus.fixtures.reduce((n, f) => n + f.expected.length, 0),
       matching:
-        "Exact UTF-8 byte ranges [start, end); identical findings deduplicated. Containment counts each expected span fully enclosed by any finding once; broader counts containment without an exact match.",
+        "Cohort-separated UTF-8 ranges [start, end). No mixed overall score. Identical findings deduplicated. Containment is separate from exact masking. AWS RawV2 secret components and Shopify composite token mapped from scanner output, never ground truth. Unreviewed observations are unscored.",
       scanners: results,
     };
     const temporary = path.join(
@@ -119,22 +127,19 @@ for (const category of registry.filter(
     await writeFile(temporary, JSON.stringify(report, null, 2) + "\n");
     await rename(temporary, path.join(outputDir, `${category.id}.json`));
     console.log(`Updated public/results/${category.id}.json`);
-    const percentage = (value) =>
-      value == null ? "—" : `${(value * 100).toFixed(1)}%`;
     console.table(
-      results.map((result) => ({
+      results.flatMap((result) => Object.entries(result.cohorts ?? { unavailable: {} }).map(([cohort, metrics]) => ({
         Scanner: result.name,
+        Cohort: cohort,
         Version: result.version ?? "—",
         Status: result.status,
-        Contained: result.contained ?? "—",
-        Broader: result.broader ?? "—",
-        ExactTP: result.tp ?? "—",
-        ExactFP: result.fp ?? "—",
-        ExactFN: result.fn ?? "—",
-        ExactPrecision: percentage(result.precision),
-        ExactRecall: percentage(result.recall),
-        ExactF1: percentage(result.f1),
-      })),
+        Files: metrics.fixtureCount ?? '—',
+        Contained: metrics.contained ?? "—",
+        Broader: metrics.broader ?? "—",
+        ExactTP: metrics.tp ?? "—",
+        ExactFP: metrics.fp ?? "—",
+        ExactFN: metrics.fn ?? "—",
+      }))),
     );
   } finally {
     await rm(scratch, { recursive: true, force: true });

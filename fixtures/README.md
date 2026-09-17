@@ -13,6 +13,12 @@ Keep expectations independent of scanner output. Expand coverage and obtain
 human review before presenting results as comparative evidence. The `reviewStatus`
 field is shown in every report and the dashboard.
 
-Every fixture must be unmistakably synthetic or explicitly revoked. No real,
-active, or reconstructable credential may appear in this directory, in a
-commit message, or in any file this directory's tooling produces.
+Every fixture must be synthetic or explicitly revoked, never an active
+provider-issued credential. The common-format cryptographic controls contain
+a parseable key derived from a public test seed and a locally signed JWT;
+these have never been deployed and must never be used in a real system.
+
+Every fixture also requires `assessment.cohort`, a rationale and source links
+for reviewed formats. The three measurement purposes and unscored review queue
+are defined in [the corpus audit](../docs/corpus-audit.md). Historical authored
+ranges remain intact even where their input is malformed or policy-specific.

@@ -4,7 +4,7 @@
   "measuredVersion": "0.1.0-beta.3",
   "milestone": "v0.1.0-beta.4",
   "milestoneUrl": "https://github.com/redact-secret/redact-secret/milestone/7",
-  "reviewedAt": "2026-09-16",
+  "reviewedAt": "2026-09-18",
   "issues": [
     {
       "id": "product-292",
@@ -32,19 +32,27 @@
       "history": {
         "observed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/issues/292"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/292"
+          ]
         },
         "reviewed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
         },
         "promoted": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/issues/292"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/292"
+          ]
         },
         "fixed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/commit/8d8d5b4e8dae8de1b42e174d8d21dc0075147fc6"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/8d8d5b4e8dae8de1b42e174d8d21dc0075147fc6"
+          ]
         }
       },
       "promotion": {
@@ -113,19 +121,27 @@
       "history": {
         "observed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/issues/293"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/293"
+          ]
         },
         "reviewed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
         },
         "promoted": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/issues/293"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/293"
+          ]
         },
         "fixed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/commit/a62339e7bb2de616bbc200476c9e043bfd429c30"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/a62339e7bb2de616bbc200476c9e043bfd429c30"
+          ]
         }
       },
       "promotion": {
@@ -188,19 +204,27 @@
       "history": {
         "observed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/issues/294"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/294"
+          ]
         },
         "reviewed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
         },
         "promoted": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/issues/294"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/294"
+          ]
         },
         "fixed": {
           "at": "2026-09-16",
-          "evidence": ["https://github.com/redact-secret/redact-secret/commit/49f41ea95958c87e6c132471b15cd4c50642f721"]
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/49f41ea95958c87e6c132471b15cd4c50642f721"
+          ]
         }
       },
       "promotion": {
@@ -250,6 +274,402 @@
             {
               "start": 22,
               "end": 50
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-404",
+      "title": "SendGrid API key with CRLF/Unicode-prefixed content only partially redacted (3-byte boundary short)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/404",
+      "number": 404,
+      "fixtures": [
+        "common-formats--sendgrid-token-segmented-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.4",
+        "lockHash": "66dcef6f5aeb1dc6d1ebcea7447f12ccf36465787430d859585a393d4de96550"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/404"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/404"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "common-formats--sendgrid-token-segmented-unicode-crlf",
+          "corpusHash": "19ca47f5dbf21acc94c6712a51d6586c9fd1653b3da132172622c0e7c4b08fb8",
+          "expected": [
+            {
+              "start": 24,
+              "end": 93
+            }
+          ],
+          "actual": [
+            {
+              "start": 21,
+              "end": 90,
+              "type": "sendgrid_api_key",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-405",
+      "title": "OpenAI token shapes 1-3 (bare/quoted/unicode-crlf) go undetected against release candidate",
+      "url": "https://github.com/redact-secret/redact-secret/issues/405",
+      "number": 405,
+      "fixtures": [
+        "detector-coverage--openai-token-shape-1-bare",
+        "detector-coverage--openai-token-shape-1-quoted",
+        "detector-coverage--openai-token-shape-1-unicode-crlf",
+        "detector-coverage--openai-token-shape-2-bare",
+        "detector-coverage--openai-token-shape-2-quoted",
+        "detector-coverage--openai-token-shape-2-unicode-crlf",
+        "detector-coverage--openai-token-shape-3-bare",
+        "detector-coverage--openai-token-shape-3-quoted",
+        "detector-coverage--openai-token-shape-3-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.4",
+        "lockHash": "66dcef6f5aeb1dc6d1ebcea7447f12ccf36465787430d859585a393d4de96550"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/405"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/405"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--openai-token-shape-1-bare",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 0,
+              "end": 51
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--openai-token-shape-1-quoted",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 7,
+              "end": 58
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--openai-token-shape-1-unicode-crlf",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 21,
+              "end": 72
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--openai-token-shape-2-bare",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 0,
+              "end": 56
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--openai-token-shape-2-quoted",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 7,
+              "end": 63
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--openai-token-shape-2-unicode-crlf",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 21,
+              "end": 77
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--openai-token-shape-3-bare",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 0,
+              "end": 59
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--openai-token-shape-3-quoted",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 7,
+              "end": 66
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--openai-token-shape-3-unicode-crlf",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 21,
+              "end": 80
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-406",
+      "title": "Slack token shape 1 (bare/quoted/unicode-crlf) goes undetected against release candidate",
+      "url": "https://github.com/redact-secret/redact-secret/issues/406",
+      "number": 406,
+      "fixtures": [
+        "detector-coverage--slack-token-shape-1-bare",
+        "detector-coverage--slack-token-shape-1-quoted",
+        "detector-coverage--slack-token-shape-1-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.4",
+        "lockHash": "66dcef6f5aeb1dc6d1ebcea7447f12ccf36465787430d859585a393d4de96550"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/406"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/406"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--slack-token-shape-1-bare",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 0,
+              "end": 53
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--slack-token-shape-1-quoted",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 7,
+              "end": 60
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--slack-token-shape-1-unicode-crlf",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 21,
+              "end": 74
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-407",
+      "title": "Docker token shape 1 (bare/quoted/unicode-crlf) goes undetected against release candidate",
+      "url": "https://github.com/redact-secret/redact-secret/issues/407",
+      "number": 407,
+      "fixtures": [
+        "detector-coverage--docker-token-shape-1-bare",
+        "detector-coverage--docker-token-shape-1-quoted",
+        "detector-coverage--docker-token-shape-1-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.4",
+        "lockHash": "66dcef6f5aeb1dc6d1ebcea7447f12ccf36465787430d859585a393d4de96550"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/407"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/407"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--docker-token-shape-1-bare",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 0,
+              "end": 41
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--docker-token-shape-1-quoted",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 7,
+              "end": 48
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--docker-token-shape-1-unicode-crlf",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 21,
+              "end": 62
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-408",
+      "title": "Cloudflare token shape 1 (bare/quoted/unicode-crlf) goes undetected against release candidate",
+      "url": "https://github.com/redact-secret/redact-secret/issues/408",
+      "number": 408,
+      "fixtures": [
+        "detector-coverage--cloudflare-token-shape-1-bare",
+        "detector-coverage--cloudflare-token-shape-1-quoted",
+        "detector-coverage--cloudflare-token-shape-1-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.4",
+        "lockHash": "66dcef6f5aeb1dc6d1ebcea7447f12ccf36465787430d859585a393d4de96550"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/408"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/408"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--cloudflare-token-shape-1-bare",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 0,
+              "end": 45
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--cloudflare-token-shape-1-quoted",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 7,
+              "end": 52
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--cloudflare-token-shape-1-unicode-crlf",
+          "corpusHash": "0d5800251b19d7ee0d2cc2ad489d09a619d7626c578bf9b28a5c9fce791610eb",
+          "expected": [
+            {
+              "start": 21,
+              "end": 66
             }
           ],
           "actual": []

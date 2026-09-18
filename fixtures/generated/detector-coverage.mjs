@@ -44,6 +44,43 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     add(detector, "short-body", [prefixes.map(prefix => prefix + "abc").join("\n")]);
   }
 
+  // Issue #369: keep these independently authored boundary cases in the
+  // expanded corpus. The fixed common-formats snapshot above remains
+  // unchanged so historical before/after evidence stays comparable.
+  const digitalOceanBody = synthetic(
+    "detector-coverage:digitalocean-token:dop_v1_",
+    64,
+    "0123456789abcdef",
+  );
+  const digitalOceanToken = `dop_v1_${digitalOceanBody}`;
+  add("digitalocean-token", "invalid-alphabet", [
+    `dop_v1_${digitalOceanBody.slice(0, 8)}g${digitalOceanBody.slice(9)}`,
+  ]);
+  add("digitalocean-token", "leading-identifier-embedding", [
+    `legacy${digitalOceanToken}`,
+  ]);
+  add("digitalocean-token", "trailing-identifier-embedding", [
+    `${digitalOceanToken}_backup`,
+  ]);
+  add("digitalocean-token", "dash-identifier-embedding", [
+    `${digitalOceanToken}-1`,
+  ]);
+  add("digitalocean-token", "punctuation-boundary", [
+    { secret: digitalOceanToken },
+    ",\n",
+  ]);
+  add("digitalocean-token", "query-boundary", [
+    "https://example.invalid/?token=",
+    { secret: digitalOceanToken },
+    "&x=1\n",
+  ]);
+  add("digitalocean-token", "repeated", [
+    { secret: digitalOceanToken },
+    " ",
+    { secret: digitalOceanToken },
+    "\n",
+  ]);
+
   const sendgrid = `SG.${synthetic("coverage:sg:id", 22)}.${synthetic("coverage:sg:secret", 43)}`;
   positive("sendgrid-token", "segmented", [{ secret: sendgrid }]);
   add("sendgrid-token", "prefix-only", ["SG."]);

@@ -12,7 +12,7 @@ const corpora = Object.fromEntries(await Promise.all(categories.map(async c => [
 const fixtures = buildCatalog(categories,corpora,assignments,registry.detectors);
 
 test('all corpus fixtures have unique, routable slugs and explicit detector assignments', () => {
-  assert.equal(fixtures.length,605);
+  assert.equal(fixtures.length,612);
   assert.equal(registry.detectors.length,25);
   for (const f of fixtures) {
     assert.equal(parseRoute('/fixture/'+f.slug).id,f.slug);

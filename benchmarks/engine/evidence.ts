@@ -13,7 +13,10 @@ ajv.addSchema(candidateSchema);
 /** Strict public schemas prohibit accidental inclusion of case-level data. */
 export function validateEvidence(report: unknown, type: 'holdout' | 'qualification' | 'candidate') {
   const validate = ajv.getSchema(`urn:redact-secret:${type}:1`)!;
-  if (!validate(report)) throw new Error('Evidence schema validation failed');
+  if (!validate(report)) {
+    const locations = (validate.errors ?? []).map(error => `${error.instancePath || '/'}:${error.keyword}`).join(',');
+    throw new Error(`Evidence schema validation failed${locations ? ` (${locations})` : ''}`);
+  }
   const value = report as any;
   if (Date.parse(value.finishedAt) < Date.parse(value.startedAt)) throw new Error('Invalid evidence chronology');
   if (type === 'candidate') {

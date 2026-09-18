@@ -25,6 +25,7 @@ export function validateEvidence(report: unknown, type: 'holdout' | 'qualificati
       throw new Error('Invalid candidate completeness');
     if (value.status === 'complete' && (value.candidate.packageName === 'unknown' || value.candidate.declaredVersion === 'unknown'))
       throw new Error('Missing candidate identity');
+    if (value.status === 'complete' && value.corpus.categories.length === 0) throw new Error('Missing candidate corpus identity');
     if (value.selection.filter === null && value.selection.scope !== 'full-suite') throw new Error('Invalid full-suite scope');
     if (value.selection.filter !== null && value.selection.scope !== 'filtered-development') throw new Error('Invalid filtered scope');
     if (value.results.length !== value.completeness.scannedFixtures ||

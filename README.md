@@ -41,6 +41,17 @@ This work is deliberately kept out of `redact-secret/redact-secret`:
   into the main repo's source tree. That means every benchmark run also
   exercises the actual installed-package experience any other consumer gets.
 
+## Promoting a product regression
+
+This repository owns discovery and evaluation evidence; the product owns the
+small, release-blocking behavioral regression. The authoritative lifecycle,
+transition evidence, fixed-candidate rerun commands, and two-gate acceptance
+rule are in
+[`docs/decisions/2026-09-18-govern-benchmark-promotion.md`](docs/decisions/2026-09-18-govern-benchmark-promotion.md).
+The product-side placement and provenance rules are linked there. Do not copy a
+discovery matrix, generated variants, competitor observations, holdout material,
+or raw result bundles into `redact-secret`.
+
 ## What this measures
 
 The same question, asked identically of every tool: given a fixed set of

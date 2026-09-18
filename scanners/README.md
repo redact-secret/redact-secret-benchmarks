@@ -8,11 +8,22 @@ to the common ground-truth schema for scoring.
 API of its pinned npm package; Gitleaks and TruffleHog are external binaries
 on `PATH`. Neither competitor's source or binary is bundled.
 
-Adapters return `{ path, start, end }` in UTF-8 bytes. Raw external findings
+Adapters return `{ path, start, end, family? }` in UTF-8 bytes. `families.mjs`
+maps explicitly recognized native detector labels to shared families; unknown
+labels remain unmapped. No family is inferred from the expected fixture. Raw external findings
 are mapped using the file, matched value, and reported line, then discarded.
 Ambiguous mappings fail closed rather than manufacturing a range. TruffleHog
 verification and update checks are disabled. Missing binaries and execution
 failures remain distinct from successful scans with no findings.
+
+The evaluation engine records adapter configuration, exact command arguments
+(with an input-root placeholder), process limits, mapping version, tool version
+and a configuration hash. `npm run eval -- --method=differential --strict`
+compares all installed adapters and writes a review queue with this evidence.
+Differential classification is only comparable where both sides supply mapped
+families at identical ranges. Unmapped classification is unsupported, not an
+agreement or a scanner execution failure. Scanner silence is never used to
+infer that a detector family is unsupported.
 
 Schema-v3 reporting separates reviewed formats, standalone masking policy,
 malformed/example controls and unscored review. Scanner adapters never select

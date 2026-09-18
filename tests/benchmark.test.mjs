@@ -79,8 +79,10 @@ test("published npm adapter converts UTF-16 offsets and never exports matched va
           r.end === unicode.expected[0].end,
       ),
     );
-    for (const r of results)
-      assert.deepEqual(Object.keys(r).sort(), ["end", "path", "start"]);
+    for (const r of results) {
+      assert.deepEqual(Object.keys(r).sort(), ["end", "family", "path", "start"]);
+      assert.match(r.family, /^[a-z][a-z0-9-]+$/);
+    }
     assert.doesNotThrow(() => score(corpus.fixtures, results));
     assert.deepEqual(score(corpus.fixtures, results).rows.find(r => r.id === "unicode-prefix").spanOutcomes, ["EXACT"]);
   } finally {

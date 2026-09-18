@@ -1,6 +1,9 @@
 # Holdout evaluation
 
-Status: evaluation method definition v1
+Status: implemented internal lifecycle v1
+
+Implementation and operating procedure: [holdout/README.md](../../holdout/README.md).
+Reproducible six-method execution: [Engine v1 qualification](../evaluation-engine-v1.md).
 
 ## Purpose
 

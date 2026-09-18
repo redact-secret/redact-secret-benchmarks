@@ -10,7 +10,7 @@ export interface Fixture {
   twinOf?: string; mutation?: string; mutationKind?: string; formatReason?: string; issue?: number;
 }
 export interface Corpus { fixtures: Fixture[]; schemaVersion?: number; reviewStatus?: string; scope?: string; references?: unknown; milestoneReview?: unknown }
-export interface Finding extends Range { path: string }
+export interface Finding extends Range { path: string; family?: string }
 export type Outcome = 'EXACT' | 'COVERED' | 'OVERBROAD' | 'PARTIAL' | 'MISS';
 export interface RowScore { spanOutcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number; flagged?: boolean; findings?: number }
 export interface ScoredRow extends RowScore {

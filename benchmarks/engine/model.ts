@@ -5,6 +5,13 @@ import { validateCorpus } from '../lib/scoring.ts';
 import { validateAssessment } from '../lib/assessment.ts';
 
 export const hash = (value: unknown) => createHash('sha256').update(typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value)).digest('hex');
+// Parameters containing arbitrary text stay hashed; built-in resolved choices
+// are numeric and can safely be retained for exact replay.
+export const safeParameters = (parameters: Record<string, unknown>) => Object.fromEntries(
+  Object.entries(parameters).filter(([key, value]) => /^[a-zA-Z][a-zA-Z0-9]*$/.test(key) &&
+    (typeof value === 'boolean' || (typeof value === 'number' && Number.isFinite(value)))),
+) as Record<string, number | boolean>;
+
 export const secrets = (fixture: Fixture) => fixture.expected.filter(r => r.role === 'secret');
 export const bytes = (fixture: Fixture, range: Range) => Buffer.from(fixture.content).subarray(range.start, range.end).toString('utf8');
 export function independentFixture(fixture: Fixture) {
@@ -18,10 +25,11 @@ export function independentFixture(fixture: Fixture) {
  */
 export function validateCase(c: EvaluationCase) {
   if (!c || !/^[a-z0-9-]+$/.test(c.id) || typeof c.method !== 'string' ||
-      !['development', 'regression'].includes(c.visibility) ||
+      !['development', 'regression', 'holdout'].includes(c.visibility) ||
+      ((c.visibility === 'holdout') !== (c.method === 'holdout')) ||
       !Array.isArray(c.targets) || c.targets.some(t => !/^[a-z0-9-]+$/.test(t)) ||
       !c.provenance?.source || !c.provenance?.rationale || !c.provenance?.seed ||
-      !Array.isArray(c.operators)) throw new Error('Invalid evaluation case (holdout is not supported)');
+      !Array.isArray(c.operators)) throw new Error('Invalid evaluation case or visibility/method boundary');
   validateCorpus({ fixtures: [independentFixture(c.seed)] });
   validateAssessment(c.seed);
   return c;
@@ -51,9 +59,10 @@ export function generateCase(c: EvaluationCase, methods: Registry<Method>, opera
   validateCase(c);
   const method = methods.get(c.method);
   method.validateCase(c);
-  const variants = method.generate(c, { operators, variant });
+  const output = method.generate(c, { operators, variant, methodVersion: method.version });
+  const { variants, attempts } = Array.isArray(output) ? { variants: output, attempts: [] } : output;
   if (!Array.isArray(variants) || !variants.length || new Set(variants.map(v => v.id)).size !== variants.length)
     throw new Error('Empty or duplicate variants');
   validateCorpus({ fixtures: variants.map(v => v.fixture) });
-  return { case: c, method, variants };
+  return { case: c, method, variants, attempts };
 }

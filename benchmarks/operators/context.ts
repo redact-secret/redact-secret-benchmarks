@@ -18,7 +18,8 @@ export function mapFixture(seed: Fixture, transform: (character: string, offset:
   })) };
 }
 
-const context = (id: string, supports: Operator['supports'], apply: (fixture: Fixture) => Fixture): Operator => ({ id, version: 1, supports,
+const context = (id: string, supports: Operator['supports'], apply: (fixture: Fixture) => Fixture): Operator => ({ id, version: 1,
+  supports: (c, parameters = {}) => !Object.keys(parameters).length && supports(c),
   generate: c => ({ fixture: apply(c.seed), strategy: 'derived', property: 'context', relation: 'same-detection' }) });
 
 export const contextOperators = [
@@ -32,6 +33,8 @@ export const contextOperators = [
   // escaping: they would change secret bytes and need a different relation.
   context('context.json', c => !/["\\\x00-\x1f]/.test(c.seed.content),
     f => mapFixture(f, c => c, '{"value":"', '"}')),
-  context('context.quote', c => !/["\r\n]/.test(c.seed.content), f => mapFixture(f, c => c, '"', '"')),
+  context('context.quote', c => !/["\\\x00-\x1f]/.test(c.seed.content), f => mapFixture(f, c => c, '"', '"')),
+  context('context.single-quote', c => !/['\\\x00-\x1f]/.test(c.seed.content), f => mapFixture(f, c => c, "'", "'")),
+  context('context.yaml', c => !/['\x00-\x1f]/.test(c.seed.content), f => mapFixture(f, c => c, "value: '", "'\n")),
   context('context.markdown', c => !/[`\r\n]/.test(c.seed.content), f => mapFixture(f, c => c, '`', '`')),
 ];

@@ -2,7 +2,12 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { findingFamily, familyMappingVersion } from './families.mjs';
 const exec = promisify(execFile);
+const processLimits = { timeout: 120_000, maxBuffer: 16 * 1024 * 1024 };
+const gitleaksArguments = ['dir', '<input-root>', '--no-banner', '--no-color', '--exit-code', '0', '--report-format', 'json', '--report-path', '-'];
+const trufflehogArguments = ['filesystem', '<input-root>', '--json', '--no-verification', '--no-update', '--results=verified,unknown,unverified'];
+const argumentsFor = (args, root) => args.map(arg => arg === '<input-root>' ? root : arg);
 
 export async function command(binary, args, cwd) {
   // Suppress raw output and environment-based Gitleaks rule overrides.
@@ -14,8 +19,7 @@ export async function command(binary, args, cwd) {
       await exec(binary, args, {
         cwd,
         env,
-        timeout: 120_000,
-        maxBuffer: 16 * 1024 * 1024,
+        ...processLimits,
       })
     ).stdout;
   } catch (error) {
@@ -170,6 +174,8 @@ export const scanners = [
     id: "redact-secret",
     name: "redact-secret",
     mode: "Published npm package · default detectors",
+    capabilities: { ranges: true, classification: true },
+    configuration: { adapterVersion: 2, familyMappingVersion, detectors: 'default', runtime: 'node' },
     async version() {
       const { VERSION } = await import("@redact-secret/core");
       return VERSION;
@@ -185,6 +191,7 @@ export const scanners = [
             path: f.path,
             start: Buffer.byteLength(text.slice(0, r.start)),
             end: Buffer.byteLength(text.slice(0, r.end)),
+            ...findingFamily('redact-secret', r.detector),
           });
       }
       return results;
@@ -194,56 +201,43 @@ export const scanners = [
     id: "gitleaks",
     name: "Gitleaks",
     mode: "Directory scan · default rules",
+    capabilities: { ranges: true, classification: true },
+    configuration: { adapterVersion: 2, familyMappingVersion, binary: 'gitleaks', arguments: gitleaksArguments, processLimits, rules: 'default', environmentRuleOverrides: false },
     async version(root) {
       return versionNumber(await command("gitleaks", ["version"], root));
     },
     async scan(root, fixtures) {
       const output = await command(
         "gitleaks",
-        [
-          "dir",
-          root,
-          "--no-banner",
-          "--no-color",
-          "--exit-code",
-          "0",
-          "--report-format",
-          "json",
-          "--report-path",
-          "-",
-        ],
+        argumentsFor(gitleaksArguments, root),
         root,
       );
       const rows = JSON.parse(output);
       if (!Array.isArray(rows)) throw new Error("Invalid scanner output");
-      return rows.map((r) => normalizeGitleaks(fixtures, root, r));
+      return rows.map((r) => ({ ...normalizeGitleaks(fixtures, root, r), ...findingFamily('gitleaks', r.RuleID) }));
     },
   },
   {
     id: "trufflehog",
     name: "TruffleHog",
     mode: "Filesystem scan · verification disabled",
+    capabilities: { ranges: true, classification: true },
+    configuration: { adapterVersion: 2, familyMappingVersion, binary: 'trufflehog', arguments: trufflehogArguments, processLimits, verification: false, update: false },
     async version(root) {
       return versionNumber(await command("trufflehog", ["--version"], root));
     },
     async scan(root, fixtures) {
       const output = await command(
         "trufflehog",
-        [
-          "filesystem",
-          root,
-          "--json",
-          "--no-verification",
-          "--no-update",
-          "--results=verified,unknown,unverified",
-        ],
+        argumentsFor(trufflehogArguments, root),
         root,
       );
       return output
         .split("\n")
         .filter((l) => l.trim())
         .flatMap((l) => {
-          return normalizeTrufflehogFindings(fixtures, root, JSON.parse(l));
+          const row = JSON.parse(l);
+          return normalizeTrufflehogFindings(fixtures, root, row).map(f => ({ ...f, ...findingFamily('trufflehog', row.DetectorName) }));
         });
     },
   },

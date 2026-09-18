@@ -12,3 +12,6 @@ public/results/.*.json
 
 # Deterministic scanner inputs are materialized locally, never committed.
 /fixtures/generated/*.json
+
+# Holdout inputs, state, private plans and execution scratch are never tracked.
+/holdout/generated/

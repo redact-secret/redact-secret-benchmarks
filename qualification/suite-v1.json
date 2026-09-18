@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "engine-v1",
+  "methods": [
+    "twin",
+    "benign",
+    "metamorphic",
+    "mutation",
+    "differential",
+    "holdout"
+  ],
+  "scanners": {
+    "redact-secret": "0.1.0-beta.4",
+    "gitleaks": "8.30.1",
+    "trufflehog": "3.97.4"
+  },
+  "developmentSeed": "engine-v1",
+  "holdoutManifest": "holdout/manifest.json",
+  "purpose": "Qualify evaluation execution and evidence; scanner assertion failures remain development findings, not an engine test failure.",
+  "publicPluginApi": false
+}

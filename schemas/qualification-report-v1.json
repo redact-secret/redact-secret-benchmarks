@@ -1,0 +1,332 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "reportType": {
+      "const": "qualification"
+    },
+    "engineVersion": {
+      "const": "1.0.0"
+    },
+    "suiteId": {
+      "const": "engine-v1"
+    },
+    "suiteHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+    },
+    "startedAt": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "finishedAt": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "scope": {
+      "enum": [
+        "engine-conformance",
+        "engine-with-protected-holdout"
+      ]
+    },
+    "status": {
+      "enum": [
+        "execution-qualified",
+        "incomplete"
+      ]
+    },
+    "supportClaims": {
+      "const": false
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "revision": {
+          "type": "string"
+        },
+        "dirty": {
+          "type": "boolean"
+        },
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "lockHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "candidateArtifactHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "runtime": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "node": {
+              "type": "string"
+            },
+            "platform": {
+              "type": "string"
+            },
+            "arch": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "node",
+            "platform",
+            "arch"
+          ]
+        }
+      },
+      "required": [
+        "revision",
+        "dirty",
+        "sourceHash",
+        "lockHash",
+        "candidateArtifactHash",
+        "runtime"
+      ]
+    },
+    "development": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "seed": {
+          "type": "string"
+        },
+        "casesHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "corpusHashes": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "failures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reviewEntries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "byDetector": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pass": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "fail": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "review-required": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "pass",
+                "fail",
+                "review-required"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "seed",
+        "casesHash",
+        "corpusHashes",
+        "failures",
+        "reviewEntries",
+        "byDetector"
+      ]
+    },
+    "methods": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "enum": [
+              "twin",
+              "benign",
+              "metamorphic",
+              "mutation",
+              "differential",
+              "holdout"
+            ]
+          },
+          "cases": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "variants": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "generationErrors": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scanners": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "enum": [
+                    "redact-secret",
+                    "gitleaks",
+                    "trufflehog"
+                  ]
+                },
+                "status": {
+                  "enum": [
+                    "complete",
+                    "unsupported",
+                    "unavailable",
+                    "error"
+                  ]
+                },
+                "assertions": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "pass": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "fail": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "review-required": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "pass",
+                    "fail",
+                    "review-required"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "status",
+                "assertions"
+              ]
+            }
+          }
+        },
+        "required": [
+          "method",
+          "cases",
+          "variants",
+          "generationErrors",
+          "scanners"
+        ]
+      }
+    },
+    "holdout": {
+      "$ref": "urn:redact-secret:holdout:1"
+    },
+    "milestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "checkedAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+        },
+        "repository": {
+          "const": "redact-secret/redact-secret-benchmarks"
+        },
+        "number": {
+          "const": 1
+        },
+        "status": {
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "openPrerequisites": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          }
+        },
+        "outOfScope": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          }
+        }
+      },
+      "required": [
+        "checkedAt",
+        "repository",
+        "number",
+        "status",
+        "openPrerequisites",
+        "outOfScope"
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "reportType",
+    "engineVersion",
+    "suiteId",
+    "suiteHash",
+    "runId",
+    "startedAt",
+    "finishedAt",
+    "scope",
+    "status",
+    "supportClaims",
+    "provenance",
+    "development",
+    "methods",
+    "holdout",
+    "milestone"
+  ],
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:redact-secret:qualification:1"
+}

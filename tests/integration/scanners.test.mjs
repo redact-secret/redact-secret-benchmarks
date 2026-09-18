@@ -60,7 +60,9 @@ for (const scanner of scanners) {
       await writeFile(path.join(root, positive.path), positive.content, {
         mode: 0o600,
       });
-      const detected = score([positive], await scanner.scan(root, [positive])).rows[0];
+      const findings = await scanner.scan(root, [positive]);
+      assert.ok(findings.some(f => f.family === 'github-token'), 'native GitHub family maps without expectations');
+      const detected = score([positive], findings).rows[0];
       assert.deepEqual([detected.spanOutcomes, detected.collateralBytes], [["EXACT"], 0]);
       await rm(path.join(root, positive.path));
       await writeFile(path.join(root, negative.path), negative.content, {

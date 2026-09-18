@@ -201,6 +201,15 @@ kept only as `diagnostics.exact` marked non-comparable.
 
 ## Architecture and extension
 
+The [internal evaluation engine](docs/evaluation-engine.md) implements Twin,
+Benign, Metamorphic, Mutation and Differential evaluation over the existing
+corpora and scanner adapters. Run `npm run eval` for a sanitized discovery report
+in `results-output/evaluation.json`, or select a method/detector/scanner, for
+example `npm run eval -- --method=twin,benign --scanner=redact-secret`.
+Uncertain mutations and scanner disagreements enter a review queue; neither
+peer consensus nor this discovery run establishes stable support. Holdout and
+public plugin compatibility remain outside this initial implementation.
+
 ```text
 benchmarks/categories.json     Case suites and corpus registry
 benchmarks/detectors.json      Core detector taxonomy snapshot

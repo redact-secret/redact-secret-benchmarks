@@ -17,6 +17,8 @@
     "pretest:redaction": "node scripts/generate-fixtures.mjs --ensure",
     "precompare": "node scripts/generate-fixtures.mjs --ensure",
     "bench": "node benchmarks/run.mjs",
+    "eval": "node benchmarks/evaluate.mjs",
+    "eval:discover": "node benchmarks/evaluate.mjs",
     "start": "npm run bench && vite --host 127.0.0.1",
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",

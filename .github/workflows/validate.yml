@@ -17,6 +17,8 @@ jobs:
       - run: npm ci
       - run: npm run fixtures:check
       - run: npm test
+      - name: Exercise evaluation engine with the published npm scanner
+        run: npm run eval -- --scanner=redact-secret
       - run: npm run build
       - name: Generated inputs must not change tracked files
         run: git diff --exit-code

@@ -38,6 +38,7 @@
     "typecheck": "tsc --noEmit",
     "eval:holdout": "node --import tsx benchmarks/holdout.ts",
     "eval:qualify": "node --import tsx benchmarks/qualify.ts",
+    "eval:candidate": "node --import tsx benchmarks/candidate.ts",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
     "eval:milestone": "node scripts/refresh-evaluation-milestone.mjs"
   },

@@ -443,6 +443,11 @@ npm run eval:publish
 npm run dev
 ```
 
+To evaluate an immutable unreleased product artifact, use the separate
+[`eval:candidate` workflow](docs/candidate-evaluation.md). It installs the
+candidate in a temporary consumer and emits candidate evidence without changing
+the published scanner or qualification suite.
+
 Discovery remains local at `results-output/evaluation.json`. `eval:publish` validates
 current development/regression sources and writes an allowlisted, schema-validated
 `public/results/evaluation-v1.json`. Build after publication to include the report.

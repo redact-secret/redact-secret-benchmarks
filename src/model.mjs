@@ -27,6 +27,8 @@ export function parseRoute(pathname) {
   if (path === '/coverage-gaps') return { kind: 'coverage-gaps', id: '' };
   if (path === '/methodology') return { kind: 'methodology', id: '' };
   if (path === '/pending') return { kind: 'pending', id: '' };
+  const evaluation = /^\/evaluation(?:\/(failures|reviews|operators)|\/(method|detector)\/([a-z0-9-]+))?$/.exec(path);
+  if (evaluation) return { kind: 'evaluation', view: evaluation[1] ?? evaluation[2] ?? 'overview', id: evaluation[3] ?? '' };
   const match = /^\/(benchmark|fixture)\/([a-z0-9-]+)$/.exec(path);
   return match ? { kind: match[1], id: match[2] } : { kind: 'missing', id: '' };
 }

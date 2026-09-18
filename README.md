@@ -418,3 +418,53 @@ Issue cards are a historical beta.3 measurement snapshot, not live GitHub
 state. Corresponding fixture pages retain their original context and beta.4
 follow-up links; current beta.4 results are summarized in
 [docs/beta-4-results.md](docs/beta-4-results.md).
+
+
+### Evaluation Engine browser evidence
+
+The measurement-v4 benchmark and fixture pages remain available. Open `/evaluation`
+for separate case/variant/assertion evidence, method and detector views, failures,
+review queue, operator coverage and aggregate-only holdout qualification.
+
+```sh
+npm run eval
+npm run eval:publish
+npm run dev
+```
+
+Discovery remains local at `results-output/evaluation.json`. `eval:publish` validates
+current development/regression sources and writes an allowlisted, schema-validated
+`public/results/evaluation-v1.json`. Build after publication to include the report.
+The browser validates the public contract and current fixture hashes. Missing,
+incompatible or stale reports produce an actionable empty state.
+
+To include qualification evidence, refresh and generate it through the engine:
+
+```sh
+npm run eval:milestone
+npm run eval:qualify -- --output=results-output/qualification/engine-v1.json
+npm run eval:validate -- results-output/qualification/engine-v1.json
+npm run eval:publish -- --qualification=results-output/qualification/engine-v1.json
+```
+
+The default manifest uses repeatable public conformance controls. Protected holdout
+runs retain their existing custodian lifecycle and budgets; do not run them merely
+to refresh a UI. Qualification is separately dated aggregate evidence, and
+`execution-qualified` describes infrastructure execution with `supportClaims: false`.
+
+Affected cases are unique evaluation case IDs within the displayed selection,
+including across scanners; one source fixture can participate in several methods.
+Failed assertions can overlap the same case. Review-required assertions, mutation
+review entries and differential disagreements are unscored. The queue is read-only:
+no UI action changes authored expectations or resolves review decisions. Full raw
+discovery evidence remains local; the public projection excludes fixture bytes,
+raw findings/ranges, arbitrary error/configuration text, seeds and source paths.
+Holdout has no fixture links, case records or inferred detector attribution.
+
+Optional browser QA uses an externally installed Playwright (no frontend dependency):
+start `npm run preview -- --port 4173` after building, then run
+`PLAYWRIGHT_MODULE=/absolute/path/to/playwright/index.mjs node scripts/check-evaluation-ui.mjs`.
+It exercises desktop/mobile routes, reloads, filters, review separation and missing/
+stale/malformed data, and saves screenshots under `results-output/ui-verification/`.
+The preview host uses SPA fallback; production hosting must likewise serve
+`index.html` for application routes.

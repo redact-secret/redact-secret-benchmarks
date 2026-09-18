@@ -5,6 +5,7 @@ import { accuracy } from './pages/accuracy';
 import { methodology } from './pages/methodology';
 import { escape as e, type Report, type Run } from './types';
 import './style.css';
+import type { EvaluationReport } from './evaluation-types';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const hashes = corpusHashes();
@@ -23,6 +24,7 @@ const targets = (): Target[] => [
   { href: '/coverage-gaps', label: 'Coverage gaps', hint: 'workspace' },
   { href: '/pending', label: 'Pending review', hint: `${fixtures.filter(f => f.assessment.tier === 'T0').length} unscored` },
   { href: '/methodology', label: 'Methodology', hint: 'protocol v4' },
+  { href: '/evaluation', label: 'Evaluation Engine', hint: 'cases · assertions · review' },
   ...registry.detectors.map(d => ({ href: `/benchmark/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
   ...categories.map(c => ({ href: `/benchmark/${c.id}`, label: c.title, hint: 'case suite' })),
 ];
@@ -34,7 +36,7 @@ function shell(content: string, label: string) {
   document.title = `${label} · Secret Benchmarks`;
   const all = targets();
   const recents = recent().map(h => all.find(t => t.href === h)).filter((t): t is Target => Boolean(t));
-  app.innerHTML = `<aside><a class="brand" href="/benchmark"><span class="brand-icon">▥</span>secret<span>benchmarks</span></a><nav aria-label="Benchmarks"><div class="nav-label">WORKSPACE</div>${all.slice(0, 4).map(navLink).join('')}<div class="nav-label">FIND A DETECTOR OR SUITE</div><div class="combobox"><input id="nav-query" type="search" role="combobox" aria-expanded="true" aria-controls="nav-options" aria-autocomplete="list" placeholder="Type to filter ${registry.detectors.length} detectors, ${categories.length} suites…" autocomplete="off"><div id="nav-options" role="listbox" aria-label="Detectors and suites">${all.slice(4).map(navLink).join('')}</div></div>${recents.length ? `<div class="nav-label">RECENTLY VIEWED</div><div class="nav-group">${recents.map(navLink).join('')}</div>` : ''}</nav><div class="sidebar-bottom"><span class="dot"></span> Project-maintained benchmarks<p>Shared inputs. Inspectable results.</p><code>npm run bench</code></div></aside><main><header><span><a href="/benchmark">BENCHMARK LAB</a> <b>/</b> ${e(label)}</span><a href="https://github.com/redact-secret/redact-secret-benchmarks">Repository ↗</a></header><p class="banner">Corpus-relative measurements per kind × tier on one run id. Not accuracy, not a ranking. <a class="text-link" href="/methodology">How to read this →</a></p><div class="content">${content}</div><footer>Project-maintained evaluation · Synthetic fixtures only<span>Refreshes every 5s</span></footer></main>`;
+  app.innerHTML = `<aside><a class="brand" href="/benchmark"><span class="brand-icon">▥</span>secret<span>benchmarks</span></a><nav aria-label="Benchmarks"><div class="nav-label">WORKSPACE</div>${all.slice(0, 5).map(navLink).join('')}<div class="nav-label">FIND A DETECTOR OR SUITE</div><div class="combobox"><input id="nav-query" type="search" role="combobox" aria-expanded="true" aria-controls="nav-options" aria-autocomplete="list" placeholder="Type to filter ${registry.detectors.length} detectors, ${categories.length} suites…" autocomplete="off"><div id="nav-options" role="listbox" aria-label="Detectors and suites">${all.slice(5).map(navLink).join('')}</div></div>${recents.length ? `<div class="nav-label">RECENTLY VIEWED</div><div class="nav-group">${recents.map(navLink).join('')}</div>` : ''}</nav><div class="sidebar-bottom"><span class="dot"></span> Project-maintained benchmarks<p>Shared inputs. Inspectable results.</p><code>npm run bench</code></div></aside><main><header><span><a href="/benchmark">BENCHMARK LAB</a> <b>/</b> ${e(label)}</span><a href="https://github.com/redact-secret/redact-secret-benchmarks">Repository ↗</a></header><p class="banner">${location.pathname.startsWith('/evaluation') ? 'Evaluation infrastructure evidence. Review-required is unscored; peer disagreement is not ground truth. No support claims.' : 'Corpus-relative measurements per kind × tier on one run id. Not accuracy, not a ranking.'} <a class="text-link" href="/methodology">How to read this →</a></p><div class="content">${content}</div><footer>Project-maintained evaluation · Scope is specific to each report<span>Refreshes every 5s</span></footer></main>`;
   bindNav();
 }
 
@@ -123,6 +125,26 @@ async function refresh(force = false) {
   const current = route();
   if (current.kind === 'coverage-gaps' && !force) return;
   const token = ++request, path = location.pathname;
+  if (current.kind === 'evaluation') {
+    const [{ evaluationProblem }, { evaluationPage, evaluationEmpty, bindEvaluation }] = await Promise.all([import('./evaluation-model'), import('./pages/evaluation')]);
+    if (token !== request || path !== location.pathname) return;
+    if (force) shell('<p role="status">Loading evaluation evidence…</p>', 'Evaluation Engine');
+    try {
+      const response = await fetch('/results/evaluation-v1.json', { cache: 'no-store' });
+      if (!response.ok) throw Error('Evaluation report not published');
+      const report: EvaluationReport = await response.json();
+      const problem = evaluationProblem(report, await hashes);
+      if (token !== request || path !== location.pathname) return;
+      const payload = JSON.stringify(report);
+      if (!force && payload === lastPayload) return;
+      lastPayload = payload;
+      shell(problem ? evaluationEmpty(problem) : evaluationPage(report, current.view!, current.id), 'Evaluation Engine');
+      bindEvaluation();
+    } catch {
+      if (token === request && path === location.pathname) { lastPayload = ''; shell(evaluationEmpty('Evaluation report missing or unreadable'), 'Evaluation Engine'); }
+    }
+    return;
+  }
   if (current.kind === 'coverage-gaps') {
     if (force) {
       shell('<p role="status">Loading detector inventory…</p>', 'Coverage gaps');
@@ -170,7 +192,7 @@ async function refresh(force = false) {
     if (fixture) body = fixturePage(fixture, reports);
     else if (detector) {
       const selected = fixtures.filter(f => f.detectors.includes(detector.id));
-      body = title(detector.title, `Fixtures targeting ${detector.id}, across all case suites.`, 'BENCHMARK / DETECTOR') + runLine(run, reports) + stats(selected) + readingNote('Detector views overlap; do not sum them.') + (selected.length ? comparison(selected, reports, run) : '<div class="notice">This detector is registered upstream but has no assigned fixtures yet. No coverage claim is made.</div>') + fixtureList(selected, reports, run);
+      body = `<p><a class="text-link" href="/evaluation/detector/${e(detector.id)}">Evaluation evidence: methods, failures and review →</a></p>` + title(detector.title, `Fixtures targeting ${detector.id}, across all case suites.`, 'BENCHMARK / DETECTOR') + runLine(run, reports) + stats(selected) + readingNote('Detector views overlap; do not sum them.') + (selected.length ? comparison(selected, reports, run) : '<div class="notice">This detector is registered upstream but has no assigned fixtures yet. No coverage claim is made.</div>') + fixtureList(selected, reports, run);
     } else if (pending) {
       const selected = fixtures.filter(f => f.assessment.tier === 'T0');
       body = title('Pending review', 'T0 fixtures: observations are inspectable but excluded from every comparative number until evidence exists.', 'BENCHMARK / PENDING') + fixtureList(selected, reports, run);
@@ -205,7 +227,7 @@ document.addEventListener('click', event => {
   const anchor = (event.target as Element).closest<HTMLAnchorElement>('a[href]');
   if (!anchor || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || anchor.hasAttribute('download') || anchor.target) return;
   const url = new URL(anchor.href);
-  if (url.origin !== location.origin || !/^\/(benchmark|fixture|methodology|coverage-gaps|pending)(\/|$)/.test(url.pathname)) return;
+  if (url.origin !== location.origin || !/^\/(benchmark|fixture|methodology|coverage-gaps|pending|evaluation)(\/|$)/.test(url.pathname)) return;
   event.preventDefault(); navigate(url.pathname);
 });
 window.addEventListener('popstate', () => { lastPayload = ''; void refresh(true); });

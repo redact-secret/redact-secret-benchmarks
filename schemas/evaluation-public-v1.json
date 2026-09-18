@@ -1,0 +1,510 @@
+{
+  "$id": "urn:redact-secret:evaluation-public:1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "reportType": {
+      "const": "evaluation-public"
+    },
+    "supportClaims": {
+      "const": false
+    },
+    "runId": {
+      "type": "string"
+    },
+    "startedAt": {
+      "type": "string"
+    },
+    "finishedAt": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "revision": {
+          "type": "string"
+        },
+        "dirty": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "casesHash": {
+          "type": "string"
+        },
+        "lockHash": {
+          "type": "string"
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "id",
+              "version"
+            ]
+          }
+        },
+        "operators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "id",
+              "version"
+            ]
+          }
+        }
+      },
+      "required": [
+        "revision",
+        "dirty",
+        "casesHash",
+        "lockHash",
+        "methods",
+        "operators"
+      ]
+    },
+    "corpusHashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "scanners": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "complete",
+              "unavailable",
+              "error",
+              "unsupported"
+            ]
+          },
+          "mode": {
+            "type": "string"
+          },
+          "configurationHash": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "status",
+          "mode",
+          "configurationHash"
+        ]
+      }
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "twin",
+              "benign",
+              "metamorphic",
+              "mutation",
+              "differential"
+            ]
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "taxonomy": {
+            "type": "string"
+          },
+          "sourceSlug": {
+            "type": "string"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "kind": {
+                  "enum": [
+                    "must-redact",
+                    "must-not-flag",
+                    "policy"
+                  ]
+                },
+                "tier": {
+                  "enum": [
+                    "T0",
+                    "T1",
+                    "T2",
+                    "T3"
+                  ]
+                },
+                "strategy": {
+                  "enum": [
+                    "authored",
+                    "derived",
+                    "review-required"
+                  ]
+                },
+                "operator": {
+                  "type": "string"
+                },
+                "property": {
+                  "type": "string"
+                },
+                "relation": {
+                  "enum": [
+                    "",
+                    "same-detection",
+                    "must-flip"
+                  ]
+                },
+                "expectationEffect": {
+                  "enum": [
+                    "",
+                    "preserve",
+                    "invalidate",
+                    "defer"
+                  ]
+                },
+                "contractMatch": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "kind",
+                "tier",
+                "strategy",
+                "operator",
+                "property",
+                "relation",
+                "expectationEffect",
+                "contractMatch"
+              ]
+            }
+          },
+          "assertions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "scanner": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "pass",
+                    "fail",
+                    "review-required"
+                  ]
+                },
+                "variant": {
+                  "type": "string"
+                },
+                "baseline": {
+                  "type": "string"
+                },
+                "candidate": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "scanner",
+                "type",
+                "status",
+                "variant",
+                "baseline",
+                "candidate"
+              ]
+            }
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "scanner": {
+                  "type": "string"
+                },
+                "variant": {
+                  "type": "string"
+                },
+                "count": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "flagged": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "scanner",
+                "variant",
+                "count",
+                "flagged"
+              ]
+            }
+          },
+          "generation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "operator": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "generated",
+                    "unsupported",
+                    "error"
+                  ]
+                }
+              },
+              "required": [
+                "operator",
+                "status"
+              ]
+            }
+          },
+          "comparisons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "peer": {
+                  "type": "string"
+                },
+                "variant": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "complete",
+                    "incomplete",
+                    "unsupported"
+                  ]
+                },
+                "disagreement": {
+                  "enum": [
+                    "",
+                    "none",
+                    "redact-secret-only",
+                    "peer-only",
+                    "range-disagreement",
+                    "classification-disagreement"
+                  ]
+                },
+                "classification": {
+                  "enum": [
+                    "",
+                    "compared",
+                    "unsupported"
+                  ]
+                }
+              },
+              "required": [
+                "peer",
+                "variant",
+                "status",
+                "disagreement",
+                "classification"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "method",
+          "targets",
+          "taxonomy",
+          "sourceSlug",
+          "variants",
+          "assertions",
+          "findings",
+          "generation",
+          "comparisons"
+        ]
+      }
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "caseId": {
+            "type": "string"
+          },
+          "variant": {
+            "type": "string"
+          },
+          "peer": {
+            "type": "string"
+          },
+          "disagreement": {
+            "enum": [
+              "",
+              "redact-secret-only",
+              "peer-only",
+              "range-disagreement",
+              "classification-disagreement"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "caseId",
+          "variant",
+          "peer",
+          "disagreement"
+        ]
+      }
+    },
+    "byOperator": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "generated": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unsupported": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "error": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "assertions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pass": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "fail": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "review-required": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "pass",
+                "fail",
+                "review-required"
+              ]
+            }
+          }
+        },
+        "required": [
+          "generated",
+          "unsupported",
+          "error",
+          "assertions"
+        ]
+      }
+    },
+    "qualification": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:redact-secret:qualification:1"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "reportType",
+    "supportClaims",
+    "runId",
+    "startedAt",
+    "finishedAt",
+    "provenance",
+    "corpusHashes",
+    "scanners",
+    "cases",
+    "reviews",
+    "byOperator",
+    "qualification"
+  ]
+}

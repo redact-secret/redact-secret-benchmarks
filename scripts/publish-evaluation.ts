@@ -1,0 +1,21 @@
+import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
+import { loadCases } from '../benchmarks/engine/cases.ts';
+import { createOperators } from '../benchmarks/operators/index.ts';
+import { publicEvaluation } from '../benchmarks/engine/public-report.ts';
+import { hash } from '../benchmarks/engine/model.ts';
+const options = Object.fromEntries(process.argv.slice(2).map(arg => {
+  const match = /^--(input|qualification)=(.+)$/.exec(arg);
+  if (!match) throw Error('Usage: npm run eval:publish -- [--input=results-output/evaluation.json] [--qualification=path]');
+  return [match[1], match[2]];
+}));
+const raw = JSON.parse(await readFile(options.input ?? 'results-output/evaluation.json', 'utf8'));
+const cases = await loadCases(createOperators());
+const categories = JSON.parse(await readFile('benchmarks/categories.json', 'utf8'));
+const hashes = Object.fromEntries(await Promise.all(categories.map(async (c: { id: string; corpus: string }) => [c.id, hash(await readFile(c.corpus))])));
+const qualification = options.qualification ? JSON.parse(await readFile(options.qualification, 'utf8')) : null;
+const report = publicEvaluation(raw, cases, hashes, qualification);
+await mkdir('public/results', { recursive: true });
+const target = 'public/results/evaluation-v1.json', temp = `${target}.tmp`;
+await writeFile(temp, JSON.stringify(report) + '\n');
+await rename(temp, target);
+console.log(`Published ${report.cases.length} development/regression cases; holdout aggregate only: ${Boolean(qualification)}`);

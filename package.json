@@ -18,6 +18,7 @@
     "precompare": "node --import tsx scripts/generate-fixtures.mjs --ensure",
     "bench": "node --import tsx benchmarks/run.ts",
     "eval": "node --import tsx benchmarks/evaluate.ts",
+    "eval:publish": "node --import tsx scripts/publish-evaluation.ts",
     "eval:discover": "node --import tsx benchmarks/evaluate.ts",
     "start": "npm run bench && vite --host 127.0.0.1",
     "dev": "vite --host 127.0.0.1",

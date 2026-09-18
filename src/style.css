@@ -189,3 +189,24 @@ code { font-size: 12px; }
   .category-grid { grid-template-columns: 1fr; }
   footer { gap: var(--s2); }
 }
+
+/* Evaluation evidence uses distinct states, never a combined quality score. */
+.eval-metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:12px; margin:24px 0; }
+.eval-metrics > div { border:1px solid var(--line); border-radius:6px; padding:16px; background:white; }
+.eval-metrics strong { display:block; font-size:25px; font-variant-numeric:tabular-nums; }
+.eval-metrics span { display:block; font-size:12px; margin-top:6px; color:#53675e; }
+.eval-status { display:inline-block; border:1px solid currentColor; border-radius:4px; padding:2px 6px; font-size:11px; }
+.eval-pass, .eval-complete { color:#236543; background:#edf8f0; }
+.eval-fail { color:#a32e36; background:#fff0f0; }
+.eval-review-required { color:#66518d; background:#f4f0ff; }
+.eval-error { color:#8b500b; background:#fff3e3; }
+.eval-unavailable, .eval-unsupported { color:#526475; background:#eef2f6; }
+.eval-filters { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:12px; margin:20px 0; }
+.eval-filters label { display:grid; gap:6px; font-size:12px; }
+.eval-filters select { width:100%; min-width:0; padding:8px; border:1px solid #bacbbf; border-radius:4px; background:white; color:#20392d; }
+#evaluation-rows td { white-space:normal; min-width:155px; max-width:330px; overflow-wrap:anywhere; }
+#evaluation-rows td:first-child { min-width:260px; }
+.run-line { overflow-wrap:anywhere; }
+
+.eval-table-hint { display:none; font-size:12px; color:#53675e; }
+@media (max-width:700px) { .eval-table-hint { display:block; } }

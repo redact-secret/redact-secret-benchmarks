@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { initialize, scan } from "@redact-secret/core";
 import { buildCorpora } from "../fixtures/generated/build.mjs";
-import { validateCorpus } from "../benchmarks/lib/scoring.mjs";
+import { validateCorpus } from "../benchmarks/lib/scoring.ts";
 
 const corpora = buildCorpora();
 

@@ -7,6 +7,11 @@ support qualification, and a public plugin API are not implemented.
 
 ## Running
 
+All code under `benchmarks/` is TypeScript. Run `npm ci` first; the npm
+commands load `tsx` so execution works on every supported Node version.
+`npm run typecheck` checks both the engine and the UI with strict TypeScript.
+For direct invocation, use `node --import tsx benchmarks/evaluate.ts`.
+
 ```sh
 npm run eval
 npm run eval -- --method=twin,benign --scanner=redact-secret
@@ -41,15 +46,18 @@ differential evidence, never agreement.
 
 | Layer | Contract and ownership |
 | --- | --- |
-| `benchmarks/engine/model.mjs` | EvaluationCase: identity, method, targets, visibility, seed fixture, operator specs, source and provenance. GeneratedVariant: parent identity, transformed fixture, expectation strategy, operator/version and hashes. |
-| `benchmarks/methods/` | Method modules implement `id`, `version`, `validateCase`, `generate`, and `evaluate`; register in `index.mjs`. |
-| `benchmarks/operators/` | Operators implement `id`, `version`, `supports`, and `generate`; register in `index.mjs`. Twin and Mutation share the authored-twin operator. |
-| `benchmarks/engine/assertions.mjs` | Absolute presence/absence and relational assertions, using the existing UTF-8 range lattice. |
-| `benchmarks/engine/runner.mjs` | Validation, generation, scratch files, scanner execution, failure isolation, cleanup and report assembly. No method-specific dispatch branches. |
+| `benchmarks/engine/types.ts` | TypeScript contracts for cases, variants, methods, operators, scanner observations and results. |
+| `benchmarks/types.ts` | Shared fixture, assessment, UTF-8 range and scoring types. |
+| `benchmarks/engine/model.ts` | Runtime validation and generation. EvaluationCase: identity, method, targets, visibility, seed fixture, operator specs, source and provenance. GeneratedVariant: parent identity, transformed fixture, expectation strategy, operator/version and hashes. |
+| `benchmarks/methods/` | Method modules implement `id`, `version`, `validateCase`, `generate`, and `evaluate`; register in `index.ts`. |
+| `benchmarks/operators/` | Operators implement `id`, `version`, `supports`, and `generate`; register in `index.ts`. Twin and Mutation share the authored-twin operator. |
+| `benchmarks/engine/assertions.ts` | Absolute presence/absence and relational assertions, using the existing UTF-8 range lattice. |
+| `benchmarks/engine/runner.ts` | Validation, generation, scratch files, scanner execution, failure isolation, cleanup and report assembly. No method-specific dispatch branches. |
 | `scanners/index.mjs` | Existing published-package/Gitleaks/TruffleHog adapters, unchanged. They receive input identity and content, without expectations. |
 
 This is an internal contract, intentionally free to evolve. A new method or
-operator is a module plus registration; the engine and scanner integration need
+operator is a `.ts` module implementing `Method` or `Operator` from
+`benchmarks/engine/types.ts`, plus registration in the corresponding `index.ts`; the engine and scanner integration need
 no new method branch. The case loader is the initial corpus-to-case bridge;
 additional case sources can use the same engine model. Duplicate registrations,
 case IDs, variant IDs and paths are rejected. Development and regression are

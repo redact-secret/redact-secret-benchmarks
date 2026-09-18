@@ -5,7 +5,7 @@ import {
   closedBehaviorIssues,
   milestoneSnapshot,
 } from "../fixtures/generated/closed-milestone.mjs";
-import { score, validateCorpus } from "../benchmarks/lib/scoring.mjs";
+import { score, validateCorpus } from "../benchmarks/lib/scoring.ts";
 import { normalizeTrufflehog } from "../scanners/index.mjs";
 
 const corpus = buildCorpora()["milestone-6-closed"];

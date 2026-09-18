@@ -3,7 +3,7 @@ import { buildRegressions } from "./regressions.mjs";
 import { buildDetectorCoverage } from "./detector-coverage.mjs";
 import { buildClosedMilestone } from "./closed-milestone.mjs";
 import { buildCommonFormats } from "./common-formats.mjs";
-import { classifyFixture } from "../../benchmarks/lib/assessment.mjs";
+import { classifyFixture } from "../../benchmarks/lib/assessment.ts";
 
 // Public, deterministic benchmark seed. These values were never provider-issued.
 const alphabet =

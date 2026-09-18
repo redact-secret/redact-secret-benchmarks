@@ -1,11 +1,13 @@
+import type { Fixture, Range } from '../types.ts';
+import type { EvaluationCase, Transformation, Strategy, GeneratedVariant, Registry, Method, Operator } from './types.ts';
 import { createHash } from 'node:crypto';
-import { validateCorpus } from '../lib/scoring.mjs';
-import { validateAssessment } from '../lib/assessment.mjs';
+import { validateCorpus } from '../lib/scoring.ts';
+import { validateAssessment } from '../lib/assessment.ts';
 
-export const hash = value => createHash('sha256').update(typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value)).digest('hex');
-export const secrets = fixture => fixture.expected.filter(r => r.role === 'secret');
-export const bytes = (fixture, range) => Buffer.from(fixture.content).subarray(range.start, range.end).toString('utf8');
-export function independentFixture(fixture) {
+export const hash = (value: unknown) => createHash('sha256').update(typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value)).digest('hex');
+export const secrets = (fixture: Fixture) => fixture.expected.filter(r => r.role === 'secret');
+export const bytes = (fixture: Fixture, range: Range) => Buffer.from(fixture.content).subarray(range.start, range.end).toString('utf8');
+export function independentFixture(fixture: Fixture) {
   const { twinOf, mutation, mutationKind, ...rest } = structuredClone(fixture);
   return rest;
 }
@@ -14,7 +16,7 @@ export function independentFixture(fixture) {
  * GeneratedVariant adds a transformation, expectation strategy and provenance.
  * All offsets remain UTF-8 byte offsets, including operator-generated spans.
  */
-export function validateCase(c) {
+export function validateCase(c: EvaluationCase) {
   if (!c || !/^[a-z0-9-]+$/.test(c.id) || typeof c.method !== 'string' ||
       !['development', 'regression'].includes(c.visibility) ||
       !Array.isArray(c.targets) || c.targets.some(t => !/^[a-z0-9-]+$/.test(t)) ||
@@ -25,7 +27,7 @@ export function validateCase(c) {
   return c;
 }
 
-export function variant(c, id, fixture, transformation, strategy = 'authored') {
+export function variant(c: EvaluationCase, id: string, fixture: Fixture, transformation: Transformation, strategy: Strategy = 'authored'): GeneratedVariant {
   if (!/^[a-z0-9.-]+$/.test(id) || !['authored', 'derived', 'review-required'].includes(strategy))
     throw new Error('Invalid generated variant');
   const f = independentFixture(fixture);
@@ -45,7 +47,7 @@ export function variant(c, id, fixture, transformation, strategy = 'authored') {
       contentHash: hash(f.content), transformationHash: hash(transformation) } };
 }
 
-export function generateCase(c, methods, operators) {
+export function generateCase(c: EvaluationCase, methods: Registry<Method>, operators: Registry<Operator>) {
   validateCase(c);
   const method = methods.get(c.method);
   method.validateCase(c);

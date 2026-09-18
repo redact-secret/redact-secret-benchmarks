@@ -1,7 +1,7 @@
 import knownGaps from '../../benchmarks/known-gaps.json';
 import { categories, registry, fixtures, corpora, baseline, type Fixture } from '../catalog';
 import { summarize, contentSegments, rowSignal, outcomeCode } from '../model.mjs';
-import { kinds, tiers, contracts } from '../../benchmarks/lib/assessment.mjs';
+import { kinds, tiers, contracts } from '../../benchmarks/lib/assessment.ts';
 import { escape as e, percent, ratio, type Report, type Row, type Run, type Summary, type RedactGroup, type ControlGroup, type Outcome } from '../types';
 
 type Kinds = keyof typeof kinds;

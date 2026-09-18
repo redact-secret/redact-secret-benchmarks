@@ -2,11 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts } from '../benchmarks/lib/assessment.mjs';
-import { scoreReport } from '../benchmarks/lib/reporting.mjs';
-import { validateCorpus, score } from '../benchmarks/lib/scoring.mjs';
-import { validateStructures } from '../benchmarks/lib/validate-structures.mjs';
-import { spanOutcome } from '../benchmarks/lib/lattice.mjs';
+import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts } from '../benchmarks/lib/assessment.ts';
+import { scoreReport } from '../benchmarks/lib/reporting.ts';
+import { validateCorpus, score } from '../benchmarks/lib/scoring.ts';
+import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
+import { spanOutcome } from '../benchmarks/lib/lattice.ts';
 import { reportProblem, summarize } from '../src/model.mjs';
 import { normalizeTrufflehogFindings } from '../scanners/index.mjs';
 

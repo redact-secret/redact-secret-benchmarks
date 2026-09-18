@@ -1,6 +1,7 @@
-import { evaluateAssertions } from '../engine/assertions.mjs';
+import type { Method } from '../engine/types.ts';
+import { evaluateAssertions } from '../engine/assertions.ts';
 
-export function generate(c, { operators, variant }) {
+export const generate: Method['generate'] = (c, { operators, variant }) => {
   const variants = [variant(c, 'canonical', c.seed, { method: c.method, methodVersion: 1, operator: 'identity', operatorVersion: 1 })];
   for (const spec of c.operators) {
     const operator = operators.get(spec.id);
@@ -16,4 +17,4 @@ export function generate(c, { operators, variant }) {
   return variants;
 }
 
-export const evaluate = context => ({ scanners: evaluateAssertions(context), queue: [] });
+export const evaluate: Method['evaluate'] = context => ({ scanners: evaluateAssertions(context), queue: [] });

@@ -5,7 +5,7 @@ import { mkdtemp, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { scanners } from "../../scanners/index.mjs";
-import { score } from "../../benchmarks/lib/scoring.mjs";
+import { score } from "../../benchmarks/lib/scoring.ts";
 import { buildCorpora } from '../../fixtures/generated/build.mjs';
 import { mkdir } from 'node:fs/promises';
 

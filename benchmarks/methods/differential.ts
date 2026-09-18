@@ -1,12 +1,15 @@
-import { generate } from './common.mjs';
-import { observe } from '../engine/assertions.mjs';
+import type { ScoredRow } from '../types.ts';
+import type { ReviewEntry, MethodResult } from '../engine/types.ts';
+import type { Method } from '../engine/types.ts';
+import { generate } from './common.ts';
+import { observe } from '../engine/assertions.ts';
 
-const ranges = row => JSON.stringify([...row.actual].sort((a, b) => a.start - b.start || a.end - b.end));
-export const differential = {
+const ranges = (row: ScoredRow) => JSON.stringify([...row.actual].sort((a, b) => a.start - b.start || a.end - b.end));
+export const differential: Method = {
   id: 'differential', version: 1, generate,
   validateCase(c) { if (c.operators.length) throw new Error('Differential observes the canonical input'); },
   evaluate({ variants, observations }) {
-    const queue = [], comparisons = [];
+    const queue: ReviewEntry[] = [], comparisons: NonNullable<MethodResult['comparisons']> = [];
     const primary = observations.find(s => s.id === 'redact-secret');
     for (const v of variants) {
       for (const peer of observations.filter(s => s.id !== 'redact-secret')) {

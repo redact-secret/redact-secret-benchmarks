@@ -7,8 +7,18 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "noEmit": true,
-    "lib": ["ES2022", "DOM"],
-    "skipLibCheck": true
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "benchmarks"
+  ]
 }

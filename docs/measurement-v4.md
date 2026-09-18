@@ -293,8 +293,8 @@ Each phase lands independently and leaves `main` green.
  `role: "secret"` to every span; envelope defaults to the span. Assert by test
  that every v4 outcome equals its v3 equivalent — a no-op migration is the
  proof the mapping is faithful.
-3. **Scoring.** Lattice + byte accounting in `benchmarks/lib/scoring.mjs`,
- groups in `reporting.mjs`, schema v4 in `run.mjs`, mirrored validation in
+3. **Scoring.** Lattice + byte accounting in `benchmarks/lib/scoring.ts`,
+ groups in `reporting.ts`, schema v4 in `run.ts`, mirrored validation in
  `src/model.mjs`. Reject v3 reports. Unit tests per lattice cell, including
  two-findings-straddling-a-secret and whole-file-finding.
 4. **Envelopes where they are already needed:** `connection-string`,

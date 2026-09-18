@@ -1,6 +1,8 @@
+import type { Fixture, Range } from '../types.ts';
+import type { Operator } from '../engine/types.ts';
 // Map every byte boundary through a text transformation. This also maps
 // authored envelopes and multiple spans, without searching for secret values.
-export function mapFixture(seed, transform, prefix = '', suffix = '') {
+export function mapFixture(seed: Fixture, transform: (character: string, offset: number) => string, prefix = '', suffix = '') {
   let content = prefix, oldOffset = 0, newOffset = Buffer.byteLength(prefix);
   const offsets = new Map([[0, Buffer.byteLength(prefix)]]);
   for (const character of seed.content) {
@@ -10,13 +12,13 @@ export function mapFixture(seed, transform, prefix = '', suffix = '') {
     oldOffset += Buffer.byteLength(character);
     offsets.set(oldOffset, newOffset);
   }
-  const mapRange = r => ({ ...r, start: offsets.get(r.start), end: offsets.get(r.end) });
+  const mapRange = <T extends Range>(r: T): T => ({ ...r, start: offsets.get(r.start)!, end: offsets.get(r.end)! });
   return { ...seed, content: content + suffix, expected: seed.expected.map(r => ({
     ...mapRange(r), ...(r.envelope ? { envelope: mapRange(r.envelope) } : {}),
   })) };
 }
 
-const context = (id, supports, apply) => ({ id, version: 1, supports,
+const context = (id: string, supports: Operator['supports'], apply: (fixture: Fixture) => Fixture): Operator => ({ id, version: 1, supports,
   generate: c => ({ fixture: apply(c.seed), strategy: 'derived', property: 'context', relation: 'same-detection' }) });
 
 export const contextOperators = [

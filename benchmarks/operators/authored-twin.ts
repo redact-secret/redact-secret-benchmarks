@@ -1,11 +1,13 @@
-import { validateCorpus } from '../lib/scoring.mjs';
-import { validateAssessment } from '../lib/assessment.mjs';
-import { secrets } from '../engine/model.mjs';
+import type { Operator } from '../engine/types.ts';
+import { validateCorpus } from '../lib/scoring.ts';
+import { validateAssessment } from '../lib/assessment.ts';
+import { secrets } from '../engine/model.ts';
 
-export const authoredTwin = {
+export const authoredTwin: Operator = {
   id: 'authored.twin', version: 1,
   supports: c => Boolean(c.twin),
   generate(c) {
+    if (!c.twin) throw new Error('Authored twin requires a twin fixture');
     validateCorpus({ fixtures: [c.seed, c.twin] });
     validateAssessment(c.twin);
     if (c.twin.twinOf !== c.seed.id || c.twin.content === c.seed.content ||

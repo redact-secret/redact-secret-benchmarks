@@ -1,3 +1,4 @@
+import type { Category, Group } from './types.ts';
 import {
   readFile,
   writeFile,
@@ -12,16 +13,16 @@ import { fileURLToPath } from "node:url";
 import { createHash, randomBytes } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { scanners } from "../scanners/index.mjs";
-import { validateCorpus } from "./lib/scoring.mjs";
-import { classifyFixture, validateAssessment, validateContracts } from './lib/assessment.mjs';
-import { scoreReport } from './lib/reporting.mjs';
-import { validateStructures } from './lib/validate-structures.mjs';
+import { validateCorpus } from "./lib/scoring.ts";
+import { classifyFixture, validateAssessment, validateContracts } from './lib/assessment.ts';
+import { scoreReport } from './lib/reporting.ts';
+import { validateStructures } from './lib/validate-structures.ts';
 
 export const MATCHING = "Per-span outcome lattice over UTF-8 [start, end). Envelope-relative coverage. Identical findings deduplicated. No cross-tier aggregation; no precision, recall or F1. T0 observations unscored. AWS RawV2 secret components and Shopify composite token mapped from scanner output, never ground truth.";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const hash = (value) => createHash("sha256").update(value).digest("hex");
-const registry = JSON.parse(
+const hash = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
+const registry: Category[] = JSON.parse(
   await readFile(path.join(root, "benchmarks/categories.json"), "utf8"),
 );
 const args = process.argv.slice(2);
@@ -34,7 +35,7 @@ if (
   process.exit(1);
 }
 validateContracts();
-const handlers = { accuracy: { validate: validateCorpus, score: scoreReport } };
+const handlers: Record<string, { validate: typeof validateCorpus; score: typeof scoreReport }> = { accuracy: { validate: validateCorpus, score: scoreReport } };
 const outputDir = path.join(root, "public/results");
 await mkdir(outputDir, { recursive: true });
 const startedAt = new Date().toISOString();
@@ -42,18 +43,18 @@ const startedAt = new Date().toISOString();
 const runId = `${startedAt}-${randomBytes(3).toString("hex")}`;
 const lockHash = hash(await readFile(path.join(root, "package-lock.json")));
 let revision = "unknown",
-  dirty = null;
+  dirty: boolean | null = null;
 try {
   revision = execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
   dirty = Boolean(execFileSync("git", ["status", "--porcelain"], { cwd: root, encoding: "utf8" }).trim());
 } catch {}
-const write = async (name, report) => {
+const write = async (name: string, report: unknown) => {
   const temporary = path.join(outputDir, `.${name}-${process.pid}.json`);
   await writeFile(temporary, JSON.stringify(report, null, 2) + "\n");
   await rename(temporary, path.join(outputDir, `${name}.json`));
 };
 let failed = false;
-const scannerVersions = {};
+const scannerVersions: Record<string, string> = {};
 const categories = [];
 for (const category of registry.filter(
   (c) => !requested || c.id === requested,
@@ -93,7 +94,7 @@ for (const category of registry.filter(
         });
         console.log(`${category.id} / ${scanner.name}: complete`);
       } catch (error) {
-        const unavailable = error.message === "unavailable";
+        const unavailable = error instanceof Error && error.message === "unavailable";
         results.push({
           ...base,
           version,
@@ -131,7 +132,7 @@ for (const category of registry.filter(
     categories.push(category.id);
     console.log(`Updated public/results/${category.id}.json`);
     console.table(
-      results.flatMap((result) => Object.entries(result.groups ?? { unavailable: {} }).map(([group, m]) => ({
+      results.flatMap((result) => Object.entries<Group>(('groups' in result ? result.groups : undefined) ?? { unavailable: { files: 0 } }).map(([group, m]) => ({
         Scanner: result.name,
         Group: group,
         Status: result.status,

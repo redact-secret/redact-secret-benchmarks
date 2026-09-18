@@ -35,7 +35,7 @@ Tier is assigned from provider documentation first; the pinned TruffleHog
 for T1. Provider pages were fetched on 2026-09-17 (`observedAt`). `Covers`
 records what the provider document actually establishes; anything else in the
 contract pattern is tool-corroborated and says so. Machine-readable contracts
-are in [`benchmarks/lib/assessment.mjs`](../benchmarks/lib/assessment.mjs).
+are in [`benchmarks/lib/assessment.ts`](../benchmarks/lib/assessment.ts).
 
 | Family | Tier | Provider source (observed 2026-09-17) | Covers | Corroboration / reason |
 | --- | --- | --- | --- | --- |

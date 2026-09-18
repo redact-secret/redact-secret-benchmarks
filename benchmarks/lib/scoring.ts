@@ -1,6 +1,7 @@
-import { scoreRow } from './lattice.mjs';
+import type { Corpus, Fixture, Finding, Range, ScoredRow } from '../types.ts';
+import { scoreRow } from './lattice.ts';
 
-function byteBoundaries(content) {
+function byteBoundaries(content: string) {
   const boundaries = new Set([0]);
   let offset = 0;
   for (const char of content) {
@@ -10,7 +11,7 @@ function byteBoundaries(content) {
   return boundaries;
 }
 
-const validRange = (r, bytes, boundaries) =>
+const validRange = (r: Range, bytes: number, boundaries: Set<number>) =>
   r && Number.isInteger(r.start) && Number.isInteger(r.end) && r.start >= 0 && r.end > r.start && r.end <= bytes && boundaries.has(r.start) && boundaries.has(r.end);
 
 /**
@@ -18,7 +19,7 @@ const validRange = (r, bytes, boundaries) =>
  * and may carry an authored `envelope` (wider acceptable range with a reason).
  * Controls may declare `twinOf` + `mutation` + `mutationKind`.
  */
-export function validateCorpus(corpus) {
+export function validateCorpus(corpus: Corpus): Corpus {
   if (!corpus || !Array.isArray(corpus.fixtures) || !corpus.fixtures.length)
     throw new Error("Empty corpus");
   const ids = new Set(),
@@ -43,7 +44,7 @@ export function validateCorpus(corpus) {
     let end = 0;
     for (const r of f.expected) {
       if (!validRange(r, bytes, boundaries) || r.start < end) throw new Error("Invalid UTF-8 range");
-      if (!['secret', 'companion'].includes(r.role)) throw new Error(`Missing span role: ${f.id}`);
+      if (!['secret', 'companion'].includes(r.role!)) throw new Error(`Missing span role: ${f.id}`);
       if (r.envelope !== undefined) {
         const e = r.envelope;
         if (!validRange(e, bytes, boundaries) || e.start > r.start || e.end < r.end || typeof e.reason !== 'string' || !e.reason.trim()) throw new Error(`Invalid envelope: ${f.id}`);
@@ -62,14 +63,14 @@ export function validateCorpus(corpus) {
 }
 
 /** Deduplicate and validate normalized findings, then score every fixture. No totals. */
-export function score(fixtures, findings) {
+export function score(fixtures: Fixture[], findings: Finding[]): { rows: ScoredRow[] } {
   const known = new Map(fixtures.map((f) => [f.path, f]));
   const boundaries = new Map(fixtures.map((f) => [f.path, byteBoundaries(f.content)]));
   if (!Array.isArray(findings)) throw new Error("Invalid normalized findings");
-  const unique = new Map();
+  const unique = new Map<string, Finding>();
   for (const r of findings) {
     const f = known.get(r?.path);
-    if (!f || !validRange(r, Buffer.byteLength(f.content), boundaries.get(r.path)))
+    if (!f || !validRange(r, Buffer.byteLength(f.content), boundaries.get(r.path)!))
       throw new Error("Invalid normalized finding");
     unique.set(`${r.path}:${r.start}:${r.end}`, r);
   }

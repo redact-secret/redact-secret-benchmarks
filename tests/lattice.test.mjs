@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { spanOutcome, scoreRow, aggregateGroups, bytesOutside, union, encodeOutcome } from '../benchmarks/lib/lattice.mjs';
-import { score } from '../benchmarks/lib/scoring.mjs';
+import { spanOutcome, scoreRow, aggregateGroups, bytesOutside, union, encodeOutcome } from '../benchmarks/lib/lattice.ts';
+import { score } from '../benchmarks/lib/scoring.ts';
 
 const span = { start: 10, end: 20, role: 'secret' };
 const enveloped = { ...span, envelope: { start: 4, end: 26 } };

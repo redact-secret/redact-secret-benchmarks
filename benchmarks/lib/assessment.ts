@@ -1,7 +1,8 @@
+import type { Fixture, Range, Kind, Tier, Assessment, FormatContract } from '../types.ts';
 // Classification is authored from input construction and provider evidence,
 // never scanner outcomes. Unknown fixtures fail closed into T0 (pending).
 // Protocol: docs/measurement-v4.md §2.1, §2.6, §6.
-import { KINDS, TIERS } from './lattice.mjs';
+import { KINDS, TIERS } from './lattice.ts';
 
 export const kinds = {
   'must-redact': { title: 'Must redact', description: 'Authored secret spans with an evidence tier. Leaked span rate, leaked byte rate and collateral ratio are the headline numbers; twin discrimination measures whether a near-identical control stays clean.' },
@@ -16,9 +17,9 @@ export const tiers = {
 };
 
 const observedAt = '2026-09-17';
-const th = (path, label) => ({ tool: 'trufflehog 3.97.4', label: label ?? path, url: `https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/${path}.go` });
+const th = (path: string, label?: string) => ({ tool: 'trufflehog 3.97.4', label: label ?? path, url: `https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/${path}.go` });
 const gl = { tool: 'gitleaks 8.30.1', label: 'gitleaks.toml', url: 'https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml' };
-const provider = (url, formatVersion, covers) => ({ url, observedAt, formatVersion, covers });
+const provider = (url: string, formatVersion: string, covers: string) => ({ url, observedAt, formatVersion, covers });
 
 /**
  * Format contracts. `tier` is the evidence tier a format-correct positive
@@ -26,7 +27,7 @@ const provider = (url, formatVersion, covers) => ({ url, observedAt, formatVersi
  * `covers` records what the provider document actually establishes so a
  * contract cannot quietly claim more than its evidence.
  */
-export const contracts = {
+export const contracts: Record<string, FormatContract> = {
   'aws-access-key': { tier: 'T1', pattern: '^AKIA[A-Z2-7]{16}$', providerSource: provider('https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes', 'IAM unique-ID prefix table', 'AKIA/ASIA/ABIA/ACCA prefixes; 16-character base32 body and 40-character secret are tool-corroborated'), corroboration: [th('aws/access_keys/accesskey'), gl], companion: 'A separate 40-character secret access key is required. ASIA additionally needs a session token and is not covered by this contract.' },
   'github-token': { tier: 'T1', pattern: '^(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36}$', providerSource: provider('https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats', '2021-04 prefix scheme', 'ghp_/gho_/ghu_/ghs_/ghr_ prefixes and underscore separator; 36-character body is tool-corroborated (checksum in the last six characters per github.blog/2021-04-05)'), corroboration: [th('github/v2/github'), gl] },
   'gitlab-token': { tier: 'T1', pattern: '^glpat-[A-Za-z0-9_-]{20}$', providerSource: provider('https://docs.gitlab.com/security/tokens/', 'token prefix table', 'glpat- prefix; 20-character legacy body is tool-corroborated, routable tokens are not covered'), corroboration: [th('gitlab/v2/gitlab_v2'), gl] },
@@ -54,27 +55,27 @@ export const contracts = {
   'generic-token': { tier: 'T3', references: [], review: 'An arbitrary literal in a sensitive field is a masking-policy case, not a provider-format ground truth.' },
 };
 
-export const evidence = family => {
-  const c = contracts[family];
+export const evidence = (family?: string) => {
+  const c = contracts[family ?? ''];
   if (!c) return [];
   return [...(c.providerSource ? [c.providerSource.url] : []), ...(c.corroboration ?? []).map(s => s.url), ...(c.references ?? [])];
 };
 
-const decide = (kind, tier, reason, family) => ({ kind, tier, reason, ...(family ? { contract: family } : {}), sources: evidence(family) });
-const policy = (reason, family) => decide('policy', 'T3', reason, family);
-const pending = (reason, family, kind = 'must-redact') => decide(kind, 'T0', reason, family);
-const control = (tier, reason, family) => decide('must-not-flag', tier, reason, family);
+const decide = (kind: Kind, tier: Tier, reason: string, family?: string): Assessment => ({ kind, tier, reason, ...(family ? { contract: family } : {}), sources: evidence(family) });
+const policy = (reason: string, family?: string) => decide('policy', 'T3', reason, family);
+const pending = (reason: string, family?: string, kind: Kind = 'must-redact') => decide(kind, 'T0', reason, family);
+const control = (tier: Tier, reason: string, family?: string) => decide('must-not-flag', tier, reason, family);
 const NEAR_MISS = 'Malformed-by-construction control: prefix-only, truncated, mis-delimited or public-material shape of a contracted family. Expected silence follows from construction.';
 const PLACEHOLDER = 'Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.';
-const bytesOf = (f, r) => new TextDecoder().decode(new TextEncoder().encode(f.content).slice(r.start, r.end));
-const matches = (family, value) => Boolean(contracts[family]?.pattern) && new RegExp(contracts[family].pattern).test(value);
+const bytesOf = (f: Fixture, r: Range) => new TextDecoder().decode(new TextEncoder().encode(f.content).slice(r.start, r.end));
+const matches = (family: string, value: string) => Boolean(contracts[family ?? '']?.pattern) && new RegExp(contracts[family ?? ''].pattern!).test(value);
 
-function classifyControl(category, f) {
+function classifyControl(category: string, f: Fixture): Assessment {
   if (f.twinOf) {
     const family = f.detectors?.[0];
-    if (!contracts[family]) throw new Error(`Unknown twin contract: ${f.id}`);
+    if (!contracts[family ?? '']) throw new Error(`Unknown twin contract: ${f.id}`);
     if (!f.mutation || !f.mutationKind) throw new Error(`Twin without mutation: ${f.id}`);
-    const documented = f.mutationKind === 'public-prefix' && contracts[family].tier === 'T1';
+    const documented = f.mutationKind === 'public-prefix' && contracts[family ?? ''].tier === 'T1';
     return control(documented ? 'T1' : 'T2', `Negative twin of ${f.twinOf}: ${f.mutation}. ${documented ? 'The provider documents this namespace as public, so silence is provider-evidenced.' : 'Exactly one structural property differs from the positive; silence follows from construction.'}`, family);
   }
   const family = f.detectors?.[0];
@@ -95,40 +96,40 @@ function classifyControl(category, f) {
   return pending('No reviewed control rule for this input. Excluded from comparative scores until reviewed.', undefined, 'must-not-flag');
 }
 
-export function classifyFixture(category, f) {
+export function classifyFixture(category: string, f: Fixture): Assessment {
   if (!f.expected.some(r => (r.role ?? 'secret') === 'secret')) return classifyControl(category, f);
   if (category === 'common-formats') {
     const family = f.detectors?.[0];
-    if (!contracts[family]) throw new Error(`Unknown format contract: ${f.id}`);
-    return decide('must-redact', contracts[family].tier, f.formatReason, family);
+    if (!contracts[family ?? '']) throw new Error(`Unknown format contract: ${f.id}`);
+    return decide('must-redact', contracts[family ?? ''].tier, f.formatReason!, family);
   }
   if (category === 'accuracy') return policy('Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.');
   if (category === 'reference-syntax') return policy('Literal value in a sensitive field; tests generic masking rather than a provider credential.');
   if (category === 'milestone-6-closed') {
-    if ([254, 257, 263, 264, 280].includes(f.issue)) return policy('Mutated documentation, placeholder, template, mask or reference. Expected masking follows a redact-secret issue decision, not a universal secret definition.');
+    if ([254, 257, 263, 264, 280].includes(f.issue!)) return policy('Mutated documentation, placeholder, template, mask or reference. Expected masking follows a redact-secret issue decision, not a universal secret definition.');
     return policy('Issue-specific literal/password range; expectations are the project’s masking policy.');
   }
   if (category === 'detector-coverage') {
-    const family = f.detectors[0];
+    const family = f.detectors![0];
     const value = bytesOf(f, f.expected[0]);
-    if (['bearer-token', 'connection-string', 'otpauth-uri', 'generic-token'].includes(family)) return policy(contracts[family].review, family);
+    if (['bearer-token', 'connection-string', 'otpauth-uri', 'generic-token'].includes(family)) return policy(contracts[family ?? ''].review!, family);
     if (family === 'aws-access-key') return policy('Standalone access-key ID without secret key/session token. Some legacy ASIA values also use digits outside the base32 alphabet.', family);
     if (family === 'shopify-token') return policy('Token shape is plausible, but the shop domain the contract requires is absent.', family);
     if (family === 'vault-token' && matches(family, value)) return policy('Token shape meets the provider’s prefix and minimum-length documentation, but the Vault endpoint the contract requires is absent.', family);
-    if (family === 'private-key' || family === 'pypi-token' || family === 'jwt') return policy(contracts[family].review, family);
-    if (contracts[family].tier === 'T0') return pending(contracts[family].review, family);
+    if (family === 'private-key' || family === 'pypi-token' || family === 'jwt') return policy(contracts[family ?? ''].review!, family);
+    if (contracts[family ?? ''].tier === 'T0') return pending(contracts[family ?? ''].review!, family);
     if (family === 'huggingface-token' && /[0-9]/.test(value)) return pending('Pinned tool rules disagree on the alphabet and the provider documents none. Evidence is needed before treating this sample as valid or malformed.', family);
     // Variant support must not be inferred from a related family name.
     if ((family === 'linear-token' && value.startsWith('lin_oauth_')) || (family === 'stripe-token' && /^(?:sk_org_|whsec_)/.test(value)) || (family === 'slack-token' && value.startsWith('xwfp-')))
       return pending('This variant needs a separate format contract; related detector support is not evidence of parity.', family);
     if (!matches(family, value)) return policy('Legacy prefix-plus-random-body does not meet the reviewed length, alphabet or internal structure. Historical positive expectation retained only as a regression.', family);
-    return decide('must-redact', contracts[family].tier, 'Synthetic value matches the pinned lexical format contract. Provider issuance, payload/checksum validity and liveness are not claimed.', family);
+    return decide('must-redact', contracts[family ?? ''].tier, 'Synthetic value matches the pinned lexical format contract. Provider issuance, payload/checksum validity and liveness are not claimed.', family);
   }
   const family = category === 'sendgrid-regressions' ? 'sendgrid-token'
     : ['token-contexts', 'context-edges'].includes(category) ? 'github-token'
-    : category === 'credential-formats' ? ({ ghp: 'github-token', gho: 'github-token', ghu: 'github-token', ghs: 'github-token', ghr: 'github-token', gitlab: 'gitlab-token', npm: 'npm-token', sendgrid: 'sendgrid-token', slack: 'slack-token' })[f.id.split('-')[0]] : null;
+    : category === 'credential-formats' ? ({ ghp: 'github-token', gho: 'github-token', ghu: 'github-token', ghs: 'github-token', ghr: 'github-token', gitlab: 'gitlab-token', npm: 'npm-token', sendgrid: 'sendgrid-token', slack: 'slack-token' } as Record<string, string>)[f.id.split('-')[0]] : null;
   if (family && f.expected.every(r => matches(family, bytesOf(f, r))))
-    return decide('must-redact', contracts[family].tier, 'Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.', family);
+    return decide('must-redact', contracts[family ?? ''].tier, 'Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.', family);
   return pending('No reviewed classification rule. Excluded from comparative scores until input and expectation have been reviewed.');
 }
 
@@ -141,15 +142,15 @@ export function validateContracts() {
   }
 }
 
-export function validateAssessment(f) {
+export function validateAssessment(f: Fixture) {
   const a = f.assessment;
   if (!a || !KINDS.includes(a.kind) || !TIERS.includes(a.tier) || typeof a.reason !== 'string' || !a.reason.trim() || !Array.isArray(a.sources)) throw new Error(`Missing or invalid assessment: ${f.id}`);
   const secrets = f.expected.filter(r => (r.role ?? 'secret') === 'secret');
   if (a.kind === 'must-not-flag') {
     if (secrets.length) throw new Error(`Control with secret spans: ${f.id}`);
-    if (f.twinOf && (typeof f.mutation !== 'string' || !f.mutation.trim() || !['length', 'alphabet', 'prefix', 'boundary', 'public-prefix'].includes(f.mutationKind))) throw new Error(`Invalid twin metadata: ${f.id}`);
+    if (f.twinOf && (typeof f.mutation !== 'string' || !f.mutation.trim() || !['length', 'alphabet', 'prefix', 'boundary', 'public-prefix'].includes(f.mutationKind!))) throw new Error(`Invalid twin metadata: ${f.id}`);
     if (!f.twinOf && (f.mutation || f.mutationKind)) throw new Error(`Mutation without twin: ${f.id}`);
-    if (a.tier === 'T1' && !(f.twinOf && contracts[a.contract]?.providerSource)) throw new Error(`T1 control without provider evidence: ${f.id}`);
+    if (a.tier === 'T1' && !(f.twinOf && contracts[a.contract ?? '']?.providerSource)) throw new Error(`T1 control without provider evidence: ${f.id}`);
     return;
   }
   if (f.twinOf) throw new Error(`Positive fixture cannot be a twin: ${f.id}`);
@@ -157,13 +158,13 @@ export function validateAssessment(f) {
   if (a.tier === 'T0') return;
   if (a.kind === 'policy') { if (a.tier !== 'T3') throw new Error(`Policy rows are T3: ${f.id}`); return; }
   if (a.tier === 'T3') throw new Error(`must-redact cannot be T3: ${f.id}`);
-  const contract = contracts[a.contract];
+  const contract = contracts[a.contract ?? ''];
   if (!contract || contract.tier !== a.tier || !a.sources.length) throw new Error(`Missing format evidence: ${f.id}`);
   if (!contract.pattern && !contract.structural) throw new Error(`No reviewed format validator: ${f.id}`);
   const values = secrets.map(r => bytesOf(f, r));
   if (a.contract === 'aws-access-key') {
-    if (values.length !== 2 || !new RegExp(contract.pattern).test(values[0]) || !/^[A-Za-z0-9/+]{40}$/.test(values[1])) throw new Error(`Incomplete AWS pair: ${f.id}`);
-  } else if (contract.pattern && !values.every(v => new RegExp(contract.pattern).test(v))) throw new Error(`Format contract violation: ${f.id}`);
+    if (values.length !== 2 || !new RegExp(contract.pattern!).test(values[0]) || !/^[A-Za-z0-9/+]{40}$/.test(values[1])) throw new Error(`Incomplete AWS pair: ${f.id}`);
+  } else if (contract.pattern && !values.every(v => new RegExp(contract.pattern!).test(v))) throw new Error(`Format contract violation: ${f.id}`);
   if (a.contract === 'shopify-token' && !/[a-zA-Z0-9-]+\.myshopify\.com/.test(f.content)) throw new Error(`Missing shop domain: ${f.id}`);
   if (a.contract === 'vault-token' && !/https:\/\/[a-zA-Z0-9-]+\.hashicorp\.cloud/.test(f.content)) throw new Error(`Missing Vault endpoint: ${f.id}`);
 }

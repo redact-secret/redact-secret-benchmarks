@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'vite';
 import { buildCatalog, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments, rowSignal } from '../src/model.mjs';
-import { scoreReport } from '../benchmarks/lib/reporting.mjs';
+import { scoreReport } from '../benchmarks/lib/reporting.ts';
 const read = async path => JSON.parse(await readFile(new URL('../'+path,import.meta.url),'utf8'));
 const categories = await read('benchmarks/categories.json');
 const registry = await read('benchmarks/detectors.json');

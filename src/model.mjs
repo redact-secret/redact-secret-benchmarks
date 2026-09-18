@@ -1,5 +1,5 @@
-import { validateAssessment } from '../benchmarks/lib/assessment.mjs';
-import { aggregateGroups, groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../benchmarks/lib/lattice.mjs';
+import { validateAssessment } from '../benchmarks/lib/assessment.ts';
+import { aggregateGroups, groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../benchmarks/lib/lattice.ts';
 
 /** Pure catalog and report projections shared by the UI and tests. */
 export const fixtureSlug = (category, id) => `${category}--${id}`;

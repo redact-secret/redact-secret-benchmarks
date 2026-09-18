@@ -24,7 +24,7 @@ every fixture carries `assessment.kind` (must-redact, must-not-flag, policy),
 `assessment.tier` (T1 provider-documented, T2 tool-corroborated, T3 project
 policy, T0 pending), a rationale and evidence links. Negative twins declare
 `twinOf`, `mutation` and `mutationKind`. Kinds, tiers and contracts are defined
-in [`benchmarks/lib/assessment.mjs`](../benchmarks/lib/assessment.mjs) and
+in [`benchmarks/lib/assessment.ts`](../benchmarks/lib/assessment.ts) and
 explained in [the corpus audit](../docs/corpus-audit.md). Historical authored
 ranges remain intact even where their input is malformed or policy-specific;
 envelopes are never widened in response to scanner output.

@@ -1,8 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildCorpora } from "../fixtures/generated/build.mjs";
-import { validateCorpus } from "../benchmarks/lib/scoring.mjs";
-import { classifyFixture, validateAssessment, validateContracts } from "../benchmarks/lib/assessment.mjs";
-import { validateStructures } from '../benchmarks/lib/validate-structures.mjs';
+import { validateCorpus } from "../benchmarks/lib/scoring.ts";
+import { classifyFixture, validateAssessment, validateContracts } from "../benchmarks/lib/assessment.ts";
+import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import { createHash } from 'node:crypto';
 
 const check = process.argv.includes("--check");

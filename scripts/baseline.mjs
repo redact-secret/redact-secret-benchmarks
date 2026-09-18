@@ -4,15 +4,15 @@
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { encodeOutcome } from '../benchmarks/lib/lattice.mjs';
-import { kinds, tiers } from '../benchmarks/lib/assessment.mjs';
+import { encodeOutcome } from '../benchmarks/lib/lattice.ts';
+import { kinds, tiers } from '../benchmarks/lib/assessment.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2);
 const save = args.indexOf('--save');
 const report = args.includes('--report');
 if ((save === -1 && !report) || args.some((a, i) => !['--save', '--report'].includes(a) && i !== save + 1)) {
-  console.error('Usage: node scripts/baseline.mjs [--save <version>] [--report]');
+  console.error('Usage: npm run baseline -- [--save <version>] [--report]');
   process.exit(1);
 }
 const baselineDir = path.join(root, 'baselines');

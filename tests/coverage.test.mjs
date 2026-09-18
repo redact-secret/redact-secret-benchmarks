@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { validateCorpus, score } from "../benchmarks/lib/scoring.mjs";
+import { validateCorpus, score } from "../benchmarks/lib/scoring.ts";
 import { locate, command } from "../scanners/index.mjs";
 import {
   buildCorpora,

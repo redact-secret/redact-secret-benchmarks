@@ -92,6 +92,13 @@ materialized in a scratch filesystem directory.
 
 ## Run it
 
+The benchmark runner, evaluation engine, methods, operators and shared scoring
+code in `benchmarks/` are TypeScript. npm commands use `tsx` to execute them;
+`npm run typecheck` strictly checks the benchmarks and UI, and `npm run build`
+runs that check before bundling. Existing `npm run bench` and `npm run eval`
+arguments are unchanged. Direct invocations need the loader, for example
+`node --import tsx benchmarks/evaluate.ts --scanner=redact-secret`.
+
 Use Node.js 22.12+ (22.x) or 24.x and npm. Python 3.11+ is also required
 for inventory-parser tests and inventory refresh; refreshing upstream metadata
 requires authenticated `gh`. From a fresh checkout:
@@ -214,14 +221,14 @@ public plugin compatibility remain outside this initial implementation.
 benchmarks/categories.json     Case suites and corpus registry
 benchmarks/detectors.json      Core detector taxonomy snapshot
 benchmarks/fixture-detectors.json Explicit fixture-to-detector assignments
-benchmarks/run.mjs             Materialization, execution, provenance, atomic reports
-benchmarks/lib/lattice.mjs     Per-span outcome lattice, byte accounting, group aggregation
-benchmarks/lib/scoring.mjs     Corpus schema 2 validation (roles, envelopes, twins) and row scoring
-benchmarks/lib/assessment.mjs  Kinds, tiers, provider-first contracts and classification
-benchmarks/lib/reporting.mjs   Per (kind × tier) groups; no mixed overall score
+benchmarks/run.ts             Materialization, execution, provenance, atomic reports
+benchmarks/lib/lattice.ts     Per-span outcome lattice, byte accounting, group aggregation
+benchmarks/lib/scoring.ts     Corpus schema 2 validation (roles, envelopes, twins) and row scoring
+benchmarks/lib/assessment.ts  Kinds, tiers, provider-first contracts and classification
+benchmarks/lib/reporting.ts   Per (kind × tier) groups; no mixed overall score
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
 scripts/baseline.mjs           Save baselines and generate docs/release-comparison.md
-benchmarks/lib/validate-structures.mjs Offline key/JWT validation
+benchmarks/lib/validate-structures.ts Offline key/JWT validation
 scanners/index.mjs             Published-package / external-process adapters
 fixtures/<category>/          Versioned corpus and independent expected ranges
 public/results/<category>.json Generated report per category (gitignored)
@@ -261,7 +268,7 @@ To add an accuracy case, create a corpus and register a unique URL-safe `id`,
 `benchmarks/categories.json`. Add every fixture slug to
 `benchmarks/fixture-detectors.json` with its detector IDs (or `[]` for a shared
 case without a detector assignment). Add an assessment rule in
-`benchmarks/lib/assessment.mjs` and regenerate/check fixtures. Unknown formats
+`benchmarks/lib/assessment.ts` and regenerate/check fixtures. Unknown formats
 default to T0. Classification describes authored test
 intent and never depends on which scanner detects a value. Ground truth must
 also be authored independently of scanner results. The catalog tests reject

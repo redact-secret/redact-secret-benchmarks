@@ -56,6 +56,23 @@ test("normalization uses UTF-8 bytes and disambiguates repeated values by line",
   assert.throws(() => locate([repeated], "/tmp/bench", fixture.path, "abc"));
   assert.throws(() => locate([fixture], "/tmp/bench", "/etc/passwd", "abc"));
 });
+test("a claim map disambiguates the same value repeated on one line across calls, in document order, without weakening an unclaimed single call", () => {
+  const sameLine = { ...fixture, content: "abc abc\n" };
+  // No claim map: still ambiguous, still throws -- a claim never substitutes
+  // for scanner-reported position on a single isolated call.
+  assert.throws(() => locate([sameLine], "/tmp/bench", fixture.path, "abc", 1));
+  // Gitleaks-shaped case: one locate() call per physical occurrence, sharing
+  // one claim map, resolves each row to a distinct byte offset in order.
+  const claim = new Map();
+  assert.equal(locate([sameLine], "/tmp/bench", fixture.path, "abc", 1, claim).start, 0);
+  assert.equal(locate([sameLine], "/tmp/bench", fixture.path, "abc", 1, claim).start, 4);
+  // A third row beyond the number of real occurrences is still ambiguous.
+  assert.throws(() => locate([sameLine], "/tmp/bench", fixture.path, "abc", 1, claim));
+  // TruffleHog-shaped case: one deduplicated row for two occurrences claims
+  // the leftmost (lowest-offset) one, never guessing when unclaimed.
+  const single = new Map();
+  assert.equal(locate([sameLine], "/tmp/bench", fixture.path, "abc", 1, single).start, 0);
+});
 test("published npm adapter converts UTF-16 offsets and never exports matched values", async () => {
   const corpus = validateCorpus(
     JSON.parse(

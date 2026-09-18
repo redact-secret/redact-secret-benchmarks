@@ -26,8 +26,9 @@ test('TruffleHog detects source-shaped Anthropic, AWS pairs and Shopify with sho
     for (const f of selected) await writeFile(path.join(root, f.path), f.content, { mode: 0o600 });
     // Remove expectations before calling the adapter: output mapping must be independent.
     const actual = await scanners.find(s => s.id === 'trufflehog').scan(root, selected.map(f => ({ ...f, expected: [] })));
-    const result = score(selected, actual);
-    assert.deepEqual([result.tp, result.fp, result.fn], [4, 0, 0]);
+    const { rows } = score(selected, actual);
+    assert.deepEqual(rows.flatMap(r => r.spanOutcomes), ["EXACT", "EXACT", "EXACT", "EXACT"]);
+    assert.deepEqual(rows.map(r => r.collateralBytes), [0, 0, 0]);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
@@ -44,6 +45,7 @@ for (const scanner of scanners) {
         {
           start: Buffer.byteLength(prefix),
           end: Buffer.byteLength(prefix + token),
+          role: "secret",
         },
       ],
     };
@@ -58,8 +60,8 @@ for (const scanner of scanners) {
       await writeFile(path.join(root, positive.path), positive.content, {
         mode: 0o600,
       });
-      const detected = score([positive], await scanner.scan(root, [positive]));
-      assert.deepEqual([detected.tp, detected.fp, detected.fn], [1, 0, 0]);
+      const detected = score([positive], await scanner.scan(root, [positive])).rows[0];
+      assert.deepEqual([detected.spanOutcomes, detected.collateralBytes], [["EXACT"], 0]);
       await rm(path.join(root, positive.path));
       await writeFile(path.join(root, negative.path), negative.content, {
         mode: 0o600,
@@ -109,12 +111,12 @@ test("Gitleaks maps original and base64-decoded PEM findings to one source range
   const pem = `-----BEGIN PRIVATE KEY-----\n${body}\n-----END PRIVATE KEY-----`;
   const fixture = {
     id: "pem", path: "key.txt", content: `🔑\r\n${pem}\n`,
-    expected: [{ start: 6, end: 6 + Buffer.byteLength(pem) }],
+    expected: [{ start: 6, end: 6 + Buffer.byteLength(pem), role: "secret" }],
   };
   try {
     await writeFile(path.join(root, fixture.path), fixture.content, { mode: 0o600 });
     const findings = await scanners.find(s => s.id === "gitleaks").scan(root, [fixture]);
-    const result = score([fixture], findings);
-    assert.deepEqual([result.tp, result.fp, result.fn], [1, 0, 0]);
+    const [row] = score([fixture], findings).rows;
+    assert.deepEqual([row.spanOutcomes, row.collateralBytes, row.actual.length], [["EXACT"], 0, 1]);
   } finally { await rm(root, { recursive: true, force: true }); }
 });

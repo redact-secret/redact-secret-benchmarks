@@ -10,28 +10,25 @@ const fixture = {
   id: "unicode",
   path: "unicode.txt",
   content: "🔑 abc xyz\n",
-  expected: [{ start: 5, end: 8 }],
+  expected: [{ start: 5, end: 8, role: "secret" }],
 };
-test("exact matching deduplicates detector hits and treats partial overlaps as FP + FN", () => {
+const outcome = (fixtures, findings) => score(fixtures, findings).rows[0];
+test("lattice scoring deduplicates detector hits and grades a wider finding as OVERBROAD, not as a miss", () => {
   const hit = { path: fixture.path, start: 5, end: 8 };
-  assert.equal(score([fixture], [hit, hit]).tp, 1);
-  assert.equal(score([fixture], [hit, hit]).fp, 0);
-  const partial = score([fixture], [{ ...hit, start: 4 }]);
-  assert.deepEqual(
-    [partial.tp, partial.fp, partial.fn, partial.f1],
-    [0, 1, 1, 0],
-  );
+  assert.deepEqual(outcome([fixture], [hit, hit]).actual, [{ start: 5, end: 8 }]);
+  assert.deepEqual(outcome([fixture], [hit, hit]).spanOutcomes, ["EXACT"]);
+  const wider = outcome([fixture], [{ ...hit, start: 4 }]);
+  assert.deepEqual([wider.spanOutcomes, wider.leakedBytes, wider.collateralBytes], [["OVERBROAD"], 0, 1]);
+  const shorter = outcome([fixture], [{ ...hit, end: 7 }]);
+  assert.deepEqual([shorter.spanOutcomes, shorter.leakedBytes], [["PARTIAL"], 1]);
 });
-test("missing detections, false positives on negatives, and undefined denominators", () => {
+test("missing detections, false alarms on controls, and no scanner-wide rates", () => {
   const negative = { ...fixture, expected: [] };
-  assert.equal(score([fixture], []).recall, 0);
-  assert.equal(score([fixture], []).precision, null);
-  assert.equal(score([negative], []).tn, 1);
-  assert.equal(score([negative], []).f1, null);
-  assert.equal(
-    score([negative], [{ path: fixture.path, start: 5, end: 8 }]).fp,
-    1,
-  );
+  assert.deepEqual(outcome([fixture], []).spanOutcomes, ["MISS"]);
+  assert.equal(outcome([fixture], []).leakedBytes, 3);
+  assert.deepEqual(outcome([negative], []), { id: "unicode", path: "unicode.txt", group: undefined, expected: [], actual: [], flagged: false, findings: 0 });
+  assert.equal(outcome([negative], [{ path: fixture.path, start: 5, end: 8 }]).findings, 1);
+  assert.deepEqual(Object.keys(score([fixture], [])), ["rows"]);
   assert.throws(() =>
     score([fixture], [{ path: "missing", start: 0, end: 1 }]),
   );
@@ -85,6 +82,7 @@ test("published npm adapter converts UTF-16 offsets and never exports matched va
     for (const r of results)
       assert.deepEqual(Object.keys(r).sort(), ["end", "path", "start"]);
     assert.doesNotThrow(() => score(corpus.fixtures, results));
+    assert.deepEqual(score(corpus.fixtures, results).rows.find(r => r.id === "unicode-prefix").spanOutcomes, ["EXACT"]);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

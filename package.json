@@ -29,7 +29,9 @@
     "fixtures:check": "node scripts/generate-fixtures.mjs --check && node scripts/check-fixture-storage.mjs",
     "test:coverage": "node --experimental-test-coverage --test-coverage-include='benchmarks/lib/**' --test-coverage-include='scanners/**' --test tests/*.test.mjs tests/integration/*.test.mjs",
     "detectors:refresh": "python3 scripts/refresh-detector-inventory.py",
-    "detectors:check": "python3 scripts/refresh-detector-inventory.py --check"
+    "detectors:check": "python3 scripts/refresh-detector-inventory.py --check",
+    "baseline": "node scripts/baseline.mjs",
+    "baseline:report": "node scripts/baseline.mjs --report"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks and TruffleHog on identical fixture sets.",
   "license": "MIT",

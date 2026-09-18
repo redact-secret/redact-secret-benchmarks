@@ -9,13 +9,15 @@ import {
 import { tmpdir, platform, arch } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { createHash } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { scanners } from "../scanners/index.mjs";
 import { validateCorpus } from "./lib/scoring.mjs";
-import { classifyFixture, validateAssessment } from './lib/cohorts.mjs';
-import { scoreCohorts } from './lib/reporting.mjs';
+import { classifyFixture, validateAssessment, validateContracts } from './lib/assessment.mjs';
+import { scoreReport } from './lib/reporting.mjs';
 import { validateStructures } from './lib/validate-structures.mjs';
+
+export const MATCHING = "Per-span outcome lattice over UTF-8 [start, end). Envelope-relative coverage. Identical findings deduplicated. No cross-tier aggregation; no precision, recall or F1. T0 observations unscored. AWS RawV2 secret components and Shopify composite token mapped from scanner output, never ground truth.";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const hash = (value) => createHash("sha256").update(value).digest("hex");
@@ -31,10 +33,28 @@ if (
   console.error("Usage: npm run bench -- [--category=accuracy] [--strict]");
   process.exit(1);
 }
-const handlers = { accuracy: { validate: validateCorpus, score: scoreCohorts } };
+validateContracts();
+const handlers = { accuracy: { validate: validateCorpus, score: scoreReport } };
 const outputDir = path.join(root, "public/results");
 await mkdir(outputDir, { recursive: true });
+const startedAt = new Date().toISOString();
+// One run, one id (§2.7): every report written by this invocation carries it.
+const runId = `${startedAt}-${randomBytes(3).toString("hex")}`;
+const lockHash = hash(await readFile(path.join(root, "package-lock.json")));
+let revision = "unknown",
+  dirty = null;
+try {
+  revision = execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  dirty = Boolean(execFileSync("git", ["status", "--porcelain"], { cwd: root, encoding: "utf8" }).trim());
+} catch {}
+const write = async (name, report) => {
+  const temporary = path.join(outputDir, `.${name}-${process.pid}.json`);
+  await writeFile(temporary, JSON.stringify(report, null, 2) + "\n");
+  await rename(temporary, path.join(outputDir, `${name}.json`));
+};
 let failed = false;
+const scannerVersions = {};
+const categories = [];
 for (const category of registry.filter(
   (c) => !requested || c.id === requested,
 )) {
@@ -42,6 +62,7 @@ for (const category of registry.filter(
     throw new Error("Invalid category registration");
   const source = await readFile(path.join(root, category.corpus), "utf8");
   const corpus = handlers[category.kind].validate(JSON.parse(source));
+  if (corpus.schemaVersion !== 2) throw new Error(`Corpus schema 2 required: ${category.id}; regenerate fixtures`);
   for (const f of corpus.fixtures) {
     validateAssessment(f);
     if (JSON.stringify(f.assessment) !== JSON.stringify(classifyFixture(category.id, f))) throw new Error(`Stale fixture assessment: ${f.id}; regenerate fixtures`);
@@ -60,6 +81,7 @@ for (const category of registry.filter(
       let version = null;
       try {
         version = await scanner.version(scratch);
+        scannerVersions[scanner.id] = version;
         const start = performance.now();
         const findings = await scanner.scan(scratch, corpus.fixtures);
         results.push({
@@ -86,23 +108,9 @@ for (const category of registry.filter(
         if (!unavailable || args.includes("--strict")) failed = true;
       }
     }
-    let revision = "unknown",
-      dirty = null;
-    try {
-      revision = execFileSync("git", ["rev-parse", "HEAD"], {
-        cwd: root,
-        encoding: "utf8",
-        stdio: ["ignore", "pipe", "ignore"],
-      }).trim();
-      dirty = Boolean(
-        execFileSync("git", ["status", "--porcelain"], {
-          cwd: root,
-          encoding: "utf8",
-        }).trim(),
-      );
-    } catch {}
     const report = {
-      schemaVersion: 3,
+      schemaVersion: 4,
+      runId,
       category: category.id,
       generatedAt: new Date().toISOString(),
       reviewStatus: corpus.reviewStatus,
@@ -110,39 +118,45 @@ for (const category of registry.filter(
       ...(corpus.references ? { references: corpus.references } : {}),
       ...(corpus.milestoneReview ? { milestoneReview: corpus.milestoneReview } : {}),
       corpusHash: hash(source),
-      lockHash: hash(await readFile(path.join(root, "package-lock.json"))),
+      lockHash,
       revision,
       dirty,
       runtime: { node: process.version, platform: platform(), arch: arch() },
       fixtureCount: corpus.fixtures.length,
       expectedCount: corpus.fixtures.reduce((n, f) => n + f.expected.length, 0),
-      matching:
-        "Cohort-separated UTF-8 ranges [start, end). No mixed overall score. Identical findings deduplicated. Containment is separate from exact masking. AWS RawV2 secret components and Shopify composite token mapped from scanner output, never ground truth. Unreviewed observations are unscored.",
+      matching: MATCHING,
       scanners: results,
     };
-    const temporary = path.join(
-      outputDir,
-      `.${category.id}-${process.pid}.json`,
-    );
-    await writeFile(temporary, JSON.stringify(report, null, 2) + "\n");
-    await rename(temporary, path.join(outputDir, `${category.id}.json`));
+    await write(category.id, report);
+    categories.push(category.id);
     console.log(`Updated public/results/${category.id}.json`);
     console.table(
-      results.flatMap((result) => Object.entries(result.cohorts ?? { unavailable: {} }).map(([cohort, metrics]) => ({
+      results.flatMap((result) => Object.entries(result.groups ?? { unavailable: {} }).map(([group, m]) => ({
         Scanner: result.name,
-        Cohort: cohort,
-        Version: result.version ?? "—",
+        Group: group,
         Status: result.status,
-        Files: metrics.fixtureCount ?? '—',
-        Contained: metrics.contained ?? "—",
-        Broader: metrics.broader ?? "—",
-        ExactTP: metrics.tp ?? "—",
-        ExactFP: metrics.fp ?? "—",
-        ExactFN: metrics.fn ?? "—",
+        Files: m.files ?? "—",
+        "Leaked spans": m.spans != null ? `${m.leakedSpans} / ${m.spans}` : "—",
+        "False alarms": m.flaggedFiles != null ? `${m.flaggedFiles} / ${m.files}` : "—",
+        Collateral: m.collateralRatio != null ? m.collateralRatio.toFixed(3) : "—",
+        Twins: m.twins?.pairs ? `${m.twins.discriminated} / ${m.twins.pairs}` : "—",
       }))),
     );
   } finally {
     await rm(scratch, { recursive: true, force: true });
   }
 }
+await write("run", {
+  schemaVersion: 4,
+  runId,
+  startedAt,
+  finishedAt: new Date().toISOString(),
+  categories,
+  partial: categories.length !== registry.length,
+  scannerVersions,
+  lockHash,
+  revision,
+  dirty,
+});
+console.log(`Run ${runId}: ${categories.length} of ${registry.length} suites`);
 process.exitCode = failed ? 1 : 0;

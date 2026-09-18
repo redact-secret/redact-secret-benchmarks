@@ -3,7 +3,7 @@ import { createPrivateKey, createPublicKey, verify } from 'node:crypto';
 // Node-only structural checks supplement lexical contracts. Nothing contacts
 // a provider. The JWT signing key is deliberately public benchmark material.
 export function validateStructures(fixtures) {
-  const selected = fixtures.filter(f => f.assessment?.cohort === 'common-format');
+  const selected = fixtures.filter(f => f.assessment?.kind === 'must-redact' && f.assessment.tier !== 'T0');
   const keys = [];
   for (const f of selected.filter(f => f.assessment.contract === 'private-key')) {
     for (const r of f.expected) {

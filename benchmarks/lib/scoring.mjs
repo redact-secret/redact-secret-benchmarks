@@ -1,4 +1,4 @@
-import { containment } from "./containment.mjs";
+import { scoreRow } from './lattice.mjs';
 
 function byteBoundaries(content) {
   const boundaries = new Set([0]);
@@ -10,18 +10,21 @@ function byteBoundaries(content) {
   return boundaries;
 }
 
+const validRange = (r, bytes, boundaries) =>
+  r && Number.isInteger(r.start) && Number.isInteger(r.end) && r.start >= 0 && r.end > r.start && r.end <= bytes && boundaries.has(r.start) && boundaries.has(r.end);
+
+/**
+ * Corpus schema 2: every expected span carries `role` (secret | companion)
+ * and may carry an authored `envelope` (wider acceptable range with a reason).
+ * Controls may declare `twinOf` + `mutation` + `mutationKind`.
+ */
 export function validateCorpus(corpus) {
   if (!corpus || !Array.isArray(corpus.fixtures) || !corpus.fixtures.length)
     throw new Error("Empty corpus");
   const ids = new Set(),
     paths = new Set();
   for (const f of corpus.fixtures) {
-    if (
-      !f ||
-      typeof f.id !== "string" ||
-      !/^[a-z0-9-]+$/.test(f.id) ||
-      ids.has(f.id)
-    )
+    if (!f || typeof f.id !== "string" || !/^[a-z0-9-]+$/.test(f.id) || ids.has(f.id))
       throw new Error("Invalid fixture id");
     if (
       typeof f.path !== "string" ||
@@ -39,42 +42,34 @@ export function validateCorpus(corpus) {
     const boundaries = byteBoundaries(f.content);
     let end = 0;
     for (const r of f.expected) {
-      if (
-        !r ||
-        !Number.isInteger(r.start) ||
-        !Number.isInteger(r.end) ||
-        r.start < end ||
-        r.end <= r.start ||
-        r.end > bytes ||
-        !boundaries.has(r.start) ||
-        !boundaries.has(r.end)
-      )
-        throw new Error("Invalid UTF-8 range");
+      if (!validRange(r, bytes, boundaries) || r.start < end) throw new Error("Invalid UTF-8 range");
+      if (!['secret', 'companion'].includes(r.role)) throw new Error(`Missing span role: ${f.id}`);
+      if (r.envelope !== undefined) {
+        const e = r.envelope;
+        if (!validRange(e, bytes, boundaries) || e.start > r.start || e.end < r.end || typeof e.reason !== 'string' || !e.reason.trim()) throw new Error(`Invalid envelope: ${f.id}`);
+        if (f.expected.some(o => o !== r && o.start < e.end && e.start < o.end)) throw new Error(`Envelope overlaps another span: ${f.id}`);
+      }
       end = r.end;
     }
+  }
+  for (const f of corpus.fixtures) {
+    if (f.twinOf === undefined) continue;
+    const positive = corpus.fixtures.find(o => o.id === f.twinOf);
+    if (!positive || positive === f || !positive.expected.some(r => r.role === 'secret') || f.expected.some(r => r.role === 'secret')) throw new Error(`Invalid twin: ${f.id}`);
+    if (typeof f.mutation !== 'string' || !f.mutation.trim() || typeof f.mutationKind !== 'string') throw new Error(`Twin without mutation: ${f.id}`);
   }
   return corpus;
 }
 
+/** Deduplicate and validate normalized findings, then score every fixture. No totals. */
 export function score(fixtures, findings) {
   const known = new Map(fixtures.map((f) => [f.path, f]));
-  const boundaries = new Map(
-    fixtures.map((f) => [f.path, byteBoundaries(f.content)]),
-  );
+  const boundaries = new Map(fixtures.map((f) => [f.path, byteBoundaries(f.content)]));
   if (!Array.isArray(findings)) throw new Error("Invalid normalized findings");
   const unique = new Map();
   for (const r of findings) {
     const f = known.get(r?.path);
-    if (
-      !f ||
-      !Number.isInteger(r.start) ||
-      !Number.isInteger(r.end) ||
-      r.start < 0 ||
-      r.end <= r.start ||
-      r.end > Buffer.byteLength(f.content) ||
-      !boundaries.get(r.path).has(r.start) ||
-      !boundaries.get(r.path).has(r.end)
-    )
+    if (!f || !validRange(r, Buffer.byteLength(f.content), boundaries.get(r.path)))
       throw new Error("Invalid normalized finding");
     unique.set(`${r.path}:${r.start}:${r.end}`, r);
   }
@@ -82,41 +77,19 @@ export function score(fixtures, findings) {
     const actual = [...unique.values()]
       .filter((r) => r.path === f.path)
       .map(({ start, end }) => ({ start, end }));
-    const expected = f.expected.map(({ start, end }) => ({ start, end }));
-    const tp = expected.filter((e) =>
-      actual.some((a) => a.start === e.start && a.end === e.end),
-    ).length;
-    return {
+    const expected = f.expected.map(({ start, end, role, envelope }) => ({ start, end, role, ...(envelope ? { envelope: { start: envelope.start, end: envelope.end } } : {}) }));
+    const a = f.assessment;
+    const row = {
       id: f.id,
       path: f.path,
       group: f.group,
-      ...(f.assessment ? { assessment: f.assessment } : {}),
+      ...(a ? { kind: a.kind, tier: a.tier, ...(a.contract ? { contract: a.contract } : {}) } : {}),
+      ...(f.twinOf ? { twinOf: f.twinOf } : {}),
       expected,
       actual,
-      ...containment(expected, actual),
-      tp,
-      fp: actual.length - tp,
-      fn: expected.length - tp,
-      tn: expected.length === 0 && actual.length === 0 ? 1 : 0,
     };
+    if (a?.tier === 'T0') return row;
+    return { ...row, ...scoreRow(expected, actual) };
   });
-  const totals = rows.reduce(
-    (t, r) => ({
-      contained: t.contained + r.contained,
-      broader: t.broader + r.broader,
-      tp: t.tp + r.tp,
-      fp: t.fp + r.fp,
-      fn: t.fn + r.fn,
-      tn: t.tn + r.tn,
-    }),
-    { tp: 0, fp: 0, fn: 0, tn: 0, contained: 0, broader: 0 },
-  );
-  const { tp, fp, fn } = totals;
-  return {
-    ...totals,
-    precision: tp + fp ? tp / (tp + fp) : null,
-    recall: tp + fn ? tp / (tp + fn) : null,
-    f1: 2 * tp + fp + fn ? (2 * tp) / (2 * tp + fp + fn) : null,
-    rows,
-  };
+  return { rows };
 }

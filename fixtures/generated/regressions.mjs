@@ -1,5 +1,5 @@
 // Issue-driven fixtures remain separate from broad format/context baselines.
-export function buildRegressions({ fixture, synthetic, wrap }) {
+export function buildRegressions({ fixture, synthetic, wrap, quoted }) {
   const contexts = [
     ["bare", "Provider detection", "", "\n"],
     ["env-token", "Provider detection", "SENDGRID_TOKEN=", "\n"],
@@ -128,7 +128,7 @@ export function buildRegressions({ fixture, synthetic, wrap }) {
   ].map(([id, group, content]) => fixture(id, group, [content]));
   // Paired literal-secret controls prevent a broad reference exclusion from
   // looking good merely because it suppresses all contextual detection.
-  for (const [id, prefix, value, suffix] of [
+  for (const [id, prefix, value, suffix, envelope] of [
     ["api-key", "api_key=", synthetic("reference-positive:api", 40), "\n"],
     [
       "password",
@@ -142,12 +142,7 @@ export function buildRegressions({ fixture, synthetic, wrap }) {
       `SYNTHETIC.${synthetic("reference-positive:dotted", 32)}`,
       "\n",
     ],
-    [
-      "quoted-password",
-      'password="',
-      synthetic("reference-positive:quoted", 32),
-      '"\n',
-    ],
+    ["quoted-password", "", quoted("password=", synthetic("reference-positive:quoted", 32)), "\n", true],
     [
       "client-secret",
       "client_secret=",
@@ -164,7 +159,7 @@ export function buildRegressions({ fixture, synthetic, wrap }) {
     references.push(
       fixture(id, "Literal-secret positive controls", [
         prefix,
-        { secret: value },
+        envelope ? value : { secret: value },
         suffix,
       ]),
     );

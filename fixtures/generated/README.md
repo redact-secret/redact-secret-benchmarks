@@ -16,16 +16,20 @@ output. No live credentials or provider verification are used. The new common
 suite includes a parseable private key from a public test seed and a locally
 signed JWT; neither has ever been deployed.
 
-All fixtures carry a measurement-purpose assessment. Legacy inputs and ranges
-are preserved, but malformed shapes and project masking policies are excluded
-from the reviewed-format cohort. Unsupported but reviewed formats stay in that
-cohort; uncertain variants are unscored. See the [full audit](../../docs/corpus-audit.md).
-Historical mixed-score tables below describe older runs and are superseded for
-comparative interpretation by schema v3.
+All fixtures carry a `(kind, tier)` assessment under measurement protocol v4.
+Legacy inputs and ranges are preserved; malformed shapes and project masking
+policies are `policy` (T3), never merged with provider-documented (T1) or
+tool-corroborated (T2) `must-redact` rows. Unsupported but evidenced formats
+stay scored; uncertain variants are T0 and unscored. Connection strings, OTP
+URIs, Bearer headers and quoted assignments carry authored envelopes. The
+common-formats suite pairs every positive except the AWS pair with a negative
+twin. See the [full audit](../../docs/corpus-audit.md). Historical mixed-score
+tables below describe older runs and are superseded for comparative
+interpretation by schema v4 and the generated [release comparison](../../docs/release-comparison.md).
 
 | Category | Files | Expected spans | Coverage |
 | --- | ---: | ---: | --- |
-| Reviewed credential formats | 58 | 60 | 18 families, companion contexts and parseable key/JWT controls |
+| Reviewed credential formats | 114 | 60 | 18 families, companion contexts, parseable key/JWT controls and 56 one-mutation negative twins |
 | Credential formats | 27 | 27 | Nine shapes × three deterministic values |
 | Context & boundaries | 20 | 23 | One GitHub PAT shape across text contexts |
 | Negative controls | 24 | 0 | Placeholders, public identifiers, malformed shapes, ordinary text |

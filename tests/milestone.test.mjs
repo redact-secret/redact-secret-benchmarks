@@ -40,6 +40,18 @@ test("closed milestone snapshot maps every reviewed issue without claiming cross
   }
 });
 
+test("connection-string and quoted positives carry envelopes so whole-URI findings are covered", () => {
+  const get = (id) => corpus.fixtures.find((f) => f.id === id);
+  const literal = get("issue-255-postgres-literal");
+  const [span] = literal.expected;
+  assert.ok(span.envelope && Buffer.from(literal.content).subarray(span.envelope.start, span.envelope.end).toString().startsWith("postgres://fixture:"));
+  assert.deepEqual(score([literal], [{ path: literal.path, start: span.envelope.start, end: span.envelope.end }]).rows[0].spanOutcomes, ["COVERED"]);
+  const quotedSpan = get("issue-257-password-digit").expected[0];
+  assert.equal(Buffer.from(get("issue-257-password-digit").content).subarray(quotedSpan.envelope.start, quotedSpan.envelope.end).toString(), 'secret_key="password1"');
+  assert.equal(get("issue-262-same-line").expected[0].envelope, undefined);
+  assert.equal(corpus.fixtures.filter(f => f.expected.some(r => r.envelope)).length, 21);
+});
+
 test("placeholder expectations follow the final decision, not the superseded issue example", () => {
   const get = (id) => corpus.fixtures.find((f) => f.id === id);
   assert.equal(get("issue-257-compound").expected.length, 0);
@@ -82,7 +94,7 @@ test("Postgres normalization maps an exported canonical URL to its original whol
     ),
     r,
   );
-  assert.equal(score([f], [r]).fp, 1);
+  assert.deepEqual(score([f], [r]).rows[0], { id: f.id, path: f.path, group: undefined, expected: [], actual: [r].map(({ start, end }) => ({ start, end })), flagged: true, findings: 1 });
   assert.deepEqual(
     normalizeTrufflehog([f], "/tmp/bench", {
       ...row,

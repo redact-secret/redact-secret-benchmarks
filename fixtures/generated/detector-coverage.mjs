@@ -21,7 +21,7 @@ const families = [
   ["npm-token", ["npm_"], 36],
 ];
 
-export function buildDetectorCoverage({ fixture, synthetic, wrap }) {
+export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, ENVELOPES }) {
   const fixtures = [];
   const add = (detector, suffix, parts) => {
     fixtures.push({
@@ -67,31 +67,30 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap }) {
   add("jwt", "missing-signature", [`${header}.${payload}.`]);
   add("jwt", "ordinary-dotted-name", ["com.example.benchmark"]);
 
-  positive("bearer-token", "header", ["Authorization: Bearer ", { secret: synthetic("coverage:bearer", 40) }]);
+  positive("bearer-token", "header", [{ secret: synthetic("coverage:bearer", 40), envelope: { before: "Authorization: Bearer ", after: "", reason: ENVELOPES.bearer } }]);
   add("bearer-token", "missing-value", ["Authorization: Bearer\n"]);
   add("bearer-token", "ordinary-prose", ["The bearer of this message is a benchmark runner."]);
 
   for (const scheme of ["postgres", "mysql", "mariadb", "redis", "mongodb"]) {
     positive("connection-string", scheme, [
-      `${scheme}://fixture:`, { secret: synthetic(`coverage:connection:${scheme}`, 24) }, "@db.example.invalid/benchmark",
+      uri(`${scheme}://fixture:`, synthetic(`coverage:connection:${scheme}`, 24), "@db.example.invalid/benchmark"),
     ]);
   }
   add("connection-string", "no-password", ["postgres://fixture@db.example.invalid/benchmark"]);
   add("connection-string", "public-url", ["https://example.invalid/docs"]);
 
   for (const kind of ["totp", "hotp"]) {
-    positive("otpauth-uri", kind, [
-      `otpauth://${kind}/Benchmark:fixture?secret=`,
-      { secret: synthetic(`coverage:otp:${kind}`, 32, "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567") },
-      "&issuer=Benchmark" + (kind === "hotp" ? "&counter=0" : ""),
-    ]);
+    positive("otpauth-uri", kind, [{
+      secret: synthetic(`coverage:otp:${kind}`, 32, "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"),
+      envelope: { before: `otpauth://${kind}/Benchmark:fixture?secret=`, after: "&issuer=Benchmark" + (kind === "hotp" ? "&counter=0" : ""), reason: ENVELOPES.otp },
+    }]);
   }
   add("otpauth-uri", "missing-secret", ["otpauth://totp/Benchmark:fixture?issuer=Benchmark"]);
   add("otpauth-uri", "short-secret", ["otpauth://totp/Benchmark:fixture?secret=ABC"]);
 
   for (const field of ["api_key", "password", "client_secret"]) {
     positive("generic-token", field.replaceAll("_", "-"), [
-      `${field}="`, { secret: synthetic(`coverage:generic:${field}`, 28) }, '"',
+      quoted(`${field}=`, synthetic(`coverage:generic:${field}`, 28)),
     ]);
   }
   add("generic-token", "reference", ["api_key=process.env.BENCHMARK_KEY"]);
@@ -100,7 +99,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap }) {
   return {
     "detector-coverage": {
       ...wrap(fixtures),
-      scope: "Structural synthetic coverage for all 25 beta.3 detector families. Provider variants reflect the pinned source contracts, not credential validity. PEM bodies are encoded public prose and JWT signatures are fabricated. Connection strings and OTP URIs label only password/seed bytes. Expectations are authored before scanning; every mismatch remains scored. No cryptographic validity, live verification, streaming, or cross-surface parity claims.",
+      scope: "Structural synthetic coverage for all 25 beta.3 detector families. Provider variants reflect the pinned source contracts, not credential validity. PEM bodies are encoded public prose and JWT signatures are fabricated. Connection strings, OTP URIs, Bearer headers and quoted generic assignments label only the secret bytes, with the enclosing URI/header/assignment as the authored envelope. Expectations are authored before scanning; every mismatch remains scored. No cryptographic validity, live verification, streaming, or cross-surface parity claims.",
       references: ["https://github.com/redact-secret/redact-secret/tree/34ea9b92ed8879082e99f56f8f4715ee4e4f1f35/crates/secret-scan-core/src/detectors"],
     },
   };

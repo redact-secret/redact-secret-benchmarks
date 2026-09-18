@@ -4,11 +4,17 @@ Project-maintained, reproducible synthetic benchmarks comparing
 [redact-secret](https://github.com/redact-secret/redact-secret) against
 established secret-scanning tools on identical fixture sets.
 
-The dashboard now separates **reviewed credential formats**, **standalone
-values / masking policy**, and **malformed / example / benign controls**.
-Unreviewed formats appear in an additional **unscored review queue**. There is
-no mixed overall score. See the [25-family corpus audit](docs/corpus-audit.md)
-for the input defects found, source evidence, remaining gaps and new controls.
+Measurement protocol **v4** ([spec](docs/measurement-v4.md),
+[decision record](docs/decisions/2026-09-17-adopt-measurement-protocol-v4.md)):
+every fixture declares a **kind** (must-redact, must-not-flag, policy) and an
+evidence **tier** (T1 provider-documented, T2 tool-corroborated, T3 project
+policy, T0 pending); every secret span may carry an authored **envelope**; each
+span is scored on a five-state lattice (EXACT · COVERED · OVERBROAD · PARTIAL ·
+MISS). Headline numbers per (kind × tier): **leaked span rate**, **false alarm
+rate**, **collateral ratio** and **twin discrimination**. There is no mixed
+overall score and no precision/recall/F1. See the
+[25-family corpus audit](docs/corpus-audit.md) for evidence tiers and the
+generated [release comparison](docs/release-comparison.md) for baselines.
 
 Generated credential JSON is **local build output**, excluded from Git.
 `npm ci`, development, builds and tests materialize it automatically from public
@@ -59,19 +65,21 @@ reviewed format fixtures also require a source-backed contract:
 {
   "id": "fixture-id",
   "path": "relative/file/path",
-  "content": "password=example-only",
-  "expected": [],
-  "assessment": {
-    "cohort": "malformed-example",
-    "reason": "Authored example/placeholder control; project policy.",
-    "sources": []
-  }
+  "content": "postgres://fixture:s3cret@db.example.invalid/app",
+  "expected": [
+    { "start": 19, "end": 25, "role": "secret",
+      "envelope": { "start": 0, "end": 48, "reason": "Whole URI may be redacted; only the password must be." } }
+  ],
+  "assessment": { "kind": "policy", "tier": "T3", "reason": "…", "contract": "connection-string", "sources": [] }
 }
 ```
 
-An empty `expected` array is an authored negative control. Example filtering
-and generic masking are policy choices, so disagreements are not automatically
-scanner defects. Fixtures are materialized in a scratch filesystem directory.
+An empty `expected` array with `kind: "must-not-flag"` is an authored control;
+a control may declare `twinOf`, `mutation` and `mutationKind` to pair with a
+positive that differs by exactly one structural property. Envelopes, tiers and
+twins are authored from construction and provider evidence, hashed with the
+corpus, and never widened in response to scanner output. Fixtures are
+materialized in a scratch filesystem directory.
 
 ## Non-goals
 
@@ -128,6 +136,8 @@ npm run compare                      # Integration checks, then strict compariso
 npm run test:coverage                # Tests + coverage for scoring and scanner adapters
 npm run test:redaction               # Published npm scan/redact parity over every registered fixture
 npm run fixtures:check               # Verify generated fixtures have not drifted
+npm run baseline -- --save 0.1.0-beta.4  # Store (fixture, scanner) → outcome from a complete run
+npm run baseline:report              # Regenerate docs/release-comparison.md from baselines/
 npm run build                       # Type-check and build a static dashboard snapshot
 npm run preview                     # Preview that snapshot
 ```
@@ -145,15 +155,21 @@ fixtures generated from Redact Secret's own detector registry. They are not an
 independently reviewed, neutral sample and cannot establish that one product is
 better than another. Corpus review status remains draft.
 
-Report schema v3 exports separate `scanner.cohorts` summaries and classified
-rows. There are no scanner-wide totals or rates. Pending-review rows preserve
-actual ranges but have no TP/FP/FN, containment or rate scores. Legacy v1/v2
-reports are rejected; regenerate with `npm run bench`.
+Report schema v4 exports `scanner.groups` keyed `<kind>/<tier>` plus classified
+rows. There are no scanner-wide totals or rates, and no precision, recall or F1
+anywhere; the dashboard rejects a report that contains them. T0 rows preserve
+actual ranges but carry no outcome or byte fields. Legacy v1/v2/v3 reports are
+rejected; regenerate with `npm run bench`.
 
-`contained` counts each expected span fully enclosed by any finding once;
-partial overlap does not count. `broader` counts containment without an exact
-match. These are not precision or redaction-success rates: an entire-file
-finding may contain a secret. Database URL findings retain their original scope.
+Each secret span is scored against the deduplicated findings on its file:
+`EXACT` (a finding equals it), `COVERED` (one finding contains it within the
+envelope), `OVERBROAD` (contains it beyond the envelope), `PARTIAL` (overlap,
+no single containing finding) or `MISS`. A secret straddled by two findings is
+`PARTIAL` and leaked. Leaked span rate = PARTIAL + MISS spans ÷ secret spans;
+collateral ratio = redacted bytes outside every envelope ÷ secret bytes; false
+alarm rate = flagged controls ÷ controls; twin discrimination = pairs where the
+positive is covered and the twin is clean ÷ pairs. Exact-range agreement is
+kept only as `diagnostics.exact` marked non-comparable.
 
 ## Measurement protocol
 
@@ -166,15 +182,12 @@ finding may contain a secret. Database URL findings retain their original scope.
   TruffleHog's normalized PostgreSQL output is matched to a unique original
   URI by credential/host/port identity, source line, and reported database.
   It retains the scanner's whole-URI span rather than borrowing the expected
-  password range; an exact-range mismatch remains FP + FN.
-- A true positive is an exact file and range match. A partial overlap is
-  both a false positive and a false negative. Duplicate identical ranges
-  count once, even when multiple detectors report them.
-- Precision = TP / (TP + FP), recall = TP / (TP + FN), and
-  F1 = 2TP / (2TP + FP + FN). Zero denominators are `null` (shown as `—`).
-  These diagnostic JSON rates are computed within scored cohorts only. The UI
-  shows counts instead of ranking charts; positive-only format samples cannot
-  establish balanced precision/F1. True negatives count clean control files.
+  password range; the authored URI envelope makes that finding `COVERED`.
+- Duplicate identical ranges count once, even when multiple detectors report
+  them. Coverage is evaluated per finding, never against the union.
+- `npm run bench` stamps one run id into every suite report and writes
+  `public/results/run.json`. Cross-suite views aggregate only reports sharing
+  the newest run id and name any stale suite as a partial run.
 - Gitleaks uses default directory rules; environment rule overrides are removed.
   TruffleHog uses `--no-verification --no-update` and includes unverified
   results. No credential verification is requested. These flags are not an
@@ -193,13 +206,17 @@ benchmarks/categories.json     Case suites and corpus registry
 benchmarks/detectors.json      Core detector taxonomy snapshot
 benchmarks/fixture-detectors.json Explicit fixture-to-detector assignments
 benchmarks/run.mjs             Materialization, execution, provenance, atomic reports
-benchmarks/lib/scoring.mjs     Ground-truth validation and exact-range scoring
-benchmarks/lib/cohorts.mjs     Input classification and pinned format evidence
-benchmarks/lib/reporting.mjs   Separate cohort summaries; no mixed overall score
+benchmarks/lib/lattice.mjs     Per-span outcome lattice, byte accounting, group aggregation
+benchmarks/lib/scoring.mjs     Corpus schema 2 validation (roles, envelopes, twins) and row scoring
+benchmarks/lib/assessment.mjs  Kinds, tiers, provider-first contracts and classification
+benchmarks/lib/reporting.mjs   Per (kind × tier) groups; no mixed overall score
+baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
+scripts/baseline.mjs           Save baselines and generate docs/release-comparison.md
 benchmarks/lib/validate-structures.mjs Offline key/JWT validation
 scanners/index.mjs             Published-package / external-process adapters
 fixtures/<category>/          Versioned corpus and independent expected ranges
 public/results/<category>.json Generated report per category (gitignored)
+public/results/run.json        Run manifest: run id, suites, scanner versions
 src/main.ts                   Application shell, history routing and report refresh
 src/catalog.ts                Synthetic corpus imports and byte-identity hashes
 src/model.mjs                 Catalog validation, route parsing and score projections
@@ -222,7 +239,8 @@ The dashboard uses these bookmarkable routes:
   fixture download. Slugs are `<case-id>--<fixture-id>` to avoid collisions.
 - `/coverage-gaps`: searchable Gitleaks/TruffleHog detector inventory and
   the six beta.3 fixture failures resolved by beta.4 issues #292–294.
-- `/methodology`: scoring and reproduction details.
+- `/pending`: T0 fixtures, inspectable and unscored.
+- `/methodology`: the protocol, its limits and reproduction details, stated once.
 
 Vite supports direct links and reloads on these paths. A production static
 host must rewrite unknown document paths to `/index.html` while serving assets
@@ -234,8 +252,8 @@ To add an accuracy case, create a corpus and register a unique URL-safe `id`,
 `benchmarks/categories.json`. Add every fixture slug to
 `benchmarks/fixture-detectors.json` with its detector IDs (or `[]` for a shared
 case without a detector assignment). Add an assessment rule in
-`benchmarks/lib/cohorts.mjs` and regenerate/check fixtures. Unknown formats
-default to the unscored review queue. Classification describes authored test
+`benchmarks/lib/assessment.mjs` and regenerate/check fixtures. Unknown formats
+default to T0. Classification describes authored test
 intent and never depends on which scanner detects a value. Ground truth must
 also be authored independently of scanner results. The catalog tests reject
 missing, orphaned, or unknown assignments. Registry detector IDs and case IDs
@@ -244,11 +262,12 @@ no local upstream checkout is needed to run this repository.
 
 Overview and detector scores are recomputed from selected fixture rows, with
 measured-file coverage shown beside each score. Different scanner versions,
-modes, lockfiles, and matching rules remain separate. These are latest reports
-per case, potentially measured at different times, not a single atomic run.
+modes, lockfiles, and matching rules remain separate, and only reports sharing
+the newest run id are aggregated; anything else is named as a partial run.
 Reports with stale corpus hashes are excluded, so new fixture bytes never
-inherit old scanner ranges. Source case pages retain run timestamps and hashes.
-Detector views overlap; do not sum their totals. No per-detector timing is claimed.
+inherit old scanner ranges. Fixture lists default to rows with signal (changed
+since the newest baseline, or not clean). Detector views overlap; do not sum
+their totals. No per-detector timing is claimed.
 
 Fixture content is bundled from the checked-in synthetic corpora so the exact
 case is inspectable even before running scanners. This intentionally exposes
@@ -305,10 +324,10 @@ milestone 6 after checking existing issues and PRs. See the
 [investigation notes](docs/sendgrid-investigation.md) for the reproducer,
 source inspection, and the distinction between the installed npm release
 and the earlier milestone source review. The benchmark is now pinned to the
-published `0.1.0-beta.4` package. See the
-[beta.4 release comparison](docs/beta-4-results.md) for measurements against
-the unchanged 491-file corpus, or the historical
-[beta.3 comparison](docs/beta-3-results.md) for the earlier 243-file cohort.
+published `0.1.0-beta.4` package. The generated
+[release comparison](docs/release-comparison.md) is the maintained view; the
+[beta.4](docs/beta-4-results.md) and [beta.3](docs/beta-3-results.md)
+documents are historical schema-v2 snapshots.
 
 **Beta.3 regressions** adds another **92 fixtures** for the 11 detection-related
 closed issues reviewed in milestone 6. The full suite now contains **243 files,
@@ -322,8 +341,9 @@ whole-input measurements.
 
 **Detector coverage** adds **248 fixtures** (198 positive spans and 50
 negative controls) across all **25 registered detector families**, including
-the 15 previously without assigned fixtures. The current catalog contains
-**491 files, 326 expected spans, and nine case suites**. Open
+the 15 previously without assigned fixtures. With the reviewed-format suite and
+its 56 negative twins the catalog contains **605 files, 386 secret spans, and
+ten case suites**. Open
 `/benchmark/detector-coverage` or any detector page to inspect the new cases.
 Provider prefix variants, six PEM labels, JWT, Bearer headers, five database
 schemes, OTP URIs, and generic fields have bare, quoted, and Unicode/CRLF

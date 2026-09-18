@@ -79,38 +79,35 @@ for (const [name, findings] of [
   test(`scoring rejects ${name}`, () =>
     assert.throws(() => score([base], findings)));
 
-test("micro-averaging mixes partial detection, duplicate hits, and clean/dirty negative files", () => {
+test("rows carry per-span outcomes and control counts; no value is ever exported", () => {
   const clean = fixture("clean", "Test", ["hello"]);
   const dirty = fixture("dirty", "Test", ["abc"]);
-  const first = { path: base.path, ...base.expected[0] };
+  const first = { path: base.path, start: base.expected[0].start, end: base.expected[0].end };
   const result = score(
     [base, clean, dirty],
     [first, first, { path: dirty.path, start: 0, end: 3 }],
   );
-  assert.deepEqual([result.tp, result.fp, result.fn, result.tn], [1, 1, 1, 1]);
-  assert.deepEqual(
-    [result.precision, result.recall, result.f1],
-    [0.5, 0.5, 0.5],
-  );
+  assert.deepEqual(result.rows.map(r => r.spanOutcomes ?? r.findings), [["EXACT", "MISS"], 0, 1]);
+  assert.deepEqual(Object.keys(result), ["rows"]);
   assert.ok(!JSON.stringify(result).includes("abc"));
-  assert.equal(
+  assert.deepEqual(
     score(
       [base],
-      base.expected.map((r) => ({ ...r, path: base.path })),
-    ).tp,
-    2,
+      base.expected.map((r) => ({ path: base.path, start: r.start, end: r.end })),
+    ).rows[0].spanOutcomes,
+    ["EXACT", "EXACT"],
   );
 });
 
 test("ranges at byte zero and EOF, adjacent spans, and LF/CRLF offsets are valid", () => {
   const f = fixture("bounds", "Test", [{ secret: "ab" }, { secret: "cd" }]);
   validateCorpus({ fixtures: [f] });
-  assert.equal(
+  assert.deepEqual(
     score(
       [f],
-      f.expected.map((r) => ({ ...r, path: f.path })),
-    ).tp,
-    2,
+      f.expected.map((r) => ({ path: f.path, start: r.start, end: r.end })),
+    ).rows[0].spanOutcomes,
+    ["EXACT", "EXACT"],
   );
   const line = fixture("line", "Test", [
     "\ufeff# 🔑\r\n",
@@ -167,9 +164,10 @@ test("generated corpora are deterministic, valid, and match the checked-in files
   const corpora = buildCorpora();
   assert.deepEqual(
     Object.values(corpora).map((c) => c.fixtures.length),
-    [27, 20, 24, 38, 26, 92, 248, 58],
+    [27, 20, 24, 38, 26, 92, 248, 114],
   );
   for (const [id, corpus] of Object.entries(corpora)) {
+    assert.equal(corpus.schemaVersion, 2);
     validateCorpus(corpus);
     assert.equal(
       await readFile(

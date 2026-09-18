@@ -1,13 +1,14 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildCorpora } from "../fixtures/generated/build.mjs";
 import { validateCorpus } from "../benchmarks/lib/scoring.mjs";
-import { classifyFixture, validateAssessment } from "../benchmarks/lib/cohorts.mjs";
+import { classifyFixture, validateAssessment, validateContracts } from "../benchmarks/lib/assessment.mjs";
 import { validateStructures } from '../benchmarks/lib/validate-structures.mjs';
 import { createHash } from 'node:crypto';
 
 const check = process.argv.includes("--check");
 const ensure = process.argv.includes('--ensure');
 if (process.argv.slice(2).some(arg => !['--check', '--ensure'].includes(arg)) || (check && ensure)) throw new Error('Usage: generate-fixtures.mjs [--check | --ensure]');
+validateContracts();
 const generated = buildCorpora();
 const manifest = {};
 for (const [id, corpus] of Object.entries(generated)) {
@@ -39,10 +40,14 @@ for (const id of ['accuracy', 'token-contexts']) {
   const file = new URL(`../fixtures/${id}/corpus.json`, import.meta.url);
   const current = await readFile(file, 'utf8');
   const corpus = JSON.parse(current);
+  corpus.schemaVersion = 2;
   for (const f of corpus.fixtures) {
+    // Corpus schema 2: every span declares its role; bytes and ranges are untouched.
+    f.expected = f.expected.map(({ start, end, note, role, envelope }) => ({ start, end, role: role ?? 'secret', note, ...(envelope ? { envelope } : {}) }));
     f.assessment = classifyFixture(id, f);
     validateAssessment(f);
   }
+  validateCorpus(corpus);
   const serialized = JSON.stringify(corpus, null, 2) + '\n';
   if ((check || ensure) && current !== serialized) throw new Error(`Assessment drift: ${id}`);
   if (!check && !ensure && current !== serialized) await writeFile(file, serialized);

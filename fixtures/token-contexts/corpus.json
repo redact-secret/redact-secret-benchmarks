@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "reviewStatus": "draft — independent human review required",
   "provenance": "Synthetic token: ghp_ + first 36 hexadecimal characters of SHA-256 of redact-secret-benchmarks:never-issued-positive-control:v1. No provider-issued credential. Verification must remain disabled.",
   "fixtures": [
@@ -12,14 +12,17 @@
         {
           "start": 13,
           "end": 53,
+          "role": "secret",
           "note": "Deterministically constructed synthetic token; never issued by GitHub."
         }
       ],
       "assessment": {
-        "cohort": "common-format",
+        "kind": "must-redact",
+        "tier": "T1",
         "reason": "Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.",
         "contract": "github-token",
         "sources": [
+          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats",
           "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
         ]
@@ -34,14 +37,17 @@
         {
           "start": 17,
           "end": 57,
+          "role": "secret",
           "note": "Deterministically constructed synthetic token; never issued by GitHub."
         }
       ],
       "assessment": {
-        "cohort": "common-format",
+        "kind": "must-redact",
+        "tier": "T1",
         "reason": "Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.",
         "contract": "github-token",
         "sources": [
+          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats",
           "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
         ]
@@ -56,14 +62,17 @@
         {
           "start": 19,
           "end": 59,
+          "role": "secret",
           "note": "Deterministically constructed synthetic token; never issued by GitHub."
         }
       ],
       "assessment": {
-        "cohort": "common-format",
+        "kind": "must-redact",
+        "tier": "T1",
         "reason": "Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.",
         "contract": "github-token",
         "sources": [
+          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats",
           "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
         ]
@@ -78,14 +87,17 @@
         {
           "start": 37,
           "end": 77,
+          "role": "secret",
           "note": "Deterministically constructed synthetic token; never issued by GitHub."
         }
       ],
       "assessment": {
-        "cohort": "common-format",
+        "kind": "must-redact",
+        "tier": "T1",
         "reason": "Source-backed lexical shape in an explicit context test; repeated shapes are not independent provider coverage.",
         "contract": "github-token",
         "sources": [
+          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats",
           "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
         ]
@@ -98,8 +110,9 @@
       "content": "GITHUB_TOKEN=${GITHUB_TOKEN}\n",
       "expected": [],
       "assessment": {
-        "cohort": "malformed-example",
-        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "sources": []
       }
     },
@@ -110,8 +123,9 @@
       "content": "This document describes how to configure GitHub access.\n",
       "expected": [],
       "assessment": {
-        "cohort": "malformed-example",
-        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "sources": []
       }
     }

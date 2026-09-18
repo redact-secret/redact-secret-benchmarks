@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "reviewStatus": "draft — independent human review required",
   "fixtures": [
     {
@@ -11,11 +11,13 @@
         {
           "start": 13,
           "end": 53,
+          "role": "secret",
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
       ],
       "assessment": {
-        "cohort": "malformed-example",
+        "kind": "policy",
+        "tier": "T3",
         "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
         "sources": []
       }
@@ -29,11 +31,13 @@
         {
           "start": 18,
           "end": 38,
+          "role": "secret",
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
       ],
       "assessment": {
-        "cohort": "malformed-example",
+        "kind": "policy",
+        "tier": "T3",
         "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
         "sources": []
       }
@@ -47,11 +51,13 @@
         {
           "start": 22,
           "end": 56,
+          "role": "secret",
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
       ],
       "assessment": {
-        "cohort": "malformed-example",
+        "kind": "policy",
+        "tier": "T3",
         "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
         "sources": []
       }
@@ -65,11 +71,13 @@
         {
           "start": 18,
           "end": 58,
+          "role": "secret",
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
       ],
       "assessment": {
-        "cohort": "malformed-example",
+        "kind": "policy",
+        "tier": "T3",
         "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
         "sources": []
       }
@@ -83,11 +91,13 @@
         {
           "start": 15,
           "end": 55,
+          "role": "secret",
           "note": "Synthetic credential-shaped test value; never issued by a provider."
         }
       ],
       "assessment": {
-        "cohort": "malformed-example",
+        "kind": "policy",
+        "tier": "T3",
         "reason": "Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.",
         "sources": []
       }
@@ -99,8 +109,9 @@
       "content": "API_KEY=\n",
       "expected": [],
       "assessment": {
-        "cohort": "malformed-example",
-        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "sources": []
       }
     },
@@ -111,8 +122,9 @@
       "content": "API_KEY=${API_KEY}\n",
       "expected": [],
       "assessment": {
-        "cohort": "malformed-example",
-        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "sources": []
       }
     },
@@ -123,8 +135,9 @@
       "content": "Set your API key in the environment before running.\n",
       "expected": [],
       "assessment": {
-        "cohort": "malformed-example",
-        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "sources": []
       }
     },
@@ -135,8 +148,9 @@
       "content": "request_id=12345678-1234-1234-1234-123456789abc\n",
       "expected": [],
       "assessment": {
-        "cohort": "malformed-example",
-        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "kind": "must-not-flag",
+        "tier": "T2",
+        "reason": "Public identifier constructed to contain no credential: silence follows from construction.",
         "sources": []
       }
     },
@@ -147,8 +161,9 @@
       "content": "Hello, benchmark. No credentials here.\n",
       "expected": [],
       "assessment": {
-        "cohort": "malformed-example",
-        "reason": "Authored negative control: benign text, reference, placeholder, example or incomplete shape. Expected silence is project policy.",
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "sources": []
       }
     }

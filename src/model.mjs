@@ -1,5 +1,5 @@
-import { containment } from "../benchmarks/lib/containment.mjs";
-import { cohorts, validateAssessment } from '../benchmarks/lib/cohorts.mjs';
+import { validateAssessment } from '../benchmarks/lib/assessment.mjs';
+import { aggregateGroups, groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../benchmarks/lib/lattice.mjs';
 
 /** Pure catalog and report projections shared by the UI and tests. */
 export const fixtureSlug = (category, id) => `${category}--${id}`;
@@ -26,87 +26,107 @@ export function parseRoute(pathname) {
   if (path === '/' || path === '/benchmark') return { kind: 'overview', id: '' };
   if (path === '/coverage-gaps') return { kind: 'coverage-gaps', id: '' };
   if (path === '/methodology') return { kind: 'methodology', id: '' };
+  if (path === '/pending') return { kind: 'pending', id: '' };
   const match = /^\/(benchmark|fixture)\/([a-z0-9-]+)$/.exec(path);
   return match ? { kind: match[1], id: match[2] } : { kind: 'missing', id: '' };
 }
 
-// Never join a report's ranges to different fixture bytes.
+const project = expected => expected.map(({ start, end, role, envelope }) => ({ start, end, role, ...(envelope ? { envelope: { start: envelope.start, end: envelope.end } } : {}) }));
+const FORBIDDEN = ['precision', 'recall', 'f1', 'tp', 'fp', 'fn', 'tn', 'contained', 'broader'];
+const SCORE_FIELDS = ['spanOutcomes', 'leakedBytes', 'collateralBytes', 'flagged', 'findings'];
+
+// Never join a report's ranges to different fixture bytes; re-verify every
+// row and every group total client-side (docs/measurement-v4.md §3).
 export function reportProblem(report, category, hash, fixtures) {
-  if (report?.schemaVersion < 3) return 'Legacy mixed-score report: rerun npm run bench';
-  if (!report || report.schemaVersion !== 3 || report.category !== category || !Array.isArray(report.scanners)) return 'Missing or invalid report';
+  if (report?.schemaVersion < 4) return 'Legacy report: rerun npm run bench';
+  if (!report || report.schemaVersion !== 4 || report.category !== category || !Array.isArray(report.scanners)) return 'Missing or invalid report';
+  if (typeof report.runId !== 'string' || !report.runId) return 'Report has no run id';
   if (report.corpusHash !== hash) return 'Stale report: fixture corpus changed';
   const source = fixtures.filter(f => f.category === category);
   for (const scanner of report.scanners) {
     if (scanner.status !== 'complete') continue;
+    if (FORBIDDEN.some(k => scanner[k] != null)) return 'Scanner-wide totals are not allowed';
     if (!Array.isArray(scanner.rows) || scanner.rows.length !== source.length || new Set(scanner.rows.map(r => r.id)).size !== source.length) return 'Invalid report rows';
-    const totals = Object.fromEntries(Object.keys(cohorts).map(id => [id, { fixtureCount: 0, expectedCount: 0, tp: 0, fp: 0, fn: 0, tn: 0, contained: 0, broader: 0 }]));
     for (const f of source) {
       const row = scanner.rows.find(r => r.id === f.id);
-      if (!row || row.path !== f.path || JSON.stringify(row.expected) !== JSON.stringify(f.expected.map(({start,end}) => ({start,end})))) return 'Report ground truth does not match fixture';
-      if (JSON.stringify(row.assessment) !== JSON.stringify(f.assessment)) return 'Report assessment does not match fixture';
+      if (!row || row.path !== f.path || JSON.stringify(row.expected) !== JSON.stringify(project(f.expected))) return 'Report ground truth does not match fixture';
+      if (row.kind !== f.assessment.kind || row.tier !== f.assessment.tier || (row.contract ?? null) !== (f.assessment.contract ?? null) || (row.twinOf ?? null) !== (f.twinOf ?? null)) return 'Report assessment does not match fixture';
       if (!Array.isArray(row.actual)) return 'Invalid report ranges';
       const boundaries = new Set([0]); let offset = 0;
       for (const char of f.content) { offset += new TextEncoder().encode(char).length; boundaries.add(offset); }
       if (row.actual.some(a => !a || !Number.isInteger(a.start) || !Number.isInteger(a.end) || a.start >= a.end || !boundaries.has(a.start) || !boundaries.has(a.end))) return 'Invalid report ranges';
       if (new Set(row.actual.map(a => `${a.start}:${a.end}`)).size !== row.actual.length) return 'Duplicate report ranges';
-      const t = totals[f.assessment.cohort];
-      t.fixtureCount++; t.expectedCount += row.expected.length;
-      if (f.assessment.cohort === 'unreviewed') {
-        if (['tp', 'fp', 'fn', 'tn', 'contained', 'broader'].some(k => row[k] != null)) return 'Unreviewed fixture must not be scored';
+      if (FORBIDDEN.some(k => row[k] != null)) return 'Exact-range scores on rows are not allowed';
+      if (f.assessment.tier === 'T0') {
+        if (SCORE_FIELDS.some(k => row[k] != null)) return 'Pending fixture must not be scored';
         continue;
       }
-      const counts = containment(row.expected, row.actual);
-      const tp = row.expected.filter(e => row.actual.some(a => e.start === a.start && e.end === a.end)).length;
-      Object.assign(counts, { tp, fp: row.actual.length - tp, fn: row.expected.length - tp, tn: !row.expected.length && !row.actual.length ? 1 : 0 });
-      if (row.contained !== counts.contained || row.broader !== counts.broader) return 'Invalid containment counts';
-      for (const k of Object.keys(counts)) { if (row[k] !== counts[k]) return 'Invalid exact counts'; t[k] += counts[k]; }
+      const expected = scoreRow(row.expected, row.actual);
+      for (const k of SCORE_FIELDS) if (JSON.stringify(row[k] ?? null) !== JSON.stringify(expected[k] ?? null)) return 'Row outcome does not recompute';
     }
-    if (['tp', 'fp', 'fn', 'tn', 'contained', 'broader', 'precision', 'recall', 'f1'].some(k => scanner[k] != null)) return 'Mixed overall scores are not allowed';
-    for (const [id, t] of Object.entries(totals)) {
-      const actual = scanner.cohorts?.[id];
-      if (!actual || actual.fixtureCount !== t.fixtureCount || actual.expectedCount !== t.expectedCount) return 'Invalid cohort totals';
-      if (id === 'unreviewed') {
-        if (actual.scored !== false || ['tp','fp','fn','tn','contained','broader','precision','recall','f1'].some(k => actual[k] != null)) return 'Unreviewed cohort must not be scored';
-      } else {
-        if (actual.scored !== true || Object.keys(t).some(k => actual[k] !== t[k])) return 'Invalid cohort totals';
-        const precision = t.tp + t.fp ? t.tp / (t.tp + t.fp) : null;
-        const recall = t.tp + t.fn ? t.tp / (t.tp + t.fn) : null;
-        const f1 = 2*t.tp + t.fp + t.fn ? 2*t.tp / (2*t.tp + t.fp + t.fn) : null;
-        if (actual.precision !== precision || actual.recall !== recall || actual.f1 !== f1) return 'Invalid cohort rates';
-      }
-    }
+    const groups = aggregateGroups(scanner.rows);
+    if (JSON.stringify(scanner.groups) !== JSON.stringify(groups)) return 'Group totals do not recompute from rows';
+    if (JSON.stringify(groups).includes('"precision"')) return 'Rates other than v4 headline metrics are not allowed';
   }
   return null;
 }
 
-export function summarize(fixtures, reports) {
+/** The run every cross-suite aggregation is restricted to. */
+export function newestRunId(reports, run) {
+  if (run?.runId) return run.runId;
+  return reports.map(r => r.runId).filter(Boolean).sort().at(-1) ?? null;
+}
+
+/**
+ * Aggregate the selected fixtures' rows per group and scanner identity.
+ * Reports from a different run id are listed as stale, never summed.
+ */
+export function summarize(fixtures, reports, runId = newestRunId(reports)) {
   const selected = new Map(fixtures.map(f => [f.slug, f]));
   const groups = new Map();
-  for (const report of reports) for (const scanner of report.scanners) for (const cohort of Object.keys(cohorts)) {
-    const relevant = fixtures.filter(f => f.category === report.category && f.assessment.cohort === cohort);
-    if (!relevant.length) continue;
-    // Different versions, modes, dependencies or matching protocols are separate observations.
-    const key = JSON.stringify([cohort, scanner.id, scanner.version, scanner.mode, report.lockHash, report.matching]);
-    if (!groups.has(key)) groups.set(key, { ...scanner, cohort, selectedCount: 0, lockHash: report.lockHash, matching: report.matching, rows: [], tp: 0, fp: 0, fn: 0, tn: 0, contained: 0, broader: 0, sources: [], statuses: [], reviews: [] });
-    const group = groups.get(key);
-    group.selectedCount += relevant.length;
-    group.statuses.push(scanner.status);
-    group.reviews.push(report.reviewStatus);
-    group.sources.push(report.category);
-    if (scanner.status !== 'complete') continue;
-    for (const row of scanner.rows ?? []) {
-      const slug = fixtureSlug(report.category, row.id);
-      if (selected.get(slug)?.assessment.cohort !== cohort) continue;
-      group.rows.push({ ...row, slug });
-      if (cohort === 'unreviewed') continue;
-      for (const count of ['tp', 'fp', 'fn', 'tn', 'contained', 'broader']) group[count] += row[count];
+  const stale = [];
+  for (const report of reports) {
+    if (runId && report.runId !== runId) { stale.push(report.category); continue; }
+    for (const scanner of report.scanners) {
+      const rows = (scanner.status === 'complete' ? scanner.rows ?? [] : []).flatMap(row => {
+        const slug = fixtureSlug(report.category, row.id);
+        const f = selected.get(slug);
+        if (!f || f.category !== report.category) return [];
+        return [{ ...row, id: slug, slug, category: report.category, twinOf: row.twinOf ? fixtureSlug(report.category, row.twinOf) : undefined }];
+      });
+      const relevant = fixtures.filter(f => f.category === report.category);
+      for (const key of new Set(relevant.map(f => groupKey(f.assessment.kind, f.assessment.tier)))) {
+        // Different versions, modes, dependencies or matching protocols are separate observations.
+        const id = JSON.stringify([key, scanner.id, scanner.version, scanner.mode, report.lockHash, report.matching]);
+        if (!groups.has(id)) groups.set(id, { key, kind: key.split('/')[0], tier: key.split('/')[1], scanner: scanner.id, name: scanner.name, version: scanner.version, mode: scanner.mode, lockHash: report.lockHash, matching: report.matching, runId, selectedCount: 0, rows: [], sources: [], statuses: [], reviews: [] });
+        const g = groups.get(id);
+        g.selectedCount += relevant.filter(f => groupKey(f.assessment.kind, f.assessment.tier) === key).length;
+        g.statuses.push(scanner.status);
+        g.reviews.push(report.reviewStatus);
+        g.sources.push(report.category);
+        g.rows.push(...rows.filter(r => groupKey(r.kind, r.tier) === key));
+      }
     }
   }
-  return [...groups.values()].map(g => g.cohort === 'unreviewed' ? { ...g, tp: null, fp: null, fn: null, tn: null, contained: null, broader: null, precision: null, recall: null, f1: null } : ({ ...g,
-    precision: g.tp + g.fp ? g.tp / (g.tp + g.fp) : null,
-    recall: g.tp + g.fn ? g.tp / (g.tp + g.fn) : null,
-    f1: 2*g.tp + g.fp + g.fn ? 2*g.tp / (2*g.tp + g.fp + g.fn) : null,
-  }));
+  const summaries = [...groups.values()].map(g => {
+    // Twins live in the same suite as their positive; aggregate over every selected row of that suite.
+    const allRows = reports.filter(r => r.runId === g.runId && g.sources.includes(r.category)).flatMap(r => (r.scanners.find(s => s.id === g.scanner && s.version === g.version && s.status === 'complete')?.rows ?? []).map(row => ({ ...row, id: fixtureSlug(r.category, row.id), twinOf: row.twinOf ? fixtureSlug(r.category, row.twinOf) : undefined })));
+    const own = new Set(g.rows.map(r => r.id));
+    const metrics = aggregateGroups(allRows.filter(r => own.has(r.id) || (r.twinOf && own.has(r.twinOf))))[g.key] ?? null;
+    return { ...g, metrics };
+  });
+  return { summaries, stale: [...new Set(stale)], runId };
+}
+
+export const outcomeCode = row => encodeOutcome(row);
+
+/** Rows that carry signal: changed since the baseline, or not clean. */
+export function rowSignal(row, baselineOutcome) {
+  if (!row) return { changed: false, clean: null };
+  const current = encodeOutcome(row);
+  const changed = baselineOutcome !== undefined && baselineOutcome !== current;
+  const clean = row.spanOutcomes ? row.spanOutcomes.every(o => o === 'EXACT' || o === 'COVERED') : row.flagged != null ? !row.flagged : null;
+  return { changed, clean };
 }
 
 export function contentSegments(content, ranges) {
@@ -122,3 +142,5 @@ export function contentSegments(content, ranges) {
   segments.push({ text: decoder.decode(bytes.slice(cursor)), highlighted: false });
   return segments;
 }
+
+export { KINDS, TIERS, groupKey };

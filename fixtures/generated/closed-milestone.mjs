@@ -35,7 +35,7 @@ export const milestoneSnapshot = {
   ],
 };
 
-export function buildClosedMilestone({ fixture, synthetic, wrap }) {
+export function buildClosedMilestone({ fixture, synthetic, wrap, quoted, uri }) {
   const fixtures = [];
   const add = (issue, id, title, parts) => {
     const f = fixture(`issue-${issue}-${id}`, `#${issue} · ${title}`, parts);
@@ -44,8 +44,18 @@ export function buildClosedMilestone({ fixture, synthetic, wrap }) {
   };
   const negative = (issue, id, title, content) =>
     add(issue, id, title, [content]);
-  const positive = (issue, id, title, prefix, value, suffix = "\n") =>
-    add(issue, id, title, [prefix, { secret: value }, suffix]);
+  // Quoted assignments and connection URIs carry authored envelopes (§2.2):
+  // the key/quotes or scheme/user/host may be redacted along with the secret.
+  const positive = (issue, id, title, prefix, value, suffix = "\n") => {
+    const quote = prefix.endsWith('"') && suffix.startsWith('"') ? '"' : null;
+    if (quote) {
+      const key = prefix.slice(prefix.lastIndexOf("\n") + 1, -1);
+      return add(issue, id, title, [prefix.slice(0, prefix.length - key.length - 1), quoted(key, value), suffix.slice(1)]);
+    }
+    const connection = /^([a-z]+:\/\/[^:\s]+:)$/.exec(prefix) && suffix.startsWith("@") ? /^(@[^\n]*)(\n?)$/.exec(suffix) : null;
+    if (connection) return add(issue, id, title, [uri(prefix, value, connection[1]), connection[2]]);
+    return add(issue, id, title, [prefix, { secret: value }, suffix]);
+  };
   const value = synthetic("closed-milestone:literal", 32);
 
   const awsId = "AKIAIOSFODNN7EXAMPLE";
@@ -327,7 +337,7 @@ export function buildClosedMilestone({ fixture, synthetic, wrap }) {
     "milestone-6-closed": {
       ...wrap(fixtures),
       scope:
-        "Regression expectations for closed milestone-6 fixes targeting beta.3. This cohort measures the installed published packages; misses and false positives remain visible against the independent expectations. Some placeholder expectations follow redact-secret's documented exclusions rather than universal credential policy. Connection-string positives label the password only; whole-URL reports count as a range mismatch (FP + FN). Whole-input detection only; streaming, Python, and release acceptance are not evaluated.",
+        "Regression expectations for closed milestone-6 fixes targeting beta.3. This cohort measures the installed published packages; misses and false positives remain visible against the independent expectations. Some placeholder expectations follow redact-secret's documented exclusions rather than universal credential policy. Connection-string positives label the password only, with the whole URI as the authored envelope; a whole-URI report is covered with measured collateral. Whole-input detection only; streaming, Python, and release acceptance are not evaluated.",
       references: closedBehaviorIssues.map(
         (id) => `https://github.com/redact-secret/redact-secret/issues/${id}`,
       ),

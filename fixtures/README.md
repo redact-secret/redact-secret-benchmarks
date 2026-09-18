@@ -13,6 +13,12 @@ Keep expectations independent of scanner output. Expand coverage and obtain
 human review before presenting results as comparative evidence. The `reviewStatus`
 field is shown in every report and the dashboard.
 
+Confirmed findings follow the governed
+[benchmark-to-product promotion lifecycle](../docs/decisions/2026-09-18-govern-benchmark-promotion.md).
+Review and promotion never rewrite an authored expectation to match scanner
+output. The benchmark fixture and its evidence remain here; only a minimal
+canonical regression and provenance link move into the product repository.
+
 Every fixture must be synthetic or explicitly revoked, never an active
 provider-issued credential. The common-format cryptographic controls contain
 a parseable key derived from a public test seed and a locally signed JWT;

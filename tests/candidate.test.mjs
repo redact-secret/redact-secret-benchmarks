@@ -47,7 +47,7 @@ function report() {
     scanner: { id: 'redact-secret-candidate', configuration: candidateConfiguration, configurationHash: '1'.repeat(64) },
     runtime: { node: process.version, os: process.platform, arch: process.arch }, command: ['node', 'candidate'],
     selection: { scope: 'filtered-development', filter: 'openai-token' }, completeness: { selectedFixtures: 1, scannedFixtures: 1 }, failures: [],
-    results: [{ fixtureId: 'common-formats--openai-token-legacy-plain', kind: 'must-redact', tier: 'T2', expectedSpans: 1, actualFindings: 1, outcome: 'EXACT', baseline: { version: '0.1.0-beta.4', outcome: 'EXACT' } }],
+    results: [{ fixtureId: 'common-formats--openai-token-legacy-plain', corpusSection: 'fixed-corpus', kind: 'must-redact', tier: 'T2', expectedSpans: 1, actualFindings: 1, outcome: 'EXACT', baseline: { version: '0.1.0-beta.4', outcome: 'EXACT' } }],
   };
 }
 

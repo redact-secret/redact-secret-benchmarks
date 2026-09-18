@@ -40,6 +40,11 @@ and safe per-fixture before/after outcomes. It contains counts and ranges only,
 never fixture content, matched plaintext, or raw scanner errors. Validate a
 stored report with `npm run eval:validate -- <path>`.
 
+Each result is labeled `fixed-corpus` for the reviewed `common-formats`
+regressions or `expanded-corpus` for broader coverage. Consumers must report
+those sections separately; an expanded-corpus observation cannot rewrite or
+invalidate the authored fixed-corpus result.
+
 The ordinary `redact-secret` scanner in `scanners/index.mjs` continues to load
 the lockfile-pinned published package, and `eval:qualify` continues to require
 the versions in `qualification/suite-v1.json`.

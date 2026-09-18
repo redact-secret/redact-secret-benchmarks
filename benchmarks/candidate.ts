@@ -101,7 +101,7 @@ async function main() {
         const scored = scoreReport(fixtures, findings.filter(finding => paths.has(finding.path))).rows;
         results.push(...scored.map((row: ScoredRow) => {
           const slug = `${category}--${row.id}`;
-          return { fixtureId: slug, kind: row.kind, tier: row.tier, expectedSpans: row.expected.filter(value => (value.role ?? 'secret') === 'secret').length,
+          return { fixtureId: slug, corpusSection: category === 'common-formats' ? 'fixed-corpus' : 'expanded-corpus', kind: row.kind, tier: row.tier, expectedSpans: row.expected.filter(value => (value.role ?? 'secret') === 'secret').length,
             actualFindings: row.actual.length, outcome: encodeOutcome(row), baseline: { version: baseline.version, outcome: baseline.rows[slug]?.['redact-secret'] ?? null } };
         }));
       }

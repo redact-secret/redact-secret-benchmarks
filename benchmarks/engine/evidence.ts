@@ -31,6 +31,8 @@ export function validateEvidence(report: unknown, type: 'holdout' | 'qualificati
     if (value.results.length !== value.completeness.scannedFixtures ||
         new Set(value.results.map((r: any) => r.fixtureId)).size !== value.results.length)
       throw new Error('Invalid candidate result coverage');
+    if (value.results.some((r: any) => (r.fixtureId.startsWith('common-formats--')) !== (r.corpusSection === 'fixed-corpus')))
+      throw new Error('Invalid candidate corpus section');
     if (value.candidate.expectedArtifactSha256 !== null && value.candidate.expectedArtifactSha256 !== value.candidate.artifactSha256)
       throw new Error('Candidate artifact identity mismatch');
   } else if (type === 'holdout') {

@@ -80,9 +80,9 @@
     },
     "result": {
       "type": "object", "additionalProperties": false,
-      "required": ["fixtureId", "kind", "tier", "expectedSpans", "actualFindings", "outcome", "baseline"],
+      "required": ["fixtureId", "corpusSection", "kind", "tier", "expectedSpans", "actualFindings", "outcome", "baseline"],
       "properties": {
-        "fixtureId": { "$ref": "#/$defs/id" }, "kind": { "enum": ["must-redact", "must-not-flag", "policy"] },
+        "fixtureId": { "$ref": "#/$defs/id" }, "corpusSection": { "enum": ["fixed-corpus", "expanded-corpus"] }, "kind": { "enum": ["must-redact", "must-not-flag", "policy"] },
         "tier": { "enum": ["T0", "T1", "T2", "T3"] }, "expectedSpans": { "type": "integer", "minimum": 0 },
         "actualFindings": { "type": "integer", "minimum": 0 }, "outcome": { "type": ["string", "null"] },
         "baseline": { "$ref": "#/$defs/baseline" }

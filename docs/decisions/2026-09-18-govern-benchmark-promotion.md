@@ -61,21 +61,24 @@ finding objects.
 
 ## Fixed-candidate revalidation
 
-Use a clean checkout whose `package.json` and lockfile identify the exact fixed
-candidate under test. Install that candidate, verify generated fixture identity,
-run the focused category first, and then run the broader validation required by
-the change:
+Build the exact fixed product revision as immutable package tarballs and invoke
+the product repository's `benchmark:candidate` command with a full 40-character
+commit for this repository. That command checks out the benchmark revision,
+installs its locked dependencies, and invokes the candidate-only entrypoint:
 
 ```sh
-npm ci
-npm run fixtures:check
-npm test
-npm run bench -- --category=<category> --strict
+npm run benchmark:candidate -- \
+  --benchmark-ref <full-40-character-benchmark-commit> \
+  --filter <detector-id>
 ```
 
-For findings exercised by Evaluation Engine methods, also run the focused
-engine selection; the engine validates the sanitized public report before it
-writes it:
+Omit `--filter` for the full candidate suite. Filtered evidence is explicitly
+development-scoped and never substitutes for a whole-suite run. The benchmark
+entrypoint and evidence contract are documented in
+[`docs/candidate-evaluation.md`](../candidate-evaluation.md).
+
+For findings exercised by other Evaluation Engine methods, the ordinary
+published-package discovery command remains separate:
 
 ```sh
 npm run eval -- --scanner=redact-secret --method=<method>

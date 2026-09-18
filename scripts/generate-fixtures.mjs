@@ -55,7 +55,9 @@ for (const id of ['accuracy', 'token-contexts']) {
 const assignmentFile = new URL('../benchmarks/fixture-detectors.json', import.meta.url);
 const current = await readFile(assignmentFile, 'utf8');
 const assignments = JSON.parse(current);
-for (const f of generated['common-formats'].fixtures) assignments[`common-formats--${f.id}`] = f.detectors;
+for (const [category, corpus] of Object.entries(generated))
+  for (const f of corpus.fixtures)
+    if (f.detectors) assignments[`${category}--${f.id}`] = f.detectors;
 const serialized = JSON.stringify(assignments, null, 2) + '\n';
 if ((check || ensure) && current !== serialized) throw new Error('Detector assignment drift');
 if (!check && !ensure && current !== serialized) await writeFile(assignmentFile, serialized);

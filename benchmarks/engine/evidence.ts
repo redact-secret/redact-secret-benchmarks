@@ -1,20 +1,41 @@
 import Ajv from 'ajv';
 import holdoutSchema from '../../schemas/holdout-report-v1.json';
 import qualificationSchema from '../../schemas/qualification-report-v1.json';
+import candidateSchema from '../../schemas/candidate-report-v1.json';
 import { hash } from './model.ts';
 import suite from '../../qualification/suite-v1.json';
 
 const ajv = new Ajv({ allErrors: true, strict: true });
 ajv.addSchema(holdoutSchema);
 ajv.addSchema(qualificationSchema);
+ajv.addSchema(candidateSchema);
 
 /** Strict public schemas prohibit accidental inclusion of case-level data. */
-export function validateEvidence(report: unknown, type: 'holdout' | 'qualification') {
+export function validateEvidence(report: unknown, type: 'holdout' | 'qualification' | 'candidate') {
   const validate = ajv.getSchema(`urn:redact-secret:${type}:1`)!;
-  if (!validate(report)) throw new Error('Evidence schema validation failed');
+  if (!validate(report)) {
+    const locations = (validate.errors ?? []).map(error => `${error.instancePath || '/'}:${error.keyword}`).join(',');
+    throw new Error(`Evidence schema validation failed${locations ? ` (${locations})` : ''}`);
+  }
   const value = report as any;
   if (Date.parse(value.finishedAt) < Date.parse(value.startedAt)) throw new Error('Invalid evidence chronology');
-  if (type === 'holdout') {
+  if (type === 'candidate') {
+    const failures = value.failures as unknown[];
+    if ((value.status === 'complete') !== (value.completeness.scannedFixtures === value.completeness.selectedFixtures && failures.length === 0))
+      throw new Error('Invalid candidate completeness');
+    if (value.status === 'complete' && (value.candidate.packageName === 'unknown' || value.candidate.declaredVersion === 'unknown'))
+      throw new Error('Missing candidate identity');
+    if (value.status === 'complete' && value.corpus.categories.length === 0) throw new Error('Missing candidate corpus identity');
+    if (value.selection.filter === null && value.selection.scope !== 'full-suite') throw new Error('Invalid full-suite scope');
+    if (value.selection.filter !== null && value.selection.scope !== 'filtered-development') throw new Error('Invalid filtered scope');
+    if (value.results.length !== value.completeness.scannedFixtures ||
+        new Set(value.results.map((r: any) => r.fixtureId)).size !== value.results.length)
+      throw new Error('Invalid candidate result coverage');
+    if (value.results.some((r: any) => (r.fixtureId.startsWith('common-formats--')) !== (r.corpusSection === 'fixed-corpus')))
+      throw new Error('Invalid candidate corpus section');
+    if (value.candidate.expectedArtifactSha256 !== null && value.candidate.expectedArtifactSha256 !== value.candidate.artifactSha256)
+      throw new Error('Candidate artifact identity mismatch');
+  } else if (type === 'holdout') {
     if (new Set(value.scanners.map((s: any) => s.id)).size !== value.scanners.length || value.caseCount !== value.variantCount)
       throw new Error('Invalid holdout completeness');
     if ((value.corpus.purpose === 'public-conformance') !== (value.independence === 'public-control')) throw new Error('Invalid independence claim');

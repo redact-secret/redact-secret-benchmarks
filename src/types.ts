@@ -43,14 +43,16 @@ export interface Scanner {
   name: string;
   mode: string;
   version: string | null;
-  status: 'complete' | 'unavailable' | 'error';
+  status: 'complete' | 'unavailable' | 'error' | 'unstable';
   message?: string;
+  replays?: { count: number; agreed: boolean };
   durationMs?: number;
   rows?: Row[];
   groups?: Record<string, Group>;
 }
 export interface Report {
   schemaVersion: number;
+  accounting: { minDenominator: number; replays: number; measurableShareFloor: Record<string, number>; twinCoverageFloor: Record<string, number>; resolvedRateFloor: Record<string, number> };
   runId: string;
   category: string;
   generatedAt: string;

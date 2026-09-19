@@ -1,4 +1,4 @@
-import { categories, registry, fixtures, corpusHashes } from './catalog';
+import { categories, registry, fixtures, corpusHashes, baseline } from './catalog';
 import { parseRoute, isAppPath, reportProblem } from './model.mjs';
 import { overview, fixturePage, fixtureList, comparison, stats, title, readingNote, runLine } from './pages/browse';
 import { accuracy } from './pages/accuracy';
@@ -8,6 +8,8 @@ import { mountShell, renderPage, type NavItem, type SearchTarget } from './shell
 import './tokens.css';
 import './style.css';
 import type { EvaluationReport } from './evaluation-types';
+import type { CandidateReport, ReviewLedgerFile } from './evaluation-model';
+import { summaryProblem, type BenchData, type RunSummary } from './pages/data';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const hashes = corpusHashes();
@@ -103,6 +105,24 @@ function restoreDetails() {
   });
 }
 
+/** Run manifest, run summary and every suite report, each re-validated before a page may read it. */
+async function loadBench(): Promise<BenchData & { signature: string }> {
+  const sourceHashes = await hashes;
+  const json = <T>(url: string) => fetch(url, { cache: 'no-store' }).then(r => (r.ok && r.headers.get('content-type')?.includes('json') ? (r.json() as Promise<T>) : undefined)).catch(() => undefined);
+  const [run, summary, loaded] = await Promise.all([
+    json<Run>('/results/run.json'), json<RunSummary>('/results/summary.json'),
+    Promise.all(categories.map(async category => {
+      const report = await json<Report>(`/results/${category.id}.json`);
+      if (!report) return { category, problem: 'Missing or unreadable report' };
+      const problem = reportProblem(report, category.id, sourceHashes[category.id], fixtures);
+      return problem ? { category, problem } : { category, report };
+    })),
+  ]);
+  const data: BenchData = { run, loaded, hashes: sourceHashes, summary };
+  data.summaryProblem = summaryProblem(summary, data) ?? undefined;
+  return { ...data, signature: JSON.stringify([run?.runId, summary?.runId, summary?.generatedAt, loaded.map(l => [l.category.id, l.report?.runId, l.report?.generatedAt, l.problem])]) };
+}
+
 async function refresh(force = false) {
   const current = route();
   if (current.kind === 'redirect') { history.replaceState(null, '', current.to + location.search + location.hash); lastPayload = ''; return refresh(true); }
@@ -110,26 +130,34 @@ async function refresh(force = false) {
   if (inventoryView && !force) return;
   const token = ++request, path = location.pathname;
   if (current.kind === 'workbench') {
-    if (current.view === 'changes') { if (force) shell('<h1>Changes</h1><p class="small">Baseline to candidate changes arrive with the Workbench stage.</p>', 'Changes'); return; }
-    const legacyView = current.view === 'review' ? 'reviews' : current.view === 'qualification' ? 'method' : current.view;
-    const legacyId = current.view === 'qualification' ? 'holdout' : current.view === 'review' ? '' : current.id;
-    const [{ evaluationProblem }, { evaluationPage, evaluationEmpty, bindEvaluation }] = await Promise.all([import('./evaluation-model'), import('./pages/evaluation')]);
+    if (force) shell('<p role="status" class="small">Loading Workbench evidence…</p>', 'Workbench');
+    const [{ workbenchPage }, { reviewPage, bindCopy }, { changesPage }, { qualificationPage }, { methodPage, bindExplorer }, { reviewClasses, evaluationProblem, candidateProblem }, { default: ledger }] = await Promise.all([
+      import('./pages/workbench/index'), import('./pages/workbench/review'), import('./pages/workbench/changes'), import('./pages/workbench/qualification'), import('./pages/workbench/method'), import('./evaluation-model'), import('../benchmarks/review-ledger.json'),
+    ]);
+    const needsEvaluation = current.view !== 'changes';
+    const [data, evaluationText, candidateText] = await Promise.all([
+      loadBench(),
+      needsEvaluation ? fetch('/results/evaluation-v1.json', { cache: 'no-store' }).then(r => (r.ok ? r.text() : '')).catch(() => '') : '',
+      fetch('/results/candidate-evidence-v1.json', { cache: 'no-store' }).then(r => (r.ok && r.headers.get('content-type')?.includes('json') ? r.text() : '')).catch(() => ''),
+    ]);
     if (token !== request || path !== location.pathname) return;
-    if (force) shell('<p role="status">Loading evaluation evidence…</p>', 'Workbench');
-    try {
-      const response = await fetch('/results/evaluation-v1.json', { cache: 'no-store' });
-      if (!response.ok) throw Error('Evaluation report not published');
-      const report: EvaluationReport = await response.json();
-      const problem = evaluationProblem(report, await hashes);
-      if (token !== request || path !== location.pathname) return;
-      const payload = JSON.stringify(report);
-      if (!force && payload === lastPayload) return;
-      lastPayload = payload;
-      shell(problem ? evaluationEmpty(problem) : evaluationPage(report, legacyView!, legacyId), 'Workbench');
-      bindEvaluation();
-    } catch {
-      if (token === request && path === location.pathname) { lastPayload = ''; shell(evaluationEmpty('Evaluation report missing or unreadable'), 'Workbench'); }
-    }
+    const payload = JSON.stringify([location.search, data.signature, evaluationText.length, evaluationText.slice(0, 400), candidateText]);
+    if (!force && payload === lastPayload) return;
+    lastPayload = payload;
+    let evaluation: EvaluationReport | null = null, problem: string | null = needsEvaluation ? 'No evaluation report published' : null;
+    if (evaluationText) { try { const parsed = JSON.parse(evaluationText); problem = evaluationProblem(parsed, await hashes); if (!problem) evaluation = parsed; } catch { problem = 'Evaluation report is unreadable'; } }
+    let candidate: CandidateReport | undefined, candidateIssue: string | undefined;
+    if (candidateText) { try { const parsed = JSON.parse(candidateText); candidateIssue = candidateProblem(parsed) ?? undefined; if (!candidateIssue) candidate = parsed; } catch { candidateIssue = 'Candidate evidence is unreadable'; } }
+    const classes = reviewClasses(ledger as unknown as ReviewLedgerFile);
+    const changes = { data, baseline, candidate, candidateProblem: candidateIssue, fixtures };
+    const labels: Record<string, string> = { overview: 'Workbench', review: 'Review queue', changes: 'Changes', qualification: 'Qualification', method: current.id };
+    const body = current.view === 'review' ? reviewPage(classes, current.id, evaluation)
+      : current.view === 'changes' ? changesPage(changes, new URLSearchParams(location.search).get('corpus') === 'expanded' ? 'expanded-corpus' : 'fixed-corpus')
+      : current.view === 'qualification' ? qualificationPage(data, evaluation)
+      : current.view === 'method' ? (evaluation ? methodPage(evaluation, current.id) : workbenchPage({ data, evaluation, evaluationProblem: problem, classes, changes }))
+      : workbenchPage({ data, evaluation, evaluationProblem: problem, classes, changes });
+    shell(body, labels[current.view] ?? 'Workbench');
+    bindCopy(); bindExplorer();
     return;
   }
   if (inventoryView) {

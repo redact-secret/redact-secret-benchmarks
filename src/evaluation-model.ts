@@ -5,7 +5,7 @@ import holdoutSchema from '../schemas/holdout-report-v1.json';
 const ajv = new Ajv({ strict: true });
 ajv.addSchema(holdoutSchema); ajv.addSchema(qualificationSchema);
 const validPublicReport = ajv.compile(publicSchema);
-import type { EvaluationReport, EvaluationCase, Counts, EvidenceRow } from './evaluation-types';
+import type { EvaluationReport, EvaluationCase, Counts, EvidenceRow, QualificationEvidence } from './evaluation-types';
 export const METHODS = ['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'];
 export const counts = (): Counts => ({ pass: 0, fail: 0, 'review-required': 0, 'not-measured': 0 });
 export function assertionRows(cases: EvaluationCase[]): EvidenceRow[] {
@@ -104,4 +104,179 @@ export function evaluationProblem(value: unknown, corpusHashes?: Record<string, 
     if (r.qualification && (r.qualification.supportClaims !== false || r.qualification.reportType !== 'qualification')) throw Error();
     return null;
   } catch { return 'Missing or invalid evaluation evidence'; }
+}
+
+/* ---------- Workbench: review ledger classes (redesign plan section 07) ---------- */
+export interface LedgerEntry { status: 'open' | 'resolved'; firstSeenRun: string; resolvedRun?: string; note: string }
+export interface ReviewLedgerFile { schemaVersion: number; entries: Record<string, LedgerEntry> }
+export interface ReviewClass {
+  id: string; label: string; description: string;
+  /** The literal `Class:` values of the ledger notes gathered here. */
+  rawClasses: string[];
+  open: number; resolved: number;
+  entries: ({ id: string } & LedgerEntry)[];
+}
+
+/** Every ledger note ends in `Class: <value>.`; that value is the reason the entry needs a person. */
+export function ledgerClassOf(note: string): string {
+  return /Class: (.+?)\.?\s*$/s.exec(note)?.[1] ?? 'unclassified';
+}
+const GROUPS: { id: string; label: string; description: string; match: (raw: string) => boolean }[] = [
+  { id: 't0-fixtures', label: 'T0 fixtures', description: 'No reviewed contract yet', match: raw => raw === 't0-pending-fixture' },
+  { id: 'confirmed-defects', label: 'Confirmed defects', description: 'Product issue candidates', match: raw => raw.startsWith('confirmed-') },
+];
+/** URL-safe id of a ledger class. Operator ids carry dots; paths here never do. */
+export function reviewClassId(raw: string): string {
+  if (raw.startsWith('operator=')) return raw.slice('operator='.length).replace(/[^a-z0-9]+/g, '-');
+  return GROUPS.find(g => g.match(raw))?.id ?? 'other';
+}
+/** What the operator does, in the ledger's own words: "operator `x` <does this>, which …". */
+const operatorEffect = (note: string) => { const m = /operator `[^`]+` (.+?), which/s.exec(note)?.[1]; return m ? m[0].toUpperCase() + m.slice(1) : 'Operator contract broken by construction'; };
+
+/** Group the ledger by the reason an entry needs a person. Counts are tallies of the JSON; nothing is inferred. */
+export function reviewClasses(ledger: ReviewLedgerFile): ReviewClass[] {
+  const classes = new Map<string, ReviewClass>();
+  for (const [id, entry] of Object.entries(ledger.entries)) {
+    const raw = ledgerClassOf(entry.note), classId = reviewClassId(raw), group = GROUPS.find(g => g.id === classId);
+    let item = classes.get(classId);
+    if (!item) classes.set(classId, item = {
+      id: classId, rawClasses: [], open: 0, resolved: 0, entries: [],
+      label: group?.label ?? (raw.startsWith('operator=') ? raw.slice('operator='.length) : 'Other'),
+      description: group?.description ?? (raw.startsWith('operator=') ? operatorEffect(entry.note) : 'Classes with no group of their own'),
+    });
+    if (!item.rawClasses.includes(raw)) item.rawClasses.push(raw);
+    item[entry.status]++;
+    item.entries.push({ id, ...entry });
+  }
+  return [...classes.values()].sort((a, b) => b.open - a.open || a.label.localeCompare(b.label));
+}
+
+/** A ledger fragment to paste into review-ledger.json through a PR. The UI writes no file. */
+export function ledgerSnippet(entries: ({ id: string } & LedgerEntry)[], resolvedRun: string, decision = '<your decision and why>'): string {
+  return JSON.stringify(Object.fromEntries(entries.map(({ id, firstSeenRun, note }) => [id, { status: 'resolved', firstSeenRun, resolvedRun, note: `${decision} Class: ${ledgerClassOf(note)}.` }])), null, 2);
+}
+
+/* ---------- Workbench: what changed, and why (redesign plan section 08) ---------- */
+import candidateSchema from '../schemas/candidate-report-v1.json';
+const validCandidate = ajv.compile(candidateSchema);
+
+/** One (fixture, product scanner) observation before and after. Codes are lattice.encodeOutcome strings. */
+export interface OutcomePair { slug: string; kind: string; tier: string; section: 'fixed-corpus' | 'expanded-corpus'; before: string | null; after: string | null }
+export type ChangeStatus = 'improved' | 'regressed' | 'held' | 'check' | 'policy' | 'new' | 'unscored';
+export interface ChangeRow { status: ChangeStatus; label: string; detail: string; before: number | null; after: number; of: number | null; slugs: string[] }
+export interface CandidateReport {
+  runId: string; finishedAt: string; status: string;
+  candidate: { sourceCommit: string; sourceState: string; declaredVersion: string; packageName: string };
+  selection: { scope: string; filter: string | null };
+  completeness: { selectedFixtures: number; scannedFixtures: number };
+  failures: { phase: string; code: string }[];
+  results: { fixtureId: string; corpusSection: 'fixed-corpus' | 'expanded-corpus'; kind: string; tier: string; outcome: string | null; baseline: { version: string; outcome: string | null } }[];
+}
+
+export function candidateProblem(value: unknown): string | null {
+  if (!validCandidate(value)) return 'Invalid candidate evidence contract';
+  return (value as { supportClaims: unknown }).supportClaims === false ? null : 'Candidate evidence must not carry support claims';
+}
+export const candidatePairs = (report: CandidateReport): OutcomePair[] =>
+  report.results.map(r => ({ slug: r.fixtureId, kind: r.kind, tier: r.tier, section: r.corpusSection, before: r.baseline.outcome, after: r.outcome }));
+
+/** A code is exposed when any span leaked, alarmed when a control was flagged. Reads the code; scores nothing. */
+const exposed = (code: string | null) => code != null && /PARTIAL|MISS/.test(code);
+const alarmed = (code: string | null) => code != null && code.startsWith('flagged');
+const count = (pairs: OutcomePair[], test: (code: string | null) => boolean, side: 'before' | 'after') => pairs.filter(p => test(p[side])).length;
+
+/**
+ * Only what changed, each with its reason. Totals are printed once per kind so
+ * a reader sees the denominator; unchanged rows collapse into one Held line.
+ */
+export function changeRows(pairs: OutcomePair[]): ChangeRow[] {
+  const rows: ChangeRow[] = [];
+  const known = pairs.filter(p => p.before != null && p.after != null);
+  const scored = known.filter(p => p.tier !== 'T0');
+  const moved = (list: OutcomePair[]) => list.filter(p => p.before !== p.after);
+  const tally = (list: OutcomePair[], test: typeof exposed, label: string, detail: string) => {
+    if (!list.length) return;
+    const before = count(list, test, 'before'), after = count(list, test, 'after');
+    const status: ChangeStatus = after < before ? 'improved' : after > before ? 'regressed' : 'held';
+    rows.push({ status, label, detail, before: before === after ? null : before, after, of: list.length, slugs: moved(list).filter(p => test(p.before) !== test(p.after)).map(p => p.slug) });
+  };
+  const required = scored.filter(p => p.kind === 'must-redact'), controls = scored.filter(p => p.kind === 'must-not-flag'), policy = scored.filter(p => p.kind === 'policy');
+  tally(required, exposed, 'Required secrets left readable', 'must-redact, T1 and T2');
+  tally(controls, alarmed, 'False alarms on controls', 'must-not-flag, every tier');
+  // Same verdict, different shape: EXACT → COVERED protects either way, but a person should look.
+  const sameVerdict = moved([...required, ...controls]).filter(p => exposed(p.before) === exposed(p.after) && alarmed(p.before) === alarmed(p.after));
+  const transitions = new Map<string, OutcomePair[]>();
+  for (const p of sameVerdict) { const key = `${p.before} → ${p.after}`; transitions.set(key, [...(transitions.get(key) ?? []), p]); }
+  for (const [transition, list] of transitions)
+    rows.push({ status: 'check', label: transition, detail: 'Same verdict, different ranges', before: null, after: list.length, of: null, slugs: list.map(p => p.slug) });
+  const policyMoved = moved(policy);
+  if (policyMoved.length) rows.push({ status: 'policy', label: 'Policy rows that changed', detail: 'Project policy (T3): a difference of opinion, not a defect', before: null, after: policyMoved.length, of: policy.length, slugs: policyMoved.map(p => p.slug) });
+  const unscoredMoved = moved(known.filter(p => p.tier === 'T0'));
+  if (unscoredMoved.length) rows.push({ status: 'unscored', label: 'Pending rows that changed', detail: 'T0: observed, never scored', before: null, after: unscoredMoved.length, of: null, slugs: unscoredMoved.map(p => p.slug) });
+  const fresh = pairs.filter(p => p.before == null && p.after != null);
+  if (fresh.length) rows.push({ status: 'new', label: 'Rows with no baseline', detail: 'No saved outcome to compare against; not scored as a change', before: null, after: fresh.length, of: null, slugs: fresh.map(p => p.slug) });
+  return rows;
+}
+
+/* ---------- Workbench: qualification floors (redesign plan section 08) ---------- */
+export type GateStatus = 'met' | 'not-met' | 'watch' | 'not-measured';
+export interface Gate { id: string; status: GateStatus; label: string; detail: string; value: string }
+interface SuiteAccounting { minDenominator: number; replays: number; resolvedRateFloor: Record<string, number>; measurableShareFloor: Record<string, number>; twinCoverageFloor: Record<string, number> }
+
+type PublishedValue = { point: number; bound: number | null; n: number } | string | null | undefined;
+/** The slice of a published must-redact / policy / control group the floors read. */
+export interface GateGroup { files: number; spans?: number; measurableShare?: PublishedValue; twins?: { pairs: number; positives: number; coverage: PublishedValue } }
+const pointOf = (value: PublishedValue) => (value && typeof value === 'object' ? value.point : null);
+const floorOf = (floor: Record<string, number>, key: string) => floor[key.split('/')[0]] ?? floor.default;
+
+/**
+ * Six floors, each with whether it is met and the actual value.
+ * Three are engine reasons stated by the qualification evidence
+ * (execution-incomplete, unresolved-assertions, unreviewed-queue). Three are
+ * measurement floors from qualification/suite-v1.json, read against the
+ * product scanner's published groups. "Met" compares two published numbers;
+ * no rate or bound is derived here. Absent evidence is Not measured.
+ */
+export function qualificationGates(accounting: SuiteAccounting, q: QualificationEvidence | null, groups: Record<string, GateGroup> | null): Gate[] {
+  const floors = (floor: Record<string, number>) => Object.entries(floor).map(([k, v]) => `${k} ${v}`).join(', ');
+  const nm = (id: string, label: string, detail: string, value = '—'): Gate => ({ id, status: 'not-measured', label, detail, value });
+  const gate = (id: string, ok: boolean, label: string, detail: string, value: string): Gate => ({ id, status: ok ? 'met' : 'not-met', label, detail, value });
+  const gates: Gate[] = [];
+
+  if (q) {
+    const scanners = q.methods?.flatMap(m => m.scanners) ?? q.holdout.scanners;
+    const ids = [...new Set(scanners.map(s => s.id))], incomplete = ids.filter(id => scanners.some(s => s.id === id && s.status !== 'complete'));
+    const unstable = ids.filter(id => scanners.some(s => s.id === id && s.status === 'unstable'));
+    gates.push(gate('scanners', !q.accounting?.reasons.includes('execution-incomplete') && !incomplete.length, 'Scanners complete', `replays ${accounting.replays}, ${unstable.length ? `unstable: ${unstable.join(', ')}` : 'none unstable'}`, `${ids.length - incomplete.length} / ${ids.length}`));
+  } else gates.push(nm('scanners', 'Scanners complete', `replays ${accounting.replays}`));
+
+  const scored = Object.entries(groups ?? {}).filter(([key]) => key !== 'pending/T0');
+  if (scored.length) {
+    const size = ([, g]: [string, GateGroup]) => g.spans ?? g.files;
+    const thin = scored.filter(entry => size(entry) < accounting.minDenominator);
+    gates.push(gate('min-denominator', !thin.length, 'Min denominator', thin.length ? `below: ${thin.map(([key, g]) => `${key} (${g.spans ?? g.files})`).join(', ')}` : 'scored groups', `${scored.length - thin.length} / ${scored.length} ≥ ${accounting.minDenominator}`));
+    const lowest = (read: (g: GateGroup) => number | null, floor: Record<string, number>) => scored
+      // A floor of 0 (the policy override) cannot be missed, so it is never the value worth showing.
+      .flatMap(([key, g]) => { const point = read(g), limit = floorOf(floor, key); return point == null || limit <= 0 ? [] : [{ key, point, floor: limit }]; })
+      .sort((a, b) => (a.point - a.floor) - (b.point - b.floor))[0];
+    const share = lowest(g => pointOf(g.measurableShare), accounting.measurableShareFloor);
+    gates.push(share ? gate('measurable-share', share.point >= share.floor, 'Measurable share', `lowest margin: ${share.key} · ${floors(accounting.measurableShareFloor)}`, `${share.point.toFixed(3)} ≥ ${share.floor}`) : nm('measurable-share', 'Measurable share', floors(accounting.measurableShareFloor)));
+    const twin = lowest(g => (g.twins?.positives ? pointOf(g.twins.coverage) : null), accounting.twinCoverageFloor);
+    gates.push(twin ? gate('twin-coverage', twin.point >= twin.floor, 'Twin coverage', `lowest margin: ${twin.key} · ${floors(accounting.twinCoverageFloor)}`, `${twin.point.toFixed(3)} ≥ ${twin.floor}`) : nm('twin-coverage', 'Twin coverage', floors(accounting.twinCoverageFloor)));
+  } else {
+    gates.push(nm('min-denominator', 'Min denominator', 'no published run summary', `≥ ${accounting.minDenominator}`));
+    gates.push(nm('measurable-share', 'Measurable share', floors(accounting.measurableShareFloor), `≥ ${accounting.measurableShareFloor.default}`));
+    gates.push(nm('twin-coverage', 'Twin coverage', floors(accounting.twinCoverageFloor), `≥ ${accounting.twinCoverageFloor.default}`));
+  }
+
+  if (q?.accounting) {
+    const { reasons, unresolvedGroups, review } = q.accounting;
+    gates.push(gate('resolved-rate', !reasons.includes('unresolved-assertions'), 'Resolved rate', unresolvedGroups.length ? `${unresolvedGroups.length} group(s) below floor, first: ${unresolvedGroups[0]}` : floors(accounting.resolvedRateFloor), `≥ ${accounting.resolvedRateFloor.default}`));
+    const total = review.open + review.resolved + review.unknown, n = (v: number) => v.toLocaleString('en-US');
+    gates.push({ id: 'ledger', status: review.unknown ? 'not-met' : review.open ? 'watch' : 'met', label: 'Ledger rows for every entry', detail: review.unknown ? `${n(review.unknown)} queue entries have no ledger row` : 'open is a valid state', value: `${n(total)} · ${n(review.open)} open` });
+  } else {
+    gates.push(nm('resolved-rate', 'Resolved rate', floors(accounting.resolvedRateFloor), `≥ ${accounting.resolvedRateFloor.default}`));
+    gates.push(nm('ledger', 'Ledger rows for every entry', 'no qualification evidence with ledger accounting'));
+  }
+  return gates;
 }

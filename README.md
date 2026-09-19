@@ -94,6 +94,8 @@ materialized in a scratch filesystem directory.
 
 ## Non-goals
 
+- This repository does not assert product output; it measures and records.
+  An assertion someone wants to write here is a promotion signal.
 - Not a release gate for `redact-secret`, and not affiliated with or a
   criticism of the Gitleaks or TruffleHog projects.
 - No live-credential validation against real provider APIs.

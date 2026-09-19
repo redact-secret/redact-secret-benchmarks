@@ -3,6 +3,18 @@
 This repository does not assert product output; it measures and records. An
 assertion someone wants to write here is a promotion signal.
 
+## Units of work
+
+Agent skills that carry a piece of work end to end, in `.agents/skills/`
+(read identically by Claude Code and Codex):
+
+| Skill | Direction | Produces |
+| --- | --- | --- |
+| [`resolve-issue`](.agents/skills/resolve-issue/SKILL.md) | issue number → implementation | a workbench branch and verified `wip:` commits, ready for `ghpr` |
+| [`review-pr`](.agents/skills/review-pr/SKILL.md) | open PR → merge-ready | applied fixes and wrap-up (changelog, ADR, docs, issue linkage) |
+| [`release-regression-check`](.agents/skills/release-regression-check/SKILL.md) | pinned product RC commit → regression view | a fixture-level before/after evidence report ahead of a release decision |
+| [`promote-finding`](.agents/skills/promote-finding/SKILL.md) | observed known-gap → product issue | a `reviewed` → `promoted` `benchmarks/known-gaps.json` record and a product-repo issue carrying the handoff |
+
 <!-- graft:start -->
 ## Graft — repo context graph
 

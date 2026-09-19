@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCES = {
     "gitleaks": ("gitleaks/gitleaks", "v8.30.1", "config/gitleaks.toml"),
     "trufflehog": ("trufflesecurity/trufflehog", "v3.97.4", "pkg/engine/defaults/defaults.go"),
+    "flare-redact": ("flare-collection/flare-redact", "v1.6.1", "spec/detectors.json"),
 }
 
 # A shared provider does not establish equal prefixes, formats, or verification.
@@ -42,6 +43,19 @@ TRUFFLEHOG_FAMILIES = {
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",
 }
+# flare-redact detector ids are discrete, not prefixed variants (mirrors the
+# runtime mapping in scanners/families.mjs); an exact-id lookup, not a prefix.
+FLARE_REDACT_FAMILIES = {
+    "github_token": "github-token", "gitlab_token": "gitlab-token", "npm_token": "npm-token",
+    "sendgrid_key": "sendgrid-token", "slack_token": "slack-token",
+    "aws_access_key": "aws-access-key", "aws_secret_key": "aws-access-key",
+    "private_key": "private-key", "jwt": "jwt", "anthropic_key": "anthropic-token",
+    "openai_key": "openai-token", "shopify_token": "shopify-token", "stripe_key": "stripe-token",
+    "generic_assignment": "generic-token", "vault_token": "vault-token",
+    "huggingface_token": "huggingface-token", "digitalocean_token": "digitalocean-token",
+    "linear_key": "linear-token", "supabase_key": "supabase-token", "bearer_token": "bearer-token",
+    "url_credentials": "connection-string",
+}
 
 
 def gh(endpoint, raw=False):
@@ -53,11 +67,13 @@ def gh(endpoint, raw=False):
 
 
 def related(tool, identifier):
+    if tool == "flare-redact":
+        return FLARE_REDACT_FAMILIES.get(identifier)
     mapping = GITLEAKS_FAMILIES if tool == "gitleaks" else TRUFFLEHOG_FAMILIES
     return next((family for prefix, family in mapping.items() if identifier.startswith(prefix)), None)
 
 
-def inventory(gitleaks, trufflehog, sources):
+def inventory(gitleaks, trufflehog, flare_redact, sources):
     rows = []
     config = tomllib.loads(gitleaks)
     rule_lines = {m.group(1): gitleaks[:m.start()].count("\n") + 1
@@ -89,6 +105,17 @@ def inventory(gitleaks, trufflehog, sources):
                      "sourceUrl": sources["trufflehog"]["url"] + f"#L{line_number}",
                      "activation": "feature-gated" if alias in gated else "registered",
                      "featureFlag": gated.get(alias)})
+
+    # FRS-1's own portable spec: a plain JSON detector array, not source code.
+    spec = json.loads(flare_redact)
+    spec_lines = {m.group(1): flare_redact[:m.start()].count("\n") + 1
+                  for m in re.finditer(r'"id":\s*"([^"]+)"', flare_redact)}
+    for detector in spec["detectors"]:
+        identifier = detector["id"]
+        rows.append({"tool": "flare-redact", "id": identifier,
+                     "sourceUrl": sources["flare-redact"]["url"] + f"#L{spec_lines[identifier]}",
+                     "activation": "default-detector" if detector.get("default") else "opt-in-detector"})
+
     for row in rows:
         family = related(row["tool"], row["id"])
         row["relatedDetector"] = family
@@ -109,7 +136,7 @@ def main():
                          "path": path, "sha256": hashlib.sha256(content.encode()).hexdigest(),
                          "url": f"https://github.com/{repo}/blob/{revision}/{path}"}
     registry = json.loads((ROOT / "benchmarks/detectors.json").read_text())
-    rows = inventory(contents["gitleaks"], contents["trufflehog"], sources)
+    rows = inventory(contents["gitleaks"], contents["trufflehog"], contents["flare-redact"], sources)
     snapshot = {"schemaVersion": 1, "reviewedAt": "2026-09-19",
                 "redactSecretVersion": "0.1.0-beta.4",
                 "redactSecretRevision": registry["sourceRevision"],

@@ -338,8 +338,9 @@ checks that the checked-in corpora match it before scanning.
 
 `npm run test:coverage` measures code coverage of the scoring/validation and
 scanner-adapter modules only. It includes installed-scanner integration tests
-and requires all three tools. It does not imply UI coverage, runner coverage,
-or real-world credential coverage.
+and requires all four tools (Gitleaks and TruffleHog as binaries on `PATH`;
+redact-secret and flare-redact as pinned npm packages). It does not imply UI
+coverage, runner coverage, or real-world credential coverage.
 
 The second expansion adds **SendGrid regressions** (38 files: 30 positives,
 8 negatives) and **Reference syntax** (26 files: 20 negatives, 6 paired

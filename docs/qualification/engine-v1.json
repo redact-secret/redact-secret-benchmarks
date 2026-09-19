@@ -5,16 +5,16 @@
   "accountingVersion": "1.1",
   "suiteId": "engine-v1",
   "suiteHash": "ac60c45a2ee82524a8bf1b85c0c4ca19b6aa27ff266a2532015042f4e223a7e0",
-  "runId": "04b656a9-a9b5-4c4f-807b-ea019c889ec1",
-  "startedAt": "2026-09-19T17:23:03.076Z",
-  "finishedAt": "2026-09-19T17:23:15.527Z",
+  "runId": "7a6ce4a5-9736-40a8-ba40-cd8988c75d1e",
+  "startedAt": "2026-09-19T17:46:55.252Z",
+  "finishedAt": "2026-09-19T17:47:07.313Z",
   "scope": "engine-conformance",
-  "status": "incomplete",
+  "status": "execution-qualified",
   "supportClaims": false,
   "provenance": {
-    "revision": "20e5eb1c6d7e9487059da59ca3a0745ecdbda859",
+    "revision": "c0eba10cf0442e153125a72d13b6bcdec2c5d230",
     "dirty": false,
-    "sourceHash": "b282d8e515fe95c567285bd0bef1f24686a40032146f322d83f5ed1807c29fe2",
+    "sourceHash": "421ea59224d25f443661f99cbbb8a697fee42e54421af488e633da0a92df481f",
     "lockHash": "c675220e35193cf0db4f75799dce7ee900db7f6013bda9992653207067062444",
     "candidateArtifactHash": "b1a2f5e635698ba57480e1a22d9944e36ad7890f0030c8e0e649305e1983b03b",
     "runtime": {
@@ -9238,15 +9238,13 @@
     }
   },
   "accounting": {
-    "reasons": [
-      "unreviewed-queue"
-    ],
+    "reasons": [],
     "unresolvedGroups": [],
     "review": {
-      "open": 0,
-      "resolved": 0,
-      "unknown": 1615,
-      "oldestOpenRun": null
+      "open": 1233,
+      "resolved": 382,
+      "unknown": 0,
+      "oldestOpenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94"
     }
   },
   "methods": [
@@ -9479,10 +9477,10 @@
   "holdout": {
     "schemaVersion": 1,
     "reportType": "holdout",
-    "runId": "04b656a9-a9b5-4c4f-807b-ea019c889ec1",
-    "planHash": "ef070a9b62c9b05322075bfe90aa7a72d22bd91d22eb07802bb2554116099099",
-    "startedAt": "2026-09-19T17:23:13.222Z",
-    "finishedAt": "2026-09-19T17:23:15.395Z",
+    "runId": "7a6ce4a5-9736-40a8-ba40-cd8988c75d1e",
+    "planHash": "c6e9bd1b0ba057c947f0ce0b713b8e1360888724562df996f616f039718b1011",
+    "startedAt": "2026-09-19T17:47:04.988Z",
+    "finishedAt": "2026-09-19T17:47:07.188Z",
     "methodology": "frozen-candidate-canonical-cases-aggregate-only",
     "independence": "public-control",
     "status": "complete",
@@ -9495,7 +9493,7 @@
       "lifecycle": "sealed-at-execution"
     },
     "candidate": {
-      "sourceHash": "b282d8e515fe95c567285bd0bef1f24686a40032146f322d83f5ed1807c29fe2",
+      "sourceHash": "421ea59224d25f443661f99cbbb8a697fee42e54421af488e633da0a92df481f",
       "lockHash": "c675220e35193cf0db4f75799dce7ee900db7f6013bda9992653207067062444",
       "candidateArtifactHash": "b1a2f5e635698ba57480e1a22d9944e36ad7890f0030c8e0e649305e1983b03b"
     },

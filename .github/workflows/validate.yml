@@ -22,5 +22,23 @@ jobs:
       - name: Exercise evaluation engine with the published npm scanner
         run: npm run eval -- --scanner=redact-secret
       - run: npm run build
+      - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
+        run: npm run pins:manifest:check
       - name: Generated inputs must not change tracked files
         run: git diff --exit-code
+
+  pin-drift:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Registry, inventory, and known-gap commits must trace to the product's main
+        run: npm run pins:check

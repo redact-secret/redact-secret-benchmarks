@@ -4,17 +4,17 @@
 
 ## Under the decided floors
 
-Accounting dry run — run `2026-09-19T17:19:10.537Z-79f51d`, 10 suites. Floors: minDenominator 5, resolvedRate {"default":0.9,"differential":0}, measurableShare {"default":0.7,"policy":0}, twinCoverage 0.5.
+Accounting dry run — run `2026-09-19T18:13:24.470Z-5df7ba`, 10 suites. Floors: minDenominator 5, resolvedRate {"default":0.9,"differential":0}, measurableShare {"default":0.7,"policy":0}, twinCoverage {"default":0.5,"policy":0}.
 
 ### Corpus-wide groups × floors (scanner-independent)
 
 | Group | files | spans | pending (same kind) | measurableShare | floor | twin pairs/positives | floor | n ≥ minDenominator |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | must-not-flag/T1 | 6 | — | — | — | n/a | — | n/a | pass |
-| must-not-flag/T2 | 130 | — | — | — | n/a | — | n/a | pass |
+| must-not-flag/T2 | 192 | — | — | — | n/a | — | n/a | pass |
 | must-not-flag/T3 | 104 | — | — | — | n/a | — | n/a | pass |
-| must-redact/T1 | 133 | 139 | 33 | 133/166 = 0.801 | pass | 38/133 = 0.286 | **fail** | pass |
-| must-redact/T2 | 93 | 93 | 33 | 93/126 = 0.738 | pass | 18/93 = 0.194 | **fail** | pass |
+| must-redact/T1 | 133 | 139 | 33 | 133/166 = 0.801 | pass | 71/133 = 0.534 | pass | pass |
+| must-redact/T2 | 93 | 93 | 33 | 93/126 = 0.738 | pass | 47/93 = 0.505 | pass | pass |
 | pending/T0 | 55 | — | {"must-not-flag":22,"must-redact":33} | — | n/a | — | n/a | n/a |
 | policy/T3 | 176 | 176 | 0 | 176/176 = 1.000 | pass | 0/176 = 0.000 | **fail** | pass |
 
@@ -24,42 +24,42 @@ Accounting dry run — run `2026-09-19T17:19:10.537Z-79f51d`, 10 suites. Floors:
 | --- | --- | --- | --- | --- |
 | accuracy | 3 | must-not-flag/T2, must-not-flag/T3 | — | policy/T3 |
 | common-formats | 4 | — | — | — |
-| context-edges | 1 | — | — | must-redact/T1 |
-| credential-formats | 2 | must-redact/T2 | — | must-redact/T1, must-redact/T2 |
+| context-edges | 2 | — | — | — |
+| credential-formats | 3 | must-redact/T2 | — | must-redact/T2 |
 | detector-coverage | 5 | — | must-redact/T1, must-redact/T2 | must-redact/T1, must-redact/T2, policy/T3 |
 | milestone-6-closed | 2 | — | — | policy/T3 |
 | negative-controls | 2 | — | — | — |
 | reference-syntax | 2 | — | — | policy/T3 |
 | sendgrid-regressions | 3 | must-not-flag/T3 | — | must-redact/T2 |
-| token-contexts | 2 | must-not-flag/T3, must-redact/T1 | — | must-redact/T1 |
+| token-contexts | 3 | must-not-flag/T2, must-not-flag/T3, must-redact/T1 | — | must-redact/T1 |
 
 ### accountingDelta per scanner (corpus-wide)
 
 | Scanner | Group | cause | v1.0 → v1.1 (published figure) |
 | --- | --- | --- | --- |
 | redact-secret | must-not-flag/T1 | no-op | falseAlarmRate 0 → 0 (bound 0.390343, n 6) |
-| redact-secret | must-not-flag/T2 | no-op | falseAlarmRate 0.184615 → 0.184615 (bound 0.26002, n 130) |
+| redact-secret | must-not-flag/T2 | no-op | falseAlarmRate 0.166667 → 0.166667 (bound 0.225809, n 192) |
 | redact-secret | must-not-flag/T3 | no-op | falseAlarmRate 0 → 0 (bound 0.035623, n 104) |
-| redact-secret | must-redact/T1 | twin-coverage | leakedSpanRate 0 → 0 (bound 0.026894, n 139); twins.rate 0.736842 → insufficient-coverage |
-| redact-secret | must-redact/T2 | twin-coverage | leakedSpanRate 0 → 0 (bound 0.039669, n 93); twins.rate 0.222222 → insufficient-coverage |
+| redact-secret | must-redact/T1 | no-op | leakedSpanRate 0 → 0 (bound 0.026894, n 139); twins.rate 0.859155 → 0.859155 (bound 0.75978, n 71) |
+| redact-secret | must-redact/T2 | no-op | leakedSpanRate 0 → 0 (bound 0.039669, n 93); twins.rate 0.531915 → 0.531915 (bound 0.392321, n 47) |
 | redact-secret | policy/T3 | no-op | leakedSpanRate 0 → 0 (bound 0.021361, n 176); twins.rate null → null |
 | gitleaks | must-not-flag/T1 | no-op | falseAlarmRate 0 → 0 (bound 0.390343, n 6) |
-| gitleaks | must-not-flag/T2 | no-op | falseAlarmRate 0.038462 → 0.038462 (bound 0.08688, n 130) |
+| gitleaks | must-not-flag/T2 | no-op | falseAlarmRate 0.25 → 0.25 (bound 0.315748, n 192) |
 | gitleaks | must-not-flag/T3 | no-op | falseAlarmRate 0 → 0 (bound 0.035623, n 104) |
-| gitleaks | must-redact/T1 | twin-coverage | leakedSpanRate 0.028777 → 0.028777 (bound 0.071654, n 139); twins.rate 0.842105 → insufficient-coverage |
-| gitleaks | must-redact/T2 | twin-coverage | leakedSpanRate 0.268817 → 0.268817 (bound 0.366764, n 93); twins.rate 0.777778 → insufficient-coverage |
+| gitleaks | must-redact/T1 | no-op | leakedSpanRate 0.028777 → 0.028777 (bound 0.071654, n 139); twins.rate 0.464789 → 0.464789 (bound 0.353583, n 71) |
+| gitleaks | must-redact/T2 | no-op | leakedSpanRate 0.268817 → 0.268817 (bound 0.366764, n 93); twins.rate 0.489362 → 0.489362 (bound 0.352753, n 47) |
 | gitleaks | policy/T3 | no-op | leakedSpanRate 0.664773 → 0.664773 (bound 0.730338, n 176); twins.rate null → null |
 | trufflehog | must-not-flag/T1 | no-op | falseAlarmRate 0 → 0 (bound 0.390343, n 6) |
-| trufflehog | must-not-flag/T2 | no-op | falseAlarmRate 0.061538 → 0.061538 (bound 0.116738, n 130) |
+| trufflehog | must-not-flag/T2 | no-op | falseAlarmRate 0.114583 → 0.114583 (bound 0.16739, n 192) |
 | trufflehog | must-not-flag/T3 | no-op | falseAlarmRate 0.096154 → 0.096154 (bound 0.16801, n 104) |
-| trufflehog | must-redact/T1 | twin-coverage | leakedSpanRate 0.079137 → 0.079137 (bound 0.13615, n 139); twins.rate 0.842105 → insufficient-coverage |
-| trufflehog | must-redact/T2 | twin-coverage | leakedSpanRate 0.365591 → 0.365591 (bound 0.466991, n 93); twins.rate 0.777778 → insufficient-coverage |
+| trufflehog | must-redact/T1 | no-op | leakedSpanRate 0.079137 → 0.079137 (bound 0.13615, n 139); twins.rate 0.915493 → 0.915493 (bound 0.827638, n 71) |
+| trufflehog | must-redact/T2 | no-op | leakedSpanRate 0.365591 → 0.365591 (bound 0.466991, n 93); twins.rate 0.425532 → 0.425532 (bound 0.295134, n 47) |
 | trufflehog | policy/T3 | no-op | leakedSpanRate 0.931818 → 0.931818 (bound 0.960571, n 176); twins.rate null → null |
 | flare-redact | must-not-flag/T1 | no-op | falseAlarmRate 0 → 0 (bound 0.390343, n 6) |
-| flare-redact | must-not-flag/T2 | no-op | falseAlarmRate 0.1 → 0.1 (bound 0.163587, n 130) |
+| flare-redact | must-not-flag/T2 | no-op | falseAlarmRate 0.140625 → 0.140625 (bound 0.196871, n 192) |
 | flare-redact | must-not-flag/T3 | no-op | falseAlarmRate 0.153846 → 0.153846 (bound 0.235382, n 104) |
-| flare-redact | must-redact/T1 | twin-coverage | leakedSpanRate 0.086331 → 0.086331 (bound 0.144839, n 139); twins.rate 0.736842 → insufficient-coverage |
-| flare-redact | must-redact/T2 | twin-coverage | leakedSpanRate 0.44086 → 0.44086 (bound 0.54212, n 93); twins.rate 0.222222 → insufficient-coverage |
+| flare-redact | must-redact/T1 | no-op | leakedSpanRate 0.086331 → 0.086331 (bound 0.144839, n 139); twins.rate 0.859155 → 0.859155 (bound 0.75978, n 71) |
+| flare-redact | must-redact/T2 | no-op | leakedSpanRate 0.44086 → 0.44086 (bound 0.54212, n 93); twins.rate 0.276596 → 0.276596 (bound 0.169364, n 47) |
 | flare-redact | policy/T3 | no-op | leakedSpanRate 0.465909 → 0.465909 (bound 0.539548, n 176); twins.rate null → null |
 
 ### resolvedRate per method/stratum (discovery run, all scanners)
@@ -85,26 +85,26 @@ Accounting dry run — run `2026-09-19T17:19:10.537Z-79f51d`, 10 suites. Floors:
 | metamorphic/policy:T3->policy:T3 | 2536/2536 = 1.000 | 0.9 | pass |
 | mutation/must-not-flag:T0 | 0/88 = 0.000 | exempt (T0) | n/a |
 | mutation/must-not-flag:T1 | 24/24 = 1.000 | 0.9 | pass |
-| mutation/must-not-flag:T2 | 520/520 = 1.000 | 0.9 | pass |
+| mutation/must-not-flag:T2 | 768/768 = 1.000 | 0.9 | pass |
 | mutation/must-not-flag:T3 | 416/416 = 1.000 | 0.9 | pass |
 | mutation/must-redact:T0 | 0/4612 = 0.000 | exempt (T0) | n/a |
 | mutation/must-redact:T1 | 948/948 = 1.000 | 0.9 | pass |
 | mutation/must-redact:T1->must-not-flag:T1 | 24/24 = 1.000 | 0.9 | pass |
-| mutation/must-redact:T1->must-not-flag:T2 | 128/128 = 1.000 | 0.9 | pass |
+| mutation/must-redact:T1->must-not-flag:T2 | 260/260 = 1.000 | 0.9 | pass |
 | mutation/must-redact:T1->must-redact:T1 | 416/416 = 1.000 | 0.9 | pass |
 | mutation/must-redact:T2 | 820/820 = 1.000 | 0.9 | pass |
-| mutation/must-redact:T2->must-not-flag:T2 | 72/72 = 1.000 | 0.9 | pass |
+| mutation/must-redact:T2->must-not-flag:T2 | 188/188 = 1.000 | 0.9 | pass |
 | mutation/must-redact:T2->must-redact:T2 | 448/448 = 1.000 | 0.9 | pass |
 | mutation/policy:T3 | 704/704 = 1.000 | 0.9 | pass |
 | twin/must-not-flag:T1 | 24/24 = 1.000 | 0.9 | pass |
-| twin/must-not-flag:T2 | 200/200 = 1.000 | 0.9 | pass |
-| twin/must-redact:T1 | 152/152 = 1.000 | 0.9 | pass |
+| twin/must-not-flag:T2 | 448/448 = 1.000 | 0.9 | pass |
+| twin/must-redact:T1 | 284/284 = 1.000 | 0.9 | pass |
 | twin/must-redact:T1->must-not-flag:T1 | 24/24 = 1.000 | 0.9 | pass |
-| twin/must-redact:T1->must-not-flag:T2 | 128/128 = 1.000 | 0.9 | pass |
-| twin/must-redact:T2 | 72/72 = 1.000 | 0.9 | pass |
-| twin/must-redact:T2->must-not-flag:T2 | 72/72 = 1.000 | 0.9 | pass |
+| twin/must-redact:T1->must-not-flag:T2 | 260/260 = 1.000 | 0.9 | pass |
+| twin/must-redact:T2 | 188/188 = 1.000 | 0.9 | pass |
+| twin/must-redact:T2->must-not-flag:T2 | 188/188 = 1.000 | 0.9 | pass |
 
-Review queue entries: 1856 (differential disagreements and deferred mutation expectations).
+Review queue entries: 1945 (differential disagreements and deferred mutation expectations).
 
 ## What the originally proposed `measurableShareFloor: 0.8` would have withheld
 

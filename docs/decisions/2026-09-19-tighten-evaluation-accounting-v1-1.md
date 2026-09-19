@@ -221,3 +221,88 @@ omission. They are deliberate.
   interval would be wrong. It reports `{ point, n }` with `bound: null` and
   `direction: null`. `meanFindingsPerFlagged` is the same kind of quantity and
   is treated the same way.
+
+## Review decisions (issue #29)
+
+Decision 5 shipped `twinCoverageFloor: 0.5` without a per-kind shape, and the
+first full dry run showed every scored group below it: `must-redact/T1`
+0.286, `must-redact/T2` 0.194, `policy/T3` 0.000 (all three withheld as
+`insufficient-coverage`, recorded in
+[the dry run](../evaluation-engine-v1.1-dry-run.md)). `policy/T3` is decided
+first, deliberately, because reaching 0.5 there means authoring twins for 176
+positives — by far the largest cost in scope — and that cost should not be
+paid before deciding whether the axis applies.
+
+- **`twinCoverageFloor: { default: 0.5, policy: 0 }`, `policy` exempt.** The
+  same shape as the existing `measurableShareFloor: { default: 0.7, policy: 0
+  }` exemption (decision 2, review above), and for the same underlying
+  reason: `policy` is this project's own masking policy, not a provider
+  format (measurement-v4 §2.6, §4). A twin mutates *one structural property
+  of a documented or tool-corroborated shape* — prefix namespace, body
+  length, alphabet, boundary character, public-vs-secret prefix
+  (measurement-v4 §2.5) — and a `policy` span has no such shape to hold one
+  property of constant while varying another; that vocabulary is defined
+  against a format contract, which is exactly what T3 lacks by construction.
+  Measurement-v4 §2.5 itself scopes twin authoring to "every T1/T2
+  must-redact fixture" and never mentions `policy`. Twin coverage was never
+  proposed to reach into `policy`, so this exemption formalizes an existing
+  scope rather than loosening one.
+  The counter-argument the issue raised — a policy expectation still has
+  near misses a tool should not flag, so a twin might be meaningful there —
+  is already measured by the axes `policy/T3` does carry: `leakedSpanRate`
+  and `collateralRatio` on the policy group itself, and `falseAlarmRate` on
+  the `must-not-flag` groups holding today's near-miss policy controls.
+  Twin discrimination would not add information those axes lack; it would
+  require inventing a structural-mutation vocabulary for a kind whose
+  defining property is the absence of one.
+  One implementation note for a future reader: because `accountGroups`
+  returns `twins.rate: null` (not `insufficient-coverage`) whenever
+  `twins.pairs` is zero (`lattice.ts`/`accounting.ts`, the `!twins.pairs`
+  branch runs before the floor comparison), this exemption does not change
+  `policy/T3`'s published figure today — it is still `null`, honestly
+  reporting "no twins exist" rather than "insufficient coverage of a target
+  that applies." The exemption matters for the future: if a `policy` twin is
+  ever authored, it fixes what a partial `policy` twin count should mean
+  (applicable-and-covered at any count ≥ 1, not held to the `must-redact`
+  bar) rather than leaving the question to whichever author touches it next.
+  176 `policy` twins were therefore not authored.
+- **`must-redact/T1` and `must-redact/T2` twins authored to clear 0.5,
+  spread across the suites the dry run showed as currently dark rather than
+  concentrated in `common-formats`.** 33 new T1 twins: 17 in `context-edges`
+  (every single-secret github-token context except the three multi-span
+  ones), 12 in `credential-formats` (`ghp`/`gho`/`ghu`/`gitlab`, 3 samples
+  each) and 4 in `token-contexts` (`env`/`json`/`unicode`/`crlf`) — all a
+  github-token body one character shorter than the documented 36
+  (`length: 35 vs contracted 36`), the same mutation `common-formats`
+  already used for the family. 29 new T2 twins: 3 in `credential-formats`
+  (`sendgrid`, final segment 42 vs 43), 15 in `detector-coverage`
+  (`docker-token`, `linear-token`, `google-api-key`, `notion-token`,
+  `atlassian-api-token`, one representative shape each across its three
+  context variants, body one character short of its tool-corroborated
+  length) and 11 in `sendgrid-regressions` (the `base62` variant across all
+  ten contexts, plus `url-safe-bare`, final segment 42 vs 43). Every new
+  twin is a `length` mutation chosen from the family's own contract
+  (`benchmarks/lib/assessment.ts`), never from a scanner's output
+  (measurement-v4 §6), and no real or plausibly live credential value
+  appears anywhere in the corpus.
+  Result, from the rerun dry run: `must-redact/T1` twin coverage is
+  71/133 = 0.534 (pass) and `must-redact/T2` is 47/93 = 0.505 (pass); both
+  now publish `twins.rate` with its Wilson bound and `n` instead of
+  `insufficient-coverage`. These are v1.1-strict figures (`OVERBROAD` does
+  not count as discriminated, decision 3) and are not compared against the
+  pre-v1.1 point estimates in the original issue, per measurement-v4 §4 and
+  the issue's own instruction: `redact-secret` 0.859 (T1, n 71) / 0.532
+  (T2, n 47); `gitleaks` 0.465 (T1) / 0.489 (T2); `trufflehog` 0.915 (T1) /
+  0.426 (T2); `flare-redact` 0.859 (T1) / 0.277 (T2). Full bounds and per-run
+  detail are in the regenerated [dry run](../evaluation-engine-v1.1-dry-run.md).
+  The target was the corpus-wide figure, not every per-suite one: two of the
+  newly-twinned suites clear their own floor as a side effect
+  (`context-edges` 17/20, `credential-formats`'s `github-token`/`gitlab-token`
+  group 12/21), while `credential-formats`'s `sendgrid` group and all of
+  `token-contexts` stay below `minDenominator` on twin pairs alone (3 and 4
+  positives respectively — too few to reach `n ≥ 5` regardless of ratio, per
+  decision 1's existing reasoning) and `sendgrid-regressions` stays below the
+  0.5 ratio (11/30). Both remain visible as per-suite withholds in the dry
+  run even though the corpus-wide `must-redact/T1` and `must-redact/T2`
+  figures now publish; that is the same small-group behavior decision 1
+  already accepted, not a new gap.

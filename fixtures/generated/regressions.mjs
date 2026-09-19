@@ -31,6 +31,26 @@ export function buildRegressions({ fixture, synthetic, wrap, quoted }) {
       ]),
     ),
   );
+  // Negative twins (§2.5): the base62 shape across every context, plus the
+  // url-safe shape's bare context, each with the final segment one character
+  // shorter than the tool-corroborated 43. Currently dark for twin coverage
+  // (issue #29); trailing-dash already carries its own truncation by
+  // construction and is left as a distinct near-miss rather than re-twinned.
+  const sendgridTwins = contexts.map(([context, group, prefix, suffix]) => ({
+    ...fixture(`base62-${context}-twin`, group, [prefix, `SG.${id}.${body.slice(0, -1)}`, suffix]),
+    detectors: ["sendgrid-token"],
+    twinOf: `base62-${context}`,
+    mutation: "length: 42 vs contracted 43",
+    mutationKind: "length",
+  }));
+  const urlSafeValue = variants.find(([variant]) => variant === "url-safe")[1];
+  sendgridTwins.push({
+    ...fixture("url-safe-bare-twin", "Provider detection", ["", urlSafeValue.slice(0, -1), "\n"]),
+    detectors: ["sendgrid-token"],
+    twinOf: "url-safe-bare",
+    mutation: "length: 42 vs contracted 43",
+    mutationKind: "length",
+  });
   // Bare malformed shapes: no generic credential field is present to create
   // an independent, valid contextual finding.
   for (const [name, value] of [
@@ -166,7 +186,7 @@ export function buildRegressions({ fixture, synthetic, wrap, quoted }) {
 
   return {
     "sendgrid-regressions": {
-      ...wrap(sendgrid),
+      ...wrap([...sendgrid, ...sendgridTwins]),
       references: ["https://github.com/redact-secret/redact-secret/issues/285"],
       scope:
         "SendGrid-shaped strings, including URL-safe punctuation and generic fallback. Synthetic format coverage only; no liveness or provider validation.",

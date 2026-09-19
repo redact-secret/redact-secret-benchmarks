@@ -128,6 +128,102 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "sources": []
       }
+    },
+    {
+      "id": "env-twin",
+      "path": "env-twin.txt",
+      "group": "Environment",
+      "content": "GITHUB_TOKEN=ghp_2531045c2c196a55f71e50a2d300118630e\n",
+      "expected": [],
+      "detectors": [
+        "github-token"
+      ],
+      "twinOf": "env",
+      "mutation": "length: 35 vs contracted 36",
+      "mutationKind": "length",
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T2",
+        "reason": "Negative twin of env: length: 35 vs contracted 36. Exactly one structural property differs from the positive; silence follows from construction.",
+        "contract": "github-token",
+        "sources": [
+          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "json-twin",
+      "path": "json-twin.txt",
+      "group": "JSON",
+      "content": "{\"github_token\":\"ghp_2531045c2c196a55f71e50a2d300118630e\"}\n",
+      "expected": [],
+      "detectors": [
+        "github-token"
+      ],
+      "twinOf": "json",
+      "mutation": "length: 35 vs contracted 36",
+      "mutationKind": "length",
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T2",
+        "reason": "Negative twin of json: length: 35 vs contracted 36. Exactly one structural property differs from the positive; silence follows from construction.",
+        "contract": "github-token",
+        "sources": [
+          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "unicode-twin",
+      "path": "unicode-twin.txt",
+      "group": "Unicode",
+      "content": "🔑 github_token=\"ghp_2531045c2c196a55f71e50a2d300118630e\"\n",
+      "expected": [],
+      "detectors": [
+        "github-token"
+      ],
+      "twinOf": "unicode",
+      "mutation": "length: 35 vs contracted 36",
+      "mutationKind": "length",
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T2",
+        "reason": "Negative twin of unicode: length: 35 vs contracted 36. Exactly one structural property differs from the positive; silence follows from construction.",
+        "contract": "github-token",
+        "sources": [
+          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "crlf-twin",
+      "path": "crlf-twin.txt",
+      "group": "CRLF",
+      "content": "# Windows line endings\r\nGITHUB_TOKEN=ghp_2531045c2c196a55f71e50a2d300118630e\r\n",
+      "expected": [],
+      "detectors": [
+        "github-token"
+      ],
+      "twinOf": "crlf",
+      "mutation": "length: 35 vs contracted 36",
+      "mutationKind": "length",
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T2",
+        "reason": "Negative twin of crlf: length: 35 vs contracted 36. Exactly one structural property differs from the positive; silence follows from construction.",
+        "contract": "github-token",
+        "sources": [
+          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
     }
   ]
 }

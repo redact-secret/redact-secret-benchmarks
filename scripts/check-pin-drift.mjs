@@ -6,8 +6,11 @@ import {
 
 const DETECTORS_PATH = 'crates/secret-scan-core/src/detectors';
 
-function compare(base, head) {
-  return JSON.parse(execFileSync('gh', ['api', `repos/${PRODUCT_REPO}/compare/${base}...${head}`], { encoding: 'utf8' }));
+function compare(base, head, { withFiles = false } = {}) {
+  const jqFilter = withFiles ? '{status, files: [.files[]?.filename]}' : '{status}';
+  return JSON.parse(execFileSync('gh', [
+    'api', `repos/${PRODUCT_REPO}/compare/${base}...${head}`, '--jq', jqFilter,
+  ], { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }));
 }
 const isAncestor = status => status === 'identical' || status === 'ahead';
 
@@ -30,14 +33,14 @@ async function main() {
   const failures = checkPinConsistency(facts);
 
   if (!process.argv.includes('--local-only')) {
-    const registryCompare = compare(facts.registrySourceRevision, PRODUCT_BRANCH);
+    const registryCompare = compare(facts.registrySourceRevision, PRODUCT_BRANCH, { withFiles: true });
     const knownGapCommitIsAncestor = {};
     for (const commit of collectKnownGapCommits(knownGaps)) {
       knownGapCommitIsAncestor[commit] = isAncestor(compare(commit, PRODUCT_BRANCH).status);
     }
     failures.push(...checkPinAncestry(facts, knownGaps, {
       registrySourceRevisionIsAncestor: isAncestor(registryCompare.status),
-      detectorsPathChangedSinceRegistry: (registryCompare.files ?? []).some(f => f.filename.startsWith(DETECTORS_PATH)),
+      detectorsPathChangedSinceRegistry: (registryCompare.files ?? []).some(f => f.startsWith(DETECTORS_PATH)),
       knownGapCommitIsAncestor,
     }));
   }

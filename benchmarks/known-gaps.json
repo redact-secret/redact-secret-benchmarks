@@ -289,7 +289,7 @@
         "common-formats--sendgrid-token-segmented-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "promoted",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.4",
@@ -309,7 +309,25 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/404"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-19",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-19",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/404"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/404",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-404",
+        "canonicalFixtureIds": []
       },
       "evidence": [
         {

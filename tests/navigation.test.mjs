@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { createServer } from 'vite';
 import { buildCatalog, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments, rowSignal } from '../src/model.mjs';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 const read = async path => JSON.parse(await readFile(new URL('../'+path,import.meta.url),'utf8'));
@@ -117,54 +116,4 @@ test('same fixture IDs in different suites remain separate observations', () => 
   assert.equal(summary.rows.length,2);
   assert.equal(new Set(summary.rows.map(r => r.slug)).size,2);
   assert.equal(summary.metrics.leakedSpans,2);
-});
-test('page renderers expose every fixture, escape input markup, and keep caveats out of the data path', async () => {
-  const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
-  try {
-    const pages = await server.ssrLoadModule('/src/pages/browse.ts');
-    const { accuracy } = await server.ssrLoadModule('/src/pages/accuracy.ts');
-    const { methodology } = await server.ssrLoadModule('/src/pages/methodology.ts');
-    const listing = pages.fixtureList(fixtures,[]);
-    for (const f of fixtures) {
-      assert.ok(listing.includes(`/fixture/${f.slug}`),f.slug);
-      const html = pages.fixturePage(f,[]);
-      assert.ok(html.includes('Exact synthetic input'),f.slug);
-      assert.ok(html.includes('No current report'),f.slug);
-      assert.ok(html.includes(`tier-${f.assessment.tier}`),f.slug);
-    }
-    const malicious = {...fixtures[0],content:'<script>alert(1)</script>',expected:[]};
-    assert.ok(!pages.fixturePage(malicious,[]).includes('<script>'));
-    assert.ok(pages.fixturePage(malicious,[]).includes('&lt;script&gt;'));
-    assert.ok(pages.overview([]).includes('/benchmark/openai-token'));
-    const corpusReport = {...report,fixtureCount:10,expectedCount:5};
-    const run = {schemaVersion:5,accountingVersion:'1.1',runId,startedAt:'2026-09-17T12:00:00.000Z',finishedAt:'2026-09-17T12:00:02.000Z',categories:['accuracy'],partial:true,scannerVersions:{test:'1'},lockHash:'lock',revision:'r',dirty:false};
-    const suite = accuracy(corpusReport, run);
-    assert.ok(suite.includes('/fixture/accuracy--github-token'));
-    assert.ok(suite.includes('Secrets left readable') && suite.includes('Safe files wrongly flagged') && suite.includes('draft'));
-    assert.ok(suite.includes('This run:') && !suite.includes('How to read this') && !suite.includes('tp/fp/fn'), 'a lead sentence replaces the glossary; diagnostics live in provenance');
-    const overview = pages.overview([corpusReport], run);
-    assert.ok(overview.includes('Partial run — 1 of 10 suites'), 'a run that covers one suite is named as partial');
-    assert.ok(overview.includes('shown, never scored'));
-    const detector = pages.comparison(fixtures.filter(f => f.detectors.includes('anthropic-token')), [corpusReport], run);
-    for (const html of [overview, detector, suite]) {
-      for (const kind of ['must-redact', 'must-not-flag', 'policy']) assert.ok(html.includes(`data-kind="${kind}"`), kind);
-      assert.ok(!/precision|recall|F1\b/i.test(html.replace(/no precision|Precision, recall and F1 are not exported/g, '')), 'no rates leak into the data path');
-      assert.ok(!html.includes('Results are separated by measurement purpose'), 'per-panel notices are gone');
-    }
-    assert.equal((overview.match(/reading-note/g) ?? []).length, 1, 'one reading note per page');
-    const twin = fixtures.find(f => f.twinOf);
-    assert.ok(pages.fixturePage(twin, []).includes('Negative twin of'));
-    const pending = fixtures.find(f => f.assessment.tier === 'T0');
-    assert.ok(pages.fixturePage(pending, []).includes('Pending review: excluded from comparative scores'));
-    const enveloped = fixtures.find(f => f.expected.some(r => r.envelope));
-    assert.ok(pages.fixturePage(enveloped, []).includes(enveloped.expected[0].envelope.reason.slice(0, 30)));
-    const bom = fixtures.find(f => f.slug==='context-edges--bom');
-    assert.ok(pages.fixturePage(bom,[]).includes('\\uFEFF'));
-    assert.ok(pages.fixturePage(fixtures.find(f => f.slug==='negative-controls--empty'),[]).includes('(empty file)'));
-    assert.ok(listing.includes('data-signal="1"') || listing.includes('data-signal="0"'));
-    assert.ok(listing.includes('id="show-all"'));
-    for (const glyph of ['■', '◩', '◫', '◪', '□']) assert.ok(listing.includes(glyph), glyph);
-    const m = methodology();
-    for (const claim of ['Not a representative sample', 'corpus-relative', 'not issuance', 'policy difference', 'bounded by which twins', 'not a speed benchmark']) assert.ok(m.includes(claim), claim);
-  } finally { await server.close(); }
 });

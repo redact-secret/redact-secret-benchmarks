@@ -1,0 +1,91 @@
+/*
+ * Redact Secret design tokens. Copied from the design system's tokens.json
+ * (vendored beside this file as tokens.json; tests/design-tokens.test.mjs fails
+ * when the two drift). Do not invent values here: change the system first.
+ *
+ * Two additions the system does not make, both settled in the redesign plan:
+ *   - the OS dark preference applies the Dark theme unless data-theme="light";
+ *   - Noto Sans KR / Noto Serif KR follow each family, because Montserrat,
+ *     Roboto and Merriweather carry no Hangul.
+ */
+:root, [data-theme="light"] {
+  --brand-green: #aad816;
+  --on-brand: #0d0d0d;
+  --surface: #ffffff;
+  --ink: #0d0d0d;
+  --ink-muted: #555555;
+  --link: #5a7a00;
+  --focus: var(--link);
+  --line: #d9d9d9;
+  --status-success: #1b6e4a;
+  --status-success-fill: #e3f1ea;
+  --status-warning: #8a4b00;
+  --status-warning-fill: #fbeedd;
+  --status-danger: #b3261e;
+  --status-danger-fill: #fbe5e3;
+  --status-info: #1d5bb8;
+  --status-info-fill: #e3ecfa;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand-green: #aad816;
+    --on-brand: #0d0d0d;
+    --surface: #000000;
+    --ink: #f2f2f2;
+    --ink-muted: #a6a6a6;
+    --link: var(--brand-green);
+    --focus: var(--brand-green);
+    --line: #333333;
+    --status-success: #5fcf9b;
+    --status-success-fill: #0f2a1e;
+    --status-warning: #f0ad4e;
+    --status-warning-fill: #2e1f08;
+    --status-danger: #ff7b72;
+    --status-danger-fill: #351310;
+    --status-info: #7fb0ff;
+    --status-info-fill: #0f1d36;
+  }
+}
+:root[data-theme="dark"] {
+  --brand-green: #aad816;
+  --on-brand: #0d0d0d;
+  --surface: #000000;
+  --ink: #f2f2f2;
+  --ink-muted: #a6a6a6;
+  --link: var(--brand-green);
+  --focus: var(--brand-green);
+  --line: #333333;
+  --status-success: #5fcf9b;
+  --status-success-fill: #0f2a1e;
+  --status-warning: #f0ad4e;
+  --status-warning-fill: #2e1f08;
+  --status-danger: #ff7b72;
+  --status-danger-fill: #351310;
+  --status-info: #7fb0ff;
+  --status-info-fill: #0f1d36;
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --radius-0: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --font-montserrat: "Montserrat", "Noto Sans KR", system-ui, sans-serif;
+  --font-roboto: "Roboto", "Noto Sans KR", sans-serif;
+  --font-merriweather: "Merriweather", "Noto Serif KR", serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --text-display: 800 56px/60px var(--font-montserrat);
+  --text-h1: 800 40px/48px var(--font-montserrat);
+  --text-h2: 700 28px/36px var(--font-merriweather);
+  --text-h3: 700 20px/28px var(--font-merriweather);
+  --text-eyebrow: 700 12px/16px var(--font-montserrat);
+  --text-body: 400 16px/1.6 var(--font-roboto);
+  --text-body-strong: 600 16px/1.6 var(--font-roboto);
+  --text-small: 400 14px/20px var(--font-roboto);
+}

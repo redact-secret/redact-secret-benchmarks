@@ -4,6 +4,8 @@ import { overview, fixturePage, fixtureList, comparison, stats, title, readingNo
 import { accuracy } from './pages/accuracy';
 import { methodology } from './pages/methodology';
 import { escape as e, type Report, type Run } from './types';
+import { mountShell, renderPage, type NavItem, type SearchTarget } from './shell';
+import './tokens.css';
 import './style.css';
 import type { EvaluationReport } from './evaluation-types';
 
@@ -16,43 +18,20 @@ const listState = new Map<string, { filter: string; showAll: boolean; page: numb
 const openKeys = new Set<string>();
 const splitState = new Map<string, boolean>();
 const expanded = new Set<string>();
-const RECENT = 'secret-benchmarks:recent';
 
-type Target = { href: string; label: string; hint: string };
-const targets = (): Target[] => [
-  { href: '/benchmark', label: 'Overview', hint: 'workspace' },
-  { href: '/coverage-gaps', label: 'Coverage gaps', hint: 'workspace' },
-  { href: '/pending', label: 'Pending review', hint: `${fixtures.filter(f => f.assessment.tier === 'T0').length} unscored` },
-  { href: '/methodology', label: 'Methodology', hint: 'protocol v4' },
-  { href: '/evaluation', label: 'Evaluation Engine', hint: 'cases · assertions · review' },
+const targets = (): SearchTarget[] => [
   ...registry.detectors.map(d => ({ href: `/benchmark/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
   ...categories.map(c => ({ href: `/benchmark/${c.id}`, label: c.title, hint: 'case suite' })),
+  ...fixtures.map(f => ({ href: `/fixture/${f.slug}`, label: f.slug, hint: 'fixture' })),
 ];
-const recent = (): string[] => { try { return JSON.parse(localStorage.getItem(RECENT) ?? '[]'); } catch { return []; } };
-const remember = (href: string) => { try { localStorage.setItem(RECENT, JSON.stringify([href, ...recent().filter(h => h !== href)].slice(0, 6))); } catch {} };
-const navLink = (t: Target) => `<a href="${e(t.href)}" role="option" ${location.pathname.replace(/\/+$/, '') === t.href ? 'aria-current="page" aria-selected="true"' : 'aria-selected="false"'}>${e(t.label)}<small>${e(t.hint)}</small></a>`;
-
-function shell(content: string, label: string) {
-  document.title = `${label} · Secret Benchmarks`;
-  const all = targets();
-  const recents = recent().map(h => all.find(t => t.href === h)).filter((t): t is Target => Boolean(t));
-  app.innerHTML = `<aside><a class="brand" href="/benchmark"><span class="brand-icon">▥</span>secret<span>benchmarks</span></a><nav aria-label="Benchmarks"><div class="nav-label">WORKSPACE</div>${all.slice(0, 5).map(navLink).join('')}<div class="nav-label">FIND A DETECTOR OR SUITE</div><div class="combobox"><input id="nav-query" type="search" role="combobox" aria-expanded="true" aria-controls="nav-options" aria-autocomplete="list" placeholder="Type to filter ${registry.detectors.length} detectors, ${categories.length} suites…" autocomplete="off"><div id="nav-options" role="listbox" aria-label="Detectors and suites">${all.slice(5).map(navLink).join('')}</div></div>${recents.length ? `<div class="nav-label">RECENTLY VIEWED</div><div class="nav-group">${recents.map(navLink).join('')}</div>` : ''}</nav><div class="sidebar-bottom"><span class="dot"></span> Project-maintained benchmarks<p>Shared inputs. Inspectable results.</p><code>npm run bench</code></div></aside><main><header><span><a href="/benchmark">BENCHMARK LAB</a> <b>/</b> ${e(label)}</span><a href="https://github.com/redact-secret/redact-secret-benchmarks">Repository ↗</a></header><p class="banner">${location.pathname.startsWith('/evaluation') ? 'Evaluation infrastructure evidence. Review-required is unscored; peer disagreement is not ground truth. No support claims.' : 'Corpus-relative measurements per kind × tier on one run id. Not accuracy, not a ranking.'} <a class="text-link" href="/methodology">How to read this →</a></p><div class="content">${content}</div><footer>Project-maintained evaluation · Scope is specific to each report<span>Refreshes every 5s</span></footer></main>`;
-  bindNav();
-}
-
-function bindNav() {
-  const input = document.querySelector<HTMLInputElement>('#nav-query');
-  const list = document.querySelector<HTMLElement>('#nav-options');
-  if (!input || !list) return;
-  const apply = () => {
-    const q = input.value.trim().toLowerCase();
-    let shown = 0;
-    list.querySelectorAll<HTMLAnchorElement>('a').forEach(a => { a.hidden = Boolean(q) && !a.textContent!.toLowerCase().includes(q); if (!a.hidden) shown++; });
-    input.setAttribute('aria-expanded', String(shown > 0));
-  };
-  input.addEventListener('input', apply);
-  input.addEventListener('keydown', ev => { if (ev.key === 'Enter') { const first = Array.from(list.querySelectorAll<HTMLAnchorElement>('a')).find(a => !a.hidden); if (first) { ev.preventDefault(); navigate(new URL(first.href).pathname); } } });
-}
+const under = (...roots: string[]) => (path: string) => roots.some(root => path === root || path.startsWith(root + '/'));
+const NAV: NavItem[] = [
+  { href: '/benchmark', label: 'Report', short: 'Report', current: under('/benchmark', '/fixture') },
+  { href: '/coverage-gaps', label: 'Coverage', short: 'Coverage', current: under('/coverage-gaps') },
+  { href: '/evaluation', label: 'Workbench', short: 'Workbench', current: under('/evaluation', '/pending') },
+  { href: '/methodology', label: 'How to read', short: 'Read', current: under('/methodology') },
+];
+const shell = (content: string, label: string) => renderPage(content, label);
 
 function bindList(key: string) {
   const input = document.querySelector<HTMLInputElement>('#filter');
@@ -201,7 +180,6 @@ async function refresh(force = false) {
       body = title(category.title, category.description, 'BENCHMARK / CASE') + (report ? `<p class="run-line">Run <span class="mono">${e(report.runId)}</span> · measured ${e(new Date(report.generatedAt).toLocaleString())} · <a class="text-link" href="/results/${e(category.id)}.json" download>Export JSON ↗</a></p>${accuracy(report, run)}<details class="panel provenance" data-key="provenance"><summary>Run provenance</summary><dl><dt>Corpus SHA-256</dt><dd>${e(report.corpusHash)}</dd><dt>Lockfile SHA-256</dt><dd>${e(report.lockHash)}</dd><dt>Revision</dt><dd>${e(report.revision)}${report.dirty ? ' (modified)' : ''}</dd><dt>Environment</dt><dd>${e(report.runtime.node)} / ${e(report.runtime.platform)} / ${e(report.runtime.arch)}</dd><dt>Matching rule</dt><dd>${e(report.matching)}</dd></dl></details>` : stats(fixtures.filter(f => f.category === category.id)) + fixtureList(fixtures.filter(f => f.category === category.id), reports, run));
     } else body = overview(reports, run);
     shell(notice + body, label);
-    remember(location.pathname.replace(/\/+$/, ''));
     restoreDetails();
     bindSplit();
     bindList(location.pathname);
@@ -230,6 +208,7 @@ document.addEventListener('click', event => {
   if (url.origin !== location.origin || !/^\/(benchmark|fixture|methodology|coverage-gaps|pending|evaluation)(\/|$)/.test(url.pathname)) return;
   event.preventDefault(); navigate(url.pathname);
 });
+mountShell(app, { nav: NAV, targets, navigate });
 window.addEventListener('popstate', () => { lastPayload = ''; void refresh(true); });
 // Preserve bookmarks from the original hash navigation.
 if (location.hash.startsWith('#/')) {

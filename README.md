@@ -354,7 +354,10 @@ and the earlier milestone source review. The benchmark is now pinned to the
 published `0.1.0-beta.4` package. The generated
 [release comparison](docs/release-comparison.md) is the maintained view; the
 [beta.4](docs/beta-4-results.md) and [beta.3](docs/beta-3-results.md)
-documents are historical schema-v2 snapshots.
+documents are historical schema-v2 snapshots. The
+[beta.5 candidate precision gate](docs/beta-5-results.md) (redact-secret#376)
+is separate schema-v4 unpublished-candidate evidence, not another
+published-package snapshot.
 
 **Beta.3 regressions** adds another **92 fixtures** for the 11 detection-related
 closed issues reviewed in milestone 6. The full suite now contains **243 files,

@@ -122,7 +122,7 @@ npm start
 ```
 
 `npm start` runs all registered benchmarks, writes sanitized JSON results,
-and serves the dashboard at **http://127.0.0.1:5174/benchmark** with Vite. The server
+and serves the site at **http://127.0.0.1:5174/report** with Vite. The server
 fails explicitly if that port is occupied rather than silently changing ports.
 Production preview uses **http://127.0.0.1:4174**. The published
 npm package for redact-secret is pinned in the lockfile. Gitleaks and
@@ -248,35 +248,60 @@ scanners/index.mjs             Published-package / external-process adapters
 fixtures/<category>/          Versioned corpus and independent expected ranges
 public/results/<category>.json Generated report per category (gitignored)
 public/results/run.json        Run manifest: run id, suites, scanner versions
-src/main.ts                   Application shell, history routing and report refresh
+public/results/summary.json    Cross-suite and per-detector groups for the run, accounted once at bench time
+benchmarks/lib/run-summary.ts  Builds summary.json with the same accountGroups that accounts each suite
+src/main.ts                   Data loading, history routing and report refresh
+src/shell.ts                  Top bar, global search, theme switch, bottom tabs at 360px
+src/tokens.css, tokens.json   Redact Secret design tokens, copied from the design system (a test fails on drift)
+src/style.css                 App styles: tokens only, no hex, no raw px, no shadows
+src/components/*.ts           Figure, Interval, StatusMark, ByteView, RedactionLane, EvidenceCrumb, ActionEmptyState
 src/catalog.ts                Synthetic corpus imports and byte-identity hashes
-src/model.mjs                 Catalog validation, route parsing and score projections
-src/pages/browse.ts            Overview, detector and exact fixture pages
-src/pages/accuracy.ts          Accuracy visualization and fixture explorer
+src/model.mjs                 Catalog validation, route table with legacy redirects, report re-validation
+src/evaluation-model.ts       Evaluation evidence checks; review-ledger classes, change rows, qualification floors
+src/pages/*.ts                Report, Coverage, Suite, Evidence (fixture), How to read
+src/pages/workbench/*.ts      Workbench home, review group, changes, qualification, method
 ```
 
-The dashboard uses these bookmarkable routes:
+The site has two entrances in one app, Report for readers and Workbench for
+maintainers, and these bookmarkable routes:
 
-- `/benchmark`: overview statistics, scanner comparisons, all 25 detector families,
-  and the ten case suites.
-- `/benchmark/github-token` (or another detector ID): fixtures targeting that
-  detector across case suites. Detectors with no assigned fixtures explicitly
-  show no coverage. Positive and negative fixture counts are separate.
-- `/benchmark/reference-syntax` (or another case ID): the original complete
-  suite, including regression context and source report provenance. SendGrid
-  has both a regression case suite and a `/benchmark/sendgrid-token` detector page.
-- `/fixture/context-edges--unicode`: the exact synthetic input, highlighted
-  expected spans, escaped whitespace, per-scanner findings, and a byte-preserving
-  fixture download. Slugs are `<case-id>--<fixture-id>` to avoid collisions.
-- `/coverage-gaps`: searchable Gitleaks/TruffleHog detector inventory and
-  the six beta.3 fixture failures resolved by beta.4 issues #292–294.
-- `/pending`: T0 fixtures, inspectable and unscored.
-- `/methodology`: the protocol, its limits and reproduction details, stated once.
+- `/report`: three answers (leaked, false alarms, twin discrimination) as the
+  published pessimistic bound with its observed fraction and n. `?level=T2` and
+  `?level=T3` switch the evidence level; T1 is first. Other scanners are
+  reference rows in run order, never ranked. Published package results only.
+- `/coverage`: the 42 detector families by fixture count, with the minimum
+  sample size drawn on every bar. `?show=thin` keeps the families at that
+  minimum; `?show=inventory` is the Gitleaks/TruffleHog inventory of families
+  with no dedicated detector.
+- `/coverage/github-token` (or another detector ID): that detector's groups,
+  reference scanners and rows.
+- `/suites/reference-syntax` (or another case ID): the complete suite with its
+  own published groups and run provenance.
+- `/fixture/context-edges--unicode`: the evidence view. Green marks the bytes
+  that must be redacted, an ink underline the envelope, and one lane per
+  scanner what it covered: solid, hatched (partly exposed) or a dashed empty
+  frame (missed). Includes the reproduce command and a byte-preserving
+  download. Slugs are `<case-id>--<fixture-id>` to avoid collisions.
+- `/workbench`: run health in five "n of m" sentences, the review queue grouped
+  by ledger class, and summaries of changes and qualification floors.
+- `/workbench/review/<class>`: one review group with representative entries and
+  a ledger fragment to copy into a pull request. The site writes no file.
+- `/workbench/changes`: saved baseline against the current run, or candidate
+  evidence when `eval:candidate` writes to `public/results`. `?corpus=expanded`.
+- `/workbench/qualification`: each floor, whether it is met, and the actual value.
+- `/workbench/method/twin` (or benign, metamorphic, mutation, differential,
+  holdout): evaluation evidence per method.
+- `/how-to-read`: the protocol, glossary, limits and reproduction, stated once.
+
+Every pre-redesign path (`/benchmark`, `/benchmark/<id>`, `/coverage-gaps`,
+`/evaluation…`, `/pending`, `/methodology`, and `#/…` hashes) redirects to its
+replacement. The site reads bounds from the published JSON and derives none:
+per suite from each suite report, across suites from `summary.json`.
+Setting `VITE_PUBLIC_ROUTES_ONLY=1` at build time drops the Workbench routes.
 
 Vite supports direct links and reloads on these paths. A production static
 host must rewrite unknown document paths to `/index.html` while serving assets
-and `/results/*.json` normally. Old `#/accuracy`-style bookmarks redirect to
-the matching case page. The app is served at the origin root.
+and `/results/*.json` normally. The app is served at the origin root.
 
 To add an accuracy case, create a corpus and register a unique URL-safe `id`,
 `title`, `description`, `kind: "accuracy"`, and `corpus` path in
@@ -379,7 +404,7 @@ negative controls) across all **25 registered detector families**, including
 the 15 previously without assigned fixtures. With the reviewed-format suite and
 its 56 negative twins the catalog contains **605 files, 386 secret spans, and
 ten case suites**. Open
-`/benchmark/detector-coverage` or any detector page to inspect the new cases.
+`/suites/detector-coverage` or any detector page to inspect the new cases.
 Provider prefix variants, six PEM labels, JWT, Bearer headers, five database
 schemes, OTP URIs, and generic fields have bare, quoted, and Unicode/CRLF
 contexts. All expectations are constructed independently of scanner output.

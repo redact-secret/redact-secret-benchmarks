@@ -13,11 +13,12 @@ test('Figure: the direction word follows the published direction', () => {
   assert.equal(directionWord('lower'), 'at least');
   assert.equal(directionWord(null), '');
   const leak = figure({ question: 'Does it miss real secrets?', value: { point: 0, bound: 0.026894, n: 139, direction: 'upper' }, observed: { count: 0, of: 139, noun: 'secret spans leaked' }, definition: 'Leaked span rate.' });
-  assert.match(leak, /<small>at most<\/small>2\.7%/, 'the bound is the large number, not the point');
+  assert.match(leak, /<small>at most<\/small> 2\.7%/, 'the bound is the large number, not the point');
+  assert.match(text(leak), /at most 2\.7%/, 'read aloud or copied, the word and the number stay apart');
   assert.match(leak, /<b>0 of 139<\/b> secret spans leaked/);
   assert.match(leak, /class="def">Leaked span rate\./);
   const twins = figure({ question: 'Does it tell near-twins apart?', value: { point: 0.859155, bound: 0.75978, n: 71, direction: 'lower' }, observed: { count: 61, of: 71, noun: 'pairs discriminated' } });
-  assert.match(twins, /<small>at least<\/small>76\.0%/);
+  assert.match(twins, /<small>at least<\/small> 76\.0%/);
   assert.ok(!twins.includes('85.9%</p>'), 'the point estimate never takes the large slot');
 });
 

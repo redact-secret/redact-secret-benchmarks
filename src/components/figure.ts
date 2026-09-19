@@ -44,7 +44,8 @@ export function figure(input: FigureInput): string {
     body = `<p class="held">${statusMark(value.withheld === 'not-measured' ? 'not-measured' : 'withheld', WITHHELD_WORD[value.withheld])}<span>${escapeHtml(withheldReason(value))}</span></p>`;
   } else {
     const shown = value.bound ?? value.point, word = value.bound == null ? '' : directionWord(value.direction);
-    const number = `${word ? `<small>${word}</small>` : ''}${escapeHtml(format(shown))}`;
+    // A real space, not only a margin: a screen reader and a copied figure both read "at most 2.7%".
+    const number = `${word ? `<small>${word}</small> ` : ''}${escapeHtml(format(shown))}`;
     body = `<p class="v">${href ? `<a href="${escapeHtml(href)}">${number}</a>` : number}</p>`;
     if (!compact && value.bound != null && value.direction) {
       const [lo, hi] = value.direction === 'upper' ? [value.point, value.bound] : [value.bound, value.point];

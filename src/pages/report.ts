@@ -7,6 +7,8 @@ import { runStates } from './states';
 
 export type Level = 'T1' | 'T2' | 'T3';
 export const LEVELS: Level[] = ['T1', 'T2', 'T3'];
+/** At 360px the segment labels shorten; the full name stays the accessible name. */
+const SHORT: Record<Level, string> = { T1: 'Provider', T2: 'Tool', T3: 'Policy' };
 export const levelOf = (search: string): Level => { const value = new URLSearchParams(search).get('level'); return LEVELS.includes(value as Level) ? (value as Level) : 'T1'; };
 /** Project policy is its own kind: T3 has no must-redact group, by construction. */
 export const redactKey = (level: Level) => (level === 'T3' ? 'policy/T3' : `must-redact/${level}`);
@@ -19,7 +21,7 @@ export const controlKey = (level: Level) => `must-not-flag/${level}`;
  */
 export function reportPage(data: BenchData, level: Level, fixtures: Fixture[]): string {
   const version = data.run?.scannerVersions[PRODUCT], runId = runIdOf(data);
-  const seg = `<div class="seg" role="group" aria-label="Evidence level">${LEVELS.map(l => `<a href="/report${l === 'T1' ? '' : `?level=${l}`}"${l === level ? ' aria-current="true"' : ''}>${e(tierTitle(l))}</a>`).join('')}</div>`;
+  const seg = `<div class="seg" role="group" aria-label="Evidence level">${LEVELS.map(l => `<a href="/report${l === 'T1' ? '' : `?level=${l}`}"${l === level ? ' aria-current="true"' : ''} aria-label="${e(tierTitle(l))}"><span class="wide">${e(tierTitle(l))}</span><span class="narrow">${SHORT[l]}</span></a>`).join('')}</div>`;
   const summary = data.summaryProblem ? undefined : data.summary;
   const reports = currentReports(data), scanners = summary?.scanners ?? [];
   const head = `<div class="page-head"><div><p class="eyebrow">${e(`${PRODUCT}${version ? ` ${version}` : ''}`.toUpperCase())}</p><h1>What the benchmark shows</h1><div class="meta">${runId ? `<span>Run <b>${e(runId.slice(0, 10))}</b></span>` : ''}${summary ? `<span>Same ${fixtures.length.toLocaleString('en-US')} inputs for ${scanners.length} scanners</span><span>Accounting <b>v${e(summary.accountingVersion)}</b></span>` : ''}<a href="/how-to-read">How to read these numbers</a></div></div>${seg}</div>`;

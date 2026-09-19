@@ -100,9 +100,35 @@ export function buildCorpora() {
       ),
     ),
   );
+  // Negative twins (§2.5): one character shorter than the contracted/tool-
+  // corroborated body, holding the surrounding `<ID>_TOKEN=` assignment fixed.
+  const formatTwinFamilies = {
+    ghp: ["github-token", "length: 35 vs contracted 36"],
+    gho: ["github-token", "length: 35 vs contracted 36"],
+    ghu: ["github-token", "length: 35 vs contracted 36"],
+    gitlab: ["gitlab-token", "length: 19 vs contracted 20"],
+    sendgrid: ["sendgrid-token", "length: 42 vs contracted 43"],
+  };
+  const formatTwins = shapes
+    .filter(([id]) => id in formatTwinFamilies)
+    .flatMap(([id, group, make]) => {
+      const [family, mutation] = formatTwinFamilies[id];
+      return [1, 2, 3].map((sample) => ({
+        ...fixture(
+          `${id}-${sample}-twin`,
+          group,
+          [`${id.toUpperCase()}_TOKEN=`, make(`${id}:${sample}`).slice(0, -1), "\n"],
+          "env",
+        ),
+        detectors: [family],
+        twinOf: `${id}-${sample}`,
+        mutation,
+        mutationKind: "length",
+      }));
+    });
   const secret = { secret: `ghp_${synthetic("context-primary", 36)}` };
   const other = { secret: `ghp_${synthetic("context-secondary", 36)}` };
-  const contexts = [
+  const contextDefs = [
     ["bare", "Boundaries", [secret]],
     ["no-final-newline", "Boundaries", ["GITHUB_TOKEN=", secret]],
     ["single-quotes", "Quoting", ["GITHUB_TOKEN='", secret, "'\n"]],
@@ -144,7 +170,21 @@ export function buildCorpora() {
       "Long input",
       ["# " + "benign text ".repeat(6000) + "\nGITHUB_TOKEN=", secret, "\n"],
     ],
-  ].map(([id, group, parts, ext]) => fixture(id, group, parts, ext));
+  ];
+  const contexts = contextDefs.map(([id, group, parts, ext]) => fixture(id, group, parts, ext));
+  // Negative twins (§2.5): every single-secret context gets a paired control
+  // whose github-token body is one character shorter than the contracted 36,
+  // holding the surrounding context byte-for-byte constant.
+  const contextTwinValue = `ghp_${synthetic("context-primary", 36).slice(0, -1)}`;
+  const contextTwins = contextDefs
+    .filter(([id]) => !["two-secrets", "repeated-lines", "same-line-distinct"].includes(id))
+    .map(([id, group, parts, ext]) => ({
+      ...fixture(`${id}-twin`, group, parts.map(p => (p === secret ? contextTwinValue : p)), ext),
+      detectors: ["github-token"],
+      twinOf: id,
+      mutation: "length: 35 vs contracted 36",
+      mutationKind: "length",
+    }));
   const negatives = [
     ["empty", "Empty inputs", ""],
     ["whitespace", "Empty inputs", " \t\r\n\n"],
@@ -223,8 +263,8 @@ export function buildCorpora() {
     fixtures,
   });
   const corpora = {
-    "credential-formats": wrap(formats),
-    "context-edges": wrap(contexts),
+    "credential-formats": wrap([...formats, ...formatTwins]),
+    "context-edges": wrap([...contexts, ...contextTwins]),
     "negative-controls": wrap(negatives),
     ...buildRegressions({ fixture, synthetic, wrap, quoted }),
     ...buildClosedMilestone({ fixture, synthetic, wrap, quoted, uri }),

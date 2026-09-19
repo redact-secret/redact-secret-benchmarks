@@ -5,11 +5,17 @@ import { validateCorpus } from "../benchmarks/lib/scoring.ts";
 
 const corpora = buildCorpora();
 
-test("SendGrid matrix contains three exact shapes in ten contexts and eight near misses", () => {
+test("SendGrid matrix contains three exact shapes in ten contexts, eight near misses and eleven negative twins", () => {
   const { fixtures } = validateCorpus(corpora["sendgrid-regressions"]);
   const positive = fixtures.filter((f) => f.expected.length);
   assert.equal(positive.length, 30);
-  assert.equal(fixtures.length - positive.length, 8);
+  assert.equal(fixtures.length - positive.length, 19);
+  const twins = fixtures.filter((f) => f.twinOf);
+  assert.equal(twins.length, 11);
+  for (const f of twins) {
+    assert.equal(f.mutationKind, "length");
+    assert.ok(positive.some((p) => p.id === f.twinOf), f.id);
+  }
   const values = new Set();
   for (const f of positive) {
     assert.equal(f.expected.length, 1);

@@ -41,11 +41,31 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     add(detector, `${variant}-quoted`, ['value="', ...parts, '"\n']);
     add(detector, `${variant}-unicode-crlf`, ["# 🔑 密钥 café\r\n", ...parts, "\r\n"]);
   };
+  // Negative twin (§2.5): same context, the value one character shorter than
+  // the tool-corroborated length declared in `families` above.
+  const addTwin = (detector, variant, twinValue, mutation) => {
+    const twin = (suffix, parts) => fixtures.push({
+      ...fixture(`${detector}-${variant}-${suffix}-twin`, detector, parts),
+      detectors: [detector],
+      twinOf: `${detector}-${variant}-${suffix}`,
+      mutation,
+      mutationKind: "length",
+    });
+    twin("bare", [twinValue]);
+    twin("quoted", ['value="', twinValue, '"\n']);
+    twin("unicode-crlf", ["# 🔑 密钥 café\r\n", twinValue, "\r\n"]);
+  };
+  // (detector, prefix index) pairs currently dark for must-redact/T2 twin
+  // coverage (docker-token, linear-token, google-api-key, notion-token,
+  // atlassian-api-token); one representative shape each is enough to move
+  // the corpus-wide floor without inventing coverage for every shape.
+  const twinTargets = { "docker-token": 1, "linear-token": 0, "google-api-key": 0, "notion-token": 0, "atlassian-api-token": 0 };
   for (const [detector, prefixes, length, alphabet] of families) {
     prefixes.forEach((prefix, index) => {
-      positive(detector, `shape-${index + 1}`, [
-        { secret: prefix + synthetic(`detector-coverage:${detector}:${prefix}`, length, alphabet) },
-      ]);
+      const value = prefix + synthetic(`detector-coverage:${detector}:${prefix}`, length, alphabet);
+      positive(detector, `shape-${index + 1}`, [{ secret: value }]);
+      if (twinTargets[detector] === index)
+        addTwin(detector, `shape-${index + 1}`, value.slice(0, -1), `length: ${value.length - 1} vs contracted ${value.length}`);
     });
     add(detector, "prefix-only", [prefixes.join("\n")]);
     add(detector, "short-body", [prefixes.map(prefix => prefix + "abc").join("\n")]);

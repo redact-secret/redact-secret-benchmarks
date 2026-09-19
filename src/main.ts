@@ -1,5 +1,5 @@
 import { categories, registry, fixtures, corpusHashes } from './catalog';
-import { parseRoute, reportProblem } from './model.mjs';
+import { parseRoute, isAppPath, reportProblem } from './model.mjs';
 import { overview, fixturePage, fixtureList, comparison, stats, title, readingNote, runLine } from './pages/browse';
 import { accuracy } from './pages/accuracy';
 import { methodology } from './pages/methodology';
@@ -12,7 +12,10 @@ import type { EvaluationReport } from './evaluation-types';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const hashes = corpusHashes();
 let request = 0, lastPayload = '', downloadUrl = '';
-const route = () => parseRoute(location.pathname);
+/** Allowlist flag for a future customer-only build: set VITE_PUBLIC_ROUTES_ONLY=1 and Workbench paths stop resolving. */
+const PUBLIC_ONLY = import.meta.env.VITE_PUBLIC_ROUTES_ONLY === '1';
+const suiteIds = categories.map(c => c.id);
+const route = () => parseRoute(location.pathname, { suites: suiteIds, publicOnly: PUBLIC_ONLY });
 // Per-route UI state survives the 5-second polling re-render.
 const listState = new Map<string, { filter: string; showAll: boolean; page: number }>();
 const openKeys = new Set<string>();
@@ -20,17 +23,17 @@ const splitState = new Map<string, boolean>();
 const expanded = new Set<string>();
 
 const targets = (): SearchTarget[] => [
-  ...registry.detectors.map(d => ({ href: `/benchmark/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
-  ...categories.map(c => ({ href: `/benchmark/${c.id}`, label: c.title, hint: 'case suite' })),
+  ...registry.detectors.map(d => ({ href: `/coverage/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
+  ...categories.map(c => ({ href: `/suites/${c.id}`, label: c.title, hint: 'case suite' })),
   ...fixtures.map(f => ({ href: `/fixture/${f.slug}`, label: f.slug, hint: 'fixture' })),
 ];
 const under = (...roots: string[]) => (path: string) => roots.some(root => path === root || path.startsWith(root + '/'));
 const NAV: NavItem[] = [
-  { href: '/benchmark', label: 'Report', short: 'Report', current: under('/benchmark', '/fixture') },
-  { href: '/coverage-gaps', label: 'Coverage', short: 'Coverage', current: under('/coverage-gaps') },
-  { href: '/evaluation', label: 'Workbench', short: 'Workbench', current: under('/evaluation', '/pending') },
-  { href: '/methodology', label: 'How to read', short: 'Read', current: under('/methodology') },
-];
+  { href: '/report', label: 'Report', short: 'Report', current: under('/report') },
+  { href: '/coverage', label: 'Coverage', short: 'Coverage', current: under('/coverage', '/suites', '/fixture') },
+  { href: '/workbench', label: 'Workbench', short: 'Workbench', current: under('/workbench') },
+  { href: '/how-to-read', label: 'How to read', short: 'Read', current: under('/how-to-read') },
+].filter(item => !PUBLIC_ONLY || item.href !== '/workbench');
 const shell = (content: string, label: string) => renderPage(content, label);
 
 function bindList(key: string) {
@@ -102,12 +105,17 @@ function restoreDetails() {
 
 async function refresh(force = false) {
   const current = route();
-  if (current.kind === 'coverage-gaps' && !force) return;
+  if (current.kind === 'redirect') { history.replaceState(null, '', current.to + location.search + location.hash); lastPayload = ''; return refresh(true); }
+  const inventoryView = current.kind === 'coverage' && !current.id;
+  if (inventoryView && !force) return;
   const token = ++request, path = location.pathname;
-  if (current.kind === 'evaluation') {
+  if (current.kind === 'workbench') {
+    if (current.view === 'changes') { if (force) shell('<h1>Changes</h1><p class="small">Baseline to candidate changes arrive with the Workbench stage.</p>', 'Changes'); return; }
+    const legacyView = current.view === 'review' ? 'reviews' : current.view === 'qualification' ? 'method' : current.view;
+    const legacyId = current.view === 'qualification' ? 'holdout' : current.view === 'review' ? '' : current.id;
     const [{ evaluationProblem }, { evaluationPage, evaluationEmpty, bindEvaluation }] = await Promise.all([import('./evaluation-model'), import('./pages/evaluation')]);
     if (token !== request || path !== location.pathname) return;
-    if (force) shell('<p role="status">Loading evaluation evidence…</p>', 'Evaluation Engine');
+    if (force) shell('<p role="status">Loading evaluation evidence…</p>', 'Workbench');
     try {
       const response = await fetch('/results/evaluation-v1.json', { cache: 'no-store' });
       if (!response.ok) throw Error('Evaluation report not published');
@@ -117,14 +125,14 @@ async function refresh(force = false) {
       const payload = JSON.stringify(report);
       if (!force && payload === lastPayload) return;
       lastPayload = payload;
-      shell(problem ? evaluationEmpty(problem) : evaluationPage(report, current.view!, current.id), 'Evaluation Engine');
+      shell(problem ? evaluationEmpty(problem) : evaluationPage(report, legacyView!, legacyId), 'Workbench');
       bindEvaluation();
     } catch {
-      if (token === request && path === location.pathname) { lastPayload = ''; shell(evaluationEmpty('Evaluation report missing or unreadable'), 'Evaluation Engine'); }
+      if (token === request && path === location.pathname) { lastPayload = ''; shell(evaluationEmpty('Evaluation report missing or unreadable'), 'Workbench'); }
     }
     return;
   }
-  if (current.kind === 'coverage-gaps') {
+  if (inventoryView) {
     if (force) {
       shell('<p role="status">Loading detector inventory…</p>', 'Coverage gaps');
       try {
@@ -135,13 +143,13 @@ async function refresh(force = false) {
     }
     return;
   }
-  if (current.kind === 'methodology') { if (force) shell(methodology(), 'Methodology'); return; }
-  const detector = current.kind === 'benchmark' ? registry.detectors.find(d => d.id === current.id) : undefined;
-  const category = current.kind === 'benchmark' ? categories.find(c => c.id === current.id) : undefined;
+  if (current.kind === 'how-to-read') { if (force) shell(methodology(), 'How to read'); return; }
+  const detector = current.kind === 'coverage' ? registry.detectors.find(d => d.id === current.id) : undefined;
+  const category = current.kind === 'suite' ? categories.find(c => c.id === current.id) : undefined;
   const fixture = current.kind === 'fixture' ? fixtures.find(f => f.slug === current.id) : undefined;
-  const pending = current.kind === 'pending';
-  if (current.kind !== 'overview' && !pending && !detector && !category && !fixture) {
-    shell('<h1>Page not found.</h1><a class="text-link" href="/benchmark">Return to benchmark overview →</a>', 'Not found'); return;
+  const pending = false;
+  if (current.kind !== 'report' && !pending && !detector && !category && !fixture) {
+    shell('<h1>Page not found</h1><p class="small">No page lives at this path. <a href="/report">Open the report</a>.</p>', 'Not found'); return;
   }
   const label = detector?.title ?? category?.title ?? fixture?.id ?? (pending ? 'Pending review' : 'Benchmark overview');
   if (force) shell('<p role="status">Loading benchmark results…</p>', label);
@@ -205,15 +213,15 @@ document.addEventListener('click', event => {
   const anchor = (event.target as Element).closest<HTMLAnchorElement>('a[href]');
   if (!anchor || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || anchor.hasAttribute('download') || anchor.target) return;
   const url = new URL(anchor.href);
-  if (url.origin !== location.origin || !/^\/(benchmark|fixture|methodology|coverage-gaps|pending|evaluation)(\/|$)/.test(url.pathname)) return;
-  event.preventDefault(); navigate(url.pathname);
+  if (url.origin !== location.origin || !isAppPath(url.pathname)) return;
+  event.preventDefault(); navigate(url.pathname + url.search);
 });
 mountShell(app, { nav: NAV, targets, navigate });
 window.addEventListener('popstate', () => { lastPayload = ''; void refresh(true); });
-// Preserve bookmarks from the original hash navigation.
+// Preserve bookmarks from the original hash navigation; parseRoute forwards the old path from there.
 if (location.hash.startsWith('#/')) {
   const old = location.hash.slice(2);
   history.replaceState(null, '', old === 'methodology' ? '/methodology' : `/benchmark/${old}`);
-} else if (location.pathname === '/') history.replaceState(null, '', '/benchmark');
+}
 void refresh(true);
 setInterval(() => { void refresh(); }, 5000);

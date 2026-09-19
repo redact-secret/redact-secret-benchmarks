@@ -51,10 +51,14 @@ test('missing, legacy, stale, dangling assertions and scored T0 evidence fail cl
   const scored = published(); scored.cases[0].variants[0].tier = 'T0';
   assert.ok(evaluationProblem(scored));
 });
-test('all evaluation routes parse on direct navigation', () => {
-  for (const path of ['/evaluation','/evaluation/failures','/evaluation/reviews','/evaluation/operators', ...['twin','benign','metamorphic','mutation','differential','holdout'].map(m => `/evaluation/method/${m}`),'/evaluation/detector/github-token']) assert.equal(parseRoute(path + '/').kind, 'evaluation');
+test('every pre-redesign evaluation route forwards to Workbench on direct navigation', () => {
+  for (const path of ['/evaluation','/evaluation/failures','/evaluation/reviews','/evaluation/operators', ...['twin','benign','metamorphic','mutation','differential','holdout'].map(m => `/evaluation/method/${m}`)]) {
+    const route = parseRoute(path + '/');
+    assert.equal(route.kind, 'redirect', path);
+    assert.equal(parseRoute(route.to).kind, 'workbench', path);
+  }
+  assert.equal(parseRoute('/evaluation/detector/github-token').to, '/coverage/github-token');
   assert.equal(parseRoute('/evaluation/unknown').kind, 'missing');
-  assert.equal(parseRoute('/benchmark/github-token').kind, 'benchmark');
 });
 
 test('public contract rejects unknown fields and injected holdout detail', () => {

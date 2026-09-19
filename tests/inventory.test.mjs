@@ -114,7 +114,8 @@ test('known gap issues cover all recorded failures and link to authored fixtures
 });
 
 test('coverage route renders inventory, source provenance, milestone, and fixture follow-ups', async () => {
-  assert.equal(parseRoute('/coverage-gaps/').kind, 'coverage-gaps');
+  assert.deepEqual(parseRoute('/coverage-gaps/'), { kind: 'redirect', id: '', view: '', to: '/coverage' });
+  assert.equal(parseRoute('/coverage').kind, 'coverage');
   const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
   try {
     const {coverageGaps} = await server.ssrLoadModule('/src/pages/gaps.ts');

@@ -24,13 +24,45 @@ test('all corpus fixtures have unique, routable slugs and explicit detector assi
   assert.throws(() => buildCatalog(categories,corpora,{...assignments,[fixtures[0].slug]:['unknown']},registry.detectors),/Unknown/);
   assert.throws(() => buildCatalog(categories,corpora,assignments,[{id:categories[0].id}]),/unique/);
 });
-test('routes distinguish overview, detectors/cases, fixtures, pending, methodology and invalid paths', () => {
-  assert.equal(parseRoute('/').kind,'overview');
-  assert.equal(parseRoute('/benchmark/').kind,'overview');
-  assert.deepEqual(parseRoute('/benchmark/github-token'),{kind:'benchmark',id:'github-token'});
-  assert.equal(parseRoute('/methodology').kind,'methodology');
-  assert.equal(parseRoute('/pending/').kind,'pending');
-  for (const path of ['/fixture','/benchmark/a/b','/benchmark/%3Cscript%3E']) assert.equal(parseRoute(path).kind,'missing');
+const suites = categories.map(c => c.id);
+const resolve = path => parseRoute(path, { suites });
+test('the redesign route table resolves, with or without a trailing slash', () => {
+  assert.equal(resolve('/report').kind, 'report');
+  assert.equal(resolve('/coverage/').kind, 'coverage');
+  assert.deepEqual(resolve('/coverage/github-token'), { kind: 'coverage', id: 'github-token', view: '', to: '' });
+  assert.deepEqual(resolve('/suites/accuracy'), { kind: 'suite', id: 'accuracy', view: '', to: '' });
+  assert.deepEqual(resolve('/workbench'), { kind: 'workbench', id: '', view: 'overview', to: '' });
+  assert.deepEqual(resolve('/workbench/review/lexical-invalid-alphabet'), { kind: 'workbench', id: 'lexical-invalid-alphabet', view: 'review', to: '' });
+  assert.equal(resolve('/workbench/changes').view, 'changes');
+  assert.equal(resolve('/workbench/qualification/').view, 'qualification');
+  for (const method of ['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout']) assert.deepEqual(resolve(`/workbench/method/${method}`), { kind: 'workbench', id: method, view: 'method', to: '' });
+  assert.equal(resolve('/how-to-read').kind, 'how-to-read');
+  for (const path of ['/fixture', '/coverage/a/b', '/coverage/%3Cscript%3E', '/workbench/method/unknown', '/workbench/review', '/suites', '/nope']) assert.equal(resolve(path).kind, 'missing', path);
+});
+test('no bookmark breaks: every pre-redesign path redirects to a page that resolves', () => {
+  const legacy = {
+    '/': '/report', '/benchmark': '/report', '/benchmark/': '/report', '/coverage-gaps': '/coverage', '/methodology': '/how-to-read',
+    '/pending': '/workbench/review/t0-fixtures', '/pending/': '/workbench/review/t0-fixtures',
+    '/evaluation': '/workbench', '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation',
+    '/evaluation/detector/github-token': '/coverage/github-token',
+    ...Object.fromEntries(['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => [`/evaluation/method/${m}`, `/workbench/method/${m}`])),
+    ...Object.fromEntries(registry.detectors.map(d => [`/benchmark/${d.id}`, `/coverage/${d.id}`])),
+    ...Object.fromEntries(categories.map(c => [`/benchmark/${c.id}`, `/suites/${c.id}`])),
+  };
+  assert.ok(Object.keys(legacy).length > 60);
+  for (const [from, to] of Object.entries(legacy)) {
+    assert.deepEqual(resolve(from), { kind: 'redirect', id: '', view: '', to }, from);
+    assert.ok(!['redirect', 'missing'].includes(resolve(to).kind), `${from} -> ${to} must land on a real page`);
+  }
+  assert.equal(resolve('/evaluation/unknown').kind, 'missing');
+});
+test('the public-only allowlist drops Workbench and nothing else', () => {
+  const open = path => parseRoute(path, { suites, publicOnly: true }).kind;
+  for (const path of ['/workbench', '/workbench/changes', '/workbench/method/twin', '/evaluation', '/pending']) assert.equal(open(path), 'missing', path);
+  assert.equal(open('/report'), 'report');
+  assert.equal(open('/coverage/github-token'), 'coverage');
+  assert.equal(open('/benchmark/accuracy'), 'redirect');
+  assert.equal(open('/how-to-read'), 'how-to-read');
 });
 test('UTF-8 highlighting round-trips every input including BOM, Unicode, CRLF and multiple secrets', () => {
   for (const f of fixtures) {

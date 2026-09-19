@@ -46,14 +46,15 @@
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
     "eval:milestone": "node scripts/refresh-evaluation-milestone.mjs"
   },
-  "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks and TruffleHog on identical fixture sets.",
+  "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/redact-secret/redact-secret-benchmarks.git"
   },
   "dependencies": {
-    "@redact-secret/core": "0.1.0-beta.4"
+    "@redact-secret/core": "0.1.0-beta.4",
+    "flare-redact": "1.6.1"
   },
   "devDependencies": {
     "@types/node": "22.20.3",

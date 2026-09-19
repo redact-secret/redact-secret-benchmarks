@@ -16,6 +16,7 @@ test('source inventory has unique, traceable entries and valid conservative mapp
   assert.equal(new Set(rows.map(r => `${r.tool}:${r.id}`)).size, rows.length);
   assert.equal(rows.filter(r => r.tool === 'gitleaks').length, 222);
   assert.equal(rows.filter(r => r.tool === 'trufflehog').length, 892);
+  assert.equal(rows.filter(r => r.tool === 'flare-redact').length, 81);
   assert.equal(inventory.redactSecretRevision, registry.sourceRevision);
   for (const r of rows) {
     const source = inventory.sources[r.tool];
@@ -57,14 +58,44 @@ dets = slices.DeleteFunc(dets, func(d detectors.Detector) bool {
  case *pinecone.Scanner:
  return !feature.PineconeDetectorEnabled.Load()
 })'''
-rows=m.inventory('[[rules]]\\nid = "gcp-api-key"\\n',source,{'gitleaks':{'url':'https://example.invalid/g'},'trufflehog':{'url':'https://example.invalid/t'}})
+empty_spec='{"detectors":[]}'
+sources={'gitleaks':{'url':'https://example.invalid/g'},'trufflehog':{'url':'https://example.invalid/t'},'flare-redact':{'url':'https://example.invalid/f'}}
+rows=m.inventory('[[rules]]\\nid = "gcp-api-key"\\n',source,empty_spec,sources)
 assert len(rows)==3
 assert next(r for r in rows if r['id']=='pinecone')['activation']=='feature-gated'
 assert next(r for r in rows if r['id']=='aws')['relatedDetector']=='aws-access-key'
 try:
- m.inventory('[[rules]]\\nid = "gcp-api-key"\\n',source.replace('aws.New(),','unknown(),'),{'gitleaks':{'url':'x'},'trufflehog':{'url':'y'}})
+ m.inventory('[[rules]]\\nid = "gcp-api-key"\\n',source.replace('aws.New(),','unknown(),'),empty_spec,sources)
 except ValueError: pass
 else: raise AssertionError('unknown constructor silently skipped')
+`;
+  execFileSync('python3', ['-B', '-c', code], {cwd: new URL('..',import.meta.url),stdio:'pipe'});
+});
+
+test('flare-redact parser reads the FRS-1 spec JSON and maps default vs opt-in activation', () => {
+  const code = `
+import importlib.util
+spec=importlib.util.spec_from_file_location('inventory','scripts/refresh-detector-inventory.py')
+m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+flare_spec='''{
+  "id": "flare-redact/core",
+  "detectors": [
+    {"id": "github_token", "default": true},
+    {"id": "phone", "tags": ["pii"], "default": false}
+  ]
+}'''
+sources={'gitleaks':{'url':'https://example.invalid/g'},'trufflehog':{'url':'https://example.invalid/t'},'flare-redact':{'url':'https://example.invalid/f'}}
+empty_trufflehog='''dets := []detectors.Detector{
+}
+dets = slices.DeleteFunc(dets, func(d detectors.Detector) bool {
+})'''
+rows=m.inventory('[[rules]]\\nid = "gcp-api-key"\\n',empty_trufflehog,flare_spec,sources)
+flare_rows={r['id']: r for r in rows if r['tool']=='flare-redact'}
+assert flare_rows['github_token']['activation']=='default-detector'
+assert flare_rows['github_token']['relatedDetector']=='github-token'
+assert flare_rows['phone']['activation']=='opt-in-detector'
+assert flare_rows['phone']['relatedDetector'] is None
+assert flare_rows['github_token']['sourceUrl'].startswith('https://example.invalid/f#L')
 `;
   execFileSync('python3', ['-B', '-c', code], {cwd: new URL('..',import.meta.url),stdio:'pipe'});
 });

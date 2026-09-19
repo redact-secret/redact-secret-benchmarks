@@ -1,12 +1,12 @@
 # scanners
 
-Per-tool invocation adapters (redact-secret, Gitleaks, TruffleHog) that run a
-scanner against the materialized `fixtures/` corpus and normalize its output
-to the common ground-truth schema for scoring.
+Per-tool invocation adapters (redact-secret, Gitleaks, TruffleHog, flare-redact)
+that run a scanner against the materialized `fixtures/` corpus and normalize
+its output to the common ground-truth schema for scoring.
 
-`index.mjs` defines the adapter registry. redact-secret uses only the public
-API of its pinned npm package; Gitleaks and TruffleHog are external binaries
-on `PATH`. Neither competitor's source or binary is bundled.
+`index.mjs` defines the adapter registry. redact-secret and flare-redact use
+only the public API of their pinned npm packages; Gitleaks and TruffleHog are
+external binaries on `PATH`. No competitor's source or binary is bundled.
 
 Adapters return `{ path, start, end, family? }` in UTF-8 bytes. `families.mjs`
 maps explicitly recognized native detector labels to shared families; unknown
@@ -52,17 +52,84 @@ compatibility with every binary release.
 ## Validated releases
 
 The local comparison has been exercised with Gitleaks **8.30.1**,
-TruffleHog **3.97.4**, and `@redact-secret/core` **0.1.0-beta.4** on macOS
-arm64. Install the external tools using `brew install gitleaks trufflehog`.
-Other systems can use the upstream installation instructions above.
+TruffleHog **3.97.4**, `@redact-secret/core` **0.1.0-beta.4**, and
+`flare-redact` **1.6.1** on macOS arm64. Install the external tools using
+`brew install gitleaks trufflehog`. Other systems can use the upstream
+installation instructions above.
 
-`npm run test:integration` requires all three actual scanners. For each, it
-checks exact byte ranges for a synthetic GitHub-shaped positive with Unicode
-and CRLF before the token, then checks a negative-only directory. Missing
-tools fail rather than skip. These tests never use live verification and
-never write raw scanner output. `npm run compare` runs these controls before
-generating strict comparison reports. Installed versions are recorded in
-every report, so results remain attributable when binaries are upgraded.
+`npm run test:integration` requires all four actual scanners (three of which
+are external binaries; flare-redact and redact-secret run through their
+pinned npm packages instead). For each, it checks exact byte ranges for a
+synthetic GitHub-shaped positive with Unicode and CRLF before the token, then
+checks a negative-only directory. Missing tools fail rather than skip. These
+tests never use live verification and never write raw scanner output.
+`npm run compare` runs these controls before generating strict comparison
+reports. Installed versions are recorded in every report, so results remain
+attributable when binaries or packages are upgraded.
+
+## flare-redact
+
+[flare-redact](https://github.com/flare-collection/flare-redact) is a
+runtime redaction library (MIT licensed, zero npm dependencies) rather than
+a repository scanner; it is measured only through its published npm package
+(`flare-redact`, pinned to an exact version), never a source import, and only
+through its JavaScript engine — the package's Python and Rust engines are not
+published to a registry and are not measured. Its detectors implement its own
+FRS-1 spec, independent of this corpus's fixtures.
+
+**Secrets-only scope.** flare-redact also detects PII (email, phone, IBAN,
+card numbers, national IDs); this corpus defines ground truth for credentials
+only, so its `pii`-tagged detectors are disabled (`disable: ['pii']`). Every
+other detector runs at its package default: `minConfidence` and
+`refineConfidence` stay at 0 and `false`, matching how this repo measures the
+other three tools at their own default configuration rather than introducing
+an independent tuning pass over flare-redact's confidence threshold.
+
+**`generic_assignment` is also disabled**, alongside `pii`. It is a keyword-
+before-`=`/`:` catch-all (covering `password`, `secret`, `token`, `key`, ... in
+80+ languages) that fires on any `KEY=value`-shaped assignment. Its span
+includes the assignment's key name, and its overlap-resolution weighting
+(risk tier, then confidence, then span length) ties with nearly every
+format-specific detector on that exact shape — the single most common
+credential shape in this corpus — so it wins on span length and the finding
+is reported under the generic label instead of the tool's actual
+purpose-built format detector. Left enabled, this relabels most named-format
+findings (`github-token`, `slack-token`, ...) under the generic family with
+an OVERBROAD range, making format-specific comparison against the other
+three tools impossible for exactly the fixtures this corpus exists to test —
+it flattens an entire dedicated corpus segment (`context-edges`, which wraps
+one credential in many syntactic contexts) to a uniform, uninformative
+OVERBROAD result regardless of the tool's real per-context detection. The
+trade-off is explicit: flare-redact's own "detected something, but only a
+generic assignment shape, no named format" recall (the `generic-token`
+family) is not measured, in exchange for every named format being scored
+against the detector that actually recognizes it. `high_entropy` (also a
+generic catch-all) is already off by default and needs no explicit exclusion.
+
+Offsets: `scan()` reports UTF-16 string indices (like `@redact-secret/core`),
+already translated back through FRS-1's zero-width-normalization matching, so
+the adapter converts with the same `Buffer.byteLength(text.slice(0, r.start))`
+pattern used for redact-secret. This is verified against the corpus's
+existing Unicode/CRLF fixtures in `tests/benchmark.test.mjs`. `includeValues`
+is never set to `true`, and the adapter reads only `fixtures[].path`, never
+`fixtures[].expected`.
+
+Label mapping in `families.mjs` covers only ids whose matched format is
+genuinely the same credential type as an existing family; providers with no
+family in this corpus (Sentry, Airtable, Postman, Figma, Notion, Doppler,
+Square, Azure, Discord, Telegram, New Relic, Groq, xAI, Perplexity,
+OpenRouter, Replicate, Databricks, GCP, Mailgun, Netlify, Google, Twilio,
+Stripe webhook secrets) stay unmapped. `aws_secret_key` shares the
+`aws-access-key` family with `aws_access_key`, matching how the TruffleHog
+adapter already families both halves of an AWS pair under one label.
+
+**Result-reporting note:** flare-redact's own streaming guarantee covers
+placeholder *restoration* across chunk boundaries; this corpus's streaming
+methods cover *detection* across chunk boundaries with partition equivalence.
+Those are different properties, and this corpus's whole-input fixtures
+measure neither — any published comparison should say so, alongside the
+secrets-only restriction and the (default, unfiltered) confidence threshold
+above, so the numbers are not mistaken for a full-product comparison.
 
 ## PostgreSQL normalization
 

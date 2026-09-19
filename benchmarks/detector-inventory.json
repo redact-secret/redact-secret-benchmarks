@@ -18,9 +18,664 @@
       "path": "pkg/engine/defaults/defaults.go",
       "sha256": "0757f94d996bf5a0a17af569cf30a8b473b1541ffcfebb385dc224979f496ffd",
       "url": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go"
+    },
+    "flare-redact": {
+      "version": "1.6.1",
+      "revision": "c652ea7946028b70527069d7c282752b8a0ccee3",
+      "path": "spec/detectors.json",
+      "sha256": "2da525f0c709481ab0157dda21b16de3c2d6d627a0dfdaaff6ab80f71ab13dbc",
+      "url": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json"
     }
   },
   "entries": [
+    {
+      "tool": "flare-redact",
+      "id": "aba_routing",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1675",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "airtable_pat",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1392",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "anthropic_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L178",
+      "activation": "default-detector",
+      "relatedDetector": "anthropic-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "au_tfn",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L937",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "aws_access_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L63",
+      "activation": "default-detector",
+      "relatedDetector": "aws-access-key",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "aws_secret_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L87",
+      "activation": "default-detector",
+      "relatedDetector": "aws-access-key",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "azure_storage_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1188",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "basic_auth",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L322",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "bearer_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L303",
+      "activation": "default-detector",
+      "relatedDetector": "bearer-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "br_cpf",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L691",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "btc_address",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1655",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "ca_sin",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L854",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "cn_resident_id",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L964",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "coordinates",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1773",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "credit_card",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L432",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "databricks_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1372",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "date_of_birth",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L618",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "de_tax_id",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L799",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "digitalocean_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1045",
+      "activation": "default-detector",
+      "relatedDetector": "digitalocean-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "discord_bot_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1108",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "discord_webhook",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1210",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "doppler_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1492",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "email",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L379",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "es_dni",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L718",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "eth_address",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1635",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "figma_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1452",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "fr_nir",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L882",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "gcp_refresh_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1592",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "gcp_service_account",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1572",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "generic_assignment",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L361",
+      "activation": "default-detector",
+      "relatedDetector": "generic-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "github_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L109",
+      "activation": "default-detector",
+      "relatedDetector": "github-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "gitlab_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L126",
+      "activation": "default-detector",
+      "relatedDetector": "gitlab-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "google_api_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L215",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "groq_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1272",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "high_entropy",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L551",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "huggingface_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1232",
+      "activation": "default-detector",
+      "relatedDetector": "huggingface-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "iban",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L638",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "in_aadhaar",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L910",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "internal_url",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1793",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "ipv4",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L491",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "ipv6",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L511",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "it_codice_fiscale",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L826",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "jp_my_number",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L991",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "jwt",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L283",
+      "activation": "default-detector",
+      "relatedDetector": "jwt",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "linear_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1432",
+      "activation": "default-detector",
+      "relatedDetector": "linear-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "mac_address",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L531",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "mailgun_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1615",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "netlify_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1532",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "new_relic_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1088",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "nl_bsn",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L745",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "notion_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1472",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "npm_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L266",
+      "activation": "default-detector",
+      "relatedDetector": "npm-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "obfuscated_email",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L403",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "openai_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L195",
+      "activation": "default-detector",
+      "relatedDetector": "openai-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "openrouter_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1332",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "perplexity_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1312",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "person_name",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L578",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "phone",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L460",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "pl_pesel",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L772",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "postman_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1412",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "private_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L47",
+      "activation": "default-detector",
+      "relatedDetector": "private-key",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "replicate_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1352",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "sendgrid_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L232",
+      "activation": "default-detector",
+      "relatedDetector": "sendgrid-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "sentry_dsn",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1065",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "shopify_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1148",
+      "activation": "default-detector",
+      "relatedDetector": "shopify-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "slack_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L143",
+      "activation": "default-detector",
+      "relatedDetector": "slack-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "square_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1168",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "street_address",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L598",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "stripe_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L160",
+      "activation": "default-detector",
+      "relatedDetector": "stripe-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "stripe_webhook_secret",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1552",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "supabase_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1512",
+      "activation": "default-detector",
+      "relatedDetector": "supabase-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "swift_bic",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1701",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "telegram_bot_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1128",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "tr_tckn",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L664",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "twilio_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L249",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "uk_nhs",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1721",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "url_credentials",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L341",
+      "activation": "default-detector",
+      "relatedDetector": "connection-string",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "us_ssn",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1018",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "vault_token",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1252",
+      "activation": "default-detector",
+      "relatedDetector": "vault-token",
+      "status": "related-family"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "vin",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1748",
+      "activation": "opt-in-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
+    {
+      "tool": "flare-redact",
+      "id": "xai_key",
+      "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1292",
+      "activation": "default-detector",
+      "relatedDetector": null,
+      "status": "no-dedicated-detector"
+    },
     {
       "tool": "gitleaks",
       "id": "1password-secret-key",

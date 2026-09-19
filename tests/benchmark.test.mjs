@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile, mkdtemp, writeFile, rm } from "node:fs/promises";
+import { readFile, mkdtemp, writeFile, rm, mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { validateCorpus, score } from "../benchmarks/lib/scoring.ts";
@@ -73,39 +73,74 @@ test("a claim map disambiguates the same value repeated on one line across calls
   const single = new Map();
   assert.equal(locate([sameLine], "/tmp/bench", fixture.path, "abc", 1, single).start, 0);
 });
-test("published npm adapter converts UTF-16 offsets and never exports matched values", async () => {
-  const corpus = validateCorpus(
-    JSON.parse(
-      await readFile(
-        new URL("../fixtures/accuracy/corpus.json", import.meta.url),
-        "utf8",
-      ),
-    ),
-  );
-  const dir = await mkdtemp(path.join(tmpdir(), "bench-test-"));
-  try {
-    for (const f of corpus.fixtures)
-      await writeFile(path.join(dir, f.path), f.content);
-    const results = await scanners[0].scan(dir, corpus.fixtures);
-    const unicode = corpus.fixtures.find((f) => f.id === "unicode-prefix");
-    assert.ok(
-      results.some(
-        (r) =>
-          r.path === unicode.path &&
-          r.start === unicode.expected[0].start &&
-          r.end === unicode.expected[0].end,
+for (const id of ["redact-secret", "flare-redact"]) {
+  test(`${id}: published npm adapter converts UTF-16 offsets and never exports matched values`, async () => {
+    const corpus = validateCorpus(
+      JSON.parse(
+        await readFile(
+          new URL("../fixtures/accuracy/corpus.json", import.meta.url),
+          "utf8",
+        ),
       ),
     );
-    for (const r of results) {
-      assert.deepEqual(Object.keys(r).sort(), ["end", "family", "path", "start"]);
-      assert.match(r.family, /^[a-z][a-z0-9-]+$/);
+    const dir = await mkdtemp(path.join(tmpdir(), "bench-test-"));
+    try {
+      for (const f of corpus.fixtures)
+        await writeFile(path.join(dir, f.path), f.content);
+      const results = await scanners.find((s) => s.id === id).scan(dir, corpus.fixtures);
+      const unicode = corpus.fixtures.find((f) => f.id === "unicode-prefix");
+      assert.ok(
+        results.some(
+          (r) =>
+            r.path === unicode.path &&
+            r.start === unicode.expected[0].start &&
+            r.end === unicode.expected[0].end,
+        ),
+      );
+      for (const r of results) {
+        assert.deepEqual(Object.keys(r).sort(), ["end", "family", "path", "start"]);
+        assert.match(r.family, /^[a-z][a-z0-9-]+$/);
+      }
+      assert.doesNotThrow(() => score(corpus.fixtures, results));
+      assert.deepEqual(score(corpus.fixtures, results).rows.find(r => r.id === "unicode-prefix").spanOutcomes, ["EXACT"]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
     }
-    assert.doesNotThrow(() => score(corpus.fixtures, results));
-    assert.deepEqual(score(corpus.fixtures, results).rows.find(r => r.id === "unicode-prefix").spanOutcomes, ["EXACT"]);
+  });
+}
+test("flare-redact converts UTF-16 offsets to exact UTF-8 byte ranges across the existing Unicode and CRLF fixtures", async () => {
+  const { buildCorpora } = await import("../fixtures/generated/build.mjs");
+  const selected = buildCorpora()["common-formats"].fixtures.filter((f) =>
+    /^(?:github-token-ghp|anthropic-token-api03|aws-access-key-pair|private-key-ed25519|jwt-eddsa)-unicode-crlf$/.test(f.id),
+  );
+  assert.equal(selected.length, 5);
+  const dir = await mkdtemp(path.join(tmpdir(), "flare-redact-unicode-crlf-"));
+  try {
+    await mkdir(path.join(dir, "cases"));
+    for (const f of selected) await writeFile(path.join(dir, f.path), f.content, { mode: 0o600 });
+    const actual = await scanners.find((s) => s.id === "flare-redact").scan(dir, selected.map((f) => ({ ...f, expected: [] })));
+    const { rows } = score(selected, actual);
+    // A wrong UTF-16 -> UTF-8 conversion would show up as PARTIAL/OVERBROAD
+    // (an off-by-one at the multi-byte prefix or a CRLF byte) rather than EXACT.
+    // aws-access-key-pair contributes two expected spans (id + secret).
+    assert.deepEqual(rows.flatMap((r) => r.spanOutcomes), ["EXACT", "EXACT", "EXACT", "EXACT", "EXACT", "EXACT"]);
+    assert.deepEqual(rows.map((r) => r.collateralBytes), [0, 0, 0, 0, 0]);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
 });
+
+test("flare-redact runs secrets-only: an ordinary email address in a must-not-flag control is never reported", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "flare-redact-pii-"));
+  const negative = { id: "email-only", path: "email.txt", content: "Contact: person@example.com\n" };
+  try {
+    await writeFile(path.join(dir, negative.path), negative.content, { mode: 0o600 });
+    assert.deepEqual(await scanners.find((s) => s.id === "flare-redact").scan(dir, [negative]), []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
 test("process failure does not disclose stdout or stderr", async () => {
   await assert.rejects(
     command(
@@ -142,7 +177,7 @@ if (args[0] === 'dir') {
     for (const binary of ["gitleaks", "trufflehog"])
       await writeFile(path.join(dir, binary), script, { mode: 0o700 });
     process.env.PATH = `${dir}${path.delimiter}${previousPath}`;
-    for (const scanner of scanners.slice(1)) {
+    for (const scanner of scanners.filter((s) => ["gitleaks", "trufflehog"].includes(s.id))) {
       assert.equal(await scanner.version(dir), "1.2.3");
       assert.deepEqual(await scanner.scan(dir, [fixture]), [
         { path: fixture.path, start: 5, end: 8 },

@@ -184,6 +184,18 @@ test('native family labels have explicit mappings; unknown labels remain unsuppo
   assert.deepEqual(findingFamily('unknown-scanner', 'Github'), {});
 });
 
+test('flare-redact family labels map only explicitly recognized ids and fail closed on the rest', () => {
+  assert.deepEqual(findingFamily('flare-redact', 'github_token'), { family: 'github-token' });
+  assert.deepEqual(findingFamily('flare-redact', 'aws_access_key'), { family: 'aws-access-key' });
+  assert.deepEqual(findingFamily('flare-redact', 'aws_secret_key'), { family: 'aws-access-key' });
+  assert.deepEqual(findingFamily('flare-redact', 'url_credentials'), { family: 'connection-string' });
+  // No dedicated family exists yet for these real flare-redact detector ids;
+  // an unmapped result is not agreement and not a failure (scanners/README.md).
+  assert.deepEqual(findingFamily('flare-redact', 'basic_auth'), {});
+  assert.deepEqual(findingFamily('flare-redact', 'netlify_token'), {});
+  assert.deepEqual(findingFamily('flare-redact', 'toString'), {});
+});
+
 test('runner drops unmapped family text and respects an adapter classification capability', async () => {
   const c = sample('differential'), { variants } = generateCase(c, methods, operators);
   const found = findingsFor(variants[0]);

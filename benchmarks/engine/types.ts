@@ -45,10 +45,14 @@ export interface Scanner {
   scan(directory: string, fixtures: Pick<Fixture, 'id' | 'path' | 'content'>[]): Promise<Finding[]>;
 }
 export type Observation = { id: string; version: string | null; mode: string; configuration?: Record<string, unknown>; configurationHash?: string } & (
-  { status: 'complete'; findings: Finding[]; durationMs: number } |
-  { status: 'unsupported' | 'unavailable' | 'error'; message: string; findings?: never }
+  { status: 'complete'; findings: Finding[]; durationMs: number; replays: Replays } |
+  { status: 'unsupported' | 'unavailable' | 'error'; message: string; findings?: never } |
+  // Replays disagreed (v1.1 §8): never a pass, never re-rolled, and no findings are retained.
+  { status: 'unstable'; message: string; findings: []; replays: Replays }
 );
-export type AssertionStatus = 'pass' | 'fail' | 'review-required';
+export interface Replays { count: number; agreed: boolean; divergentPaths?: string[] }
+// `not-measured` (v1.1 §4): the scanner never observed this variant. It consumes denominator and never resolves.
+export type AssertionStatus = 'pass' | 'fail' | 'review-required' | 'not-measured';
 export interface Assertion { type: string; status: AssertionStatus; reason?: string; variant?: string; baseline?: string; candidate?: string }
 export interface ScannerResult { scanner: string; status: Observation['status']; variants: { id: string; row: ScoredRow }[]; assertions: Assertion[] }
 export interface ObservedRange extends Range { families: string[]; unmapped: boolean }
@@ -71,3 +75,4 @@ export interface Method {
 }
 export type CaseResult = ReturnType<typeof describeCase> & MethodResult & { variants: ReturnType<typeof describeVariant>[]; generation: GenerationAttempt[] };
 export type Summary = Record<string, Record<AssertionStatus, number>>;
+export interface ReviewLedger { schemaVersion: 1; entries: Record<string, { status: 'open' | 'resolved'; firstSeenRun: string; resolvedRun?: string; note: string }> }

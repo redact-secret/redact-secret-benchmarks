@@ -19,20 +19,24 @@ export interface Row {
   flagged?: boolean;
   findings?: number;
 }
+/** Engine v1.1: a published rate is the pessimistic bound beside its point and n, or the reason it is withheld. */
+export interface Rate { point: number; bound: number | null; n: number; direction: 'upper' | 'lower' | null }
+export type Published = Rate | 'insufficient-evidence' | null;
 export interface RedactGroup {
   files: number; spans: number; secretBytes: number;
   outcomes: Record<Outcome, number>;
-  leakedSpans: number; leakedSpanRate: number | null;
-  leakedBytes: number; leakedByteRate: number | null;
-  collateralBytes: number; collateralRatio: number | null;
-  twins: { positives: number; pairs: number; discriminated: number; rate: number | null };
+  pendingFiles: number; measurableShare: Published; envelopeWidth: { spans: number; bytes: number };
+  leakedSpans: number; leakedSpanRate: Published;
+  leakedBytes: number; leakedByteRate: Published;
+  collateralBytes: number; collateralRatio: Published;
+  twins: { positives: number; pairs: number; discriminated: number; coverage: Published; rate: Published | 'insufficient-coverage' };
   diagnostics: { exact: { tp: number; fp: number; fn: number }; comparable: false };
 }
 export interface ControlGroup {
-  files: number; flaggedFiles: number; falseAlarmRate: number | null; findings: number; meanFindingsPerFlagged: number | null;
+  files: number; flaggedFiles: number; falseAlarmRate: Published; findings: number; meanFindingsPerFlagged: Published;
   diagnostics: { exact: { fp: number; tn: number }; comparable: false };
 }
-export interface PendingGroup { files: number; scored: false }
+export interface PendingGroup { files: number; scored: false; candidateKinds: Record<string, number> }
 export type Group = RedactGroup | ControlGroup | PendingGroup;
 export interface Scanner {
   id: string;
@@ -98,3 +102,8 @@ export const escape = (value: unknown) =>
 export const percent = (value: number | null | undefined, digits = 1) =>
   value == null ? "—" : `${(value * 100).toFixed(digits)}%`;
 export const ratio = (value: number | null | undefined) => (value == null ? '—' : value.toFixed(3));
+/** The bound is the headline; the point is secondary. A withheld rate renders its reason verbatim. */
+export const published = (rate: Published | 'insufficient-coverage' | undefined, format: (value: number) => string = v => percent(v)) =>
+  rate == null ? '—' : typeof rate === 'string' ? rate
+    : rate.bound == null ? `${format(rate.point)} (n ${rate.n})`
+    : `${rate.direction === 'upper' ? '≤' : '≥'} ${format(rate.bound)} (point ${format(rate.point)}, n ${rate.n})`;

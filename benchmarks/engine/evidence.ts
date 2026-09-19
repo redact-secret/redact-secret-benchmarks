@@ -10,6 +10,19 @@ ajv.addSchema(holdoutSchema);
 ajv.addSchema(qualificationSchema);
 ajv.addSchema(candidateSchema);
 
+/**
+ * Why a run is `incomplete` (v1.1 §1, §6). Unresolved assertions and unreviewed
+ * disagreements are unfinished measurement. An `open` ledger row is a
+ * legitimate standing state and never blocks; only `unknown` does.
+ */
+export function completenessReasons({ executed, unresolvedGroups, review }: { executed: boolean; unresolvedGroups: string[]; review: { unknown: number } }) {
+  return [
+    ...(executed ? [] : ['execution-incomplete']),
+    ...(unresolvedGroups.length ? ['unresolved-assertions'] : []),
+    ...(review.unknown ? ['unreviewed-queue'] : []),
+  ];
+}
+
 /** Strict public schemas prohibit accidental inclusion of case-level data. */
 export function validateEvidence(report: unknown, type: 'holdout' | 'qualification' | 'candidate') {
   const validate = ajv.getSchema(`urn:redact-secret:${type}:1`)!;
@@ -60,9 +73,13 @@ export function validateEvidence(report: unknown, type: 'holdout' | 'qualificati
       if (value.status === 'execution-qualified' && (method.generationErrors || method.scanners.some((s: any) => s.status !== 'complete')))
         throw new Error('Incomplete execution claimed qualified');
       for (const scanner of method.scanners) {
-        const total = Object.values(scanner.assertions).reduce((a: number, b: any) => a + b, 0);
+        const { 'not-measured': notMeasured = 0, ...observed } = scanner.assertions;
+        const total = Object.values(observed).reduce((a: number, b: any) => a + b, 0);
         if ((method.method === 'differential' || scanner.status !== 'complete') ? total !== 0 : total < method.cases)
           throw new Error('Missing assertions or consensus presented as truth');
+        // v1.1 §4: an absent scanner is a measured gap; a complete one never carries not-measured rows.
+        if (method.method !== 'differential' && method.method !== 'holdout' && (scanner.status === 'complete' ? notMeasured !== 0 : notMeasured < method.cases))
+          throw new Error('Unmeasured scanner dropped from the denominator');
       }
     }
     const h = value.methods.find((m: any) => m.method === 'holdout');
@@ -79,6 +96,12 @@ export function validateEvidence(report: unknown, type: 'holdout' | 'qualificati
       n + m.scanners.reduce((total: number, s: any) => total + s.assertions.fail, 0), 0);
     if (failures !== value.development.failures) throw new Error('Inconsistent development failure count');
     if (value.status === 'execution-qualified' && value.holdout.status !== 'complete') throw new Error('Missing complete holdout');
+    // v1.1 §1/§6: qualified means nothing unresolved below the floor and no disagreement nobody has looked at.
+    const a = value.accounting;
+    if (a.reasons.includes('unresolved-assertions') !== (a.unresolvedGroups.length > 0) || a.reasons.includes('unreviewed-queue') !== (a.review.unknown > 0) ||
+        (value.status === 'execution-qualified') !== (a.reasons.length === 0) || a.review.open + a.review.resolved + a.review.unknown !== value.development.reviewEntries ||
+        (a.review.oldestOpenRun === null) !== (a.review.open === 0))
+      throw new Error('Inconsistent accounting evidence');
     if (value.milestone.status === 'closed' && value.milestone.openPrerequisites.length) throw new Error('Open milestone dependencies');
   }
   return report;

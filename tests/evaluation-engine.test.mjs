@@ -177,7 +177,8 @@ test('invalid findings, process errors and missing tools cannot masquerade as cl
   ] });
   assert.deepEqual(report.scanners.map(s => s.status), ['error', 'error', 'unavailable']);
   assert.equal(JSON.stringify(report).includes(sentinel), false);
-  assert.equal(report.results[0].scanners.every(s => s.assertions.length === 0), true);
+  // v1.1 §4: a scanner that never observed the input is a measured gap, one row per variant, never a pass.
+  assert.equal(report.results[0].scanners.every(s => s.assertions.length === report.results[0].variants.length && s.assertions.every(a => a.status === 'not-measured' && a.reason === s.status)), true);
   assert.equal(exitCode(report), 1);
   const missing = { scanners: [{ status: 'unavailable' }], failures: [] };
   assert.equal(exitCode(missing), 0);

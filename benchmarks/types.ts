@@ -25,6 +25,34 @@ export interface Group {
   twins?: { positives: number; pairs: number; discriminated: number; rate: number | null };
   diagnostics?: { exact: { tp?: number; fp: number; fn?: number; tn?: number }; comparable: boolean };
 }
+/** Engine v1.1 accounting (docs/evaluation-engine-v1.1.md). Floors live in qualification/suite-v1.json. */
+export type Floor = number | ({ default: number } & Record<string, number>);
+export interface AccountingConfig {
+  version: '1.1'; minDenominator: number; resolvedRateFloor: Floor; measurableShareFloor: Floor; twinCoverageFloor: Floor;
+  replays: number; intervalZ: number; intervalPrecision: number;
+}
+/** `bound` is the pessimistic Wilson endpoint; unbounded ratios carry `bound: null` by decision. */
+export interface Rate { point: number; bound: number | null; n: number; direction: 'upper' | 'lower' | null }
+export type Published = Rate | 'insufficient-evidence' | null;
+export interface AccountedGroup {
+  files: number; scored?: boolean; candidateKinds?: Record<string, number>;
+  spans?: number; secretBytes?: number; outcomes?: Record<string, number>;
+  pendingFiles?: number; measurableShare?: Published; envelopeWidth?: { spans: number; bytes: number };
+  flaggedFiles?: number; findings?: number; falseAlarmRate?: Published; meanFindingsPerFlagged?: Published;
+  leakedSpans?: number; leakedSpanRate?: Published; leakedBytes?: number; leakedByteRate?: Published;
+  collateralBytes?: number; collateralRatio?: Published;
+  twins?: { positives: number; pairs: number; discriminated: number; coverage: Published; rate: Published | 'insufficient-coverage' };
+  diagnostics?: Group['diagnostics'];
+}
+export type DeltaCause = 'unresolved' | 't0-share' | 'overbroad-twin' | 'not-measured' | 'twin-coverage' | 'interval' | 'unstable';
+export interface AccountingDelta {
+  version: '1.0 -> 1.1';
+  groups: Record<string, { v10: Record<string, number | null>; v11: Record<string, Published | 'insufficient-coverage'>; cause: DeltaCause[] }>;
+}
+export interface AccountedCounts {
+  pass: number; fail: number; 'review-required': number; 'not-measured': number;
+  total: number; resolved: number; unresolved: number; resolvedRate: Published;
+}
 export interface FormatContract {
   tier: Tier; pattern?: string; structural?: boolean; review?: string; companion?: string; references?: string[];
   providerSource?: { url: string; observedAt: string; formatVersion: string; covers: string };

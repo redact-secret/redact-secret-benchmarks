@@ -2,16 +2,28 @@
 
 [engine-v1.json](engine-v1.json) is schema-validated aggregate evidence from all six methods and all three pinned scanners. It contains no holdout case rows.
 
-- Run ID: da80141f-d2e9-42b7-b8ed-baf707edda04
-- Completed: 2026-09-18T03:17:07.653Z
-- Source fingerprint: 1e50fd94d185d2656ce58cf22575679db2f1efd57fd09202371de8fcb0c38982
-- Cases / variants: 1,939 / 5,107
-- Unit tests: 147 passed; real-adapter integration tests: 6 passed
-- TypeScript, production build, fixture-storage and evidence validation: passed
+- Engine 1.1.0 · accounting 1.1 · report schema 2
+- Status: **`incomplete`**, reason `unreviewed-queue`
+- Run ID: 04b656a9-a9b5-4c4f-807b-ea019c889ec1
+- Completed: 2026-09-19T17:23:15.527Z
+- Source fingerprint: b282d8e515fe95c567285bd0bef1f24686a40032146f322d83f5ed1807c29fe2 (revision 20e5eb1, clean tree)
+- Cases / variants: 2,253 / 6,107 (twin 56/112, benign 206/206, metamorphic 641/3,047, mutation 641/2,033, differential 697/697, holdout 12/12)
+- Every scanner completed and agreed across 2 replays; 0 generation errors; 0 `not-measured` assertions
+- `unresolvedGroups`: none — every scored stratum resolves at 1.000 against the 0.9 floor
+- Review queue: 1,615 entries, **1,615 `unknown`**, 0 open, 0 resolved
 - Public holdout lifecycle controls: 12/12 assertions passed for each scanner
-- Development findings: 2907 failed assertions; 1381 review entries
+- Development findings: 3,783 failed assertions
+- Unit tests: 187 passed; real-adapter integration tests: 7 passed; TypeScript, production build, fixture-storage, pin-manifest and evidence validation: passed
 
-A fresh source snapshot with no node_modules or generated inputs ran npm ci and eval:qualify. Replay run 1db2c60a-1e83-4547-a616-ee87cf6f35c7 matched the source, lockfile and installed candidate artifact hashes, every method aggregate, development evidence and holdout scanner aggregates. IDs and timestamps intentionally differ. The snapshot was not a committed release checkout; the main evidence explicitly records the current working tree as dirty.
+Execution itself is unchanged from the v1.0 evidence this file replaces: all six
+methods ran with all three pinned scanners. The run is `incomplete` because
+engine v1.1 counts an unreviewed disagreement as an unfinished measurement
+([decision](../decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md)), and
+`benchmarks/review-ledger.json` ships empty — the engine never writes it. The
+status becomes `execution-qualified` once every queue entry has a ledger row;
+`open` rows are a legitimate standing state and do not block. Nobody should
+bulk-mark entries to turn this green: that is the failure mode the ledger exists to
+make visible.
 
 The checked-in holdout is a public conformance corpus, not independently maintained protected detector evidence. No stable-support claim follows. GitHub prerequisite issues #1–#8 remain open in the recorded milestone snapshot; the formal milestone-closure gate was tested and correctly failed before consuming a holdout attempt. No prerequisite was silently removed from scope.
 

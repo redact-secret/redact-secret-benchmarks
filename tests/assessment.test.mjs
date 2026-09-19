@@ -18,6 +18,10 @@ const common = generated['common-formats'].fixtures;
 const legacy = generated['detector-coverage'].fixtures;
 const get = id => legacy.find(f => f.id === id);
 
+// Engine v1.1 accounting with the floors relaxed, so tiny synthetic groups still publish a rate object.
+const suite = JSON.parse(await readFile(new URL('../qualification/suite-v1.json', import.meta.url)));
+const lax = { ...suite.accounting, minDenominator: 1, measurableShareFloor: 0, twinCoverageFloor: 0 };
+
 test('contracts are provider-first: T1 needs a dated provider source, T2 needs corroboration', async () => {
   validateContracts();
   const registry = await read('benchmarks/detectors.json');
@@ -169,26 +173,36 @@ test('cryptographic controls parse and signatures verify; corrupted signatures a
 test('reports export per-group metrics only and the client re-verifies every row and total', () => {
   const selected = [common.find(f => f.id === 'github-token-ghp-plain'), common.find(f => f.id === 'github-token-ghp-plain-twin'), get('aws-access-key-shape-1-bare'), get('anthropic-token-shape-1-bare'), get('vercel-token-shape-1-bare'), get('github-token-prefix-only')];
   const findings = selected.flatMap(f => f.expected.map(r => ({ path: f.path, start: r.start, end: r.end })));
-  const result = scoreReport(selected, findings);
-  assert.deepEqual(Object.keys(result).sort(), ['groups', 'rows']);
+  const result = scoreReport(selected, findings, lax);
+  assert.deepEqual(Object.keys(result).sort(), ['accountingDelta', 'groups', 'rows']);
   assert.deepEqual(Object.keys(result.groups), ['must-not-flag/T2', 'must-redact/T1', 'pending/T0', 'policy/T3']);
-  assert.deepEqual(result.groups['must-redact/T1'].twins, { positives: 1, pairs: 1, discriminated: 1, rate: 1 });
-  assert.equal(result.groups['must-redact/T1'].leakedSpanRate, 0);
+  const t1 = result.groups['must-redact/T1'];
+  assert.deepEqual([t1.twins.positives, t1.twins.pairs, t1.twins.discriminated, t1.twins.rate.point, t1.twins.coverage.point], [1, 1, 1, 1, 1]);
+  assert.deepEqual([t1.leakedSpanRate.point, t1.leakedSpanRate.direction, t1.leakedSpanRate.n], [0, 'upper', 1]);
+  assert.ok(t1.leakedSpanRate.bound > 0, 'one clean span is not evidence of a zero leak rate');
   assert.equal(result.groups['policy/T3'].outcomes.EXACT, 2);
-  assert.deepEqual(result.groups['pending/T0'], { files: 1, scored: false });
+  assert.deepEqual(result.groups['pending/T0'], { files: 1, scored: false, candidateKinds: { 'must-redact': 1 } });
+  // The pending file is charged to the group it would have joined, next to the rate it is absent from.
+  assert.deepEqual([t1.pendingFiles, t1.measurableShare.point], [1, 0.5]);
+  assert.equal(scoreReport(selected, findings, suite.accounting).groups['must-redact/T1'].leakedSpanRate, 'insufficient-evidence');
   const pending = result.rows.find(r => r.tier === 'T0');
   assert.equal(pending.actual.length, 1);
   assert.equal(pending.spanOutcomes, undefined);
   const fixtures = selected.map(f => ({ ...f, category: 'mixed', slug: `mixed--${f.id}` }));
-  const report = { schemaVersion: 4, runId: '2026-09-17T00:00:00.000Z-abc123', category: 'mixed', corpusHash: 'hash', lockHash: 'lock', matching: 'v4', scanners: [{ id: 'test', name: 'Test', mode: 'offline', version: '1', status: 'complete', ...result }] };
+  const report = { schemaVersion: 5, accountingVersion: '1.1', accounting: lax, runId: '2026-09-17T00:00:00.000Z-abc123', category: 'mixed', corpusHash: 'hash', lockHash: 'lock', matching: 'v4', scanners: [{ id: 'test', name: 'Test', mode: 'offline', version: '1', status: 'complete', ...result }] };
   assert.equal(reportProblem(report, 'mixed', 'hash', fixtures), null);
   const { summaries, stale } = summarize(fixtures, [report]);
   assert.deepEqual(stale, []);
   assert.equal(summaries.length, 4);
-  assert.deepEqual(summaries.find(s => s.key === 'must-redact/T1').metrics.twins, { positives: 1, pairs: 1, discriminated: 1, rate: 1 });
+  assert.deepEqual(summaries.find(s => s.key === 'must-redact/T1').metrics, t1, 'a full selection recomputes the published group, pending share included');
   assert.equal(summaries.find(s => s.key === 'pending/T0').metrics.scored, false);
   for (const [name, mutate] of [
     ['legacy', r => { r.schemaVersion = 3; }],
+    ['v1.0 accounting', r => { delete r.accountingVersion; }],
+    ['accounting block', r => { r.accounting.intervalZ = 0; }],
+    ['relaxed floor after the fact', r => { r.accounting = { ...r.accounting, minDenominator: 2 }; }],
+    ['published bound', r => { r.scanners[0].groups['must-redact/T1'].leakedSpanRate.bound = 0; }],
+    ['delta', r => { r.scanners[0].accountingDelta.groups['must-redact/T1'].cause = ['interval']; }],
     ['no run id', r => { delete r.runId; }],
     ['scanner-wide total', r => { r.scanners[0].tp = 4; }],
     ['precision anywhere', r => { r.scanners[0].groups['must-redact/T1'].precision = 1; }],
@@ -205,14 +219,14 @@ test('reports export per-group metrics only and the client re-verifies every row
     const bad = structuredClone(report); mutate(bad);
     assert.ok(reportProblem(bad, 'mixed', 'hash', fixtures), name);
   }
-  assert.match(reportProblem({ ...report, schemaVersion: 3 }, 'mixed', 'hash', fixtures), /Legacy report/);
+  assert.match(reportProblem({ ...report, schemaVersion: 4 }, 'mixed', 'hash', fixtures), /Legacy report/);
 });
 
 test('cross-suite views aggregate only the newest run id and name stale suites', () => {
   const a = common.find(f => f.id === 'npm-token-access-plain');
   const b = common.find(f => f.id === 'npm-token-access-plain-twin');
   const fixtures = [{ ...a, category: 'one', slug: 'one--' + a.id }, { ...b, category: 'one', slug: 'one--' + b.id }, { ...a, category: 'two', slug: 'two--' + a.id }];
-  const make = (category, runId, findings) => ({ schemaVersion: 4, runId, category, corpusHash: 'h', lockHash: 'l', matching: 'v4', reviewStatus: 'draft', scanners: [{ id: 't', name: 'T', mode: 'm', version: '1', status: 'complete', ...scoreReport(category === 'one' ? [a, b] : [a], findings) }] });
+  const make = (category, runId, findings) => ({ schemaVersion: 5, accountingVersion: '1.1', accounting: lax, runId, category, corpusHash: 'h', lockHash: 'l', matching: 'v4', reviewStatus: 'draft', scanners: [{ id: 't', name: 'T', mode: 'm', version: '1', status: 'complete', ...scoreReport(category === 'one' ? [a, b] : [a], findings, lax) }] });
   const hit = { path: a.path, ...a.expected[0] };
   const reports = [make('one', '2026-09-17T10:00:00.000Z-aaaaaa', [hit]), make('two', '2026-09-17T09:00:00.000Z-bbbbbb', [])];
   const { summaries, stale, runId } = summarize(fixtures, reports);
@@ -220,16 +234,16 @@ test('cross-suite views aggregate only the newest run id and name stale suites',
   assert.deepEqual(stale, ['two']);
   const redact = summaries.find(s => s.key === 'must-redact/T1');
   assert.equal(redact.rows.length, 1, 'the stale suite is not summed');
-  assert.deepEqual(redact.metrics.twins, { positives: 1, pairs: 1, discriminated: 1, rate: 1 });
+  assert.deepEqual([redact.metrics.twins.positives, redact.metrics.twins.pairs, redact.metrics.twins.discriminated, redact.metrics.twins.rate.point], [1, 1, 1, 1]);
   assert.equal(summarize(fixtures, reports, '2026-09-17T09:00:00.000Z-bbbbbb').summaries.find(s => s.key === 'must-redact/T1').metrics.leakedSpans, 1);
   assert.equal(summarize(fixtures, [reports[0], { ...reports[0], runId: '2026-09-17T11:00:00.000Z-cccccc', scanners: [{ ...reports[0].scanners[0], version: '2' }] }]).summaries.filter(s => s.key === 'must-redact/T1').length, 1, 'older run is stale, not a separate observation');
 });
 
 test('format-correct unsupported controls stay included regardless of scanner output', () => {
   const selected = common.filter(f => /docker-token|cloudflare-token|stripe-token-test/.test(f.id));
-  const result = scoreReport(selected, []);
+  const result = scoreReport(selected, [], lax);
   assert.equal(result.groups['must-redact/T2'].leakedSpans, selected.filter(f => f.assessment.kind === 'must-redact' && f.assessment.tier === 'T2').length);
-  assert.equal(result.groups['must-redact/T1'].leakedSpanRate, 1);
+  assert.equal(result.groups['must-redact/T1'].leakedSpanRate.point, 1);
   assert.equal(result.groups['must-redact/T1'].twins.discriminated, 0, 'a clean twin does not count when the positive leaks');
   assert.equal(result.groups['pending/T0'], undefined);
 });

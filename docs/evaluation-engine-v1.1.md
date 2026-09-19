@@ -6,7 +6,10 @@ Everything not stated here is unchanged. The rationale and the decisions behind
 it are in
 [`docs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md`](decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md).
 
-Status: draft for review. No code has been written against it.
+Status: accepted and implemented (issue #26). The floors and the §12 questions
+were settled from a dry run — [`evaluation-engine-v1.1-dry-run.md`](evaluation-engine-v1.1-dry-run.md)
+— and the decisions are recorded in the ADR. Where a clause below was refined
+by review, the refinement is marked **Decided**.
 
 v1.1 changes **accounting and reporting only**. It does not change the outcome
 lattice, envelope semantics, corpus truth, tier assignment, or the adapter
@@ -25,8 +28,8 @@ a reviewable corpus-adjacent change rather than a code edit:
 "accounting": {
   "version": "1.1",
   "minDenominator": 5,
-  "resolvedRateFloor": 0.9,
-  "measurableShareFloor": 0.8,
+  "resolvedRateFloor": { "default": 0.9, "differential": 0 },
+  "measurableShareFloor": { "default": 0.7, "policy": 0 },
   "twinCoverageFloor": 0.5,
   "replays": 2,
   "intervalZ": 1.96,
@@ -34,7 +37,10 @@ a reviewable corpus-adjacent change rather than a code edit:
 }
 ```
 
-Floors are proposed values, not decided ones — §9.
+A floor is a number, or a map with a `default` and per-key overrides (method
+for `resolvedRateFloor`, kind for the other two). **Decided:** the values above
+are the reviewed ones (§12); floors gate on the point estimate, publication
+reads the bound (§7).
 
 ---
 
@@ -65,6 +71,11 @@ A run whose assertions are wholly `review-required` reports `incomplete` with
 reason `unresolved-assertions`, listing the offending group keys. Detector
 assertion failures keep their v1.0 meaning: visible, and not an infrastructure
 malfunction.
+
+**Decided.** T0 strata are unresolved by construction and are charged through
+`measurableShare` (§2) and the ledger (§6), so the floor is held over scored
+strata; a method that resolves nothing at all is listed as `<method>/*`, which
+is how the wholly-`review-required` run is caught.
 
 **Differential interaction.** `differential.ts` queues every disagreement as
 `review-required` by design, and that must stay — a disagreement is never
@@ -244,7 +255,12 @@ evaluation UI headline — reads `bound`. `point` stays available and is shown
 secondary.
 
 When `n < accounting.minDenominator`, the whole rate object is replaced by the
-string `"insufficient-evidence"`, matching §2.
+string `"insufficient-evidence"`, matching §2. A zero denominator stays `null`.
+
+**Decided.** `n` is the number of independent observations, not always the
+arithmetic denominator: `leakedByteRate` draws its interval over spans.
+`meanFindingsPerFlagged` is an unbounded ratio like `collateralRatio` and
+carries `bound: null` too.
 
 ---
 
@@ -289,6 +305,12 @@ accountingDelta: {
 
 `cause` names which v1.1 rule moved the figure: `unresolved`, `t0-share`,
 `overbroad-twin`, `not-measured`, `twin-coverage`, `interval`, `unstable`.
+**Decided.** `interval` is named only when the rule withholds a figure for
+`n < minDenominator`; the bound itself is an addition beside an unchanged
+point. The bench report carries the lattice delta per `<kind>/<tier>`; the
+discovery report carries the assertion delta (`unresolved`, `not-measured`,
+`unstable`) per stratum.
+
 This is the mechanism that keeps "the number got worse" attributable to the
 engine rather than to the candidate, and it mirrors the no-op assertion that
 proved the v3 → v4 mapping faithful (measurement-v4 §5, phase 2).
@@ -308,7 +330,7 @@ The v1.0 doc calls them independent; v1.1 names them separately instead:
 
 | Field | Meaning | v1.1 value |
 | --- | --- | --- |
-| `schemaVersion` | report structure | `3` (discovery), `2` (qualification) |
+| `schemaVersion` | report structure | `3` (discovery), `2` (qualification), `5` (bench report and `run.json`), `2` (public evaluation, baselines) |
 | `engineVersion` | code milestone label | `'1.1.0'` |
 | `accountingVersion` | **new** — comparability key | `'1.1'` |
 
@@ -340,7 +362,14 @@ Land nothing without these; each maps to one clause above.
 
 ---
 
-## 12. Open questions for review
+## 12. Review questions — decided
+
+All five are settled in the ADR's *Review decisions* section: floors
+(`minDenominator` 5, `resolvedRateFloor` 0.9 over scored strata,
+`measurableShareFloor` 0.7 with `policy: 0`, `twinCoverageFloor` 0.5); `policy`
+shares the `resolvedRate` floor only; replay disagreement fails the scanner for
+the run; the ledger is a new `benchmarks/review-ledger.json`; `holdout`
+publishes no intervals. The questions are kept below as asked.
 
 1. **Floor values.** §0 proposes `minDenominator: 5`,
    `resolvedRateFloor: 0.9`, `measurableShareFloor: 0.8`,

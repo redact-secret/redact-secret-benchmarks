@@ -1,6 +1,6 @@
 # Tighten evaluation accounting (engine v1.1)
 
-Date: 2026-09-19 · Status: proposed · Extends: engine v1.0 qualification,
+Date: 2026-09-19 · Status: accepted · Extends: engine v1.0 qualification,
 measurement protocol v4
 
 ## Context
@@ -125,7 +125,99 @@ standing confusion between the integer `engineVersion: 2` written by
 - `lattice.ts` stays pure integer and closed-form arithmetic so the browser can
   keep re-verifying rows; Wilson bounds are rounded to a fixed precision
   declared in the suite so report bytes stay deterministic.
-- Three open questions are deferred to review, not decided here: the numeric
-  floors, whether `policy` groups are held to the same `resolvedRate` floor as
-  `must-redact`, and whether replay disagreement should quarantine the single
-  unstable case or fail the whole run.
+- The open questions below were deferred to review when this record was
+  proposed; they are now decided.
+
+## Review decisions (issue #26)
+
+The floors were decided from a read-only dry run over the current corpus
+(`npm run eval:dry-run`, recorded in
+[`docs/evaluation-engine-v1.1-dry-run.md`](../evaluation-engine-v1.1-dry-run.md)),
+not from the proposal. The dry run is a second scorer over rows an existing run
+already produced; it enforces nothing and prints group keys and counts only.
+
+- **`minDenominator: 5` stands.** Every group it withholds has `n ≤ 4`
+  (per-suite `must-not-flag/T2` n=1, `must-not-flag/T3` n=2/2/4,
+  `must-redact/T2` n=3, `must-redact/T1` n=4). At `n = 4` with zero events the
+  Wilson upper bound is already 0.49: the bound says nothing, so the figure is
+  withheld rather than printed. No corpus-wide group is affected.
+- **`resolvedRateFloor: { default: 0.9, differential: 0 }`, held over scored
+  strata.** The dry run shows `resolvedRate` is bimodal today — 1.000 on every
+  T1–T3 stratum, 0.000 on every T0 stratum — so the value does not discriminate
+  yet and the proposal is kept. What the dry run did decide is *scope*: T0
+  strata are unresolved by construction and are already charged through
+  `measurableShare` (decision 2) and the review ledger, so holding them to this
+  floor as well would charge the same absence twice and make qualification
+  impossible while any T0 row exists. The floor applies to scored strata, and a
+  method that resolves nothing at all is reported as `<method>/*`. That keeps
+  the headline guarantee — a run whose assertions are wholly `review-required`
+  is `incomplete` with reason `unresolved-assertions`.
+- **`measurableShareFloor: { default: 0.7, policy: 0 }`, down from 0.8.** A T0
+  row has a candidate kind but no tier, so the 33 pending `must-redact` files
+  are charged in full to *each* tier: `must-redact/T1` is 133/166 = 0.801 and
+  `must-redact/T2` is 93/126 = 0.738, while the kind as a whole is 226/259 =
+  0.873. At 0.8 the corpus-wide T2 rate of every scanner would be withheld
+  because of that double charge, and T1 would sit 0.001 above the floor, one
+  pending file from flipping. 0.7 on the double-charged per-tier figure is the
+  equivalent of 0.8 on the kind. It still withholds where it should: the
+  `detector-coverage` suite, which holds every pending file, is at 0.58 / 0.56
+  and publishes `insufficient-evidence`.
+- **`twinCoverageFloor: 0.5` stands.** Corpus-wide coverage is 0.286 (T1),
+  0.194 (T2) and 0 (policy), so every corpus-wide `twins.rate` is withheld as
+  `insufficient-coverage`; `common-formats`, the one suite twins were authored
+  for (38/40 and 18/18), publishes. That is exactly the boundary ADR 2026-09-17
+  drew in prose, now as a number. `twins.rate` additionally needs
+  `pairs >= minDenominator`.
+- **Floors gate on the point; publication reads the bound.** A floor compares
+  `resolved / total`, `scored / (scored + pending)` and `pairs / positives`
+  directly. Gating on the Wilson bound would make every floor a function of `n`
+  and fail small, fully measured groups for being small twice.
+- **`policy` faces the same `resolvedRate` floor and no `measurableShare`
+  floor.** A policy expectation is this project's own masking policy: it can be
+  unresolved like any other, but it has no provider evidence to be pending on
+  (0 of 55 T0 files carry the `policy` kind). The share is still reported, and
+  the floor is an explicit `policy: 0` in the suite rather than a code branch.
+- **Replay disagreement fails the scanner for the run.** A scanner that is not
+  a function of its input on one file gives no reason to trust it on the
+  others, and quarantining one case would mean retaining per-case raw
+  divergence. `unstable` discards all findings, records `divergentPaths`, and
+  is never re-rolled. Re-running a whole qualification remains allowed.
+- **The review ledger is a new `benchmarks/review-ledger.json`.** Promotion
+  records describe a product gap travelling `observed → reviewed → promoted`
+  with a product-issue handoff. A differential disagreement is never truth and
+  has no such destination; filing it as a promotion record would push reviewers
+  toward closing disagreements as findings. The engine never writes the ledger.
+  It ships empty, so the first v1.1 qualification is `incomplete` with reason
+  `unreviewed-queue` — the consequence this record predicted, and the honest
+  state of a queue nobody has looked at.
+- **`holdout` publishes no intervals.** It stays aggregate counts over resolved
+  states. Its `caseCount` is already public, so a bound would add nothing a
+  reader cannot compute, while a rate object per stratum would widen a strict,
+  aggregate-only schema. The holdout schema gains the `unstable` scanner status
+  and nothing else; unknown fields stay rejected.
+- **Interval sample size.** A proportion's interval is drawn over independent
+  observations, which is not always its arithmetic denominator:
+  `leakedByteRate` is bytes over bytes, but bytes inside one span are not
+  independent trials, so its interval uses `n = spans`.
+- **`interval` as a delta cause.** The bound is an addition beside an unchanged
+  point. The interval rule *moves* a figure only when it withholds one for
+  `n < minDenominator`; that is what `accountingDelta.cause` records, and what
+  makes the §9 no-op proof possible at realistic `n`.
+
+### Ratified non-changes
+
+Both are places where a later reader would plausibly "fix" an apparent
+omission. They are deliberate.
+
+- **`isLeaked` is unchanged.** Leakage and overbreadth are separate axes by
+  construction (measurement-v4 §2.4, ADR 2026-09-17 decision 3): an overbroad
+  finding genuinely does not leave the secret readable, and its cost is already
+  charged as `collateralBytes`. Only twin discrimination moves to the strict
+  `EXACT`/`COVERED` reading. `isCovered` is kept for the leak axis and documented
+  as not an acceptability predicate; `aggregateGroups` is kept frozen as the
+  v1.0 scorer for the dual-scorer transition.
+- **`collateralRatio` gets no Wilson bound.** It is `collateralBytes /
+  secretBytes`, unbounded above (ADR 2026-09-17 decision 2), so a binomial
+  interval would be wrong. It reports `{ point, n }` with `bound: null` and
+  `direction: null`. `meanFindingsPerFlagged` is the same kind of quantity and
+  is treated the same way.

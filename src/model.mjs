@@ -1,5 +1,6 @@
 import { validateAssessment } from '../benchmarks/lib/assessment.ts';
-import { aggregateGroups, groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../benchmarks/lib/lattice.ts';
+import { groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../benchmarks/lib/lattice.ts';
+import { ACCOUNTING_VERSION, accountGroups, accountingDelta, validateAccounting } from '../benchmarks/lib/accounting.ts';
 
 /** Pure catalog and report projections shared by the UI and tests. */
 export const fixtureSlug = (category, id) => `${category}--${id}`;
@@ -40,8 +41,11 @@ const SCORE_FIELDS = ['spanOutcomes', 'leakedBytes', 'collateralBytes', 'flagged
 // Never join a report's ranges to different fixture bytes; re-verify every
 // row and every group total client-side (docs/measurement-v4.md §3).
 export function reportProblem(report, category, hash, fixtures) {
-  if (report?.schemaVersion < 4) return 'Legacy report: rerun npm run bench';
-  if (!report || report.schemaVersion !== 4 || report.category !== category || !Array.isArray(report.scanners)) return 'Missing or invalid report';
+  if (report?.schemaVersion < 5) return 'Legacy report: rerun npm run bench';
+  // Reports are only comparable under one accounting version; the block is re-validated, never trusted.
+  if (report?.accountingVersion !== ACCOUNTING_VERSION) return 'Report accounting version is not comparable';
+  try { validateAccounting(report.accounting); } catch { return 'Invalid accounting configuration'; }
+  if (!report || report.schemaVersion !== 5 || report.category !== category || !Array.isArray(report.scanners)) return 'Missing or invalid report';
   if (typeof report.runId !== 'string' || !report.runId) return 'Report has no run id';
   if (report.corpusHash !== hash) return 'Stale report: fixture corpus changed';
   const source = fixtures.filter(f => f.category === category);
@@ -66,8 +70,9 @@ export function reportProblem(report, category, hash, fixtures) {
       const expected = scoreRow(row.expected, row.actual);
       for (const k of SCORE_FIELDS) if (JSON.stringify(row[k] ?? null) !== JSON.stringify(expected[k] ?? null)) return 'Row outcome does not recompute';
     }
-    const groups = aggregateGroups(scanner.rows);
+    const groups = accountGroups(scanner.rows, report.accounting);
     if (JSON.stringify(scanner.groups) !== JSON.stringify(groups)) return 'Group totals do not recompute from rows';
+    if (JSON.stringify(scanner.accountingDelta) !== JSON.stringify(accountingDelta(scanner.rows, report.accounting))) return 'Accounting delta does not recompute from rows';
     if (JSON.stringify(groups).includes('"precision"')) return 'Rates other than v4 headline metrics are not allowed';
   }
   return null;
@@ -100,7 +105,7 @@ export function summarize(fixtures, reports, runId = newestRunId(reports)) {
       for (const key of new Set(relevant.map(f => groupKey(f.assessment.kind, f.assessment.tier)))) {
         // Different versions, modes, dependencies or matching protocols are separate observations.
         const id = JSON.stringify([key, scanner.id, scanner.version, scanner.mode, report.lockHash, report.matching]);
-        if (!groups.has(id)) groups.set(id, { key, kind: key.split('/')[0], tier: key.split('/')[1], scanner: scanner.id, name: scanner.name, version: scanner.version, mode: scanner.mode, lockHash: report.lockHash, matching: report.matching, runId, selectedCount: 0, rows: [], sources: [], statuses: [], reviews: [] });
+        if (!groups.has(id)) groups.set(id, { accounting: report.accounting, key, kind: key.split('/')[0], tier: key.split('/')[1], scanner: scanner.id, name: scanner.name, version: scanner.version, mode: scanner.mode, lockHash: report.lockHash, matching: report.matching, runId, selectedCount: 0, rows: [], sources: [], statuses: [], reviews: [] });
         const g = groups.get(id);
         g.selectedCount += relevant.filter(f => groupKey(f.assessment.kind, f.assessment.tier) === key).length;
         g.statuses.push(scanner.status);
@@ -114,7 +119,9 @@ export function summarize(fixtures, reports, runId = newestRunId(reports)) {
     // Twins live in the same suite as their positive; aggregate over every selected row of that suite.
     const allRows = reports.filter(r => r.runId === g.runId && g.sources.includes(r.category)).flatMap(r => (r.scanners.find(s => s.id === g.scanner && s.version === g.version && s.status === 'complete')?.rows ?? []).map(row => ({ ...row, id: fixtureSlug(r.category, row.id), twinOf: row.twinOf ? fixtureSlug(r.category, row.twinOf) : undefined })));
     const own = new Set(g.rows.map(r => r.id));
-    const metrics = aggregateGroups(allRows.filter(r => own.has(r.id) || (r.twinOf && own.has(r.twinOf))))[g.key] ?? null;
+    // Selected T0 rows stay beside the group they are absent from, so measurableShare survives a filtered view.
+    const pending = new Set([...groups.values()].filter(p => p.key === 'pending/T0' && p.scanner === g.scanner && p.version === g.version && p.mode === g.mode).flatMap(p => p.rows.map(r => r.id)));
+    const metrics = accountGroups(allRows.filter(r => own.has(r.id) || pending.has(r.id) || (r.twinOf && own.has(r.twinOf))), g.accounting)[g.key] ?? null;
     return { ...g, metrics };
   });
   return { summaries, stale: [...new Set(stale)], runId };

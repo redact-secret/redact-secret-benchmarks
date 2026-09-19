@@ -235,7 +235,9 @@ benchmarks/categories.json     Case suites and corpus registry
 benchmarks/detectors.json      Core detector taxonomy snapshot
 benchmarks/fixture-detectors.json Explicit fixture-to-detector assignments
 benchmarks/run.ts             Materialization, execution, provenance, atomic reports
-benchmarks/lib/lattice.ts     Per-span outcome lattice, byte accounting, group aggregation
+benchmarks/lib/lattice.ts     Per-span outcome lattice, byte accounting, v1.0 group aggregation (frozen scorer)
+benchmarks/lib/accounting.ts  Engine v1.1 accounting: Wilson bounds, floors, measurable share, twin coverage, dual-scorer delta
+benchmarks/review-ledger.json Reviewed state of queued disagreements; written by review, never by the engine
 benchmarks/lib/scoring.ts     Corpus schema 2 validation (roles, envelopes, twins) and row scoring
 benchmarks/lib/assessment.ts  Kinds, tiers, provider-first contracts and classification
 benchmarks/lib/reporting.ts   Per (kind × tier) groups; no mixed overall score
@@ -473,6 +475,33 @@ The default manifest uses repeatable public conformance controls. Protected hold
 runs retain their existing custodian lifecycle and budgets; do not run them merely
 to refresh a UI. Qualification is separately dated aggregate evidence, and
 `execution-qualified` describes infrastructure execution with `supportClaims: false`.
+
+### Accounting (engine v1.1)
+
+Anything unmeasured, unstable or unreviewed consumes denominator rather than
+disappearing from it, and the published figure is the worst defensible bound
+([spec](docs/evaluation-engine-v1.1.md),
+[decision](docs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md)).
+Every rate is `{ point, bound, n, direction }` with a Wilson bound on the
+pessimistic side, or the reason it is withheld (`insufficient-evidence`,
+`insufficient-coverage`). Each scanner is replayed over the same scratch tree
+and a disagreement is `unstable`, never a pass. A scanner that did not complete
+emits `not-measured` assertion rows. Floors live in the `accounting` block of
+`qualification/suite-v1.json` and are covered by `suiteHash`.
+
+```sh
+npm run bench && npm run eval
+npm run eval:dry-run                       # read-only: what each floor withholds today, and the v1.0 -> v1.1 delta
+npm run eval:dry-run -- --measurableShareFloor=0.8   # try a floor before proposing it
+```
+
+Qualification additionally requires that no scored stratum falls below the
+`resolvedRate` floor and that every review-queue entry has a row in
+`benchmarks/review-ledger.json`. An `open` row is a legitimate standing state;
+an entry with no row is a disagreement nobody has looked at and reports
+`incomplete` with reason `unreviewed-queue`. Reports carry `accountingVersion`;
+records under different accounting versions are only compared when one of them
+carries the `accountingDelta` mapping.
 
 Affected cases are unique evaluation case IDs within the displayed selection,
 including across scanners; one source fixture can participate in several methods.

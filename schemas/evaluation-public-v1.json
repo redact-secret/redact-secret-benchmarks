@@ -4,7 +4,7 @@
   "additionalProperties": false,
   "properties": {
     "schemaVersion": {
-      "const": 1
+      "const": 2
     },
     "reportType": {
       "const": "evaluation-public"
@@ -116,7 +116,8 @@
               "complete",
               "unavailable",
               "error",
-              "unsupported"
+              "unsupported",
+              "unstable"
             ]
           },
           "mode": {
@@ -253,7 +254,8 @@
                   "enum": [
                     "pass",
                     "fail",
-                    "review-required"
+                    "review-required",
+                    "not-measured"
                   ]
                 },
                 "variant": {
@@ -463,12 +465,17 @@
                 "review-required": {
                   "type": "integer",
                   "minimum": 0
+                },
+                "not-measured": {
+                  "type": "integer",
+                  "minimum": 0
                 }
               },
               "required": [
                 "pass",
                 "fail",
-                "review-required"
+                "review-required",
+                "not-measured"
               ]
             }
           }
@@ -490,6 +497,39 @@
           "$ref": "urn:redact-secret:qualification:1"
         }
       ]
+    },
+    "accountingVersion": {
+      "const": "1.1"
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "open",
+        "resolved",
+        "unknown",
+        "oldestOpenRun"
+      ],
+      "properties": {
+        "open": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resolved": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unknown": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "oldestOpenRun": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
     }
   },
   "required": [
@@ -505,6 +545,8 @@
     "cases",
     "reviews",
     "byOperator",
-    "qualification"
+    "qualification",
+    "accountingVersion",
+    "review"
   ]
 }

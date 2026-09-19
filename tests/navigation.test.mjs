@@ -41,10 +41,11 @@ test('UTF-8 highlighting round-trips every input including BOM, Unicode, CRLF an
 });
 const source = fixtures.filter(f => f.category === 'accuracy');
 const runId = '2026-09-17T12:00:00.000Z-0a0b0c';
-const report = {schemaVersion:4,runId,category:'accuracy',corpusHash:'hash',lockHash:'lock',matching:'v4',generatedAt:'2026-09-17T12:00:01.000Z',reviewStatus:'draft',scanners:[{id:'test',name:'Test scanner',mode:'offline',version:'1',status:'complete',...scoreReport(corpora.accuracy.fixtures, [])}]};
+const accounting = JSON.parse(await readFile(new URL('../qualification/suite-v1.json', import.meta.url))).accounting;
+const report = {schemaVersion:5,accountingVersion:'1.1',accounting,runId,category:'accuracy',corpusHash:'hash',lockHash:'lock',matching:'v4',generatedAt:'2026-09-17T12:00:01.000Z',reviewStatus:'draft',scanners:[{id:'test',name:'Test scanner',mode:'offline',version:'1',status:'complete',...scoreReport(corpora.accuracy.fixtures, [], accounting)}]};
 test('reports require a run id, matching bytes, fixture identity and recomputable outcomes before joining', () => {
   assert.equal(reportProblem(report,'accuracy','hash',fixtures),null);
-  assert.match(reportProblem({...report,schemaVersion:3},'accuracy','hash',fixtures),/Legacy/);
+  assert.match(reportProblem({...report,schemaVersion:4},'accuracy','hash',fixtures),/Legacy/);
   assert.match(reportProblem({...report,runId:undefined},'accuracy','hash',fixtures),/run id/);
   const badCounts = structuredClone(report); badCounts.scanners[0].groups['must-not-flag/T3'].flaggedFiles = 999;
   assert.match(reportProblem(badCounts,'accuracy','hash',fixtures),/recompute/);
@@ -65,7 +66,8 @@ test('projections aggregate selected rows per group and keep versions and runs s
   assert.equal(summary.key,'policy/T3');
   assert.equal(summary.rows.length,3);
   assert.equal(summary.metrics.leakedSpans,3);
-  assert.equal(summary.metrics.leakedSpanRate,1);
+  // Three spans are below minDenominator: the rate is withheld, the counts are not.
+  assert.equal(summary.metrics.leakedSpanRate,'insufficient-evidence');
   const other = structuredClone(report); other.scanners[0].version='2';
   assert.equal(summarize(selected,[report,other]).summaries.length,2);
   other.scanners[0].status='error';
@@ -103,7 +105,7 @@ test('page renderers expose every fixture, escape input markup, and keep caveats
     assert.ok(pages.fixturePage(malicious,[]).includes('&lt;script&gt;'));
     assert.ok(pages.overview([]).includes('/benchmark/openai-token'));
     const corpusReport = {...report,fixtureCount:10,expectedCount:5};
-    const run = {schemaVersion:4,runId,startedAt:'2026-09-17T12:00:00.000Z',finishedAt:'2026-09-17T12:00:02.000Z',categories:['accuracy'],partial:true,scannerVersions:{test:'1'},lockHash:'lock',revision:'r',dirty:false};
+    const run = {schemaVersion:5,accountingVersion:'1.1',runId,startedAt:'2026-09-17T12:00:00.000Z',finishedAt:'2026-09-17T12:00:02.000Z',categories:['accuracy'],partial:true,scannerVersions:{test:'1'},lockHash:'lock',revision:'r',dirty:false};
     const suite = accuracy(corpusReport, run);
     assert.ok(suite.includes('/fixture/accuracy--github-token'));
     assert.ok(suite.includes('Secrets left readable') && suite.includes('Safe files wrongly flagged') && suite.includes('draft'));

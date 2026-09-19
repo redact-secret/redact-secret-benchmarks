@@ -9,18 +9,14 @@ const inventory = await read('benchmarks/detector-inventory.json');
 const packageJson = await read('package.json');
 const knownGaps = await read('benchmarks/known-gaps.json');
 
-test('pin consistency check reports the currently published beta.3/beta.4 mismatch', () => {
+test('pin consistency check passes against the real, refreshed tree', () => {
   const facts = {
     registrySourceRevision: registry.sourceRevision,
     inventoryRedactSecretRevision: inventory.redactSecretRevision,
     inventoryRedactSecretVersion: inventory.redactSecretVersion,
     packageVersion: packageJson.dependencies['@redact-secret/core'],
   };
-  const failures = checkPinConsistency(facts);
-  assert.ok(
-    failures.some(f => f.includes(inventory.redactSecretVersion) && f.includes(packageJson.dependencies['@redact-secret/core'])),
-    'expected the redactSecretVersion vs. package.json mismatch to be reported against the real tree',
-  );
+  assert.deepEqual(checkPinConsistency(facts), []);
 });
 
 test('pin consistency check passes when both pins align', () => {

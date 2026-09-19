@@ -19,6 +19,13 @@ const families = [
   ["supabase-token", ["sb_secret_"], 40],
   ["vercel-token", ["vcp_", "vci_", "vca_", "vcr_", "vck_"], 32],
   ["npm-token", ["npm_"], 36],
+  ["google-api-key", ["AIza"], 35, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"],
+  ["notion-token", ["secret_"], 43],
+  ["atlassian-api-token", ["ATAT"], 100, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"],
+  ["telegram-bot-token", ["123456:"], 34, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"],
+  ["sentry-user-auth-token", ["sntryu_"], 64, "0123456789abcdef"],
+  ["grafana-cloud-access-policy-token", ["glc_"], 32, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"],
+  ["new-relic-user-api-key", ["NRAK-"], 27, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"],
 ];
 
 export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, ENVELOPES }) {
@@ -43,6 +50,72 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     add(detector, "prefix-only", [prefixes.join("\n")]);
     add(detector, "short-body", [prefixes.map(prefix => prefix + "abc").join("\n")]);
   }
+
+  // beta.4 additions: 17 detectors with no dedicated-prefix-plus-run shape
+  // simple enough for the families loop above, added when detectors.json
+  // was refreshed to the beta.4 registry snapshot.
+  const ALNUM_DASH = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
+  const BASE64_BODY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  const LOWER_HEX = "0123456789abcdef";
+
+  const entraPrefix = synthetic("coverage:entra:prefix", 3, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~");
+  const entraSuffix = synthetic("coverage:entra:suffix", 33, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~-");
+  positive("microsoft-entra-client-secret", "digit-q-tilde", [{ secret: `${entraPrefix}8Q~${entraSuffix}` }]);
+  add("microsoft-entra-client-secret", "missing-marker", [`${entraPrefix}8${entraSuffix}`]);
+  add("microsoft-entra-client-secret", "short-suffix", [`${entraPrefix}8Q~${entraSuffix.slice(0, 28)}`]);
+
+  const azdoPrefix = synthetic("coverage:azdo:prefix", 76);
+  const azdoSuffix = synthetic("coverage:azdo:suffix", 4);
+  positive("azure-devops-personal-access-token", "azdo-marker", [{ secret: `${azdoPrefix}AZDO${azdoSuffix}` }]);
+  add("azure-devops-personal-access-token", "missing-marker", [azdoPrefix + azdoSuffix + "XXXX"]);
+  add("azure-devops-personal-access-token", "short-body", [`${azdoPrefix.slice(0, 70)}AZDO${azdoSuffix}`]);
+
+  const twilioSid = synthetic("coverage:twilio:sid", 32, LOWER_HEX);
+  const twilioAuthToken = synthetic("coverage:twilio:auth-token", 32, LOWER_HEX);
+  positive("twilio-auth-token", "paired-account-sid", [`AC${twilioSid} `, { secret: twilioAuthToken }]);
+  add("twilio-auth-token", "missing-identifier", [twilioAuthToken]);
+  add("twilio-auth-token", "short-token", [`AC${twilioSid} ${twilioAuthToken.slice(0, 30)}`]);
+
+  const twilioApiKeySid = synthetic("coverage:twilio:api-key-sid", 32);
+  const twilioApiKeySecret = synthetic("coverage:twilio:api-key-secret", 32);
+  positive("twilio-api-key-secret", "paired-api-key-sid", [`SK${twilioApiKeySid} `, { secret: twilioApiKeySecret }]);
+  add("twilio-api-key-secret", "missing-identifier", [twilioApiKeySecret]);
+  add("twilio-api-key-secret", "short-secret", [`SK${twilioApiKeySid} ${twilioApiKeySecret.slice(0, 30)}`]);
+
+  const discordDigits = synthetic("coverage:discord:snowflake-digits", 18, "0123456789");
+  const discordSeg1 = Buffer.from(discordDigits).toString("base64url");
+  const discordSeg2 = synthetic("coverage:discord:seg2", 6, ALNUM_DASH);
+  const discordSeg3 = synthetic("coverage:discord:seg3", 27, ALNUM_DASH);
+  positive("discord-bot-token", "three-segments", [{ secret: `${discordSeg1}.${discordSeg2}.${discordSeg3}` }]);
+  add("discord-bot-token", "missing-segment", [`${discordSeg1}.${discordSeg3}`]);
+  add("discord-bot-token", "short-final-segment", [`${discordSeg1}.${discordSeg2}.${discordSeg3.slice(0, 20)}`]);
+
+  const sentryOrgPayload = synthetic("coverage:sentry-org:payload", 26, BASE64_BODY);
+  const sentryOrgSignature = synthetic("coverage:sentry-org:signature", 43, BASE64_BODY);
+  positive("sentry-org-auth-token", "org-token", [{ secret: `sntrys_eyJ${sentryOrgPayload}_${sentryOrgSignature}` }]);
+  add("sentry-org-auth-token", "missing-json-marker", [`sntrys_${sentryOrgPayload}_${sentryOrgSignature}`]);
+  add("sentry-org-auth-token", "short-signature", [`sntrys_eyJ${sentryOrgPayload}_${sentryOrgSignature.slice(0, 30)}`]);
+
+  const datadogApiKey = synthetic("coverage:datadog:api-key", 32, LOWER_HEX);
+  positive("datadog-api-key", "env-marker", ["DD_API_KEY=", { secret: datadogApiKey }]);
+  add("datadog-api-key", "missing-marker", [datadogApiKey]);
+  add("datadog-api-key", "short-key", ["DD_API_KEY=" + datadogApiKey.slice(0, 20)]);
+
+  const datadogAppKey = synthetic("coverage:datadog:application-key", 40, LOWER_HEX);
+  positive("datadog-application-key", "env-marker", ["DD_APPLICATION_KEY=", { secret: datadogAppKey }]);
+  add("datadog-application-key", "missing-marker", [datadogAppKey]);
+  add("datadog-application-key", "short-key", ["DD_APPLICATION_KEY=" + datadogAppKey.slice(0, 20)]);
+
+  const grafanaSaBody = synthetic("coverage:grafana-sa:body", 32);
+  const grafanaSaChecksum = synthetic("coverage:grafana-sa:checksum", 8, LOWER_HEX);
+  positive("grafana-service-account-token", "checksum-segment", [{ secret: `glsa_${grafanaSaBody}_${grafanaSaChecksum}` }]);
+  add("grafana-service-account-token", "missing-separator", [`glsa_${grafanaSaBody}${grafanaSaChecksum}`]);
+  add("grafana-service-account-token", "short-checksum", [`glsa_${grafanaSaBody}_${grafanaSaChecksum.slice(0, 6)}`]);
+
+  const newRelicLicenseKey = synthetic("coverage:new-relic:license-key", 40, LOWER_HEX);
+  positive("new-relic-license-key", "keyword-context", ["newrelic ", { secret: newRelicLicenseKey }]);
+  add("new-relic-license-key", "missing-keyword", [newRelicLicenseKey]);
+  add("new-relic-license-key", "short-key", ["newrelic " + newRelicLicenseKey.slice(0, 20)]);
 
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
@@ -136,8 +209,8 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   return {
     "detector-coverage": {
       ...wrap(fixtures),
-      scope: "Structural synthetic coverage for all 25 beta.3 detector families. Provider variants reflect the pinned source contracts, not credential validity. PEM bodies are encoded public prose and JWT signatures are fabricated. Connection strings, OTP URIs, Bearer headers and quoted generic assignments label only the secret bytes, with the enclosing URI/header/assignment as the authored envelope. Expectations are authored before scanning; every mismatch remains scored. No cryptographic validity, live verification, streaming, or cross-surface parity claims.",
-      references: ["https://github.com/redact-secret/redact-secret/tree/34ea9b92ed8879082e99f56f8f4715ee4e4f1f35/crates/secret-scan-core/src/detectors"],
+      scope: "Structural synthetic coverage for all 42 beta.4 detector families. Provider variants reflect the pinned source contracts, not credential validity. PEM bodies are encoded public prose and JWT signatures are fabricated. Connection strings, OTP URIs, Bearer headers, quoted generic assignments, and the context-gated Twilio/Datadog/New Relic license-key bare values label only the secret bytes, with the enclosing URI/header/assignment/identifier as the authored envelope. Expectations are authored before scanning; every mismatch remains scored. No cryptographic validity, live verification, streaming, or cross-surface parity claims.",
+      references: ["https://github.com/redact-secret/redact-secret/tree/dade2d69ea0d346cbc331f49eb1b4d4005c6ed34/crates/secret-scan-core/src/detectors"],
     },
   };
 }

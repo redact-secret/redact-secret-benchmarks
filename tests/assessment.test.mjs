@@ -46,16 +46,17 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
     if (f.assessment.kind === 'policy') assert.equal(f.assessment.tier, 'T3', f.id);
     if (f.assessment.kind === 'must-redact' && f.assessment.tier !== 'T0') assert.equal(contracts[f.assessment.contract].tier, f.assessment.tier, f.id);
   }
-  // v3 audit plus #369 expanded boundaries: reviewed formats 193 files / 199 spans;
-  // masking 69 + malformed-with-spans 86 = 155 policy;
-  // 168 negative controls; 36 unreviewed. Phase 5 moved the three Vault recovery
-  // contexts from pending to policy because the provider documents the hvr. prefix.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 193);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 199);
-  assert.deepEqual(tally['policy/T3'], { files: 158, spans: 158 });
+  // v3 audit plus #369 expanded boundaries plus the beta.4 registry refresh
+  // (17 new detector families): reviewed formats 226 files / 232 spans;
+  // 176 policy; 184 negative controls; 33 unreviewed. Phase 5 moved the three
+  // Vault recovery contexts from pending to policy because the provider
+  // documents the hvr. prefix.
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 226);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 232);
+  assert.deepEqual(tally['policy/T3'], { files: 176, spans: 176 });
   assert.deepEqual(tally['must-redact/T0'], { files: 33, spans: 33 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 168);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 184);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

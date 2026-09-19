@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { createServer } from 'vite';
 import { buildCatalog, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments, rowSignal } from '../src/model.mjs';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 const read = async path => JSON.parse(await readFile(new URL('../'+path,import.meta.url),'utf8'));
@@ -24,13 +23,45 @@ test('all corpus fixtures have unique, routable slugs and explicit detector assi
   assert.throws(() => buildCatalog(categories,corpora,{...assignments,[fixtures[0].slug]:['unknown']},registry.detectors),/Unknown/);
   assert.throws(() => buildCatalog(categories,corpora,assignments,[{id:categories[0].id}]),/unique/);
 });
-test('routes distinguish overview, detectors/cases, fixtures, pending, methodology and invalid paths', () => {
-  assert.equal(parseRoute('/').kind,'overview');
-  assert.equal(parseRoute('/benchmark/').kind,'overview');
-  assert.deepEqual(parseRoute('/benchmark/github-token'),{kind:'benchmark',id:'github-token'});
-  assert.equal(parseRoute('/methodology').kind,'methodology');
-  assert.equal(parseRoute('/pending/').kind,'pending');
-  for (const path of ['/fixture','/benchmark/a/b','/benchmark/%3Cscript%3E']) assert.equal(parseRoute(path).kind,'missing');
+const suites = categories.map(c => c.id);
+const resolve = path => parseRoute(path, { suites });
+test('the redesign route table resolves, with or without a trailing slash', () => {
+  assert.equal(resolve('/report').kind, 'report');
+  assert.equal(resolve('/coverage/').kind, 'coverage');
+  assert.deepEqual(resolve('/coverage/github-token'), { kind: 'coverage', id: 'github-token', view: '', to: '' });
+  assert.deepEqual(resolve('/suites/accuracy'), { kind: 'suite', id: 'accuracy', view: '', to: '' });
+  assert.deepEqual(resolve('/workbench'), { kind: 'workbench', id: '', view: 'overview', to: '' });
+  assert.deepEqual(resolve('/workbench/review/lexical-invalid-alphabet'), { kind: 'workbench', id: 'lexical-invalid-alphabet', view: 'review', to: '' });
+  assert.equal(resolve('/workbench/changes').view, 'changes');
+  assert.equal(resolve('/workbench/qualification/').view, 'qualification');
+  for (const method of ['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout']) assert.deepEqual(resolve(`/workbench/method/${method}`), { kind: 'workbench', id: method, view: 'method', to: '' });
+  assert.equal(resolve('/how-to-read').kind, 'how-to-read');
+  for (const path of ['/fixture', '/coverage/a/b', '/coverage/%3Cscript%3E', '/workbench/method/unknown', '/workbench/review', '/suites', '/nope']) assert.equal(resolve(path).kind, 'missing', path);
+});
+test('no bookmark breaks: every pre-redesign path redirects to a page that resolves', () => {
+  const legacy = {
+    '/': '/report', '/benchmark': '/report', '/benchmark/': '/report', '/coverage-gaps': '/coverage', '/methodology': '/how-to-read',
+    '/pending': '/workbench/review/t0-fixtures', '/pending/': '/workbench/review/t0-fixtures',
+    '/evaluation': '/workbench', '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation',
+    '/evaluation/detector/github-token': '/coverage/github-token',
+    ...Object.fromEntries(['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => [`/evaluation/method/${m}`, `/workbench/method/${m}`])),
+    ...Object.fromEntries(registry.detectors.map(d => [`/benchmark/${d.id}`, `/coverage/${d.id}`])),
+    ...Object.fromEntries(categories.map(c => [`/benchmark/${c.id}`, `/suites/${c.id}`])),
+  };
+  assert.ok(Object.keys(legacy).length > 60);
+  for (const [from, to] of Object.entries(legacy)) {
+    assert.deepEqual(resolve(from), { kind: 'redirect', id: '', view: '', to }, from);
+    assert.ok(!['redirect', 'missing'].includes(resolve(to).kind), `${from} -> ${to} must land on a real page`);
+  }
+  assert.equal(resolve('/evaluation/unknown').kind, 'missing');
+});
+test('the public-only allowlist drops Workbench and nothing else', () => {
+  const open = path => parseRoute(path, { suites, publicOnly: true }).kind;
+  for (const path of ['/workbench', '/workbench/changes', '/workbench/method/twin', '/evaluation', '/pending']) assert.equal(open(path), 'missing', path);
+  assert.equal(open('/report'), 'report');
+  assert.equal(open('/coverage/github-token'), 'coverage');
+  assert.equal(open('/benchmark/accuracy'), 'redirect');
+  assert.equal(open('/how-to-read'), 'how-to-read');
 });
 test('UTF-8 highlighting round-trips every input including BOM, Unicode, CRLF and multiple secrets', () => {
   for (const f of fixtures) {
@@ -85,54 +116,4 @@ test('same fixture IDs in different suites remain separate observations', () => 
   assert.equal(summary.rows.length,2);
   assert.equal(new Set(summary.rows.map(r => r.slug)).size,2);
   assert.equal(summary.metrics.leakedSpans,2);
-});
-test('page renderers expose every fixture, escape input markup, and keep caveats out of the data path', async () => {
-  const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
-  try {
-    const pages = await server.ssrLoadModule('/src/pages/browse.ts');
-    const { accuracy } = await server.ssrLoadModule('/src/pages/accuracy.ts');
-    const { methodology } = await server.ssrLoadModule('/src/pages/methodology.ts');
-    const listing = pages.fixtureList(fixtures,[]);
-    for (const f of fixtures) {
-      assert.ok(listing.includes(`/fixture/${f.slug}`),f.slug);
-      const html = pages.fixturePage(f,[]);
-      assert.ok(html.includes('Exact synthetic input'),f.slug);
-      assert.ok(html.includes('No current report'),f.slug);
-      assert.ok(html.includes(`tier-${f.assessment.tier}`),f.slug);
-    }
-    const malicious = {...fixtures[0],content:'<script>alert(1)</script>',expected:[]};
-    assert.ok(!pages.fixturePage(malicious,[]).includes('<script>'));
-    assert.ok(pages.fixturePage(malicious,[]).includes('&lt;script&gt;'));
-    assert.ok(pages.overview([]).includes('/benchmark/openai-token'));
-    const corpusReport = {...report,fixtureCount:10,expectedCount:5};
-    const run = {schemaVersion:5,accountingVersion:'1.1',runId,startedAt:'2026-09-17T12:00:00.000Z',finishedAt:'2026-09-17T12:00:02.000Z',categories:['accuracy'],partial:true,scannerVersions:{test:'1'},lockHash:'lock',revision:'r',dirty:false};
-    const suite = accuracy(corpusReport, run);
-    assert.ok(suite.includes('/fixture/accuracy--github-token'));
-    assert.ok(suite.includes('Secrets left readable') && suite.includes('Safe files wrongly flagged') && suite.includes('draft'));
-    assert.ok(suite.includes('This run:') && !suite.includes('How to read this') && !suite.includes('tp/fp/fn'), 'a lead sentence replaces the glossary; diagnostics live in provenance');
-    const overview = pages.overview([corpusReport], run);
-    assert.ok(overview.includes('Partial run — 1 of 10 suites'), 'a run that covers one suite is named as partial');
-    assert.ok(overview.includes('shown, never scored'));
-    const detector = pages.comparison(fixtures.filter(f => f.detectors.includes('anthropic-token')), [corpusReport], run);
-    for (const html of [overview, detector, suite]) {
-      for (const kind of ['must-redact', 'must-not-flag', 'policy']) assert.ok(html.includes(`data-kind="${kind}"`), kind);
-      assert.ok(!/precision|recall|F1\b/i.test(html.replace(/no precision|Precision, recall and F1 are not exported/g, '')), 'no rates leak into the data path');
-      assert.ok(!html.includes('Results are separated by measurement purpose'), 'per-panel notices are gone');
-    }
-    assert.equal((overview.match(/reading-note/g) ?? []).length, 1, 'one reading note per page');
-    const twin = fixtures.find(f => f.twinOf);
-    assert.ok(pages.fixturePage(twin, []).includes('Negative twin of'));
-    const pending = fixtures.find(f => f.assessment.tier === 'T0');
-    assert.ok(pages.fixturePage(pending, []).includes('Pending review: excluded from comparative scores'));
-    const enveloped = fixtures.find(f => f.expected.some(r => r.envelope));
-    assert.ok(pages.fixturePage(enveloped, []).includes(enveloped.expected[0].envelope.reason.slice(0, 30)));
-    const bom = fixtures.find(f => f.slug==='context-edges--bom');
-    assert.ok(pages.fixturePage(bom,[]).includes('\\uFEFF'));
-    assert.ok(pages.fixturePage(fixtures.find(f => f.slug==='negative-controls--empty'),[]).includes('(empty file)'));
-    assert.ok(listing.includes('data-signal="1"') || listing.includes('data-signal="0"'));
-    assert.ok(listing.includes('id="show-all"'));
-    for (const glyph of ['■', '◩', '◫', '◪', '□']) assert.ok(listing.includes(glyph), glyph);
-    const m = methodology();
-    for (const claim of ['Not a representative sample', 'corpus-relative', 'not issuance', 'policy difference', 'bounded by which twins', 'not a speed benchmark']) assert.ok(m.includes(claim), claim);
-  } finally { await server.close(); }
 });

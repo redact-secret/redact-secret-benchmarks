@@ -46,6 +46,9 @@ export interface EvidenceRow {
 export interface QualificationEvidence {
   reportType: 'qualification'; supportClaims: false; status: string; scope: string; runId: string; finishedAt: string;
   milestone: { status: string; checkedAt: string; openPrerequisites: number[] };
+  /** Engine v1.1: why a run is not yet qualified, and the review queue read against the checked-in ledger. */
+  accounting?: { reasons: ('execution-incomplete' | 'unresolved-assertions' | 'unreviewed-queue')[]; unresolvedGroups: string[]; review: { open: number; resolved: number; unknown: number; oldestOpenRun: string | null } };
+  methods?: { method: string; cases: number; variants: number; generationErrors: number; scanners: { id: string; status: ScannerStatus; assertions: Counts }[] }[];
   holdout: {
     caseCount: number; variantCount: number; generationErrors: number; methodology: string; independence: string; status: string;
     candidate: { sourceHash: string; lockHash: string; candidateArtifactHash: string };

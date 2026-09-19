@@ -51,10 +51,14 @@ test('missing, legacy, stale, dangling assertions and scored T0 evidence fail cl
   const scored = published(); scored.cases[0].variants[0].tier = 'T0';
   assert.ok(evaluationProblem(scored));
 });
-test('all evaluation routes parse on direct navigation', () => {
-  for (const path of ['/evaluation','/evaluation/failures','/evaluation/reviews','/evaluation/operators', ...['twin','benign','metamorphic','mutation','differential','holdout'].map(m => `/evaluation/method/${m}`),'/evaluation/detector/github-token']) assert.equal(parseRoute(path + '/').kind, 'evaluation');
+test('every pre-redesign evaluation route forwards to Workbench on direct navigation', () => {
+  for (const path of ['/evaluation','/evaluation/failures','/evaluation/reviews','/evaluation/operators', ...['twin','benign','metamorphic','mutation','differential','holdout'].map(m => `/evaluation/method/${m}`)]) {
+    const route = parseRoute(path + '/');
+    assert.equal(route.kind, 'redirect', path);
+    assert.equal(parseRoute(route.to).kind, 'workbench', path);
+  }
+  assert.equal(parseRoute('/evaluation/detector/github-token').to, '/coverage/github-token');
   assert.equal(parseRoute('/evaluation/unknown').kind, 'missing');
-  assert.equal(parseRoute('/benchmark/github-token').kind, 'benchmark');
 });
 
 test('public contract rejects unknown fields and injected holdout detail', () => {
@@ -70,27 +74,39 @@ test('operator summaries cannot drift from generated attempts and assertions', (
   assert.match(evaluationProblem(report), /Operator totals/);
 });
 
-test('rendered method, detector, review and holdout views retain the evidence boundaries', async () => {
+test('rendered Workbench method, review and holdout views retain the evidence boundaries', async () => {
   const { createServer } = await import('vite');
   const { readFile } = await import('node:fs/promises');
   const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
   try {
-    const { evaluationPage, evaluationEmpty } = await server.ssrLoadModule('/src/pages/evaluation.ts');
+    const { methodPage } = await server.ssrLoadModule('/src/pages/workbench/method.ts');
+    const { workbenchPage } = await server.ssrLoadModule('/src/pages/workbench/index.ts');
+    const { qualificationPage } = await server.ssrLoadModule('/src/pages/workbench/qualification.ts');
+    const { reviewClasses } = await server.ssrLoadModule('/src/evaluation-model.ts');
     const r = published();
-    const overview = evaluationPage(r,'overview','');
-    for (const method of ['twin','benign','metamorphic','mutation','differential','holdout']) assert.ok(overview.includes(`/evaluation/method/${method}`));
-    assert.ok(overview.includes('Affected failing cases') && overview.includes('Failed assertions'));
-    assert.ok(evaluationPage(r,'method','twin').includes('Discriminated pairs'));
-    assert.ok(evaluationPage(r,'method','benign').includes('Flagged controls'));
-    assert.ok(evaluationPage(r,'method','differential').includes('not ground truth or votes'));
-    assert.ok(evaluationPage(r,'reviews','').includes('Human review evidence'));
-    assert.ok(evaluationPage(r,'detector','github-token').includes('/benchmark/github-token'));
-    assert.ok(evaluationEmpty('Stale evaluation').includes('npm run eval:publish'));
+    const ledger = JSON.parse(await readFile('benchmarks/review-ledger.json','utf8'));
+    const data = { loaded: [], hashes: {} };
+    const home = workbenchPage({ data, evaluation: r, evaluationProblem: null, classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
+    for (const method of ['twin','benign','metamorphic','mutation','differential','holdout']) assert.ok(home.includes(`/workbench/method/${method}`), method);
+    assert.ok(home.includes('never ground truth'));
+    assert.ok(!home.includes('/evaluation'), 'no link points at a pre-redesign path');
+    assert.ok(methodPage(r,'twin').includes('Discriminated pairs'));
+    assert.ok(methodPage(r,'twin').includes('affected failing cases') && methodPage(r,'twin').includes('failed assertions'));
+    assert.ok(methodPage(r,'benign').includes('Flagged controls'));
+    assert.ok(methodPage(r,'mutation').includes('Operator evidence'), 'operator evidence moved in with the method that generates variants');
+    assert.ok(methodPage(r,'differential').includes('not ground truth or votes'));
+    assert.ok(methodPage(r,'differential').includes('Human review evidence'));
+    const missing = workbenchPage({ data, evaluation: null, evaluationProblem: 'Stale evaluation: fixture corpus changed', classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
+    assert.ok(missing.includes('Stale evaluation') && missing.includes('npm run eval:publish'));
+    assert.ok(missing.includes('Review queue') && missing.includes('lexical.invalid-alphabet'), 'the queue reads the ledger, so it survives a missing report');
+    assert.ok(methodPage(r,'holdout').includes('No qualification aggregate published'));
     r.qualification = JSON.parse(await readFile('docs/qualification/engine-v1.json','utf8'));
-    const holdout = evaluationPage(r,'method','holdout');
+    const holdout = methodPage(r,'holdout');
     assert.ok(holdout.includes('supportClaims: false'));
     assert.ok(!holdout.includes('/fixture/'));
     assert.ok(holdout.includes('No case drill-down'));
+    const floors = qualificationPage(data, r);
+    assert.ok(floors.includes('supportClaims: false') && floors.includes('Ledger rows for every entry'));
     const raw = structuredClone(r); raw.qualification.holdout.cases = [{content:'PROTECTED_SENTINEL'}];
     assert.ok(evaluationProblem(raw));
   } finally { await server.close(); }

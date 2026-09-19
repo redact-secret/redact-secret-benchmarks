@@ -18,6 +18,7 @@ import { classifyFixture, validateAssessment, validateContracts } from './lib/as
 import { scoreReport } from './lib/reporting.ts';
 import { validateStructures } from './lib/validate-structures.ts';
 import { ACCOUNTING_VERSION, validateAccounting } from './lib/accounting.ts';
+import { summarizeRun } from './lib/run-summary.ts';
 
 export const MATCHING = "Per-span outcome lattice over UTF-8 [start, end). Envelope-relative coverage. Identical findings deduplicated. No cross-tier aggregation; no precision, recall or F1. T0 observations unscored. AWS RawV2 secret components and Shopify composite token mapped from scanner output, never ground truth.";
 
@@ -60,6 +61,7 @@ const write = async (name: string, report: unknown) => {
 let failed = false;
 const scannerVersions: Record<string, string> = {};
 const categories = [];
+const published: unknown[] = [];
 for (const category of registry.filter(
   (c) => !requested || c.id === requested,
 )) {
@@ -143,6 +145,7 @@ for (const category of registry.filter(
       scanners: results,
     };
     await write(category.id, report);
+    published.push(report);
     categories.push(category.id);
     console.log(`Updated public/results/${category.id}.json`);
     console.table(
@@ -165,6 +168,8 @@ for (const category of registry.filter(
     await rm(scratch, { recursive: true, force: true });
   }
 }
+// Cross-suite and per-detector groups, accounted once here so the site reads bounds instead of deriving them.
+if (published.length) await write('summary', summarizeRun(published as Parameters<typeof summarizeRun>[0], JSON.parse(await readFile(path.join(root, 'benchmarks/fixture-detectors.json'), 'utf8'))));
 await write("run", {
   schemaVersion: 5,
   accountingVersion: ACCOUNTING_VERSION,

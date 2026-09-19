@@ -114,18 +114,20 @@ test('known gap issues cover all recorded failures and link to authored fixtures
 });
 
 test('coverage route renders inventory, source provenance, milestone, and fixture follow-ups', async () => {
-  assert.equal(parseRoute('/coverage-gaps/').kind, 'coverage-gaps');
+  assert.deepEqual(parseRoute('/coverage-gaps/'), { kind: 'redirect', id: '', view: '', to: '/coverage' });
+  assert.equal(parseRoute('/coverage').kind, 'coverage');
   const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
   try {
-    const {coverageGaps} = await server.ssrLoadModule('/src/pages/gaps.ts');
-    const html = coverageGaps();
+    const {coveragePage} = await server.ssrLoadModule('/src/pages/coverage.ts');
+    const {fixtures} = await server.ssrLoadModule('/src/catalog.ts');
+    const html = coveragePage(fixtures, 'inventory');
     assert.ok(html.includes('No dedicated detector'));
     assert.ok(html.includes('parity is unverified'));
     assert.ok(html.includes('inventory-query') && html.includes('inventory-next'));
     for (const source of Object.values(inventory.sources)) assert.ok(html.includes(source.url));
     for (const issue of knownGaps.issues) assert.ok(html.includes(issue.url));
-    const {fixturePage} = await server.ssrLoadModule('/src/pages/browse.ts');
-    const {fixtures} = await server.ssrLoadModule('/src/catalog.ts');
-    assert.ok(fixturePage(fixtures.find(f => f.slug === 'reference-syntax--windows-env'),[]).includes('Beta.4 #292'));
+    assert.ok(!coveragePage(fixtures, 'all').includes('inventory-query'), 'the inventory is its own view of Coverage');
+    const {fixturePage} = await server.ssrLoadModule('/src/pages/fixture.ts');
+    assert.ok(fixturePage(fixtures.find(f => f.slug === 'reference-syntax--windows-env'), undefined).includes('Beta.4 #292'));
   } finally { await server.close(); }
 });

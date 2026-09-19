@@ -22,17 +22,63 @@ export function buildCatalog(categories, corpora, assignments, detectors) {
   return fixtures;
 }
 
-export function parseRoute(pathname) {
-  const path = pathname.replace(/\/+$/, '') || '/';
-  if (path === '/' || path === '/benchmark') return { kind: 'overview', id: '' };
-  if (path === '/coverage-gaps') return { kind: 'coverage-gaps', id: '' };
-  if (path === '/methodology') return { kind: 'methodology', id: '' };
-  if (path === '/pending') return { kind: 'pending', id: '' };
-  const evaluation = /^\/evaluation(?:\/(failures|reviews|operators)|\/(method|detector)\/([a-z0-9-]+))?$/.exec(path);
-  if (evaluation) return { kind: 'evaluation', view: evaluation[1] ?? evaluation[2] ?? 'overview', id: evaluation[3] ?? '' };
-  const match = /^\/(benchmark|fixture)\/([a-z0-9-]+)$/.exec(path);
-  return match ? { kind: match[1], id: match[2] } : { kind: 'missing', id: '' };
+const ID = '[a-z0-9-]+';
+const METHOD_IDS = ['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'];
+/** One shape for every route so callers never narrow: unused fields are ''. @returns {{ kind: string, id: string, view: string, to: string }} */
+const at = (kind, id = '', view = '', to = '') => ({ kind, id, view, to });
+const redirect = to => at('redirect', '', '', to);
+const MISSING = () => at('missing');
+
+/**
+ * Pre-redesign paths. Every one lands on its replacement so no bookmark breaks.
+ * `/benchmark/:id` served both detectors and suites; the suite list decides.
+ */
+function legacyRoute(path, suites) {
+  if (path === '/benchmark') return redirect('/report');
+  if (path === '/coverage-gaps') return redirect('/coverage');
+  if (path === '/methodology') return redirect('/how-to-read');
+  // T0 fixtures are one class of the review queue now.
+  if (path === '/pending') return redirect('/workbench/review/t0-fixtures');
+  if (path === '/evaluation' || path === '/evaluation/reviews' || path === '/evaluation/failures') return redirect('/workbench');
+  // Operator evidence sits with the method that generates operator variants.
+  if (path === '/evaluation/operators') return redirect('/workbench/method/mutation');
+  let match = new RegExp(`^/evaluation/method/(${ID})$`).exec(path);
+  if (match) return redirect(`/workbench/method/${match[1]}`);
+  match = new RegExp(`^/evaluation/detector/(${ID})$`).exec(path);
+  if (match) return redirect(`/coverage/${match[1]}`);
+  match = new RegExp(`^/benchmark/(${ID})$`).exec(path);
+  if (match) return redirect(suites.includes(match[1]) ? `/suites/${match[1]}` : `/coverage/${match[1]}`);
+  return null;
 }
+
+/**
+ * Route table of the redesign (plan section 03). `publicOnly` is the allowlist
+ * flag for a future customer-only build: Workbench paths stop resolving.
+ * @param {string} pathname
+ * @param {{ suites?: string[], publicOnly?: boolean }} [options]
+ */
+export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
+  const path = pathname.replace(/\/+$/, '') || '/';
+  if (path === '/') return redirect('/report');
+  if (path === '/report') return at('report');
+  if (path === '/coverage') return at('coverage');
+  if (path === '/how-to-read') return at('how-to-read');
+  const match = new RegExp(`^/(coverage|suites|fixture)/(${ID})$`).exec(path);
+  if (match) return at(match[1] === 'suites' ? 'suite' : match[1], match[2]);
+  const workbench = new RegExp(`^/workbench(?:/(changes|qualification)|/(review|method)/(${ID}))?$`).exec(path);
+  if (workbench) {
+    if (publicOnly) return MISSING();
+    const view = workbench[1] ?? workbench[2] ?? 'overview', id = workbench[3] ?? '';
+    if (view === 'method' && !METHOD_IDS.includes(id)) return MISSING();
+    return at('workbench', id, view);
+  }
+  const legacy = legacyRoute(path, suites);
+  if (legacy) return publicOnly && legacy.to.startsWith('/workbench') ? MISSING() : legacy;
+  return MISSING();
+}
+
+/** Paths the app owns, for intercepting link clicks. */
+export const isAppPath = pathname => parseRoute(pathname).kind !== 'missing';
 
 const project = expected => expected.map(({ start, end, role, envelope }) => ({ start, end, role, ...(envelope ? { envelope: { start: envelope.start, end: envelope.end } } : {}) }));
 const FORBIDDEN = ['precision', 'recall', 'f1', 'tp', 'fp', 'fn', 'tn', 'contained', 'broader'];

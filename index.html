@@ -2,9 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#101b1b" />
-    <title>Secret Benchmarks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Redact Secret Benchmarks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Montserrat, Roboto and Merriweather carry no Hangul; Noto Sans KR / Noto Serif KR are the fallbacks. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Merriweather:wght@700&family=Roboto:wght@400;600&family=Noto+Sans+KR:wght@400;600;700;800&family=Noto+Serif+KR:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Apply a saved theme before first paint; without one the OS preference decides.
+      try {
+        var saved = localStorage.getItem("redact-secret-benchmarks:theme");
+        if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="app"></div>

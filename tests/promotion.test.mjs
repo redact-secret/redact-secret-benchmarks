@@ -49,6 +49,7 @@ test('candidate.sourceCommit rejects an unknown sibling key', () => {
 
 test('verified records require candidate.sourceCommit', () => {
   const candidate = clone();
+  delete candidate.issues[0].candidate.sourceCommit;
   candidate.issues[0].status = 'verified';
   candidate.issues[0].history.verified = {
     at: '2026-09-18',

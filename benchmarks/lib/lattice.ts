@@ -50,6 +50,11 @@ export function spanOutcome(span: ExpectedRange, findings: Range[]): Outcome {
 }
 
 export const isLeaked = (outcome: string) => outcome === 'PARTIAL' || outcome === 'MISS';
+/**
+ * Leak-axis complement only: true for OVERBROAD, which does not leak the
+ * secret. This is NOT an acceptability predicate — acceptable is EXACT or
+ * COVERED (engine v1.1 §3). Leakage and overbreadth are separate axes (§2.4).
+ */
 export const isCovered = (outcome: string) => !isLeaked(outcome);
 
 /**
@@ -72,6 +77,10 @@ const rate = (n: number, d: number) => (d ? n / d : null);
 const secretBytesOf = (row: ScoredRow) => row.expected.filter(e => (e.role ?? 'secret') === 'secret').reduce((n, e) => n + e.end - e.start, 0);
 
 /**
+ * The v1.0 scorer, kept frozen for the dual-scorer transition: published
+ * groups come from `accountGroups` (./accounting.ts), which applies the v1.1
+ * rules on top of these counts.
+ *
  * Aggregate scored rows into `<kind>/<tier>` groups. Rows must carry
  * kind, tier, expected, actual and the scoreRow fields; `twinOf` names the
  * positive row (by `id`) a control is paired with. No cross-group totals.
@@ -140,6 +149,9 @@ export function aggregateGroups(rows: ScoredRow[]) {
     g.collateralRatio = rate(g.collateralBytes!, g.secretBytes!);
     g.twins!.rate = rate(g.twins!.discriminated, g.twins!.pairs);
   }
+  // The twin denominator is the positive population; the per-row increments must agree with it.
+  const counted = Object.values(groups).reduce((n, g) => n + (g.twins?.positives ?? 0), 0);
+  if (counted !== positives.length) throw new Error('Twin denominator does not agree with the positive population');
   return Object.fromEntries(Object.entries(groups).sort(([a], [b]) => a.localeCompare(b)));
 }
 

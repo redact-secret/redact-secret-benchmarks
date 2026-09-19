@@ -7,7 +7,7 @@ ajv.addSchema(holdoutSchema); ajv.addSchema(qualificationSchema);
 const validPublicReport = ajv.compile(publicSchema);
 import type { EvaluationReport, EvaluationCase, Counts, EvidenceRow } from './evaluation-types';
 export const METHODS = ['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'];
-export const counts = (): Counts => ({ pass: 0, fail: 0, 'review-required': 0 });
+export const counts = (): Counts => ({ pass: 0, fail: 0, 'review-required': 0, 'not-measured': 0 });
 export function assertionRows(cases: EvaluationCase[]): EvidenceRow[] {
   return cases.flatMap(c => c.assertions.map(a => {
     const v = c.variants.find(v => v.id === (a.variant || a.candidate))!;
@@ -69,27 +69,29 @@ const canonical = (value: unknown): string => JSON.stringify(value, function(_ke
 export function evaluationProblem(value: unknown, corpusHashes?: Record<string, string>): string | null {
   try {
     const r = value as EvaluationReport;
-    if (r.schemaVersion !== 1 || r.reportType !== 'evaluation-public' || r.supportClaims !== false) return 'Unsupported evaluation report version';
+    if (r.schemaVersion !== 2 || r.accountingVersion !== '1.1' || r.reportType !== 'evaluation-public' || r.supportClaims !== false) return 'Unsupported evaluation report version';
     if (!validPublicReport(value)) return 'Invalid public evaluation contract';
     if (!r.runId || !Number.isFinite(Date.parse(r.startedAt)) || !Number.isFinite(Date.parse(r.finishedAt)) || Date.parse(r.finishedAt) < Date.parse(r.startedAt)) throw Error();
     if (!r.cases.length || new Set(r.cases.map(c => c.id)).size !== r.cases.length || !r.scanners.length) throw Error();
     const scannerIds = new Set(r.scanners.map(s => s.id));
-    if (scannerIds.size !== r.scanners.length || r.scanners.some(s => !['complete','unavailable','error','unsupported'].includes(s.status))) throw Error();
+    if (scannerIds.size !== r.scanners.length || r.scanners.some(s => !['complete','unavailable','error','unsupported','unstable'].includes(s.status))) throw Error();
     for (const c of r.cases) {
       if (!METHODS.slice(0, 5).includes(c.method) || !/^[a-z0-9-]+$/.test(c.id) || !/^[a-z0-9-]+--[a-z0-9-]+$/.test(c.sourceSlug) || !Array.isArray(c.targets)) throw Error();
       const variants = new Map(c.variants.map(v => [v.id, v]));
       if (!variants.size || variants.size !== c.variants.length) throw Error();
       for (const a of c.assertions) {
         const v = variants.get(a.variant || a.candidate), b = a.baseline ? variants.get(a.baseline) : null;
-        if (!v || (a.baseline && !b) || !scannerIds.has(a.scanner) || r.scanners.find(s => s.id === a.scanner)?.status !== 'complete' || !['pass','fail','review-required'].includes(a.status)) throw Error();
-        if ([v, b].some(x => x && (x.tier === 'T0' || x.strategy === 'review-required')) && a.status !== 'review-required') throw Error();
+        if (!v || (a.baseline && !b) || !scannerIds.has(a.scanner) || !['pass','fail','review-required','not-measured'].includes(a.status)) throw Error();
+        // A scanner that did not complete measured nothing, and says so on every variant.
+        if ((r.scanners.find(s => s.id === a.scanner)?.status !== 'complete') !== (a.status === 'not-measured')) throw Error();
+        if (a.status !== 'not-measured' && [v, b].some(x => x && (x.tier === 'T0' || x.strategy === 'review-required')) && a.status !== 'review-required') throw Error();
       }
       if (c.method === 'differential' && c.assertions.length) throw Error();
       if (c.generation.some(g => !['generated','unsupported','error'].includes(g.status))) throw Error();
       if (c.findings.some(f => !Number.isInteger(f.count) || f.count < 0 || !variants.has(f.variant))) throw Error();
       if (!Array.isArray(c.comparisons)) throw Error();
     }
-    if (new Set(r.reviews.map(x => x.id)).size !== r.reviews.length) throw Error();
+    if (new Set(r.reviews.map(x => x.id)).size !== r.reviews.length || r.review.open + r.review.resolved + r.review.unknown !== r.reviews.length) throw Error();
     for (const q of r.reviews) {
       const c = r.cases.find(c => c.id === q.caseId);
       if (!c || !c.variants.some(v => v.id === q.variant) || !['mutation','differential'].includes(c.method)) throw Error();

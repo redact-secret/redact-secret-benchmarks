@@ -30,7 +30,9 @@ export function relation(baseline: GeneratedVariant, candidate: GeneratedVariant
 
 export function evaluateAssertions({ variants, observations }: Pick<EvaluationContext, 'variants' | 'observations'>): ScannerResult[] {
   return observations.map(scanner => {
-    if (scanner.status !== 'complete') return { scanner: scanner.id, status: scanner.status, variants: [], assertions: [] };
+    // An absent observation is a measured gap, not an empty one (v1.1 §4).
+    if (scanner.status !== 'complete') return { scanner: scanner.id, status: scanner.status, variants: [],
+      assertions: variants.map(v => ({ variant: v.id, type: 'absolute', status: 'not-measured' as const, reason: scanner.status })) };
     const rows = variants.map(v => observe(v, scanner.findings));
     const assertions: Assertion[] = variants.map((v, i) => ({ variant: v.id, ...absolute(v, rows[i]) }));
     for (let i = 1; i < variants.length; i++) {

@@ -1,5 +1,9 @@
 # Evaluation Engine v1.0 qualification
 
+> Accounting and report identity were tightened in engine v1.1: see the
+> [differential specification](evaluation-engine-v1.1.md). Everything it does not
+> state is unchanged from this document.
+
 This engine is benchmark infrastructure owned by `redact-secret-benchmarks`.
 `redact-secret` owns detector implementation; this repository owns evaluation
 truth and evidence; the main project's documentation owns published support

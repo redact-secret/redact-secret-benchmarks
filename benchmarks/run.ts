@@ -1,4 +1,4 @@
-import type { Category, Group } from './types.ts';
+import type { Category, AccountedGroup, Published } from './types.ts';
 import {
   readFile,
   writeFile,
@@ -17,6 +17,7 @@ import { validateCorpus } from "./lib/scoring.ts";
 import { classifyFixture, validateAssessment, validateContracts } from './lib/assessment.ts';
 import { scoreReport } from './lib/reporting.ts';
 import { validateStructures } from './lib/validate-structures.ts';
+import { ACCOUNTING_VERSION, validateAccounting } from './lib/accounting.ts';
 
 export const MATCHING = "Per-span outcome lattice over UTF-8 [start, end). Envelope-relative coverage. Identical findings deduplicated. No cross-tier aggregation; no precision, recall or F1. T0 observations unscored. AWS RawV2 secret components and Shopify composite token mapped from scanner output, never ground truth.";
 
@@ -35,6 +36,9 @@ if (
   process.exit(1);
 }
 validateContracts();
+// Floors and interval parameters are suite configuration, covered by suiteHash, never a code edit.
+const accounting = validateAccounting(JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8')).accounting);
+const shown = (rate: Published | 'insufficient-coverage' | undefined, digits = 3) => (rate == null ? '—' : typeof rate === 'string' ? rate : `${rate.point.toFixed(digits)}${rate.bound == null ? '' : ` (${rate.direction === 'upper' ? '≤' : '≥'} ${rate.bound.toFixed(digits)})`}`);
 const handlers: Record<string, { validate: typeof validateCorpus; score: typeof scoreReport }> = { accuracy: { validate: validateCorpus, score: scoreReport } };
 const outputDir = path.join(root, "public/results");
 await mkdir(outputDir, { recursive: true });
@@ -85,32 +89,42 @@ for (const category of registry.filter(
         scannerVersions[scanner.id] = version;
         const start = performance.now();
         const findings = await scanner.scan(scratch, corpus.fixtures);
+        // An observation is only truth if it repeats over the same scratch tree (engine v1.1 §8).
+        const tuples = (list: typeof findings) => list.map((f: { path: string; start: number; end: number }) => `${f.path}:${f.start}:${f.end}`).sort().join('\n');
+        for (let replay = 1; replay < accounting.replays; replay++)
+          if (tuples(await scanner.scan(scratch, corpus.fixtures)) !== tuples(findings)) throw new Error('unstable');
         results.push({
           ...base,
           version,
           status: "complete",
           durationMs: Math.round((performance.now() - start) * 100) / 100,
-          ...handlers[category.kind].score(corpus.fixtures, findings),
+          replays: { count: accounting.replays, agreed: true },
+          ...handlers[category.kind].score(corpus.fixtures, findings, accounting),
         });
         console.log(`${category.id} / ${scanner.name}: complete`);
       } catch (error) {
         const unavailable = error instanceof Error && error.message === "unavailable";
+        const unstable = error instanceof Error && error.message === "unstable";
         results.push({
           ...base,
           version,
-          status: unavailable ? "unavailable" : "error",
+          status: unavailable ? "unavailable" : unstable ? "unstable" : "error",
+          ...(unstable ? { replays: { count: accounting.replays, agreed: false } } : {}),
           message: unavailable
             ? "Install the released binary and add it to PATH."
+            : unstable ? "Replays over identical input disagreed; findings discarded. Never re-rolled for a greener result."
             : "Scanner execution or normalization failed. Check the adapter and installed version; raw scanner output is suppressed.",
         });
         console.log(
-          `${category.id} / ${scanner.name}: ${unavailable ? "unavailable" : "error"}`,
+          `${category.id} / ${scanner.name}: ${unavailable ? "unavailable" : unstable ? "unstable" : "error"}`,
         );
         if (!unavailable || args.includes("--strict")) failed = true;
       }
     }
     const report = {
-      schemaVersion: 4,
+      schemaVersion: 5,
+      accountingVersion: ACCOUNTING_VERSION,
+      accounting,
       runId,
       category: category.id,
       generatedAt: new Date().toISOString(),
@@ -132,15 +146,19 @@ for (const category of registry.filter(
     categories.push(category.id);
     console.log(`Updated public/results/${category.id}.json`);
     console.table(
-      results.flatMap((result) => Object.entries<Group>(('groups' in result ? result.groups : undefined) ?? { unavailable: { files: 0 } }).map(([group, m]) => ({
+      results.flatMap((result) => Object.entries<AccountedGroup>(('groups' in result ? result.groups : undefined) ?? { unavailable: { files: 0 } }).map(([group, m]) => ({
         Scanner: result.name,
         Group: group,
         Status: result.status,
         Files: m.files ?? "—",
         "Leaked spans": m.spans != null ? `${m.leakedSpans} / ${m.spans}` : "—",
+        "Leak rate (bound)": shown(m.leakedSpanRate),
         "False alarms": m.flaggedFiles != null ? `${m.flaggedFiles} / ${m.files}` : "—",
-        Collateral: m.collateralRatio != null ? m.collateralRatio.toFixed(3) : "—",
-        Twins: m.twins?.pairs ? `${m.twins.discriminated} / ${m.twins.pairs}` : "—",
+        "Alarm rate (bound)": shown(m.falseAlarmRate),
+        Collateral: shown(m.collateralRatio),
+        Measurable: shown(m.measurableShare),
+        Twins: m.twins?.pairs ? `${m.twins.discriminated} / ${m.twins.pairs} of ${m.twins.positives}` : "—",
+        "Twin rate": shown(m.twins?.rate),
       }))),
     );
   } finally {
@@ -148,7 +166,8 @@ for (const category of registry.filter(
   }
 }
 await write("run", {
-  schemaVersion: 4,
+  schemaVersion: 5,
+  accountingVersion: ACCOUNTING_VERSION,
   runId,
   startedAt,
   finishedAt: new Date().toISOString(),

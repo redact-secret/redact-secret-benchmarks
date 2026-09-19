@@ -23,7 +23,7 @@ npm run eval:publish</pre><p>Optional: add --qualification=path/to/validated-qua
 }
 function summary(cases: EvaluationCase[], reviews: number) {
   const s = summarizeEvaluation(cases);
-  return metrics([['Cases', s.cases], ['Variants', s.variants], ['Affected failing cases', s.affected], ['Failed assertions', s.assertions.fail], ['Passing assertions', s.assertions.pass], ['Review-required assertions', s.assertions['review-required']], ['Cases with review assertions', s.reviewed], ['Review queue entries', reviews], ['Generation errors', s.generationErrors], ['Unsupported attempts', s.unsupported]]);
+  return metrics([['Cases', s.cases], ['Variants', s.variants], ['Affected failing cases', s.affected], ['Failed assertions', s.assertions.fail], ['Passing assertions', s.assertions.pass], ['Review-required assertions', s.assertions['review-required']], ['Not-measured assertions', s.assertions['not-measured']], ['Cases with review assertions', s.reviewed], ['Review queue entries', reviews], ['Generation errors', s.generationErrors], ['Unsupported attempts', s.unsupported]]);
 }
 function methodMatrix(cases: EvaluationCase[], r: EvaluationReport) {
   return panel('Method evidence', '<p>Development counts span selected scanners. Cases are unique within a method; assertions are not independent cases. Detector assignments overlap.</p>' + table(['Method','Cases','Variants','Affected cases','Pass assertions','Fail assertions','Review assertions','Queue entries','Generation errors','Evidence'], METHODS.slice(0, 5).map(m => {
@@ -72,6 +72,8 @@ export function evaluationPage(r: EvaluationReport, view: string, id: string) {
   if (view === 'detector') body += `<p>${link(`/benchmark/${id}`,'Measurement-v4 detector fixtures')} · ${link('/evaluation/method/holdout','Holdout aggregate: detector attribution unavailable')}</p>`;
   if (view === 'operators') return body + operators(r);
   body += summary(cases, reviewRows(r, cases).length);
+  // Ledger state covers the whole run, not the current filter: `unknown` is a disagreement nobody has looked at.
+  if (view === 'overview' || view === 'reviews') body += `<p>Review ledger (accounting v${e(r.accountingVersion)}): ${r.review.unknown} unknown · ${r.review.open} open · ${r.review.resolved} resolved${r.review.oldestOpenRun ? ` · oldest open since run ${e(r.review.oldestOpenRun)}` : ''}. Qualification requires zero unknown entries, not zero open ones.</p>`;
   if (view !== 'overview') body += `<p>Scanner execution: ${r.scanners.map(s => `${e(s.id)} ${badge(s.status)}`).join(' · ')}</p>`;
   if (view === 'overview') {
     return body + panel('Scanner execution', table(['Scanner','Version','Mode','Status'],r.scanners.map(s => [e(s.id),e(s.version ?? 'unavailable'),e(s.mode),badge(s.status)]))) + methodMatrix(cases,r) + panel('Detector evidence', `<div class="category-grid">${[...new Set(cases.flatMap(c => c.targets))].sort().map(d => link(`/evaluation/detector/${d}`,d)).join('')}</div>`) + holdout(r) + panel('Discovery provenance',`<details><summary>Revision, case hash, method and operator versions</summary><pre>${e(JSON.stringify(r.provenance,null,2))}</pre></details><p>Scope is this selection and run only. No overall accuracy score or scanner ranking.</p>`);

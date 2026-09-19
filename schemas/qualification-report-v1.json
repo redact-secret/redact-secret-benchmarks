@@ -3,13 +3,13 @@
   "additionalProperties": false,
   "properties": {
     "schemaVersion": {
-      "const": 1
+      "const": 2
     },
     "reportType": {
       "const": "qualification"
     },
     "engineVersion": {
-      "const": "1.0.0"
+      "const": "1.1.0"
     },
     "suiteId": {
       "const": "engine-v1"
@@ -143,6 +143,10 @@
                 "review-required": {
                   "type": "integer",
                   "minimum": 0
+                },
+                "not-measured": {
+                  "type": "integer",
+                  "minimum": 0
                 }
               },
               "required": [
@@ -213,7 +217,8 @@
                     "complete",
                     "unsupported",
                     "unavailable",
-                    "error"
+                    "error",
+                    "unstable"
                   ]
                 },
                 "assertions": {
@@ -229,6 +234,10 @@
                       "minimum": 0
                     },
                     "review-required": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "not-measured": {
                       "type": "integer",
                       "minimum": 0
                     }
@@ -307,6 +316,69 @@
         "openPrerequisites",
         "outOfScope"
       ]
+    },
+    "accountingVersion": {
+      "const": "1.1"
+    },
+    "accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reasons",
+        "unresolvedGroups",
+        "review"
+      ],
+      "properties": {
+        "reasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "execution-incomplete",
+              "unresolved-assertions",
+              "unreviewed-queue"
+            ]
+          }
+        },
+        "unresolvedGroups": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z-]+/([a-z0-9-]+/[a-zA-Z0-9:>-]+/[a-z-]+|\\*)$"
+          }
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "open",
+            "resolved",
+            "unknown",
+            "oldestOpenRun"
+          ],
+          "properties": {
+            "open": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "resolved": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unknown": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "oldestOpenRun": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
     }
   },
   "required": [
@@ -325,7 +397,9 @@
     "development",
     "methods",
     "holdout",
-    "milestone"
+    "milestone",
+    "accountingVersion",
+    "accounting"
   ],
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "urn:redact-secret:qualification:1"

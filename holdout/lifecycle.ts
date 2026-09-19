@@ -91,6 +91,8 @@ export async function runHoldout({ manifestFile, scanners, candidate, verifyCand
         for (const a of scored.assertions) {
           const v = result.variants.find(v => v.id === a.variant)!;
           const bucket = byStratum[`${v.kind}:${v.tier}`] ??= counts();
+          // Complete scanners never carry `not-measured` rows; holdout stays counts-only (no intervals, by decision).
+          if (a.status === 'not-measured') throw new HoldoutError('access-execution-or-validation-failed');
           bucket[a.status]++; assertions[a.status]++;
         }
       }

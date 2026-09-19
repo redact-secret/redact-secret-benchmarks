@@ -12,7 +12,11 @@ import { validateCorpus } from './lib/scoring.ts';
 import { validateStructures } from './lib/validate-structures.ts';
 import { hash } from './engine/model.ts';
 import { validateEvidence } from './engine/evidence.ts';
-import type { Category, Fixture, ScoredRow } from './types.ts';
+import type { Category, Fixture, ScoredRow, AccountingConfig } from './types.ts';
+import { validateAccounting } from './lib/accounting.ts';
+import suite from '../qualification/suite-v1.json';
+
+const accounting = validateAccounting(suite.accounting as AccountingConfig);
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const SHA = /^[a-f0-9]{40}$/;
@@ -94,11 +98,15 @@ async function main() {
         await writeFile(file, fixture.content, { mode: 0o600 });
       }
       const findings = await scanner.scan(scratch, selected.map(entry => entry.fixture));
+      // Engine v1.1 §8: a candidate observation that does not repeat is not evidence, and is never re-rolled.
+      const tuples = (list: typeof findings) => list.map(f => `${f.path}:${f.start}:${f.end}`).sort().join('\n');
+      for (let replay = 1; replay < accounting.replays; replay++)
+        if (tuples(await scanner.scan(scratch, selected.map(entry => entry.fixture))) !== tuples(findings)) throw new Error('candidate-scan-unstable');
       const byCategory = new Map<string, Fixture[]>();
       for (const entry of selected) byCategory.set(entry.category, [...(byCategory.get(entry.category) ?? []), entry.fixture]);
       for (const [category, fixtures] of byCategory) {
         const paths = new Set(fixtures.map(fixture => fixture.path));
-        const scored = scoreReport(fixtures, findings.filter(finding => paths.has(finding.path))).rows;
+        const scored = scoreReport(fixtures, findings.filter(finding => paths.has(finding.path)), accounting).rows;
         results.push(...scored.map((row: ScoredRow) => {
           const slug = `${category}--${row.id}`;
           return { fixtureId: slug, corpusSection: category === 'common-formats' ? 'fixed-corpus' : 'expanded-corpus', kind: row.kind, tier: row.tier, expectedSpans: row.expected.filter(value => (value.role ?? 'secret') === 'secret').length,

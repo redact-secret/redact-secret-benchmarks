@@ -19,5 +19,5 @@ export interface HoldoutReport {
   independence: 'public-control' | 'custodian-declared';
   corpus: { id: string; revision: number; purpose: HoldoutManifest['purpose']; corpusHash: string; seedHash: string; lifecycle: 'sealed-at-execution' };
   candidate: Candidate; caseCount: number; variantCount: number; generationErrors: number;
-  scanners: { id: string; version: string | null; configurationHash: string; configuration: Record<string, unknown>; status: 'complete' | 'unsupported' | 'unavailable' | 'error'; assertions: Counts; byStratum: Record<string, Counts> }[];
+  scanners: { id: string; version: string | null; configurationHash: string; configuration: Record<string, unknown>; status: 'complete' | 'unsupported' | 'unavailable' | 'error' | 'unstable'; assertions: Counts; byStratum: Record<string, Counts> }[];
 }

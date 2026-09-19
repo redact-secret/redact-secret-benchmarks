@@ -6,7 +6,7 @@ Measurement protocol v4 (`docs/measurement-v4.md`). Numbers are corpus-relative 
 
 ## 0.1.0-beta.4
 
-Run `2026-09-17T18:58:05.028Z-fe936e` · revision `2f3d1c051e3a9f4c776835c939cd0b3c5d560533` · saved 2026-09-17T18:58:57.374Z
+Run `2026-09-17T18:58:05.028Z-fe936e` · revision `2f3d1c051e3a9f4c776835c939cd0b3c5d560533` · saved 2026-09-17T18:58:57.374Z · **accounting v1.0**
 
 Scanner versions: redact-secret 0.1.0-beta.4 · gitleaks 8.30.1 · trufflehog 3.97.4
 

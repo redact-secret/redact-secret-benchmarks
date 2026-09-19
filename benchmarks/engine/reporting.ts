@@ -28,7 +28,7 @@ export function summaries(results: CaseResult[]) {
   const byOperator: Record<string, { generated: number; unsupported: number; error: number; assertions: Summary }> = {};
   const add = (destination: Summary, method: string, scanner: string, stratum: string, type: string, status: AssertionStatus) => {
     const key = `${method}/${scanner}/${stratum}/${type}`;
-    const row = destination[key] ??= { pass: 0, fail: 0, 'review-required': 0 };
+    const row = destination[key] ??= { pass: 0, fail: 0, 'review-required': 0, 'not-measured': 0 };
     row[status]++;
   };
   for (const r of results) {

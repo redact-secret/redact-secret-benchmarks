@@ -69,12 +69,12 @@ else: raise AssertionError('unknown constructor silently skipped')
   execFileSync('python3', ['-B', '-c', code], {cwd: new URL('..',import.meta.url),stdio:'pipe'});
 });
 
-test('beta.4 issues cover all six recorded failures and link to authored fixtures', async () => {
-  assert.deepEqual(knownGaps.issues.map(i => i.number), [292,293,294]);
+test('known gap issues cover all recorded failures and link to authored fixtures', async () => {
+  assert.deepEqual(knownGaps.issues.map(i => i.number), [292,293,294,404,405,406,407,408]);
   const assignments = await read('benchmarks/fixture-detectors.json');
   const slugs = knownGaps.issues.flatMap(i => i.fixtures);
-  assert.equal(slugs.length, 6);
-  assert.equal(new Set(slugs).size, 6);
+  assert.equal(slugs.length, 25);
+  assert.equal(new Set(slugs).size, 25);
   for (const issue of knownGaps.issues) {
     assert.equal(issue.url, `https://github.com/redact-secret/redact-secret/issues/${issue.number}`);
     for (const slug of issue.fixtures) assert.ok(Object.hasOwn(assignments,slug));

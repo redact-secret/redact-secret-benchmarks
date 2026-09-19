@@ -18,7 +18,8 @@ export interface KnownGapRecord {
   fixtures: string[];
   kind: 'false-positive' | 'false-negative';
   status: PromotionStatus;
-  candidate: { package: string; version: string; lockHash: string };
+  /** `sourceCommit` is the product commit under measurement, required once `status` reaches `verified`. */
+  candidate: { package: string; version: string; lockHash: string; sourceCommit?: string };
   expectationReview: { method: 'authored-independent-of-scanner-output'; evidence: string[] };
   history: Partial<Record<'observed' | 'reviewed' | 'promoted' | 'fixed' | 'verified', Transition>>;
   promotion?: {
@@ -28,6 +29,7 @@ export interface KnownGapRecord {
     canonicalFixtureIds: string[];
   };
   fix?: { commit: string; version?: string };
+  /** `fixingCommitOrVersion` is the commit that repaired the defect — distinct from `candidate.sourceCommit`, the commit where it was observed. */
   verification?: {
     canonicalProductRegression: { manifestRecordId: string; fixtureIds: string[] };
     fixingCommitOrVersion: string;
@@ -112,9 +114,10 @@ export function validateKnownGaps(value: KnownGaps): KnownGaps {
       !['false-positive', 'false-negative'].includes(record.kind) ||
       ![...ACTIVE, ...TERMINAL].includes(record.status as never) ||
       typeof record.candidate !== 'object' || record.candidate === null ||
-      !only(record.candidate, ['package', 'version', 'lockHash']) ||
+      !only(record.candidate, ['package', 'version', 'lockHash', 'sourceCommit']) ||
       record.candidate.package !== '@redact-secret/core' ||
       typeof record.candidate.version !== 'string' || !SHA256.test(record.candidate.lockHash) ||
+      (record.candidate.sourceCommit !== undefined && !COMMIT.test(record.candidate.sourceCommit)) ||
       typeof record.expectationReview !== 'object' || record.expectationReview === null ||
       !only(record.expectationReview, ['method', 'evidence']) ||
       record.expectationReview.method !== 'authored-independent-of-scanner-output' ||
@@ -165,6 +168,7 @@ export function validateKnownGaps(value: KnownGaps): KnownGaps {
       !only(record.fix, ['commit', 'version']) || !COMMIT.test(record.fix.commit) ||
       (record.fix.version !== undefined && typeof record.fix.version !== 'string')
     )) fail(id, 'invalid-fix-evidence');
+    if (requiredThrough >= 4 && !COMMIT.test(record.candidate.sourceCommit ?? '')) fail(id, 'invalid-candidate-source-commit');
     if (record.status === 'verified') {
       const verified = record.verification;
       if (

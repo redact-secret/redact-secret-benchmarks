@@ -1,3 +1,8 @@
+## Boundary rule
+
+This repository does not assert product output; it measures and records. An
+assertion someone wants to write here is a promotion signal.
+
 <!-- graft:start -->
 ## Graft — repo context graph
 

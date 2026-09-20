@@ -83,10 +83,25 @@ be tuned once A3 runs them against real data, per #503.
 
 ```ts
 import { classifyFamilySupport, statusCriteria } from '../support/status.ts';
-import { taxonomy, familiesForDetector } from '../support/taxonomy.ts';
+import { familyEvidence } from '../support/evidence.ts';
+import { contracts } from '../lib/assessment.ts';
 ```
 
-A3 builds one `FamilySupportEvidence` per `taxonomy.families[]` entry (empty
-`detectors` for `undetectedFamilies()`) and calls `classifyFamilySupport`.
-A8's `support-matrix.json` (#509) is that per-family result, unmodified —
-never a status re-derived or hand-adjusted downstream of this function.
+A3 (`benchmarks/classify-support.ts`, `npm run eval:classify`) builds one
+`FamilySupportEvidence` per **registered detector** — `Object.keys(contracts)`,
+exactly `benchmarks/detectors.json`'s 42 ids and #504's "42" — not per
+`taxonomy.families[]` entry: the taxonomy's provider:credential-name units are
+finer-grained (72, several per detector) and are the unit A8's support matrix
+displays, via `familiesForDetector`, not the unit this evidence attaches to.
+`familyEvidence` reads a full `runEvaluation` report's `byDetector` summaries
+(twin/benign/metamorphic assertions, scoped to the `redact-secret` scanner)
+and its `reviewQueue` resolved against `benchmarks/review-ledger.json`
+(mutation/differential; a queued entry counts as unresolved unless the ledger
+marks it `resolved`; a hard mutation failure counts as unresolved too — no
+ledger entry ever un-reviews an assertion that failed outright). Each
+family's contract `unprobeable` record (#33) is carried into the output
+alongside its status, so a zero twin-pair reading is never silently
+indistinguishable from "nobody got to it yet". `results-output/support-status.json`
+(schema `schemas/support-status-report-v1.json`) is that per-family result,
+unmodified — never a status re-derived or hand-adjusted downstream of this
+function — for A8's `support-matrix.json` (#509) to consume.

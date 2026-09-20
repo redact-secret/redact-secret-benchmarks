@@ -6,12 +6,15 @@ const CHANGE: Record<ChangeStatus, [StatusKind, string]> = {
 };
 const GATE: Record<GateStatus, [StatusKind, string]> = { met: ['pass', 'Met'], 'not-met': ['fail', 'Not met'], watch: ['review', 'Watch'], 'not-measured': ['not-measured', 'Not measured'] };
 const n = (value: number) => value.toLocaleString('en-US');
+const SHOWN = 8;
 
 export function changeRow(row: ChangeRow, links = false): string {
   const [kind, word] = CHANGE[row.status];
   const value = row.of == null ? `${n(row.after)} row${row.after === 1 ? '' : 's'}` : `${row.before == null ? '' : `<s>${n(row.before)}</s> → `}${n(row.after)} / ${n(row.of)}`;
-  const shown = links ? row.slugs.slice(0, 8) : [];
-  const list = shown.length ? `<small>${shown.map(slug => `<a href="/fixture/${e(slug)}">${e(slug.split('--')[1] ?? slug)}</a>`).join(' · ')}${row.slugs.length > shown.length ? ` · and ${n(row.slugs.length - shown.length)} more` : ''}</small>` : '';
+  const link = (slug: string) => `<a href="/fixture/${e(slug)}">${e(slug.split('--')[1] ?? slug)}</a>`;
+  const shown = links ? row.slugs.slice(0, SHOWN) : [], rest = links ? row.slugs.slice(SHOWN) : [];
+  // The folded remainder opens in place; data-key keeps it open across the polling re-render.
+  const list = shown.length ? `<small>${shown.map(link).join(' · ')}</small>${rest.length ? `<details data-key="chg:${e(row.label)}"><summary><small>and ${n(rest.length)} more</small></summary><small>${rest.map(link).join(' · ')}</small></details>` : ''}` : '';
   return `<div class="chg">${statusMark(kind, word)}<span>${e(row.label)}<small>${e(row.detail)}</small>${list}</span><span class="d">${value}</span></div>`;
 }
 export function gateRow(gate: Gate): string {

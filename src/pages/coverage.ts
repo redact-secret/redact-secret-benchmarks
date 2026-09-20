@@ -5,7 +5,7 @@ import { validateKnownGaps, type KnownGaps } from '../../benchmarks/lib/promotio
 import { twinProbe, type TwinProbeEntry } from '../../benchmarks/lib/twin-probe.ts';
 import type { FormatContract, ScoredRow } from '../../benchmarks/types.ts';
 import suite from '../../qualification/suite-v1.json';
-import { actionEmptyState, escapeHtml as e, evidenceCrumb, statusMark } from '../components';
+import { actionEmptyState, bindPager, escapeHtml as e, evidenceCrumb, pager, statusMark } from '../components';
 import { categories, registry, type Fixture } from '../catalog';
 import { filterInventory } from '../inventory.mjs';
 import type { Outcome } from '../types';
@@ -103,7 +103,7 @@ function inventoryView(): string {
   return `<p class="prose small">Named detector families in other scanners that redact-secret ${e(inventory.redactSecretVersion)} has no dedicated detector for, and this corpus therefore has no dedicated fixtures for. Missing a dedicated detector is different from missing a secret: generic detection may still find a value. Related families can support different formats; their parity is unverified. Counts are tool entries, including versions, not unique providers.</p>
     <div class="meta" style="margin:var(--space-4) 0"><span><b>${n(count('gitleaks'))}</b> of ${n(all('gitleaks'))} Gitleaks ${e(inventory.sources.gitleaks.version)} rules</span><span><b>${n(count('trufflehog'))}</b> of ${n(all('trufflehog'))} TruffleHog ${e(inventory.sources.trufflehog.version)} registrations</span><span>Snapshot ${e(inventory.reviewedAt)}</span></div>
     <form class="filters" id="inventory-filters"><label class="field">Search<input id="inventory-query" type="search" placeholder="Datadog, GCP, Notion"></label><label class="field">Scanner<select id="inventory-tool"><option value="all">Both scanners</option><option value="gitleaks">Gitleaks</option><option value="trufflehog">TruffleHog</option></select></label><label class="field">Coverage<select id="inventory-status"><option value="no-dedicated-detector">No dedicated detector</option><option value="related-family">Related family, parity unverified</option><option value="all">All entries</option></select></label></form>
-    <p class="small" id="inventory-count" role="status" aria-live="polite"></p><div class="tbl wide" tabindex="0" role="region" aria-label="Upstream detector inventory"><table><thead><tr><th scope="col">Detector or rule</th><th scope="col">redact-secret status</th><th scope="col">Upstream registration</th></tr></thead><tbody id="inventory-rows">${inventoryRows(missing.slice(0, PAGE))}</tbody></table></div><p class="small" id="inventory-empty" hidden>No detector entries match these filters.</p><div class="pager"><button type="button" class="btn" id="inventory-prev">Previous</button><span id="inventory-page"></span><button type="button" class="btn" id="inventory-next">Next</button></div>
+    <p class="small" id="inventory-count" role="status" aria-live="polite"></p><div class="tbl wide" tabindex="0" role="region" aria-label="Upstream detector inventory"><table><thead><tr><th scope="col">Detector or rule</th><th scope="col">redact-secret status</th><th scope="col">Upstream registration</th></tr></thead><tbody id="inventory-rows">${inventoryRows(missing.slice(0, PAGE))}</tbody></table></div><p class="small" id="inventory-empty" hidden>No detector entries match these filters.</p>${pager('inventory')}
     <section class="section"><div class="section-head"><div><h2 class="h2-compact">Measured regressions tracked as product issues</h2><p class="small">Published npm ${e(gaps.measuredVersion)} · snapshot ${e(gaps.reviewedAt)}. Measured fixture failures, separate from the inventory above. Historical measurement, not live issue status.</p></div><a href="${e(gaps.milestoneUrl)}">Milestone</a></div>${gaps.issues.map(issue => `<div class="chg">${statusMark('info', issue.status)}<span><a href="${e(issue.url)}">#${issue.number} · ${e(issue.title)}</a><small>${issue.kind === 'false-positive' ? 'False positives' : 'Missed secret spans'} · ${issue.fixtures.map(slug => `<a href="/fixture/${e(slug)}">${e(slug.split('--')[1])}</a>`).join(' · ')}</small></span><span class="d">${issue.fixtures.length} fixtures</span></div>`).join('')}</section>
     <section class="section prose"><h2 class="h2-compact">Sources and method</h2><p class="small">No scanner implementations are bundled; this view stores identifiers, registration metadata, mappings and source links. Commented-out TruffleHog registrations are excluded, feature-gated registrations are labelled, and versions stay separate. These entries are candidates for future synthetic fixtures and scope review, not confirmed runtime false negatives.</p><ul class="small">${Object.entries(inventory.sources).map(([tool, source]) => `<li><a href="${e(source.url)}">${e(tools[tool as keyof typeof tools])} ${e(source.version)} registry</a> · revision <code>${e(source.revision.slice(0, 12))}</code></li>`).join('')}<li><a href="https://github.com/redact-secret/redact-secret/blob/${e(inventory.redactSecretRevision)}/crates/secret-scan-core/src/detectors/mod.rs">redact-secret ${e(inventory.redactSecretVersion)} registry</a></li></ul></section>`;
 }
@@ -113,19 +113,16 @@ export function bindInventory() {
   if (!form) return;
   let page = 0;
   const query = document.querySelector<HTMLInputElement>('#inventory-query')!, tool = document.querySelector<HTMLSelectElement>('#inventory-tool')!, status = document.querySelector<HTMLSelectElement>('#inventory-status')!;
-  const previous = document.querySelector<HTMLButtonElement>('#inventory-prev')!, next = document.querySelector<HTMLButtonElement>('#inventory-next')!;
   const render = () => {
     const selected = filterInventory(inventory.entries, { query: query.value, tool: tool.value, status: status.value }) as Entry[];
     const pages = Math.max(1, Math.ceil(selected.length / PAGE)); page = Math.min(page, pages - 1);
     document.querySelector('#inventory-rows')!.innerHTML = inventoryRows(selected.slice(page * PAGE, (page + 1) * PAGE));
     document.querySelector('#inventory-count')!.textContent = `${n(selected.length)} matching entries of ${n(inventory.entries.length)}`;
     document.querySelector<HTMLElement>('#inventory-empty')!.hidden = selected.length !== 0;
-    document.querySelector('#inventory-page')!.textContent = `Page ${page + 1} of ${pages}`;
-    previous.disabled = page === 0; next.disabled = page + 1 === pages;
+    showPage(page, pages);
   };
+  const showPage = bindPager('inventory', delta => { page += delta; render(); });
   form.addEventListener('submit', event => event.preventDefault());
   form.addEventListener('input', () => { page = 0; render(); });
-  previous.addEventListener('click', () => { page--; render(); });
-  next.addEventListener('click', () => { page++; render(); });
   render();
 }

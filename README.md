@@ -87,7 +87,13 @@ reviewed format fixtures also require a source-backed contract:
 
 An empty `expected` array with `kind: "must-not-flag"` is an authored control;
 a control may declare `twinOf`, `mutation` and `mutationKind` to pair with a
-positive that differs by exactly one structural property. Envelopes, tiers and
+positive that differs by exactly one structural property. For a family whose
+value has no grammar the twin keeps the value and mutates one property of the
+assignment context (`mutationKind: "context"`); a family with nothing
+documented to mutate is recorded `unprobeable` on its contract instead, and
+`/coverage` publishes discriminated, not discriminated and un-probeable as
+separate lines
+([decision](docs/decisions/2026-09-20-extend-twins-to-assignment-context.md)). Envelopes, tiers and
 twins are authored from construction and provider evidence, hashed with the
 corpus, and never widened in response to scanner output. Fixtures are
 materialized in a scratch filesystem directory.
@@ -239,6 +245,7 @@ benchmarks/lib/lattice.ts     Per-span outcome lattice, byte accounting, v1.0 gr
 benchmarks/lib/accounting.ts  Engine v1.1 accounting: Wilson bounds, floors, measurable share, twin coverage, dual-scorer delta
 benchmarks/review-ledger.json Reviewed state of queued disagreements; written by review, never by the engine
 benchmarks/lib/scoring.ts     Corpus schema 2 validation (roles, envelopes, twins) and row scoring
+benchmarks/lib/twin-probe.ts  Per-family twin probe: discriminated, not discriminated, un-probeable
 benchmarks/lib/assessment.ts  Kinds, tiers, provider-first contracts and classification
 benchmarks/lib/reporting.ts   Per (kind × tier) groups; no mixed overall score
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point

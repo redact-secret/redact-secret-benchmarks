@@ -30,7 +30,7 @@ test('registries reject malformed, duplicate and unknown extensions', () => {
 test('all existing corpora bridge deterministically into five methods and all detector targets', () => {
   assert.deepEqual([...new Set(cases.map(c => c.method))].sort(), ['benign', 'differential', 'metamorphic', 'mutation', 'twin']);
   assert.equal(new Set(cases.flatMap(c => c.targets)).size, 42);
-  assert.equal(cases.filter(c => c.method === 'twin').length, 120);
+  assert.equal(cases.filter(c => c.method === 'twin').length, 168);
   const before = hash(cases);
   const first = cases.map(c => generateCase(c, methods, operators).variants);
   const second = cases.map(c => generateCase(c, methods, operators).variants);
@@ -99,6 +99,17 @@ test('twin integrity rejects missing relation, unchanged input and mismatched fa
   assert.throws(() => op.generate({ ...c, twin: { ...c.twin, twinOf: 'unknown' } }));
   assert.throws(() => op.generate({ ...c, twin: { ...c.twin, content: c.seed.content } }));
   assert.throws(() => op.generate({ ...c, twin: { ...c.twin, assessment: { ...c.twin.assessment, contract: 'gitlab-token' } } }));
+});
+
+test('a context twin keeps the value and edits one place outside it; anything else fails integrity', () => {
+  const op = operators.get('authored.twin');
+  const context = cases.filter(c => c.method === 'twin' && c.twin.mutationKind === 'context');
+  assert.equal(context.length, 24);
+  for (const c of context) assert.equal(op.generate(c).integrity.property, 'context', c.id);
+  const c = structuredClone(context.find(c => c.id.includes('connection-string-postgres-bare')));
+  const value = Buffer.from(c.seed.content).subarray(c.seed.expected[0].start, c.seed.expected[0].end).toString();
+  assert.throws(() => op.generate({ ...c, twin: { ...c.twin, content: c.twin.content.replace(value, value.slice(0, -1)) } }), /Context twin changes the value/);
+  assert.throws(() => op.generate({ ...c, twin: { ...c.twin, content: c.seed.content.replace(value, `${value.slice(0, 4)}-${value.slice(4)} ${value}`) } }), /Context twin edits the secret/);
 });
 
 test('twin must-flip detects either missed positive or flagged negative', () => {

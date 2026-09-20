@@ -41,19 +41,21 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     add(detector, `${variant}-quoted`, ['value="', ...parts, '"\n']);
     add(detector, `${variant}-unicode-crlf`, ["# 🔑 密钥 café\r\n", ...parts, "\r\n"]);
   };
-  // Negative twin (§2.5): same context, the value one character shorter than
-  // the tool-corroborated length declared in `families` above.
-  const addTwin = (detector, variant, twinValue, mutation) => {
-    const twin = (suffix, parts) => fixtures.push({
-      ...fixture(`${detector}-${variant}-${suffix}-twin`, detector, parts),
+  // Negative twin (§2.5): the positive's three contexts with exactly one
+  // property mutated. `parts` is the mutated literal, never a secret span.
+  // Every mutation is authored from the documentation cited on the family's
+  // contract (providerSource / twinSource), never from scanner output.
+  const addTwin = (detector, variant, parts, mutation, mutationKind = "length") => {
+    const twin = (suffix, body) => fixtures.push({
+      ...fixture(`${detector}-${variant}-${suffix}-twin`, detector, body),
       detectors: [detector],
       twinOf: `${detector}-${variant}-${suffix}`,
       mutation,
-      mutationKind: "length",
+      mutationKind,
     });
-    twin("bare", [twinValue]);
-    twin("quoted", ['value="', twinValue, '"\n']);
-    twin("unicode-crlf", ["# 🔑 密钥 café\r\n", twinValue, "\r\n"]);
+    twin("bare", parts);
+    twin("quoted", ['value="', ...parts, '"\n']);
+    twin("unicode-crlf", ["# 🔑 密钥 café\r\n", ...parts, "\r\n"]);
   };
   // (detector, prefix index) pairs currently dark for must-redact/T2 twin
   // coverage (docker-token, linear-token, google-api-key, notion-token,
@@ -65,7 +67,15 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
       const value = prefix + synthetic(`detector-coverage:${detector}:${prefix}`, length, alphabet);
       positive(detector, `shape-${index + 1}`, [{ secret: value }]);
       if (twinTargets[detector] === index)
-        addTwin(detector, `shape-${index + 1}`, value.slice(0, -1), `length: ${value.length - 1} vs contracted ${value.length}`);
+        addTwin(detector, `shape-${index + 1}`, [value.slice(0, -1)], `length: ${value.length - 1} vs contracted ${value.length}`);
+      // #36: the IAM prefix table documents AIDA as an IAM-user unique ID, not
+      // an access key. The common-formats ID/secret pair stays untwinned: any
+      // single mutation leaves its other credential component intact.
+      if (detector === "aws-access-key")
+        addTwin(detector, `shape-${index + 1}`, ["AIDA" + value.slice(prefix.length)], `prefix namespace: AIDA (provider-documented IAM user unique ID) vs ${prefix} access key`, "prefix");
+      // #36: PyPI documents the pypi- prefix as part of the token value.
+      if (detector === "pypi-token")
+        addTwin(detector, `shape-${index + 1}`, ["pypx-" + value.slice(prefix.length)], "prefix namespace: pypx- vs provider-documented pypi-", "prefix");
     });
     add(detector, "prefix-only", [prefixes.join("\n")]);
     add(detector, "short-body", [prefixes.map(prefix => prefix + "abc").join("\n")]);
@@ -87,6 +97,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   const azdoPrefix = synthetic("coverage:azdo:prefix", 76);
   const azdoSuffix = synthetic("coverage:azdo:suffix", 4);
   positive("azure-devops-personal-access-token", "azdo-marker", [{ secret: `${azdoPrefix}AZDO${azdoSuffix}` }]);
+  addTwin("azure-devops-personal-access-token", "azdo-marker", [`${azdoPrefix}AZDO${azdoSuffix}`.slice(0, -1)], "length: 83 vs provider-documented 84 characters; AZDO signature position unchanged");
   add("azure-devops-personal-access-token", "missing-marker", [azdoPrefix + azdoSuffix + "XXXX"]);
   add("azure-devops-personal-access-token", "short-body", [`${azdoPrefix.slice(0, 70)}AZDO${azdoSuffix}`]);
 
@@ -134,6 +145,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
 
   const newRelicLicenseKey = synthetic("coverage:new-relic:license-key", 40, LOWER_HEX);
   positive("new-relic-license-key", "keyword-context", ["newrelic ", { secret: newRelicLicenseKey }]);
+  addTwin("new-relic-license-key", "keyword-context", ["newrelic " + newRelicLicenseKey.slice(0, -1)], "length: 39 vs provider-documented 40-character hexadecimal string");
   add("new-relic-license-key", "missing-keyword", [newRelicLicenseKey]);
   add("new-relic-license-key", "short-key", ["newrelic " + newRelicLicenseKey.slice(0, 20)]);
 
@@ -197,31 +209,43 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("jwt", "missing-signature", [`${header}.${payload}.`]);
   add("jwt", "ordinary-dotted-name", ["com.example.benchmark"]);
 
-  positive("bearer-token", "header", [{ secret: synthetic("coverage:bearer", 40), envelope: { before: "Authorization: Bearer ", after: "", reason: ENVELOPES.bearer } }]);
+  const bearer = synthetic("coverage:bearer", 40);
+  positive("bearer-token", "header", [{ secret: bearer, envelope: { before: "Authorization: Bearer ", after: "", reason: ENVELOPES.bearer } }]);
+  // RFC 6750 §2.1: "!" is outside the b64token alphabet.
+  addTwin("bearer-token", "header", [`Authorization: Bearer ${bearer.slice(0, 20)}!${bearer.slice(21)}`], "alphabet: one character (!) outside the RFC 6750 b64token alphabet", "alphabet");
   add("bearer-token", "missing-value", ["Authorization: Bearer\n"]);
   add("bearer-token", "ordinary-prose", ["The bearer of this message is a benchmark runner."]);
 
   for (const scheme of ["postgres", "mysql", "mariadb", "redis", "mongodb"]) {
+    const password = synthetic(`coverage:connection:${scheme}`, 24);
     positive("connection-string", scheme, [
-      uri(`${scheme}://fixture:`, synthetic(`coverage:connection:${scheme}`, 24), "@db.example.invalid/benchmark"),
+      uri(`${scheme}://fixture:`, password, "@db.example.invalid/benchmark"),
     ]);
+    // Context twin (#36): the value has no grammar, so the value is kept and
+    // the userinfo ":" delimiter is the one property removed. Without it
+    // RFC 3986 §3.2.1 assigns no password subcomponent; the run is a user name.
+    addTwin("connection-string", scheme, [`${scheme}://fixture${password}@db.example.invalid/benchmark`], 'context: userinfo has no ":" delimiter, so RFC 3986 assigns no password subcomponent; value unchanged', "context");
   }
   add("connection-string", "no-password", ["postgres://fixture@db.example.invalid/benchmark"]);
   add("connection-string", "public-url", ["https://example.invalid/docs"]);
 
   for (const kind of ["totp", "hotp"]) {
-    positive("otpauth-uri", kind, [{
-      secret: synthetic(`coverage:otp:${kind}`, 32, "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"),
-      envelope: { before: `otpauth://${kind}/Benchmark:fixture?secret=`, after: "&issuer=Benchmark" + (kind === "hotp" ? "&counter=0" : ""), reason: ENVELOPES.otp },
-    }]);
+    const seed = synthetic(`coverage:otp:${kind}`, 32, "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
+    const before = `otpauth://${kind}/Benchmark:fixture?secret=`, after = "&issuer=Benchmark" + (kind === "hotp" ? "&counter=0" : "");
+    positive("otpauth-uri", kind, [{ secret: seed, envelope: { before, after, reason: ENVELOPES.otp } }]);
+    // The Key URI format requires an RFC 3548 Base32 secret; "1" is outside that alphabet.
+    addTwin("otpauth-uri", kind, [before + seed.slice(0, 16) + "1" + seed.slice(17) + after], "alphabet: one character (1) outside the RFC 3548 Base32 alphabet the Key URI format requires", "alphabet");
   }
   add("otpauth-uri", "missing-secret", ["otpauth://totp/Benchmark:fixture?issuer=Benchmark"]);
   add("otpauth-uri", "short-secret", ["otpauth://totp/Benchmark:fixture?secret=ABC"]);
 
   for (const field of ["api_key", "password", "client_secret"]) {
-    positive("generic-token", field.replaceAll("_", "-"), [
-      quoted(`${field}=`, synthetic(`coverage:generic:${field}`, 28)),
-    ]);
+    const literal = synthetic(`coverage:generic:${field}`, 28);
+    positive("generic-token", field.replaceAll("_", "-"), [quoted(`${field}=`, literal)]);
+    // Context twin (#36): same literal, delimiter and quoting; only the field
+    // name changes, to one with no credential meaning. The name comes from
+    // ordinary usage, never from the product's keyword list.
+    addTwin("generic-token", field.replaceAll("_", "-"), [`build_id="${literal}"`], `context: field name build_id carries no credential meaning vs sensitive ${field}; value, delimiter and quoting unchanged`, "context");
   }
   add("generic-token", "reference", ["api_key=process.env.BENCHMARK_KEY"]);
   add("generic-token", "mask", ["password=********"]);

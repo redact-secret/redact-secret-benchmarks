@@ -35,7 +35,7 @@ export function suitePage(data: BenchData, fixtures: Fixture[], id: string): str
       byFamily.set(family, kinds);
     }
     const families = [...byFamily.keys()].sort((a, b) => a.localeCompare(b));
-    return `<section class="section"><h2 class="h2-compact">Twin mutation axis, by family</h2><p class="small">Which structural property each family's twins mutate: prefix, boundary, public-prefix, length or alphabet. A family listed with only prefix or boundary entries has never had its body length or alphabet probed; see the fixture page for why.</p><div class="tbl"><table><thead><tr><th scope="col">Family</th><th scope="col" class="num">Twins</th><th scope="col">Axis</th></tr></thead><tbody>${families.map(family => {
+    return `<section class="section"><h2 class="h2-compact">Twin mutation axis, by family</h2><p class="small">Which structural property each family's twins mutate: prefix, boundary, public-prefix, length or alphabet. A <code>context</code> twin keeps the value and mutates one property of the assignment around it, for families whose value has no grammar. A family listed with only prefix or boundary entries has never had its body length or alphabet probed; see the fixture page for why.</p><div class="tbl"><table><thead><tr><th scope="col">Family</th><th scope="col" class="num">Twins</th><th scope="col">Axis</th></tr></thead><tbody>${families.map(family => {
       const title = registry.detectors.find(d => d.id === family)?.title ?? family;
       const kinds = [...byFamily.get(family)!.entries()].sort(([a], [b]) => a.localeCompare(b));
       const total = kinds.reduce((sum, [, count]) => sum + count, 0);

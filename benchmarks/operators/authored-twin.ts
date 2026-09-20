@@ -18,6 +18,18 @@ export const authoredTwin: Operator = {
     const spans = secrets(c.seed);
     if (spans.length !== 1) throw new Error('Authored twin needs one secret');
     const source = Buffer.from(c.seed.content), span = spans[0];
+    // A context twin (#36) inverts the rule below: the value is kept
+    // byte-for-byte and one contiguous edit lands wholly outside the secret.
+    if (c.twin.mutationKind === 'context') {
+      const target = Buffer.from(c.twin.content), value = source.subarray(span.start, span.end);
+      let head = 0, tail = 0;
+      while (head < source.length && head < target.length && source[head] === target[head]) head++;
+      while (tail < source.length - head && tail < target.length - head && source[source.length - 1 - tail] === target[target.length - 1 - tail]) tail++;
+      if (target.indexOf(value) === -1 || target.indexOf(value) !== target.lastIndexOf(value)) throw new Error('Context twin changes the value');
+      if (!(source.length - tail <= span.start || head >= span.end)) throw new Error('Context twin edits the secret');
+      return { fixture: c.twin, strategy: 'authored', property: 'context',
+        relation: 'must-flip', integrity: { kind: 'authored-single-property', property: 'context' } };
+    }
     const prefix = source.subarray(0, span.start).toString();
     const suffix = source.subarray(span.end).toString().trimEnd();
     const candidate = c.twin.content.trimEnd();

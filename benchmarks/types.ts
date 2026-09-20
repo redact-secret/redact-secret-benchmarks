@@ -57,5 +57,9 @@ export interface FormatContract {
   tier: Tier; pattern?: string; structural?: boolean; review?: string; companion?: string; references?: string[];
   providerSource?: { url: string; observedAt: string; formatVersion: string; covers: string };
   candidateSource?: FormatContract['providerSource']; corroboration?: { tool: string; label: string; url: string }[];
+  /** Documentation establishing the one property this family's twins mutate, when the tier carries no `providerSource` (#36). */
+  twinSource?: FormatContract['providerSource'];
+  /** No twin is authored: documentation establishes nothing mutable. Published as its own line, never inside the twin rate (#36). */
+  unprobeable?: { reason: string; observedAt: string };
 }
 export interface Category { id: string; kind: string; corpus: string }

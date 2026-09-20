@@ -107,6 +107,19 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   for (const d of registry.detectors) assert.ok(html.includes(`href="/coverage/${d.id}"`), d.id);
   for (const c of categories) assert.ok(html.includes(`href="/suites/${c.id}"`), c.id);
   assert.equal((coveragePage(fixtures, 'thin').match(/class="cov-row" role="row"/g) ?? []).length, atMinimum);
+  // #36: the twin figure separates discriminated / not discriminated / un-probeable.
+  const { twinProbe } = await load('/benchmarks/lib/twin-probe.ts');
+  const { contracts } = await load('/benchmarks/lib/assessment.ts');
+  const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: f.slug, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), productRows, contracts);
+  const measured = text(coveragePage(fixtures, 'all', data));
+  assert.ok(measured.includes(`${probe.counts.discriminated} discriminated · ${probe.counts['not-discriminated']} not discriminated · ${probe.counts['un-probeable']} un-probeable`), 'three separate lines');
+  assert.equal(probe.counts['un-probeable'], 14);
+  assert.equal(probe.counts.discriminated + probe.counts['not-discriminated'], 28, 'the test product reports every secret exactly and nothing else');
+  for (const entry of probe.entries.filter(x => x.status === 'un-probeable')) assert.ok(measured.replaceAll('&quot;', '"').replaceAll('&#39;', "'").includes(entry.reason), entry.id);
+  assert.ok(text(coveragePage(fixtures, 'all')).includes('28 not measured'), 'without a run nothing is claimed');
+  assert.ok(!coveragePage(fixtures, 'thin', data).includes('id="twin-probe"'));
+  assert.ok(text(detectorPage(data, fixtures, 'vercel-token')).includes('Un-probeable'));
+  assert.ok(detectorPage(data, fixtures, 'bearer-token').includes('Twin source'));
   const page = detectorPage(data, fixtures, 'github-token'), groups = summary.byDetector['github-token']['redact-secret'];
   for (const [key, g] of Object.entries(groups)) if (g.leakedSpanRate?.bound != null) assert.ok(text(page).includes(`at most ${percent(g.leakedSpanRate.bound)}`), key);
   assert.ok(page.includes('Pending review') === Boolean(groups['pending/T0']));

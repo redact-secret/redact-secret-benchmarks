@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:redact-secret-benchmarks:support-status-criteria:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "stable", "provisional", "pending", "unsupported"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "stable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["positiveContract", "minimumTwinPairs", "twinFailures", "benign", "metamorphic", "mutation", "differential"],
+      "properties": {
+        "positiveContract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["requireProviderSource", "rationale"],
+          "properties": {
+            "requireProviderSource": { "const": true },
+            "rationale": { "type": "string", "minLength": 1 }
+          }
+        },
+        "minimumTwinPairs": { "$ref": "#/definitions/threshold" },
+        "twinFailures": { "$ref": "#/definitions/threshold" },
+        "benign": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["minimumCases", "falseAlarms"],
+          "properties": {
+            "minimumCases": { "$ref": "#/definitions/threshold" },
+            "falseAlarms": { "$ref": "#/definitions/threshold" }
+          }
+        },
+        "metamorphic": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["criticalFailures"],
+          "properties": { "criticalFailures": { "$ref": "#/definitions/threshold" } }
+        },
+        "mutation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["unresolvedCritical"],
+          "properties": { "unresolvedCritical": { "$ref": "#/definitions/threshold" } }
+        },
+        "differential": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["unresolvedContractDisagreements"],
+          "properties": { "unresolvedContractDisagreements": { "$ref": "#/definitions/threshold" } }
+        }
+      }
+    },
+    "provisional": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiresDetector", "rationale"],
+      "properties": {
+        "requiresDetector": { "const": true },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "pending": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tier", "rationale"],
+      "properties": {
+        "tier": { "const": "T0" },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "unsupported": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiresReason", "rationale"],
+      "properties": {
+        "requiresReason": { "const": true },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "definitions": {
+    "threshold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "rationale"],
+      "properties": {
+        "value": { "type": "integer", "minimum": 0 },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

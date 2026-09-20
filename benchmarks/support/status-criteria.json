@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "stable": {
+    "positiveContract": {
+      "requireProviderSource": true,
+      "rationale": "T2 (tool-corroborated) and T3 (project policy) have no provider-documented ground truth to certify against, and T0 has no positive at all; only a T1 contract, backed by providerSource, counts."
+    },
+    "minimumTwinPairs": {
+      "value": 5,
+      "rationale": "Five discriminated positive/negative twin pairs is the minimum sample that the detector reliably tells the credential apart from a near-identical non-secret."
+    },
+    "twinFailures": {
+      "value": 0,
+      "rationale": "A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample."
+    },
+    "benign": {
+      "minimumCases": {
+        "value": 5,
+        "rationale": "Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family."
+      },
+      "falseAlarms": {
+        "value": 0,
+        "rationale": "A false alarm on a benign control is a recorded false positive; stable tolerates none."
+      }
+    },
+    "metamorphic": {
+      "criticalFailures": {
+        "value": 0,
+        "rationale": "A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run."
+      }
+    },
+    "mutation": {
+      "unresolvedCritical": {
+        "value": 0,
+        "rationale": "An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review."
+      }
+    },
+    "differential": {
+      "unresolvedContractDisagreements": {
+        "value": 0,
+        "rationale": "An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
+      }
+    }
+  },
+  "provisional": {
+    "requiresDetector": true,
+    "rationale": "A family with at least one registered detector is useful even before its evidence clears every stable floor; provisional records that gap honestly instead of rounding up to stable."
+  },
+  "pending": {
+    "tier": "T0",
+    "rationale": "Tier T0 means no positive fixture has cleared review yet, so nothing about detection accuracy can be claimed for this family; pending is the only honest label."
+  },
+  "unsupported": {
+    "requiresReason": true,
+    "rationale": "A family this project explicitly does not detect must record why, so the absence reads as a decision rather than an oversight. Without a reason, a family with no detector reports pending instead."
+  }
+}

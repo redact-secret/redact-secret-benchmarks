@@ -54,13 +54,19 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // (17 new detector families): reviewed formats 226 files / 232 spans;
   // 176 policy; 184 negative controls; 33 unreviewed. Phase 5 moved the three
   // Vault recovery contexts from pending to policy because the provider
-  // documents the hvr. prefix.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 226);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 232);
+  // documents the hvr. prefix. #45 resolved all 55 pending/T0 fixtures: 22
+  // malformed-by-construction controls promoted to must-not-flag/T2 (closing
+  // a near-miss suffix regex gap) and huggingface-token's digit-bearing
+  // shape promoted to must-redact/T2 (trufflehog's pinned alphabet is
+  // alphanumeric, not letters-only); 30 remain pending with per-family
+  // evidence gaps and tracking issues (vercel #516, stripe #513, slack #512,
+  // supabase #515, linear un-tracked).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 229);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 235);
   assert.deepEqual(tally['policy/T3'], { files: 176, spans: 176 });
-  assert.deepEqual(tally['must-redact/T0'], { files: 33, spans: 33 });
+  assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 184);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 206);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

@@ -57,6 +57,47 @@ TruffleHog **3.97.4**, `@redact-secret/core` **0.1.0-beta.4**, and
 `brew install gitleaks trufflehog`. Other systems can use the upstream
 installation instructions above.
 
+CI (`.github/workflows/validate.yml`, `scanner-comparison` job) installs the
+same pinned releases on `ubuntu-latest` (linux x64) directly from GitHub,
+verifies the downloaded archive against the release's published checksum,
+then verifies the installed binary's own `version` output matches the pin
+before running anything — a silently upgraded binary must not be able to
+change published numbers:
+
+```sh
+curl -sSL -O https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+tar xzf gitleaks_8.30.1_linux_x64.tar.gz gitleaks   # -> ./gitleaks, `gitleaks version` reports 8.30.1
+
+curl -sSL -O https://github.com/trufflesecurity/trufflehog/releases/download/v3.97.4/trufflehog_3.97.4_linux_amd64.tar.gz
+tar xzf trufflehog_3.97.4_linux_amd64.tar.gz trufflehog   # -> ./trufflehog, `trufflehog --version` reports 3.97.4
+```
+
+With both on `PATH`, `npm run test:integration` and `npm run bench -- --strict`
+exercise all four adapters with no other change; the job fails closed if
+either scanner is missing, mismatched, or unstable across replays.
+
+### TruffleHog silence on a hand-written fixture is not a missing detector
+
+Every TruffleHog detector matches a specific structural contract (prefix,
+character alphabet, length range) before it ever runs verification, and
+reports nothing when a hand-written fixture falls outside it — even with
+verification disabled and `--results=verified,unknown,unverified` passed (the
+adapter already passes this). Two confirmed examples: TruffleHog's `github`
+v2 detector only matches `\b(?:ghp|gho|ghu|ghs|ghr|github_pat)_[a-zA-Z0-9_]{36,255}\b`
+(github.com/trufflesecurity/trufflehog `pkg/detectors/github/v2/github.go`), so
+a hand-written token one character short of 36 reports nothing — exactly why
+this corpus's `ghp`/`gitlab`/... twin fixtures (one character shorter than
+the contracted length) are true negatives, not a missing-detector gap; and
+TruffleHog reports nothing for a real `openssl genpkey -algorithm Ed25519`
+PEM (verified locally against 3.97.4/3.97.5), likely for the same reason —
+its detector expects a specific PEM shape. It does report this corpus's own
+positives, because this corpus's `synthetic()` values are constructed to
+satisfy the contracted grammars. Read TruffleHog silence on a fixture you
+wrote by hand as "the fixture doesn't satisfy that detector's structural
+contract", not "the tool lacks the detector" — `--results=verified,unknown,unverified`
+does not change this, since it only affects live verification, not the
+structural match.
+
 `npm run test:integration` requires all four actual scanners (three of which
 are external binaries; flare-redact and redact-secret run through their
 pinned npm packages instead). For each, it checks exact byte ranges for a

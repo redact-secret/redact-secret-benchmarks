@@ -18,9 +18,11 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   };
   // Negative twin (§2.5): the same context with exactly one structural property
   // mutated. `twin` is the mutated literal; silence follows from construction.
-  const addTwin = (family, variant, twin, mutationKind, mutation, extra = '') => {
+  // `twinVariant` lets a second twin of the same positive (different mutation
+  // axis) get its own fixture id while `twinOf` still points at the positive.
+  const addTwin = (family, variant, twin, mutationKind, mutation, extra = '', twinVariant = variant) => {
     for (const [context, before, after] of contexts) {
-      const f = fixture(`${family}-${variant}-${context}-twin`, family, [before, twin, '\n', extra, after]);
+      const f = fixture(`${family}-${twinVariant}-${context}-twin`, family, [before, twin, '\n', extra, after]);
       fixtures.push({ ...f, detectors: [family], twinOf: `${family}-${variant}-${context}`, mutation, mutationKind });
     }
   };
@@ -87,6 +89,7 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   const sgId = value('sg-id', 22), sgSecret = value('sg-secret', 43);
   token('sendgrid-token', 'segmented', `SG.${sgId}.${sgSecret}`);
   addTwin('sendgrid-token', 'segmented', `SG.${sgId}:${sgSecret}`, 'boundary', 'boundary: colon instead of the dot separator between segments');
+  addTwin('sendgrid-token', 'segmented', `SG.${sgId}.${sgSecret.slice(0, -1)}`, 'length', 'length: 68-character key vs SendGrid-documented fixed 69-character length', '', 'segmented-length');
   const key = publicTestKey();
   add('private-key', 'ed25519', [{ secret: key.export({ type: 'pkcs8', format: 'pem' }).trimEnd() }], 'Locally parseable Ed25519 PKCS#8 private key from a fixed public test seed. Never deployed; not a provider-issued credential.');
   addTwin('private-key', 'ed25519', createPublicKey(key).export({ type: 'spki', format: 'pem' }).trimEnd(), 'public-prefix', 'public material: RFC 7468 PUBLIC KEY block of the same test key vs PRIVATE KEY');
@@ -94,5 +97,5 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   const unsigned = `${encode({ alg: 'EdDSA', typ: 'JWT' })}.${encode({ sub: 'benchmark-only', iss: 'https://example.invalid', iat: 1700000000, exp: 4102444800 })}`;
   add('jwt', 'eddsa', [{ secret: unsigned + '.' + sign(null, Buffer.from(unsigned), key).toString('base64url') }], 'EdDSA JWT signed locally with the public test key. Syntax and signature are checked offline; no production issuer or trust is implied.');
   addTwin('jwt', 'eddsa', unsigned + '.', 'boundary', 'boundary: signature segment absent (unsigned header.payload.)');
-  return { 'common-formats': { ...wrap(fixtures), scope: 'Source-reviewed synthetic lexical formats and locally parseable cryptographic controls, each paired with a negative twin that mutates one structural property. Selection is independent of scanner results. Unsupported formats and format-correct misses remain visible. This is not provider issuance validation or a product ranking.' } };
+  return { 'common-formats': { ...wrap(fixtures), scope: 'Source-reviewed synthetic lexical formats and locally parseable cryptographic controls, each paired with one or more negative twins, every twin mutating exactly one structural property. Selection is independent of scanner results. Unsupported formats and format-correct misses remain visible. This is not provider issuance validation or a product ranking.' } };
 }

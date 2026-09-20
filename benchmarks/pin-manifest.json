@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "ae6ff0b0ca7d6ae5cf8ae2adf01e7b1bc8e1f44d",
+  "revision": "f67eaf8d5ddba2fa9c99adb9e7df96bf5f64ef9a",
   "pins": {
     "sourceRevision": "18d49cdf771c1a1b9c7c5ed175622bd02526034e",
     "redactSecretRevision": "18d49cdf771c1a1b9c7c5ed175622bd02526034e",
@@ -8,16 +8,16 @@
     "packageVersion": "0.1.0-beta.4"
   },
   "corpusHashes": {
-    "common-formats": "19ca47f5dbf21acc94c6712a51d6586c9fd1653b3da132172622c0e7c4b08fb8",
+    "common-formats": "56c45d3242778e943e3354ef55cbf9cc96f934ffb6f1232e7a6d7fdbdb778b81",
     "accuracy": "33c2a504fe7c3c200f7458b903104844d695fea8296dc6977038273358f72e33",
     "token-contexts": "1a38c702ee7fbf6febdfb4f856fccef65966812e23bfa751322c84242ec441ac",
-    "credential-formats": "f2a4c1d96ee4864f07a91b7a9add998009a88f80833702b0057d94570c7d0561",
+    "credential-formats": "8a314552eea2e9db66ed49750294ad59a8b10bc4c33fcf471f2eaee059b8af4f",
     "context-edges": "f10ab780987576d77811bd6edb3df9f763ec2a6ca2f039273da7a2babc150e31",
     "negative-controls": "90cb2e615a5afa71f8d52ba70454d5d65cb9b206af78ac292f02cb0f9ee57a7b",
-    "sendgrid-regressions": "6c15981a502d67c4041723c16cef8b4b645d359d96eb7ad790519b574e7c1552",
+    "sendgrid-regressions": "bb556d9d91dda1a394c83be1cd3763e75ebf9230d5fbdb6ad5abd91368ab459d",
     "reference-syntax": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
     "milestone-6-closed": "388b26e3703fc5a80b1ca0cd65232873e765a0a0b59148ba0e6998fd6c8ff766",
-    "detector-coverage": "55ee9bea85454bb4d2c80b3e1e6f24280c756ec7fd10d990df7e03fe1ed918a2"
+    "detector-coverage": "c893aabc5ad5f4feea14093fb15bd209d5da27afcb6374727155bb280335adcc"
   },
   "fixtureIds": [
     "accuracy--aws-id",
@@ -116,6 +116,8 @@
     "common-formats--private-key-ed25519-plain-twin",
     "common-formats--private-key-ed25519-unicode-crlf",
     "common-formats--private-key-ed25519-unicode-crlf-twin",
+    "common-formats--sendgrid-token-segmented-length-plain-twin",
+    "common-formats--sendgrid-token-segmented-length-unicode-crlf-twin",
     "common-formats--sendgrid-token-segmented-plain",
     "common-formats--sendgrid-token-segmented-plain-twin",
     "common-formats--sendgrid-token-segmented-unicode-crlf",

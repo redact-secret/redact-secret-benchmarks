@@ -136,11 +136,13 @@ def main():
                          "path": path, "sha256": hashlib.sha256(content.encode()).hexdigest(),
                          "url": f"https://github.com/{repo}/blob/{revision}/{path}"}
     registry = json.loads((ROOT / "benchmarks/detectors.json").read_text())
+    version = json.loads((ROOT / "package.json").read_text())["dependencies"]["@redact-secret/core"]
+    release = version.rsplit("-", 1)[-1]
     rows = inventory(contents["gitleaks"], contents["trufflehog"], contents["flare-redact"], sources)
-    snapshot = {"schemaVersion": 1, "reviewedAt": "2026-09-19",
-                "redactSecretVersion": "0.1.0-beta.4",
+    snapshot = {"schemaVersion": 1, "reviewedAt": "2026-09-20",
+                "redactSecretVersion": version,
                 "redactSecretRevision": registry["sourceRevision"],
-                "method": "Explicit provider-family mapping against the 42 registered beta.4 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+                "method": f"Explicit provider-family mapping against the {len(registry['detectors'])} registered {release} detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
                 "sources": sources, "entries": rows}
     target = ROOT / "benchmarks/detector-inventory.json"
     serialized = json.dumps(snapshot, indent=2) + "\n"

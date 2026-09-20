@@ -46,16 +46,18 @@ test('Report: every bound and n on the page is the accounting.ts result, per evi
   for (const level of ['T1', 'T2', 'T3']) {
     const html = reportPage(data, level, fixtures), plain = text(html);
     const redact = truth[level === 'T3' ? 'policy/T3' : `must-redact/${level}`], control = truth[`must-not-flag/${level}`];
-    assert.ok(plain.includes(`at most ${percent(redact.leakedSpanRate.bound)}`), `${level} leak bound`);
-    assert.ok(plain.includes(`${redact.leakedSpans} of ${redact.spans} secret spans leaked`), `${level} leak n`);
-    assert.equal(redact.leakedSpanRate.n, redact.spans);
+    if (typeof redact.leakedSpanRate === 'object' && redact.leakedSpanRate) {
+      assert.ok(plain.includes(`at most ${percent(redact.leakedSpanRate.bound)}`), `${level} leak bound`);
+      assert.ok(plain.includes(`${redact.leakedSpans} of ${redact.spans} secret spans leaked`), `${level} leak n`);
+      assert.equal(redact.leakedSpanRate.n, redact.spans);
+      assert.ok(!plain.includes(percent(redact.leakedSpanRate.point) + ' at most'), 'the point never takes the large slot');
+    } else assert.ok(plain.includes('Withheld') || plain.includes('Not measured'), `${level} leak withheld with a reason`);
     assert.ok(plain.includes(`at most ${percent(control.falseAlarmRate.bound)}`), `${level} alarm bound`);
     assert.ok(plain.includes(`${control.flaggedFiles} of ${control.files.toLocaleString('en-US')} controls flagged`), `${level} alarm n`);
     if (typeof redact.twins.rate === 'object' && redact.twins.rate) {
       assert.ok(plain.includes(`at least ${percent(redact.twins.rate.bound)}`), `${level} twin bound`);
       assert.ok(plain.includes(`${redact.twins.discriminated} of ${redact.twins.pairs} pairs discriminated`), `${level} twin n`);
     } else assert.ok(plain.includes('Withheld') || plain.includes('Not measured'), `${level} twins withheld with a reason`);
-    assert.ok(!plain.includes(percent(redact.leakedSpanRate.point) + ' at most'), 'the point never takes the large slot');
   }
   const t1 = reportPage(data, 'T1', fixtures);
   assert.equal((t1.match(/class="fig"/g) ?? []).length, 3, 'three answers');

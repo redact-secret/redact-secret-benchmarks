@@ -1,5 +1,5 @@
 import { actionEmptyState, escapeHtml as e, evidenceCrumb, statusMark } from '../components';
-import { categories, type Fixture } from '../catalog';
+import { categories, registry, type Fixture } from '../catalog';
 import type { Group } from '../types';
 import { PRODUCT, runIdOf, type BenchData } from './data';
 import { boundCell, compactFigure, isControl, isRedact, type Floors } from './figures';
@@ -25,5 +25,22 @@ export function suitePage(data: BenchData, fixtures: Fixture[], id: string): str
     return `<tr><td>${e(groupTitle(key))}</td><td class="num">${g?.files ?? '—'}</td><td>${compactFigure(groupTitle(key), g, which, key, floors)}</td><td>${isRedact(g) ? compactFigure(`${groupTitle(key)}, twins`, g, 'twins', key, floors) : isControl(g) ? '' : ''}</td><td class="peer-cell">${others.map(s => `<small>${e(s.id)} ${s.status === 'complete' ? boundCell(cell(s.groups, key), which, key, floors) : statusMark(s.status === 'unstable' ? 'unstable' : 'not-measured')}</small>`).join('')}</td></tr>`;
   }).join('')}</tbody></table></div>` : '';
   const provenance = `<section class="section"><h2 class="h2-compact">Run provenance</h2><dl class="kv"><dt>Review status</dt><dd>${e(report.reviewStatus)}${report.scope ? ` · ${e(report.scope)}` : ''}</dd><dt>Measured</dt><dd>${e(report.generatedAt)}</dd><dt>Corpus SHA-256</dt><dd><code>${e(report.corpusHash)}</code></dd><dt>Lockfile SHA-256</dt><dd><code>${e(report.lockHash)}</code></dd><dt>Revision</dt><dd><code>${e(report.revision)}</code>${report.dirty ? ' (modified)' : ''}</dd><dt>Environment</dt><dd>${e(report.runtime.node)} · ${e(report.runtime.platform)} · ${e(report.runtime.arch)}</dd><dt>Scanners</dt><dd>${report.scanners.map(s => `${e(s.id)} ${e(s.version ?? 'version unavailable')} <span class="muted">${e(s.mode)}</span>`).join('<br>')}</dd><dt>Matching rule</dt><dd>${e(report.matching)}</dd>${report.milestoneReview ? `<dt>Release context</dt><dd>${e(report.milestoneReview.targetRelease)}. ${e(report.milestoneReview.validation)} Not evaluated: ${report.milestoneReview.unverifiedSurfaces.map(e).join(' · ')}</dd>` : ''}</dl></section>`;
-  return head + (stale ? actionEmptyState({ title: 'This suite is from an older run', body: `Its run id differs from the current run, so it is left out of every cross-suite total. The numbers below are this suite's own.`, command: `npm run bench -- --category=${id}` }) : '') + table + rowsTable({ fixtures: selected, reports: [report] }) + provenance;
+  const twins = selected.filter(f => f.mutationKind);
+  const axis = twins.length ? (() => {
+    const byFamily = new Map<string, Map<string, number>>();
+    for (const f of twins) {
+      const family = f.detectors[0] ?? 'unknown';
+      const kinds = byFamily.get(family) ?? new Map<string, number>();
+      kinds.set(f.mutationKind!, (kinds.get(f.mutationKind!) ?? 0) + 1);
+      byFamily.set(family, kinds);
+    }
+    const families = [...byFamily.keys()].sort((a, b) => a.localeCompare(b));
+    return `<section class="section"><h2 class="h2-compact">Twin mutation axis, by family</h2><p class="small">Which structural property each family's twins mutate: prefix, boundary, public-prefix, length or alphabet. A family listed with only prefix or boundary entries has never had its body length or alphabet probed; see the fixture page for why.</p><div class="tbl"><table><thead><tr><th scope="col">Family</th><th scope="col" class="num">Twins</th><th scope="col">Axis</th></tr></thead><tbody>${families.map(family => {
+      const title = registry.detectors.find(d => d.id === family)?.title ?? family;
+      const kinds = [...byFamily.get(family)!.entries()].sort(([a], [b]) => a.localeCompare(b));
+      const total = kinds.reduce((sum, [, count]) => sum + count, 0);
+      return `<tr><td><a href="/coverage/${e(family)}">${e(title)}</a></td><td class="num">${total}</td><td>${kinds.map(([kind, count]) => `<code>${e(kind)}</code> × ${count}`).join(' · ')}</td></tr>`;
+    }).join('')}</tbody></table></div></section>`;
+  })() : '';
+  return head + (stale ? actionEmptyState({ title: 'This suite is from an older run', body: `Its run id differs from the current run, so it is left out of every cross-suite total. The numbers below are this suite's own.`, command: `npm run bench -- --category=${id}` }) : '') + table + axis + rowsTable({ fixtures: selected, reports: [report] }) + provenance;
 }

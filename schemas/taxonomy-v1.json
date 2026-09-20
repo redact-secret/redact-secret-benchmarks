@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:redact-secret:taxonomy:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "sourceNote", "providers", "families"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "sourceNote": { "type": "string" },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "name": { "type": "string" }
+        }
+      }
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "provider", "name", "description", "detectors"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+:[a-z0-9-]+$" },
+          "provider": { "type": ["string", "null"] },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "detectors": { "type": "array", "items": { "type": "string" } },
+          "sources": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

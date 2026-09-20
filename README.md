@@ -162,7 +162,7 @@ npm run compare                      # Integration checks, then strict compariso
 npm run test:coverage                # Tests + coverage for scoring and scanner adapters
 npm run test:redaction               # Published npm scan/redact parity over every registered fixture
 npm run fixtures:check               # Verify generated fixtures have not drifted
-npm run baseline -- --save 0.1.0-beta.4  # Store (fixture, scanner) → outcome from a complete run
+npm run baseline -- --save 0.1.0-beta.5  # Store (fixture, scanner) → outcome from a complete run
 npm run baseline:report              # Regenerate docs/release-comparison.md from baselines/
 npm run build                       # Type-check and build a static dashboard snapshot
 npm run preview                     # Preview that snapshot
@@ -388,13 +388,13 @@ milestone 6 after checking existing issues and PRs. See the
 [investigation notes](docs/sendgrid-investigation.md) for the reproducer,
 source inspection, and the distinction between the installed npm release
 and the earlier milestone source review. The benchmark is now pinned to the
-published `0.1.0-beta.4` package. The generated
+published `0.1.0-beta.5` package. The generated
 [release comparison](docs/release-comparison.md) is the maintained view; the
 [beta.4](docs/beta-4-results.md) and [beta.3](docs/beta-3-results.md)
 documents are historical schema-v2 snapshots. The
 [beta.5 candidate precision gate](docs/beta-5-results.md) (redact-secret#376)
-is separate schema-v4 unpublished-candidate evidence, not another
-published-package snapshot.
+is schema-v4 evidence taken from the unpublished candidate; its closing
+section records the same figures re-measured on the published package.
 
 **Beta.3 regressions** adds another **92 fixtures** for the 11 detection-related
 closed issues reviewed in milestone 6. The full suite now contains **243 files,

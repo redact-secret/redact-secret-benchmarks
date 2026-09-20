@@ -1,4 +1,4 @@
-import { escapeHtml as e, statusMark, OUTCOME_NAME, type Outcome } from '../components';
+import { bindPager, escapeHtml as e, pager, statusMark, OUTCOME_NAME, type Outcome } from '../components';
 import { kinds, tiers } from '../../benchmarks/lib/assessment.ts';
 import type { Fixture } from '../catalog';
 import type { Report, Row } from '../types';
@@ -40,7 +40,7 @@ export function rowsTable({ fixtures, reports, id = 'rows', heading = 'Rows', no
   }).join('');
   return `<section class="section" id="${e(id)}" data-rows><div class="section-head"><div><h2 class="h2-compact">${e(heading)}</h2><p class="small">${fixtures.length.toLocaleString('en-US')} fixtures, ${attention.toLocaleString('en-US')} where some scanner left a secret readable, redacted too much or flagged a safe value.${note ? ` ${note}` : ''}</p></div><div class="filters"><label class="field">Find<input type="search" data-rows-filter placeholder="id, suite, kind, evidence level"></label><label class="field">Show<select data-rows-signal><option value="signal">Rows needing a look</option><option value="all">All rows</option></select></label></div></div>
     <div class="tbl wide" tabindex="0" role="region" aria-label="${e(heading)}"><table><thead><tr><th scope="col">Fixture</th><th scope="col">Kind and evidence</th>${scanners.map(([, name]) => `<th scope="col">${e(name)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>
-    <div class="pager"><span data-rows-count role="status" aria-live="polite"></span><button class="btn" type="button" data-rows-prev>Previous</button><span data-rows-page></span><button class="btn" type="button" data-rows-next>Next</button></div></section>`;
+    ${pager(id, '<span data-rows-count role="status" aria-live="polite"></span>')}</section>`;
 }
 
 const PAGE = 50;
@@ -53,7 +53,6 @@ export function bindRows() {
     const anySignal = rows.some(r => r.dataset.signal === '1');
     const saved = state.get(key) ?? { filter: '', show: anySignal ? 'signal' : 'all', page: 0 }; state.set(key, saved);
     const filter = section.querySelector<HTMLInputElement>('[data-rows-filter]')!, show = section.querySelector<HTMLSelectElement>('[data-rows-signal]')!;
-    const prev = section.querySelector<HTMLButtonElement>('[data-rows-prev]')!, next = section.querySelector<HTMLButtonElement>('[data-rows-next]')!;
     filter.value = saved.filter; show.value = saved.show;
     const apply = () => {
       const matching = rows.filter(r => r.dataset.search!.includes(saved.filter.toLowerCase()) && (saved.show === 'all' || r.dataset.signal === '1'));
@@ -61,13 +60,11 @@ export function bindRows() {
       const visible = new Set(matching.slice(saved.page * PAGE, (saved.page + 1) * PAGE));
       for (const r of rows) r.hidden = !visible.has(r);
       section.querySelector('[data-rows-count]')!.textContent = `${matching.length.toLocaleString('en-US')} of ${rows.length.toLocaleString('en-US')} rows`;
-      section.querySelector('[data-rows-page]')!.textContent = `Page ${saved.page + 1} of ${pages}`;
-      prev.disabled = saved.page === 0; next.disabled = saved.page + 1 >= pages;
+      showPage(saved.page, pages);
     };
+    const showPage = bindPager(section.id, delta => { saved.page += delta; apply(); });
     filter.addEventListener('input', () => { saved.filter = filter.value; saved.page = 0; apply(); });
     show.addEventListener('change', () => { saved.show = show.value; saved.page = 0; apply(); });
-    prev.addEventListener('click', () => { saved.page--; apply(); });
-    next.addEventListener('click', () => { saved.page++; apply(); });
     apply();
   });
 }

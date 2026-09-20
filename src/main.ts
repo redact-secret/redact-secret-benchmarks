@@ -49,7 +49,8 @@ function restoreDetails() {
 /** Run manifest, run summary and every suite report, each re-validated before a page may read it. */
 async function loadBench(): Promise<BenchData & { signature: string }> {
   const sourceHashes = await hashes;
-  const json = <T>(url: string) => fetch(url, { cache: 'no-store' }).then(r => (r.ok && r.headers.get('content-type')?.includes('json') ? (r.json() as Promise<T>) : undefined)).catch(() => undefined);
+  // no-cache revalidates: an unchanged report costs a 304, not a download, on every 5-second poll.
+  const json = <T>(url: string) => fetch(url, { cache: 'no-cache' }).then(r => (r.ok && r.headers.get('content-type')?.includes('json') ? (r.json() as Promise<T>) : undefined)).catch(() => undefined);
   const [run, summary, loaded] = await Promise.all([
     json<Run>('/results/run.json'), json<RunSummary>('/results/summary.json'),
     Promise.all(categories.map(async category => {
@@ -64,12 +65,26 @@ async function loadBench(): Promise<BenchData & { signature: string }> {
   return { ...data, signature: JSON.stringify([run?.runId, summary?.runId, summary?.generatedAt, loaded.map(l => [l.category.id, l.report?.runId, l.report?.generatedAt, l.problem])]) };
 }
 
+/** The evaluation report runs to megabytes, too large for some HTTP caches, so a poll asks for its validator and re-reads the body only when that changes. */
+const bodies = new Map<string, { tag: string; body: string }>();
+async function text(url: string): Promise<string> {
+  try {
+    const isJson = (r: Response) => r.ok && !!r.headers.get('content-type')?.includes('json');
+    const head = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    if (!isJson(head)) { bodies.delete(url); return ''; }
+    const tag = head.headers.get('etag') ?? head.headers.get('last-modified') ?? '', held = bodies.get(url);
+    if (tag && held?.tag === tag) return held.body;
+    const response = await fetch(url, { cache: 'no-cache' }), body = isJson(response) ? await response.text() : '';
+    if (tag && body) bodies.set(url, { tag, body });
+    return body;
+  } catch { return ''; }
+}
+
 async function renderWorkbench(current: ReturnType<typeof route>, token: number, path: string, force: boolean) {
   if (force) renderPage('<p role="status" class="small">Loading Workbench evidence…</p>', 'Workbench');
   const [{ workbenchPage }, { reviewPage, bindCopy }, { changesPage }, { qualificationPage }, { methodPage, bindExplorer }, { reviewClasses, evaluationProblem, candidateProblem }, { default: ledger }] = await Promise.all([
     import('./pages/workbench/index'), import('./pages/workbench/review'), import('./pages/workbench/changes'), import('./pages/workbench/qualification'), import('./pages/workbench/method'), import('./evaluation-model'), import('../benchmarks/review-ledger.json'),
   ]);
-  const text = (url: string) => fetch(url, { cache: 'no-store' }).then(r => (r.ok && r.headers.get('content-type')?.includes('json') ? r.text() : '')).catch(() => '');
   const needsEvaluation = current.view !== 'changes';
   const [data, evaluationText, candidateText] = await Promise.all([loadBench(), needsEvaluation ? text('/results/evaluation-v1.json') : '', text('/results/candidate-evidence-v1.json')]);
   if (token !== request || path !== location.pathname) return;

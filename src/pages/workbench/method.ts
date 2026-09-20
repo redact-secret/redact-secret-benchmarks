@@ -1,4 +1,4 @@
-import { actionEmptyState, escapeHtml as e, evidenceCrumb, statusMark, type StatusKind } from '../../components';
+import { actionEmptyState, bindPager, escapeHtml as e, evidenceCrumb, pager, statusMark, type StatusKind } from '../../components';
 import { METHODS, assertionRows, reviewRows, summarizeEvaluation } from '../../evaluation-model';
 import type { EvaluationReport, EvaluationCase, EvidenceRow } from '../../evaluation-types';
 
@@ -69,7 +69,7 @@ export function methodPage(r: EvaluationReport, id: string): string {
   if (id === 'mutation' || id === 'metamorphic') body += operators(r);
   const review = id === 'differential';
   activeRows = review ? queue : assertionRows(cases);
-  body += section(review ? 'Human review evidence' : 'Assertion explorer', `<p class="small">Review-required is unscored, not a product failure. Relational overlap marks an absolute failure on the same case and scanner; unique case counts include it once.</p><div id="evaluation-filters" class="filters"></div><p class="small" id="evaluation-count" role="status"></p><div id="evaluation-rows"></div><div class="pager"><button class="btn" type="button" id="evaluation-prev">Previous</button><span id="evaluation-page"></span><button class="btn" type="button" id="evaluation-next">Next</button></div>`);
+  body += section(review ? 'Human review evidence' : 'Assertion explorer', `<p class="small">Review-required is unscored, not a product failure. Relational overlap marks an absolute failure on the same case and scanner; unique case counts include it once.</p><div id="evaluation-filters" class="filters"></div><p class="small" id="evaluation-count" role="status"></p><div id="evaluation-rows"></div>${pager('evaluation')}`);
   const generation = cases.flatMap(c => c.generation.filter(g => g.status !== 'generated').map(g => [e(c.id), e(g.operator), mark(g.status)]));
   if (generation.length) body += section('Generation attempts requiring attention', `<details><summary>${generation.length} unsupported or error attempts</summary>${table('Generation attempts', ['Case', 'Operator', 'Status'], generation)}</details>`);
   return body;
@@ -96,12 +96,9 @@ export function bindExplorer() {
       `${e(r.baseline ? r.baseline + ' → ' : '')}${e(r.variant)}<small>${r.baseline ? 'Relational' : 'Absolute or observation'}</small>`,
       `${e(r.operator)}<small>${e(r.property)} · effect: ${e(r.effect || 'not specified')} · contract match: ${e(r.contract)}</small>`,
       `${e(r.scanner || 'scanner-independent')} ${r.peer ? '↔ ' + e(r.peer) : ''}<small>${e(r.disagreement)}</small>`]));
-    document.querySelector('#evaluation-page')!.textContent = `Page ${state.page + 1} of ${pages}`;
-    (document.querySelector('#evaluation-prev') as HTMLButtonElement).disabled = state.page === 0;
-    (document.querySelector('#evaluation-next') as HTMLButtonElement).disabled = state.page === pages - 1;
+    showPage(state.page, pages);
   };
+  const showPage = bindPager('evaluation', delta => { state.page += delta; render(); });
   filters.querySelectorAll<HTMLSelectElement>('select').forEach(sel => sel.addEventListener('change', () => { state.filters[sel.dataset.evalFilter!] = sel.value; state.page = 0; render(); }));
-  document.querySelector('#evaluation-prev')!.addEventListener('click', () => { state.page--; render(); });
-  document.querySelector('#evaluation-next')!.addEventListener('click', () => { state.page++; render(); });
   render();
 }

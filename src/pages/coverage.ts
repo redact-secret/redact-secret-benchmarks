@@ -2,6 +2,8 @@ import inventory from '../../benchmarks/detector-inventory.json';
 import rawGaps from '../../benchmarks/known-gaps.json';
 import { contracts } from '../../benchmarks/lib/assessment.ts';
 import { validateKnownGaps, type KnownGaps } from '../../benchmarks/lib/promotion';
+import { twinProbe, type TwinProbeEntry } from '../../benchmarks/lib/twin-probe.ts';
+import type { FormatContract, ScoredRow } from '../../benchmarks/types.ts';
 import suite from '../../qualification/suite-v1.json';
 import { actionEmptyState, escapeHtml as e, evidenceCrumb, statusMark } from '../components';
 import { categories, registry, type Fixture } from '../catalog';
@@ -26,7 +28,27 @@ export function detectorCounts(fixtures: Fixture[]) {
 }
 const seg = (view: CoverageView) => `<div class="seg" role="group" aria-label="Coverage view">${([['all', 'All', ''], ['thin', 'Thin coverage', '?show=thin'], ['inventory', 'No dedicated fixtures', '?show=inventory']] as const).map(([id, label, query]) => `<a href="/coverage${query}"${id === view ? ' aria-current="true"' : ''}>${label}</a>`).join('')}</div>`;
 
-export function coveragePage(fixtures: Fixture[], view: CoverageView): string {
+/**
+ * Twin probe by family (#36): discriminated, not discriminated and un-probeable
+ * are separate lines. Un-probeable families never enter the pair counts, so the
+ * twin rate's denominator no longer hides the families nothing is paired against.
+ */
+export function twinProbeSection(data: BenchData | undefined, fixtures: Fixture[]): string {
+  const reports = data ? currentReports(data) : [];
+  const rows = reports.flatMap(r => (r.scanners.find(s => s.id === PRODUCT && s.status === 'complete')?.rows ?? []).map(row => ({ ...row, id: `${r.category}--${row.id}`, twinOf: row.twinOf ? `${r.category}--${row.twinOf}` : undefined }))) as unknown as ScoredRow[];
+  const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: f.slug, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), rows.length ? rows : undefined, contracts as Record<string, FormatContract>);
+  const title = (id: string) => registry.detectors.find(d => d.id === id)?.title ?? id;
+  const link = (entry: TwinProbeEntry) => `<a href="/coverage/${e(entry.id)}">${e(title(entry.id))}</a>`;
+  const of = (status: TwinProbeEntry['status']) => probe.entries.filter(entry => entry.status === status);
+  const measured = [...of('not-discriminated'), ...of('discriminated'), ...of('not-measured'), ...of('unrecorded')];
+  const mark = (entry: TwinProbeEntry) => entry.status === 'discriminated' ? statusMark('pass', 'Discriminated') : entry.status === 'not-discriminated' ? statusMark('fail', 'Not discriminated') : entry.status === 'not-measured' ? statusMark('not-measured') : statusMark('withheld', 'No twin, no record');
+  const c = probe.counts;
+  return `<section class="section" id="twin-probe"><h2 class="h2-compact">Twin probe, by detector family</h2><p class="small">${PRODUCT} on the current run: <b>${c.discriminated}</b> discriminated · <b>${c['not-discriminated']}</b> not discriminated · <b>${c['un-probeable']}</b> un-probeable${c['not-measured'] ? ` · <b>${c['not-measured']}</b> not measured` : ''}${c.unrecorded ? ` · <b>${c.unrecorded}</b> with no twin and no record` : ''}, of ${probe.entries.length} families. A family is discriminated only when every scored pair has the positive covered and the twin quiet. Un-probeable families have no twin because the provider documents nothing a twin could mutate; they are listed on their own and never counted in a twin rate.</p>
+    <div class="tbl"><table><thead><tr><th scope="col">Family</th><th scope="col">Twin probe</th><th scope="col" class="num">Pairs discriminated</th></tr></thead><tbody>${measured.map(entry => `<tr><td>${link(entry)}</td><td>${mark(entry)}</td><td class="num">${entry.pairs ? `${entry.discriminated} of ${entry.pairs}` : '—'}</td></tr>`).join('')}</tbody></table></div>
+    <div class="tbl" style="margin-top:var(--space-4)"><table><thead><tr><th scope="col">Un-probeable family</th><th scope="col">Why no twin exists</th><th scope="col">Checked</th></tr></thead><tbody>${of('un-probeable').map(entry => `<tr><td>${link(entry)}</td><td><small>${e(entry.reason ?? '')}</small></td><td>${e(entry.observedAt ?? '')}</td></tr>`).join('')}</tbody></table></div></section>`;
+}
+
+export function coveragePage(fixtures: Fixture[], view: CoverageView, data?: BenchData): string {
   const counts = detectorCounts(fixtures), atMinimum = counts.filter(d => d.fixtures <= MIN);
   const head = `<div class="page-head"><div><h1>Detector coverage</h1><div class="meta"><span><b>${counts.length}</b> detector families</span><span><b>${atMinimum.length}</b> at the minimum sample size</span><span>Sorted by fixtures</span></div></div>${seg(view)}</div>`;
   if (view === 'inventory') return head + inventoryView();
@@ -34,7 +56,7 @@ export function coveragePage(fixtures: Fixture[], view: CoverageView): string {
   const line = (MIN / max * 100).toFixed(2);
   return `${head}<p class="small" style="margin-bottom:var(--space-4)">The vertical line on each bar is the minimum sample size (${MIN}): below it no rate is published for a group. A fixture may count for more than one detector, so these numbers do not add up to the corpus.</p>
     <div class="cov-list" role="table" aria-label="Detectors by fixture count"><div class="cov-row cov-head" role="row"><span role="columnheader">DETECTOR</span><span class="n" role="columnheader">FIXTURES</span><span role="columnheader">SAMPLE SIZE</span><span role="columnheader"></span></div>${shown.map(d => `<div class="cov-row" role="row"><a role="cell" href="/coverage/${e(d.id)}">${e(d.title)}</a><span class="n" role="cell">${n(d.fixtures)}</span><span class="bar" role="cell" aria-label="${n(d.fixtures)} fixtures; minimum sample size ${MIN}"><i style="width:${(d.fixtures / max * 100).toFixed(2)}%"></i><u style="left:${line}%"></u></span><span class="flag" role="cell">${d.fixtures < MIN ? 'Below minimum' : d.fixtures === MIN ? 'At minimum' : ''}</span></div>`).join('')}</div>
-    <section class="section"><h2 class="h2-compact">Case suites</h2><p class="small">The same fixtures, grouped by the question each suite was written to ask.</p><div class="tbl"><table><thead><tr><th scope="col">Suite</th><th scope="col" class="num">Fixtures</th><th scope="col">Scope</th></tr></thead><tbody>${categories.map(c => `<tr><td><a href="/suites/${e(c.id)}">${e(c.title)}</a></td><td class="num">${n(fixtures.filter(f => f.category === c.id).length)}</td><td>${e(c.description)}</td></tr>`).join('')}</tbody></table></div></section>`;
+    ${view === 'all' ? twinProbeSection(data, fixtures) : ''}<section class="section"><h2 class="h2-compact">Case suites</h2><p class="small">The same fixtures, grouped by the question each suite was written to ask.</p><div class="tbl"><table><thead><tr><th scope="col">Suite</th><th scope="col" class="num">Fixtures</th><th scope="col">Scope</th></tr></thead><tbody>${categories.map(c => `<tr><td><a href="/suites/${e(c.id)}">${e(c.title)}</a></td><td class="num">${n(fixtures.filter(f => f.category === c.id).length)}</td><td>${e(c.description)}</td></tr>`).join('')}</tbody></table></div></section>`;
 }
 
 const strip = (outcomes: Record<Outcome, number>) => {
@@ -49,8 +71,8 @@ export function detectorPage(data: BenchData, fixtures: Fixture[], id: string): 
   if (!detector) return `${evidenceCrumb([{ label: 'Coverage', href: '/coverage' }, { label: id }])}<div class="page-head"><div><h1>No such detector</h1></div></div>${actionEmptyState({ title: `No detector family is registered as “${e(id)}”`, body: 'Detector families come from <code>benchmarks/detectors.json</code>. <a href="/coverage">Open the coverage list</a> or search by name.' })}`;
   const selected = fixtures.filter(f => f.detectors.includes(id));
   const suites = [...new Set(selected.map(f => f.category))];
-  const contract = (contracts as Record<string, { tier?: string; providerSource?: { url: string; formatVersion: string; observedAt: string; covers: string }; candidateSource?: { url: string }; corroboration?: { url: string; tool: string }[]; references?: string[]; review?: string; companion?: string }>)[id] ?? {};
-  const sources = [contract.providerSource ? `<a href="${e(contract.providerSource.url)}">Provider documentation</a> <span class="muted">${e(contract.providerSource.formatVersion)} · observed ${e(contract.providerSource.observedAt)} · ${e(contract.providerSource.covers)}</span>` : '', contract.candidateSource ? `<a href="${e(contract.candidateSource.url)}">Provider, prefix only</a>` : '', ...(contract.corroboration ?? []).map(s => `<a href="${e(s.url)}">${e(s.tool)}</a>`), ...(contract.references ?? []).map((url, i) => `<a href="${e(url)}">Reference ${i + 1}</a>`)].filter(Boolean);
+  const contract = (contracts as Record<string, { tier?: string; providerSource?: { url: string; formatVersion: string; observedAt: string; covers: string }; candidateSource?: { url: string }; corroboration?: { url: string; tool: string }[]; references?: string[]; review?: string; companion?: string; twinSource?: { url: string; formatVersion: string; observedAt: string; covers: string }; unprobeable?: { reason: string; observedAt: string } }>)[id] ?? {};
+  const sources = [contract.providerSource ? `<a href="${e(contract.providerSource.url)}">Provider documentation</a> <span class="muted">${e(contract.providerSource.formatVersion)} · observed ${e(contract.providerSource.observedAt)} · ${e(contract.providerSource.covers)}</span>` : '', contract.candidateSource ? `<a href="${e(contract.candidateSource.url)}">Provider, prefix only</a>` : '', ...(contract.corroboration ?? []).map(s => `<a href="${e(s.url)}">${e(s.tool)}</a>`), ...(contract.references ?? []).map((url, i) => `<a href="${e(url)}">Reference ${i + 1}</a>`), contract.twinSource ? `<a href="${e(contract.twinSource.url)}">Twin source</a> <span class="muted">${e(contract.twinSource.formatVersion)} · observed ${e(contract.twinSource.observedAt)} · ${e(contract.twinSource.covers)}</span>` : ''].filter(Boolean);
   const head = `${evidenceCrumb([{ label: 'Coverage', href: '/coverage' }, { label: detector.title }])}<div class="page-head"><div><h1>${e(detector.title)}</h1><div class="meta"><span><b>${n(selected.length)}</b> fixtures${selected.length <= MIN ? ` ${statusMark('withheld', selected.length < MIN ? 'Below minimum' : 'At minimum')}` : ''}</span><span>Suites: ${suites.map(s => `<a href="/suites/${e(s)}">${e(s)}</a>`).join(', ') || 'none'}</span>${contract.tier ? `<span>Format evidence: <b>${e(contract.tier)} · ${e(tierTitle(contract.tier))}</b></span>` : ''}</div></div></div>`;
   if (!selected.length) return head + actionEmptyState({ title: 'No fixtures are assigned to this detector', body: 'It is registered upstream, but nothing in the corpus targets it, so nothing is measured and no coverage is claimed. Assign fixtures in <code>benchmarks/fixture-detectors.json</code>.', command: 'npm run fixtures:check' });
   const summary = data.summaryProblem ? undefined : data.summary, reports = currentReports(data);
@@ -66,7 +88,7 @@ export function detectorPage(data: BenchData, fixtures: Fixture[], id: string): 
     }).join('')}</tbody></table></div><p class="small" style="margin-top:var(--space-3)">Detector views overlap, so their groups are never summed. Other scanners are reference values on the same inputs, in run order.</p>`;
   }
   const followUps = gaps.issues.filter(issue => issue.fixtures.some(slug => selected.some(f => f.slug === slug)));
-  return head + (sources.length ? `<p class="small">${sources.join(' · ')}${contract.review ? ` · ${e(contract.review)}` : contract.companion ? ` · ${e(contract.companion)}` : ''}</p>` : '') + groups + runStates(data)
+  return head + (sources.length ? `<p class="small">${sources.join(' · ')}${contract.review ? ` · ${e(contract.review)}` : contract.companion ? ` · ${e(contract.companion)}` : ''}</p>` : '') + (contract.unprobeable ? `<p class="small">${statusMark('withheld', 'Un-probeable')} No negative twin is authored for this family, and it is left out of every twin rate. ${e(contract.unprobeable.reason)} <span class="muted">Checked ${e(contract.unprobeable.observedAt)}.</span></p>` : '') + groups + runStates(data)
     + (followUps.length ? `<section class="section"><h2 class="h2-compact">Tracked product issues</h2>${followUps.map(issue => `<div class="chg">${statusMark('info', issue.status)}<span><a href="${e(issue.url)}">#${issue.number} · ${e(issue.title)}</a><small>${issue.kind === 'false-positive' ? 'False positives' : 'Missed secret spans'} · measured on ${e(gaps.measuredVersion)}</small></span><span class="d">${issue.fixtures.length} fixtures</span></div>`).join('')}</section>` : '')
     + rowsTable({ fixtures: selected, reports, heading: 'Rows' });
 }

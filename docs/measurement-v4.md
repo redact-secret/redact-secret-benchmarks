@@ -182,6 +182,19 @@ what it says: can the tool tell these two apart? The beta.4 backlog (#316–#325
 sets rather than loose negatives. Un-twinned positives are reported as a coverage
 gap (`twinned: 138/195`), not silently averaged.
 
+**Amendment, 2026-09-20 (#36).** Two extensions, decided in
+[`2026-09-20-extend-twins-to-assignment-context`](decisions/2026-09-20-extend-twins-to-assignment-context.md):
+
+- A family whose value has no grammar (`generic-token`, `connection-string`)
+  cannot have one property of its value mutated. Its twin keeps the value and
+  mutates exactly one property of the **assignment context** instead
+  (`mutationKind: "context"`), and is a T3 control: silence is project policy.
+- A family for which provider documentation establishes nothing mutable gets no
+  twin and is recorded **un-probeable** on its contract, with the reason and an
+  observation date. The published figure separates *discriminated*, *not
+  discriminated* and *un-probeable* per family; un-probeable families are never
+  counted in a twin rate.
+
 ### 2.6 Evidence tiers, provider-first
 
 `contracts` entries are restructured:

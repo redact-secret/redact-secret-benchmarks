@@ -112,7 +112,7 @@ async function refresh(force = false): Promise<void> {
     lastPayload = payload;
     let body: string;
     if (current.kind === 'report') body = reportPage(data, levelOf(location.search), fixtures);
-    else if (current.kind === 'coverage') body = current.id ? detectorPage(data, fixtures, current.id) : coveragePage(fixtures, coverageViewOf(location.search));
+    else if (current.kind === 'coverage') body = current.id ? detectorPage(data, fixtures, current.id) : coveragePage(fixtures, coverageViewOf(location.search), data);
     else if (current.kind === 'suite') body = suitePage(data, fixtures, current.id);
     else if (fixture) { const loaded = data.loaded.find(l => l.category.id === fixture.category); body = fixturePage(fixture, loaded?.report, loaded?.problem); }
     else body = `<div class="page-head"><div><h1>No such fixture</h1></div></div>${actionEmptyState({ title: 'No fixture has this slug', body: 'A slug is <code>suite--fixture-id</code>. Search for it, or <a href="/coverage">open the coverage list</a>.' })}`;

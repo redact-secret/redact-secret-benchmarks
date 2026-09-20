@@ -1,0 +1,828 @@
+{
+  "schemaVersion": 1,
+  "sourceNote": "Provider x credential-family taxonomy (issue #502). Grounded in benchmarks/lib/assessment.ts contract review text and benchmarks/detectors.json; every entry with an empty detectors list carries a source or note explaining why it is not detector-covered. Consumed by A2 (#503) and A3 (#504); zero-detector families become `unsupported` candidates in A8's support-matrix.json (#509).",
+  "providers": [
+    {
+      "id": "aws",
+      "name": "Amazon Web Services"
+    },
+    {
+      "id": "github",
+      "name": "GitHub"
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab"
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI"
+    },
+    {
+      "id": "anthropic",
+      "name": "Anthropic"
+    },
+    {
+      "id": "shopify",
+      "name": "Shopify"
+    },
+    {
+      "id": "hashicorp-vault",
+      "name": "HashiCorp Vault"
+    },
+    {
+      "id": "stripe",
+      "name": "Stripe"
+    },
+    {
+      "id": "slack",
+      "name": "Slack"
+    },
+    {
+      "id": "pypi",
+      "name": "Python Package Index (PyPI)"
+    },
+    {
+      "id": "huggingface",
+      "name": "Hugging Face"
+    },
+    {
+      "id": "docker",
+      "name": "Docker Hub"
+    },
+    {
+      "id": "cloudflare",
+      "name": "Cloudflare"
+    },
+    {
+      "id": "digitalocean",
+      "name": "DigitalOcean"
+    },
+    {
+      "id": "linear",
+      "name": "Linear"
+    },
+    {
+      "id": "supabase",
+      "name": "Supabase"
+    },
+    {
+      "id": "vercel",
+      "name": "Vercel"
+    },
+    {
+      "id": "npm",
+      "name": "npm"
+    },
+    {
+      "id": "google",
+      "name": "Google"
+    },
+    {
+      "id": "sendgrid",
+      "name": "Twilio SendGrid"
+    },
+    {
+      "id": "microsoft-entra",
+      "name": "Microsoft Entra ID"
+    },
+    {
+      "id": "azure-devops",
+      "name": "Azure DevOps"
+    },
+    {
+      "id": "notion",
+      "name": "Notion"
+    },
+    {
+      "id": "atlassian",
+      "name": "Atlassian"
+    },
+    {
+      "id": "twilio",
+      "name": "Twilio"
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram"
+    },
+    {
+      "id": "discord",
+      "name": "Discord"
+    },
+    {
+      "id": "sentry",
+      "name": "Sentry"
+    },
+    {
+      "id": "datadog",
+      "name": "Datadog"
+    },
+    {
+      "id": "grafana",
+      "name": "Grafana"
+    },
+    {
+      "id": "new-relic",
+      "name": "New Relic"
+    }
+  ],
+  "families": [
+    {
+      "id": "aws:iam-user-access-key",
+      "provider": "aws",
+      "name": "IAM user access key",
+      "description": "Long-term access key ID for an IAM user, prefixed AKIA.",
+      "detectors": [
+        "aws-access-key"
+      ],
+      "sources": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes"
+      ]
+    },
+    {
+      "id": "aws:sts-temporary-access-key",
+      "provider": "aws",
+      "name": "STS temporary access key",
+      "description": "Short-lived access key ID issued by AWS STS, prefixed ASIA; requires an accompanying session token.",
+      "detectors": [],
+      "sources": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes"
+      ],
+      "note": "aws-access-key's pattern is anchored to AKIA only (benchmarks/lib/assessment.ts contract), so ASIA values are not matched. classifyFixture already special-cases a bare AWS positive as policy, not must-redact, because \"some legacy ASIA values also use digits outside the base32 alphabet\"."
+    },
+    {
+      "id": "aws:sts-service-bearer-token",
+      "provider": "aws",
+      "name": "STS service bearer token",
+      "description": "AWS STS service-issued bearer credential, prefixed ABIA.",
+      "detectors": [],
+      "sources": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes"
+      ],
+      "note": "Documented in the same IAM unique-identifier prefix table as AKIA/ASIA; not matched by the AKIA-only pattern."
+    },
+    {
+      "id": "aws:context-specific-credential",
+      "provider": "aws",
+      "name": "Context-specific credential",
+      "description": "Context-specific temporary credential, prefixed ACCA.",
+      "detectors": [],
+      "sources": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes"
+      ],
+      "note": "Documented in the same IAM unique-identifier prefix table as AKIA/ASIA; not matched by the AKIA-only pattern."
+    },
+    {
+      "id": "aws:iam-user-secret-access-key",
+      "provider": "aws",
+      "name": "IAM user secret access key",
+      "description": "The 40-character secret paired with an IAM user access key ID. Has no distinguishing prefix or lexical marker.",
+      "detectors": [],
+      "note": "The aws-access-key contract's companion field states a separate 40-character secret access key is required alongside the access key ID; this project has no dedicated detector for the secret half, which carries no stable prefix to anchor on."
+    },
+    {
+      "id": "github:classic-personal-access-token",
+      "provider": "github",
+      "name": "Classic personal access token",
+      "description": "Classic PAT, prefixed ghp_.",
+      "detectors": [
+        "github-token"
+      ],
+      "sources": [
+        "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
+      ]
+    },
+    {
+      "id": "github:oauth-access-token",
+      "provider": "github",
+      "name": "OAuth access token",
+      "description": "OAuth app access token, prefixed gho_.",
+      "detectors": [
+        "github-token"
+      ],
+      "sources": [
+        "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
+      ]
+    },
+    {
+      "id": "github:app-user-to-server-token",
+      "provider": "github",
+      "name": "GitHub App user-to-server token",
+      "description": "GitHub App user-to-server token, prefixed ghu_.",
+      "detectors": [
+        "github-token"
+      ],
+      "sources": [
+        "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
+      ]
+    },
+    {
+      "id": "github:app-server-to-server-token",
+      "provider": "github",
+      "name": "GitHub App server-to-server token",
+      "description": "GitHub App installation (server-to-server) token, prefixed ghs_.",
+      "detectors": [
+        "github-token"
+      ],
+      "sources": [
+        "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
+      ]
+    },
+    {
+      "id": "github:oauth-refresh-token",
+      "provider": "github",
+      "name": "OAuth refresh token",
+      "description": "OAuth app refresh token, prefixed ghr_.",
+      "detectors": [
+        "github-token"
+      ],
+      "sources": [
+        "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
+      ]
+    },
+    {
+      "id": "github:fine-grained-personal-access-token",
+      "provider": "github",
+      "name": "Fine-grained personal access token",
+      "description": "Repository- and permission-scoped PAT, prefixed github_pat_.",
+      "detectors": [],
+      "sources": [
+        "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
+      ],
+      "note": "Named explicitly in issue #502 as a family the github-token detector does not cover: its pattern only matches the ghp_/gho_/ghu_/ghs_/ghr_ underscore-plus-36-character-body shape, which github_pat_ does not fit."
+    },
+    {
+      "id": "gitlab:legacy-personal-access-token",
+      "provider": "gitlab",
+      "name": "Legacy personal access token",
+      "description": "Legacy-format PAT, prefixed glpat- with a 20-character body.",
+      "detectors": [
+        "gitlab-token"
+      ],
+      "sources": [
+        "https://docs.gitlab.com/security/tokens/"
+      ]
+    },
+    {
+      "id": "gitlab:routable-personal-access-token",
+      "provider": "gitlab",
+      "name": "Routable personal access token",
+      "description": "Newer routable PAT format described on the same token-prefix page.",
+      "detectors": [],
+      "sources": [
+        "https://docs.gitlab.com/security/tokens/"
+      ],
+      "note": "gitlab-token's contract review states explicitly that routable tokens are not covered by the 20-character-body pattern."
+    },
+    {
+      "id": "openai:secret-api-key",
+      "provider": "openai",
+      "name": "Secret API key",
+      "description": "sk- prefixed secret API key, including project- and service-account-scoped variants (sk-proj-, sk-svcacct-).",
+      "detectors": [
+        "openai-token"
+      ]
+    },
+    {
+      "id": "anthropic:secret-api-key",
+      "provider": "anthropic",
+      "name": "Secret API key",
+      "description": "sk-ant- prefixed secret API key.",
+      "detectors": [
+        "anthropic-token"
+      ]
+    },
+    {
+      "id": "shopify:custom-app-access-token",
+      "provider": "shopify",
+      "name": "Custom app access token",
+      "description": "Access token for a store-installed custom app, prefixed shpat_.",
+      "detectors": [
+        "shopify-token"
+      ]
+    },
+    {
+      "id": "shopify:public-app-access-token",
+      "provider": "shopify",
+      "name": "Public app access token",
+      "description": "Access token for a public/listed app, prefixed shppa_.",
+      "detectors": [
+        "shopify-token"
+      ]
+    },
+    {
+      "id": "hashicorp-vault:service-token",
+      "provider": "hashicorp-vault",
+      "name": "Service token",
+      "description": "Standard Vault service token, prefixed hvs.",
+      "detectors": [
+        "vault-token"
+      ]
+    },
+    {
+      "id": "hashicorp-vault:batch-token",
+      "provider": "hashicorp-vault",
+      "name": "Batch token",
+      "description": "Lightweight, non-renewable Vault batch token, prefixed hvb.",
+      "detectors": [
+        "vault-token"
+      ]
+    },
+    {
+      "id": "hashicorp-vault:recovery-token",
+      "provider": "hashicorp-vault",
+      "name": "Recovery token",
+      "description": "Vault recovery operation token, prefixed hvr.",
+      "detectors": [
+        "vault-token"
+      ]
+    },
+    {
+      "id": "stripe:secret-key-live",
+      "provider": "stripe",
+      "name": "Live secret key",
+      "description": "Live-mode secret key, prefixed sk_live_.",
+      "detectors": [
+        "stripe-token"
+      ]
+    },
+    {
+      "id": "stripe:secret-key-test",
+      "provider": "stripe",
+      "name": "Test secret key",
+      "description": "Test-mode secret key, prefixed sk_test_.",
+      "detectors": [
+        "stripe-token"
+      ]
+    },
+    {
+      "id": "stripe:restricted-key-live",
+      "provider": "stripe",
+      "name": "Live restricted key",
+      "description": "Live-mode restricted-permission key, prefixed rk_live_.",
+      "detectors": [
+        "stripe-token"
+      ]
+    },
+    {
+      "id": "stripe:restricted-key-test",
+      "provider": "stripe",
+      "name": "Test restricted key",
+      "description": "Test-mode restricted-permission key, prefixed rk_test_.",
+      "detectors": [
+        "stripe-token"
+      ]
+    },
+    {
+      "id": "stripe:organization-api-key",
+      "provider": "stripe",
+      "name": "Organization API key",
+      "description": "Organization-scoped secret key, prefixed sk_org_.",
+      "detectors": [],
+      "sources": [
+        "benchmarks/lib/assessment.ts (classifyFixture variant guard: \"Variant support must not be inferred from a related family name.\")"
+      ],
+      "note": "classifyFixture explicitly routes sk_org_ values to \"this variant needs a separate format contract; related detector support is not evidence of parity\", so it is not claimed by stripe-token's live/test secret-key pattern."
+    },
+    {
+      "id": "stripe:webhook-signing-secret",
+      "provider": "stripe",
+      "name": "Webhook signing secret",
+      "description": "Webhook endpoint signing secret, prefixed whsec_.",
+      "detectors": [],
+      "sources": [
+        "benchmarks/lib/assessment.ts (classifyFixture variant guard: \"Variant support must not be inferred from a related family name.\")"
+      ],
+      "note": "Same classifyFixture guard as the organization API key covers whsec_ values; stripe-token's pattern does not match them."
+    },
+    {
+      "id": "slack:bot-token",
+      "provider": "slack",
+      "name": "Bot token",
+      "description": "Bot user OAuth token, prefixed xoxb-.",
+      "detectors": [
+        "slack-token"
+      ]
+    },
+    {
+      "id": "slack:user-token",
+      "provider": "slack",
+      "name": "User token",
+      "description": "User OAuth token, prefixed xoxp-.",
+      "detectors": [],
+      "sources": [
+        "https://docs.slack.dev/authentication/tokens"
+      ],
+      "note": "slack-token's contract lists xoxp- among the provider-documented prefixes but its pattern only matches xoxb-."
+    },
+    {
+      "id": "slack:app-level-token",
+      "provider": "slack",
+      "name": "App-level token",
+      "description": "App-level token, prefixed xapp-.",
+      "detectors": [],
+      "sources": [
+        "https://docs.slack.dev/authentication/tokens"
+      ],
+      "note": "Documented alongside xoxb- in the same provider prefix table; not matched by the bot-token-only pattern."
+    },
+    {
+      "id": "slack:workflow-webhook-token",
+      "provider": "slack",
+      "name": "Workflow webhook token",
+      "description": "Workflow webhook trigger token, prefixed xwfp-.",
+      "detectors": [],
+      "sources": [
+        "benchmarks/lib/assessment.ts (classifyFixture variant guard: \"Variant support must not be inferred from a related family name.\")"
+      ],
+      "note": "classifyFixture explicitly routes xwfp- values to the \"needs a separate format contract\" guard."
+    },
+    {
+      "id": "pypi:api-token",
+      "provider": "pypi",
+      "name": "API token",
+      "description": "pypi- prefixed base64-encoded macaroon.",
+      "detectors": [
+        "pypi-token"
+      ]
+    },
+    {
+      "id": "huggingface:api-token",
+      "provider": "huggingface",
+      "name": "API token",
+      "description": "hf_ prefixed access token.",
+      "detectors": [
+        "huggingface-token"
+      ]
+    },
+    {
+      "id": "docker:personal-access-token",
+      "provider": "docker",
+      "name": "Personal access token",
+      "description": "Personal access token, prefixed dckr_pat_.",
+      "detectors": [
+        "docker-token"
+      ]
+    },
+    {
+      "id": "docker:oauth-access-token",
+      "provider": "docker",
+      "name": "OAuth access token",
+      "description": "OAuth access token, prefixed dckr_oat_.",
+      "detectors": [
+        "docker-token"
+      ]
+    },
+    {
+      "id": "cloudflare:api-token",
+      "provider": "cloudflare",
+      "name": "Scannable API token",
+      "description": "cfut_ prefixed scannable API token format.",
+      "detectors": [
+        "cloudflare-token"
+      ]
+    },
+    {
+      "id": "digitalocean:personal-access-token",
+      "provider": "digitalocean",
+      "name": "Personal access token",
+      "description": "Personal access token, prefixed dop_v1_.",
+      "detectors": [
+        "digitalocean-token"
+      ]
+    },
+    {
+      "id": "digitalocean:oauth-token",
+      "provider": "digitalocean",
+      "name": "OAuth token",
+      "description": "OAuth token, prefixed doo_v1_.",
+      "detectors": [
+        "digitalocean-token"
+      ]
+    },
+    {
+      "id": "digitalocean:refresh-token",
+      "provider": "digitalocean",
+      "name": "Refresh token",
+      "description": "Refresh token, prefixed dor_v1_.",
+      "detectors": [
+        "digitalocean-token"
+      ]
+    },
+    {
+      "id": "linear:personal-api-key",
+      "provider": "linear",
+      "name": "Personal API key",
+      "description": "Personal API key, prefixed lin_api_.",
+      "detectors": [
+        "linear-token"
+      ]
+    },
+    {
+      "id": "linear:oauth-access-token",
+      "provider": "linear",
+      "name": "OAuth access token",
+      "description": "OAuth access token, prefixed lin_oauth_.",
+      "detectors": [],
+      "sources": [
+        "benchmarks/lib/assessment.ts (classifyFixture variant guard: \"Variant support must not be inferred from a related family name.\")"
+      ],
+      "note": "classifyFixture explicitly routes lin_oauth_ values to the \"needs a separate format contract; related detector support is not evidence of parity\" guard."
+    },
+    {
+      "id": "supabase:secret-key",
+      "provider": "supabase",
+      "name": "Project secret key",
+      "description": "Project-scoped secret API key, prefixed sb_secret_.",
+      "detectors": [
+        "supabase-token"
+      ],
+      "sources": [
+        "https://supabase.com/docs/guides/api/api-keys"
+      ],
+      "note": "supabase-token's contract is T0/pending: the provider documents the sb_secret_ prefix but not the body shape, so this family has no stable positive contract yet even though a detector targets it."
+    },
+    {
+      "id": "supabase:personal-access-token",
+      "provider": "supabase",
+      "name": "Personal access token",
+      "description": "Management-API personal access token, prefixed sbp_.",
+      "detectors": [],
+      "note": "supabase-token's contract review notes the pinned TruffleHog detector instead covers sbp_ management tokens, a distinct family from the sb_secret_ project key this project's detector targets."
+    },
+    {
+      "id": "vercel:access-token",
+      "provider": "vercel",
+      "name": "Access token",
+      "description": "Vercel REST API access token.",
+      "detectors": [
+        "vercel-token"
+      ],
+      "note": "vercel-token is T0/pending: the REST API reference documents no token prefix, and the corpus's five candidate vcp_/vci_/vca_/vcr_/vck_ shapes are unconfirmed against provider documentation, so they are not split into separate families here."
+    },
+    {
+      "id": "npm:granular-access-token",
+      "provider": "npm",
+      "name": "Granular access token",
+      "description": "2021-09 format token with a Base62 CRC32 checksum, prefixed npm_.",
+      "detectors": [
+        "npm-token"
+      ],
+      "sources": [
+        "https://github.blog/changelog/2021-09-23-npm-has-a-new-access-token-format/"
+      ]
+    },
+    {
+      "id": "npm:legacy-token",
+      "provider": "npm",
+      "name": "Legacy token",
+      "description": "Pre-2021 unprefixed UUID-format token.",
+      "detectors": [],
+      "sources": [
+        "https://github.blog/changelog/2021-09-23-npm-has-a-new-access-token-format/"
+      ],
+      "note": "npm-token's own provider source is the changelog announcing the npm_ prefix scheme as a replacement, implying the prior UUID-format token predates it; that legacy shape is not matched by the npm_-prefixed pattern."
+    },
+    {
+      "id": "google:generic-api-key",
+      "provider": "google",
+      "name": "Generic API key",
+      "description": "AIza prefixed general-purpose API key.",
+      "detectors": [
+        "google-api-key"
+      ]
+    },
+    {
+      "id": "google:oauth2-credential",
+      "provider": "google",
+      "name": "OAuth2 credential",
+      "description": "OAuth2 client secret, access token or refresh token.",
+      "detectors": [],
+      "note": "google-api-key's contract review notes the pinned TruffleHog detectors separately cover Gemini and OAuth2 credentials, not this generic AIza API-key shape."
+    },
+    {
+      "id": "sendgrid:api-key",
+      "provider": "sendgrid",
+      "name": "API key",
+      "description": "SG. prefixed API key (full-access and restricted-access permission scopes share this format).",
+      "detectors": [
+        "sendgrid-token"
+      ]
+    },
+    {
+      "id": "microsoft-entra:application-client-secret",
+      "provider": "microsoft-entra",
+      "name": "Application client secret",
+      "description": "Client secret value for an app registration, with a digit+Q~ marker.",
+      "detectors": [
+        "microsoft-entra-client-secret"
+      ]
+    },
+    {
+      "id": "azure-devops:personal-access-token",
+      "provider": "azure-devops",
+      "name": "Personal access token",
+      "description": "84-character PAT with a fixed AZDO signature at positions 76-80.",
+      "detectors": [
+        "azure-devops-personal-access-token"
+      ]
+    },
+    {
+      "id": "notion:legacy-integration-token",
+      "provider": "notion",
+      "name": "Legacy integration token",
+      "description": "secret_ prefixed integration token.",
+      "detectors": [
+        "notion-token"
+      ]
+    },
+    {
+      "id": "notion:integration-token",
+      "provider": "notion",
+      "name": "Integration token",
+      "description": "ntn_ prefixed integration token from Notion's 2024-09 rollout.",
+      "detectors": [],
+      "note": "notion-token's contract review states this current ntn_-prefixed format has no contract here; the pinned gitleaks rule targets it instead of the legacy secret_ shape."
+    },
+    {
+      "id": "atlassian:api-token",
+      "provider": "atlassian",
+      "name": "API token",
+      "description": "ATAT prefixed API token (minimum-length contract; Atlassian disclaims a fixed length).",
+      "detectors": [
+        "atlassian-api-token"
+      ]
+    },
+    {
+      "id": "atlassian:access-token",
+      "provider": "atlassian",
+      "name": "Access token",
+      "description": "ATCT prefixed access token.",
+      "detectors": [],
+      "note": "atlassian-api-token's contract review states the pinned TruffleHog detector targets the distinct ATCT access-token family, not the ATAT-prefixed API-token shape."
+    },
+    {
+      "id": "twilio:auth-token",
+      "provider": "twilio",
+      "name": "Account auth token",
+      "description": "32-character lowercase-hex account auth token.",
+      "detectors": [
+        "twilio-auth-token"
+      ]
+    },
+    {
+      "id": "twilio:api-key-secret",
+      "provider": "twilio",
+      "name": "API key secret",
+      "description": "32-character API key secret.",
+      "detectors": [
+        "twilio-api-key-secret"
+      ]
+    },
+    {
+      "id": "telegram:bot-token",
+      "provider": "telegram",
+      "name": "Bot token",
+      "description": "digits:secret bot token.",
+      "detectors": [
+        "telegram-bot-token"
+      ]
+    },
+    {
+      "id": "discord:bot-token",
+      "provider": "discord",
+      "name": "Bot token",
+      "description": "Three-segment base64url bot token.",
+      "detectors": [
+        "discord-bot-token"
+      ]
+    },
+    {
+      "id": "sentry:user-auth-token",
+      "provider": "sentry",
+      "name": "User auth token",
+      "description": "sntryu_ prefixed personal auth token.",
+      "detectors": [
+        "sentry-user-auth-token"
+      ]
+    },
+    {
+      "id": "sentry:organization-auth-token",
+      "provider": "sentry",
+      "name": "Organization auth token",
+      "description": "sntrys_ prefixed organization auth token.",
+      "detectors": [
+        "sentry-org-auth-token"
+      ]
+    },
+    {
+      "id": "datadog:api-key",
+      "provider": "datadog",
+      "name": "API key",
+      "description": "32-character API key.",
+      "detectors": [
+        "datadog-api-key"
+      ]
+    },
+    {
+      "id": "datadog:application-key",
+      "provider": "datadog",
+      "name": "Application key",
+      "description": "40-character application key.",
+      "detectors": [
+        "datadog-application-key"
+      ]
+    },
+    {
+      "id": "grafana:service-account-token",
+      "provider": "grafana",
+      "name": "Service account token",
+      "description": "glsa_ prefixed service account token.",
+      "detectors": [
+        "grafana-service-account-token"
+      ]
+    },
+    {
+      "id": "grafana:cloud-access-policy-token",
+      "provider": "grafana",
+      "name": "Cloud access policy token",
+      "description": "glc_ prefixed Cloud access policy token.",
+      "detectors": [
+        "grafana-cloud-access-policy-token"
+      ]
+    },
+    {
+      "id": "new-relic:user-api-key",
+      "provider": "new-relic",
+      "name": "User API key",
+      "description": "NRAK- prefixed user API key.",
+      "detectors": [
+        "new-relic-user-api-key"
+      ]
+    },
+    {
+      "id": "new-relic:license-key",
+      "provider": "new-relic",
+      "name": "License key",
+      "description": "40-character hexadecimal license key.",
+      "detectors": [
+        "new-relic-license-key"
+      ]
+    },
+    {
+      "id": "generic:private-key",
+      "provider": null,
+      "name": "PEM-encoded private key",
+      "description": "RFC 7468 textual encoding of private key material (any algorithm), not tied to a single provider.",
+      "detectors": [
+        "private-key"
+      ]
+    },
+    {
+      "id": "generic:jwt",
+      "provider": null,
+      "name": "JSON Web Token",
+      "description": "RFC 7519 compact-serialization token, not tied to a single issuer.",
+      "detectors": [
+        "jwt"
+      ]
+    },
+    {
+      "id": "generic:bearer-token",
+      "provider": null,
+      "name": "Bearer credential",
+      "description": "RFC 6750 Authorization: Bearer value; a transport scheme, not a provider-specific format.",
+      "detectors": [
+        "bearer-token"
+      ]
+    },
+    {
+      "id": "generic:connection-string-password",
+      "provider": null,
+      "name": "Connection-string password",
+      "description": "Password embedded in a URI's userinfo component per RFC 3986.",
+      "detectors": [
+        "connection-string"
+      ]
+    },
+    {
+      "id": "generic:otp-seed",
+      "provider": null,
+      "name": "OTP seed",
+      "description": "Base32 secret parameter of an otpauth:// key URI.",
+      "detectors": [
+        "otpauth-uri"
+      ]
+    },
+    {
+      "id": "generic:unclassified-assignment-literal",
+      "provider": null,
+      "name": "Unclassified assignment literal",
+      "description": "Arbitrary literal in a sensitive-looking assignment, masked as project policy rather than a provider format.",
+      "detectors": [
+        "generic-token"
+      ]
+    }
+  ]
+}

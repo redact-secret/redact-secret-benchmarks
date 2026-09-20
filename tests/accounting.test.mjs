@@ -39,8 +39,12 @@ test('§0 floors live in the suite, are covered by suiteHash, and malformed bloc
 });
 
 test('§1 a wholly review-required run is incomplete with unresolved-assertions; a differential-only queue does not trip the floor', async () => {
-  const t0 = cases.find(c => c.method === 'benign' && c.seed.assessment.tier === 'T0');
-  assert.ok(t0, 'the corpus carries a pending benign case');
+  // #45 resolved every pending/T0 must-not-flag fixture, so the live corpus no longer carries
+  // one; synthesize a T0 benign case from a real one so this test still exercises the
+  // review-required path generically, independent of the corpus's current composition.
+  const template = cases.find(c => c.method === 'benign');
+  assert.ok(template, 'the corpus carries a benign case to use as a template');
+  const t0 = { ...template, seed: { ...template.seed, assessment: { ...template.seed.assessment, tier: 'T0' } } };
   const unresolved = await runEvaluation({ cases: [t0], methods, operators, scanners: [exact] });
   assert.ok(unresolved.results[0].scanners[0].assertions.every(a => a.status === 'review-required'));
   assert.deepEqual(unresolved.unresolvedGroups, ['benign/*']);

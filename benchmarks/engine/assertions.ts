@@ -1,10 +1,20 @@
 import type { Finding, ScoredRow } from '../types.ts';
 import type { GeneratedVariant, Assertion, Relation, EvaluationContext, ScannerResult } from './types.ts';
 import { score } from '../lib/scoring.ts';
+import { scoreRow } from '../lib/lattice.ts';
 import { secrets } from './model.ts';
 
 export function observe(variant: GeneratedVariant, findings: Finding[]) {
-  return score([variant.fixture], findings.filter(f => f.path === variant.fixture.path)).rows[0];
+  const row = score([variant.fixture], findings.filter(f => f.path === variant.fixture.path)).rows[0];
+  // A generated variant's fixture never carries `twinOf` (the engine gives every variant its
+  // own id space, so a corpus-relative `twinOf` would dangle); `transformation.relation ===
+  // 'must-flip'` is the engine-native twin signal instead (only `authored.twin` sets it).
+  // Scope the reading to the twin's own declared contract family, per
+  // docs/evaluation-methods/02-negative-twin.md — a finding from a different, known family is
+  // legitimate co-detection, not a twin failure.
+  if (variant.transformation.relation === 'must-flip' && variant.fixture.assessment.contract)
+    return { ...row, ...scoreRow(row.expected, row.actual, variant.fixture.assessment.contract) };
+  return row;
 }
 
 export function absolute(variant: GeneratedVariant, row: ScoredRow): Assertion {

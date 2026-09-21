@@ -75,9 +75,12 @@ export function score(fixtures: Fixture[], findings: Finding[]): { rows: ScoredR
     unique.set(`${r.path}:${r.start}:${r.end}`, r);
   }
   const rows = fixtures.map((f) => {
+    // `family`, when a scanner attributed one, rides along on `actual` so a twin's flagged
+    // reading can be scoped to its own contract family (below) and so a published report row
+    // stays self-verifying (docs/measurement-v4.md §3) without a separate, unpublished channel.
     const actual = [...unique.values()]
       .filter((r) => r.path === f.path)
-      .map(({ start, end }) => ({ start, end }));
+      .map(({ start, end, family }) => ({ start, end, ...(family !== undefined ? { family } : {}) }));
     const expected = f.expected.map(({ start, end, role, envelope }) => ({ start, end, role, ...(envelope ? { envelope: { start: envelope.start, end: envelope.end } } : {}) }));
     const a = f.assessment;
     const row = {
@@ -90,7 +93,7 @@ export function score(fixtures: Fixture[], findings: Finding[]): { rows: ScoredR
       actual,
     };
     if (a?.tier === 'T0') return row;
-    return { ...row, ...scoreRow(expected, actual) };
+    return { ...row, ...scoreRow(expected, actual, f.twinOf ? a?.contract : undefined) };
   });
   return { rows };
 }

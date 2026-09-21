@@ -54,6 +54,32 @@ test('companion spans are never scored and their bytes are not collateral', () =
   assert.deepEqual(scoreRow([{ start: 0, end: 4, role: 'companion' }], [f(0, 4)]), { flagged: true, findings: 1 });
 });
 
+test('a twin\'s flagged reading is scoped to its declared contract family (#82)', () => {
+  const own = { ...f(0, 3), family: 'openai-token' };
+  const other = { ...f(0, 3), family: 'bearer-token' };
+  const unattributed = f(0, 3);
+  // Silence on the target contract: clean, regardless of what else is in the file.
+  assert.deepEqual(scoreRow([], [], 'openai-token'), { flagged: false, findings: 0 });
+  // The target family fired: a real twin failure.
+  assert.deepEqual(scoreRow([], [own], 'openai-token'), { flagged: true, findings: 1 });
+  // Only a different, known family fired: not a twin failure, but not silently discarded either.
+  assert.deepEqual(scoreRow([], [other], 'openai-token'), { flagged: false, findings: 1, coDetected: true });
+  // Both: the twin still fails on its own contract, and co-detection is still recorded.
+  assert.deepEqual(scoreRow([], [own, other], 'openai-token'), { flagged: true, findings: 2, coDetected: true });
+  // A finding with no attributed family is ambiguous, not known-other: it still flags (fails closed).
+  assert.deepEqual(scoreRow([], [unattributed], 'openai-token'), { flagged: true, findings: 1 });
+  // A benign control (no scopeFamily) keeps the unscoped, global reading.
+  assert.deepEqual(scoreRow([], [other]), { flagged: true, findings: 1 });
+});
+
+test('co-detection on a twin is recorded on its own axis in aggregateGroups, not counted as a twin failure', () => {
+  const positive = { id: 'p1', kind: 'must-redact', tier: 'T1', expected: [span], actual: [f(10, 20)], ...scoreRow([span], [f(10, 20)]) };
+  const twin = { id: 't1', kind: 'must-not-flag', tier: 'T2', twinOf: 'p1', contract: 'openai-token', expected: [], actual: [{ ...f(0, 3), family: 'bearer-token' }],
+    ...scoreRow([], [{ ...f(0, 3), family: 'bearer-token' }], 'openai-token') };
+  const groups = aggregateGroups([positive, twin]);
+  assert.deepEqual(groups['must-redact/T1'].twins, { positives: 1, pairs: 1, discriminated: 1, coDetected: 1, rate: 1 });
+});
+
 test('control rows only count findings; groups compute headline rates and twin discrimination', () => {
   const rows = [
     { id: 'p1', kind: 'must-redact', tier: 'T1', expected: [span], actual: [f(10, 20)], ...scoreRow([span], [f(10, 20)]) },
@@ -71,9 +97,9 @@ test('control rows only count findings; groups compute headline rates and twin d
   assert.deepEqual([t1.files, t1.spans, t1.secretBytes, t1.leakedSpans, t1.leakedSpanRate, t1.leakedBytes, t1.collateralBytes], [2, 2, 20, 0, 0, 0, 8]);
   assert.equal(t1.collateralRatio, 0.4);
   assert.deepEqual(t1.outcomes, { EXACT: 1, COVERED: 0, OVERBROAD: 1, PARTIAL: 0, MISS: 0 });
-  assert.deepEqual(t1.twins, { positives: 2, pairs: 2, discriminated: 1, rate: 0.5 });
+  assert.deepEqual(t1.twins, { positives: 2, pairs: 2, discriminated: 1, coDetected: 0, rate: 0.5 });
   assert.deepEqual(t1.diagnostics, { exact: { tp: 1, fp: 1, fn: 1 }, comparable: false });
-  assert.deepEqual(groups['must-redact/T2'].twins, { positives: 1, pairs: 0, discriminated: 0, rate: null });
+  assert.deepEqual(groups['must-redact/T2'].twins, { positives: 1, pairs: 0, discriminated: 0, coDetected: 0, rate: null });
   assert.equal(groups['must-redact/T2'].leakedSpanRate, 1);
   assert.deepEqual(groups['must-not-flag/T2'], { files: 2, flaggedFiles: 1, falseAlarmRate: 0.5, findings: 1, meanFindingsPerFlagged: 1, diagnostics: { exact: { fp: 1, tn: 1 }, comparable: false } });
   assert.deepEqual(groups['must-not-flag/T3'], { files: 1, flaggedFiles: 1, falseAlarmRate: 1, findings: 2, meanFindingsPerFlagged: 2, diagnostics: { exact: { fp: 2, tn: 0 }, comparable: false } });
@@ -93,4 +119,18 @@ test('score() deduplicates findings, keeps T0 rows unscored and never exports to
   assert.deepEqual(score([{ ...fixture, assessment: { kind: 'must-redact', tier: 'T0' } }], [hit]).rows[0].spanOutcomes, undefined);
   assert.throws(() => score([fixture], [{ path: 'missing', start: 0, end: 1 }]));
   assert.throws(() => score([fixture], [{ path: 'u.txt', start: 1, end: 4 }]), /Invalid normalized finding/);
+});
+
+test('score() scopes a twin fixture to its declared contract; a benign control stays global (#82)', () => {
+  const twin = { id: 't', path: 't.txt', group: 'g', content: 'x', expected: [],
+    assessment: { kind: 'must-not-flag', tier: 'T2', contract: 'openai-token' }, twinOf: 'p' };
+  const control = { id: 'c', path: 'c.txt', group: 'g', content: 'x', expected: [],
+    assessment: { kind: 'must-not-flag', tier: 'T3', contract: 'openai-token' } };
+  const other = { path: 't.txt', start: 0, end: 1, family: 'bearer-token' };
+  const twinRow = score([twin], [other]).rows[0];
+  assert.deepEqual([twinRow.flagged, twinRow.coDetected], [false, true]);
+  assert.deepEqual(twinRow.actual, [{ start: 0, end: 1, family: 'bearer-token' }]);
+  // The same finding on a non-twin control (no twinOf) is not scoped: any finding flags it.
+  const controlRow = score([control], [{ ...other, path: 'c.txt' }]).rows[0];
+  assert.deepEqual([controlRow.flagged, controlRow.coDetected], [true, undefined]);
 });

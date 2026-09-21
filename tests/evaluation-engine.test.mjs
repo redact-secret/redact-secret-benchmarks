@@ -120,6 +120,17 @@ test('twin must-flip detects either missed positive or flagged negative', () => 
   assert.equal(relation(a, b, detected, observe(b, [{ path: b.fixture.path, start: 0, end: 1 }]), 'must-flip').status, 'fail');
 });
 
+test('a twin\'s must-flip assertion is scoped to its own contract family: co-detection by another family passes (#82)', () => {
+  const { variants: [a, b] } = prepared('twin');
+  const detected = observe(a, findingsFor(a));
+  assert.equal(b.fixture.assessment.contract, 'github-token');
+  const own = observe(b, [{ path: b.fixture.path, start: 0, end: 1, family: 'github-token' }]);
+  assert.equal(relation(a, b, detected, own, 'must-flip').status, 'fail', 'a finding from the twin\'s own contract family still fails it');
+  const coDetected = observe(b, [{ path: b.fixture.path, start: 0, end: 1, family: 'bearer-token' }]);
+  assert.equal(coDetected.coDetected, true);
+  assert.equal(relation(a, b, detected, coDetected, 'must-flip').status, 'pass', 'a finding from a different, known family is legitimate co-detection, not a twin failure');
+});
+
 test('metamorphic invariants do not pass two misses or overbroad redaction', () => {
   const { variants: [a, b] } = prepared('metamorphic');
   assert.equal(relation(a, b, observe(a, []), observe(b, []), 'same-detection').status, 'fail');

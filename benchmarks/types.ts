@@ -12,7 +12,9 @@ export interface Fixture {
 export interface Corpus { fixtures: Fixture[]; schemaVersion?: number; reviewStatus?: string; scope?: string; references?: unknown; milestoneReview?: unknown }
 export interface Finding extends Range { path: string; family?: string }
 export type Outcome = 'EXACT' | 'COVERED' | 'OVERBROAD' | 'PARTIAL' | 'MISS';
-export interface RowScore { spanOutcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number; flagged?: boolean; findings?: number }
+/** `coDetected` is set only on a scoped twin (`flagged` scoped to its declared contract family): a finding attributed
+ * to a different, known family fired on the fixture. It is evidence, not a failure of the twin's own contract. */
+export interface RowScore { spanOutcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number; flagged?: boolean; findings?: number; coDetected?: boolean }
 export interface ScoredRow extends RowScore {
   id: string; path: string; group: string; kind?: Kind; tier?: Tier; contract?: string; twinOf?: string;
   expected: ExpectedRange[]; actual: Range[];
@@ -22,7 +24,7 @@ export interface Group {
   flaggedFiles?: number; findings?: number; falseAlarmRate?: number | null; meanFindingsPerFlagged?: number | null;
   leakedSpans?: number; leakedSpanRate?: number | null; leakedBytes?: number; leakedByteRate?: number | null;
   collateralBytes?: number; collateralRatio?: number | null;
-  twins?: { positives: number; pairs: number; discriminated: number; rate: number | null };
+  twins?: { positives: number; pairs: number; discriminated: number; coDetected: number; rate: number | null };
   diagnostics?: { exact: { tp?: number; fp: number; fn?: number; tn?: number }; comparable: boolean };
 }
 /** Engine v1.1 accounting (docs/evaluation-engine-v1.1.md). Floors live in qualification/suite-v1.json. */
@@ -41,7 +43,7 @@ export interface AccountedGroup {
   flaggedFiles?: number; findings?: number; falseAlarmRate?: Published; meanFindingsPerFlagged?: Published;
   leakedSpans?: number; leakedSpanRate?: Published; leakedBytes?: number; leakedByteRate?: Published;
   collateralBytes?: number; collateralRatio?: Published;
-  twins?: { positives: number; pairs: number; discriminated: number; coverage: Published; rate: Published | 'insufficient-coverage' };
+  twins?: { positives: number; pairs: number; discriminated: number; coDetected: number; coverage: Published; rate: Published | 'insufficient-coverage' };
   diagnostics?: Group['diagnostics'];
 }
 export type DeltaCause = 'unresolved' | 't0-share' | 'overbroad-twin' | 'not-measured' | 'twin-coverage' | 'interval' | 'unstable';

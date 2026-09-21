@@ -106,7 +106,7 @@ export function accountGroups(rows: ScoredRow[], config: AccountingConfig): Reco
       leakedSpans: g.leakedSpans, leakedSpanRate: withheld(proportion(g.leakedSpans!, g.spans!, 'upper', config)),
       leakedBytes: g.leakedBytes, leakedByteRate: withheld(proportion(g.leakedBytes!, g.secretBytes!, 'upper', config, g.spans!)),
       collateralBytes: g.collateralBytes, collateralRatio: withheld(ratio(g.collateralBytes!, g.secretBytes!, config, g.spans!)),
-      twins: { positives: twins.positives, pairs: twins.pairs, discriminated, coverage,
+      twins: { positives: twins.positives, pairs: twins.pairs, discriminated, coDetected: twins.coDetected, coverage,
         rate: !twins.pairs ? null : !measurable ? INSUFFICIENT_EVIDENCE : !covered ? INSUFFICIENT_COVERAGE
           : proportion(discriminated, twins.pairs, 'lower', config) },
       diagnostics: g.diagnostics,

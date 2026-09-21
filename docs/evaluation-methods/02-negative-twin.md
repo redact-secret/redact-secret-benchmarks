@@ -28,7 +28,19 @@ detector from improving its apparent performance merely by matching more text.
 ## Assertions
 
 - The positive must be `EXACT` or `COVERED`.
-- The negative twin must be clean.
+- The negative twin must be clean **on its own declared contract family**: a
+  twin's `flagged` reading is scoped to the fixture's `contract` (the same
+  family the positive belongs to), never to the whole file. A finding
+  attributed to that family is a twin failure. A finding attributed to a
+  *different*, known family is legitimate co-detection — evidence that some
+  other detector correctly did its own job on the same bytes — and is
+  recorded on its own axis (`coDetected`), never discarded and never counted
+  as a twin failure. A finding with no attributed family is ambiguous, not
+  known-other, and still fails the twin (fails closed). Only a fixture that
+  carries both `twinOf` and a declared `contract` is scoped this way; a plain
+  `must-not-flag` benign control (no `twinOf`) keeps the unscoped, global
+  reading — it asserts that *nothing* should fire on the file at all.
+  (redact-secret-benchmarks#82)
 - A positive failure, twin false alarm, or both are reported distinctly.
 - Multi-property changes are not valid twins and belong in another method.
 

@@ -104,7 +104,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // clear the stable floor of 3 benign axes for those families, plus one
   // reference control each for gitlab-token and npm-token so raising that
   // floor does not regress the two families already reading stable at it.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 345);
+  // #105: 3 new independent negatives (digitalocean-token mask/label-prose/
+  // reference) clear the same 3-axis floor for digitalocean-token, which #93
+  // skipped (it was already at 5+ benign cases via #369's near-miss-only
+  // controls, so it never appeared in #93's case-count-deficient scope).
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 348);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "lifecycleAuthority": "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/docs/decisions/2026-09-18-govern-benchmark-promotion.md",
-  "measuredVersion": "0.1.0-beta.3",
-  "milestone": "v0.1.0-beta.4",
-  "milestoneUrl": "https://github.com/redact-secret/redact-secret/milestone/7",
-  "reviewedAt": "2026-09-18",
+  "measuredVersion": "0.1.0-beta.5",
+  "milestone": "v0.1.0-beta.6",
+  "milestoneUrl": "https://github.com/redact-secret/redact-secret/milestone/9",
+  "reviewedAt": "2026-09-21",
   "issues": [
     {
       "id": "product-292",
@@ -699,6 +699,345 @@
             }
           ],
           "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-551",
+      "title": "D3: Fix the shared boundary false positive — 42 confirmed entries across 7 families, one root cause",
+      "url": "https://github.com/redact-secret/redact-secret/issues/551",
+      "number": 551,
+      "fixtures": [
+        "detector-coverage--linear-token-oauth-trailing-identifier-embedding",
+        "detector-coverage--linear-token-oauth-dash-identifier-embedding",
+        "detector-coverage--slack-token-rotation-trailing-identifier-embedding",
+        "detector-coverage--slack-token-rotation-dash-identifier-embedding"
+      ],
+      "kind": "false-positive",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.5",
+        "lockHash": "12ed54c60feab89c9b5f99678c2f3bf650071b4416311c1ec44328dee7e5b3f6",
+        "sourceCommit": "0cc48374d005a44334bf727e49125165ec7d4157"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/551"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/551"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/551"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/86577d8e5b7db7a5a6c4ecfd6fc6ee8ab215909a"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/551",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-551",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "86577d8e5b7db7a5a6c4ecfd6fc6ee8ab215909a"
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--linear-token-oauth-trailing-identifier-embedding",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [],
+          "actual": [
+            {
+              "start": 0,
+              "end": 37,
+              "type": "linear_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "detector-coverage--linear-token-oauth-dash-identifier-embedding",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [],
+          "actual": [
+            {
+              "start": 0,
+              "end": 32,
+              "type": "linear_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "detector-coverage--slack-token-rotation-trailing-identifier-embedding",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [],
+          "actual": [
+            {
+              "start": 0,
+              "end": 32,
+              "type": "slack_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "detector-coverage--slack-token-rotation-dash-identifier-embedding",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [],
+          "actual": [
+            {
+              "start": 0,
+              "end": 27,
+              "type": "slack_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-552",
+      "title": "D4: generic-token markdown-inline-code assignment boundary — the confirmed, independent share of the 168 metamorphic failures",
+      "url": "https://github.com/redact-secret/redact-secret/issues/552",
+      "number": 552,
+      "fixtures": [
+        "detector-coverage--generic-token-api-key-markdown-inline-code-boundary",
+        "detector-coverage--generic-token-password-markdown-inline-code-boundary",
+        "detector-coverage--generic-token-client-secret-markdown-inline-code-boundary"
+      ],
+      "kind": "false-negative",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.5",
+        "lockHash": "12ed54c60feab89c9b5f99678c2f3bf650071b4416311c1ec44328dee7e5b3f6",
+        "sourceCommit": "0cc48374d005a44334bf727e49125165ec7d4157"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/552"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/552"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/552"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/11dba979d98a5c91420bf82a66e86eb6a9d5c559"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/552",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-552",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "11dba979d98a5c91420bf82a66e86eb6a9d5c559"
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--generic-token-api-key-markdown-inline-code-boundary",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [
+            {
+              "start": 10,
+              "end": 38
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--generic-token-password-markdown-inline-code-boundary",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [
+            {
+              "start": 11,
+              "end": 39
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--generic-token-client-secret-markdown-inline-code-boundary",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [
+            {
+              "start": 16,
+              "end": 44
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-553",
+      "title": "D5: bearer-token and sendgrid-token twin/differential findings — fixture encodes a superseded or conflated expectation, no detector defect",
+      "url": "https://github.com/redact-secret/redact-secret/issues/553",
+      "number": 553,
+      "fixtures": [
+        "detector-coverage--bearer-token-header-bare-twin",
+        "detector-coverage--bearer-token-header-quoted-twin",
+        "detector-coverage--bearer-token-header-unicode-crlf-twin",
+        "sendgrid-regressions--base62-bearer-twin",
+        "sendgrid-regressions--base62-generic-key-twin"
+      ],
+      "kind": "false-positive",
+      "status": "policy-decision",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.5",
+        "lockHash": "12ed54c60feab89c9b5f99678c2f3bf650071b4416311c1ec44328dee7e5b3f6",
+        "sourceCommit": "0cc48374d005a44334bf727e49125165ec7d4157"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/553"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/553"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-21",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/workbench/553-bearer-sendgrid-twin-decision/docs/audits/evidence/553/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/workbench/553-bearer-sendgrid-twin-decision/docs/decisions/2026-09-21-accept-truncated-and-nested-shapes-under-bearer-token-length-grammar.md"
+          ]
+        }
+      },
+      "disposition": {
+        "reason": "All five findings reduce to two already-shipped, evidence-reviewed detector decisions, not a detector defect. The three bearer-token-header twins mutate a byte that still leaves both sides of a 40-byte value at or above MIN_TOKEN_LEN (16), so no single mid-value mutation at this index can produce a negative under the documented floor; the twin's chosen mutation index is untenable given that already-tested contract. The sendgrid base62-bearer-twin is correctly declined by sendgrid-token's own exact-length contract but is separately, correctly co-detected by bearer-token as a generic Bearer credential (67 bytes, well over the 16-byte floor) -- expected co-detection, not a discrimination failure. base62-generic-key-twin is a mainline generic-token true positive under the standing decision docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md (api_key= is a HIGH_SIGNAL_NAMES match, warned on unconditionally). Correcting the three benchmark fixtures (moving the bearer-token-header twin's mutation within 16 bytes of either edge; rescoping the two sendgrid twins to expect co-detection) is redact-secret-benchmarks follow-up work, not filed as of this record.",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/blob/workbench/553-bearer-sendgrid-twin-decision/docs/audits/evidence/553/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/workbench/553-bearer-sendgrid-twin-decision/docs/decisions/2026-09-21-accept-truncated-and-nested-shapes-under-bearer-token-length-grammar.md",
+          "https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md"
+        ]
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--bearer-token-header-bare-twin",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [],
+          "actual": [
+            {
+              "start": 22,
+              "end": 42,
+              "type": "bearer_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "detector-coverage--bearer-token-header-quoted-twin",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [],
+          "actual": [
+            {
+              "start": 29,
+              "end": 49,
+              "type": "bearer_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "detector-coverage--bearer-token-header-unicode-crlf-twin",
+          "corpusHash": "877da61687723e50cc5d09a93aeccbaa570d3106caa47c8c6fcee22fdf27e86c",
+          "expected": [],
+          "actual": [
+            {
+              "start": 36,
+              "end": 56,
+              "type": "bearer_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "sendgrid-regressions--base62-bearer-twin",
+          "corpusHash": "bb556d9d91dda1a394c83be1cd3763e75ebf9230d5fbdb6ad5abd91368ab459d",
+          "expected": [],
+          "actual": [
+            {
+              "start": 22,
+              "end": 90,
+              "type": "bearer_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "sendgrid-regressions--base62-generic-key-twin",
+          "corpusHash": "bb556d9d91dda1a394c83be1cd3763e75ebf9230d5fbdb6ad5abd91368ab459d",
+          "expected": [],
+          "actual": [
+            {
+              "start": 8,
+              "end": 76,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
         }
       ]
     }

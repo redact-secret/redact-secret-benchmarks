@@ -283,6 +283,29 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     add(detector, "dash-identifier-embedding", [`${token}-1`]);
   }
 
+  // #66: the loop above covers each family's exact-length primary shape
+  // (`lin_api_`, `xoxb-`), which the ledger's confirmed entries for these
+  // two families never actually exercised — `linear-token`'s `lin_oauth_`
+  // and `slack-token`'s `xoxe-`/`xoxe.xoxb-`/`xoxe.xoxp-`/`xapp-`/`xwfp-`
+  // interim guards were still `RunLength::AtLeast` (an open floor over the
+  // same alphabet the boundary check itself uses) when redact-secret#551
+  // was filed, so a directly-glued wider identifier was silently absorbed
+  // into the match instead of tripping the boundary rule. Both guards were
+  // turned into an exact 20-byte length by redact-secret#551's fix
+  // (docs/decisions/2026-09-20-freeze-slack-user-and-rotation-token-grammar.md's
+  // guards, and linear-token's `lin_oauth_`); `xoxe-` here stands in for
+  // all five now-identical Slack guards.
+  const openFloorIdentifierEmbeddingFamilies = [
+    ["linear-token", "oauth", "lin_oauth_", 20],
+    ["slack-token", "rotation", "xoxe-", 20],
+  ];
+  for (const [detector, shape, prefix, length] of openFloorIdentifierEmbeddingFamilies) {
+    const token = prefix + synthetic(`detector-coverage:${detector}:${prefix}:open-floor`, length);
+    add(detector, `${shape}-leading-identifier-embedding`, [`legacy${token}`]);
+    add(detector, `${shape}-trailing-identifier-embedding`, [`${token}_backup`]);
+    add(detector, `${shape}-dash-identifier-embedding`, [`${token}-1`]);
+  }
+
   const sendgrid = `SG.${synthetic("coverage:sg:id", 22)}.${synthetic("coverage:sg:secret", 43)}`;
   positive("sendgrid-token", "segmented", [{ secret: sendgrid }]);
   add("sendgrid-token", "prefix-only", ["SG."]);
@@ -366,6 +389,15 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     // name changes, to one with no credential meaning. The name comes from
     // ordinary usage, never from the product's keyword list.
     addTwin("generic-token", field.replaceAll("_", "-"), [`build_id="${literal}"`], `context: field name build_id carries no credential meaning vs sensitive ${field}; value, delimiter and quoting unchanged`, "context");
+    // #66/redact-secret#552: the metamorphic method's `context.markdown`
+    // operator wraps this exact positive in a matching pair of backticks
+    // (Markdown inline code) with no other change. A backtick sits directly
+    // against the key name and against the value's closing quote — neither
+    // was in `is_prefix_boundary_char`/`is_quoted_value_boundary`, so the
+    // whole assignment went unrecognized (not merely mis-spanned) until
+    // redact-secret#552's fix. This static fixture pins that exact shape,
+    // independent of a fresh metamorphic run.
+    add("generic-token", `${field.replaceAll("_", "-")}-markdown-inline-code-boundary`, ["`", quoted(`${field}=`, literal), "`"]);
   }
   add("generic-token", "reference", ["api_key=process.env.BENCHMARK_KEY"]);
   add("generic-token", "mask", ["password=********"]);

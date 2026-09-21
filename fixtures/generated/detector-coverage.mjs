@@ -399,8 +399,17 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
 
   const bearer = synthetic("coverage:bearer", 40);
   positive("bearer-token", "header", [{ secret: bearer, envelope: { before: "Authorization: Bearer ", after: "", reason: ENVELOPES.bearer } }]);
-  // RFC 6750 §2.1: "!" is outside the b64token alphabet.
-  addTwin("bearer-token", "header", [`Authorization: Bearer ${bearer.slice(0, 20)}!${bearer.slice(21)}`], "alphabet: one character (!) outside the RFC 6750 b64token alphabet", "alphabet");
+  // RFC 6750 §2.1: "!" is outside the b64token alphabet. The detector anchors
+  // on "Bearer" 1*SP and greedily consumes a b64token-alphabet run from that
+  // fixed position, checking only that head run against the MIN_TOKEN_LEN=16
+  // floor; it does not rescan past the first invalid byte for a second run
+  // (redact-secret/redact-secret#553, redact-secret-benchmarks#78). Mutating
+  // at index 20 of this 40-byte value left the anchored head run at 20 bytes
+  // — still over the floor, so the detector matched anyway. The mutation
+  // must land inside the first 16 bytes so the anchored run itself falls
+  // under the floor; the 31-byte tail past the invalid byte is never an
+  // independent match candidate.
+  addTwin("bearer-token", "header", [`Authorization: Bearer ${bearer.slice(0, 8)}!${bearer.slice(9)}`], "alphabet: one character (!) outside the RFC 6750 b64token alphabet, inside the 16-byte MIN_TOKEN_LEN floor", "alphabet");
   add("bearer-token", "missing-value", ["Authorization: Bearer\n"]);
   add("bearer-token", "ordinary-prose", ["The bearer of this message is a benchmark runner."]);
 

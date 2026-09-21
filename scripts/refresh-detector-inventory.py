@@ -27,6 +27,7 @@ GITLEAKS_FAMILIES = {
     "npm-": "npm-token", "openai-": "openai-token", "pypi-": "pypi-token",
     "sendgrid-": "sendgrid-token", "shopify-": "shopify-token",
     "slack-": "slack-token", "stripe-": "stripe-token", "vault-": "vault-token",
+    "hashicorp-tf-": "terraform-cloud-token", "pulumi-": "pulumi-access-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -39,6 +40,7 @@ TRUFFLEHOG_FAMILIES = {
     "npmtoken": "npm-token", "pypi": "pypi-token", "sendgrid": "sendgrid-token",
     "shopify": "shopify-token", "slack": "slack-token", "stripe": "stripe-token",
     "supabase": "supabase-token", "vercel": "vercel-token",
+    "terraformcloud": "terraform-cloud-token", "pulumi": "pulumi-access-token",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",

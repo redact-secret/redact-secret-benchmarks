@@ -6,6 +6,26 @@ scanner adapter, or qualification pins. It is a development/revalidation
 workflow and emits `reportType: "candidate"`; it is not Evaluation Engine
 qualification and never implies whole-suite support.
 
+Most callers never need the raw command below directly — it is what the two
+wrappers in front of it call for you:
+
+- **Already have the product repo checked out at the commit to measure?** Run
+  `./scripts/measure-candidate.sh` from the product repo (or `npm run
+  benchmark:candidate` if you want to drive it yourself). It builds the
+  façade/N-API/Wasm tarballs, computes their hashes, runs `eval:candidate`
+  against this repo, and runs `eval:validate` on the result — one command, no
+  manual tarball paths or sha256s.
+- **Measuring a commit you don't have checked out** (a release tag, a PR tip,
+  anything not your active product checkout)? Use this repo's
+  [`release-regression-check`](../.agents/skills/release-regression-check/SKILL.md)
+  skill/agent. It pins the commit in a disposable worktree, runs the same
+  `benchmark:candidate` orchestration, and reports a fixture-level
+  before/after regression view.
+
+Reach for `eval:candidate` directly only when neither wrapper fits — for
+example, tarballs built or supplied outside this repo's tooling, or a custom
+`--ruleset`.
+
 The JavaScript package has three runtime artifacts. Supply the façade tarball,
 the current host's N-API package tarball, and the WebAssembly package tarball:
 

@@ -64,17 +64,34 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
     token('shopify-token', prefix.slice(0, -1), prefix + body, 'SHOP_DOMAIN=benchmark-never-issued.myshopify.com');
     addTwin('shopify-token', prefix.slice(0, -1), 'shpxx_' + body, 'prefix', `prefix namespace: shpxx_ vs contracted ${prefix}`, 'SHOP_DOMAIN=benchmark-never-issued.myshopify.com');
   }
+  // #65: boundary twin off the shpat_ positive, to help clear the stable
+  // floor of 5 twin pairs. shopify.dev/docs/apps/build/authentication-
+  // authorization/access-tokens documents shpat_ and shppa_ as literal
+  // prefixes with the trailing underscore included; dropping it breaks that
+  // documented literal even though the body itself stays un-probeable (#33).
+  addTwin('shopify-token', 'shpat', 'shpat' + value('shpat_', 32, hex), 'boundary', 'boundary: missing "_" delimiter after the shpat prefix (the documented shpat_/shppa_ prefixes each include the trailing underscore)', 'SHOP_DOMAIN=benchmark-never-issued.myshopify.com', 'shpat-boundary');
   const vault = value('vault', 100);
   token('vault-token', 'service', 'hvs.' + vault, 'VAULT_ADDR=https://benchmark-never-issued.hashicorp.cloud');
   addTwin('vault-token', 'service', 'hvs.' + vault.slice(0, 23), 'length', 'length: 23 vs provider-documented minimum 24', 'VAULT_ADDR=https://benchmark-never-issued.hashicorp.cloud');
   // #46: developer.hashicorp.com/vault/docs/concepts/tokens documents exactly
   // three prefixes (hvs./hvb./hvr.); hvx. is outside all three.
   addTwin('vault-token', 'service', 'hvx.' + vault, 'prefix', 'prefix namespace: hvx. vs the three documented prefixes hvs./hvb./hvr.', 'VAULT_ADDR=https://benchmark-never-issued.hashicorp.cloud', 'service-prefix');
+  // #65: boundary twin off the same page, to help clear the stable floor of
+  // 5 twin pairs. hvs./hvb./hvr. are documented with the dot included;
+  // dropping it breaks that documented literal even though the body itself
+  // stays un-probeable beyond the minimum length (#33).
+  addTwin('vault-token', 'service', 'hvs' + vault, 'boundary', 'boundary: missing "." delimiter after the hvs prefix (the three documented prefixes hvs./hvb./hvr. each include the dot)', 'VAULT_ADDR=https://benchmark-never-issued.hashicorp.cloud', 'service-boundary');
   for (const mode of ['live', 'test']) {
     const body = value('stripe:' + mode, 32);
     token('stripe-token', mode, `sk_${mode}_` + body);
     addTwin('stripe-token', mode, `pk_${mode}_` + body, 'public-prefix', `public prefix: pk_${mode}_ (documented as safe to expose) vs secret sk_${mode}_`);
   }
+  // #65: boundary twin off the sk_live_ positive, to help clear the stable
+  // floor of 5 twin pairs. docs.stripe.com/keys documents sk_live_/sk_test_
+  // as literal prefixes with the underscore between sk and the mode;
+  // dropping it breaks that documented literal even though the body itself
+  // stays un-probeable (#33).
+  addTwin('stripe-token', 'live', 'sklive_' + value('stripe:live', 32), 'boundary', 'boundary: missing "_" delimiter between the sk and live segments (the documented sk_live_/sk_test_/rk_live_/rk_test_ prefixes each include it)', '', 'live-boundary');
   const team = value('slack-team', 12, '0123456789'), bot = value('slack-bot', 12, '0123456789'), slackSecret = value('slack-secret', 24);
   token('slack-token', 'bot', `xoxb-${team}-${bot}-${slackSecret}`);
   addTwin('slack-token', 'bot', `xoxb-${team}-${bot}${slackSecret}`, 'boundary', 'boundary: missing dash before the secret section');
@@ -82,6 +99,10 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   // prefix (xoxb-/xoxp-/xapp-/xwfp-) sharing or extending the xox- stem this
   // contract's pattern requires; xoyb- breaks that stem outright.
   addTwin('slack-token', 'bot', `xoyb-${team}-${bot}-${slackSecret}`, 'prefix', 'prefix namespace: xoyb- vs contracted xoxb- (breaks the xox- stem every documented Slack token prefix shares or extends)', '', 'bot-prefix');
+  // #65: second boundary twin off the same positive (missing dash before the
+  // team-id section, not the secret section the first boundary twin above
+  // already covers), to help clear the stable floor of 5 twin pairs.
+  addTwin('slack-token', 'bot', `xoxb${team}-${bot}-${slackSecret}`, 'boundary', 'boundary: missing dash between the xoxb prefix and the team-id section', '', 'bot-team-boundary');
   const hf = value('hf', 34, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
   token('huggingface-token', 'user', 'hf_' + hf);
   addTwin('huggingface-token', 'user', 'hf_' + hf.slice(0, 33), 'length', 'length: 33 vs contracted 34');
@@ -96,6 +117,11 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   // #46: developers.cloudflare.com documents cfut_ as the only scannable-format
   // prefix; cfux_ is a single-character deviation from that exact string.
   addTwin('cloudflare-token', 'user', 'cfux_' + cf + value('cf-suffix', 8, hex), 'prefix', 'prefix namespace: cfux_ vs the documented cfut_ scannable-format prefix', '', 'user-prefix');
+  // #65: length twin off the cfut_ positive, to help clear the stable floor
+  // of 5 twin pairs. Body length is tool-corroborated rather than
+  // provider-documented, the same standing already used for this family's
+  // existing alphabet twin above.
+  addTwin('cloudflare-token', 'user', 'cfut_' + cf + value('cf-suffix', 8, hex).slice(0, 7), 'length', 'length: 7-character hex suffix vs contracted 8', '', 'user-length');
   for (const prefix of ['dop', 'doo', 'dor']) {
     const body = value(prefix, 64, hex);
     token('digitalocean-token', prefix, prefix + '_v1_' + body);

@@ -102,16 +102,22 @@ test('twinProbe separates discriminated, not discriminated and un-probeable, and
 // source documents — see docs/decisions/2026-09-20-fill-per-family-twin-coverage.md
 // for the per-family rationale and the two prefix twins that needed a
 // stem-breaking fallback after an empirically-not-discriminated first attempt.
+// #65: shopify-token, vault-token and stripe-token each gained a `boundary`
+// twin (a documented prefix delimiter — the underscore, dot or underscore
+// respectively — dropped) to clear the stable floor of 5 twin pairs without
+// touching the body length/alphabet dimension their contracts' review notes
+// record as un-probeable. cloudflare-token gained a `length` twin on the
+// same tool-corroborated standing already used for its `alphabet` twin.
 const T1_DIMENSIONS = {
   'aws-access-key': ['prefix'],
   'github-token': ['length', 'prefix'],
   'gitlab-token': ['length', 'prefix'],
-  'shopify-token': ['prefix'],
-  'vault-token': ['length', 'prefix'],
-  'stripe-token': ['public-prefix'],
+  'shopify-token': ['prefix', 'boundary'],
+  'vault-token': ['length', 'prefix', 'boundary'],
+  'stripe-token': ['public-prefix', 'boundary'],
   'slack-token': ['boundary', 'prefix'],
   'pypi-token': ['prefix'],
-  'cloudflare-token': ['alphabet', 'prefix'],
+  'cloudflare-token': ['alphabet', 'prefix', 'length'],
   'digitalocean-token': ['length', 'prefix'],
   'npm-token': ['length', 'prefix', 'boundary'],
   'sendgrid-token': ['boundary', 'length'],

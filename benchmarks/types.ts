@@ -3,7 +3,11 @@ export type Kind = 'must-redact' | 'must-not-flag' | 'policy';
 export type Tier = 'T0' | 'T1' | 'T2' | 'T3';
 export interface Range { start: number; end: number }
 export interface ExpectedRange extends Range { role?: 'secret' | 'companion'; envelope?: Range & { reason?: string } }
-export interface Assessment { kind: Kind; tier: Tier; reason: string; sources: string[]; contract?: string }
+/** Recorded, never inferred (docs/decisions/2026-09-21-check-lexical-separability.md): a `must-not-flag`
+ * fixture whose value is provider-published vocabulary that also satisfies its contract's frozen pattern,
+ * so no lexical rule can separate it from a positive of the same family. `citation` is the provider page. */
+export interface LexicalExemption { reason: string; citation: string }
+export interface Assessment { kind: Kind; tier: Tier; reason: string; sources: string[]; contract?: string; lexicalExemption?: LexicalExemption }
 export interface Fixture {
   id: string; path: string; content: string; expected: ExpectedRange[];
   group: string; assessment: Assessment; detectors?: string[];

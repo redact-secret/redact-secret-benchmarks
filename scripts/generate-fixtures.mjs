@@ -1,8 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildCorpora } from "../fixtures/generated/build.mjs";
 import { validateCorpus } from "../benchmarks/lib/scoring.ts";
-import { classifyFixture, validateAssessment, validateContracts } from "../benchmarks/lib/assessment.ts";
+import { classifyFixture, validateAssessment, validateContracts, contracts } from "../benchmarks/lib/assessment.ts";
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
+import { checkLexicalSeparability, validateLexicalExemptions } from '../benchmarks/lib/lexical-separability.ts';
 import { createHash } from 'node:crypto';
 
 const check = process.argv.includes("--check");
@@ -36,6 +37,7 @@ if (check || ensure) {
   if (await readFile(manifestFile, 'utf8') !== manifestText) throw new Error('Generated corpus hash drift. Review the generator change and run npm run fixtures:generate.');
 } else await writeFile(manifestFile, manifestText);
 // Annotate hand-authored legacy fixtures without changing bytes or expectations.
+const legacyCorpora = [];
 for (const id of ['accuracy', 'token-contexts']) {
   const file = new URL(`../fixtures/${id}/corpus.json`, import.meta.url);
   const current = await readFile(file, 'utf8');
@@ -48,10 +50,17 @@ for (const id of ['accuracy', 'token-contexts']) {
     validateAssessment(f);
   }
   validateCorpus(corpus);
+  legacyCorpora.push(corpus);
   const serialized = JSON.stringify(corpus, null, 2) + '\n';
   if ((check || ensure) && current !== serialized) throw new Error(`Assessment drift: ${id}`);
   if (!check && !ensure && current !== serialized) await writeFile(file, serialized);
 }
+// #84: no fixture pair may be lexically inseparable, across the whole corpus.
+const allFixtures = [...Object.values(generated).flatMap(c => c.fixtures), ...legacyCorpora.flatMap(c => c.fixtures)];
+validateLexicalExemptions(allFixtures, contracts);
+const lexicalViolations = checkLexicalSeparability(allFixtures, contracts);
+if (lexicalViolations.length)
+  throw new Error(`Lexically inseparable fixture pair(s):\n${lexicalViolations.map(v => `  - ${v.reason}`).join('\n')}`);
 const assignmentFile = new URL('../benchmarks/fixture-detectors.json', import.meta.url);
 const current = await readFile(assignmentFile, 'utf8');
 const assignments = JSON.parse(current);

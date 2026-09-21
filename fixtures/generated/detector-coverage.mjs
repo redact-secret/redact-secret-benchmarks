@@ -243,7 +243,13 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   addTwin("supabase-management-token", "versioned-shape", [supabasePatShapes.versioned.slice(0, 8) + "A" + supabasePatShapes.versioned.slice(9)], "alphabet: one uppercase byte vs the tool-corroborated lowercase-only [a-z0-9] body", "alphabet");
   add("supabase-management-token", "prefix-only", ["sbp_"]);
   add("supabase-management-token", "short-body", [`sbp_${supabasePatShapes.classic.slice(4, 14)}`]);
-  add("supabase-management-token", "invalid-alphabet", [`sbp_${supabasePatShapes.classic.slice(4, 5).toUpperCase()}${supabasePatShapes.classic.slice(5)}`]);
+  // #84: a conditional .toUpperCase() no-ops when the targeted byte lands on
+  // a digit (the [a-z0-9] alphabet's digits have no case), which silently
+  // left this control satisfying its own contract's frozen pattern. "A" is
+  // never a member of [a-z0-9] regardless of which byte it replaces, matching
+  // the unconditional-insertion technique already used for the versioned
+  // shape's alphabet twin below.
+  add("supabase-management-token", "invalid-alphabet", [`${supabasePatShapes.classic.slice(0, 4)}A${supabasePatShapes.classic.slice(5)}`]);
   add("supabase-management-token", "mask", [`sbp_${"*".repeat(40)}`]);
   add("supabase-management-token", "reference", ["SUPABASE_ACCESS_TOKEN=${SUPABASE_ACCESS_TOKEN}"]);
 

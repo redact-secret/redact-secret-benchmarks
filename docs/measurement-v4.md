@@ -195,6 +195,20 @@ gap (`twinned: 138/195`), not silently averaged.
   discriminated* and *un-probeable* per family; un-probeable families are never
   counted in a twin rate.
 
+**Amendment, 2026-09-21 (#84).** A twin's mutation axis is only sound if the
+mutated value lands outside every format the provider issues — mutating a
+marker is invalid whenever a marker-less format already covers the result. No
+fixture pair may be lexically inseparable: `fixtures:check` runs
+`benchmarks/lib/lexical-separability.ts`, which fails the build when a
+`must-not-flag` fixture's content contains an isolated occurrence of the
+frozen pattern belonging to a `must-redact`, scored-tier positive of the same
+declared contract. A `policy/T3` expectation never conflicts with a
+contract-scoped negative — see
+[`2026-09-21-check-lexical-separability`](decisions/2026-09-21-check-lexical-separability.md)
+for the full rule, the boundary-gating identifier-embedding controls (#64)
+need, and the exemption path (`assessment.lexicalExemption`) for a documented
+example that is genuinely unavoidable.
+
 ### 2.6 Evidence tiers, provider-first
 
 `contracts` entries are restructured:

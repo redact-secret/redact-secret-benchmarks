@@ -115,7 +115,7 @@ const T1_DIMENSIONS = {
   'digitalocean-token': ['length', 'prefix'],
   'npm-token': ['length', 'prefix', 'boundary'],
   'sendgrid-token': ['boundary', 'length'],
-  'private-key': ['public-prefix'],
+  'private-key': ['prefix', 'public-prefix'],
   jwt: ['boundary', 'alphabet'],
   'terraform-cloud-token': ['length', 'boundary'],
   'pulumi-access-token': ['length', 'alphabet'],

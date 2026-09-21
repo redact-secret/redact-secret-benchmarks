@@ -79,6 +79,10 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     });
     add(detector, "prefix-only", [prefixes.join("\n")]);
     add(detector, "short-body", [prefixes.map(prefix => prefix + "abc").join("\n")]);
+    // #62: a fifth aws-access-key benign control (masked/placeholder body) to
+    // clear the stable floor of 5 benign cases; prefix-only and short-body
+    // above account for the other two.
+    if (detector === "aws-access-key") add(detector, "mask", ["AKIA" + "*".repeat(16)]);
   }
 
   // beta.4 additions: 17 detectors with no dedicated-prefix-plus-run shape
@@ -246,16 +250,39 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
       { secret: `-----BEGIN ${label}-----\n${pemBody}\n-----END ${label}-----` },
     ]);
   }
+  // #62: prefix twin off the generic PRIVATE KEY positive, to clear the
+  // stable floor of 5 twin pairs. RFC 7468 §4 documents CERTIFICATE as a
+  // distinct textual-encoding label, structurally discriminated from
+  // PRIVATE KEY by the redact-secret scanner (empirically verified, since
+  // this detector is label-structural, not body-validating: a body-only
+  // mutation such as length or alphabet is not discriminated here).
+  addTwin("private-key", "private-key", [`-----BEGIN CERTIFICATE-----\n${pemBody}\n-----END CERTIFICATE-----`], "prefix namespace: CERTIFICATE (RFC 7468 §4 distinct textual-encoding label) vs PRIVATE KEY", "prefix");
   add("private-key", "public-block", [`-----BEGIN PUBLIC KEY-----\n${pemBody}\n-----END PUBLIC KEY-----`]);
   add("private-key", "label-prose", ["Documentation mentions BEGIN PRIVATE KEY without key material."]);
+  // #62: two more benign controls to clear the stable floor of 5.
+  add("private-key", "prefix-only", ["-----BEGIN PRIVATE KEY-----"]);
+  add("private-key", "reference", ["id_rsa is stored in ~/.ssh/id_rsa on this machine.\n"]);
 
   // JWT JSON is intelligible, but the signature is fabricated, never signed.
   const encode = object => Buffer.from(JSON.stringify(object)).toString("base64url");
   const header = encode({ alg: "HS256", typ: "JWT" });
   const payload = encode({ sub: "benchmark-only", iss: "https://example.invalid", exp: 1 });
-  positive("jwt", "expired-fabricated", [{ secret: `${header}.${payload}.${synthetic("coverage:jwt:signature", 43)}` }]);
+  const jwtSignature = synthetic("coverage:jwt:signature", 43);
+  positive("jwt", "expired-fabricated", [{ secret: `${header}.${payload}.${jwtSignature}` }]);
+  // #62: alphabet twin off the fabricated-but-well-formed positive, to clear
+  // the stable floor of 5 twin pairs. RFC 7519 §3 requires base64url
+  // encoding for every segment; base64url never uses "+". Mutated in the
+  // payload segment, matching jwt-eddsa's precedent (common-formats.mjs): the
+  // redact-secret detector validates header/payload charset structurally but
+  // not the signature segment's, so a signature-only mutation is not
+  // discriminated here (empirically verified).
+  addTwin("jwt", "expired-fabricated", [`${header}.${payload.slice(0, 20)}+${payload.slice(21)}.${jwtSignature}`], 'alphabet: one character (+) outside the RFC 7519 base64url alphabet', "alphabet");
   add("jwt", "missing-signature", [`${header}.${payload}.`]);
   add("jwt", "ordinary-dotted-name", ["com.example.benchmark"]);
+  // #62: three more benign controls to clear the stable floor of 5.
+  add("jwt", "prefix-only", [header]);
+  add("jwt", "reference", ["Authorization: Bearer ${JWT_TOKEN}\n"]);
+  add("jwt", "mask", [`${header}.${payload}.${"*".repeat(43)}`]);
 
   const bearer = synthetic("coverage:bearer", 40);
   positive("bearer-token", "header", [{ secret: bearer, envelope: { before: "Authorization: Bearer ", after: "", reason: ENVELOPES.bearer } }]);

@@ -69,7 +69,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   assert.deepEqual(tally['policy/T3'], { files: 176, spans: 176 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 218);
+  // #62: 6 new independent benign controls (aws-access-key-mask,
+  // jwt-prefix-only/reference/mask, private-key-prefix-only/reference) plus
+  // 6 new twins (which net out of this count via -twins.length).
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 224);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

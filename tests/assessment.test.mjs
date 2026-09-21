@@ -72,7 +72,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #62: 6 new independent benign controls (aws-access-key-mask,
   // jwt-prefix-only/reference/mask, private-key-prefix-only/reference) plus
   // 6 new twins (which net out of this count via -twins.length).
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 224);
+  // #64: 18 new independent negatives (leading/trailing/dash identifier-
+  // embedding × 6 families), generalising the digitalocean-token-only shape.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 242);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

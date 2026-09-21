@@ -98,6 +98,16 @@ const pending = (reason: string, family?: string, kind: Kind = 'must-redact') =>
 const control = (tier: Tier, reason: string, family?: string) => decide('must-not-flag', tier, reason, family);
 /** `context` keeps the value and mutates one property of the assignment context (docs/decisions/2026-09-20-extend-twins-to-assignment-context.md). */
 export const MUTATION_KINDS = ['length', 'alphabet', 'prefix', 'boundary', 'public-prefix', 'context'];
+/**
+ * A mutation axis is only valid when the mutated value falls outside every
+ * format the provider issues — `fixtures:check` enforces this automatically
+ * (`benchmarks/lib/lexical-separability.ts`): no `must-not-flag` fixture may
+ * satisfy the frozen `pattern` of a `must-redact`, scored-tier positive that
+ * declares the same `contract`. A conditional mutation (e.g. `.toUpperCase()`
+ * of a byte that might already be case-insensitive) can silently no-op; prefer
+ * an unconditional literal substitution. See
+ * docs/decisions/2026-09-21-check-lexical-separability.md.
+ */
 const NEAR_MISS = 'Malformed-by-construction control: prefix-only, truncated, mis-delimited or public-material shape of a contracted family. Expected silence follows from construction.';
 const PLACEHOLDER = 'Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.';
 const bytesOf = (f: Fixture, r: Range) => new TextDecoder().decode(new TextEncoder().encode(f.content).slice(r.start, r.end));

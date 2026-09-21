@@ -102,8 +102,9 @@ import { buildSupportMatrix } from '../benchmarks/support/matrix.ts';
 `results-output/support-status.json`; `npm run eval:matrix` then reads it.
 Downstream, #510 (A9, benchmark UI projection) and #511 (A10, qualification-side
 matrix drift) consume `results-output/support-matrix.json` — never a status
-re-derived or hand-adjusted from it. The benchmark UI half of A9 has landed:
-`npm run eval:publish:matrix` copies this file to
-`public/results/support-matrix-v1.json` and `/support` renders it, with a CI
-gate that fails if the site carries a status this artifact cannot. See
-[support-ui.md](support-ui.md).
+re-derived or hand-adjusted from it. Both have landed: `npm run
+eval:publish:matrix` copies this file to `public/results/support-matrix-v1.json`
+and `/support` renders it, with a CI gate that fails if the site carries a
+status this artifact cannot (see [support-ui.md](support-ui.md)), and `npm run
+eval:matrix:drift` diffs a candidate's matrix against a saved baseline (see
+[support-matrix-drift.md](support-matrix-drift.md)).

@@ -506,6 +506,13 @@ npm run eval:publish:matrix    # validated, then published   -> public/results/s
 npm run support:check:ui       # CI gate: the site carries no status the matrix cannot
 ```
 
+For a release candidate, `npm run eval:matrix:drift -- --baseline=<path>`
+diffs the freshly generated (or published) matrix against a saved baseline
+and emits the record a release gate can check — regressions, improvements,
+new-and-unclassified families, and stale provider provenance. This
+repository never decides what the drift means for a release; see
+[docs/support-matrix-drift.md](docs/support-matrix-drift.md).
+
 To evaluate an immutable unreleased product artifact, use the separate
 [`eval:candidate` workflow](docs/candidate-evaluation.md). It installs the
 candidate in a temporary consumer and emits candidate evidence without changing

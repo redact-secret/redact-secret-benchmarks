@@ -96,6 +96,8 @@ jobs:
           fi
       - name: Real-binary integration tests for all external adapters
         run: npm run test:integration
+      - name: Every review-queue id resolves against the ledger, or is deliberately open (#98)
+        run: npm run queue:check
       - name: Run the full four-scanner comparison
         run: npm run bench -- --strict
       - name: Record which redact-secret artifact was measured

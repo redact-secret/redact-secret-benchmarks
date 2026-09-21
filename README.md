@@ -278,7 +278,7 @@ maintainers, and these bookmarkable routes:
   published pessimistic bound with its observed fraction and n. `?level=T2` and
   `?level=T3` switch the evidence level; T1 is first. Other scanners are
   reference rows in run order, never ranked. Published package results only.
-- `/coverage`: the 42 detector families by fixture count, with the minimum
+- `/coverage`: the 44 detector families by fixture count, with the minimum
   sample size drawn on every bar. `?show=thin` keeps the families at that
   minimum; `?show=inventory` is the Gitleaks/TruffleHog inventory of families
   with no dedicated detector.

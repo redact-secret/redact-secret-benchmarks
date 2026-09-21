@@ -60,13 +60,16 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // shape promoted to must-redact/T2 (trufflehog's pinned alphabet is
   // alphanumeric, not letters-only); 30 remain pending with per-family
   // evidence gaps and tracking issues (vercel #516, stripe #513, slack #512,
-  // supabase #515, linear un-tracked).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 229);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 235);
+  // supabase #515, linear un-tracked). #67 backfilled terraform-cloud-token
+  // and pulumi-access-token (registered upstream but absent here): 18 new
+  // must-redact/T1 positives (3 shapes × 3 contexts each) and 12 new
+  // must-not-flag controls (6 twins + 6 independent negatives) per family.
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 247);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 253);
   assert.deepEqual(tally['policy/T3'], { files: 176, spans: 176 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 206);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 218);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

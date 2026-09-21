@@ -125,6 +125,14 @@
     {
       "id": "new-relic",
       "name": "New Relic"
+    },
+    {
+      "id": "hashicorp-terraform",
+      "name": "HashiCorp Terraform Cloud/Enterprise"
+    },
+    {
+      "id": "pulumi",
+      "name": "Pulumi"
     }
   ],
   "families": [
@@ -768,6 +776,60 @@
       "description": "40-character hexadecimal license key.",
       "detectors": [
         "new-relic-license-key"
+      ]
+    },
+    {
+      "id": "hashicorp-terraform:user-token",
+      "provider": "hashicorp-terraform",
+      "name": "User token",
+      "description": "HCP Terraform/Enterprise user API token, 14 alphanumeric bytes, the literal .atlasv1. marker, then 67 alphanumeric bytes.",
+      "detectors": [
+        "terraform-cloud-token"
+      ]
+    },
+    {
+      "id": "hashicorp-terraform:organization-token",
+      "provider": "hashicorp-terraform",
+      "name": "Organization token",
+      "description": "HCP Terraform/Enterprise organization API token; identical grammar to the user token.",
+      "detectors": [
+        "terraform-cloud-token"
+      ]
+    },
+    {
+      "id": "hashicorp-terraform:team-token",
+      "provider": "hashicorp-terraform",
+      "name": "Team token",
+      "description": "HCP Terraform/Enterprise team API token; identical grammar to the user token.",
+      "detectors": [
+        "terraform-cloud-token"
+      ]
+    },
+    {
+      "id": "pulumi:personal-access-token",
+      "provider": "pulumi",
+      "name": "Personal access token",
+      "description": "Pulumi Cloud personal access token, prefixed pul-.",
+      "detectors": [
+        "pulumi-access-token"
+      ]
+    },
+    {
+      "id": "pulumi:organization-access-token",
+      "provider": "pulumi",
+      "name": "Organization access token",
+      "description": "Pulumi Cloud organization access token; identical grammar to the personal token.",
+      "detectors": [
+        "pulumi-access-token"
+      ]
+    },
+    {
+      "id": "pulumi:team-access-token",
+      "provider": "pulumi",
+      "name": "Team access token",
+      "description": "Pulumi Cloud team access token; identical grammar to the personal token.",
+      "detectors": [
+        "pulumi-access-token"
       ]
     },
     {

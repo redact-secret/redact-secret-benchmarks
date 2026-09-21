@@ -149,6 +149,54 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("new-relic-license-key", "missing-keyword", [newRelicLicenseKey]);
   add("new-relic-license-key", "short-key", ["newrelic " + newRelicLicenseKey.slice(0, 20)]);
 
+  // #67: HashiCorp's own documentation shows one identical grammar for user,
+  // organization and team tokens, so shapes vary the synthetic body, not a
+  // kind-specific prefix or structure, since the provider draws no
+  // kind-specific distinction (docs/decisions/2026-09-21-add-terraform-
+  // cloud-enterprise-token-detection.md).
+  const terraformShapes = {};
+  for (const kind of ["user", "organization", "team"]) {
+    const prefix = synthetic(`coverage:terraform:${kind}:prefix`, 14);
+    const suffix = synthetic(`coverage:terraform:${kind}:suffix`, 67);
+    terraformShapes[kind] = { prefix, suffix, value: `${prefix}.atlasv1.${suffix}` };
+    positive("terraform-cloud-token", `${kind}-shape`, [{ secret: terraformShapes[kind].value }]);
+  }
+  addTwin("terraform-cloud-token", "user-shape", [terraformShapes.user.value.slice(0, -1)], `length: 66-byte suffix segment vs the provider-documented 67`, "length");
+  // The mirrored Terraform Enterprise page confirms .atlasv1. is the only
+  // documented version marker; .atlasv2. is malformed by construction.
+  addTwin("terraform-cloud-token", "organization-shape", [`${terraformShapes.organization.prefix}.atlasv2.${terraformShapes.organization.suffix}`], "boundary: .atlasv2. marker vs the only documented .atlasv1. version marker", "boundary");
+  add("terraform-cloud-token", "missing-marker", [terraformShapes.team.prefix + terraformShapes.team.suffix]);
+  add("terraform-cloud-token", "short-suffix", [`${terraformShapes.team.prefix}.atlasv1.${terraformShapes.team.suffix.slice(0, 40)}`]);
+  add("terraform-cloud-token", "short-body", [`${terraformShapes.team.prefix.slice(0, 7)}.atlasv1.${terraformShapes.team.suffix.slice(0, 30)}`]);
+  add("terraform-cloud-token", "invalid-alphabet", [`${terraformShapes.team.prefix.slice(0, 13)}-.atlasv1.${terraformShapes.team.suffix}`]);
+  // HashiCorp's own CLI-configuration documentation shows this doc-style
+  // placeholder: a 6-byte prefix and 13-byte suffix, both far short of the
+  // documented 14/67 widths.
+  add("terraform-cloud-token", "mask", ["xxxxxx.atlasv1.zzzzzzzzzzzzz"]);
+  add("terraform-cloud-token", "reference", ["TF_TOKEN_app_terraform_io=${TF_CLOUD_TOKEN}"]);
+
+  // #67: Pulumi's own REST API reference documents no kind-specific prefix
+  // for personal, organization or team tokens, so shapes vary the synthetic
+  // body under the one documented pul- prefix (docs/decisions/2026-09-21-
+  // freeze-pulumi-access-token-grammar.md).
+  const pulumiShapes = {};
+  for (const kind of ["personal", "organization", "team"]) {
+    const body = synthetic(`coverage:pulumi:${kind}:body`, 40, LOWER_HEX);
+    pulumiShapes[kind] = `pul-${body}`;
+    positive("pulumi-access-token", `${kind}-shape`, [{ secret: pulumiShapes[kind] }]);
+  }
+  addTwin("pulumi-access-token", "personal-shape", [pulumiShapes.personal.slice(0, -1)], "length: 39-byte body vs the tool-corroborated exact 40", "length");
+  // A conditional .toUpperCase() on a synthetic byte is a no-op when that
+  // byte lands on a digit; "A" is never a member of the lowercase-hex
+  // alphabet, so substituting it always produces a real mutation.
+  addTwin("pulumi-access-token", "organization-shape", [pulumiShapes.organization.slice(0, 5) + "A" + pulumiShapes.organization.slice(6)], "alphabet: one uppercase hex byte vs the tool-corroborated lowercase-only body", "alphabet");
+  add("pulumi-access-token", "prefix-only", ["pul-"]);
+  add("pulumi-access-token", "short-body", [`pul-${pulumiShapes.team.slice(4, 14)}`]);
+  add("pulumi-access-token", "invalid-alphabet", [`pul-${pulumiShapes.team.slice(4, 5)}g${pulumiShapes.team.slice(6)}`]);
+  add("pulumi-access-token", "trailing-identifier-embedding", [`${pulumiShapes.team}_backup`]);
+  add("pulumi-access-token", "mask", [`pul-${"*".repeat(40)}`]);
+  add("pulumi-access-token", "reference", ["stack: myorg/myproject/prod"]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

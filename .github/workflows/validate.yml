@@ -21,6 +21,8 @@ jobs:
         run: npm run eval:validate -- docs/qualification/engine-v1.json
       - name: Exercise evaluation engine with the published npm scanner
         run: npm run eval -- --scanner=redact-secret
+      - name: The UI carries no support status the generated matrix cannot
+        run: npm run support:check:ui
       - run: npm run build
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check

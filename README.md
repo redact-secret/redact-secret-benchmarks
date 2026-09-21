@@ -265,7 +265,9 @@ src/components/*.ts           Figure, Interval, StatusMark, ByteView, RedactionL
 src/catalog.ts                Synthetic corpus imports and byte-identity hashes
 src/model.mjs                 Catalog validation, route table with legacy redirects, report re-validation
 src/evaluation-model.ts       Evaluation evidence checks; review-ledger classes, change rows, qualification floors
-src/pages/*.ts                Report, Coverage, Suite, Evidence (fixture), How to read
+src/support-model.ts          Re-validates the published support matrix before a page may render it
+public/results/support-matrix-v1.json  Generated support matrix the Support page reads (gitignored)
+src/pages/*.ts                Report, Coverage, Support, Suite, Evidence (fixture), How to read
 src/pages/workbench/*.ts      Workbench home, review group, changes, qualification, method
 ```
 
@@ -282,6 +284,14 @@ maintainers, and these bookmarkable routes:
   with no dedicated detector.
 - `/coverage/github-token` (or another detector ID): that detector's groups,
   reference scanners and rows.
+- `/support`: the support status of every provider × credential family, read
+  from the generated `support-matrix-v1.json` — no status is written into the
+  site. Each status says what it means to a reader who has not read the
+  qualification profile, every family's evidence (tier, provider source, twin
+  coverage, unresolved critical items) opens in place, and unsupported families
+  stay listed with the reason they are not detected. `?status=provisional` (or
+  another status) filters. `npm run support:check:ui` fails CI if the site
+  carries a status the matrix cannot.
 - `/suites/reference-syntax` (or another case ID): the complete suite with its
   own published groups and run provenance.
 - `/fixture/context-edges--unicode`: the evidence view. Green marks the bytes
@@ -481,6 +491,19 @@ review queue, operator coverage and aggregate-only holdout qualification.
 npm run eval
 npm run eval:publish
 npm run dev
+```
+
+### Support status per family
+
+`/support` shows every provider × credential family with the status its
+evidence decided. The page reads one generated artifact and authors nothing;
+see [docs/support-ui.md](docs/support-ui.md).
+
+```sh
+npm run eval:classify          # evidence per detector      -> results-output/support-status.json
+npm run eval:matrix            # projected onto the taxonomy -> results-output/support-matrix.json
+npm run eval:publish:matrix    # validated, then published   -> public/results/support-matrix-v1.json
+npm run support:check:ui       # CI gate: the site carries no status the matrix cannot
 ```
 
 To evaluate an immutable unreleased product artifact, use the separate

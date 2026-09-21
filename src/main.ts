@@ -12,6 +12,7 @@ import { actionEmptyState } from './components';
 import type { Report, Run } from './types';
 import type { EvaluationReport } from './evaluation-types';
 import type { CandidateReport, ReviewLedgerFile } from './evaluation-model';
+import type { SupportMatrixFile } from './support-model';
 import './tokens.css';
 import './style.css';
 
@@ -35,6 +36,7 @@ const under = (...roots: string[]) => (path: string) => roots.some(root => path 
 const NAV: NavItem[] = [
   { href: '/report', label: 'Report', short: 'Report', current: under('/report') },
   { href: '/coverage', label: 'Coverage', short: 'Coverage', current: under('/coverage', '/suites', '/fixture') },
+  { href: '/support', label: 'Support', short: 'Support', current: under('/support') },
   { href: '/workbench', label: 'Workbench', short: 'Workbench', current: under('/workbench') },
   { href: '/how-to-read', label: 'How to read', short: 'Read', current: under('/how-to-read') },
 ].filter(item => !PUBLIC_ONLY || item.href !== '/workbench');
@@ -108,6 +110,21 @@ async function renderWorkbench(current: ReturnType<typeof route>, token: number,
   bindCopy(); bindExplorer(); restoreDetails();
 }
 
+/** The support matrix is a generated artifact like the evaluation report: read, re-validated, then rendered. No status is held in the app. */
+async function renderSupport(token: number, path: string, force: boolean) {
+  if (force) renderPage('<p role="status" class="small">Loading support matrix…</p>', 'Support');
+  const [{ supportPage, supportFilterOf }, { supportMatrixProblem }] = await Promise.all([import('./pages/support'), import('./support-model')]);
+  const body = await text('/results/support-matrix-v1.json');
+  if (token !== request || path !== location.pathname) return;
+  const payload = JSON.stringify([path, location.search, body]);
+  if (!force && payload === lastPayload) return;
+  lastPayload = payload;
+  let matrix: SupportMatrixFile | null = null, problem: string | null = 'No support matrix published';
+  if (body) { try { const parsed = JSON.parse(body); problem = supportMatrixProblem(parsed); if (!problem) matrix = parsed; } catch { problem = 'Support matrix is unreadable'; } }
+  renderPage(supportPage(matrix, problem, supportFilterOf(location.search)), 'Support');
+  restoreDetails();
+}
+
 async function refresh(force = false): Promise<void> {
   const current = route();
   if (current.kind === 'redirect') { history.replaceState(null, '', current.to + location.search + location.hash); lastPayload = ''; return refresh(true); }
@@ -115,6 +132,7 @@ async function refresh(force = false): Promise<void> {
   if (current.kind === 'missing') { if (force) renderPage(`<div class="page-head"><div><h1>Page not found</h1></div></div>${actionEmptyState({ title: 'No page lives at this path', body: 'Search for a detector, a suite or a fixture, or <a href="/report">open the report</a>.' })}`, 'Not found'); return; }
   if (current.kind === 'how-to-read') { if (force) renderPage(howToRead(), 'How to read'); return; }
   if (current.kind === 'workbench') return renderWorkbench(current, token, path, force);
+  if (current.kind === 'support') return renderSupport(token, path, force);
 
   const fixture = current.kind === 'fixture' ? fixtures.find(f => f.slug === current.id) : undefined;
   const label = current.kind === 'report' ? 'Report' : current.kind === 'coverage' ? (registry.detectors.find(d => d.id === current.id)?.title ?? 'Coverage') : current.kind === 'suite' ? (categories.find(c => c.id === current.id)?.title ?? 'Suite') : (fixture?.id ?? 'Fixture');

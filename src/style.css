@@ -115,7 +115,7 @@ h3, .h3 { font: var(--text-h3); margin: 0; }
   .content { padding: var(--space-6) var(--space-4) var(--space-12); }
   .foot-in { padding: var(--space-6) var(--space-4); }
   body { padding-bottom: calc(var(--tabs-h) + env(safe-area-inset-bottom, 0)); }
-  .tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: var(--surface); border-top: var(--hairline) solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0); }
+  .tabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: var(--surface); border-top: var(--hairline) solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0); }
   .tabs a { justify-content: center; text-align: center; font: var(--text-label); min-height: var(--tabs-h); border-top: var(--mark) solid transparent; padding: 0 var(--space-1) var(--mark); }
   .tabs a[aria-current] { color: var(--ink); border-top-color: var(--brand-green); }
 }

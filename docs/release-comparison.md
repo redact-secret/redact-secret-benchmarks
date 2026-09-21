@@ -74,3 +74,137 @@ Suites are summed here for readability only; per-suite groups are in the baselin
 
 Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
 
+## 0.1.0-beta.5
+
+Run `2026-09-21T01:00:31.953Z-56bf2b` · revision `23aebf9def42da563f9d56a7979c655640e1e2d4` · saved 2026-09-21T01:01:07.208Z · **accounting v1.1** (rates are point estimates here; the dashboard headline is the Wilson bound; twins follow the strict EXACT/COVERED reading)
+
+Scanner versions: redact-secret 0.1.0-beta.5 · gitleaks 8.30.1 · trufflehog 3.97.5 · flare-redact 1.6.1
+
+### Must not flag · T1 Provider-documented
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 6 | 0 | 0.0% |
+| gitleaks | 6 | 0 | 0.0% |
+| trufflehog | 6 | 0 | 0.0% |
+| flare-redact | 6 | 0 | 0.0% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must not flag · T2 Tool-corroborated
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 258 | 5 | 1.9% |
+| gitleaks | 258 | 48 | 18.6% |
+| trufflehog | 258 | 27 | 10.5% |
+| flare-redact | 258 | 40 | 15.5% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must not flag · T3 Project policy
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 128 | 0 | 0.0% |
+| gitleaks | 128 | 0 | 0.0% |
+| trufflehog | 128 | 10 | 7.8% |
+| flare-redact | 128 | 16 | 12.5% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must redact · T1 Provider-documented
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 171 | 177 | 0 | 0.0% | 0.000 | 105 / 107 |
+| gitleaks | 171 | 177 | 4 | 2.3% | 0.000 | 56 / 107 |
+| trufflehog | 171 | 177 | 21 | 11.9% | 0.000 | 83 / 107 |
+| flare-redact | 171 | 177 | 21 | 11.9% | 0.002 | 79 / 107 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must redact · T2 Tool-corroborated
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 58 | 58 | 0 | 0.0% | 0.000 | 31 / 31 |
+| gitleaks | 58 | 58 | 28 | 48.3% | 0.000 | 18 / 31 |
+| trufflehog | 58 | 58 | 24 | 41.4% | 0.000 | 18 / 31 |
+| flare-redact | 58 | 58 | 32 | 55.2% | 0.000 | 11 / 31 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Pending · T0 Pending
+
+30 files, unscored.
+
+### Policy · T3 Project policy
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 176 | 176 | 18 | 10.2% | 0.000 | 45 / 48 |
+| gitleaks | 176 | 176 | 117 | 66.5% | 0.000 | 12 / 48 |
+| trufflehog | 176 | 176 | 164 | 93.2% | 0.000 | 6 / 48 |
+| flare-redact | 176 | 176 | 82 | 46.6% | 0.012 | 15 / 48 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+## Changed rows: 0.1.0-beta.4 → 0.1.0-beta.5
+
+51 (fixture, scanner) outcomes changed · 222 fixtures added · 0 fixtures removed. Corpus hashes differ; only fixtures present in both baselines are compared.
+
+| Fixture | Scanner | Before | After |
+| --- | --- | --- | --- |
+| common-formats--openai-token-legacy-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--openai-token-legacy-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--openai-token-proj-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--openai-token-proj-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--openai-token-svcacct-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--openai-token-svcacct-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--slack-token-bot-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--slack-token-bot-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--huggingface-token-user-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--huggingface-token-user-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--docker-token-pat-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--docker-token-pat-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--docker-token-oat-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--docker-token-oat-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--cloudflare-token-user-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--cloudflare-token-user-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--digitalocean-token-dop-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--digitalocean-token-dop-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--digitalocean-token-doo-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--digitalocean-token-doo-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--digitalocean-token-dor-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--digitalocean-token-dor-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--linear-token-api-plain-twin | redact-secret | `flagged:1` | `clean` |
+| common-formats--linear-token-api-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+| detector-coverage--openai-token-shape-1-bare | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--openai-token-shape-1-quoted | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--openai-token-shape-1-unicode-crlf | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--openai-token-shape-2-bare | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--openai-token-shape-2-quoted | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--openai-token-shape-2-unicode-crlf | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--openai-token-shape-3-bare | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--openai-token-shape-3-quoted | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--openai-token-shape-3-unicode-crlf | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--slack-token-shape-1-bare | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--slack-token-shape-1-quoted | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--slack-token-shape-1-unicode-crlf | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--huggingface-token-shape-1-bare | redact-secret | `observed:1` | `EXACT` |
+| detector-coverage--huggingface-token-shape-1-bare | gitleaks | `observed:0` | `MISS` |
+| detector-coverage--huggingface-token-shape-1-bare | trufflehog | `observed:1` | `EXACT` |
+| detector-coverage--huggingface-token-shape-1-quoted | redact-secret | `observed:1` | `EXACT` |
+| detector-coverage--huggingface-token-shape-1-quoted | gitleaks | `observed:0` | `MISS` |
+| detector-coverage--huggingface-token-shape-1-quoted | trufflehog | `observed:1` | `EXACT` |
+| detector-coverage--huggingface-token-shape-1-unicode-crlf | redact-secret | `observed:1` | `EXACT` |
+| detector-coverage--huggingface-token-shape-1-unicode-crlf | gitleaks | `observed:0` | `MISS` |
+| detector-coverage--huggingface-token-shape-1-unicode-crlf | trufflehog | `observed:1` | `EXACT` |
+| detector-coverage--docker-token-shape-1-bare | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--docker-token-shape-1-quoted | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--docker-token-shape-1-unicode-crlf | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--cloudflare-token-shape-1-bare | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--cloudflare-token-shape-1-quoted | redact-secret | `EXACT` | `MISS` |
+| detector-coverage--cloudflare-token-shape-1-unicode-crlf | redact-secret | `EXACT` | `MISS` |
+

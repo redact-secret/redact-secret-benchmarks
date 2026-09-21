@@ -21,7 +21,7 @@ const accounting = validateAccounting(suite.accounting as AccountingConfig);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const SHA = /^[a-f0-9]{40}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
-const usage = 'npm run eval:candidate -- --candidate-package <core.tgz> --candidate-node-package <node.tgz> --candidate-wasm-package <wasm.tgz> --candidate-source-commit <40-hex> --product-state clean|dirty --output-dir <absolute-path> [--filter <detector-id>] [--expected-artifact-sha256 <64-hex>]';
+const usage = 'npm run eval:candidate -- --candidate-package <core.tgz> --candidate-node-package <node.tgz> --candidate-wasm-package <wasm.tgz> --candidate-source-commit <40-hex> --product-state clean|dirty --output-dir <absolute-path> [--filter <detector-id>] [--expected-artifact-sha256 <64-hex>] [--ruleset <path>]';
 
 function parse(argv: string[]) {
   const values: Record<string, string> = {};
@@ -32,11 +32,11 @@ function parse(argv: string[]) {
     values[key.slice(2)] = value;
   }
   const required = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit', 'product-state', 'output-dir'];
-  if (required.some(key => !values[key]) || Object.keys(values).some(key => ![...required, 'filter', 'expected-artifact-sha256'].includes(key))) throw new Error(usage);
+  if (required.some(key => !values[key]) || Object.keys(values).some(key => ![...required, 'filter', 'expected-artifact-sha256', 'ruleset'].includes(key))) throw new Error(usage);
   if (!SHA.test(values['candidate-source-commit']) || !['clean', 'dirty'].includes(values['product-state']) || !path.isAbsolute(values['output-dir'])) throw new Error(usage);
   if (values['filter'] && !/^[a-z0-9-]+$/.test(values['filter'])) throw new Error(usage);
   if (values['expected-artifact-sha256'] && !SHA256.test(values['expected-artifact-sha256'])) throw new Error(usage);
-  for (const key of ['candidate-package', 'candidate-node-package', 'candidate-wasm-package']) values[key] = path.resolve(values[key]);
+  for (const key of ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'ruleset']) if (values[key]) values[key] = path.resolve(values[key]);
   return values;
 }
 
@@ -62,6 +62,7 @@ async function main() {
   let packageName = 'unknown', declaredVersion = 'unknown', scannedFixtures = 0;
   let results: any[] = [], selectedFixtures = 0, corpusHash = '0'.repeat(64);
   const categoryHashes: { id: string; sha256: string }[] = [];
+  let rulesetInfo: { sha256: string; byteLength: number } | null = null;
   try {
     if (options['expected-artifact-sha256'] && options['expected-artifact-sha256'] !== artifactSha256) throw new Error('artifact-identity-mismatch');
     const registry: Category[] = JSON.parse(await readFile(path.join(root, 'benchmarks/categories.json'), 'utf8'));
@@ -86,9 +87,11 @@ async function main() {
     if (!selected.length) throw new Error('empty-selection');
     selectedFixtures = selected.length;
     corpusHash = hash(categoryHashes);
+    const ruleset = options.ruleset ? await readFile(options.ruleset) : undefined;
+    if (ruleset) rulesetInfo = { sha256: createHash('sha256').update(ruleset).digest('hex'), byteLength: ruleset.byteLength };
     installation = await installCandidate({ core: options['candidate-package'], node: options['candidate-node-package'], wasm: options['candidate-wasm-package'] });
     packageName = installation.packageName; declaredVersion = installation.declaredVersion;
-    const scanner = await loadCandidate(installation);
+    const scanner = await loadCandidate(installation, ruleset);
     if (scanner.version !== declaredVersion) throw new Error('candidate-version-mismatch');
     const scratch = await mkdtemp(path.join(tmpdir(), 'redact-secret-candidate-fixtures-'));
     try {
@@ -127,7 +130,10 @@ async function main() {
       artifactSha256, expectedArtifactSha256: options['expected-artifact-sha256'] ?? null, artifacts: artifactSet },
     benchmark: { sourceCommit: benchmarkRevision, dirty: benchmarkDirty, lockfileSha256: await sha256File(path.join(root, 'package-lock.json')) },
     corpus: { protocol: 'measurement-v4', hash: corpusHash, categories: categoryHashes },
-    scanner: { id: 'redact-secret-candidate', configuration: candidateConfiguration, configurationHash: hash(candidateConfiguration) },
+    scanner: (() => {
+      const configuration = { ...candidateConfiguration, ruleset: rulesetInfo };
+      return { id: 'redact-secret-candidate', configuration, configurationHash: hash(configuration) };
+    })(),
     runtime: { node: process.version, os: platform(), arch: arch() }, command: [process.execPath, ...process.execArgv, ...process.argv.slice(1)],
     selection: { scope: options.filter ? 'filtered-development' : 'full-suite', filter: options.filter ?? null },
     completeness: { selectedFixtures, scannedFixtures }, failures, results,

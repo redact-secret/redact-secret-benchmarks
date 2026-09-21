@@ -29,7 +29,9 @@ async function packages(mode = 'ok') {
     ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){throw Error('unsafe detail')} export function scan(){return []}`
     : mode === 'scan-failure'
       ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(){throw Error('unsafe fixture detail')}`
-      : `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(){return []}`;
+      : mode === 'ruleset-echo'
+        ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(text, options){ return options && options.ruleset ? [{id:'finding-1', type:'ruleset-echo', detector:'ruleset-echo', confidence:'medium', obfuscation:'none', start:0, end:text.length}] : []; }`
+        : `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(){return []}`;
   await writeFile(path.join(core, 'dist/index.js'), source);
   await writeFile(path.join(node, 'package.json'), JSON.stringify({ name: nodeName, version: '9.8.7-candidate.1' }));
   await writeFile(path.join(wasm, 'package.json'), JSON.stringify({ name: '@redact-secret/wasm', version: '9.8.7-candidate.1' }));
@@ -93,6 +95,25 @@ test('initialization and scan failures remain explicit and sanitized', async () 
   }
 });
 
+test('loadCandidate forwards a supplied ruleset to every scan call', async () => {
+  const artifacts = await packages('ruleset-echo');
+  let installation;
+  try {
+    installation = await installCandidate(artifacts);
+    const withoutRuleset = await loadCandidate(installation);
+    assert.deepEqual(await withoutRuleset.scan(installation.root, []), []);
+    const withRuleset = await loadCandidate(installation, Buffer.from('ruleset-revision: 1\nnames: ambiguous\nname: corp_token\n'));
+    const scratch = await mkdtemp(path.join(tmpdir(), 'ruleset-echo-fixture-'));
+    try {
+      await writeFile(path.join(scratch, 'sample.txt'), 'hello');
+      const findings = await withRuleset.scan(scratch, [{ path: 'sample.txt' }]);
+      assert.equal(findings.length, 1);
+      assert.equal(findings[0].start, 0);
+      assert.equal(findings[0].end, 5);
+    } finally { await rm(scratch, { recursive: true, force: true }); }
+  } finally { await removeCandidate(installation); await rm(artifacts.root, { recursive: true, force: true }); }
+});
+
 test('candidate CLI records filter provenance without mutating the lockfile', async () => {
   const artifacts = await packages();
   const output = path.join(artifacts.root, 'evidence output');
@@ -109,6 +130,31 @@ test('candidate CLI records filter provenance without mutating the lockfile', as
     assert.ok(evidence.results.every(row => !('content' in row) && !('plaintext' in row)));
     assert.doesNotThrow(() => validateEvidence(evidence, 'candidate'));
     assert.equal(await hashFile(path.join(repositoryRoot, 'package-lock.json')), before);
+  } finally { await rm(artifacts.root, { recursive: true, force: true }); }
+});
+
+test('candidate CLI evidence records ruleset identity and the run changes when one is loaded', async () => {
+  const artifacts = await packages('ruleset-echo');
+  const rulesetFile = path.join(artifacts.root, 'reference.ruleset');
+  await writeFile(rulesetFile, 'ruleset-revision: 1\nnames: ambiguous\nname: corp_token\n');
+  const withoutOutput = path.join(artifacts.root, 'evidence-without');
+  const withOutput = path.join(artifacts.root, 'evidence-with');
+  const cliArgs = ['--candidate-package', artifacts.core, '--candidate-node-package', artifacts.node, '--candidate-wasm-package', artifacts.wasm,
+    '--candidate-source-commit', 'a'.repeat(40), '--product-state', 'clean', '--filter', 'openai-token',
+    '--expected-artifact-sha256', await hashFile(artifacts.core)];
+  try {
+    await exec(process.execPath, ['--import', 'tsx', 'benchmarks/candidate.ts', ...cliArgs, '--output-dir', withoutOutput],
+      { cwd: repositoryRoot, timeout: 120_000 });
+    await exec(process.execPath, ['--import', 'tsx', 'benchmarks/candidate.ts', ...cliArgs, '--output-dir', withOutput, '--ruleset', rulesetFile],
+      { cwd: repositoryRoot, timeout: 120_000 });
+    const without = JSON.parse(await readFile(path.join(withoutOutput, 'candidate-evidence-v1.json'), 'utf8'));
+    const withRuleset = JSON.parse(await readFile(path.join(withOutput, 'candidate-evidence-v1.json'), 'utf8'));
+    assert.equal(without.scanner.configuration.ruleset, null);
+    assert.deepEqual(withRuleset.scanner.configuration.ruleset, { sha256: await hashFile(rulesetFile), byteLength: (await readFile(rulesetFile)).byteLength });
+    assert.ok(without.results.some(row => row.actualFindings === 0));
+    assert.ok(withRuleset.results.every(row => row.actualFindings > 0));
+    assert.doesNotThrow(() => validateEvidence(without, 'candidate'));
+    assert.doesNotThrow(() => validateEvidence(withRuleset, 'candidate'));
   } finally { await rm(artifacts.root, { recursive: true, force: true }); }
 });
 

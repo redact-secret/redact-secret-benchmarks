@@ -13,7 +13,7 @@ D2's own sweep closed. Its own Step 0 flagged that the numbers it quoted
 the issue was filed and might already be wrong.
 
 They were: `npm run eval:classify` at this branch's base commit
-(`c23d81e`, with `gitleaks 8.30.1` / `trufflehog 3.97.5` pinned) read
+(`c23d81e`, with `gitleaks 8.30.1` pinned) read
 `{"stable":2,"provisional":42,"pending":2,"unsupported":0}` of **46**
 families — not 42. Between the issue being filed and this sweep, D7
 (redact-secret/redact-secret#569, this repo's PR #101) already resolved
@@ -118,6 +118,16 @@ checks. This is issue #98's own suggested "`arrival:check`-style guard": the
 next fixture batch that generates untriaged differential ids now fails CI
 instead of accumulating invisibly until someone happens to re-run
 `eval:classify`.
+
+**Known issue at merge time:** this sweep's own measurement ran against
+`trufflehog 3.97.5` on the author's `PATH`, not the `3.97.4` that
+`.github/workflows/validate.yml`'s `scanner-comparison` job pins. The two
+versions disagree on enough fixtures that the differential review queue
+`3.97.4` actually produces in CI is not the same 384-id queue this record
+classified, so `npm run queue:check` fails in CI against the ledger rows
+added here. The guard is doing exactly what it's for: catching a queue this
+record didn't cover. Re-sweeping and classifying against the CI-pinned
+`3.97.4` is tracked as follow-up work, not done in this record.
 
 ## Explicitly out of scope
 

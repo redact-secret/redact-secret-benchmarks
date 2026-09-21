@@ -18,8 +18,15 @@ npm run eval:candidate -- \
   --product-state clean \
   --expected-artifact-sha256 <core-tarball-sha256> \
   --output-dir /absolute/path/to/evidence \
-  --filter openai-token
+  --filter openai-token \
+  --ruleset /absolute/path/to/ruleset.txt
 ```
+
+`--ruleset` is optional and forwards a caller-supplied declarative ruleset
+(raw bytes or UTF-8 text) to every `scan` call, mirroring the product's own
+`ruleset` option on `scan`/`scanAndRedact`. Its sha256 and byte length are
+recorded in the evidence's `scanner.configuration.ruleset` (or `null` when
+omitted); its text is never embedded in the report.
 
 The adapter creates a temporary npm consumer, uses local-tarball overrides for
 the native and Wasm dependencies, initializes the installed public package,

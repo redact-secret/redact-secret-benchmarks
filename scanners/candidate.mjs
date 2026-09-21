@@ -54,18 +54,19 @@ async function nodePackageName(tarball) {
   }
 }
 
-export async function loadCandidate(installation) {
+export async function loadCandidate(installation, ruleset) {
   try {
     const module = await import(`${pathToFileURL(path.join(installation.root, 'node_modules/@redact-secret/core/dist/index.js')).href}?candidate=${Date.now()}`);
     if (typeof module.initialize !== 'function' || typeof module.scan !== 'function') throw new Error('api');
     await module.initialize();
+    const options = ruleset ? { ruleset } : undefined;
     return {
       version: typeof module.VERSION === 'string' ? module.VERSION : installation.declaredVersion,
       async scan(root, fixtures) {
         const results = [];
         for (const fixture of fixtures) {
           const text = await readFile(path.join(root, fixture.path), 'utf8');
-          const findings = module.scan(text);
+          const findings = module.scan(text, options);
           if (!Array.isArray(findings)) throw new Error('scan');
           for (const finding of findings) results.push({
             path: fixture.path,

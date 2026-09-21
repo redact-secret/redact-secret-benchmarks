@@ -238,6 +238,29 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     "\n",
   ]);
 
+  // #64: the leading/trailing/dash identifier-embedding boundary shape above
+  // was applied to digitalocean-token only and never generalised, even
+  // though the ledger's `confirmed-boundary-false-positive/<family>` class
+  // (redact-secret/redact-secret#551) reproduces the same over-detection —
+  // a fully-formed, contracted token concatenated directly into a longer
+  // identifier, with no delimiter marking where it starts or ends — on six
+  // more families. Each token reuses its shape-1 seed key from the `families`
+  // loop above, so the embedded value is identical to that positive fixture.
+  const identifierEmbeddingFamilies = [
+    ["openai-token", "sk-", 48],
+    ["slack-token", "xoxb-", 48],
+    ["huggingface-token", "hf_", 34],
+    ["docker-token", "dckr_pat_", 32],
+    ["cloudflare-token", "cfut_", 40],
+    ["linear-token", "lin_api_", 40],
+  ];
+  for (const [detector, prefix, length] of identifierEmbeddingFamilies) {
+    const token = prefix + synthetic(`detector-coverage:${detector}:${prefix}`, length);
+    add(detector, "leading-identifier-embedding", [`legacy${token}`]);
+    add(detector, "trailing-identifier-embedding", [`${token}_backup`]);
+    add(detector, "dash-identifier-embedding", [`${token}-1`]);
+  }
+
   const sendgrid = `SG.${synthetic("coverage:sg:id", 22)}.${synthetic("coverage:sg:secret", 43)}`;
   positive("sendgrid-token", "segmented", [{ secret: sendgrid }]);
   add("sendgrid-token", "prefix-only", ["SG."]);

@@ -180,3 +180,77 @@ npm run benchmark:candidate -- \
   --benchmark-ref c1f777ae20bb38c105a615ffa28005f64d4d6596 \
   --benchmark-repo /absolute/path/to/redact-secret-benchmarks
 ```
+
+## Closing: re-measured on the published package (issue #48)
+
+Everything above was measured against an immutable, unpublished candidate
+artifact. This section re-measures the same gate on what `npm install
+@redact-secret/core@0.1.0-beta.5` actually resolves, so the two can be told
+apart and any drift between them is visible rather than assumed away.
+
+### Provenance
+
+| Field | Value |
+| --- | --- |
+| Consumer | This repository's ordinary `redact-secret` adapter (`scanners/index.mjs`), resolved through this repo's own `npm install` — not the `eval:candidate` isolated-tarball consumer (`docs/candidate-evaluation.md`) used above |
+| Registry-resolved identity | `@redact-secret/core` `sha512-Hn3TMQcV3OEYucfosuOeyjhh08FrCszxmaaKqNF3P+KKkH/N8QeVzhJQaJOSECBpOfye3FFBceshMdoiGX/fJQ==`; `@redact-secret/wasm` `sha512-DfEbrU+oUxcWRD4uRE82OTlmTAkSnT/Q4ZAm6lML47YoYbFaxt0PxSX49urUukmpy/DkebWElJPRR7r5sQ+/Yg==`; `@redact-secret/node-darwin-arm64` `sha512-EkgEAcThQNFnYEBJC9iHS6wZIh0PUQvea1xNuQ48uSg1qK5aSsDNXFDQ4o/zcNRNvOM/ZjdVsFfDBkRdrgsvHg==` — all resolved from `https://registry.npmjs.org`, none from a `file:`/`workspace:` reference (`package-lock.json`) |
+| Baseline saved | [`baselines/0.1.0-beta.5.json`](../baselines/0.1.0-beta.5.json), schema v2, 827 fixtures × 4 scanners |
+| Run ID | `2026-09-21T01:00:31.953Z-56bf2b`, revision `23aebf9def42da563f9d56a7979c655640e1e2d4` (clean) |
+| Saved at | 2026-09-21T01:01:07.208Z |
+| Compared against | [`baselines/0.1.0-beta.4.json`](../baselines/0.1.0-beta.4.json) via `npm run baseline:report`; full tables and the row-level diff are in [`docs/release-comparison.md`](release-comparison.md), not duplicated here |
+
+### Does the published package reproduce the candidate gate
+
+| Metric this gate tracked | Candidate (unpublished tarball) | Published `0.1.0-beta.5` | |
+| --- | --- | --- | --- |
+| Fixed-corpus twin false alarms, before → after (24 frozen-family twins) | 24 → 0 | 24 → 0 — the identical 24 `common-formats--*-twin` fixture rows, see `release-comparison.md`'s changed-rows table | matches |
+| Fixed-corpus twin discrimination | 56 / 56 | 76 / 76 (pair count grew 56 → 76: `redact-secret-benchmarks#46` added more T1/T2 twin pairs since the candidate measurement; every pair, old and new, discriminates) | matches, now over a larger set |
+| Fixed-corpus required-positive misses (T1/T2) | 0 → 0 (58 / 58 preserved) | 0 → 0 (44 T1 + 16 T2 spans, all `EXACT`) | matches |
+| `detector-coverage` policy/T3 rows silenced | 18, four families' generic shapes | 18 — the identical fixture list (openai-token-shape-1/2/3, slack-token-shape-1, docker-token-shape-1, cloudflare-token-shape-1) | matches exactly |
+| Expanded-corpus required-positive misses (T1/T2) | 0 → 0 (168 / 168 preserved) | 0 → 0 (133 T1 + 42 T2 spans, all `EXACT`) | matches |
+| Rows with no beta.4 baseline | 7 (new DigitalOcean coverage) | 222 (all corpus growth since the candidate's 612-fixture snapshot: `#43`–`#47` landed in between) | candidate's "7" is superseded by later corpus growth, not reproduced here |
+
+Every outcome the candidate gate tracked reproduces identically on the actual
+published package: the same 24 fixed-corpus twin fixtures go silent, the same
+18 `detector-coverage` policy rows move `EXACT` → `MISS`, and no
+required-positive miss appears anywhere. There is no drift between the
+immutable artifact `redact-secret#376` measured and what the npm registry
+actually serves as `0.1.0-beta.5`.
+
+### Differences the candidate gate never measured
+
+Two things changed between `baselines/0.1.0-beta.4.json` and this baseline
+that fall outside the candidate gate's tracked metrics above. Neither is a
+regression of anything the candidate reported — both are reported here in
+full rather than folded into the "matches" row above:
+
+1. **Corpus growth.** The candidate measured 612 fixtures; this baseline
+   measures 827 (+222, `#43`–`#47`, mostly per-family twin coverage). Every
+   denominator in the table above differs from the candidate document's for
+   this reason; what was compared is the fixture-level facts, not the
+   denominators.
+2. **Five new `must-not-flag/T2` false alarms, none seen by the candidate:**
+   `sendgrid-regressions--base62-generic-key-twin`,
+   `sendgrid-regressions--base62-bearer-twin`,
+   `detector-coverage--bearer-token-header-bare-twin`,
+   `detector-coverage--bearer-token-header-quoted-twin`, and
+   `detector-coverage--bearer-token-header-unicode-crlf-twin`. None of the
+   five exists in `baselines/0.1.0-beta.4.json` — they are new corpus
+   coverage added after the candidate's snapshot, not a beta.4 → beta.5
+   regression and not something the candidate gate's per-issue table (#367)
+   ever measured. Whether this is a genuine detector gap is a question for
+   `promote-finding`, not this issue; recorded here as measurement, not as a
+   product claim, per this repository's boundary rule.
+3. **`detector-coverage--huggingface-token-shape-1-{bare,quoted,unicode-crlf}`**
+   moved from `observed` (unscored T0) at beta.4 to a scored outcome here:
+   `EXACT` for redact-secret and trufflehog, `MISS` for gitleaks. The
+   candidate's per-issue table (`#372`) covers the reviewed
+   `huggingface-token-user` shape, not this generic `-shape-1` fixture; the
+   reclassification is a corpus change between beta.4 and this baseline, not
+   part of the candidate/published comparison.
+
+Candidate-derived evidence (this document, above the closing section;
+`reportType: "candidate"`, schema v4, never checked into `baselines/`) and
+published-derived evidence (`baselines/0.1.0-beta.5.json`, schema v2, saved by
+`npm run baseline -- --save`) stay in separate files under separate schemas;
+neither this section nor `npm run baseline:report` overwrites the other.

@@ -69,12 +69,18 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // (T2, one shape × 3 contexts = 3 positives, 1 twin × 3 contexts): 9 new
   // must-redact positives, 9 new twins (6 supabase + 3 firebase) and 10 new
   // independent negatives (5 supabase + 5 firebase).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 256);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 262);
+  // #569: `slack-token`'s `xoxb-` shape-1 and `cloudflare-token`'s `cfut_`
+  // shape-1 were generated as a flat unstructured run, never matching either
+  // family's own frozen `pattern` (`^xoxb-[0-9]{12}-[0-9]{12}-[A-Za-z0-9]{24}$`,
+  // `^cfut_[A-Za-z0-9]{40}[a-f0-9]{8}$`); corrected to a contract-matching
+  // structural shape, both move policy/T3 -> must-redact/T1 (+6 files/+6
+  // spans: 3 contexts each).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 262);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 268);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
-  assert.deepEqual(tally['policy/T3'], { files: 179, spans: 179 });
+  assert.deepEqual(tally['policy/T3'], { files: 173, spans: 173 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -173,7 +179,11 @@ test('twins mutate exactly one property, pair with their positive and never carr
 });
 
 test('malformed fixtures, missing companions and pending variants cannot pass as must-redact', () => {
-  for (const id of ['anthropic-token-shape-1-bare', 'openai-token-shape-1-bare', 'slack-token-shape-1-bare', 'pypi-token-shape-1-bare', 'docker-token-shape-1-bare', 'cloudflare-token-shape-1-bare', 'vault-token-shape-1-bare', 'vault-token-shape-3-bare', 'private-key-private-key-bare', 'jwt-expired-fabricated-bare', 'aws-access-key-shape-1-bare', 'shopify-token-shape-1-bare', 'connection-string-postgres-bare', 'generic-token-api-key-bare']) assert.equal(get(id).assessment.kind, 'policy', id);
+  // #569: slack-token/cloudflare-token shape-1 now generate a contract-matching
+  // structural body (see the tally test above) and correctly promote to must-redact.
+  for (const id of ['anthropic-token-shape-1-bare', 'openai-token-shape-1-bare', 'pypi-token-shape-1-bare', 'docker-token-shape-1-bare', 'vault-token-shape-1-bare', 'vault-token-shape-3-bare', 'private-key-private-key-bare', 'jwt-expired-fabricated-bare', 'aws-access-key-shape-1-bare', 'shopify-token-shape-1-bare', 'connection-string-postgres-bare', 'generic-token-api-key-bare']) assert.equal(get(id).assessment.kind, 'policy', id);
+  assert.equal(get('slack-token-shape-1-bare').assessment.kind, 'must-redact');
+  assert.equal(get('cloudflare-token-shape-1-bare').assessment.kind, 'must-redact');
   for (const id of ['supabase-token-shape-1-bare', 'vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
   assert.equal(get('digitalocean-token-shape-1-bare').assessment.tier, 'T1');
   assert.equal(get('linear-token-shape-1-bare').assessment.tier, 'T2');

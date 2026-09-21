@@ -62,9 +62,34 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // atlassian-api-token); one representative shape each is enough to move
   // the corpus-wide floor without inventing coverage for every shape.
   const twinTargets = { "docker-token": 1, "linear-token": 0, "google-api-key": 0, "notion-token": 0, "atlassian-api-token": 0 };
+  const SLACK_TAIL_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-", HEX_ALPHABET = "0123456789abcdef";
+  // #569: `slack-token`'s section grammar (#371/#512) and `cloudflare-token`'s
+  // trailing checksum (#367) cannot be expressed by the shared "prefix +
+  // one flat run" formula every other family in `families` uses — both were
+  // still generating that flat shape after their contracts froze structure,
+  // which is why every reviewed prefix here (all but `xapp-`/`xwfp-`,
+  // deliberately left pending per #512/#45, tracked in redact-secret#569)
+  // silently stopped matching its own detector. Digit-section and tail
+  // widths mirror the frozen grammars exactly (see slack.rs's module doc /
+  // docs/decisions/2026-09-{17,20}-freeze-slack-*.md and
+  // docs/audits/evidence/367/precision-contracts.json's cloudflare-token
+  // entry), not invented here.
+  const structuralShapeValue = {
+    "slack-token": prefix => {
+      const seed = `detector-coverage:slack-token:${prefix}`;
+      const digits = (label, n) => synthetic(`${seed}:${label}`, n, "0123456789");
+      if (prefix === "xoxb-") return prefix + digits("section-1", 12) + "-" + digits("section-2", 12) + "-" + synthetic(`${seed}:secret`, 24);
+      if (prefix === "xoxp-") return prefix + digits("section-1", 12) + "-" + digits("section-2", 12) + "-" + digits("section-3", 12) + "-" + synthetic(`${seed}:secret`, 32);
+      if (["xoxe-", "xoxe.xoxb-", "xoxe.xoxp-"].includes(prefix)) return prefix + digits("version", 1) + "-" + synthetic(`${seed}:tail`, 20, SLACK_TAIL_ALPHABET);
+      return null; // xapp-/xwfp-: unchanged flat interim shape, exact 20 bytes (redact-secret#551)
+    },
+    "cloudflare-token": prefix => prefix + synthetic(`detector-coverage:cloudflare-token:${prefix}`, 40) + synthetic(`detector-coverage:cloudflare-token:${prefix}:checksum`, 8, HEX_ALPHABET),
+  };
   for (const [detector, prefixes, length, alphabet] of families) {
     prefixes.forEach((prefix, index) => {
-      const value = prefix + synthetic(`detector-coverage:${detector}:${prefix}`, length, alphabet);
+      const structural = structuralShapeValue[detector]?.(prefix);
+      const value = structural ?? prefix + synthetic(`detector-coverage:${detector}:${prefix}`,
+        detector === "slack-token" ? 20 : length, detector === "slack-token" ? SLACK_TAIL_ALPHABET : alphabet);
       positive(detector, `shape-${index + 1}`, [{ secret: value }]);
       if (twinTargets[detector] === index)
         addTwin(detector, `shape-${index + 1}`, [value.slice(0, -1)], `length: ${value.length - 1} vs contracted ${value.length}`);

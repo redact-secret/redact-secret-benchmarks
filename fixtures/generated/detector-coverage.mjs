@@ -85,6 +85,28 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     if (detector === "aws-access-key") add(detector, "mask", ["AKIA" + "*".repeat(16)]);
   }
 
+  // #65: additional detector-coverage benign controls for the eight T1
+  // families short of the stable floor of 5 benign cases
+  // (redact-secret-benchmarks#65). mask/reference/label-prose join each
+  // family's existing prefix-only and short-body controls from the loop
+  // above.
+  add("vault-token", "mask", ["hvs." + "*".repeat(24)]);
+  add("vault-token", "reference", ["VAULT_TOKEN=${VAULT_TOKEN}\n"]);
+  add("vault-token", "label-prose", ["Documentation mentions a Vault service token (hvs. prefix) without embedding the token value."]);
+  add("shopify-token", "mask", ["shpat_" + "*".repeat(32)]);
+  add("shopify-token", "reference", ["SHOPIFY_ACCESS_TOKEN=${SHOPIFY_TOKEN}\n"]);
+  add("shopify-token", "label-prose", ["Documentation mentions a Shopify access token (shpat_ prefix) without embedding the token value."]);
+  add("cloudflare-token", "mask", ["cfut_" + "*".repeat(48)]);
+  add("cloudflare-token", "reference", ["CLOUDFLARE_API_TOKEN=${CF_API_TOKEN}\n"]);
+  add("cloudflare-token", "label-prose", ["Documentation mentions a Cloudflare API token (cfut_ prefix) without embedding the token value."]);
+  add("stripe-token", "mask", ["sk_live_" + "*".repeat(32)]);
+  add("stripe-token", "reference", ["STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}\n"]);
+  add("stripe-token", "label-prose", ["Documentation mentions a Stripe secret key (sk_ prefix) without embedding the key value."]);
+  add("slack-token", "mask", ["xoxb-" + "*".repeat(12) + "-" + "*".repeat(12) + "-" + "*".repeat(24)]);
+  add("gitlab-token", "mask", ["glpat-" + "*".repeat(20)]);
+  add("npm-token", "mask", ["npm_" + "*".repeat(36)]);
+  add("github-token", "mask", ["ghp_" + "*".repeat(36)]);
+
   // beta.4 additions: 17 detectors with no dedicated-prefix-plus-run shape
   // simple enough for the families loop above, added when detectors.json
   // was refreshed to the beta.4 registry snapshot.

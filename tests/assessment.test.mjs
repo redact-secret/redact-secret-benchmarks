@@ -74,7 +74,13 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // 6 new twins (which net out of this count via -twins.length).
   // #64: 18 new independent negatives (leading/trailing/dash identifier-
   // embedding × 6 families), generalising the digitalocean-token-only shape.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 242);
+  // #65: 16 new independent benign controls (mask/reference/label-prose
+  // across vault-token, shopify-token, cloudflare-token, stripe-token, plus
+  // one mask each for slack-token, gitlab-token, npm-token, github-token)
+  // plus 10 new twins (netted out via -twins.length), to clear the stable
+  // floors of 5 twin pairs and 5 benign cases for the ten T1 families #65
+  // covers.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 258);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });
@@ -133,7 +139,7 @@ test('corpus validation rejects malformed roles, envelopes and twins', () => {
 
 test('twins mutate exactly one property, pair with their positive and never carry spans', () => {
   const twins = common.filter(f => f.twinOf);
-  assert.equal(twins.length, 76);
+  assert.equal(twins.length, 86);
   const untwinned = common.filter(f => f.assessment.kind === 'must-redact' && !twins.some(t => t.twinOf === f.id));
   assert.deepEqual(untwinned.map(f => f.id), ['aws-access-key-pair-plain', 'aws-access-key-pair-unicode-crlf'], 'the ID/secret pair has no single-mutation twin yet');
   for (const t of twins) {

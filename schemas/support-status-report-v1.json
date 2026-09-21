@@ -3,7 +3,7 @@
   "$id": "urn:redact-secret-benchmarks:support-status-report:1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "scanners", "caseCount", "variantCount", "familyCount", "distribution", "families"],
+  "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "product", "scanners", "caseCount", "variantCount", "familyCount", "distribution", "families"],
   "properties": {
     "schemaVersion": { "const": 1 },
     "generatedAt": { "type": "string" },
@@ -11,6 +11,31 @@
     "revision": { "type": "string" },
     "dirty": { "type": ["boolean", "null"] },
     "criteriaSchemaVersion": { "const": 1 },
+    "product": {
+      "type": ["object", "null"],
+      "description": "Null when this run measured the pinned published package, the default. Populated when a candidate build substituted the redact-secret entry, naming the exact build the report describes so it can never be mistaken for one about a different build.",
+      "additionalProperties": false,
+      "required": ["sourceCommit", "packageName", "declaredVersion", "artifacts"],
+      "properties": {
+        "sourceCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "packageName": { "type": "string", "minLength": 1 },
+        "declaredVersion": { "type": "string", "minLength": 1 },
+        "artifacts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "sha256"],
+            "properties": {
+              "role": { "enum": ["package", "node", "wasm"] },
+              "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+            }
+          }
+        }
+      }
+    },
     "scanners": { "type": "array", "items": { "type": "string" } },
     "caseCount": { "type": "integer", "minimum": 0 },
     "variantCount": { "type": "integer", "minimum": 0 },

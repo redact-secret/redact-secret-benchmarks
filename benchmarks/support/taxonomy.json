@@ -127,6 +127,10 @@
       "name": "New Relic"
     },
     {
+      "id": "firebase",
+      "name": "Firebase"
+    },
+    {
       "id": "hashicorp-terraform",
       "name": "HashiCorp Terraform Cloud/Enterprise"
     },
@@ -555,9 +559,10 @@
       "id": "supabase:personal-access-token",
       "provider": "supabase",
       "name": "Personal access token",
-      "description": "Management-API personal access token, prefixed sbp_.",
-      "detectors": [],
-      "note": "supabase-token's contract review notes the pinned TruffleHog detector instead covers sbp_ management tokens, a distinct family from the sb_secret_ project key this project's detector targets."
+      "description": "Management-API personal access token, prefixed sbp_/sbp_v0_.",
+      "detectors": ["supabase-management-token"],
+      "sources": ["https://supabase.com/docs/guides/platform/personal-access-tokens"],
+      "note": "#81 backfilled the supabase-management-token detector (redact-secret#535). Deliberately independent of supabase:secret-key's evidence, per docs/decisions/2026-09-20-scope-supabase-management-token-and-secret-key-independence.md."
     },
     {
       "id": "vercel:access-token",
@@ -777,6 +782,17 @@
       "detectors": [
         "new-relic-license-key"
       ]
+    },
+    {
+      "id": "firebase:server-key",
+      "provider": "firebase",
+      "name": "Legacy FCM server key",
+      "description": "Legacy Firebase Cloud Messaging HTTP/XMPP server key: literal AAAA prefix, 7 bytes, a literal \":\", then 140 bytes.",
+      "detectors": [
+        "firebase-server-key"
+      ],
+      "sources": ["https://github.com/projectdiscovery/nuclei-templates/blob/8cf94b93a389a47bef77b89f8c8915b2755018f0/http/exposures/tokens/firebase-fcm-server-key-disclosure.yaml"],
+      "note": "#81 backfilled the firebase-server-key detector (redact-secret#543). Service-account JSON exports and AIza-prefixed keys are covered elsewhere (private-key, google-api-key), not this family."
     },
     {
       "id": "hashicorp-terraform:user-token",

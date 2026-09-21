@@ -64,8 +64,13 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // and pulumi-access-token (registered upstream but absent here): 18 new
   // must-redact/T1 positives (3 shapes × 3 contexts each) and 12 new
   // must-not-flag controls (6 twins + 6 independent negatives) per family.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 247);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 253);
+  // #81 backfilled supabase-management-token (T1, two prefix shapes × 3
+  // contexts = 6 positives, 2 twins × 3 contexts) and firebase-server-key
+  // (T2, one shape × 3 contexts = 3 positives, 1 twin × 3 contexts): 9 new
+  // must-redact positives, 9 new twins (6 supabase + 3 firebase) and 10 new
+  // independent negatives (5 supabase + 5 firebase).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 256);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 262);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -88,7 +93,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // `slack-token`'s `xoxe-`) — #64's generalisation above reused each
   // family's already-exact primary shape and never exercised the two
   // interim guards redact-secret#551 actually found still open-floored.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 264);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 274);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

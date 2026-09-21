@@ -11,8 +11,8 @@ const corpora = Object.fromEntries(await Promise.all(categories.map(async c => [
 const fixtures = buildCatalog(categories,corpora,assignments,registry.detectors);
 
 test('all corpus fixtures have unique, routable slugs and explicit detector assignments', () => {
-  assert.equal(fixtures.length,934);
-  assert.equal(registry.detectors.length,44);
+  assert.equal(fixtures.length,962);
+  assert.equal(registry.detectors.length,46);
   for (const f of fixtures) {
     assert.equal(parseRoute('/fixture/'+f.slug).id,f.slug);
     assert.equal(f.slug,fixtureSlug(f.category,f.id));

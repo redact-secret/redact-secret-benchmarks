@@ -59,12 +59,29 @@ export const isCovered = (outcome: string) => !isLeaked(outcome);
 
 /**
  * Score one fixture row. `expected` carries role and optional envelope;
- * `actual` is the deduplicated list of findings on that file.
- * Rows with no secret span are controls and only count findings.
+ * `actual` is the deduplicated list of findings on that file, each optionally
+ * carrying which family produced it.
+ *
+ * Rows with no secret span are controls and only count findings. `scopeFamily`
+ * is passed only for a twin (a control fixture with `twinOf` set): its
+ * assertion is scoped to its own declared contract family, per
+ * docs/evaluation-methods/02-negative-twin.md. A finding attributed to a
+ * *different*, known family is not silence — it is legitimate co-detection by
+ * another detector — so it is recorded on its own axis (`coDetected`) instead
+ * of failing the twin. A finding with no attributed family is ambiguous, not
+ * known-other, and still counts toward `flagged` (fails closed). A benign
+ * control (no `scopeFamily`) keeps the unscoped, global reading: any finding
+ * at all flags it.
  */
-export function scoreRow(expected: ExpectedRange[], actual: Range[]): RowScore {
+export function scoreRow(expected: ExpectedRange[], actual: (Range & { family?: string })[], scopeFamily?: string): RowScore {
   const secrets = expected.filter(e => (e.role ?? 'secret') === 'secret');
-  if (!secrets.length) return { flagged: actual.length > 0, findings: actual.length };
+  if (!secrets.length) {
+    if (scopeFamily) {
+      const other = actual.filter(a => a.family !== undefined && a.family !== scopeFamily).length;
+      return { flagged: other < actual.length, findings: actual.length, ...(other > 0 ? { coDetected: true } : {}) };
+    }
+    return { flagged: actual.length > 0, findings: actual.length };
+  }
   const spanOutcomes = secrets.map(e => spanOutcome(e, actual));
   const leakedBytes = secrets.reduce((n, e, i) => n + (isLeaked(spanOutcomes[i]) ? bytesOutside([e], actual) : 0), 0);
   const acceptable = expected.map(e => e.envelope ?? e);
@@ -117,7 +134,7 @@ export function aggregateGroups(rows: ScoredRow[]) {
       outcomes: Object.fromEntries(OUTCOMES.map(o => [o, 0])),
       leakedSpans: 0, leakedSpanRate: null, leakedBytes: 0, leakedByteRate: null,
       collateralBytes: 0, collateralRatio: null,
-      twins: { positives: 0, pairs: 0, discriminated: 0, rate: null },
+      twins: { positives: 0, pairs: 0, discriminated: 0, coDetected: 0, rate: null },
       diagnostics: { exact: { tp: 0, fp: 0, fn: 0 }, comparable: false },
     });
     g.files++;
@@ -135,6 +152,7 @@ export function aggregateGroups(rows: ScoredRow[]) {
     for (const twin of twinsFor.get(row.id) ?? []) {
       g.twins!.pairs++;
       if (row.spanOutcomes!.every(isCovered) && !twin.flagged) g.twins!.discriminated++;
+      if (twin.coDetected) g.twins!.coDetected++;
     }
   }
   for (const [key, g] of Object.entries(groups)) {

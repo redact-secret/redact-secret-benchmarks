@@ -18,6 +18,8 @@ export interface Row {
   collateralBytes?: number;
   flagged?: boolean;
   findings?: number;
+  /** Set only on a scoped twin: a finding from a different, known family fired. Not a twin failure. */
+  coDetected?: boolean;
 }
 /** Engine v1.1: a published rate is the pessimistic bound beside its point and n, or the reason it is withheld. */
 export interface Rate { point: number; bound: number | null; n: number; direction: 'upper' | 'lower' | null }
@@ -29,7 +31,7 @@ export interface RedactGroup {
   leakedSpans: number; leakedSpanRate: Published;
   leakedBytes: number; leakedByteRate: Published;
   collateralBytes: number; collateralRatio: Published;
-  twins: { positives: number; pairs: number; discriminated: number; coverage: Published; rate: Published | 'insufficient-coverage' };
+  twins: { positives: number; pairs: number; discriminated: number; coDetected: number; coverage: Published; rate: Published | 'insufficient-coverage' };
   diagnostics: { exact: { tp: number; fp: number; fn: number }; comparable: false };
 }
 export interface ControlGroup {

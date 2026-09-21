@@ -33,7 +33,8 @@ export const differential: Method = {
         }
         const a = observe(v, primary.findings), b = observe(v, peer.findings);
         const ac = classifications(v, primary.findings), bc = classifications(v, peer.findings);
-        const sortRanges = (ranges: typeof a.actual) => [...ranges].sort((x, y) => x.start - y.start || x.end - y.end);
+        // Range agreement is family-blind by design: classification agreement is ac/bc's job.
+        const sortRanges = (ranges: typeof a.actual) => [...ranges].map(({ start, end }) => ({ start, end })).sort((x, y) => x.start - y.start || x.end - y.end);
         a.actual = sortRanges(a.actual); b.actual = sortRanges(b.actual);
         const rangesEqual = JSON.stringify(a.actual) === JSON.stringify(b.actual);
         const classifiable = rangesEqual && ac.length > 0 && [...ac, ...bc].every(r => !r.unmapped && r.families.length);

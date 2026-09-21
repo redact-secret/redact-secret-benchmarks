@@ -83,7 +83,7 @@ export const isAppPath = pathname => parseRoute(pathname).kind !== 'missing';
 
 const project = expected => expected.map(({ start, end, role, envelope }) => ({ start, end, role, ...(envelope ? { envelope: { start: envelope.start, end: envelope.end } } : {}) }));
 const FORBIDDEN = ['precision', 'recall', 'f1', 'tp', 'fp', 'fn', 'tn', 'contained', 'broader'];
-const SCORE_FIELDS = ['spanOutcomes', 'leakedBytes', 'collateralBytes', 'flagged', 'findings'];
+const SCORE_FIELDS = ['spanOutcomes', 'leakedBytes', 'collateralBytes', 'flagged', 'findings', 'coDetected'];
 
 // Never join a report's ranges to different fixture bytes; re-verify every
 // row and every group total client-side (docs/measurement-v4.md §3).
@@ -114,7 +114,7 @@ export function reportProblem(report, category, hash, fixtures) {
         if (SCORE_FIELDS.some(k => row[k] != null)) return 'Pending fixture must not be scored';
         continue;
       }
-      const expected = scoreRow(row.expected, row.actual);
+      const expected = scoreRow(row.expected, row.actual, row.twinOf ? row.contract : undefined);
       for (const k of SCORE_FIELDS) if (JSON.stringify(row[k] ?? null) !== JSON.stringify(expected[k] ?? null)) return 'Row outcome does not recompute';
     }
     const groups = accountGroups(scanner.rows, report.accounting);

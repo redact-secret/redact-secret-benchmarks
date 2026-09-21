@@ -23,6 +23,8 @@ jobs:
         run: npm run eval -- --scanner=redact-secret
       - name: The UI carries no support status the generated matrix cannot
         run: npm run support:check:ui
+      - name: No detector family arrives without its required evidence (#52)
+        run: npm run arrival:check
       - run: npm run build
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check

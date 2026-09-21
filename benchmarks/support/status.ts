@@ -6,6 +6,17 @@ import data from './status-criteria.json';
  * profile that decides a provider x credential-family's support status from
  * evidence alone, so no status is ever hand-written into README, docs or UI.
  * See docs/support-status.md.
+ *
+ * This profile is deliberately downstream of, and never a substitute for,
+ * `scripts/check-evidence-arrival.mjs` (#52): these floors are pass-rate
+ * thresholds over evidence that is assumed to already exist. A family
+ * missing a required evidence kind entirely — no twin, no benign control,
+ * no metamorphic or mutation case — reads as zero cases here, which already
+ * fails `minimumTwinPairs`/`benign.minimumCases` on its way to `stable`; the
+ * arrival gate is what makes that failure legible as a missing element
+ * rather than an unexplained zero, and is the one CI checks before this
+ * profile's numbers are trusted at all. Clearing the arrival contract is
+ * necessary for `stable`; it is never sufficient on its own.
  */
 export type SupportStatus = 'stable' | 'provisional' | 'pending' | 'unsupported';
 

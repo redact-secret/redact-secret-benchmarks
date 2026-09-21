@@ -26,12 +26,18 @@ export function describeCase(c: EvaluationCase) {
 export function summaries(results: CaseResult[]) {
   const byMethod: Summary = {}, byDetector: Record<string, Summary> = {}, byTaxonomy: Record<string, Summary> = {};
   const byOperator: Record<string, { generated: number; unsupported: number; error: number; assertions: Summary }> = {};
+  // Distinct benign taxonomy axes per detector (#92), case-level rather than
+  // assertion-level: a case's axis does not vary by scanner or assertion type.
+  const axisSets: Record<string, Set<string>> = {};
   const add = (destination: Summary, method: string, scanner: string, stratum: string, type: string, status: AssertionStatus) => {
     const key = `${method}/${scanner}/${stratum}/${type}`;
     const row = destination[key] ??= { pass: 0, fail: 0, 'review-required': 0, 'not-measured': 0 };
     row[status]++;
   };
   for (const r of results) {
+    if (r.method === 'benign' && r.taxonomy) {
+      for (const target of r.targets.length ? r.targets : ['unassigned']) (axisSets[target] ??= new Set()).add(r.taxonomy);
+    }
     for (const attempt of r.generation) {
       const row = byOperator[attempt.operator] ??= { generated: 0, unsupported: 0, error: 0, assertions: {} };
       row[attempt.status]++;
@@ -55,5 +61,6 @@ export function summaries(results: CaseResult[]) {
       }
     }
   }
-  return { byMethod, byDetector, byTaxonomy, byOperator };
+  const axesByDetector = Object.fromEntries(Object.entries(axisSets).map(([target, axes]) => [target, [...axes].sort()]));
+  return { byMethod, byDetector, byTaxonomy, byOperator, axesByDetector };
 }

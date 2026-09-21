@@ -38,19 +38,21 @@ function unresolvedInQueue(family: string, method: string, queue: QueuedReview[]
 }
 
 /**
- * One family's evidence from a full evaluation report. `byDetector` and
- * `reviewQueue` come from `runEvaluation` (twin/benign/metamorphic/mutation/
- * differential, `redact-secret` scored against the checked-in ledger).
- * Differential never reaches `byDetector` (its method returns no scanner
- * assertions, only a review queue), so its evidence is queue-only.
+ * One family's evidence from a full evaluation report. `byDetector`,
+ * `axesByDetector` and `reviewQueue` come from `runEvaluation` (twin/benign/
+ * metamorphic/mutation/differential, `redact-secret` scored against the
+ * checked-in ledger). Differential never reaches `byDetector` (its method
+ * returns no scanner assertions, only a review queue), so its evidence is
+ * queue-only.
  */
-export function familyEvidence(family: string, byDetector: Record<string, Summary>, reviewQueue: QueuedReview[], ledger: ReviewLedger): FamilySupportEvidence {
+export function familyEvidence(family: string, byDetector: Record<string, Summary>, axesByDetector: Record<string, string[]>, reviewQueue: QueuedReview[], ledger: ReviewLedger): FamilySupportEvidence {
   const summary = byDetector[family] ?? {};
   const contract = contracts[family];
   const twin = totalWhere(summary, 'twin', 'must-flip');
   const benign = totalWhere(summary, 'benign');
   const metamorphic = totalWhere(summary, 'metamorphic');
   const mutation = totalWhere(summary, 'mutation');
+  const benignAxisIds = axesByDetector[family] ?? [];
   return {
     family,
     detectors: contract ? [family] : [],
@@ -60,6 +62,8 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
     twinFailures: twin.fail,
     benignCases: benign.pass + benign.fail,
     benignFalseAlarms: benign.fail,
+    benignAxes: benignAxisIds.length,
+    benignAxisIds,
     metamorphicCriticalFailures: metamorphic.fail,
     // A hard mutation failure is as unreviewed as a queued one: nobody has
     // signed off that either is acceptable (only a `resolved` ledger entry does).

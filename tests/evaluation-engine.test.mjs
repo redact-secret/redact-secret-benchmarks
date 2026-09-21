@@ -11,6 +11,7 @@ import { mapFixture } from '../benchmarks/operators/context.ts';
 import { absolute, observe, relation } from '../benchmarks/engine/assertions.ts';
 import { runEvaluation, exitCode } from '../benchmarks/engine/runner.ts';
 import { generate, evaluate } from '../benchmarks/methods/common.ts';
+import { summaries } from '../benchmarks/engine/reporting.ts';
 
 const methods = createMethods(), operators = createOperators();
 const cases = await loadCases(operators);
@@ -208,6 +209,24 @@ test('invalid findings, process errors and missing tools cannot masquerade as cl
   const failed = { scanners: [{ status: 'complete' }], failures: [{}] };
   assert.equal(exitCode(failed), 0);
   assert.equal(exitCode(failed, { failOnAssertions: true }), 1);
+});
+
+test('summaries() computes axesByDetector from benign cases only, distinct per target, deduped and sorted (#92)', () => {
+  const variant = (id, kind, tier) => ({ id, path: `${id}.txt`, strategy: 'authored', kind, tier,
+    transformation: { method: 'none', methodVersion: 1, operator: 'none', operatorVersion: 1 }, provenance: {} });
+  const pass = (variantId) => ({ scanner: 'redact-secret', status: 'complete', variants: [],
+    assertions: [{ type: 'absolute', status: 'pass', variant: variantId }] });
+  const results = [
+    { id: 'c1', method: 'benign', taxonomy: 'near-miss', targets: ['fam-a'], generation: [], variants: [variant('c1-v1', 'must-not-flag', 'T2')], scanners: [pass('c1-v1')] },
+    { id: 'c2', method: 'benign', taxonomy: 'placeholder', targets: ['fam-a'], generation: [], variants: [variant('c2-v1', 'must-not-flag', 'T3')], scanners: [pass('c2-v1')] },
+    // A repeated axis on the same target must not be double-counted.
+    { id: 'c3', method: 'benign', taxonomy: 'near-miss', targets: ['fam-a'], generation: [], variants: [variant('c3-v1', 'must-not-flag', 'T2')], scanners: [pass('c3-v1')] },
+    { id: 'c4', method: 'benign', taxonomy: 'reference', targets: ['fam-b'], generation: [], variants: [variant('c4-v1', 'must-not-flag', 'T3')], scanners: [pass('c4-v1')] },
+    // Non-benign methods (twin, here) must never contribute to axis diversity.
+    { id: 'c5', method: 'twin', targets: ['fam-a'], generation: [], variants: [variant('c5-v1', 'must-redact', 'T1')], scanners: [pass('c5-v1')] },
+  ];
+  const { axesByDetector } = summaries(results);
+  assert.deepEqual(axesByDetector, { 'fam-a': ['near-miss', 'placeholder'], 'fam-b': ['reference'] });
 });
 
 test('a sixth method registers and runs without changing engine dispatch', async () => {

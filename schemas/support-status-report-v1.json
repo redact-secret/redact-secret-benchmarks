@@ -66,7 +66,7 @@
             "type": "object",
             "additionalProperties": false,
             "required": ["family", "detectors", "positiveContractTier", "hasProviderSource", "twinPairs", "twinFailures",
-              "benignCases", "benignFalseAlarms", "metamorphicCriticalFailures", "mutationUnresolvedCritical", "differentialUnresolvedContractDisagreements"],
+              "benignCases", "benignAxes", "benignAxisIds", "benignFalseAlarms", "metamorphicCriticalFailures", "mutationUnresolvedCritical", "differentialUnresolvedContractDisagreements"],
             "properties": {
               "family": { "type": "string" },
               "detectors": { "type": "array", "items": { "type": "string" } },
@@ -75,6 +75,8 @@
               "twinPairs": { "type": "integer", "minimum": 0 },
               "twinFailures": { "type": "integer", "minimum": 0 },
               "benignCases": { "type": "integer", "minimum": 0 },
+              "benignAxes": { "type": "integer", "minimum": 0 },
+              "benignAxisIds": { "type": "array", "items": { "type": "string" } },
               "benignFalseAlarms": { "type": "integer", "minimum": 0 },
               "metamorphicCriticalFailures": { "type": "integer", "minimum": 0 },
               "mutationUnresolvedCritical": { "type": "integer", "minimum": 0 },

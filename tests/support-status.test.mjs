@@ -18,6 +18,8 @@ const baseEvidence = () => ({
   twinPairs: 5,
   twinFailures: 0,
   benignCases: 5,
+  benignAxes: 3,
+  benignAxisIds: ['near-miss', 'placeholder', 'reference'],
   benignFalseAlarms: 0,
   metamorphicCriticalFailures: 0,
   mutationUnresolvedCritical: 0,
@@ -38,7 +40,7 @@ test('validateStatusCriteria accepts the checked-in criteria and rejects a mutil
 
 test('every stable threshold carries a non-empty rationale', () => {
   const s = statusCriteria.stable;
-  const thresholds = [s.minimumTwinPairs, s.twinFailures, s.benign.minimumCases, s.benign.falseAlarms,
+  const thresholds = [s.minimumTwinPairs, s.twinFailures, s.benign.minimumCases, s.benign.minimumAxes, s.benign.falseAlarms,
     s.metamorphic.criticalFailures, s.mutation.unresolvedCritical, s.differential.unresolvedContractDisagreements];
   for (const t of thresholds) assert.ok(t.rationale.trim().length > 0);
   assert.ok(s.positiveContract.rationale.trim().length > 0);
@@ -57,6 +59,35 @@ test('tier alone does not grant stable: a T1 contract with no twins is provision
   const result = classifyFamilySupport(evidence);
   assert.equal(result.status, 'provisional');
   assert.ok(result.reasons.some(r => r.startsWith('minimumTwinPairs:')));
+});
+
+test('a family under the axis floor is provisional, and the reason names the axes present (#92)', () => {
+  const stricter = JSON.parse(JSON.stringify(statusCriteria));
+  stricter.stable.benign.minimumAxes.value = 3;
+  const evidence = { ...baseEvidence(), benignCases: 5, benignAxes: 1, benignAxisIds: ['near-miss'] };
+  const result = classifyFamilySupport(evidence, stricter);
+  assert.equal(result.status, 'provisional');
+  const reason = result.reasons.find(r => r.startsWith('benign.minimumAxes:'));
+  assert.ok(reason, JSON.stringify(result.reasons));
+  assert.ok(reason.includes('near-miss'), reason);
+});
+
+test('a family with no benign axes at all names "none" rather than an empty list', () => {
+  const stricter = JSON.parse(JSON.stringify(statusCriteria));
+  stricter.stable.benign.minimumAxes.value = 3;
+  const evidence = { ...baseEvidence(), benignCases: 0, benignAxes: 0, benignAxisIds: [] };
+  const result = classifyFamilySupport(evidence, stricter);
+  const reason = result.reasons.find(r => r.startsWith('benign.minimumAxes:'));
+  assert.ok(reason, JSON.stringify(result.reasons));
+  assert.ok(reason.includes('none'), reason);
+});
+
+test('a family meeting the axis floor exactly is not penalized for minimumAxes', () => {
+  const stricter = JSON.parse(JSON.stringify(statusCriteria));
+  stricter.stable.benign.minimumAxes.value = 3;
+  const evidence = { ...baseEvidence(), benignCases: 5, benignAxes: 3, benignAxisIds: ['near-miss', 'placeholder', 'reference'] };
+  const result = classifyFamilySupport(evidence, stricter);
+  assert.ok(!result.reasons.some(r => r.startsWith('benign.minimumAxes:')), JSON.stringify(result.reasons));
 });
 
 test('a family failing reports which criterion it failed, one entry per breach', () => {

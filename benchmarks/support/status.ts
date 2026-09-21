@@ -28,7 +28,7 @@ export interface StatusCriteria {
     positiveContract: { requireProviderSource: true; rationale: string };
     minimumTwinPairs: Threshold;
     twinFailures: Threshold;
-    benign: { minimumCases: Threshold; falseAlarms: Threshold };
+    benign: { minimumCases: Threshold; minimumAxes: Threshold; falseAlarms: Threshold };
     metamorphic: { criticalFailures: Threshold };
     mutation: { unresolvedCritical: Threshold };
     differential: { unresolvedContractDisagreements: Threshold };
@@ -48,7 +48,7 @@ export function validateStatusCriteria(value: unknown): StatusCriteria {
   const s = c.stable;
   if (!s || s.positiveContract?.requireProviderSource !== true || !s.positiveContract.rationale ||
       !threshold(s.minimumTwinPairs) || !threshold(s.twinFailures) ||
-      !threshold(s.benign?.minimumCases) || !threshold(s.benign?.falseAlarms) ||
+      !threshold(s.benign?.minimumCases) || !threshold(s.benign?.minimumAxes) || !threshold(s.benign?.falseAlarms) ||
       !threshold(s.metamorphic?.criticalFailures) || !threshold(s.mutation?.unresolvedCritical) ||
       !threshold(s.differential?.unresolvedContractDisagreements))
     throw new Error('Invalid support-status criteria: stable');
@@ -76,6 +76,10 @@ export interface FamilySupportEvidence {
   twinFailures: number;
   benignCases: number;
   benignFalseAlarms: number;
+  /** Distinct benign taxonomy axes observed (`lib/assessment.ts`'s `Axis`); a bare case count cannot express diversity, this can. */
+  benignAxes: number;
+  /** Which axes those are, so a `benign.minimumAxes` failure names what is present, not just how many. */
+  benignAxisIds: string[];
   metamorphicCriticalFailures: number;
   mutationUnresolvedCritical: number;
   differentialUnresolvedContractDisagreements: number;
@@ -103,6 +107,8 @@ function stableFailures(evidence: FamilySupportEvidence, criteria: StatusCriteri
   check('minimumTwinPairs', evidence.twinPairs, s.minimumTwinPairs.value, '<', s.minimumTwinPairs.rationale);
   check('twinFailures', evidence.twinFailures, s.twinFailures.value, '>', s.twinFailures.rationale);
   check('benign.minimumCases', evidence.benignCases, s.benign.minimumCases.value, '<', s.benign.minimumCases.rationale);
+  if (fails(evidence.benignAxes, s.benign.minimumAxes.value, '<'))
+    reasons.push(`benign.minimumAxes: ${evidence.benignAxes} < ${s.benign.minimumAxes.value} (axes present: ${evidence.benignAxisIds.length ? evidence.benignAxisIds.join(', ') : 'none'}) — ${s.benign.minimumAxes.rationale}`);
   check('benign.falseAlarms', evidence.benignFalseAlarms, s.benign.falseAlarms.value, '>', s.benign.falseAlarms.rationale);
   check('metamorphic.criticalFailures', evidence.metamorphicCriticalFailures, s.metamorphic.criticalFailures.value, '>', s.metamorphic.criticalFailures.rationale);
   check('mutation.unresolvedCritical', evidence.mutationUnresolvedCritical, s.mutation.unresolvedCritical.value, '>', s.mutation.unresolvedCritical.rationale);

@@ -93,6 +93,7 @@ test('rendered Workbench method, review and holdout views retain the evidence bo
     assert.ok(methodPage(r,'twin').includes('Discriminated pairs'));
     assert.ok(methodPage(r,'twin').includes('affected failing cases') && methodPage(r,'twin').includes('failed assertions'));
     assert.ok(methodPage(r,'benign').includes('Flagged controls'));
+    assert.ok(methodPage(r,'benign').includes(selected[1].taxonomy), 'benign method page renders the case\'s reviewed taxonomy axis (#91)');
     assert.ok(methodPage(r,'mutation').includes('Operator evidence'), 'operator evidence moved in with the method that generates variants');
     assert.ok(methodPage(r,'differential').includes('not ground truth or votes'));
     assert.ok(methodPage(r,'differential').includes('Human review evidence'));

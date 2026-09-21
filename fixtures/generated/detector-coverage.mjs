@@ -129,7 +129,15 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("stripe-token", "label-prose", ["Documentation mentions a Stripe secret key (sk_ prefix) without embedding the key value."]);
   add("slack-token", "mask", ["xoxb-" + "*".repeat(12) + "-" + "*".repeat(12) + "-" + "*".repeat(24)]);
   add("gitlab-token", "mask", ["glpat-" + "*".repeat(20)]);
+  // #93: gitlab-token and npm-token were the only two families already
+  // reading stable at the staged floor of 2 axes (near-miss, placeholder;
+  // docs/decisions/2026-09-21-measure-benign-axis-diversity.md). Raising the
+  // floor to 3 in this same change would otherwise regress both, which the
+  // acceptance criteria forbid; one reference control each clears it without
+  // adding a third near-miss shape.
+  add("gitlab-token", "reference", ["GITLAB_TOKEN=${GITLAB_TOKEN}\n"]);
   add("npm-token", "mask", ["npm_" + "*".repeat(36)]);
+  add("npm-token", "reference", ["NPM_TOKEN=${NPM_TOKEN}\n"]);
   add("github-token", "mask", ["ghp_" + "*".repeat(36)]);
 
   // beta.4 additions: 17 detectors with no dedicated-prefix-plus-run shape
@@ -480,6 +488,105 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   }
   add("generic-token", "reference", ["api_key=process.env.BENCHMARK_KEY"]);
   add("generic-token", "mask", ["password=********"]);
+
+  // #93: the remaining 23 families sat at exactly two benign controls, both
+  // the same malformed-by-construction near-miss axis (#90). mask/reference/
+  // label-prose join each family's existing near-miss pair, reusing the same
+  // three suffixes #65/#62 already registered in #91's axis table
+  // (assessment.ts CONTROL_RULES) rather than a fourth near-miss shape, per
+  // this issue's authoring rule against manufacturing more -short-*/-missing-*
+  // controls to hit a number.
+  add("anthropic-token", "mask", ["sk-ant-api03-" + "*".repeat(80)]);
+  add("anthropic-token", "reference", ["ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}\n"]);
+  add("anthropic-token", "label-prose", ["Documentation mentions an Anthropic API key (sk-ant-api03- prefix) without embedding the key value."]);
+
+  add("atlassian-api-token", "mask", ["ATAT" + "*".repeat(100)]);
+  add("atlassian-api-token", "reference", ["ATLASSIAN_API_TOKEN=${ATLASSIAN_API_TOKEN}\n"]);
+  add("atlassian-api-token", "label-prose", ["Documentation mentions an Atlassian API token (ATAT prefix) without embedding the token value."]);
+
+  add("azure-devops-personal-access-token", "mask", ["*".repeat(76) + "AZDO" + "*".repeat(4)]);
+  add("azure-devops-personal-access-token", "reference", ["AZURE_DEVOPS_EXT_PAT=${AZURE_DEVOPS_PAT}\n"]);
+  add("azure-devops-personal-access-token", "label-prose", ["Documentation mentions an Azure DevOps personal access token (84-character body with the AZDO marker) without embedding the token value."]);
+
+  add("bearer-token", "mask", ["Authorization: Bearer " + "*".repeat(40)]);
+  add("bearer-token", "reference", ["Authorization: Bearer ${API_TOKEN}\n"]);
+  add("bearer-token", "label-prose", ["Documentation mentions an Authorization Bearer header without embedding the token value."]);
+
+  add("datadog-api-key", "mask", ["DD_API_KEY=" + "*".repeat(32)]);
+  add("datadog-api-key", "reference", ["DD_API_KEY=${DATADOG_API_KEY}\n"]);
+  add("datadog-api-key", "label-prose", ["Documentation mentions a Datadog API key (DD_API_KEY marker) without embedding the key value."]);
+
+  add("datadog-application-key", "mask", ["DD_APPLICATION_KEY=" + "*".repeat(40)]);
+  add("datadog-application-key", "reference", ["DD_APPLICATION_KEY=${DATADOG_APPLICATION_KEY}\n"]);
+  add("datadog-application-key", "label-prose", ["Documentation mentions a Datadog application key (DD_APPLICATION_KEY marker) without embedding the key value."]);
+
+  add("discord-bot-token", "mask", [`${"*".repeat(24)}.${"*".repeat(6)}.${"*".repeat(27)}`]);
+  add("discord-bot-token", "reference", ["DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}\n"]);
+  add("discord-bot-token", "label-prose", ["Documentation mentions a Discord bot token (three-segment, dot-delimited shape) without embedding the token value."]);
+
+  add("google-api-key", "mask", ["AIza" + "*".repeat(35)]);
+  add("google-api-key", "reference", ["GOOGLE_API_KEY=${GOOGLE_API_KEY}\n"]);
+  add("google-api-key", "label-prose", ["Documentation mentions a Google API key (AIza prefix) without embedding the key value."]);
+
+  add("grafana-cloud-access-policy-token", "mask", ["glc_" + "*".repeat(32)]);
+  add("grafana-cloud-access-policy-token", "reference", ["GRAFANA_CLOUD_TOKEN=${GRAFANA_CLOUD_TOKEN}\n"]);
+  add("grafana-cloud-access-policy-token", "label-prose", ["Documentation mentions a Grafana Cloud access policy token (glc_ prefix) without embedding the token value."]);
+
+  add("grafana-service-account-token", "mask", [`glsa_${"*".repeat(32)}_${"*".repeat(8)}`]);
+  add("grafana-service-account-token", "reference", ["GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_SA_TOKEN}\n"]);
+  add("grafana-service-account-token", "label-prose", ["Documentation mentions a Grafana service account token (glsa_ prefix) without embedding the token value."]);
+
+  add("microsoft-entra-client-secret", "mask", [`${"*".repeat(3)}8Q~${"*".repeat(33)}`]);
+  add("microsoft-entra-client-secret", "reference", ["AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}\n"]);
+  add("microsoft-entra-client-secret", "label-prose", ["Documentation mentions a Microsoft Entra client secret without embedding the secret value."]);
+
+  add("new-relic-license-key", "mask", ["newrelic " + "*".repeat(40)]);
+  add("new-relic-license-key", "reference", ["NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}\n"]);
+  add("new-relic-license-key", "label-prose", ["Documentation mentions a New Relic license key without embedding the key value."]);
+
+  add("new-relic-user-api-key", "mask", ["NRAK-" + "*".repeat(27)]);
+  add("new-relic-user-api-key", "reference", ["NEW_RELIC_API_KEY=${NEW_RELIC_API_KEY}\n"]);
+  add("new-relic-user-api-key", "label-prose", ["Documentation mentions a New Relic user API key (NRAK- prefix) without embedding the key value."]);
+
+  add("notion-token", "mask", ["secret_" + "*".repeat(43)]);
+  add("notion-token", "reference", ["NOTION_TOKEN=${NOTION_TOKEN}\n"]);
+  add("notion-token", "label-prose", ["Documentation mentions a Notion integration token (secret_ prefix) without embedding the token value."]);
+
+  add("otpauth-uri", "mask", ["otpauth://totp/Benchmark:fixture?secret=" + "*".repeat(32) + "&issuer=Benchmark"]);
+  add("otpauth-uri", "reference", ["TOTP_SECRET=${TOTP_SECRET}\n"]);
+  add("otpauth-uri", "label-prose", ["Documentation mentions an otpauth Key URI secret parameter without embedding the seed value."]);
+
+  add("pypi-token", "mask", ["pypi-" + "*".repeat(90)]);
+  add("pypi-token", "reference", ["TWINE_PASSWORD=${PYPI_TOKEN}\n"]);
+  add("pypi-token", "label-prose", ["Documentation mentions a PyPI API token (pypi- prefix) without embedding the token value."]);
+
+  add("sentry-org-auth-token", "mask", [`sntrys_eyJ${"*".repeat(26)}_${"*".repeat(43)}`]);
+  add("sentry-org-auth-token", "reference", ["SENTRY_ORG_AUTH_TOKEN=${SENTRY_ORG_AUTH_TOKEN}\n"]);
+  add("sentry-org-auth-token", "label-prose", ["Documentation mentions a Sentry organization auth token (sntrys_ prefix) without embedding the token value."]);
+
+  add("sentry-user-auth-token", "mask", ["sntryu_" + "*".repeat(64)]);
+  add("sentry-user-auth-token", "reference", ["SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}\n"]);
+  add("sentry-user-auth-token", "label-prose", ["Documentation mentions a Sentry user auth token (sntryu_ prefix) without embedding the token value."]);
+
+  add("supabase-token", "mask", ["sb_secret_" + "*".repeat(40)]);
+  add("supabase-token", "reference", ["SUPABASE_SECRET_KEY=${SUPABASE_SECRET_KEY}\n"]);
+  add("supabase-token", "label-prose", ["Documentation mentions a Supabase secret key (sb_secret_ prefix) without embedding the key value."]);
+
+  add("telegram-bot-token", "mask", ["123456:" + "*".repeat(34)]);
+  add("telegram-bot-token", "reference", ["TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}\n"]);
+  add("telegram-bot-token", "label-prose", ["Documentation mentions a Telegram bot token (digits-colon-secret shape) without embedding the token value."]);
+
+  add("twilio-api-key-secret", "mask", [`SK${"*".repeat(32)} ${"*".repeat(32)}`]);
+  add("twilio-api-key-secret", "reference", ["TWILIO_API_KEY_SECRET=${TWILIO_API_KEY_SECRET}\n"]);
+  add("twilio-api-key-secret", "label-prose", ["Documentation mentions a Twilio API Key Secret without embedding the secret value."]);
+
+  add("twilio-auth-token", "mask", [`AC${"*".repeat(32)} ${"*".repeat(32)}`]);
+  add("twilio-auth-token", "reference", ["TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}\n"]);
+  add("twilio-auth-token", "label-prose", ["Documentation mentions a Twilio Auth Token without embedding the token value."]);
+
+  add("vercel-token", "mask", ["vcp_" + "*".repeat(32)]);
+  add("vercel-token", "reference", ["VERCEL_TOKEN=${VERCEL_TOKEN}\n"]);
+  add("vercel-token", "label-prose", ["Documentation mentions a Vercel access token (vcp_/vci_/vca_/vcr_/vck_ prefixes) without embedding the token value."]);
 
   return {
     "detector-coverage": {

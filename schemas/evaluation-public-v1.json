@@ -161,7 +161,16 @@
             }
           },
           "taxonomy": {
-            "type": "string"
+            "enum": [
+              "",
+              "public-identifier",
+              "placeholder",
+              "reference",
+              "ordinary-prose",
+              "near-miss",
+              "encoded-value",
+              "pending"
+            ]
           },
           "sourceSlug": {
             "type": "string"

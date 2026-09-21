@@ -110,8 +110,90 @@ export const MUTATION_KINDS = ['length', 'alphabet', 'prefix', 'boundary', 'publ
  */
 const NEAR_MISS = 'Malformed-by-construction control: prefix-only, truncated, mis-delimited or public-material shape of a contracted family. Expected silence follows from construction.';
 const PLACEHOLDER = 'Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.';
+const PUBLIC_OR_ENCODED = 'Public identifier or benign encoding constructed to contain no credential: silence follows from construction.';
+const PUBLIC_ID = 'Public identifier constructed to contain no credential: silence follows from construction.';
+const MILESTONE_CLOSED = 'Placeholder, tutorial, reference, template or mask control whose expected silence follows a closed redact-secret issue decision, not a universal secret definition.';
 const bytesOf = (f: Fixture, r: Range) => new TextDecoder().decode(new TextEncoder().encode(f.content).slice(r.start, r.end));
 const matches = (family: string, value: string) => Boolean(contracts[family ?? '']?.pattern) && new RegExp(contracts[family ?? ''].pattern!).test(value);
+
+/**
+ * Benign-control (`must-not-flag`) taxonomy axis (#91). Kept out of `Assessment`
+ * itself: the field is compared byte-for-byte against checked-in corpora
+ * (`cases.ts`'s "Stale case assessment" check), so a new field there forces a
+ * corpus-wide rewrite for zero measurement gain. `pending` is reserved for T0
+ * controls with no reviewed rule and is never returned by `controlAxis` itself
+ * — callers assign it once a control's tier is known to be T0.
+ */
+export type Axis = 'public-identifier' | 'placeholder' | 'reference' | 'ordinary-prose' | 'near-miss' | 'encoded-value' | 'pending';
+export const AXES: readonly Axis[] = ['public-identifier', 'placeholder', 'reference', 'ordinary-prose', 'near-miss', 'encoded-value', 'pending'];
+
+type ControlRule = { test: (f: Fixture) => boolean; tier: Tier; reason: string; axis: Exclude<Axis, 'pending'>; family?: (f: Fixture) => string | undefined };
+const idSuffix = (...suffixes: string[]) => (f: Fixture) => suffixes.some(s => f.id.endsWith(`-${s}`));
+const idIn = (...ids: string[]) => (f: Fixture) => ids.includes(f.id);
+const groupIn = (...groups: string[]) => (f: Fixture) => groups.includes(f.group);
+const always = () => true;
+const detectorFamily = (f: Fixture) => f.detectors?.[0];
+
+/**
+ * Single source for classifyControl's must-not-flag tier/reason AND
+ * controlAxis's taxonomy (#91): every reviewed must-not-flag branch is one
+ * row here, evaluated in category then array order (first match wins), so a
+ * suffix/id/group added to one side cannot be missed by the other. Rows that
+ * originate from the same pre-#91 branch keep that branch's exact `tier` and
+ * `reason` (`classifyFixture`'s output is compared byte-for-byte against
+ * checked-in corpora); only `axis` may distinguish them.
+ */
+const CONTROL_RULES: Record<string, ControlRule[]> = {
+  'detector-coverage': [
+    // #45: missing-marker/-identifier/-segment/-separator/-keyword/-json-marker cover a
+    // required same-line or in-value marker the family's shape depends on; short-* covers
+    // truncation below the reviewed minimum; invalid-alphabet and *-identifier-embedding
+    // cover a broken character class or a boundary violation against adjacent text. All are
+    // the same malformed-by-construction argument as the suffixes above, just per-family.
+    { test: idSuffix('prefix-only', 'short-body', 'public-block', 'missing-signature', 'missing-value', 'no-password', 'missing-secret', 'short-secret', 'missing-marker', 'short-suffix', 'missing-identifier', 'short-token', 'missing-segment', 'short-final-segment', 'missing-json-marker', 'short-signature', 'short-key', 'missing-separator', 'short-checksum', 'missing-keyword', 'invalid-alphabet', 'leading-identifier-embedding', 'trailing-identifier-embedding', 'dash-identifier-embedding'), tier: 'T2', reason: NEAR_MISS, axis: 'near-miss', family: detectorFamily },
+    { test: idSuffix('reference', 'public-url'), tier: 'T3', reason: PLACEHOLDER, axis: 'reference', family: detectorFamily },
+    { test: idSuffix('mask', 'label-prose'), tier: 'T3', reason: PLACEHOLDER, axis: 'placeholder', family: detectorFamily },
+    { test: idSuffix('ordinary-dotted-name', 'ordinary-prose'), tier: 'T3', reason: PLACEHOLDER, axis: 'ordinary-prose', family: detectorFamily },
+  ],
+  'sendgrid-regressions': [
+    { test: idIn('short-id', 'short-secret', 'missing-separator', 'wrong-separator', 'wrong-prefix', 'prefix-only'), tier: 'T2', reason: NEAR_MISS, axis: 'near-miss', family: () => 'sendgrid-token' },
+    { test: idIn('masked'), tier: 'T3', reason: PLACEHOLDER, axis: 'placeholder', family: () => 'sendgrid-token' },
+    { test: idIn('documentation'), tier: 'T3', reason: PLACEHOLDER, axis: 'ordinary-prose', family: () => 'sendgrid-token' },
+  ],
+  'negative-controls': [
+    { test: idIn('prefix-only', 'short-github', 'short-gitlab', 'short-npm', 'short-sendgrid', 'short-slack', 'pem-label-only'), tier: 'T2', reason: NEAR_MISS, axis: 'near-miss' },
+    { test: idIn('sha256', 'commit-hash', 'uuid', 'public-url', 'public-email'), tier: 'T2', reason: PUBLIC_OR_ENCODED, axis: 'public-identifier' },
+    { test: idIn('base64-text'), tier: 'T2', reason: PUBLIC_OR_ENCODED, axis: 'encoded-value' },
+    { test: idIn('shell-reference', 'template-reference', 'token-variable'), tier: 'T3', reason: PLACEHOLDER, axis: 'reference' },
+    { test: idIn('unicode-prose', 'numbers'), tier: 'T3', reason: PLACEHOLDER, axis: 'ordinary-prose' },
+    { test: idIn('empty', 'whitespace', 'empty-assignment', 'redacted', 'masked', 'null-json'), tier: 'T3', reason: PLACEHOLDER, axis: 'placeholder' },
+  ],
+  accuracy: [
+    { test: idIn('public-id'), tier: 'T2', reason: PUBLIC_ID, axis: 'public-identifier' },
+    { test: idIn('placeholder'), tier: 'T3', reason: PLACEHOLDER, axis: 'reference' },
+    { test: idIn('documentation', 'ordinary-text'), tier: 'T3', reason: PLACEHOLDER, axis: 'ordinary-prose' },
+    { test: idIn('empty-config'), tier: 'T3', reason: PLACEHOLDER, axis: 'placeholder' },
+  ],
+  'token-contexts': [
+    { test: idIn('env-reference'), tier: 'T3', reason: PLACEHOLDER, axis: 'reference' },
+    { test: idIn('ordinary-text'), tier: 'T3', reason: PLACEHOLDER, axis: 'ordinary-prose' },
+  ],
+  'reference-syntax': [{ test: always, tier: 'T3', reason: PLACEHOLDER, axis: 'reference' }],
+  'milestone-6-closed': [
+    { test: groupIn('#254 · AWS documentation literals', '#255 · Tutorial URL passwords', '#256 · Connection placeholders', '#257 · Placeholder vocabulary', '#264 · Masked values'), tier: 'T3', reason: MILESTONE_CLOSED, axis: 'placeholder' },
+    { test: groupIn('#262 · Line boundaries'), tier: 'T3', reason: MILESTONE_CLOSED, axis: 'near-miss' },
+    { test: idIn('issue-265-properties'), tier: 'T3', reason: MILESTONE_CLOSED, axis: 'ordinary-prose' },
+    { test: groupIn('#263 · Fully delimited templates', '#266 · Flow collections', '#278 · Code reference exclusions', '#280 · Secret-manager grammars'), tier: 'T3', reason: MILESTONE_CLOSED, axis: 'reference' },
+    { test: idIn('issue-265-secret-key-ref'), tier: 'T3', reason: MILESTONE_CLOSED, axis: 'reference' },
+  ],
+};
+
+/** Pure sibling of classifyControl's must-not-flag branch: same table, axis instead of tier/reason. Null means no reviewed rule (fail closed in loadCases). */
+export function controlAxis(category: string, f: Fixture): Axis | null {
+  if (f.twinOf) return null;
+  for (const rule of CONTROL_RULES[category] ?? []) if (rule.test(f)) return rule.axis;
+  return null;
+}
 
 function classifyControl(category: string, f: Fixture): Assessment {
   if (f.twinOf) {
@@ -125,26 +207,9 @@ function classifyControl(category: string, f: Fixture): Assessment {
     const documented = f.mutationKind === 'public-prefix' && contracts[family ?? ''].tier === 'T1';
     return control(documented ? 'T1' : 'T2', `Negative twin of ${f.twinOf}: ${f.mutation}. ${documented ? 'The provider documents this namespace as public, so silence is provider-evidenced.' : 'Exactly one structural property differs from the positive; silence follows from construction.'}`, family);
   }
-  const family = f.detectors?.[0];
-  if (category === 'detector-coverage') {
-    // #45: missing-marker/-identifier/-segment/-separator/-keyword/-json-marker cover a
-    // required same-line or in-value marker the family's shape depends on; short-* covers
-    // truncation below the reviewed minimum; invalid-alphabet and *-identifier-embedding
-    // cover a broken character class or a boundary violation against adjacent text. All are
-    // the same malformed-by-construction argument as the suffixes above, just per-family.
-    if (/-(?:prefix-only|short-body|public-block|missing-signature|missing-value|no-password|missing-secret|short-secret|missing-marker|short-suffix|missing-identifier|short-token|missing-segment|short-final-segment|missing-json-marker|short-signature|short-key|missing-separator|short-checksum|missing-keyword|invalid-alphabet|leading-identifier-embedding|trailing-identifier-embedding|dash-identifier-embedding)$/.test(f.id)) return control('T2', NEAR_MISS, family);
-    if (/-(?:label-prose|ordinary-dotted-name|ordinary-prose|public-url|reference|mask)$/.test(f.id)) return control('T3', PLACEHOLDER, family);
+  for (const rule of CONTROL_RULES[category] ?? []) {
+    if (rule.test(f)) return control(rule.tier, rule.reason, rule.family?.(f));
   }
-  if (category === 'sendgrid-regressions') {
-    if (['short-id', 'short-secret', 'missing-separator', 'wrong-separator', 'wrong-prefix', 'prefix-only'].includes(f.id)) return control('T2', NEAR_MISS, 'sendgrid-token');
-    if (['masked', 'documentation'].includes(f.id)) return control('T3', PLACEHOLDER, 'sendgrid-token');
-  }
-  if (category === 'negative-controls') {
-    if (['Incomplete shapes', 'Public identifiers', 'Benign encoded text'].includes(f.group)) return control('T2', f.group === 'Incomplete shapes' ? NEAR_MISS : 'Public identifier or benign encoding constructed to contain no credential: silence follows from construction.');
-    if (['Empty inputs', 'Placeholders', 'Ordinary text'].includes(f.group)) return control('T3', PLACEHOLDER);
-  }
-  if (category === 'accuracy') return f.id === 'public-id' ? control('T2', 'Public identifier constructed to contain no credential: silence follows from construction.') : control('T3', PLACEHOLDER);
-  if (['token-contexts', 'reference-syntax', 'milestone-6-closed'].includes(category)) return control('T3', category === 'milestone-6-closed' ? 'Placeholder, tutorial, reference, template or mask control whose expected silence follows a closed redact-secret issue decision, not a universal secret definition.' : PLACEHOLDER);
   return pending('No reviewed control rule for this input. Excluded from comparative scores until reviewed.', undefined, 'must-not-flag');
 }
 

@@ -5,18 +5,17 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { buildCorpora } from '../../fixtures/generated/build.mjs';
 import { validateCorpus } from '../lib/scoring.ts';
-import { validateAssessment, classifyFixture, validateContracts } from '../lib/assessment.ts';
+import { validateAssessment, classifyFixture, validateContracts, controlAxis } from '../lib/assessment.ts';
 import { validateStructures } from '../lib/validate-structures.ts';
 import { hash, secrets } from './model.ts';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const taxonomy = (category: string, f: Fixture) => {
-  if (/reference|syntax/i.test(category + f.group)) return 'references';
-  if (/placeholder|mask/i.test(f.group)) return 'placeholders';
-  if (/encoded/i.test(f.group)) return 'encoded-values';
-  if (/identifier/i.test(f.group)) return 'identifiers';
-  if (/shape|miss/i.test(f.group)) return 'near-misses';
-  return 'documentation';
+/** Fail closed (#91): a reviewed must-not-flag control always has an axis. T0 controls are unscored and carry the explicit `pending` axis instead. */
+const axisFor = (category: string, f: Fixture) => {
+  if (f.assessment.tier === 'T0') return 'pending';
+  const axis = controlAxis(category, f);
+  if (axis === null) throw new Error(`No reviewed axis rule for control: ${category}/${f.id}`);
+  return axis;
 };
 
 /** Bridge the corpus catalog to cases; never relabel from observations. */
@@ -71,7 +70,7 @@ export async function loadCases(operators: Registry<Operator>): Promise<Evaluati
       if (f.twinOf) {
         const positive = corpus.fixtures.find(p => p.id === f.twinOf);
         add('twin', { seed: positive!, twin: f, operators: [{ id: 'authored.twin' }] });
-      } else if (!secrets(f).length) add('benign', { taxonomy: taxonomy(category.id, f) });
+      } else if (!secrets(f).length) add('benign', { taxonomy: axisFor(category.id, f) });
       // Context methods also check preservation of silence and pending cases.
       // Existing twins remain in the paired method rather than being unpaired.
       if (!f.twinOf) {

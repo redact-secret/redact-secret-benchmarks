@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts } from '../benchmarks/lib/assessment.ts';
+import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES } from '../benchmarks/lib/assessment.ts';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 import { validateCorpus, score } from '../benchmarks/lib/scoring.ts';
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
@@ -298,4 +298,44 @@ test('AWS and Shopify composites map reported components without borrowing expec
   assert.deepEqual(normalizeTrufflehogFindings([{ ...shop, expected: [] }], '/tmp', shopRow), shop.expected.map(({ start, end }) => ({ path: shop.path, start, end })));
   assert.throws(() => normalizeTrufflehogFindings([shop], '/tmp', { ...shopRow, Raw: token + 'absent.myshopify.com' }));
   assert.deepEqual(score([aws], expected).rows[0].spanOutcomes, ['EXACT', 'EXACT']);
+});
+
+test('controlAxis reads the same table as classifyControl: one id per suffix, and a stale suffix fails closed (#91)', () => {
+  // One representative fixture per reviewed suffix/id/group, covering every axis the vocabulary names.
+  const cases = [
+    ['detector-coverage', 'aws-access-key-prefix-only', 'near-miss'],
+    ['detector-coverage', 'digitalocean-token-leading-identifier-embedding', 'near-miss'],
+    ['detector-coverage', 'vault-token-reference', 'reference'],
+    ['detector-coverage', 'connection-string-public-url', 'reference'],
+    ['detector-coverage', 'vault-token-mask', 'placeholder'],
+    ['detector-coverage', 'private-key-label-prose', 'placeholder'],
+    ['detector-coverage', 'jwt-ordinary-dotted-name', 'ordinary-prose'],
+    ['detector-coverage', 'bearer-token-ordinary-prose', 'ordinary-prose'],
+    ['sendgrid-regressions', 'short-id', 'near-miss'],
+    ['sendgrid-regressions', 'masked', 'placeholder'],
+    ['sendgrid-regressions', 'documentation', 'ordinary-prose'],
+    ['negative-controls', 'prefix-only', 'near-miss'],
+    ['negative-controls', 'sha256', 'public-identifier'],
+    ['negative-controls', 'base64-text', 'encoded-value'],
+    ['negative-controls', 'shell-reference', 'reference'],
+    ['negative-controls', 'unicode-prose', 'ordinary-prose'],
+    ['negative-controls', 'empty', 'placeholder'],
+    ['accuracy', 'public-id', 'public-identifier'],
+    ['token-contexts', 'env-reference', 'reference'],
+    ['token-contexts', 'ordinary-text', 'ordinary-prose'],
+    ['reference-syntax', 'jinja', 'reference'],
+    ['milestone-6-closed', 'issue-262-yaml-block', 'near-miss'],
+    ['milestone-6-closed', 'issue-265-secret-key-ref', 'reference'],
+  ];
+  const byCategory = new Map(all.map(([category, corpus]) => [category, corpus.fixtures]));
+  for (const [category, id, axis] of cases) {
+    const f = byCategory.get(category).find(x => x.id === id);
+    assert.ok(f, `${category}/${id} fixture must exist`);
+    assert.equal(controlAxis(category, f), axis, `${category}/${id}`);
+  }
+  assert.deepEqual(new Set(cases.map(([, , axis]) => axis)), new Set(AXES.filter(a => a !== 'pending')), 'every non-pending axis in the vocabulary is exercised above');
+  // A suffix classifyControl does not recognize must fail closed on both sides of the shared table together.
+  const stale = { id: 'aws-access-key-never-reviewed-suffix', group: 'aws-access-key', content: 'x', expected: [], detectors: ['aws-access-key'] };
+  assert.equal(controlAxis('detector-coverage', stale), null);
+  assert.equal(classifyFixture('detector-coverage', stale).tier, 'T0');
 });

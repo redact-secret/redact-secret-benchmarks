@@ -50,7 +50,7 @@ test('familyEvidence reads twin pairs and failures from the must-flip relation o
       'twin/gitleaks/must-redact:T1->must-not-flag:T2/must-flip': { pass: 0, fail: 9, 'review-required': 0, 'not-measured': 0 },
     },
   };
-  const evidence = familyEvidence('example-token', byDetector, [], emptyLedger);
+  const evidence = familyEvidence('example-token', byDetector, {}, [], emptyLedger);
   assert.equal(evidence.twinPairs, 3);
   assert.equal(evidence.twinFailures, 1);
 });
@@ -63,15 +63,25 @@ test('familyEvidence sums benign and metamorphic pass/fail for the product scann
       'metamorphic/redact-secret/must-redact:T1/present-within-envelope': { pass: 7, fail: 2, 'review-required': 0, 'not-measured': 0 },
     },
   };
-  const evidence = familyEvidence('example-token', byDetector, [], emptyLedger);
+  const evidence = familyEvidence('example-token', byDetector, {}, [], emptyLedger);
   assert.equal(evidence.benignCases, 5);
   assert.equal(evidence.benignFalseAlarms, 1);
   assert.equal(evidence.metamorphicCriticalFailures, 2);
 });
 
+test('familyEvidence reports benignAxes/benignAxisIds from axesByDetector, keyed by family, and empty when absent (#92)', () => {
+  const axesByDetector = { 'example-token': ['near-miss', 'placeholder'], 'other-token': ['reference'] };
+  const evidence = familyEvidence('example-token', {}, axesByDetector, [], emptyLedger);
+  assert.equal(evidence.benignAxes, 2);
+  assert.deepEqual(evidence.benignAxisIds, ['near-miss', 'placeholder']);
+  const missing = familyEvidence('never-registered', {}, axesByDetector, [], emptyLedger);
+  assert.equal(missing.benignAxes, 0);
+  assert.deepEqual(missing.benignAxisIds, []);
+});
+
 test('familyEvidence counts a hard mutation failure as unresolved even with no queue entry', () => {
   const byDetector = { 'example-token': { 'mutation/redact-secret/must-redact:T1/present-within-envelope': { pass: 1, fail: 3, 'review-required': 0, 'not-measured': 0 } } };
-  const evidence = familyEvidence('example-token', byDetector, [], emptyLedger);
+  const evidence = familyEvidence('example-token', byDetector, {}, [], emptyLedger);
   assert.equal(evidence.mutationUnresolvedCritical, 3);
 });
 
@@ -84,7 +94,7 @@ test('familyEvidence treats a queued mutation review as resolved only when the l
     { id: 'other-family', method: 'mutation', targets: ['other-token'] },
   ];
   const ledger = { schemaVersion: 1, entries: { 'open-1': { status: 'open', firstSeenRun: 'r', note: '' }, 'resolved-1': { status: 'resolved', firstSeenRun: 'r', note: '' } } };
-  const evidence = familyEvidence('example-token', byDetector, queue, ledger);
+  const evidence = familyEvidence('example-token', byDetector, {}, queue, ledger);
   assert.equal(evidence.mutationUnresolvedCritical, 2);
 });
 
@@ -101,19 +111,19 @@ test('familyEvidence treats a not-assertable queue entry as settled, the same as
       'not-assertable-1': { status: 'not-assertable', firstSeenRun: 'r', note: 'operator contract broken by construction' },
     },
   };
-  const evidence = familyEvidence('example-token', byDetector, queue, ledger);
+  const evidence = familyEvidence('example-token', byDetector, {}, queue, ledger);
   assert.equal(evidence.mutationUnresolvedCritical, 1, 'only the open entry counts; not-assertable is settled');
 });
 
 test('familyEvidence sources differential evidence from the review queue only, never byDetector', () => {
   const byDetector = { 'example-token': { 'differential/redact-secret/must-redact:T1/absolute': { pass: 1, fail: 99, 'review-required': 0, 'not-measured': 0 } } };
   const queue = [{ id: 'd-1', method: 'differential', targets: ['example-token'] }];
-  const evidence = familyEvidence('example-token', byDetector, queue, emptyLedger);
+  const evidence = familyEvidence('example-token', byDetector, {}, queue, emptyLedger);
   assert.equal(evidence.differentialUnresolvedContractDisagreements, 1);
 });
 
 test('familyEvidence fails closed: an id absent from contracts carries no detector and no tier', () => {
-  const evidence = familyEvidence('never-registered', {}, [], emptyLedger);
+  const evidence = familyEvidence('never-registered', {}, {}, [], emptyLedger);
   assert.deepEqual(evidence.detectors, []);
   assert.equal(evidence.positiveContractTier, null);
   assert.equal(evidence.hasProviderSource, false);
@@ -121,7 +131,7 @@ test('familyEvidence fails closed: an id absent from contracts carries no detect
 
 test('every registered family gets a positive-contract tier and hasProviderSource true only for T1 with a documented source', () => {
   for (const family of Object.keys(contracts)) {
-    const evidence = familyEvidence(family, {}, [], emptyLedger);
+    const evidence = familyEvidence(family, {}, {}, [], emptyLedger);
     assert.equal(evidence.detectors.length, 1);
     assert.equal(evidence.positiveContractTier, contracts[family].tier);
     assert.equal(evidence.hasProviderSource, contracts[family].tier === 'T1' && Boolean(contracts[family].providerSource));
@@ -129,7 +139,7 @@ test('every registered family gets a positive-contract tier and hasProviderSourc
 });
 
 test('classifying the full registry from all-zero evidence gives exactly one status per family, with a reason unless stable', () => {
-  const results = Object.keys(contracts).map(family => classifyFamilySupport(familyEvidence(family, {}, [], emptyLedger)));
+  const results = Object.keys(contracts).map(family => classifyFamilySupport(familyEvidence(family, {}, {}, [], emptyLedger)));
   assert.equal(results.length, Object.keys(contracts).length);
   for (const r of results) {
     assert.ok(['stable', 'provisional', 'pending', 'unsupported'].includes(r.status));
@@ -158,7 +168,7 @@ test('a real classify-support report, if present from a prior eval:classify run,
 
 test('a synthetic report shaped like eval:classify output satisfies the schema', () => {
   const family = Object.keys(contracts)[0];
-  const evidence = familyEvidence(family, {}, [], emptyLedger);
+  const evidence = familyEvidence(family, {}, {}, [], emptyLedger);
   const assessment = classifyFamilySupport(evidence);
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
@@ -171,7 +181,7 @@ test('a synthetic report shaped like eval:classify output satisfies the schema',
 
 test('a synthetic report shaped like a candidate eval:classify run satisfies the schema', () => {
   const family = Object.keys(contracts)[0];
-  const evidence = familyEvidence(family, {}, [], emptyLedger);
+  const evidence = familyEvidence(family, {}, {}, [], emptyLedger);
   const assessment = classifyFamilySupport(evidence);
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,

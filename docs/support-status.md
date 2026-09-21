@@ -42,7 +42,7 @@ sits near that floor — no code change required:
     "positiveContract": { "requireProviderSource": true, "rationale": "..." },
     "minimumTwinPairs": { "value": 5, "rationale": "..." },
     "twinFailures": { "value": 0, "rationale": "..." },
-    "benign": { "minimumCases": { "value": 5, "rationale": "..." }, "falseAlarms": { "value": 0, "rationale": "..." } },
+    "benign": { "minimumCases": { "value": 5, "rationale": "..." }, "minimumAxes": { "value": 2, "rationale": "..." }, "falseAlarms": { "value": 0, "rationale": "..." } },
     "metamorphic": { "criticalFailures": { "value": 0, "rationale": "..." } },
     "mutation": { "unresolvedCritical": { "value": 0, "rationale": "..." } },
     "differential": { "unresolvedContractDisagreements": { "value": 0, "rationale": "..." } }
@@ -60,9 +60,12 @@ non-empty.
 
 `classifyFamilySupport(evidence, criteria)` takes a `FamilySupportEvidence`
 record (positive-contract tier and provider-source flag, twin pairs/failures,
-benign cases/false alarms, metamorphic critical failures, mutation unresolved
-critical, differential unresolved contract disagreements, detector list, and
-an optional `unsupportedReason`) and returns `{ family, status, reasons }`.
+benign cases/false alarms, benign axis count and the axis ids themselves
+(`benignAxes`/`benignAxisIds` — issue #92, distinct `must-not-flag` taxonomy
+axes such as `near-miss`/`placeholder`/`reference`, not merely a case count),
+metamorphic critical failures, mutation unresolved critical, differential
+unresolved contract disagreements, detector list, and an optional
+`unsupportedReason`) and returns `{ family, status, reasons }`.
 `reasons` names every `stable` criterion the evidence missed — the family's
 actual number, the floor, and the floor's rationale — so a failing family
 never reports a bare status with no explanation.
@@ -94,8 +97,11 @@ exactly `benchmarks/detectors.json`'s 42 ids and #504's "42" — not per
 finer-grained (72, several per detector) and are the unit A8's support matrix
 displays, via `familiesForDetector`, not the unit this evidence attaches to.
 `familyEvidence` reads a full `runEvaluation` report's `byDetector` summaries
-(twin/benign/metamorphic assertions, scoped to the `redact-secret` scanner)
-and its `reviewQueue` resolved against `benchmarks/review-ledger.json`
+(twin/benign/metamorphic assertions, scoped to the `redact-secret` scanner),
+its `axesByDetector` (distinct benign taxonomy axes per family, case-level,
+`reporting.ts`'s `summaries()` — see
+[ADR](decisions/2026-09-21-measure-benign-axis-diversity.md)), and its
+`reviewQueue` resolved against `benchmarks/review-ledger.json`
 (mutation/differential; a queued entry counts as unresolved unless the ledger
 marks it `resolved` or `not-assertable` — the latter a per-operator-class
 decision that no ground truth is inferable by construction, distinct from a

@@ -25,9 +25,10 @@
         "benign": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["minimumCases", "falseAlarms"],
+          "required": ["minimumCases", "minimumAxes", "falseAlarms"],
           "properties": {
             "minimumCases": { "$ref": "#/definitions/threshold" },
+            "minimumAxes": { "$ref": "#/definitions/threshold" },
             "falseAlarms": { "$ref": "#/definitions/threshold" }
           }
         },

@@ -81,7 +81,7 @@ async function main() {
     // snapshot), not a taxonomy sub-family: `contracts` keys are exactly `detectors.json`'s ids.
     const families = Object.keys(contracts).sort();
     const results = families.map(family => {
-      const evidence = familyEvidence(family, report.byDetector, report.reviewQueue, ledger);
+      const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger);
       const assessment = classifyFamilySupport(evidence);
       // Un-probeable (#33) is carried alongside the status, never folded silently
       // into a bare "not enough twins" reading: zero twin pairs reads differently

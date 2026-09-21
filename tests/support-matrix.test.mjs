@@ -18,7 +18,7 @@ const emptyLedger = { schemaVersion: 1, entries: {} };
 /** A full, schema-shaped `support-status.json` built from real evidence, exactly as `eval:classify` would — every registered detector, all-zero evidence. */
 function fullStatusReport() {
   const families = Object.keys(contracts).sort().map(family => {
-    const evidence = familyEvidence(family, {}, [], emptyLedger);
+    const evidence = familyEvidence(family, {}, {}, [], emptyLedger);
     const assessment = classifyFamilySupport(evidence);
     return { ...assessment, taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable: contracts[family].unprobeable ?? null };
   });

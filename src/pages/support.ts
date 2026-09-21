@@ -65,6 +65,7 @@ function floors(): string {
     ['Twin pairs', `at least ${n(s.minimumTwinPairs.value)}`, s.minimumTwinPairs.rationale],
     ['Twin failures', `at most ${n(s.twinFailures.value)}`, s.twinFailures.rationale],
     ['Benign controls', `at least ${n(s.benign.minimumCases.value)}`, s.benign.minimumCases.rationale],
+    ['Distinct benign taxonomy axes', `at least ${n(s.benign.minimumAxes.value)}`, s.benign.minimumAxes.rationale],
     ['False alarms on benign controls', `at most ${n(s.benign.falseAlarms.value)}`, s.benign.falseAlarms.rationale],
     ['Metamorphic critical failures', `at most ${n(s.metamorphic.criticalFailures.value)}`, s.metamorphic.criticalFailures.rationale],
     ['Unresolved critical mutation findings', `at most ${n(s.mutation.unresolvedCritical.value)}`, s.mutation.unresolvedCritical.rationale],

@@ -101,11 +101,11 @@ assert flare_rows['github_token']['sourceUrl'].startswith('https://example.inval
 });
 
 test('known gap issues cover all recorded failures and link to authored fixtures', async () => {
-  assert.deepEqual(knownGaps.issues.map(i => i.number), [292,293,294,404,405,406,407,408]);
+  assert.deepEqual(knownGaps.issues.map(i => i.number), [292,293,294,404,405,406,407,408,551,552,553]);
   const assignments = await read('benchmarks/fixture-detectors.json');
   const slugs = knownGaps.issues.flatMap(i => i.fixtures);
-  assert.equal(slugs.length, 25);
-  assert.equal(new Set(slugs).size, 25);
+  assert.equal(slugs.length, 37);
+  assert.equal(new Set(slugs).size, 37);
   for (const issue of knownGaps.issues) {
     assert.equal(issue.url, `https://github.com/redact-secret/redact-secret/issues/${issue.number}`);
     for (const slug of issue.fixtures) assert.ok(Object.hasOwn(assignments,slug));
@@ -128,6 +128,6 @@ test('coverage route renders inventory, source provenance, milestone, and fixtur
     for (const issue of knownGaps.issues) assert.ok(html.includes(issue.url));
     assert.ok(!coveragePage(fixtures, 'all').includes('inventory-query'), 'the inventory is its own view of Coverage');
     const {fixturePage} = await server.ssrLoadModule('/src/pages/fixture.ts');
-    assert.ok(fixturePage(fixtures.find(f => f.slug === 'reference-syntax--windows-env'), undefined).includes('Beta.4 #292'));
+    assert.ok(fixturePage(fixtures.find(f => f.slug === 'reference-syntax--windows-env'), undefined).includes('Beta.6 #292'));
   } finally { await server.close(); }
 });

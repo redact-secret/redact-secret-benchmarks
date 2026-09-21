@@ -66,7 +66,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // must-not-flag controls (6 twins + 6 independent negatives) per family.
   assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 247);
   assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 253);
-  assert.deepEqual(tally['policy/T3'], { files: 176, spans: 176 });
+  // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
+  // boundary, one per field) pin the exact metamorphic-derived shape
+  // redact-secret#552 found undetected, independent of a fresh metamorphic run.
+  assert.deepEqual(tally['policy/T3'], { files: 179, spans: 179 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -80,7 +83,12 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // plus 10 new twins (netted out via -twins.length), to clear the stable
   // floors of 5 twin pairs and 5 benign cases for the ten T1 families #65
   // covers.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 258);
+  // #66: 6 new independent negatives (leading/trailing/dash identifier-
+  // embedding × 2 open-floor shapes, `linear-token`'s `lin_oauth_` and
+  // `slack-token`'s `xoxe-`) — #64's generalisation above reused each
+  // family's already-exact primary shape and never exercised the two
+  // interim guards redact-secret#551 actually found still open-floored.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 264);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });
@@ -104,7 +112,9 @@ test('v4 outcomes reduce to the v3 exact/containment rule when no envelope is au
 
 test('envelopes are authored where v3 needed prose: URIs, OTP, Bearer, quoted generics', () => {
   const enveloped = all.flatMap(([category, c]) => c.fixtures.filter(f => f.expected.some(r => r.envelope)).map(f => ({ category, f })));
-  assert.equal(enveloped.length, 55);
+  // #66: 3 new quoted-assignment envelopes (generic-token's markdown-inline-
+  // code boundary, one per field).
+  assert.equal(enveloped.length, 58);
   for (const { f } of enveloped) for (const r of f.expected) {
     const bytes = Buffer.from(f.content);
     const whole = bytes.subarray(r.envelope.start, r.envelope.end).toString();

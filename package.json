@@ -48,6 +48,7 @@
     "eval:matrix:drift": "node --import tsx benchmarks/support-matrix-drift.ts",
     "support:check:ui": "node --import tsx scripts/check-support-ui.mjs",
     "arrival:check": "node --import tsx scripts/check-evidence-arrival.mjs",
+    "decisions:validate": "node scripts/check-ledger-decisions.mjs",
     "eval:candidate": "node --import tsx benchmarks/candidate.ts",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
     "eval:dry-run": "node --import tsx scripts/accounting-dry-run.ts",

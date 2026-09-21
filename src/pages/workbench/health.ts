@@ -28,7 +28,7 @@ export function healthCells(data: BenchData, evaluation: EvaluationReport | null
   // Only a qualification run reads the checked-in ledger; discovery never does, so its queue state says nothing here.
   const review = evaluation?.qualification?.accounting?.review;
   cells.push(review
-    ? { id: 'ledger', label: 'LEDGER', sentence: `${n(review.unknown)} of ${n(review.open + review.resolved + review.unknown)} queue entries unreviewed`, state: review.unknown ? 'bad' : 'ok', href: '/workbench/qualification' }
+    ? { id: 'ledger', label: 'LEDGER', sentence: `${n(review.unknown)} of ${n(review.open + review.resolved + review.notAssertable + review.unknown)} queue entries unreviewed`, state: review.unknown ? 'bad' : 'ok', href: '/workbench/qualification' }
     : { id: 'ledger', label: 'LEDGER', sentence: 'No qualification evidence published', state: 'not-measured', href: '/workbench/qualification' });
   void runId;
   return cells;

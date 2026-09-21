@@ -91,7 +91,7 @@ export function evaluationProblem(value: unknown, corpusHashes?: Record<string, 
       if (c.findings.some(f => !Number.isInteger(f.count) || f.count < 0 || !variants.has(f.variant))) throw Error();
       if (!Array.isArray(c.comparisons)) throw Error();
     }
-    if (new Set(r.reviews.map(x => x.id)).size !== r.reviews.length || r.review.open + r.review.resolved + r.review.unknown !== r.reviews.length) throw Error();
+    if (new Set(r.reviews.map(x => x.id)).size !== r.reviews.length || r.review.open + r.review.resolved + r.review.notAssertable + r.review.unknown !== r.reviews.length) throw Error();
     for (const q of r.reviews) {
       const c = r.cases.find(c => c.id === q.caseId);
       if (!c || !c.variants.some(v => v.id === q.variant) || !['mutation','differential'].includes(c.method)) throw Error();
@@ -107,13 +107,15 @@ export function evaluationProblem(value: unknown, corpusHashes?: Record<string, 
 }
 
 /* ---------- Workbench: review ledger classes (redesign plan section 07) ---------- */
-export interface LedgerEntry { status: 'open' | 'resolved'; firstSeenRun: string; resolvedRun?: string; note: string }
+export interface LedgerEntry { status: 'open' | 'resolved' | 'not-assertable'; firstSeenRun: string; resolvedRun?: string; note: string }
 export interface ReviewLedgerFile { schemaVersion: number; entries: Record<string, LedgerEntry> }
 export interface ReviewClass {
   id: string; label: string; description: string;
   /** The literal `Class:` values of the ledger notes gathered here. */
   rawClasses: string[];
   open: number; resolved: number;
+  /** No ground truth is inferable, decided once per operator class (not a per-fixture review). Distinct from `resolved`. */
+  'not-assertable': number;
   entries: ({ id: string } & LedgerEntry)[];
 }
 
@@ -140,7 +142,7 @@ export function reviewClasses(ledger: ReviewLedgerFile): ReviewClass[] {
     const raw = ledgerClassOf(entry.note), classId = reviewClassId(raw), group = GROUPS.find(g => g.id === classId);
     let item = classes.get(classId);
     if (!item) classes.set(classId, item = {
-      id: classId, rawClasses: [], open: 0, resolved: 0, entries: [],
+      id: classId, rawClasses: [], open: 0, resolved: 0, 'not-assertable': 0, entries: [],
       label: group?.label ?? (raw.startsWith('operator=') ? raw.slice('operator='.length) : 'Other'),
       description: group?.description ?? (raw.startsWith('operator=') ? operatorEffect(entry.note) : 'Classes with no group of their own'),
     });
@@ -272,7 +274,7 @@ export function qualificationGates(accounting: SuiteAccounting, q: Qualification
   if (q?.accounting) {
     const { reasons, unresolvedGroups, review } = q.accounting;
     gates.push(gate('resolved-rate', !reasons.includes('unresolved-assertions'), 'Resolved rate', unresolvedGroups.length ? `${unresolvedGroups.length} group(s) below floor, first: ${unresolvedGroups[0]}` : floors(accounting.resolvedRateFloor), `≥ ${accounting.resolvedRateFloor.default}`));
-    const total = review.open + review.resolved + review.unknown, n = (v: number) => v.toLocaleString('en-US');
+    const total = review.open + review.resolved + review.notAssertable + review.unknown, n = (v: number) => v.toLocaleString('en-US');
     gates.push({ id: 'ledger', status: review.unknown ? 'not-met' : review.open ? 'watch' : 'met', label: 'Ledger rows for every entry', detail: review.unknown ? `${n(review.unknown)} queue entries have no ledger row` : 'open is a valid state', value: `${n(total)} · ${n(review.open)} open` });
   } else {
     gates.push(nm('resolved-rate', 'Resolved rate', floors(accounting.resolvedRateFloor), `≥ ${accounting.resolvedRateFloor.default}`));

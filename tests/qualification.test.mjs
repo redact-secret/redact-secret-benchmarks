@@ -18,7 +18,7 @@ function report() {
     development: { seed: 'engine-v1', casesHash: 'd'.repeat(64), corpusHashes: { control: 'e'.repeat(64) }, failures: 0, reviewEntries: 0, byDetector: {} },
     methods: suite.methods.map(method => ({ method, cases: 2, variants: 2, generationErrors: 0,
       scanners: scanners.map(({ id, status, assertions }) => ({ id, status, assertions: method === 'differential' ? { pass: 0, fail: 0, 'review-required': 0, 'not-measured': 0 } : method === 'holdout' ? structuredClone(assertions) : { ...assertions, 'not-measured': 0 } })) })),
-    accounting: { reasons: [], unresolvedGroups: [], review: { open: 0, resolved: 0, unknown: 0, oldestOpenRun: null } },
+    accounting: { reasons: [], unresolvedGroups: [], review: { open: 0, resolved: 0, notAssertable: 0, unknown: 0, oldestOpenRun: null } },
     holdout: { schemaVersion: 1, reportType: 'holdout', runId, planHash: 'f'.repeat(64), startedAt: time, finishedAt: time,
       methodology: 'frozen-candidate-canonical-cases-aggregate-only', independence: 'public-control', status: 'complete',
       corpus: { id: 'public-controls', revision: 1, purpose: 'public-conformance', corpusHash: 'd'.repeat(64), seedHash: 'e'.repeat(64), lifecycle: 'sealed-at-execution' },
@@ -60,6 +60,7 @@ test('qualification validation rejects incomplete coverage, mixed provenance, di
     r => r.accounting.review.unknown = 3,
     r => { r.accounting.review.unknown = 3; r.development.reviewEntries = 3; r.accounting.reasons = ['unreviewed-queue']; },
     r => { r.accounting.review.open = 1; r.development.reviewEntries = 1; },
+    r => { r.accounting.review.notAssertable = 1; },
     r => r.accounting.reasons = ['execution-incomplete'],
     r => r.methods[0].scanners[0].assertions['not-measured'] = 2,
     r => { const s = r.methods[0].scanners[0]; s.status = 'unstable'; s.assertions = { pass: 0, fail: 0, 'review-required': 0, 'not-measured': 0 }; r.status = 'incomplete'; r.accounting.reasons = ['execution-incomplete']; },
@@ -72,11 +73,12 @@ test('qualification validation rejects incomplete coverage, mixed provenance, di
 
 test('v1.1 evidence: an open acknowledged queue qualifies; unknown entries and unstable scanners are incomplete but valid', () => {
   const open = report();
-  open.accounting.review = { open: 2, resolved: 1, unknown: 0, oldestOpenRun: open.runId }; open.development.reviewEntries = 3;
+  // A not-assertable row is settled, same as resolved: it neither blocks qualification nor triggers `unreviewed-queue`.
+  open.accounting.review = { open: 2, resolved: 1, notAssertable: 1, unknown: 0, oldestOpenRun: open.runId }; open.development.reviewEntries = 4;
   assert.doesNotThrow(() => validateEvidence(open, 'qualification'));
   const unknown = report();
   unknown.status = 'incomplete'; unknown.development.reviewEntries = 4;
-  unknown.accounting = { reasons: ['unresolved-assertions', 'unreviewed-queue'], unresolvedGroups: ['mutation/*'], review: { open: 0, resolved: 0, unknown: 4, oldestOpenRun: null } };
+  unknown.accounting = { reasons: ['unresolved-assertions', 'unreviewed-queue'], unresolvedGroups: ['mutation/*'], review: { open: 0, resolved: 0, notAssertable: 0, unknown: 4, oldestOpenRun: null } };
   assert.doesNotThrow(() => validateEvidence(unknown, 'qualification'));
   const unstable = report();
   unstable.status = 'incomplete'; unstable.accounting.reasons = ['execution-incomplete'];

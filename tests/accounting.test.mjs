@@ -113,14 +113,19 @@ test('§5 twin coverage is pairs / positives and a single-pair group withholds i
   assert.equal(Object.values(aggregateGroups(rows)).reduce((n, x) => n + (x.twins?.positives ?? 0), 0), 40);
 });
 
-test('§6 a queue entry with no ledger row blocks qualification; an open row does not', () => {
-  const queue = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
-  const entries = { a: { status: 'open', firstSeenRun: '2026-09-02', note: 'acknowledged' }, b: { status: 'resolved', firstSeenRun: '2026-09-01', resolvedRun: '2026-09-10', note: 'adapter mapping' }, c: { status: 'open', firstSeenRun: '2026-08-30', note: 'standing' } };
+test('§6 a queue entry with no ledger row blocks qualification; an open row does not; not-assertable is settled like resolved', () => {
+  const queue = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }];
+  const entries = {
+    a: { status: 'open', firstSeenRun: '2026-09-02', note: 'acknowledged' },
+    b: { status: 'resolved', firstSeenRun: '2026-09-01', resolvedRun: '2026-09-10', note: 'adapter mapping' },
+    c: { status: 'open', firstSeenRun: '2026-08-30', note: 'standing' },
+    d: { status: 'not-assertable', firstSeenRun: '2026-09-03', note: 'no ground truth is inferable by construction' },
+  };
   const reviewed = reviewState(queue, { schemaVersion: 1, entries });
-  assert.deepEqual(reviewed, { open: 2, resolved: 1, unknown: 0, oldestOpenRun: '2026-08-30' });
+  assert.deepEqual(reviewed, { open: 2, resolved: 1, notAssertable: 1, unknown: 0, oldestOpenRun: '2026-08-30' });
   assert.deepEqual(completenessReasons({ executed: true, unresolvedGroups: [], review: reviewed }), []);
   const unseen = reviewState(queue, { schemaVersion: 1, entries: { a: entries.a } });
-  assert.deepEqual(unseen, { open: 1, resolved: 0, unknown: 2, oldestOpenRun: '2026-09-02' });
+  assert.deepEqual(unseen, { open: 1, resolved: 0, notAssertable: 0, unknown: 3, oldestOpenRun: '2026-09-02' });
   assert.deepEqual(completenessReasons({ executed: true, unresolvedGroups: [], review: unseen }), ['unreviewed-queue']);
   assert.equal(reviewState([{ id: 'constructor' }], { schemaVersion: 1, entries: {} }).unknown, 1);
 });

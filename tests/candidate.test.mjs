@@ -31,7 +31,9 @@ async function packages(mode = 'ok') {
       ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(){throw Error('unsafe fixture detail')}`
       : mode === 'ruleset-echo'
         ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(text, options){ return options && options.ruleset ? [{id:'finding-1', type:'ruleset-echo', detector:'ruleset-echo', confidence:'medium', obfuscation:'none', start:0, end:text.length}] : []; }`
-        : `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(){return []}`;
+        : mode === 'sendgrid-token-scan'
+          ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(text){ const m = /SG\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+/.exec(text); return m ? [{id:'finding-1', type:'sendgrid-token', detector:'sendgrid-token', confidence:'high', obfuscation:'none', start:m.index, end:m.index+m[0].length}] : []; }`
+          : `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(){return []}`;
   await writeFile(path.join(core, 'dist/index.js'), source);
   await writeFile(path.join(node, 'package.json'), JSON.stringify({ name: nodeName, version: '9.8.7-candidate.1' }));
   await writeFile(path.join(wasm, 'package.json'), JSON.stringify({ name: '@redact-secret/wasm', version: '9.8.7-candidate.1' }));
@@ -48,7 +50,7 @@ function report() {
     corpus: { protocol: 'measurement-v4', hash: 'f'.repeat(64), categories: [{ id: 'common-formats', sha256: '0'.repeat(64) }] },
     scanner: { id: 'redact-secret-candidate', configuration: candidateConfiguration, configurationHash: '1'.repeat(64) },
     runtime: { node: process.version, os: process.platform, arch: process.arch }, command: ['node', 'candidate'],
-    selection: { scope: 'filtered-development', filter: 'openai-token' }, completeness: { selectedFixtures: 1, scannedFixtures: 1 }, failures: [],
+    selection: { scope: 'filtered-development', filter: 'openai-token' }, completeness: { selectedFixtures: 1, scannedFixtures: 1, writtenFixtures: 1 }, failures: [],
     results: [{ fixtureId: 'common-formats--openai-token-legacy-plain', corpusSection: 'fixed-corpus', kind: 'must-redact', tier: 'T2', expectedSpans: 1, actualFindings: 1, outcome: 'EXACT', baseline: { version: '0.1.0-beta.4', outcome: 'EXACT' } }],
   };
 }
@@ -57,6 +59,7 @@ test('candidate evidence rejects false completeness and artifact identity drift'
   assert.doesNotThrow(() => validateEvidence(report(), 'candidate'));
   for (const mutate of [
     value => value.completeness.scannedFixtures = 0,
+    value => value.completeness.writtenFixtures = 0,
     value => value.failures.push({ phase: 'scan', code: 'scan-failed' }),
     value => value.candidate.expectedArtifactSha256 = '2'.repeat(64),
     value => value.selection.scope = 'full-suite',
@@ -155,6 +158,31 @@ test('candidate CLI evidence records ruleset identity and the run changes when o
     assert.ok(withRuleset.results.every(row => row.actualFindings > 0));
     assert.doesNotThrow(() => validateEvidence(without, 'candidate'));
     assert.doesNotThrow(() => validateEvidence(withRuleset, 'candidate'));
+  } finally { await rm(artifacts.root, { recursive: true, force: true }); }
+});
+
+test('candidate CLI scores a fixture whose path collides with another category as EXACT, never PARTIAL', async () => {
+  // common-formats and detector-coverage each carry a fixture at
+  // cases/sendgrid-token-segmented-unicode-crlf.txt with different content and
+  // expected spans. Pooling both categories into one scratch directory let the
+  // second write silently clobber the first, so the file scanned for
+  // common-formats no longer matched its own expected span (issue #77).
+  const artifacts = await packages('sendgrid-token-scan');
+  const output = path.join(artifacts.root, 'evidence output');
+  try {
+    await exec(process.execPath, ['--import', 'tsx', 'benchmarks/candidate.ts',
+      '--candidate-package', artifacts.core, '--candidate-node-package', artifacts.node, '--candidate-wasm-package', artifacts.wasm,
+      '--candidate-source-commit', 'a'.repeat(40), '--product-state', 'clean', '--output-dir', output, '--filter', 'sendgrid-token',
+      '--expected-artifact-sha256', await hashFile(artifacts.core)], { cwd: repositoryRoot, timeout: 120_000 });
+    const evidence = JSON.parse(await readFile(path.join(output, 'candidate-evidence-v1.json'), 'utf8'));
+    assert.equal(evidence.status, 'complete');
+    assert.equal(evidence.completeness.writtenFixtures, evidence.completeness.selectedFixtures);
+    assert.ok(evidence.results.some(row => row.fixtureId === 'common-formats--sendgrid-token-segmented-unicode-crlf'));
+    assert.ok(evidence.results.some(row => row.fixtureId === 'detector-coverage--sendgrid-token-segmented-unicode-crlf'));
+    for (const row of evidence.results) assert.notEqual(row.outcome, 'PARTIAL');
+    const collided = evidence.results.find(row => row.fixtureId === 'common-formats--sendgrid-token-segmented-unicode-crlf');
+    assert.equal(collided.outcome, 'EXACT');
+    assert.doesNotThrow(() => validateEvidence(evidence, 'candidate'));
   } finally { await rm(artifacts.root, { recursive: true, force: true }); }
 });
 

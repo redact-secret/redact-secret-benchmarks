@@ -34,7 +34,8 @@ export function validateEvidence(report: unknown, type: 'holdout' | 'qualificati
   if (Date.parse(value.finishedAt) < Date.parse(value.startedAt)) throw new Error('Invalid evidence chronology');
   if (type === 'candidate') {
     const failures = value.failures as unknown[];
-    if ((value.status === 'complete') !== (value.completeness.scannedFixtures === value.completeness.selectedFixtures && failures.length === 0))
+    if ((value.status === 'complete') !== (value.completeness.scannedFixtures === value.completeness.selectedFixtures &&
+        value.completeness.writtenFixtures === value.completeness.selectedFixtures && failures.length === 0))
       throw new Error('Invalid candidate completeness');
     if (value.status === 'complete' && (value.candidate.packageName === 'unknown' || value.candidate.declaredVersion === 'unknown'))
       throw new Error('Missing candidate identity');

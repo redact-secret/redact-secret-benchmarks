@@ -170,7 +170,7 @@ export interface CandidateReport {
   runId: string; finishedAt: string; status: string;
   candidate: { sourceCommit: string; sourceState: string; declaredVersion: string; packageName: string };
   selection: { scope: string; filter: string | null };
-  completeness: { selectedFixtures: number; scannedFixtures: number };
+  completeness: { selectedFixtures: number; scannedFixtures: number; writtenFixtures: number };
   failures: { phase: string; code: string }[];
   results: { fixtureId: string; corpusSection: 'fixed-corpus' | 'expanded-corpus'; kind: string; tier: string; outcome: string | null; baseline: { version: string; outcome: string | null } }[];
 }

@@ -21,7 +21,7 @@ export function healthStrip(data: BenchData, evaluation: EvaluationReport | null
 }
 
 export function workbenchPage({ data, evaluation, evaluationProblem, classes, changes }: WorkbenchInput): string {
-  const open = classes.reduce((sum, c) => sum + c.open, 0), total = classes.reduce((sum, c) => sum + c.open + c.resolved, 0);
+  const open = classes.reduce((sum, c) => sum + c.open, 0), total = classes.reduce((sum, c) => sum + c.open + c.resolved + c['not-assertable'], 0);
   const view = changeView(changes), rows = view ? rowsFor(view, 'fixed-corpus') : [];
   const lead = [...rows.filter(r => r.status !== 'held'), ...rows.filter(r => r.status === 'held')].slice(0, SUMMARY_ROWS);
   const gates = gatesFor(data, evaluation), notMet = gates.filter(g => g.status === 'not-met');

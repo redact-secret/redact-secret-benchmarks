@@ -59,6 +59,23 @@ test('familyEvidence treats a queued mutation review as resolved only when the l
   assert.equal(evidence.mutationUnresolvedCritical, 2);
 });
 
+test('familyEvidence treats a not-assertable queue entry as settled, the same as resolved', () => {
+  const byDetector = {};
+  const queue = [
+    { id: 'open-1', method: 'mutation', targets: ['example-token'] },
+    { id: 'not-assertable-1', method: 'mutation', targets: ['example-token'] },
+  ];
+  const ledger = {
+    schemaVersion: 1,
+    entries: {
+      'open-1': { status: 'open', firstSeenRun: 'r', note: '' },
+      'not-assertable-1': { status: 'not-assertable', firstSeenRun: 'r', note: 'operator contract broken by construction' },
+    },
+  };
+  const evidence = familyEvidence('example-token', byDetector, queue, ledger);
+  assert.equal(evidence.mutationUnresolvedCritical, 1, 'only the open entry counts; not-assertable is settled');
+});
+
 test('familyEvidence sources differential evidence from the review queue only, never byDetector', () => {
   const byDetector = { 'example-token': { 'differential/redact-secret/must-redact:T1/absolute': { pass: 1, fail: 99, 'review-required': 0, 'not-measured': 0 } } };
   const queue = [{ id: 'd-1', method: 'differential', targets: ['example-token'] }];

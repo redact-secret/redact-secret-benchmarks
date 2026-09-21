@@ -99,7 +99,7 @@ export function validateEvidence(report: unknown, type: 'holdout' | 'qualificati
     // v1.1 §1/§6: qualified means nothing unresolved below the floor and no disagreement nobody has looked at.
     const a = value.accounting;
     if (a.reasons.includes('unresolved-assertions') !== (a.unresolvedGroups.length > 0) || a.reasons.includes('unreviewed-queue') !== (a.review.unknown > 0) ||
-        (value.status === 'execution-qualified') !== (a.reasons.length === 0) || a.review.open + a.review.resolved + a.review.unknown !== value.development.reviewEntries ||
+        (value.status === 'execution-qualified') !== (a.reasons.length === 0) || a.review.open + a.review.resolved + a.review.notAssertable + a.review.unknown !== value.development.reviewEntries ||
         (a.review.oldestOpenRun === null) !== (a.review.open === 0))
       throw new Error('Inconsistent accounting evidence');
     if (value.milestone.status === 'closed' && value.milestone.openPrerequisites.length) throw new Error('Open milestone dependencies');

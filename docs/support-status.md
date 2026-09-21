@@ -97,8 +97,12 @@ displays, via `familiesForDetector`, not the unit this evidence attaches to.
 (twin/benign/metamorphic assertions, scoped to the `redact-secret` scanner)
 and its `reviewQueue` resolved against `benchmarks/review-ledger.json`
 (mutation/differential; a queued entry counts as unresolved unless the ledger
-marks it `resolved`; a hard mutation failure counts as unresolved too — no
-ledger entry ever un-reviews an assertion that failed outright). Each
+marks it `resolved` or `not-assertable` — the latter a per-operator-class
+decision that no ground truth is inferable by construction, distinct from a
+per-fixture review (issue #63,
+[ADR](decisions/2026-09-21-settle-mechanical-mutation-review-classes.md)); a
+hard mutation failure counts as unresolved too — no ledger entry ever
+un-reviews an assertion that failed outright). Each
 family's contract `unprobeable` record (#33) is carried into the output
 alongside its status, so a zero twin-pair reading is never silently
 indistinguishable from "nobody got to it yet". `results-output/support-status.json`

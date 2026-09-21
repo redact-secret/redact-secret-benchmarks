@@ -75,4 +75,4 @@ export interface Method {
 }
 export type CaseResult = ReturnType<typeof describeCase> & MethodResult & { variants: ReturnType<typeof describeVariant>[]; generation: GenerationAttempt[] };
 export type Summary = Record<string, Record<AssertionStatus, number>>;
-export interface ReviewLedger { schemaVersion: 1; entries: Record<string, { status: 'open' | 'resolved'; firstSeenRun: string; resolvedRun?: string; note: string }> }
+export interface ReviewLedger { schemaVersion: 1; entries: Record<string, { status: 'open' | 'resolved' | 'not-assertable'; firstSeenRun: string; resolvedRun?: string; note: string }> }

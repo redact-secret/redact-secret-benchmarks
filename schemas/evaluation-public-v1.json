@@ -507,6 +507,7 @@
       "required": [
         "open",
         "resolved",
+        "notAssertable",
         "unknown",
         "oldestOpenRun"
       ],
@@ -516,6 +517,10 @@
           "minimum": 0
         },
         "resolved": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notAssertable": {
           "type": "integer",
           "minimum": 0
         },

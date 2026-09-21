@@ -8,16 +8,18 @@ const ledger = JSON.parse(await readFile(new URL('../benchmarks/review-ledger.js
 const entries = Object.entries(ledger.entries);
 const classes = reviewClasses(ledger);
 
-test('ledger classes tally the JSON exactly: every entry lands in one class, open and resolved separately', () => {
-  assert.equal(classes.reduce((n, c) => n + c.open + c.resolved, 0), entries.length);
+test('ledger classes tally the JSON exactly: every entry lands in one class, open, resolved and not-assertable separately', () => {
+  assert.equal(classes.reduce((n, c) => n + c.open + c.resolved + c['not-assertable'], 0), entries.length);
   assert.equal(classes.reduce((n, c) => n + c.open, 0), entries.filter(([, e]) => e.status === 'open').length);
   assert.equal(classes.reduce((n, c) => n + c.resolved, 0), entries.filter(([, e]) => e.status === 'resolved').length);
+  assert.equal(classes.reduce((n, c) => n + c['not-assertable'], 0), entries.filter(([, e]) => e.status === 'not-assertable').length);
   assert.equal(new Set(classes.flatMap(c => c.entries.map(e => e.id))).size, entries.length, 'no entry is counted twice');
   for (const c of classes) {
     // Recount straight from the file, independent of reviewClasses.
     const direct = entries.filter(([, e]) => reviewClassId(ledgerClassOf(e.note)) === c.id);
     assert.equal(c.open, direct.filter(([, e]) => e.status === 'open').length, c.id);
     assert.equal(c.resolved, direct.filter(([, e]) => e.status === 'resolved').length, c.id);
+    assert.equal(c['not-assertable'], direct.filter(([, e]) => e.status === 'not-assertable').length, c.id);
     for (const raw of c.rawClasses) assert.ok(direct.some(([, e]) => ledgerClassOf(e.note) === raw), raw);
   }
   assert.ok(entries.every(([, e]) => ledgerClassOf(e.note) !== 'unclassified'), 'every note names its class');
@@ -29,8 +31,17 @@ test('the open queue is a handful of groups, not a thousand rows; each has a boo
   assert.deepEqual(open.map(c => c.open), [...open.map(c => c.open)].sort((a, b) => b - a), 'largest group first');
   for (const c of classes) assert.deepEqual(parseRoute(`/workbench/review/${c.id}`), { kind: 'workbench', id: c.id, view: 'review', to: '' }, c.id);
   assert.ok(open.some(c => c.id === 't0-fixtures'), '/pending redirects here');
-  const operator = open.find(c => c.rawClasses[0].startsWith('operator='));
+  assert.ok(!open.some(c => c.rawClasses[0].startsWith('operator=')), 'the mechanical operator classes were settled not-assertable (issue #63), so none is open any more');
+});
+
+test('the mechanical operator classes settled not-assertable are visible as their own state, not folded into resolved', () => {
+  const notAssertable = classes.filter(c => c['not-assertable']);
+  assert.ok(notAssertable.length > 0);
+  assert.ok(notAssertable.every(c => c.open === 0), 'a settled class carries no open entries');
+  const operator = notAssertable.find(c => c.rawClasses[0].startsWith('operator='));
   assert.ok(operator.description.length > 10 && !operator.description.includes('`'), 'operator groups describe their effect in the ledger\'s words');
+  // Every entry the ADR (docs/decisions/2026-09-21-settle-mechanical-mutation-review-classes.md) reclassified stayed a `not-assertable` entry, never `resolved`: no per-fixture review happened.
+  assert.equal(notAssertable.reduce((n, c) => n + c.resolved, 0), 0);
 });
 
 test('the ledger snippet is a paste-ready fragment and keeps the class on the note', () => {
@@ -95,6 +106,6 @@ test('floors show met or not plus the actual value, and absent evidence is Not m
   assert.equal(get('scanners').status, 'met');
   const thin = qualificationGates(suite.accounting, null, { 'must-redact/T1': group(3, 3, 0.4, 3, 1, 0.333) });
   assert.deepEqual(thin.filter(g => g.status === 'not-met').map(g => g.id), ['min-denominator', 'measurable-share', 'twin-coverage']);
-  const reviewed = structuredClone(evidence); reviewed.accounting = { reasons: [], unresolvedGroups: [], review: { open: 1233, resolved: 382, unknown: 0, oldestOpenRun: 'x' } };
-  assert.deepEqual([qualificationGates(suite.accounting, reviewed, null).at(-1).status, qualificationGates(suite.accounting, reviewed, null).at(-1).value], ['watch', '1,615 · 1,233 open'], 'open is a valid state');
+  const reviewed = structuredClone(evidence); reviewed.accounting = { reasons: [], unresolvedGroups: [], review: { open: 1233, resolved: 382, notAssertable: 5, unknown: 0, oldestOpenRun: 'x' } };
+  assert.deepEqual([qualificationGates(suite.accounting, reviewed, null).at(-1).status, qualificationGates(suite.accounting, reviewed, null).at(-1).value], ['watch', '1,620 · 1,233 open'], 'open is a valid state, and not-assertable counts toward the total like resolved');
 });

@@ -27,10 +27,20 @@ export function reviewPage(classes: ReviewClass[], id: string, evaluation: Evalu
   }).join('');
   const snippet = open.length ? ledgerSnippet(sample, evaluation?.runId ?? '<run id>') : '';
   const note = open[0]?.note ?? group.entries[0].note;
-  return `${crumbFor(group.label)}<div class="page-head"><div><p class="eyebrow">REVIEW GROUP</p><h1>${e(group.label)}</h1><div class="meta"><span><b>${n(group.open)}</b> open</span><span><b>${n(group.resolved)}</b> resolved</span><span>${e(group.description)}</span></div></div></div>
+  const notAssertable = group['not-assertable'];
+  return `${crumbFor(group.label)}<div class="page-head"><div><p class="eyebrow">REVIEW GROUP</p><h1>${e(group.label)}</h1><div class="meta"><span><b>${n(group.open)}</b> open</span><span><b>${n(group.resolved)}</b> resolved</span>${notAssertable ? `<span><b>${n(notAssertable)}</b> not assertable</span>` : ''}<span>${e(group.description)}</span></div></div></div>
     <section class="section"><h2 class="h2-compact">Why these need a person</h2><p class="prose">${e(note.replace(/\s*Class: .+$/s, ''))}</p><p class="small">Ledger class${group.rawClasses.length === 1 ? '' : 'es'}: ${group.rawClasses.map(raw => `<code>${e(raw)}</code>`).join(', ')}</p></section>
     ${open.length ? `<section class="section"><h2 class="h2-compact">${sample.length} representative ${sample.length === 1 ? 'entry' : 'entries'} of ${n(open.length)}</h2><div class="tbl"><table><thead><tr><th scope="col">Ledger entry</th><th scope="col">Source fixture</th><th scope="col">State</th></tr></thead><tbody>${rows}</tbody></table></div></section>
-    <section class="section"><div class="section-head"><div><h2 class="h2-compact">Ledger fragment</h2><p class="small">A draft for these ${sample.length} entries. Replace the decision text, then merge it into <code>benchmarks/review-ledger.json</code> through a pull request. This page copies text; it writes no file and changes no expectation.</p></div><button class="btn" type="button" data-copy="ledger-snippet">Copy JSON</button></div><pre class="snippet" id="ledger-snippet" tabindex="0">${e(snippet)}</pre><p class="small" role="status" aria-live="polite" data-copy-status="ledger-snippet"></p></section>` : `<section class="section"><p class="small">Nothing open in this group. ${n(group.resolved)} resolved ${group.resolved === 1 ? 'entry' : 'entries'} stay in the ledger with ${group.resolved === 1 ? 'its' : 'their'} decision${group.rawClasses.length ? `: ${e(ledgerClassOf(group.entries[0].note))}` : ''}.</p></section>`}`;
+    <section class="section"><div class="section-head"><div><h2 class="h2-compact">Ledger fragment</h2><p class="small">A draft for these ${sample.length} entries. Replace the decision text, then merge it into <code>benchmarks/review-ledger.json</code> through a pull request. This page copies text; it writes no file and changes no expectation.</p></div><button class="btn" type="button" data-copy="ledger-snippet">Copy JSON</button></div><pre class="snippet" id="ledger-snippet" tabindex="0">${e(snippet)}</pre><p class="small" role="status" aria-live="polite" data-copy-status="ledger-snippet"></p></section>` : `<section class="section"><p class="small">Nothing open in this group. ${closedSummary(group)}</p></section>`}`;
+}
+
+/** Distinguishes a per-fixture sign-off (`resolved`) from a per-class construction decision (`not-assertable`); a class can carry either, both, or neither. */
+function closedSummary(group: ReviewClass): string {
+  const parts: string[] = [];
+  if (group.resolved) parts.push(`${n(group.resolved)} resolved ${group.resolved === 1 ? 'entry stays' : 'entries stay'} in the ledger with ${group.resolved === 1 ? 'its' : 'their'} decision`);
+  if (group['not-assertable']) parts.push(`${n(group['not-assertable'])} ${group['not-assertable'] === 1 ? 'entry is' : 'entries are'} marked not-assertable: no ground truth is inferable from this construction, decided once for the whole class, not per fixture`);
+  const classSuffix = group.rawClasses.length ? `: ${e(ledgerClassOf(group.entries[0].note))}` : '';
+  return `${parts.join(' · ')}${classSuffix}.`;
 }
 
 export function bindCopy(root: ParentNode = document) {

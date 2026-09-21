@@ -24,8 +24,14 @@ function totalWhere(summary: Summary, method: string, type?: string) {
   return { pass, fail };
 }
 
-/** Ledger status for one review-queue id; anything absent from the ledger is `unknown`, not resolved. */
-const unresolved = (id: string, ledger: ReviewLedger) => ledger.entries[id]?.status !== 'resolved';
+/**
+ * Ledger status for one review-queue id; anything absent from the ledger is
+ * `unknown`, not resolved. `not-assertable` is settled too: a person decided,
+ * per operator class, that no ground truth is inferable — that is a real
+ * disposition, distinct from `resolved` (a per-fixture sign-off) but just as
+ * final for accounting purposes.
+ */
+const unresolved = (id: string, ledger: ReviewLedger) => !['resolved', 'not-assertable'].includes(ledger.entries[id]?.status as string);
 
 function unresolvedInQueue(family: string, method: string, queue: QueuedReview[], ledger: ReviewLedger) {
   return queue.filter(q => q.method === method && q.targets.includes(family) && unresolved(q.id, ledger)).length;

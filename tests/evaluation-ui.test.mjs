@@ -98,7 +98,8 @@ test('rendered Workbench method, review and holdout views retain the evidence bo
     assert.ok(methodPage(r,'differential').includes('Human review evidence'));
     const missing = workbenchPage({ data, evaluation: null, evaluationProblem: 'Stale evaluation: fixture corpus changed', classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
     assert.ok(missing.includes('Stale evaluation') && missing.includes('npm run eval:publish'));
-    assert.ok(missing.includes('Review queue') && missing.includes('lexical.invalid-alphabet'), 'the queue reads the ledger, so it survives a missing report');
+    assert.ok(missing.includes('Review queue') && missing.includes('T0 fixtures'), 'the queue reads the ledger, so it survives a missing report');
+    assert.ok(!missing.includes('lexical.invalid-alphabet'), 'a class settled not-assertable carries no open entries, so it drops out of the open queue');
     assert.ok(methodPage(r,'holdout').includes('No qualification aggregate published'));
     r.qualification = JSON.parse(await readFile('docs/qualification/engine-v1.json','utf8'));
     const holdout = methodPage(r,'holdout');

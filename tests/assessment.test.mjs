@@ -125,7 +125,7 @@ test('corpus validation rejects malformed roles, envelopes and twins', () => {
 
 test('twins mutate exactly one property, pair with their positive and never carry spans', () => {
   const twins = common.filter(f => f.twinOf);
-  assert.equal(twins.length, 58);
+  assert.equal(twins.length, 76);
   const untwinned = common.filter(f => f.assessment.kind === 'must-redact' && !twins.some(t => t.twinOf === f.id));
   assert.deepEqual(untwinned.map(f => f.id), ['aws-access-key-pair-plain', 'aws-access-key-pair-unicode-crlf'], 'the ID/secret pair has no single-mutation twin yet');
   for (const t of twins) {

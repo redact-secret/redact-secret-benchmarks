@@ -96,6 +96,45 @@ test('twinProbe separates discriminated, not discriminated and un-probeable, and
   assert.throws(() => twinProbe(['c'], [...list, { id: 'c-twin', detectors: ['c'], twinOf: 'c-pos' }], rows, book), /Un-probeable family with twins/);
 });
 
+// #46: "targeting stable" is exactly the T1 contracts (the only tier
+// `benchmarks/support/status-criteria.json`'s `stable.positiveContract` can
+// ever certify). Each must carry a twin for every dimension its provider
+// source documents — see docs/decisions/2026-09-20-fill-per-family-twin-coverage.md
+// for the per-family rationale and the two prefix twins that needed a
+// stem-breaking fallback after an empirically-not-discriminated first attempt.
+const T1_DIMENSIONS = {
+  'aws-access-key': ['prefix'],
+  'github-token': ['length', 'prefix'],
+  'gitlab-token': ['length', 'prefix'],
+  'shopify-token': ['prefix'],
+  'vault-token': ['length', 'prefix'],
+  'stripe-token': ['public-prefix'],
+  'slack-token': ['boundary', 'prefix'],
+  'pypi-token': ['prefix'],
+  'cloudflare-token': ['alphabet', 'prefix'],
+  'digitalocean-token': ['length', 'prefix'],
+  'npm-token': ['length', 'prefix', 'boundary'],
+  'sendgrid-token': ['boundary', 'length'],
+  'private-key': ['public-prefix'],
+  jwt: ['boundary', 'alphabet'],
+};
+
+test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
+  const t1 = Object.entries(contracts).filter(([, c]) => c.tier === 'T1').map(([id]) => id);
+  assert.deepEqual(t1.sort(), Object.keys(T1_DIMENSIONS).sort(), 'T1_DIMENSIONS must cover exactly the T1 contracts');
+  for (const [family, expected] of Object.entries(T1_DIMENSIONS)) {
+    const kinds = [...new Set(twins.filter(t => t.detectors[0] === family).map(t => t.mutationKind))];
+    assert.deepEqual(kinds.sort(), [...expected].sort(), family);
+  }
+  // A checksum for github-token and npm-token is provider-documented (github.blog,
+  // npm's changelog) but not part of either contract's lexical `pattern`, so a
+  // checksum-only mutation still satisfies the pattern and cannot be a twin here
+  // (enforced structurally by the "must not satisfy the contract" check above).
+  for (const family of ['github-token', 'npm-token'])
+    for (const t of twins.filter(t => t.detectors[0] === family))
+      assert.doesNotMatch(t.mutation, /checksum/, `${t.id} — checksum is not twin-constructible for this contract`);
+});
+
 test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);

@@ -33,9 +33,20 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
     token('github-token', prefix, prefix + '_' + body);
     addTwin('github-token', prefix, prefix + '_' + body.slice(0, 35), 'length', 'length: 35 vs contracted 36');
   }
+  // #46: docs.github.com's own token-format table also documents github_pat_
+  // (the fine-grained token) as a distinct, real prefix outside this contract's
+  // ghp_/gho_/ghu_/ghs_/ghr_ set; one representative shape is enough to move
+  // the family's prefix dimension off un-tested.
+  const ghpBody = value('ghp', 36);
+  addTwin('github-token', 'ghp', 'github_pat_' + ghpBody, 'prefix', 'prefix namespace: github_pat_ (documented fine-grained personal access token prefix) vs contracted ghp_', '', 'ghp-prefix');
   const gitlab = value('gitlab', 20);
   token('gitlab-token', 'pat', 'glpat-' + gitlab);
   addTwin('gitlab-token', 'pat', 'glpat-' + gitlab.slice(0, 19), 'length', 'length: 19 vs contracted 20');
+  // #46: docs.gitlab.com's token-prefix table documents glpat- exactly (shared
+  // by four token kinds, none of them this contract's positive) as the only
+  // prefix this contract's pattern accepts; xlpat- breaks the documented gl-
+  // stem every GitLab token prefix in that table shares.
+  addTwin('gitlab-token', 'pat', 'xlpat-' + gitlab, 'prefix', 'prefix namespace: xlpat- vs contracted glpat- (breaks the gl- stem every documented GitLab token prefix shares)', '', 'pat-prefix');
   const anthropic = value('anthropic', 93);
   token('anthropic-token', 'api03', 'sk-ant-api03-' + anthropic + 'AA');
   addTwin('anthropic-token', 'api03', 'sk-ant-api04-' + anthropic + 'AA', 'prefix', 'prefix namespace: sk-ant-api04- vs contracted sk-ant-api03-');
@@ -56,6 +67,9 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   const vault = value('vault', 100);
   token('vault-token', 'service', 'hvs.' + vault, 'VAULT_ADDR=https://benchmark-never-issued.hashicorp.cloud');
   addTwin('vault-token', 'service', 'hvs.' + vault.slice(0, 23), 'length', 'length: 23 vs provider-documented minimum 24', 'VAULT_ADDR=https://benchmark-never-issued.hashicorp.cloud');
+  // #46: developer.hashicorp.com/vault/docs/concepts/tokens documents exactly
+  // three prefixes (hvs./hvb./hvr.); hvx. is outside all three.
+  addTwin('vault-token', 'service', 'hvx.' + vault, 'prefix', 'prefix namespace: hvx. vs the three documented prefixes hvs./hvb./hvr.', 'VAULT_ADDR=https://benchmark-never-issued.hashicorp.cloud', 'service-prefix');
   for (const mode of ['live', 'test']) {
     const body = value('stripe:' + mode, 32);
     token('stripe-token', mode, `sk_${mode}_` + body);
@@ -64,6 +78,10 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   const team = value('slack-team', 12, '0123456789'), bot = value('slack-bot', 12, '0123456789'), slackSecret = value('slack-secret', 24);
   token('slack-token', 'bot', `xoxb-${team}-${bot}-${slackSecret}`);
   addTwin('slack-token', 'bot', `xoxb-${team}-${bot}${slackSecret}`, 'boundary', 'boundary: missing dash before the secret section');
+  // #46: docs.slack.dev/authentication/tokens documents every Slack token
+  // prefix (xoxb-/xoxp-/xapp-/xwfp-) sharing or extending the xox- stem this
+  // contract's pattern requires; xoyb- breaks that stem outright.
+  addTwin('slack-token', 'bot', `xoyb-${team}-${bot}-${slackSecret}`, 'prefix', 'prefix namespace: xoyb- vs contracted xoxb- (breaks the xox- stem every documented Slack token prefix shares or extends)', '', 'bot-prefix');
   const hf = value('hf', 34, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
   token('huggingface-token', 'user', 'hf_' + hf);
   addTwin('huggingface-token', 'user', 'hf_' + hf.slice(0, 33), 'length', 'length: 33 vs contracted 34');
@@ -75,17 +93,31 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   const cf = value('cf', 40);
   token('cloudflare-token', 'user', 'cfut_' + cf + value('cf-suffix', 8, hex));
   addTwin('cloudflare-token', 'user', 'cfut_' + cf + 'ghijklmn', 'alphabet', 'alphabet: non-hexadecimal eight-character suffix');
+  // #46: developers.cloudflare.com documents cfut_ as the only scannable-format
+  // prefix; cfux_ is a single-character deviation from that exact string.
+  addTwin('cloudflare-token', 'user', 'cfux_' + cf + value('cf-suffix', 8, hex), 'prefix', 'prefix namespace: cfux_ vs the documented cfut_ scannable-format prefix', '', 'user-prefix');
   for (const prefix of ['dop', 'doo', 'dor']) {
     const body = value(prefix, 64, hex);
     token('digitalocean-token', prefix, prefix + '_v1_' + body);
     addTwin('digitalocean-token', prefix, prefix + '_v1_' + body.slice(0, 63), 'length', 'length: 63 vs contracted 64');
   }
+  // #46: the 2022-03-29 DigitalOcean release notes document exactly three
+  // prefixes (dop_v1_/doo_v1_/dor_v1_); dox_v1_ is outside all three.
+  addTwin('digitalocean-token', 'dop', 'dox_v1_' + value('dop', 64, hex), 'prefix', 'prefix namespace: dox_v1_ vs the three documented prefixes dop_v1_/doo_v1_/dor_v1_', '', 'dop-prefix');
   const linear = value('linear', 40);
   token('linear-token', 'api', 'lin_api_' + linear);
   addTwin('linear-token', 'api', 'lin_api_' + linear.slice(0, 39), 'length', 'length: 39 vs contracted 40');
   const npm = value('npm', 36);
   token('npm-token', 'access', 'npm_' + npm);
   addTwin('npm-token', 'access', 'npm_' + npm.slice(0, 35), 'length', 'length: 35 vs contracted 36');
+  // #46: github.blog/changelog/2021-09-23-npm-has-a-new-access-token-format
+  // documents the npm_ prefix (npmx_ is a single-character deviation) and the
+  // underscore delimiter that replaced the pre-2021 hyphen. The same page also
+  // documents a six-character Base62 CRC32 checksum, but the checksum is not
+  // part of this contract's lexical `pattern`, so a checksum-only mutation
+  // still satisfies the pattern and cannot be constructed as a twin here.
+  addTwin('npm-token', 'access', 'npmx_' + npm, 'prefix', 'prefix namespace: npmx_ vs the documented npm_ prefix', '', 'access-prefix');
+  addTwin('npm-token', 'access', 'npm-' + npm, 'boundary', 'boundary: delimiter npm- (the pre-2021 hyphen) vs the documented underscore delimiter', '', 'access-delimiter');
   const sgId = value('sg-id', 22), sgSecret = value('sg-secret', 43);
   token('sendgrid-token', 'segmented', `SG.${sgId}.${sgSecret}`);
   addTwin('sendgrid-token', 'segmented', `SG.${sgId}:${sgSecret}`, 'boundary', 'boundary: colon instead of the dot separator between segments');
@@ -95,7 +127,13 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   addTwin('private-key', 'ed25519', createPublicKey(key).export({ type: 'spki', format: 'pem' }).trimEnd(), 'public-prefix', 'public material: RFC 7468 PUBLIC KEY block of the same test key vs PRIVATE KEY');
   const encode = o => Buffer.from(JSON.stringify(o)).toString('base64url');
   const unsigned = `${encode({ alg: 'EdDSA', typ: 'JWT' })}.${encode({ sub: 'benchmark-only', iss: 'https://example.invalid', iat: 1700000000, exp: 4102444800 })}`;
-  add('jwt', 'eddsa', [{ secret: unsigned + '.' + sign(null, Buffer.from(unsigned), key).toString('base64url') }], 'EdDSA JWT signed locally with the public test key. Syntax and signature are checked offline; no production issuer or trust is implied.');
+  const [jwtHeader, jwtPayload] = unsigned.split('.');
+  const signed = unsigned + '.' + sign(null, Buffer.from(unsigned), key).toString('base64url');
+  add('jwt', 'eddsa', [{ secret: signed }], 'EdDSA JWT signed locally with the public test key. Syntax and signature are checked offline; no production issuer or trust is implied.');
   addTwin('jwt', 'eddsa', unsigned + '.', 'boundary', 'boundary: signature segment absent (unsigned header.payload.)');
+  // #46: RFC 7519 §3 requires base64url encoding for every segment; base64url
+  // never uses "+" (base64's own alphabet does), so substituting it in for the
+  // payload segment's first character violates only the alphabet.
+  addTwin('jwt', 'eddsa', jwtHeader + '.+' + jwtPayload.slice(1) + '.' + signed.split('.')[2], 'alphabet', 'alphabet: one character (+) outside the RFC 7519 base64url alphabet, in the payload segment', '', 'eddsa-alphabet');
   return { 'common-formats': { ...wrap(fixtures), scope: 'Source-reviewed synthetic lexical formats and locally parseable cryptographic controls, each paired with one or more negative twins, every twin mutating exactly one structural property. Selection is independent of scanner results. Unsupported formats and format-correct misses remain visible. This is not provider issuance validation or a product ranking.' } };
 }

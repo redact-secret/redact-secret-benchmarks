@@ -98,6 +98,7 @@ export function validateKnownGaps(value: KnownGaps): KnownGaps {
 
   const ids = new Set<string>();
   const fixtureIds = new Set<string>();
+  const numbers = new Set<number>();
   for (const record of value.issues) {
     const id = typeof record?.id === 'string' && ID.test(record.id) ? record.id : 'unknown';
     if (ids.has(id)) fail(id, 'duplicate-id');
@@ -126,6 +127,9 @@ export function validateKnownGaps(value: KnownGaps): KnownGaps {
       !only(record.history, [...ACTIVE]) ||
       !Array.isArray(record.evidence) || record.evidence.length !== record.fixtures.length
     ) fail(id, 'invalid-metadata');
+
+    if (numbers.has(record.number)) fail(id, 'duplicate-product-issue');
+    numbers.add(record.number);
 
     for (const fixtureId of record.fixtures) {
       if (fixtureIds.has(fixtureId)) fail(id, 'duplicate-benchmark-fixture');

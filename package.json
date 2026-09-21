@@ -33,6 +33,8 @@
     "detectors:check": "python3 scripts/refresh-detector-inventory.py --check",
     "pins:check": "node --import tsx scripts/check-pin-drift.mjs",
     "pins:check:local": "node --import tsx scripts/check-pin-drift.mjs --local-only",
+    "promotion:check": "node --import tsx scripts/check-promotion-consistency.mjs",
+    "promotion:check:local": "node --import tsx scripts/check-promotion-consistency.mjs --local-only",
     "prepins:manifest": "node --import tsx scripts/generate-fixtures.mjs --ensure",
     "pins:manifest": "node --import tsx scripts/generate-pin-manifest.mjs",
     "prepins:manifest:check": "node --import tsx scripts/generate-fixtures.mjs --ensure",

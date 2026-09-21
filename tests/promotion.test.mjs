@@ -67,6 +67,13 @@ test('verified records require candidate.sourceCommit', () => {
   assert.throws(() => validateKnownGaps(candidate), /invalid-candidate-source-commit/);
 });
 
+test('duplicate product issue numbers are rejected (#106, closes #66\'s no-duplicate-issue criterion)', () => {
+  const candidate = clone();
+  candidate.issues[1].number = candidate.issues[0].number;
+  candidate.issues[1].url = candidate.issues[0].url;
+  assert.throws(() => validateKnownGaps(candidate), /duplicate-product-issue/);
+});
+
 test('alternate dispositions require reviewed evidence and a reason', () => {
   const candidate = clone();
   candidate.issues[0].status = 'rejected';

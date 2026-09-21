@@ -93,7 +93,12 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // `slack-token`'s `xoxe-`) — #64's generalisation above reused each
   // family's already-exact primary shape and never exercised the two
   // interim guards redact-secret#551 actually found still open-floored.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 274);
+  // #93: 69 new independent negatives (mask/reference/label-prose across the
+  // 23 families that previously carried only a same-axis near-miss pair), to
+  // clear the stable floor of 3 benign axes for those families, plus one
+  // reference control each for gitlab-token and npm-token so raising that
+  // floor does not regress the two families already reading stable at it.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 345);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

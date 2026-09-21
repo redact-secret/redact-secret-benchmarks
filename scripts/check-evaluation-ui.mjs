@@ -23,7 +23,7 @@ await mkdir(output, { recursive: true });
 
 const percent = v => `${(v * 100).toFixed(1)}%`;
 const fixture = 'milestone-6-closed--issue-255-postgres-literal';
-const ROUTES = ['/report', '/report?level=T2', '/report?level=T3', '/coverage', '/coverage?show=thin', '/coverage?show=inventory', '/coverage/github-token', '/suites/accuracy', `/fixture/${fixture}`,
+const ROUTES = ['/report', '/report?level=T2', '/report?level=T3', '/coverage', '/coverage?show=thin', '/coverage?show=inventory', '/coverage/github-token', '/support', '/support?status=unsupported', '/suites/accuracy', `/fixture/${fixture}`,
   '/workbench', '/workbench/review/lexical-invalid-alphabet', '/workbench/review/t0-fixtures', '/workbench/changes', '/workbench/changes?corpus=expanded', '/workbench/qualification',
   ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/workbench/method/${m}`), '/how-to-read'];
 const LEGACY = { '/': '/report', '/benchmark': '/report', '/benchmark/github-token': '/coverage/github-token', '/benchmark/accuracy': '/suites/accuracy', '/coverage-gaps': '/coverage', '/evaluation': '/workbench', '/pending': '/workbench/review/t0-fixtures',

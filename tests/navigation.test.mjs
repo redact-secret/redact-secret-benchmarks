@@ -28,6 +28,7 @@ const resolve = path => parseRoute(path, { suites });
 test('the redesign route table resolves, with or without a trailing slash', () => {
   assert.equal(resolve('/report').kind, 'report');
   assert.equal(resolve('/coverage/').kind, 'coverage');
+  assert.equal(resolve('/support').kind, 'support');
   assert.deepEqual(resolve('/coverage/github-token'), { kind: 'coverage', id: 'github-token', view: '', to: '' });
   assert.deepEqual(resolve('/suites/accuracy'), { kind: 'suite', id: 'accuracy', view: '', to: '' });
   assert.deepEqual(resolve('/workbench'), { kind: 'workbench', id: '', view: 'overview', to: '' });
@@ -36,7 +37,7 @@ test('the redesign route table resolves, with or without a trailing slash', () =
   assert.equal(resolve('/workbench/qualification/').view, 'qualification');
   for (const method of ['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout']) assert.deepEqual(resolve(`/workbench/method/${method}`), { kind: 'workbench', id: method, view: 'method', to: '' });
   assert.equal(resolve('/how-to-read').kind, 'how-to-read');
-  for (const path of ['/fixture', '/coverage/a/b', '/coverage/%3Cscript%3E', '/workbench/method/unknown', '/workbench/review', '/suites', '/nope']) assert.equal(resolve(path).kind, 'missing', path);
+  for (const path of ['/fixture', '/coverage/a/b', '/coverage/%3Cscript%3E', '/support/github', '/workbench/method/unknown', '/workbench/review', '/suites', '/nope']) assert.equal(resolve(path).kind, 'missing', path);
 });
 test('no bookmark breaks: every pre-redesign path redirects to a page that resolves', () => {
   const legacy = {

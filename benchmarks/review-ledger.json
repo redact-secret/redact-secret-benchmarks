@@ -106,6 +106,12 @@
       "resolvedRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "02b37e035ca65aff06aa9c15598c9a74beeeb349800ab0362f3ab7731f1c34cf": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
     "02e58b48fc4bfbddc790b44cdb1d7e7e9c7dae596a727877165a003de2592f98": {
       "status": "resolved",
       "firstSeenRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
@@ -253,6 +259,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "resolvedRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "0660487bce83ebb005e5cf5d5991d165248c2ff14049e7e16354a23874864021": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "0688d228f539b96f23ebc7201e0bea036ffc96e2c715fb7185e605b672023b0d": {
       "status": "resolved",
@@ -1360,6 +1372,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
     },
+    "1d7f7f65a3ec188cfc5526b6231c00e048d8dc9c8fce6594328d12932f4bd4e6": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "1d7fa3de356d2991506f1efe4c4d13b0c311801b30cc784525e14bd0f8d8c267": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -1615,6 +1633,12 @@
       "resolvedRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "21123d32f4283c11b32b03ed5ee04cfbded0d8848da729a4dd790efe394ddc43": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "213c47bb8592d1dbc56369e689164a3bdffa2ef02753372cae4797048f711015": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -1640,6 +1664,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "21f340837ead58c648b13788a65bac3cd697ba3d6b7a09d53c06d5eed1a81d1f": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "21ff585f67840925be9c3e19c414e7748b90461af7ccdce013fb82d3c8eda8b1": {
       "status": "open",
@@ -1943,6 +1973,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Fixture assessment tier is T0 (\"no reviewed control rule for this input\"); ground truth for this fixture has not been authored yet, so the redact-secret/gitleaks disagreement cannot be adjudicated from this corpus. Open pending fixture review; not inferable from scanner comparison. Class: t0-pending-fixture."
+    },
+    "287ac72ed3ed987278e25fc4835879218205476370a737170ec481c4f62e4e7b": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "2883e162e48e5b17fe1634a698a91f26e2ded17380faf55d06235d5a120a7faa": {
       "status": "open",
@@ -2361,6 +2397,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
     },
+    "31e4d7fa01a66d392238dd48824fd25c4263e371c77645fc55396024329f58f1": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "31eaaf64943e263fc5ba88380cc032c48064f5732b5c931532e2f1b013970080": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -2656,6 +2698,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
     },
+    "380a707b375b2d065ddfc26a66b03ff44841dd5ad63d8a4168f704e9ff56d995": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "380b3c4a884f3276c5fa1f648e7c61b3beea5ab9941c5353974c12bb22529620": {
       "status": "resolved",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -2727,6 +2775,12 @@
       "firstSeenRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "resolvedRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "3a570c48f09ef26423180c74d9ae3db32110fb36bd22d6a044aa9e86f335a131": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "3a9a4cc6ff7d36afdc80172fd62f450f774a09bcb4f2b75dae8e14a0e7bcecbc": {
       "status": "resolved",
@@ -3729,6 +3783,12 @@
       "resolvedRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
+    "51af4f738c0376e8093f1a67ef8c108a35648eefe9f22667fa9f87db549b2d49": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "51b1ae62bee27d36a0a642e55dceca31b46cca8886c63609cfce5e06b010a6de": {
       "status": "resolved",
       "firstSeenRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
@@ -4360,6 +4420,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "5f3a7317bc2df484f1e816efd4aaf02aa5837a1b148fa0ef887237bf0c6d05f5": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "5f4f49a6bd12e151f7445001128c0c3f25df484c5f0e48c420ec9117df35ce52": {
       "status": "open",
@@ -5079,6 +5145,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
     },
+    "6e1e8271dd9935a4d64963414b03566e51d1b54d02d7dc0b65eb0363557e49f5": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
     "6e495c4c063442944766ec118ae7f8056aa4aae9656b40e2f9cc7c71c2a2cc13": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -5230,6 +5302,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "7196b77238832860ac9f3f7f6381f6b576f76fad712f86318022344145e4ffd4": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "71e70cd993c4ec14524b352a62cf0f1ba8a7de813c6a0b1ab7364640961d68f7": {
       "status": "open",
@@ -5560,6 +5638,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
     },
+    "79991ab4b033bbac3a406753ccebdcfe2ef1310101c5b67667dd484772103d5c": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "79d3bdc06fc54fba008772679fc10a4eb6431775b13f2ef89bb4b3eff523b0d7": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -5666,6 +5750,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "7c566f73d2e8b04f2d687eb21e61b2df7a16aead38d04a8c287296589f84501d": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "7c9f2fa1551603647d294805bb68452d50ac310b439482101e77227caf811df5": {
       "status": "resolved",
@@ -5846,6 +5936,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
     },
+    "814d6c82c719856ae988785b8e26977e831003a291f59d60a8df9a2a68ce6852": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "8154c39bc433410267f84fe5607a063447106fe8aa946d95468aac33d11c22c8": {
       "status": "resolved",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -5928,10 +6024,22 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
     },
+    "82f95c82ac45e722234d2b333de02eb623017a61a12d8c4a5c07c71cd539d708": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "831e7ad9511ed8c25dc3b0074d141228e93008b06e057126a7217898e0e36210": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "835279716b9c3708008adfe4eaf37001ce1a1e06c7520d191943d22c7d48db6c": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "83a5ba960f2c50d766bcd052210522e4ddae7ecb052f8b724388cd2bf47a08d0": {
       "status": "resolved",
@@ -6157,6 +6265,12 @@
       "status": "resolved",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "resolvedRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "8876cc934584d27d6ead5939c99373d9bc3878fed25776bba44ea01c1c4618c9": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "888e944d4e1ca6444c3b3fa54a85b26a2047a844e390e14b14570413a4d7f995": {
@@ -6519,6 +6633,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
     },
+    "9098dc70ede43915047332e3475aab815946fb0202885e8e7a2920a9d32be194": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "90b64c5c3b04e5ba3c229be9d453f644274f4bc964d628c52da5e316a8e7dbfd": {
       "status": "resolved",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -6850,6 +6970,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
     },
+    "975b180da43b054598e5671292432aca3a3330884cef274efb5683450d5de048": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "978252b11425ce2c1e1f14ec19837bd3f90c44bc9ed32fe684d8448878ae7a83": {
       "status": "resolved",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -6886,6 +7012,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "993be0d6cdc06b349e293f61e53944aa4f475bd7026173d029c144363981cc83": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "993cbf9e483bac2f090305bee643eb2b4efd9c45223197bd5f9fb9e0a553704d": {
       "status": "open",
@@ -7470,6 +7602,12 @@
       "resolvedRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly (byte-exact boundary, no collateral). The disagreement is fully explained by trufflehog reporting a byte-shorter range that excludes a trailing character this corpus's authored span includes — a peer boundary-selection difference, not a corpus or redact-secret defect. Class: range-disagreement/trufflehog/peer-narrower-boundary."
     },
+    "a4f2c71abb5519d3d9b4d0091a17328237a4f2f68157582d91f585afe46befcb": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "a4fb3086e96bb813bde5d0d4b0c04db52e87dd483e2c259c636162fb0b9fd56c": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -7485,6 +7623,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Confirmed defect, not a tool-comparison artifact: redact-secret's detection on this fixture diverges from this corpus's own authored, scored (tier T2) expectation — independent of the trufflehog comparison, the corpus's own `authored.twin` assertion already fails for this input. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). No matching benchmarks/known-gaps.json record exists yet for this pattern (contracted-length boundary over-detection on a negative twin) as of this triage. Promotion candidate: needs a `promote-finding` pass to open the product issue and known-gaps.json record. Class: confirmed-boundary-false-positive/digitalocean-token."
+    },
+    "a53b2733c4c74306b565c0fdfce265d5f0870f8ab08aa07e89cb5a7993b255b6": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "a55675726a5ff479bfb8d58e366245624bc4ad0e1c2d4942d0285a881d730d58": {
       "status": "open",
@@ -7517,6 +7661,12 @@
       "status": "resolved",
       "firstSeenRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "resolvedRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "a5e2df3664674f4fa3df908428509a2813259e03a92ff768b53a3f29f6b11e56": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "a62e8f79426bb9601ace899c9591b7a33f30cef5838f5c8e0c85c23dbf3e6019": {
@@ -7579,6 +7729,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `structural.remove-segment` removes one dash/dot-delimited segment from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=structural.remove-segment."
+    },
+    "a7724c9ef4e9c19abcd7e56d36d4a38a006175ac93ae96caf82307325bd1d430": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "a77a00da12c85eeb108326f29d0733a42e3b4c78d0c1f3044c864ea8550fcdef": {
       "status": "open",
@@ -8186,6 +8342,12 @@
       "status": "resolved",
       "firstSeenRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "resolvedRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "b5fb6997b07daa906775e9c75e739ec77ce36b8faad1753983abb96cd7389370": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "b6157cde34d6bb1173e16216da51b96b8c1e20532b6296dd21f4c8ad662421f7": {
@@ -8847,6 +9009,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
     },
+    "c86c2c14bb8a40a9eea317abbfe476d1c1a46d2188f95e2f862bcd11e9932d4a": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "c876e56f0c54eadaabd03c75e9dbe39d7c1f4cf479f61398f4a647555c57bfa0": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -9030,6 +9198,12 @@
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "cc6a6fc06e35a26c7b4cbe63cfc64325bd0a2fd8327de98029a55150ed2bb1e6": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "cc6d14b600d77b16cbc661d864655b3ef5eb26f726fbd07cb8d923472a78109f": {
       "status": "resolved",
@@ -11231,6 +11405,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
     },
+    "fd68524d3fa02c0d99d7b3c484578cbff5ce88339bfe4cb4143fb8a8b377c8a8": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "fd7ceb25f80efd698f978c985c51fbce5354fe8426523f70cde2c6239997fe71": {
       "status": "open",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -11324,6 +11504,12 @@
       "status": "resolved",
       "firstSeenRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "resolvedRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "ffaa20cee0f01a67023081792dfb094e01c3296f4d9b42a9edb2ed145ac047c0": {
+      "status": "resolved",
+      "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
+      "resolvedRun": "b265cd9e-7779-4d11-96a0-132cac809382",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     }
   }

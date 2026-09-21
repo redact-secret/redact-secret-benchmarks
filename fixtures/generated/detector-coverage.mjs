@@ -186,7 +186,10 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     positive("pulumi-access-token", `${kind}-shape`, [{ secret: pulumiShapes[kind] }]);
   }
   addTwin("pulumi-access-token", "personal-shape", [pulumiShapes.personal.slice(0, -1)], "length: 39-byte body vs the tool-corroborated exact 40", "length");
-  addTwin("pulumi-access-token", "organization-shape", [pulumiShapes.organization.slice(0, 5) + pulumiShapes.organization[5].toUpperCase() + pulumiShapes.organization.slice(6)], "alphabet: one uppercase hex byte vs the tool-corroborated lowercase-only body", "alphabet");
+  // A conditional .toUpperCase() on a synthetic byte is a no-op when that
+  // byte lands on a digit; "A" is never a member of the lowercase-hex
+  // alphabet, so substituting it always produces a real mutation.
+  addTwin("pulumi-access-token", "organization-shape", [pulumiShapes.organization.slice(0, 5) + "A" + pulumiShapes.organization.slice(6)], "alphabet: one uppercase hex byte vs the tool-corroborated lowercase-only body", "alphabet");
   add("pulumi-access-token", "prefix-only", ["pul-"]);
   add("pulumi-access-token", "short-body", [`pul-${pulumiShapes.team.slice(4, 14)}`]);
   add("pulumi-access-token", "invalid-alphabet", [`pul-${pulumiShapes.team.slice(4, 5)}g${pulumiShapes.team.slice(6)}`]);

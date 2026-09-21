@@ -67,8 +67,8 @@
       "properties": { "scope": { "enum": ["full-suite", "filtered-development"] }, "filter": { "anyOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] } }
     },
     "completeness": {
-      "type": "object", "additionalProperties": false, "required": ["selectedFixtures", "scannedFixtures"],
-      "properties": { "selectedFixtures": { "type": "integer", "minimum": 0 }, "scannedFixtures": { "type": "integer", "minimum": 0 } }
+      "type": "object", "additionalProperties": false, "required": ["selectedFixtures", "scannedFixtures", "writtenFixtures"],
+      "properties": { "selectedFixtures": { "type": "integer", "minimum": 0 }, "scannedFixtures": { "type": "integer", "minimum": 0 }, "writtenFixtures": { "type": "integer", "minimum": 0 } }
     },
     "failure": {
       "type": "object", "additionalProperties": false, "required": ["phase", "code"],

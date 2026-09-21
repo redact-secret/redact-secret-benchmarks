@@ -12,7 +12,7 @@ import { validateCorpus } from './lib/scoring.ts';
 import { validateStructures } from './lib/validate-structures.ts';
 import { hash } from './engine/model.ts';
 import { validateEvidence } from './engine/evidence.ts';
-import type { Category, Fixture, ScoredRow, AccountingConfig } from './types.ts';
+import type { Category, Fixture, Finding, ScoredRow, AccountingConfig } from './types.ts';
 import { validateAccounting } from './lib/accounting.ts';
 import suite from '../qualification/suite-v1.json';
 
@@ -43,6 +43,29 @@ function parse(argv: string[]) {
 const sha256File = async (file: string) => createHash('sha256').update(await readFile(file)).digest('hex');
 const safeFailure = (phase: string, code: string) => ({ phase, code });
 
+// Each category gets its own scratch tree: two categories are free to reuse a fixture
+// path (§ the collision this once caused), but one category may never silently
+// overwrite a fixture of its own on disk (that would forge which content was scanned).
+async function scanCategory(scanner: { scan: (root: string, fixtures: Fixture[]) => Promise<Finding[]> }, replays: number, fixtures: Fixture[]): Promise<{ findings: Finding[]; writtenFixtures: number }> {
+  const scratch = await mkdtemp(path.join(tmpdir(), 'redact-secret-candidate-fixtures-'));
+  try {
+    const written = new Set<string>();
+    for (const fixture of fixtures) {
+      if (written.has(fixture.path)) throw new Error('duplicate-fixture-path');
+      written.add(fixture.path);
+      const file = path.join(scratch, fixture.path);
+      await mkdir(path.dirname(file), { recursive: true });
+      await writeFile(file, fixture.content, { mode: 0o600 });
+    }
+    const findings = await scanner.scan(scratch, fixtures);
+    // Engine v1.1 §8: a candidate observation that does not repeat is not evidence, and is never re-rolled.
+    const tuples = (list: typeof findings) => list.map(f => `${f.path}:${f.start}:${f.end}`).sort().join('\n');
+    for (let replay = 1; replay < replays; replay++)
+      if (tuples(await scanner.scan(scratch, fixtures)) !== tuples(findings)) throw new Error('candidate-scan-unstable');
+    return { findings, writtenFixtures: written.size };
+  } finally { await rm(scratch, { recursive: true, force: true }); }
+}
+
 async function main() {
   const options = parse(process.argv.slice(2));
   const target = path.join(options['output-dir'], 'candidate-evidence-v1.json');
@@ -59,7 +82,7 @@ async function main() {
   })));
   const failures: { phase: string; code: string }[] = [];
   let installation: Awaited<ReturnType<typeof installCandidate>> | undefined;
-  let packageName = 'unknown', declaredVersion = 'unknown', scannedFixtures = 0;
+  let packageName = 'unknown', declaredVersion = 'unknown', scannedFixtures = 0, writtenFixtures = 0;
   let results: any[] = [], selectedFixtures = 0, corpusHash = '0'.repeat(64);
   const categoryHashes: { id: string; sha256: string }[] = [];
   let rulesetInfo: { sha256: string; byteLength: number } | null = null;
@@ -93,31 +116,19 @@ async function main() {
     packageName = installation.packageName; declaredVersion = installation.declaredVersion;
     const scanner = await loadCandidate(installation, ruleset);
     if (scanner.version !== declaredVersion) throw new Error('candidate-version-mismatch');
-    const scratch = await mkdtemp(path.join(tmpdir(), 'redact-secret-candidate-fixtures-'));
-    try {
-      for (const { fixture } of selected) {
-        const file = path.join(scratch, fixture.path);
-        await mkdir(path.dirname(file), { recursive: true });
-        await writeFile(file, fixture.content, { mode: 0o600 });
-      }
-      const findings = await scanner.scan(scratch, selected.map(entry => entry.fixture));
-      // Engine v1.1 §8: a candidate observation that does not repeat is not evidence, and is never re-rolled.
-      const tuples = (list: typeof findings) => list.map(f => `${f.path}:${f.start}:${f.end}`).sort().join('\n');
-      for (let replay = 1; replay < accounting.replays; replay++)
-        if (tuples(await scanner.scan(scratch, selected.map(entry => entry.fixture))) !== tuples(findings)) throw new Error('candidate-scan-unstable');
-      const byCategory = new Map<string, Fixture[]>();
-      for (const entry of selected) byCategory.set(entry.category, [...(byCategory.get(entry.category) ?? []), entry.fixture]);
-      for (const [category, fixtures] of byCategory) {
-        const paths = new Set(fixtures.map(fixture => fixture.path));
-        const scored = scoreReport(fixtures, findings.filter(finding => paths.has(finding.path)), accounting).rows;
-        results.push(...scored.map((row: ScoredRow) => {
-          const slug = `${category}--${row.id}`;
-          return { fixtureId: slug, corpusSection: category === 'common-formats' ? 'fixed-corpus' : 'expanded-corpus', kind: row.kind, tier: row.tier, expectedSpans: row.expected.filter(value => (value.role ?? 'secret') === 'secret').length,
-            actualFindings: row.actual.length, outcome: encodeOutcome(row), baseline: { version: baseline.version, outcome: baseline.rows[slug]?.['redact-secret'] ?? null } };
-        }));
-      }
-      scannedFixtures = results.length;
-    } finally { await rm(scratch, { recursive: true, force: true }); }
+    const byCategory = new Map<string, Fixture[]>();
+    for (const entry of selected) byCategory.set(entry.category, [...(byCategory.get(entry.category) ?? []), entry.fixture]);
+    for (const [category, fixtures] of byCategory) {
+      const { findings, writtenFixtures: written } = await scanCategory(scanner, accounting.replays, fixtures);
+      writtenFixtures += written;
+      const scored = scoreReport(fixtures, findings, accounting).rows;
+      results.push(...scored.map((row: ScoredRow) => {
+        const slug = `${category}--${row.id}`;
+        return { fixtureId: slug, corpusSection: category === 'common-formats' ? 'fixed-corpus' : 'expanded-corpus', kind: row.kind, tier: row.tier, expectedSpans: row.expected.filter(value => (value.role ?? 'secret') === 'secret').length,
+          actualFindings: row.actual.length, outcome: encodeOutcome(row), baseline: { version: baseline.version, outcome: baseline.rows[slug]?.['redact-secret'] ?? null } };
+      }));
+    }
+    scannedFixtures = results.length;
   } catch (error) {
     const code = error instanceof Error && /^[a-z][a-z0-9-]+$/.test(error.message) ? error.message : 'candidate-execution-failed';
     const phase = code.includes('identity') || code.includes('version') ? 'identity' : code.includes('install') ? 'installation' : code.includes('initialization') ? 'initialization' : 'scan';
@@ -125,7 +136,7 @@ async function main() {
   } finally { await removeCandidate(installation); }
   const report = {
     schemaVersion: 1, reportType: 'candidate', runId, startedAt, finishedAt: new Date().toISOString(),
-    status: failures.length === 0 && scannedFixtures === selectedFixtures ? 'complete' : scannedFixtures ? 'incomplete' : 'failed', supportClaims: false,
+    status: failures.length === 0 && scannedFixtures === selectedFixtures && writtenFixtures === selectedFixtures ? 'complete' : scannedFixtures ? 'incomplete' : 'failed', supportClaims: false,
     candidate: { sourceCommit: options['candidate-source-commit'], sourceState: options['product-state'], packageName, declaredVersion,
       artifactSha256, expectedArtifactSha256: options['expected-artifact-sha256'] ?? null, artifacts: artifactSet },
     benchmark: { sourceCommit: benchmarkRevision, dirty: benchmarkDirty, lockfileSha256: await sha256File(path.join(root, 'package-lock.json')) },
@@ -136,7 +147,7 @@ async function main() {
     })(),
     runtime: { node: process.version, os: platform(), arch: arch() }, command: [process.execPath, ...process.execArgv, ...process.argv.slice(1)],
     selection: { scope: options.filter ? 'filtered-development' : 'full-suite', filter: options.filter ?? null },
-    completeness: { selectedFixtures, scannedFixtures }, failures, results,
+    completeness: { selectedFixtures, scannedFixtures, writtenFixtures }, failures, results,
   };
   validateEvidence(report, 'candidate');
   const temporary = `${target}.${runId}.tmp`;

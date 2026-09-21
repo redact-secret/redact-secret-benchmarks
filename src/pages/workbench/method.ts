@@ -49,6 +49,25 @@ function diagnostics(cases: EvaluationCase[], method: string, r: EvaluationRepor
   return '';
 }
 
+// #95: `redact`/`block` are gating; `warn` is accepted-by-design noise on ordinary prose per the
+// product ADR (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md, Decision 3) and is never
+// counted as a false alarm here.
+const GATING_ACTIONS = new Set(['redact', 'block']);
+
+/** Untargeted `real-world-shapes` controls, reported on their own labelled row so a reader never
+ * mistakes the accepted-by-design `warn` noise on ordinary prose for a family regression. */
+function untargetedFalseAlarms(cases: EvaluationCase[], r: EvaluationReport) {
+  const untargeted = cases.filter(c => c.sourceSlug.startsWith('real-world-shapes--'));
+  if (!untargeted.length) return '';
+  return section('Untargeted false-alarm rate', '<p class="small">Real-world-shaped synthetic content (<code>fixtures/real-world-shapes</code>), reported separately from every family: a flag here is discovery evidence, never evidence against a family, and moves no family\'s support status. Per product ADR <a href="https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md">2026-09-20-warn-unconditionally-on-high-signal-contextual-names</a>, <code>warn</code> findings on ordinary prose are accepted by design; only <code>redact</code>/<code>block</code> findings count as a false alarm below.</p>'
+    + table('Untargeted false alarms', ['Scanner', 'Controls', 'Flagged (any action)', 'Gating (redact/block)', 'Warn-only, non-gating'], r.scanners.map(s => {
+      const findings = untargeted.flatMap(c => c.findings.filter(f => f.scanner === s.id));
+      const flagged = findings.filter(f => f.flagged).length;
+      const gating = findings.filter(f => Object.keys(f.actionCounts ?? {}).some(a => GATING_ACTIONS.has(a))).length;
+      return [e(s.id), String(findings.length), String(flagged), String(gating), String(flagged - gating)];
+    }), [1, 2, 3, 4]));
+}
+
 /** Operators generate the mutation and metamorphic variants, so their evidence sits with those methods. */
 function operators(r: EvaluationReport) {
   return section('Operator evidence', '<p class="small">Generation attempts exclude canonical identity variants. Assertion totals retain scanner, tier, kind and relation strata in the public JSON.</p>' + table('Operators', ['Operator', 'Generated', 'Unsupported', 'Error', 'Pass', 'Fail', 'Needs review'], Object.entries(r.byOperator).map(([id, o]) => {
@@ -66,6 +85,7 @@ export function methodPage(r: EvaluationReport, id: string): string {
   body += facts([['cases', s.cases], ['variants', s.variants], ['affected failing cases', s.affected], ['failed assertions', s.assertions.fail], ['passing assertions', s.assertions.pass], ['review-required assertions', s.assertions['review-required']], ['not-measured assertions', s.assertions['not-measured']], ['review queue entries', queue.length], ['generation errors', s.generationErrors], ['unsupported attempts', s.unsupported]]);
   body += `<p class="small" style="margin-top:var(--space-3)">Scanner execution: ${r.scanners.map(sc => `${e(sc.id)} ${mark(sc.status)}`).join(' · ')}</p>`;
   body += diagnostics(cases, id, r);
+  if (id === 'benign') body += untargetedFalseAlarms(cases, r);
   if (id === 'mutation' || id === 'metamorphic') body += operators(r);
   const review = id === 'differential';
   activeRows = review ? queue : assertionRows(cases);

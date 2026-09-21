@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 2,
+  "reviewStatus": "draft — independent human review required",
+  "fixtures": [
+    {
+      "id": "docker-compose",
+      "path": "docker-compose.yml",
+      "group": "realworld-config",
+      "content": "version: \"3.9\"\nservices:\n  api:\n    image: example/api:1.4.2\n    environment:\n      - DATABASE_URL=${DATABASE_URL}\n      - REDIS_URL=${REDIS_URL}\n      - NODE_ENV=production\n    ports:\n      - \"3000:3000\"\n    depends_on:\n      - db\n  db:\n    image: postgres:16\n    environment:\n      - POSTGRES_USER=app\n      - POSTGRES_DB=app\n    ports:\n      - \"5432:5432\"\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "nginx-conf",
+      "path": "nginx.conf",
+      "group": "realworld-config",
+      "content": "server {\n    listen 80;\n    server_name example.internal;\n\n    location /api/ {\n        proxy_pass http://backend:3000;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n    }\n\n    location /static/ {\n        alias /var/www/static/;\n        expires 30d;\n    }\n}\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "app-settings",
+      "path": "settings.json",
+      "group": "realworld-config",
+      "content": "{\n  \"featureFlags\": {\n    \"newDashboard\": true,\n    \"betaCheckout\": false\n  },\n  \"timeouts\": {\n    \"requestMs\": 30000,\n    \"connectMs\": 5000\n  },\n  \"retries\": 3,\n  \"logLevel\": \"info\"\n}\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "nginx-access-log",
+      "path": "access.log",
+      "group": "realworld-logs",
+      "content": "10.0.0.12 - - [21/Sep/2026:10:15:32 +0000] \"GET /api/v1/users HTTP/1.1\" 200 512 \"-\" \"curl/8.4.0\"\n10.0.0.14 - - [21/Sep/2026:10:15:33 +0000] \"POST /api/v1/sessions HTTP/1.1\" 201 128 \"-\" \"Mozilla/5.0\"\n10.0.0.12 - - [21/Sep/2026:10:15:35 +0000] \"GET /health HTTP/1.1\" 200 15 \"-\" \"kube-probe/1.29\"\n10.0.0.19 - - [21/Sep/2026:10:15:41 +0000] \"GET /api/v1/orders?status=pending HTTP/1.1\" 200 964 \"-\" \"curl/8.4.0\"\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "app-error-log",
+      "path": "app.log",
+      "group": "realworld-logs",
+      "content": "2026-09-21T10:15:32Z INFO  worker pid=1234 starting up\n2026-09-21T10:15:33Z ERROR failed to connect to database: connection refused, retrying in 5s\n2026-09-21T10:15:38Z INFO  database connection established after 1 retry\n2026-09-21T10:16:02Z WARN  request took 4200ms, above the 3000ms budget\n2026-09-21T10:16:05Z INFO  worker pid=1234 shutting down gracefully\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "deploy-log",
+      "path": "deploy.log",
+      "group": "realworld-logs",
+      "content": "Deploying build #482 to production...\nStep 1/5: Pulling image example/api:1.4.2\nStep 2/5: Running database migrations\nStep 3/5: Warming up 3 replicas\nStep 4/5: Health checks passing on all replicas\nStep 5/5: Routing traffic to new deployment\nDeployment complete in 42s\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "package-lock-snippet",
+      "path": "package-lock.json",
+      "group": "realworld-lockfile",
+      "content": "{\n  \"name\": \"example-app\",\n  \"version\": \"1.4.2\",\n  \"lockfileVersion\": 3,\n  \"packages\": {\n    \"node_modules/lodash\": {\n      \"version\": \"4.17.21\",\n      \"resolved\": \"https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz\",\n      \"integrity\": \"sha512-v2kDEe57lecTulaDIuNTPy3Ry4/GTVDrHZH+LKI3jCAJp1KqQFYCXpHfMFnyRz4v4/hUxTIcRSTbLnQuTAKX2A==\"\n    },\n    \"node_modules/express\": {\n      \"version\": \"4.19.2\",\n      \"resolved\": \"https://registry.npmjs.org/express/-/express-4.19.2.tgz\",\n      \"integrity\": \"sha512-5T6nhjsT053nXBIzE0V0wgZK+Uzk9NfxCBBUxxk0FQqTb2NwlbaWtwHz0Fu4rEqAiSpj7SnKrp/1lXhZvWY9x9V==\"\n    }\n  }\n}\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "yarn-lock-snippet",
+      "path": "yarn.lock",
+      "group": "realworld-lockfile",
+      "content": "# THIS IS AN AUTOGENERATED FILE. DO NOT EDIT THIS FILE DIRECTLY.\n# yarn lockfile v1\n\n\nlodash@^4.17.21:\n  version \"4.17.21\"\n  resolved \"https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c\"\n  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4/GTVDrHZH+LKI3jCAJp1KqQFYCXpHfMFnyRz4v4/hUxTIcRSTbLnQuTAKX2A==\n\nexpress@^4.19.2:\n  version \"4.19.2\"\n  resolved \"https://registry.yarnpkg.com/express/-/express-4.19.2.tgz#043b8adfa02a04cf5dd50be2f8267bfba6ff9dd6\"\n  integrity sha512-5T6nhjsT053nXBIzE0V0wgZK+Uzk9NfxCBBUxxk0FQqTb2NwlbaWtwHz0Fu4rEqAiSpj7SnKrp/1lXhZvWY9x9V==\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "go-sum-snippet",
+      "path": "go.sum",
+      "group": "realworld-lockfile",
+      "content": "github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=\ngithub.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=\ngolang.org/x/sys v0.13.0 h1:Af8nKPmuFypiUBjVoU9V20FiaFXOcuZI21p0ycVYYGE=\ngolang.org/x/sys v0.13.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "js-source-snippet",
+      "path": "client.js",
+      "group": "realworld-source",
+      "content": "import { Client } from './vendor-sdk.js';\n\n// The SDK reads its credential from the environment; it is never hardcoded here.\nexport function createClient() {\n  return new Client({\n    apiKey: process.env.SERVICE_API_KEY,\n    baseUrl: process.env.SERVICE_BASE_URL ?? 'https://api.example.internal',\n    timeoutMs: 10_000,\n  });\n}\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "python-source-snippet",
+      "path": "client.py",
+      "group": "realworld-source",
+      "content": "import os\n\nfrom vendor_sdk import Client\n\n\ndef create_client() -> Client:\n    \"\"\"Build the SDK client from environment configuration.\"\"\"\n    return Client(\n        api_key=os.environ[\"SERVICE_API_KEY\"],\n        base_url=os.environ.get(\"SERVICE_BASE_URL\", \"https://api.example.internal\"),\n        timeout=10,\n    )\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "terraform-source-snippet",
+      "path": "main.tf",
+      "group": "realworld-source",
+      "content": "resource \"aws_instance\" \"web\" {\n  ami           = var.ami_id\n  instance_type = \"t3.micro\"\n\n  tags = {\n    Name        = \"web-server\"\n    Environment = var.environment\n  }\n}\n\nvariable \"ami_id\" {\n  type        = string\n  description = \"AMI id for the web server\"\n}\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "readme-snippet",
+      "path": "README.md",
+      "group": "realworld-docs",
+      "content": "## Setup\n\n1. Copy `.env.example` to `.env`.\n2. Fill in your own database and cache credentials.\n3. Run `npm install` followed by `npm run dev`.\n\nThe service listens on port 3000 by default; override it with `PORT`.\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "api-docs-snippet",
+      "path": "authentication.md",
+      "group": "realworld-docs",
+      "content": "## Authentication\n\nEvery request must carry your API key in the `Authorization` header as\n`Bearer <token>`. Keys are issued from the dashboard under Settings -> API\nKeys and can be rotated at any time without downtime.\n\nRequests without a valid key receive a 401 response.\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    },
+    {
+      "id": "changelog-snippet",
+      "path": "CHANGELOG.md",
+      "group": "realworld-docs",
+      "content": "## v2.3.0\n\n- Added support for custom webhook retries\n- Fixed a bug where sessions expired earlier than configured\n- Upgraded the internal HTTP client for better connection reuse\n",
+      "expected": [],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).",
+        "sources": []
+      }
+    }
+  ]
+}

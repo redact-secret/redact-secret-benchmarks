@@ -17,7 +17,9 @@ export interface EvaluationAssertion {
 export interface EvaluationCase {
   id: string; method: string; targets: string[]; taxonomy: string; sourceSlug: string;
   variants: EvaluationVariant[]; assertions: EvaluationAssertion[];
-  findings: { scanner: string; variant: string; count: number; flagged: boolean | null }[];
+  /** `actionCounts` (#95): tally of the product policy action a finding carried, present only when
+   * the scanner reports one (redact-secret only). Additive; never changes `flagged`/`count`. */
+  findings: { scanner: string; variant: string; count: number; flagged: boolean | null; actionCounts?: Record<string, number> }[];
   generation: { operator: string; status: 'generated' | 'unsupported' | 'error' }[];
   comparisons: { peer: string; variant: string; status: string; disagreement: string; classification: string }[];
 }

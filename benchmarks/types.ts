@@ -14,14 +14,21 @@ export interface Fixture {
   twinOf?: string; mutation?: string; mutationKind?: string; formatReason?: string; issue?: number;
 }
 export interface Corpus { fixtures: Fixture[]; schemaVersion?: number; reviewStatus?: string; scope?: string; references?: unknown; milestoneReview?: unknown }
-export interface Finding extends Range { path: string; family?: string }
+/** `action` (#95, docs/decisions/2026-09-21-add-untargeted-benign-corpus.md Decision 3): the product
+ * policy action a finding carried, when the scanner reports one. Only the redact-secret adapter
+ * threads it; other scanners carry no action concept and leave it undefined. */
+export interface Finding extends Range { path: string; family?: string; action?: string }
 export type Outcome = 'EXACT' | 'COVERED' | 'OVERBROAD' | 'PARTIAL' | 'MISS';
 /** `coDetected` is set only on a scoped twin (`flagged` scoped to its declared contract family): a finding attributed
  * to a different, known family fired on the fixture. It is evidence, not a failure of the twin's own contract. */
-export interface RowScore { spanOutcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number; flagged?: boolean; findings?: number; coDetected?: boolean }
+/** `actionCounts` (#95): tally of the product policy action (`redact`/`warn`/`block`/`allow`) carried
+ * by a control's findings, when the scanner reports one (redact-secret only). Present only when at
+ * least one finding carries an action; never changes `flagged`/`findings` (docs/decisions/2026-09-21-
+ * add-untargeted-benign-corpus.md, Decision 3 — additive, never a redefinition of falseAlarmRate). */
+export interface RowScore { spanOutcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number; flagged?: boolean; findings?: number; coDetected?: boolean; actionCounts?: Record<string, number> }
 export interface ScoredRow extends RowScore {
   id: string; path: string; group: string; kind?: Kind; tier?: Tier; contract?: string; twinOf?: string;
-  expected: ExpectedRange[]; actual: Range[];
+  expected: ExpectedRange[]; actual: (Range & { family?: string; action?: string })[];
 }
 export interface Group {
   files: number; scored?: boolean; spans?: number; secretBytes?: number; outcomes?: Record<string, number>;

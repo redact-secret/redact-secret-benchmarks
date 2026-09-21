@@ -94,8 +94,9 @@ export async function executeEvaluation({ cases, methods, operators, scanners, p
         for (let replay = 0; replay < accounting.replays; replay++) {
           const rawFindings = await scanner.scan(scratch, fixtures.map(({ id, path, content }) => ({ id, path, content })));
           score(fixtures, rawFindings); // fail closed on unmappable/invalid findings
-          replays.push(rawFindings.map(({ path, start, end, family }) => ({ path, start, end,
-            ...(scanner.capabilities?.classification !== false && family && Object.hasOwn(contracts, family) ? { family } : {}) })));
+          replays.push(rawFindings.map(({ path, start, end, family, action }) => ({ path, start, end,
+            ...(scanner.capabilities?.classification !== false && family && Object.hasOwn(contracts, family) ? { family } : {}),
+            ...(action !== undefined ? { action } : {}) })));
         }
         const [first, ...rest] = replays.map(tuples);
         const divergent = new Set<string>();

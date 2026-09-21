@@ -2,16 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadCases } from '../benchmarks/engine/cases.ts';
 import { createOperators } from '../benchmarks/operators/index.ts';
-import { AXES } from '../benchmarks/lib/assessment.ts';
+import { AXES, REAL_WORLD_AXES } from '../benchmarks/lib/assessment.ts';
 
 const operators = createOperators();
 const benign = (await loadCases(operators)).filter(c => c.method === 'benign');
 
-test('every benign case has a single-source, in-vocabulary axis (#91)', () => {
+test('every benign case has a single-source, in-vocabulary axis: AXES (#91) or REAL_WORLD_AXES (#95)', () => {
   assert.ok(benign.length > 0);
   for (const c of benign) {
     assert.ok(c.taxonomy, c.id);
-    assert.ok(AXES.includes(c.taxonomy), `${c.id}: ${c.taxonomy}`);
+    assert.ok(AXES.includes(c.taxonomy) || REAL_WORLD_AXES.includes(c.taxonomy), `${c.id}: ${c.taxonomy}`);
   }
 });
 

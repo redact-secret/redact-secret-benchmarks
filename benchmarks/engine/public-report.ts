@@ -21,7 +21,8 @@ export function publicEvaluation(raw: Awaited<ReturnType<typeof runEvaluation>>,
         expectationEffect: v.transformation.expectationEffect ?? '', contractMatch: v.transformation.contractMatch ?? null })),
       assertions: c.scanners.flatMap(s => s.assertions.map(a => ({ scanner: s.scanner, type: a.type, status: a.status,
         variant: a.variant ?? '', baseline: a.baseline ?? '', candidate: a.candidate ?? '' }))),
-      findings: c.scanners.flatMap(s => s.variants.map(v => ({ scanner: s.scanner, variant: v.id, count: v.row.actual.length, flagged: v.row.flagged ?? null }))),
+      findings: c.scanners.flatMap(s => s.variants.map(v => ({ scanner: s.scanner, variant: v.id, count: v.row.actual.length, flagged: v.row.flagged ?? null,
+        ...(v.row.actionCounts ? { actionCounts: v.row.actionCounts } : {}) }))),
       generation: c.generation.map(g => ({ operator: g.operator, status: g.status })),
       comparisons: (c.comparisons ?? []).map(c => ({ peer: c.peer, variant: c.variant, status: c.status, disagreement: c.disagreement ?? '', classification: c.classification ?? '' })) };
   });

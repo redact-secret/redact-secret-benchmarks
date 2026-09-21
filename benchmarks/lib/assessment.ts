@@ -113,8 +113,12 @@ const PLACEHOLDER = 'Placeholder, reference, template, mask, documentation or or
 const PUBLIC_OR_ENCODED = 'Public identifier or benign encoding constructed to contain no credential: silence follows from construction.';
 const PUBLIC_ID = 'Public identifier constructed to contain no credential: silence follows from construction.';
 const MILESTONE_CLOSED = 'Placeholder, tutorial, reference, template or mask control whose expected silence follows a closed redact-secret issue decision, not a universal secret definition.';
+/** Decision 2 default (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md): every `real-world-shapes`
+ * fixture is T3 — ordinary content has no credential grammar to be malformed against, so "this file contains
+ * no secret" rests on construction and this project's own policy, never provider or tool evidence. */
+const REAL_WORLD_SHAPE = 'Real-world-shaped synthetic content, authored locally and not ingested from any external source (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md). No provider or tool evidence grounds its silence: expected silence is project policy (T3).';
 const bytesOf = (f: Fixture, r: Range) => new TextDecoder().decode(new TextEncoder().encode(f.content).slice(r.start, r.end));
-const matches = (family: string, value: string) => Boolean(contracts[family ?? '']?.pattern) && new RegExp(contracts[family ?? ''].pattern!).test(value);
+export const matches = (family: string, value: string) => Boolean(contracts[family ?? '']?.pattern) && new RegExp(contracts[family ?? ''].pattern!).test(value);
 
 /**
  * Benign-control (`must-not-flag`) taxonomy axis (#91). Kept out of `Assessment`
@@ -127,7 +131,19 @@ const matches = (family: string, value: string) => Boolean(contracts[family ?? '
 export type Axis = 'public-identifier' | 'placeholder' | 'reference' | 'ordinary-prose' | 'near-miss' | 'encoded-value' | 'pending';
 export const AXES: readonly Axis[] = ['public-identifier', 'placeholder', 'reference', 'ordinary-prose', 'near-miss', 'encoded-value', 'pending'];
 
-type ControlRule = { test: (f: Fixture) => boolean; tier: Tier; reason: string; axis: Exclude<Axis, 'pending'>; family?: (f: Fixture) => string | undefined };
+/**
+ * `real-world-shapes`' (#95) own taxonomy — structurally separate from `AXES`
+ * above (#91's family-control vocabulary). These controls are untargeted (no
+ * `detectors`, no `fixture-detectors.json` entry) and must never be able to
+ * count toward any family's `benign.minimumAxes`, even by accident: a value
+ * from this vocabulary is never a member of `AXES`, so it can never be
+ * mistaken for reviewed family-control evidence. See
+ * docs/decisions/2026-09-21-add-untargeted-benign-corpus.md.
+ */
+export type RealWorldAxis = 'realworld-config' | 'realworld-logs' | 'realworld-lockfile' | 'realworld-source' | 'realworld-docs';
+export const REAL_WORLD_AXES: readonly RealWorldAxis[] = ['realworld-config', 'realworld-logs', 'realworld-lockfile', 'realworld-source', 'realworld-docs'];
+
+type ControlRule = { test: (f: Fixture) => boolean; tier: Tier; reason: string; axis: Exclude<Axis, 'pending'> | RealWorldAxis; family?: (f: Fixture) => string | undefined };
 const idSuffix = (...suffixes: string[]) => (f: Fixture) => suffixes.some(s => f.id.endsWith(`-${s}`));
 const idIn = (...ids: string[]) => (f: Fixture) => ids.includes(f.id);
 const groupIn = (...groups: string[]) => (f: Fixture) => groups.includes(f.group);
@@ -186,10 +202,13 @@ const CONTROL_RULES: Record<string, ControlRule[]> = {
     { test: groupIn('#263 · Fully delimited templates', '#266 · Flow collections', '#278 · Code reference exclusions', '#280 · Secret-manager grammars'), tier: 'T3', reason: MILESTONE_CLOSED, axis: 'reference' },
     { test: idIn('issue-265-secret-key-ref'), tier: 'T3', reason: MILESTONE_CLOSED, axis: 'reference' },
   ],
+  // #95: untargeted, own axis vocabulary (REAL_WORLD_AXES, disjoint from AXES) — `group` doubles as
+  // the shape label since every fixture belongs to exactly one of the five shapes.
+  'real-world-shapes': REAL_WORLD_AXES.map(axis => ({ test: groupIn(axis), tier: 'T3' as Tier, reason: REAL_WORLD_SHAPE, axis })),
 };
 
 /** Pure sibling of classifyControl's must-not-flag branch: same table, axis instead of tier/reason. Null means no reviewed rule (fail closed in loadCases). */
-export function controlAxis(category: string, f: Fixture): Axis | null {
+export function controlAxis(category: string, f: Fixture): Axis | RealWorldAxis | null {
   if (f.twinOf) return null;
   for (const rule of CONTROL_RULES[category] ?? []) if (rule.test(f)) return rule.axis;
   return null;

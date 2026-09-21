@@ -169,7 +169,12 @@
               "ordinary-prose",
               "near-miss",
               "encoded-value",
-              "pending"
+              "pending",
+              "realworld-config",
+              "realworld-logs",
+              "realworld-lockfile",
+              "realworld-source",
+              "realworld-docs"
             ]
           },
           "sourceSlug": {
@@ -308,6 +313,13 @@
                     "boolean",
                     "null"
                   ]
+                },
+                "actionCounts": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
                 }
               },
               "required": [

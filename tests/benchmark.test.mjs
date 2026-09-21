@@ -97,9 +97,13 @@ for (const id of ["redact-secret", "flare-redact"]) {
             r.end === unicode.expected[0].end,
         ),
       );
+      // #95: redact-secret's `scan()` always reports an `action` per finding; other adapters carry no
+      // such concept (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md, Decision 3).
+      const expectedKeys = id === "redact-secret" ? ["action", "end", "family", "path", "start"] : ["end", "family", "path", "start"];
       for (const r of results) {
-        assert.deepEqual(Object.keys(r).sort(), ["end", "family", "path", "start"]);
+        assert.deepEqual(Object.keys(r).sort(), expectedKeys);
         assert.match(r.family, /^[a-z][a-z0-9-]+$/);
+        if (id === "redact-secret") assert.match(r.action, /^(redact|warn|block|allow)$/);
       }
       assert.doesNotThrow(() => score(corpus.fixtures, results));
       assert.deepEqual(score(corpus.fixtures, results).rows.find(r => r.id === "unicode-prefix").spanOutcomes, ["EXACT"]);

@@ -223,6 +223,45 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("pulumi-access-token", "mask", [`pul-${"*".repeat(40)}`]);
   add("pulumi-access-token", "reference", ["stack: myorg/myproject/prod"]);
 
+  // #515/#81: docs.supabase.com/guides/platform/personal-access-tokens
+  // documents exactly two prefixes (classic sbp_, versioned sbp_v0_), each
+  // sharing the identical tool-corroborated 40-byte lowercase-alnum body
+  // (docs/decisions/2026-09-20-scope-supabase-management-token-and-secret-
+  // key-independence.md). Never mixed with supabase-token's sb_secret_
+  // fixtures above; the two credential classes stay evidence-independent.
+  const LOWER_ALNUM = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const supabasePatShapes = {};
+  for (const [kind, prefix] of [["classic", "sbp_"], ["versioned", "sbp_v0_"]]) {
+    const body = synthetic(`coverage:supabase-pat:${kind}:body`, 40, LOWER_ALNUM);
+    supabasePatShapes[kind] = `${prefix}${body}`;
+    positive("supabase-management-token", `${kind}-shape`, [{ secret: supabasePatShapes[kind] }]);
+  }
+  addTwin("supabase-management-token", "classic-shape", [supabasePatShapes.classic.slice(0, -1)], "length: 39-byte body vs the tool-corroborated exact 40", "length");
+  // The versioned prefix's body shares the classic shape's alphabet; an
+  // uppercase byte falls outside is_lower_alnum's [a-z0-9] regardless of
+  // which body byte is substituted.
+  addTwin("supabase-management-token", "versioned-shape", [supabasePatShapes.versioned.slice(0, 8) + "A" + supabasePatShapes.versioned.slice(9)], "alphabet: one uppercase byte vs the tool-corroborated lowercase-only [a-z0-9] body", "alphabet");
+  add("supabase-management-token", "prefix-only", ["sbp_"]);
+  add("supabase-management-token", "short-body", [`sbp_${supabasePatShapes.classic.slice(4, 14)}`]);
+  add("supabase-management-token", "invalid-alphabet", [`sbp_${supabasePatShapes.classic.slice(4, 5).toUpperCase()}${supabasePatShapes.classic.slice(5)}`]);
+  add("supabase-management-token", "mask", [`sbp_${"*".repeat(40)}`]);
+  add("supabase-management-token", "reference", ["SUPABASE_ACCESS_TOKEN=${SUPABASE_ACCESS_TOKEN}"]);
+
+  // #520/#81: projectdiscovery/nuclei-templates's firebase-fcm-server-key-
+  // disclosure.yaml is the only corroboration source for the exact width;
+  // the literal AAAA prefix and ":" separator are the only structural
+  // markers it documents (docs/decisions/2026-09-20-add-firebase-server-
+  // key-detection-and-client-config-discrimination.md).
+  const URL_SAFE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
+  const firebaseServerKey = `AAAA${synthetic("coverage:firebase:segment1", 7, URL_SAFE)}:${synthetic("coverage:firebase:segment2", 140, URL_SAFE)}`;
+  positive("firebase-server-key", "server-key", [{ secret: firebaseServerKey }]);
+  addTwin("firebase-server-key", "server-key", [firebaseServerKey.replace(":", "-")], "boundary: \"-\" separator vs the corroborated literal \":\" marker", "boundary");
+  add("firebase-server-key", "prefix-only", ["AAAA"]);
+  add("firebase-server-key", "missing-separator", [firebaseServerKey.replace(":", "")]);
+  add("firebase-server-key", "short-body", [firebaseServerKey.slice(0, 40)]);
+  add("firebase-server-key", "mask", [`AAAA${"*".repeat(7)}:${"*".repeat(140)}`]);
+  add("firebase-server-key", "reference", ["FIREBASE_SERVER_KEY=${FCM_LEGACY_SERVER_KEY}"]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

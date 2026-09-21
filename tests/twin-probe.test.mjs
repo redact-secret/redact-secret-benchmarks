@@ -125,6 +125,7 @@ const T1_DIMENSIONS = {
   jwt: ['boundary', 'alphabet'],
   'terraform-cloud-token': ['length', 'boundary'],
   'pulumi-access-token': ['length', 'alphabet'],
+  'supabase-management-token': ['length', 'alphabet'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -147,5 +148,5 @@ test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
   assert.equal(probe.counts['un-probeable'], 14);
-  assert.equal(probe.counts['not-measured'], 30);
+  assert.equal(probe.counts['not-measured'], 32);
 });

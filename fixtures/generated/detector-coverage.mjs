@@ -338,6 +338,23 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     "\n",
   ]);
 
+  // #105: every digitalocean-token benign control above is a malformed-by-
+  // construction near-miss (one axis); stable.benign.minimumAxes = 3 needs
+  // distinct reasons, not further truncations of the same shape
+  // (docs/decisions/2026-09-21-measure-benign-axis-diversity.md). mask/
+  // label-prose (axis: placeholder) and reference (axis: reference) mirror
+  // the template #93 already applied to the other T1 families that shared
+  // this gap. One design, instantiated across the three documented prefixes
+  // rather than authored three times over dop_v1_ alone: the taxonomy's
+  // three digitalocean:* families all read this one detector's evidence
+  // (`familiesForDetector`), so the axis controls need not be triplicated
+  // per prefix to clear every family's gate.
+  add("digitalocean-token", "mask", [`doo_v1_${"*".repeat(64)}`]);
+  add("digitalocean-token", "label-prose", [
+    "Documentation mentions a DigitalOcean API token (dop_v1_/doo_v1_/dor_v1_ prefixes) without embedding the token value.",
+  ]);
+  add("digitalocean-token", "reference", ["DIGITALOCEAN_ACCESS_TOKEN=${DIGITALOCEAN_TOKEN}\n"]);
+
   // #64: the leading/trailing/dash identifier-embedding boundary shape above
   // was applied to digitalocean-token only and never generalised, even
   // though the ledger's `confirmed-boundary-false-positive/<family>` class

@@ -73,14 +73,22 @@ export const isCovered = (outcome: string) => !isLeaked(outcome);
  * control (no `scopeFamily`) keeps the unscoped, global reading: any finding
  * at all flags it.
  */
-export function scoreRow(expected: ExpectedRange[], actual: (Range & { family?: string })[], scopeFamily?: string): RowScore {
+export function scoreRow(expected: ExpectedRange[], actual: (Range & { family?: string; action?: string })[], scopeFamily?: string): RowScore {
   const secrets = expected.filter(e => (e.role ?? 'secret') === 'secret');
   if (!secrets.length) {
+    // #95: additive tally of the product policy action a finding carried, when the scanner
+    // reports one. Never changes `flagged`/`findings` below (docs/decisions/2026-09-21-
+    // add-untargeted-benign-corpus.md, Decision 3).
+    const actionCounts = actual.reduce<Record<string, number>>((counts, a) => {
+      if (a.action !== undefined) counts[a.action] = (counts[a.action] ?? 0) + 1;
+      return counts;
+    }, {});
+    const withActions = <T extends RowScore>(score: T): T => (Object.keys(actionCounts).length ? { ...score, actionCounts } : score);
     if (scopeFamily) {
       const other = actual.filter(a => a.family !== undefined && a.family !== scopeFamily).length;
-      return { flagged: other < actual.length, findings: actual.length, ...(other > 0 ? { coDetected: true } : {}) };
+      return withActions({ flagged: other < actual.length, findings: actual.length, ...(other > 0 ? { coDetected: true } : {}) });
     }
-    return { flagged: actual.length > 0, findings: actual.length };
+    return withActions({ flagged: actual.length > 0, findings: actual.length });
   }
   const spanOutcomes = secrets.map(e => spanOutcome(e, actual));
   const leakedBytes = secrets.reduce((n, e, i) => n + (isLeaked(spanOutcomes[i]) ? bytesOutside([e], actual) : 0), 0);

@@ -68,5 +68,12 @@
     "description": "Synthetic positive shapes, prefix variants, and negative controls for every registered beta.3 detector.",
     "kind": "accuracy",
     "corpus": "fixtures/generated/detector-coverage.json"
+  },
+  {
+    "id": "real-world-shapes",
+    "title": "Untargeted real-world shapes",
+    "description": "Real-world-shaped synthetic config, logs, lockfiles, source and docs, authored locally rather than ingested — this measures a global false-alarm rate, not any family's evidence, and moves no family's support status. A flag here is discovery evidence; never relabel the fixture, add a detector exception, or edit it to make it quiet.",
+    "kind": "accuracy",
+    "corpus": "fixtures/real-world-shapes/corpus.json"
   }
 ]

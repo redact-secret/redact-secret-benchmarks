@@ -78,9 +78,10 @@ export function score(fixtures: Fixture[], findings: Finding[]): { rows: ScoredR
     // `family`, when a scanner attributed one, rides along on `actual` so a twin's flagged
     // reading can be scoped to its own contract family (below) and so a published report row
     // stays self-verifying (docs/measurement-v4.md §3) without a separate, unpublished channel.
+    // `action` (#95) rides along the same way, for scoreRow's additive actionCounts.
     const actual = [...unique.values()]
       .filter((r) => r.path === f.path)
-      .map(({ start, end, family }) => ({ start, end, ...(family !== undefined ? { family } : {}) }));
+      .map(({ start, end, family, action }) => ({ start, end, ...(family !== undefined ? { family } : {}), ...(action !== undefined ? { action } : {}) }));
     const expected = f.expected.map(({ start, end, role, envelope }) => ({ start, end, role, ...(envelope ? { envelope: { start: envelope.start, end: envelope.end } } : {}) }));
     const a = f.assessment;
     const row = {

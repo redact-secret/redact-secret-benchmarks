@@ -1,10 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { promisify } from 'node:util';
 import Ajv from 'ajv';
 import { familyEvidence } from '../benchmarks/support/evidence.ts';
 import { classifyFamilySupport } from '../benchmarks/support/status.ts';
 import { contracts } from '../benchmarks/lib/assessment.ts';
+
+const exec = promisify(execFile);
+const repositoryRoot = path.resolve(new URL('..', import.meta.url).pathname);
+const hashFile = async file => createHash('sha256').update(await readFile(file)).digest('hex');
 
 const read = async path => JSON.parse(await readFile(new URL(`../${path}`, import.meta.url), 'utf8'));
 const schema = await read('schemas/support-status-report-v1.json');
@@ -12,6 +21,26 @@ const ajv = new Ajv({ strict: true });
 const validate = ajv.compile(schema);
 
 const emptyLedger = { schemaVersion: 1, entries: {} };
+
+async function pack(directory) {
+  const { stdout } = await exec(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['pack', '--json'], { cwd: directory });
+  return path.join(directory, JSON.parse(stdout)[0].filename);
+}
+
+// A minimal candidate build: enough for installCandidate/loadCandidate to
+// accept it, never a real product build. Mirrors tests/candidate.test.mjs.
+async function candidatePackages() {
+  const root = await mkdtemp(path.join(tmpdir(), 'classify-candidate packages with spaces '));
+  const nodeName = '@redact-secret/node-test';
+  const core = path.join(root, 'core'), node = path.join(root, 'node'), wasm = path.join(root, 'wasm');
+  await Promise.all([mkdir(path.join(core, 'dist'), { recursive: true }), mkdir(node), mkdir(wasm)]);
+  await writeFile(path.join(core, 'package.json'), JSON.stringify({ name: '@redact-secret/core', version: '9.9.9-candidate.1', type: 'module',
+    exports: './dist/index.js', dependencies: { '@redact-secret/wasm': '9.9.9-candidate.1' }, optionalDependencies: { [nodeName]: '9.9.9-candidate.1' } }));
+  await writeFile(path.join(core, 'dist/index.js'), `export const VERSION='9.9.9-candidate.1'; export async function initialize(){} export function scan(){return []}`);
+  await writeFile(path.join(node, 'package.json'), JSON.stringify({ name: nodeName, version: '9.9.9-candidate.1' }));
+  await writeFile(path.join(wasm, 'package.json'), JSON.stringify({ name: '@redact-secret/wasm', version: '9.9.9-candidate.1' }));
+  return { root, core: await pack(core), node: await pack(node), wasm: await pack(wasm) };
+}
 
 test('familyEvidence reads twin pairs and failures from the must-flip relation only, for the product scanner', () => {
   const byDetector = {
@@ -133,9 +162,74 @@ test('a synthetic report shaped like eval:classify output satisfies the schema',
   const assessment = classifyFamilySupport(evidence);
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
-    criteriaSchemaVersion: 1, scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
+    criteriaSchemaVersion: 1, product: null, scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
     familyCount: 1, distribution: { stable: 0, provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
     families: [{ ...assessment, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null }],
   };
   assert.ok(validate(synthetic), JSON.stringify(validate.errors));
+});
+
+test('a synthetic report shaped like a candidate eval:classify run satisfies the schema', () => {
+  const family = Object.keys(contracts)[0];
+  const evidence = familyEvidence(family, {}, [], emptyLedger);
+  const assessment = classifyFamilySupport(evidence);
+  const synthetic = {
+    schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
+    criteriaSchemaVersion: 1,
+    product: { sourceCommit: 'a'.repeat(40), packageName: '@redact-secret/core', declaredVersion: '9.9.9-candidate.1',
+      artifacts: ['package', 'node', 'wasm'].map(role => ({ role, sha256: 'b'.repeat(64) })) },
+    scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
+    familyCount: 1, distribution: { stable: 0, provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
+    families: [{ ...assessment, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null }],
+  };
+  assert.ok(validate(synthetic), JSON.stringify(validate.errors));
+});
+
+test('eval:classify CLI rejects a partial candidate flag set rather than silently measuring the published package', async () => {
+  await assert.rejects(exec(process.execPath, ['--import', 'tsx', 'benchmarks/classify-support.ts',
+    '--candidate-package=/tmp/does-not-matter.tgz', '--candidate-node-package=/tmp/does-not-matter.tgz'],
+    { cwd: repositoryRoot, timeout: 30_000 }), /Usage: npm run eval:classify/);
+});
+
+test('eval:classify CLI rejects a malformed candidate source commit', async () => {
+  await assert.rejects(exec(process.execPath, ['--import', 'tsx', 'benchmarks/classify-support.ts',
+    '--candidate-package=/tmp/does-not-matter.tgz', '--candidate-node-package=/tmp/does-not-matter.tgz',
+    '--candidate-wasm-package=/tmp/does-not-matter.tgz', '--candidate-source-commit=not-a-sha'],
+    { cwd: repositoryRoot, timeout: 30_000 }), /Usage: npm run eval:classify/);
+});
+
+test('eval:classify CLI substitutes a candidate build for redact-secret only, and names the measured product', async () => {
+  const artifacts = await candidatePackages();
+  const output = path.join(artifacts.root, 'support-status.json');
+  const sourceCommit = 'a'.repeat(40);
+  try {
+    await exec(process.execPath, ['--import', 'tsx', 'benchmarks/classify-support.ts',
+      `--output=${output}`, `--candidate-package=${artifacts.core}`, `--candidate-node-package=${artifacts.node}`,
+      `--candidate-wasm-package=${artifacts.wasm}`, `--candidate-source-commit=${sourceCommit}`],
+      { cwd: repositoryRoot, timeout: 120_000 });
+    const report = JSON.parse(await readFile(output, 'utf8'));
+    assert.ok(validate(report), JSON.stringify(validate.errors));
+    // Peer scanners stay exactly the pinned set; only the redact-secret entry was substituted.
+    assert.deepEqual(report.scanners, ['redact-secret', 'gitleaks', 'trufflehog']);
+    assert.deepEqual(report.product, {
+      sourceCommit, packageName: '@redact-secret/core', declaredVersion: '9.9.9-candidate.1',
+      artifacts: [
+        { role: 'package', sha256: await hashFile(artifacts.core) },
+        { role: 'node', sha256: await hashFile(artifacts.node) },
+        { role: 'wasm', sha256: await hashFile(artifacts.wasm) },
+      ],
+    });
+  } finally { await rm(artifacts.root, { recursive: true, force: true }); }
+});
+
+test('eval:classify CLI with no arguments still measures the published package, product null', async () => {
+  const output = path.join(await mkdtemp(path.join(tmpdir(), 'classify-default-')), 'support-status.json');
+  try {
+    await exec(process.execPath, ['--import', 'tsx', 'benchmarks/classify-support.ts', `--output=${output}`],
+      { cwd: repositoryRoot, timeout: 120_000 });
+    const report = JSON.parse(await readFile(output, 'utf8'));
+    assert.ok(validate(report), JSON.stringify(validate.errors));
+    assert.equal(report.product, null);
+    assert.deepEqual(report.scanners, ['redact-secret', 'gitleaks', 'trufflehog']);
+  } finally { await rm(path.dirname(output), { recursive: true, force: true }); }
 });

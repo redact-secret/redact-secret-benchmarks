@@ -55,3 +55,28 @@ invalidate the authored fixed-corpus result.
 The ordinary `redact-secret` scanner in `scanners/index.mjs` continues to load
 the lockfile-pinned published package, and `eval:qualify` continues to require
 the versions in `qualification/suite-v1.json`.
+
+## Measuring support status against a candidate
+
+`eval:classify` (issue #80) accepts the same three tarballs, plus the
+product's source commit, to substitute a candidate build for the pinned
+`redact-secret` entry before running the full twin/benign/metamorphic/
+mutation/differential suite:
+
+```sh
+npm run eval:classify -- \
+  --candidate-package=/absolute/path/redact-secret-core.tgz \
+  --candidate-node-package=/absolute/path/redact-secret-node-platform.tgz \
+  --candidate-wasm-package=/absolute/path/redact-secret-wasm.tgz \
+  --candidate-source-commit=<full-product-commit-sha>
+```
+
+All four flags are required together (or all omitted); a partial set is
+refused rather than silently falling back to the published package. Peer
+scanners (`gitleaks`, `trufflehog`) stay pinned and unchanged, so differential
+evidence is unaffected. `results-output/support-status.json` gains a
+`product` field — `null` for the default (published-package) run, or the
+candidate's `sourceCommit`, `packageName`, `declaredVersion` and per-artifact
+sha256 digests when one was supplied — so a support-status report can never
+be mistaken for one about a different build. It reuses `installCandidate` /
+`loadCandidate` from `scanners/candidate.mjs`; no second installer.

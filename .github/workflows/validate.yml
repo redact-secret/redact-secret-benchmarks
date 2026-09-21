@@ -48,6 +48,8 @@ jobs:
       - run: npm ci
       - name: Registry, inventory, and known-gap commits must trace to the product's main
         run: npm run pins:check
+      - name: Every product promotion cross-references a lifecycle record, and vice versa (#106)
+        run: npm run promotion:check
 
   scanner-comparison:
     runs-on: ubuntu-latest

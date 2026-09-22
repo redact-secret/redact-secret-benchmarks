@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "id": "synthetic-sample",
+  "title": "Synthetic documentation sample pack",
+  "sample": true,
+  "status": "accepted",
+  "qualification": "maintainer-regression",
+  "author": {
+    "attribution": "redact-secret-benchmarks maintainers (documentation sample)",
+    "attributionKind": "organization",
+    "affiliation": "project-maintainer",
+    "contact": "github:redact-secret"
+  },
+  "implementationExposure": {
+    "inspectedDetectorImplementation": true,
+    "detail": "Written by project maintainers who maintain the detectors; this is why the sample can never qualify as externally authored."
+  },
+  "provenance": {
+    "credentialStatus": "synthetic",
+    "construction": "Hand-typed placeholder bodies behind an invented exs_ prefix that no provider issues; the lookalike is a made-up hex string, not a real commit."
+  },
+  "license": {
+    "spdx": "MIT",
+    "redistribution": true,
+    "grant": "Contributed under this repository's MIT license."
+  },
+  "threatCategories": [
+    "context-camouflage",
+    "boundary-splitting",
+    "benign-lookalike"
+  ],
+  "expectations": {
+    "authoring": "Ranges and actions were written from the construction above, by counting UTF-8 bytes, before any scanner ran.",
+    "scannerOutputConsulted": false,
+    "digest": "6af78e3190888718b08bdf2d709e650c1692e30cbcac2d7e7441dbb8c0851799"
+  },
+  "fixtures": [
+    {
+      "id": "env-assignment",
+      "path": "sample/.env",
+      "content": "EXAMPLE_API_TOKEN=exs_SYNTHETIC0q8Zr1LmN4vT7wXy2Kb5\n",
+      "action": "must-redact",
+      "expected": [
+        {
+          "start": 18,
+          "end": 51
+        }
+      ],
+      "threatCategories": [
+        "context-camouflage"
+      ],
+      "credentialStatus": "synthetic",
+      "rationale": "The whole assigned value is the credential; the key name is not."
+    },
+    {
+      "id": "concatenated-literal",
+      "path": "sample/token.js",
+      "content": "const token = \"exs_SYNTHETIC\" + \"7Hq2Lp9Xv4Rt6Wm1Zc3N\";\n",
+      "action": "must-redact",
+      "expected": [
+        {
+          "start": 15,
+          "end": 28
+        },
+        {
+          "start": 33,
+          "end": 53
+        }
+      ],
+      "threatCategories": [
+        "boundary-splitting"
+      ],
+      "credentialStatus": "synthetic",
+      "rationale": "The credential is split across two string literals; each literal part must be redacted, and the operator between them need not be."
+    },
+    {
+      "id": "commit-hash-lookalike",
+      "path": "sample/release.toml",
+      "content": "release_commit = \"9f2c4e1a7b3d5f6081a2c3d4e5f60718293a4b5c\"\n",
+      "action": "must-not-flag",
+      "expected": [],
+      "threatCategories": [
+        "benign-lookalike"
+      ],
+      "credentialStatus": "synthetic",
+      "rationale": "A 40-hex git commit id under a non-secret key is not a credential."
+    }
+  ],
+  "submittedAt": "2026-09-22T09:00:00Z",
+  "safetyReview": {
+    "reviewer": "redact-secret-benchmarks maintainers",
+    "reviewedAt": "2026-09-22T10:00:00Z",
+    "outcome": "passed",
+    "notes": "Every value is an invented placeholder under a prefix no provider issues."
+  },
+  "firstRun": {
+    "path": "first-run.json",
+    "sha256": "4a74fffe055674f554ad0fffbeacfb2e43757a6e6253036e7c3f6a983b5af15d"
+  },
+  "history": [
+    {
+      "status": "submitted",
+      "at": "2026-09-22T09:00:00Z",
+      "by": "redact-secret-benchmarks maintainers"
+    },
+    {
+      "status": "safety-review",
+      "at": "2026-09-22T09:30:00Z",
+      "by": "redact-secret-benchmarks maintainers"
+    },
+    {
+      "status": "frozen-first-run",
+      "at": "2026-09-22T12:00:00Z",
+      "by": "redact-secret-benchmarks maintainers"
+    },
+    {
+      "status": "accepted",
+      "at": "2026-09-22T13:00:00Z",
+      "by": "redact-secret-benchmarks maintainers"
+    }
+  ],
+  "maintainerEdits": []
+}

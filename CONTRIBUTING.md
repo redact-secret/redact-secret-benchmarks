@@ -36,6 +36,17 @@ Both commands use Python 3.11+ and `gh`; review the explicit family mappings
 in `scripts/refresh-detector-inventory.py` when upgrading versions. The web app
 loads only the checked-in snapshot and performs no external scanner queries.
 
+## Submitting an external adversarial pack
+
+Adversarial fixtures written outside the project enter through the intake in
+[`adversarial/README.md`](adversarial/README.md): one `intake.json` per pack
+recording attribution, implementation exposure, synthetic provenance,
+scanner-free expectations, threat categories and license, followed by a
+safety review and an immutable first run. `npm run adversarial:check`
+validates every pack; `npm run evidence:query -- --class=<class>` lists
+public adversarial, protected holdout and maintainer regression evidence
+separately. Project-authored evidence is never described as independent.
+
 ## Recording a decision
 
 `docs/decisions/` holds this repository's ADRs — benchmark-methodology and

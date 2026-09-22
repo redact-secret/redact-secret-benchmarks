@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "packId": "synthetic-sample",
+  "expectationsDigest": "6af78e3190888718b08bdf2d709e650c1692e30cbcac2d7e7441dbb8c0851799",
+  "recordedAt": "2026-09-22T12:00:00Z",
+  "benchmarkCommit": "e74e60871fbdb9f19201451bca7f1aefe254573e",
+  "scanners": [
+    {
+      "name": "example-scanner",
+      "version": "0.0.0-sample",
+      "configuration": "documentation sample; no scanner was run",
+      "artifactDigest": "sha256:db3fde8ded4f1a4121df025a4a76c3f9b96e1af6d5417689b5251dfd05592454"
+    }
+  ],
+  "results": [
+    {
+      "fixtureId": "env-assignment",
+      "scanner": "example-scanner",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 18,
+          "end": 51
+        }
+      ]
+    },
+    {
+      "fixtureId": "concatenated-literal",
+      "scanner": "example-scanner",
+      "status": "complete",
+      "findings": []
+    },
+    {
+      "fixtureId": "commit-hash-lookalike",
+      "scanner": "example-scanner",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 18,
+          "end": 58
+        }
+      ]
+    }
+  ]
+}

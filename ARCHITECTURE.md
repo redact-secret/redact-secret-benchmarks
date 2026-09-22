@@ -72,6 +72,9 @@ benchmarks/lib/scoring.ts     Corpus schema 2 validation (roles, envelopes, twin
 benchmarks/lib/twin-probe.ts  Per-family twin probe: discriminated, not discriminated, un-probeable
 benchmarks/lib/assessment.ts  Kinds, tiers, provider-first contracts and classification
 benchmarks/lib/reporting.ts   Per (kind × tier) groups; no mixed overall score
+benchmarks/lib/adversarial-intake.ts External adversarial intake: lifecycle, synthetic-only, frozen expectations and first run, qualification
+benchmarks/lib/evidence-classes.ts Public adversarial / protected holdout / maintainer regression queries and independence wording
+adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
 scripts/baseline.mjs           Save baselines and generate docs/generated/release-comparison.md
 benchmarks/lib/validate-structures.ts Offline key/JWT validation

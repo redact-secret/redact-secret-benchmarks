@@ -1,5 +1,30 @@
 // Authored against the beta.3 format contracts, never scanner output.
 // Prefix variants are structural examples, not issued/valid credentials.
+import { createHash } from "node:crypto";
+
+// docs/decisions/2026-09-21-author-pypi-macaroon-positives-synthetically.md's
+// verified construction: a well-formed libmacaroons v2 body (VERSION,
+// LOCATION("pypi.org"), a reserved Nil-UUID IDENTIFIER, one self-naming
+// caveat, and a SIGNATURE that is deterministic hash filler, never an HMAC or
+// anything key-derived) rather than an arbitrary random run. Every byte that
+// decodes to plain text says "synthetic" or "never-issued".
+const pypiMacaroonField = (type, content) => Buffer.concat([Buffer.from([type, content.length]), content]);
+const PYPI_MACAROON_BODY = (() => {
+  const identifier = Buffer.from("00000000-0000-0000-0000-000000000000", "ascii");
+  const caveat = Buffer.from("permission=synthetic-benchmark-fixture", "ascii");
+  const signature = createHash("sha256").update("secret-benchmark:never-issued:v2:pypi-token:e0-candidate:signature:0").digest();
+  const body = Buffer.concat([
+    Buffer.from([0x02]), // VERSION
+    pypiMacaroonField(1, Buffer.from("pypi.org", "ascii")), // LOCATION
+    pypiMacaroonField(2, identifier), // IDENTIFIER
+    Buffer.from([0x00]), // EOS (header)
+    pypiMacaroonField(2, caveat), // caveat cid
+    Buffer.from([0x00, 0x00]), // EOS, EOS
+    pypiMacaroonField(6, signature), // SIGNATURE
+  ]);
+  return body.toString("base64url").replace(/=+$/, "");
+})();
+
 const families = [
   ["aws-access-key", ["AKIA", "ASIA"], 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"],
   ["github-token", ["ghp_", "gho_", "ghu_", "ghs_", "ghr_"], 36],
@@ -45,9 +70,9 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // property mutated. `parts` is the mutated literal, never a secret span.
   // Every mutation is authored from the documentation cited on the family's
   // contract (providerSource / twinSource), never from scanner output.
-  const addTwin = (detector, variant, parts, mutation, mutationKind = "length") => {
+  const addTwin = (detector, variant, parts, mutation, mutationKind = "length", twinVariant = variant) => {
     const twin = (suffix, body) => fixtures.push({
-      ...fixture(`${detector}-${variant}-${suffix}-twin`, detector, body),
+      ...fixture(`${detector}-${twinVariant}-${suffix}-twin`, detector, body),
       detectors: [detector],
       twinOf: `${detector}-${variant}-${suffix}`,
       mutation,
@@ -84,6 +109,9 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
       return null; // xapp-/xwfp-: unchanged flat interim shape, exact 20 bytes (redact-secret#551)
     },
     "cloudflare-token": prefix => prefix + synthetic(`detector-coverage:cloudflare-token:${prefix}`, 40) + synthetic(`detector-coverage:cloudflare-token:${prefix}:checksum`, 8, HEX_ALPHABET),
+    // #104/#107: a flat "pypi-" + random run is not a serialized macaroon (the
+    // gap the ADR closed); PYPI_MACAROON_BODY is the verified construction.
+    "pypi-token": prefix => prefix + PYPI_MACAROON_BODY,
   };
   for (const [detector, prefixes, length, alphabet] of families) {
     prefixes.forEach((prefix, index) => {
@@ -98,9 +126,18 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
       // single mutation leaves its other credential component intact.
       if (detector === "aws-access-key")
         addTwin(detector, `shape-${index + 1}`, ["AIDA" + value.slice(prefix.length)], `prefix namespace: AIDA (provider-documented IAM user unique ID) vs ${prefix} access key`, "prefix");
-      // #36: PyPI documents the pypi- prefix as part of the token value.
-      if (detector === "pypi-token")
+      // #36/#107: PyPI documents the pypi- prefix as part of the token value.
+      if (detector === "pypi-token") {
         addTwin(detector, `shape-${index + 1}`, ["pypx-" + value.slice(prefix.length)], "prefix namespace: pypx- vs provider-documented pypi-", "prefix");
+        // docs.pypi.org/api/secrets's own regex is pypi-[A-Za-z0-9-_]{85,}; one
+        // byte short of that documented floor, verified quiet against the
+        // pinned product (docs/decisions/2026-09-21-author-pypi-macaroon-
+        // positives-synthetically.md).
+        addTwin(detector, `shape-${index + 1}`, [value.slice(0, prefix.length + 84)], "length: 84-byte body vs the provider's documented {85,} floor", "length", `shape-${index + 1}-length`);
+        // Same page's character class is [A-Za-z0-9-_]; a byte outside it
+        // immediately after the prefix breaks the same regex.
+        addTwin(detector, `shape-${index + 1}`, [prefix + "!" + value.slice(prefix.length + 1)], "alphabet: a byte outside the provider-documented [A-Za-z0-9-_] class immediately after the prefix", "alphabet", `shape-${index + 1}-alphabet`);
+      }
     });
     add(detector, "prefix-only", [prefixes.join("\n")]);
     add(detector, "short-body", [prefixes.map(prefix => prefix + "abc").join("\n")]);
@@ -576,6 +613,14 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("pypi-token", "mask", ["pypi-" + "*".repeat(90)]);
   add("pypi-token", "reference", ["TWINE_PASSWORD=${PYPI_TOKEN}\n"]);
   add("pypi-token", "label-prose", ["Documentation mentions a PyPI API token (pypi- prefix) without embedding the token value."]);
+  // #107: three genuinely distinct axes, not further near-miss truncations —
+  // pypi.org/help/#apitoken's own "unique identifier displayed on PyPI" (a
+  // public, non-secret UUID, never the pypi- prefix), ordinary prose with no
+  // embedded value, and an unrelated base64-encoded value that merely looks
+  // encoded. Each verified quiet against the pinned product.
+  add("pypi-token", "public-id", ["PYPI_TOKEN_ID=3fa85f64-5717-4562-b3fc-2c963f66afa6\n"]);
+  add("pypi-token", "ordinary-prose", ["We rotate our PyPI upload credentials every quarter as part of routine key hygiene.\n"]);
+  add("pypi-token", "encoded-value", [`X-PyPI-Metadata: ${Buffer.from("release notes: nothing sensitive in this build").toString("base64")}\n`]);
 
   add("sentry-org-auth-token", "mask", [`sntrys_eyJ${"*".repeat(26)}_${"*".repeat(43)}`]);
   add("sentry-org-auth-token", "reference", ["SENTRY_ORG_AUTH_TOKEN=${SENTRY_ORG_AUTH_TOKEN}\n"]);

@@ -63,6 +63,7 @@ export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
   if (path === '/report') return at('report');
   if (path === '/coverage') return at('coverage');
   if (path === '/support') return at('support');
+  if (path === '/performance') return at('performance');
   if (path === '/how-to-read') return at('how-to-read');
   const match = new RegExp(`^/(coverage|suites|fixture)/(${ID})$`).exec(path);
   if (match) return at(match[1] === 'suites' ? 'suite' : match[1], match[2]);

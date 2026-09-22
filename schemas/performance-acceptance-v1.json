@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:redact-secret-benchmarks:performance-acceptance:1",
+  "description": "One acceptance verdict produced by evaluating a core CompleteAssessment run against benchmarks/performance-criteria.json. See benchmarks/evaluate-performance.ts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "status", "criteriaId", "criteriaFixedAt", "environmentId", "summaryPath", "checks", "failures"],
+  "properties": {
+    "schemaVersion": { "const": "1" },
+    "status": { "enum": ["accepted", "rejected"] },
+    "criteriaId": { "type": "string", "minLength": 1 },
+    "criteriaFixedAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "environmentId": { "type": "string", "minLength": 1 },
+    "sourceCommit": { "type": "string" },
+    "summaryPath": { "type": "string", "minLength": 1 },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "observed", "operator", "threshold", "passed"],
+        "properties": {
+          "key": { "type": "string", "minLength": 1 },
+          "observed": { "type": "number" },
+          "operator": { "enum": ["<=", ">="] },
+          "threshold": { "type": "number" },
+          "passed": { "type": "boolean" }
+        }
+      }
+    },
+    "failures": { "type": "array", "items": { "type": "string" } }
+  }
+}

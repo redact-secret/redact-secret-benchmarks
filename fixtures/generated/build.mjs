@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
 import { buildRegressions } from "./regressions.mjs";
-import { buildDetectorCoverage } from "./detector-coverage.mjs";
+import { buildDetectorCoverage, documentedTwins } from "./detector-coverage.mjs";
 import { buildClosedMilestone } from "./closed-milestone.mjs";
 import { buildCommonFormats } from "./common-formats.mjs";
+import { buildContextFamilies } from "./context-families.mjs";
 import { classifyFixture } from "../../benchmarks/lib/assessment.ts";
 
 // Public, deterministic benchmark seed. These values were never provider-issued.
@@ -264,7 +265,7 @@ export function buildCorpora() {
   });
   const corpora = {
     "credential-formats": wrap([...formats, ...formatTwins]),
-    "context-edges": wrap([...contexts, ...contextTwins]),
+    "context-edges": wrap([...contexts, ...contextTwins, ...buildContextFamilies({ fixture, synthetic }, documentedTwins)]),
     "negative-controls": wrap(negatives),
     ...buildRegressions({ fixture, synthetic, wrap, quoted }),
     ...buildClosedMilestone({ fixture, synthetic, wrap, quoted, uri }),

@@ -53,6 +53,42 @@ const families = [
   ["new-relic-user-api-key", ["NRAK-"], 27, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"],
 ];
 
+// #112 re-check (2026-09-22): five of the families #36 recorded un-probeable
+// now have a source on the provider's own domain establishing one mutable
+// property (research: redact-secret/redact-secret#644, #655, and the
+// benchmarks decision 2026-09-22-lift-five-families-out-of-un-probeable.md).
+// Each entry maps a contract-valid value to its single-property twin; shared
+// by detector-coverage and context-edges so both suites mutate identically.
+// Sentry's two families and twilio-auth-token stay un-probeable: their only
+// sources are provider-authored but hosted on github.com, which #658/#659/#662
+// leave to a maintainer decision.
+export const documentedTwins = {
+  // Datadog's OpenAPI ApiKey schema (renders docs.datadoghq.com's Key
+  // Management reference): key minLength/maxLength 32.
+  "datadog-api-key": value => ({ value: value.slice(0, -1), mutationKind: "length",
+    mutation: `length: ${value.length - 1} vs the 32 characters Datadog's own OpenAPI ApiKey schema fixes (minLength/maxLength 32)` }),
+  // learn.microsoft.com's Purview Entra client secret definition: "a
+  // combination of up to 40 characters". "." and "~" are in that alphabet but
+  // end an identifier, so one of them at bytes 37-40 would leave a
+  // contract-length prefix standing on its own: the value keeps its first 37
+  // bytes and runs to 41 on "Z" (inside the alphabet), never containing the
+  // positive.
+  "microsoft-entra-client-secret": value => {
+    const twin = value.slice(0, 37) + "ZZZZ";
+    if (twin.includes(value)) throw new Error("Entra length twin contains its positive");
+    return { value: twin, mutationKind: "length", mutation: "length: 41 vs the provider-documented maximum of 40 characters" };
+  },
+  // docs.newrelic.com terraform-intro: "Most user keys begin with the prefix NRAK-".
+  "new-relic-user-api-key": value => ({ value: `NRAX-${value.slice(5)}`, mutationKind: "prefix",
+    mutation: "prefix namespace: NRAX- vs the provider-documented NRAK- user-key prefix" }),
+  // grafana.com's Grafana 9.1 service-accounts GA post: tokens carry "a 'glsa' prefix".
+  "grafana-service-account-token": value => ({ value: `glsx_${value.slice(5)}`, mutationKind: "prefix",
+    mutation: "prefix namespace: glsx_ vs the provider-documented glsa service-account prefix" }),
+  // grafana.com's Cloud access-policy token instructions: "Tokens start with glc_".
+  "grafana-cloud-access-policy-token": value => ({ value: `glx_${value.slice(4)}`, mutationKind: "prefix",
+    mutation: "prefix namespace: glx_ vs the provider-documented glc_ access-policy token prefix" }),
+};
+
 export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, ENVELOPES }) {
   const fixtures = [];
   const add = (detector, suffix, parts) => {
@@ -81,6 +117,11 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     twin("bare", parts);
     twin("quoted", ['value="', ...parts, '"\n']);
     twin("unicode-crlf", ["# 🔑 密钥 café\r\n", ...parts, "\r\n"]);
+  };
+  // A `documentedTwins` mutation of `value`, `before` held constant.
+  const documentedTwin = (detector, variant, value, before = "") => {
+    const twin = documentedTwins[detector](value);
+    addTwin(detector, variant, [before + twin.value], twin.mutation, twin.mutationKind);
   };
   // (detector, prefix index) pairs currently dark for must-redact/T2 twin
   // coverage (docker-token, linear-token, google-api-key, notion-token,
@@ -152,6 +193,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
         // immediately after the prefix breaks the same regex.
         addTwin(detector, `shape-${index + 1}`, [prefix + "!" + value.slice(prefix.length + 1)], "alphabet: a byte outside the provider-documented [A-Za-z0-9-_] class immediately after the prefix", "alphabet", `shape-${index + 1}-alphabet`);
       }
+      if (documentedTwins[detector]) documentedTwin(detector, `shape-${index + 1}`, value);
     });
     add(detector, "prefix-only", [prefixes.join("\n")]);
     add(detector, "short-body", [prefixes.map(prefix => prefix + "abc").join("\n")]);
@@ -242,6 +284,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   const entraPrefix = synthetic("coverage:entra:prefix", 3, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~");
   const entraSuffix = synthetic("coverage:entra:suffix", 33, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~-");
   positive("microsoft-entra-client-secret", "digit-q-tilde", [{ secret: `${entraPrefix}8Q~${entraSuffix}` }]);
+  documentedTwin("microsoft-entra-client-secret", "digit-q-tilde", `${entraPrefix}8Q~${entraSuffix}`);
   add("microsoft-entra-client-secret", "missing-marker", [`${entraPrefix}8${entraSuffix}`]);
   add("microsoft-entra-client-secret", "short-suffix", [`${entraPrefix}8Q~${entraSuffix.slice(0, 28)}`]);
 
@@ -280,6 +323,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
 
   const datadogApiKey = synthetic("coverage:datadog:api-key", 32, LOWER_HEX);
   positive("datadog-api-key", "env-marker", ["DD_API_KEY=", { secret: datadogApiKey }]);
+  documentedTwin("datadog-api-key", "env-marker", datadogApiKey, "DD_API_KEY=");
   add("datadog-api-key", "missing-marker", [datadogApiKey]);
   add("datadog-api-key", "short-key", ["DD_API_KEY=" + datadogApiKey.slice(0, 20)]);
 
@@ -291,6 +335,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   const grafanaSaBody = synthetic("coverage:grafana-sa:body", 32);
   const grafanaSaChecksum = synthetic("coverage:grafana-sa:checksum", 8, LOWER_HEX);
   positive("grafana-service-account-token", "checksum-segment", [{ secret: `glsa_${grafanaSaBody}_${grafanaSaChecksum}` }]);
+  documentedTwin("grafana-service-account-token", "checksum-segment", `glsa_${grafanaSaBody}_${grafanaSaChecksum}`);
   add("grafana-service-account-token", "missing-separator", [`glsa_${grafanaSaBody}${grafanaSaChecksum}`]);
   add("grafana-service-account-token", "short-checksum", [`glsa_${grafanaSaBody}_${grafanaSaChecksum.slice(0, 6)}`]);
 

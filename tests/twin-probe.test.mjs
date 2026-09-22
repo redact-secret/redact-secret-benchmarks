@@ -16,21 +16,24 @@ const bytesOf = (f, r) => Buffer.from(f.content).subarray(r.start, r.end).toStri
 
 // The 22 families issue #36 found with no twin anywhere in the corpus.
 const TWINNED = ['aws-access-key', 'generic-token', 'connection-string', 'otpauth-uri', 'bearer-token', 'pypi-token', 'new-relic-license-key', 'azure-devops-personal-access-token'];
-const UNPROBEABLE = ['vercel-token', 'supabase-token', 'discord-bot-token', 'telegram-bot-token', 'datadog-api-key', 'datadog-application-key', 'twilio-auth-token', 'twilio-api-key-secret', 'new-relic-user-api-key', 'sentry-org-auth-token', 'sentry-user-auth-token', 'grafana-service-account-token', 'grafana-cloud-access-policy-token', 'microsoft-entra-client-secret'];
+// #36 un-probeable families a 2026-09-22 re-check found a provider-domain source for
+// (docs/decisions/2026-09-22-lift-five-families-out-of-un-probeable.md).
+const LIFTED = ['datadog-api-key', 'new-relic-user-api-key', 'grafana-service-account-token', 'grafana-cloud-access-policy-token', 'microsoft-entra-client-secret'];
+const UNPROBEABLE = ['vercel-token', 'supabase-token', 'discord-bot-token', 'telegram-bot-token', 'datadog-application-key', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
 
 test('every detector family either has a twin or is recorded un-probeable, never both and never neither', () => {
-  assert.equal(TWINNED.length + UNPROBEABLE.length, 22);
+  assert.equal(TWINNED.length + LIFTED.length + UNPROBEABLE.length, 22);
   for (const { id } of registry.detectors) {
     const twinned = twins.some(t => t.detectors?.[0] === id), record = contracts[id].unprobeable;
     assert.notEqual(twinned, Boolean(record), id);
     if (record) { assert.ok(record.reason.trim().length > 40, `${id} states why`); assert.match(record.observedAt, /^\d{4}-\d{2}-\d{2}$/, id); }
   }
   assert.deepEqual(registry.detectors.map(d => d.id).filter(id => contracts[id].unprobeable).sort(), [...UNPROBEABLE].sort());
-  for (const id of TWINNED) assert.ok(twins.some(t => t.detectors[0] === id), id);
+  for (const id of [...TWINNED, ...LIFTED]) assert.ok(twins.some(t => t.detectors[0] === id), id);
 });
 
 test('every family twinned for #36 cites dated documentation for the property its twin mutates', () => {
-  for (const id of TWINNED) {
+  for (const id of [...TWINNED, ...LIFTED]) {
     const source = contracts[id].providerSource ?? contracts[id].twinSource;
     assert.ok(source?.url && source.covers && source.formatVersion, id);
     assert.match(source.observedAt, /^\d{4}-\d{2}-\d{2}$/, id);
@@ -150,6 +153,6 @@ test('every T1 ("stable"-track) family has a twin for each structural dimension 
 test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
-  assert.equal(probe.counts['un-probeable'], 14);
-  assert.equal(probe.counts['not-measured'], 32);
+  assert.equal(probe.counts['un-probeable'], 9);
+  assert.equal(probe.counts['not-measured'], 37);
 });

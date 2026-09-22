@@ -30,3 +30,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Store benchmark measurement evidence per core issue under `evidence/`](2026-09-22-store-benchmark-evidence-per-core-issue.md)
 - [Own performance evaluation and recalibrate Linux x86_64 thresholds](2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md)
 - [Define external adversarial fixture intake and provenance](2026-09-22-define-external-adversarial-intake.md)
+- [Lift five families out of un-probeable and widen context coverage for the floor families](2026-09-22-lift-five-families-out-of-un-probeable.md)

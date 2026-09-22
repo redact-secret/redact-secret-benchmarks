@@ -85,12 +85,17 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#370 froze `dckr_pat_` at its own 27-byte length
   // (`dckr_oat_` stays 32); corrected to per-prefix lengths, moving
   // policy/T3 -> must-redact/T2 (+3 files/+3 spans: 3 contexts).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 268);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 274);
+  // #112: 64 new must-redact/T2 positives in context-edges — the eight
+  // pattern-contracted families that sat at the detector-coverage floor, each
+  // across eight text contexts (fixtures/generated/context-families.mjs).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 332);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 338);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
-  assert.deepEqual(tally['policy/T3'], { files: 167, spans: 167 });
+  // #112: 32 more — the four keyword-gated Datadog/Twilio families across the
+  // same eight context-edges contexts, policy as in detector-coverage.
+  assert.deepEqual(tally['policy/T3'], { files: 199, spans: 199 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,

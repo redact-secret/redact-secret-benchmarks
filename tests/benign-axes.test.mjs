@@ -33,3 +33,16 @@ test('#125: aws-access-key, github-token and slack-token each carry a third, dis
     assert.ok(axes.has('near-miss') && axes.has('placeholder'), `${family}: the two pre-existing axes stay`);
   }
 });
+
+test('#129: docker-token, huggingface-token, linear-token and openai-token each carry placeholder and reference axes alongside near-miss, derived by controlAxis from the mask/reference controls', () => {
+  for (const family of ['docker-token', 'huggingface-token', 'linear-token', 'openai-token']) {
+    const own = benign.filter(c => c.targets.includes(family));
+    const axes = new Set(own.map(c => c.taxonomy));
+    assert.ok(axes.size >= 3, `${family}: ${[...axes].join(', ')}`);
+    const mask = own.find(c => c.source.category === 'detector-coverage' && c.source.fixtureId === `${family}-mask`);
+    assert.equal(mask?.taxonomy, 'placeholder', `${family}-mask should land on the placeholder axis`);
+    const reference = own.find(c => c.source.category === 'detector-coverage' && c.source.fixtureId === `${family}-reference`);
+    assert.equal(reference?.taxonomy, 'reference', `${family}-reference should land on the reference axis`);
+    assert.ok(axes.has('near-miss'), `${family}: the pre-existing near-miss axis stays`);
+  }
+});

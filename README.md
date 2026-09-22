@@ -176,7 +176,10 @@ drift as corpora are added, and this table is not regenerated automatically. See
 source references, and per-category limitations, and
 [docs/reports/](docs/reports/) for the dated growth history and per-release
 results (beta.3 through beta.6, the SendGrid investigation, and the
-closed-issue coverage matrix).
+closed-issue coverage matrix). Durable measurement evidence tied to one
+`redact-secret` issue lives in [`evidence/<issue>/`](evidence/README.md), not
+in that repository's own frozen-evidence archive — see
+[the evidence decision record](docs/specs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md).
 
 `npm run test:coverage` measures code coverage of the scoring/validation and
 scanner-adapter modules only, and requires all four tools (Gitleaks and

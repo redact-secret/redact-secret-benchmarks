@@ -1,7 +1,7 @@
 import type { Range, ExpectedRange, Outcome, RowScore, ScoredRow, Group } from '../types.ts';
 // Measurement protocol v4: per-span outcome lattice over UTF-8 byte ranges.
 // Pure integer interval arithmetic so the browser can re-verify every report
-// row without fixture bytes. See docs/measurement-v4.md §2.3–§2.5.
+// row without fixture bytes. See docs/specs/measurement-v4.md §2.3–§2.5.
 
 export const OUTCOMES = ['EXACT', 'COVERED', 'OVERBROAD', 'PARTIAL', 'MISS'];
 export const KINDS = ['must-redact', 'must-not-flag', 'policy'];
@@ -65,7 +65,7 @@ export const isCovered = (outcome: string) => !isLeaked(outcome);
  * Rows with no secret span are controls and only count findings. `scopeFamily`
  * is passed only for a twin (a control fixture with `twinOf` set): its
  * assertion is scoped to its own declared contract family, per
- * docs/evaluation-methods/02-negative-twin.md. A finding attributed to a
+ * docs/specs/evaluation-methods/02-negative-twin.md. A finding attributed to a
  * *different*, known family is not silence — it is legitimate co-detection by
  * another detector — so it is recorded on its own axis (`coDetected`) instead
  * of failing the twin. A finding with no attributed family is ambiguous, not
@@ -77,7 +77,7 @@ export function scoreRow(expected: ExpectedRange[], actual: (Range & { family?: 
   const secrets = expected.filter(e => (e.role ?? 'secret') === 'secret');
   if (!secrets.length) {
     // #95: additive tally of the product policy action a finding carried, when the scanner
-    // reports one. Never changes `flagged`/`findings` below (docs/decisions/2026-09-21-
+    // reports one. Never changes `flagged`/`findings` below (docs/specs/decisions/2026-09-21-
     // add-untargeted-benign-corpus.md, Decision 3).
     const actionCounts = actual.reduce<Record<string, number>>((counts, a) => {
       if (a.action !== undefined) counts[a.action] = (counts[a.action] ?? 0) + 1;

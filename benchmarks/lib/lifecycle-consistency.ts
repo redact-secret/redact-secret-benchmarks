@@ -32,7 +32,7 @@ export function checkProductIssuesReachable(knownGaps: Pick<KnownGaps, 'issues'>
  * #106 bullets 2-3: bidirectional cross-reference between this repo's authoritative
  * benchmarks/known-gaps.json and the product's conformance/benchmark-regressions.json,
  * which is verified against, never trusted as, ground truth (see
- * docs/decisions/2026-09-21-anchor-cross-repo-promotion-authority-in-known-gaps.md).
+ * docs/specs/decisions/2026-09-21-anchor-cross-repo-promotion-authority-in-known-gaps.md).
  * Every product manifest record must resolve to a known-gaps.json record it agrees with;
  * a product record with no known-gaps.json record behind it is exactly the bypass #66 and
  * #106 exist to catch, so an unresolved reference fails, it does not warn.

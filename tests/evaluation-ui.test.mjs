@@ -102,7 +102,7 @@ test('rendered Workbench method, review and holdout views retain the evidence bo
     assert.ok(missing.includes('Review queue') && missing.includes('T0 fixtures'), 'the queue reads the ledger, so it survives a missing report');
     assert.ok(!missing.includes('lexical.invalid-alphabet'), 'a class settled not-assertable carries no open entries, so it drops out of the open queue');
     assert.ok(methodPage(r,'holdout').includes('No qualification aggregate published'));
-    r.qualification = JSON.parse(await readFile('docs/qualification/engine-v1.json','utf8'));
+    r.qualification = JSON.parse(await readFile('docs/specs/qualification/engine-v1.json','utf8'));
     const holdout = methodPage(r,'holdout');
     assert.ok(holdout.includes('supportClaims: false'));
     assert.ok(!holdout.includes('/fixture/'));

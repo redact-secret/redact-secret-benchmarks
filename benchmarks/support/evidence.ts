@@ -6,7 +6,7 @@ import { contracts } from '../lib/assessment.ts';
  * Real `FamilySupportEvidence` per family (issue #504, A3). Aggregates
  * `benchmarks/engine/reporting.ts`'s `byDetector` summaries and the checked-in
  * review ledger; `classifyFamilySupport` (#503) turns this into a status.
- * See docs/support-status.md.
+ * See docs/specs/support-status.md.
  */
 export interface QueuedReview { id: string; method: string; targets: string[] }
 

@@ -22,7 +22,7 @@ export function synthetic(label, length, chars = alphabet) {
 // Parts: literal strings, `{ secret }` spans, or `{ secret, envelope: { before, after, reason } }`
 // where `before`/`after` are emitted around the secret and the authored
 // envelope covers all three. Envelopes are written from construction, never
-// widened in response to scanner output (docs/measurement-v4.md §2.2).
+// widened in response to scanner output (docs/specs/measurement-v4.md §2.2).
 export function fixture(id, group, parts, extension = "txt") {
   let content = "";
   const expected = [];

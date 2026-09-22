@@ -50,7 +50,7 @@ function diagnostics(cases: EvaluationCase[], method: string, r: EvaluationRepor
 }
 
 // #95: `redact`/`block` are gating; `warn` is accepted-by-design noise on ordinary prose per the
-// product ADR (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md, Decision 3) and is never
+// product ADR (docs/specs/decisions/2026-09-21-add-untargeted-benign-corpus.md, Decision 3) and is never
 // counted as a false alarm here.
 const GATING_ACTIONS = new Set(['redact', 'block']);
 

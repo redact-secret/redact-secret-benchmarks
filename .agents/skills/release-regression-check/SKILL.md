@@ -128,7 +128,7 @@ the same way, joining on `fixtureId`.
 ## Boundaries
 
 This produces discovery evidence only. Per
-`docs/decisions/2026-09-18-govern-benchmark-promotion.md`, a regression found
+`docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md`, a regression found
 here is not itself a release-blocking product bug until it is entered into
 `benchmarks/known-gaps.json`'s `observed → reviewed → promoted → fixed →
 verified` lifecycle, and this workflow "does not authorize versioning,

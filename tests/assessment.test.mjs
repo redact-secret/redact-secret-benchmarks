@@ -77,7 +77,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // spans: 3 contexts each).
   // #104/#107: `pypi-token`'s shape-1 was likewise a flat "pypi-" + random
   // run, never a serialized macaroon; corrected to the ADR-verified
-  // construction (docs/decisions/2026-09-21-author-pypi-macaroon-positives-
+  // construction (docs/specs/decisions/2026-09-21-author-pypi-macaroon-positives-
   // synthetically.md), moving policy/T3 -> must-redact/T1 (+3 files/+3 spans:
   // 3 contexts).
   // #128: `docker-token`'s `shape-1` (`dckr_pat_`) was generated at the

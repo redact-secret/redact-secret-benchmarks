@@ -6,7 +6,7 @@ import type { SupportStatus } from '../benchmarks/support/status.ts';
 
 /**
  * The UI's read side of the generated support matrix (issue #50, A9; the
- * artifact is #509/A8, `docs/support-matrix.md`). Nothing here decides a
+ * artifact is #509/A8, `docs/specs/support-matrix.md`). Nothing here decides a
  * status: `support-matrix.json` carries one per provider x credential family,
  * and this module only re-validates it before a page may render it.
  */

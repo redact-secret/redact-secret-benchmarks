@@ -98,7 +98,7 @@ for (const id of ["redact-secret", "flare-redact"]) {
         ),
       );
       // #95: redact-secret's `scan()` always reports an `action` per finding; other adapters carry no
-      // such concept (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md, Decision 3).
+      // such concept (docs/specs/decisions/2026-09-21-add-untargeted-benign-corpus.md, Decision 3).
       const expectedKeys = id === "redact-secret" ? ["action", "end", "family", "path", "start"] : ["end", "family", "path", "start"];
       for (const r of results) {
         assert.deepEqual(Object.keys(r).sort(), expectedKeys);

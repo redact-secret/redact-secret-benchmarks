@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lifecycleAuthority": "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/docs/decisions/2026-09-18-govern-benchmark-promotion.md",
+  "lifecycleAuthority": "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md",
   "measuredVersion": "0.1.0-beta.5",
   "milestone": "v0.1.0-beta.6",
   "milestoneUrl": "https://github.com/redact-secret/redact-secret/milestone/9",
@@ -955,16 +955,16 @@
         "reviewed": {
           "at": "2026-09-21",
           "evidence": [
-            "https://github.com/redact-secret/redact-secret/blob/workbench/553-bearer-sendgrid-twin-decision/docs/audits/evidence/553/README.md",
-            "https://github.com/redact-secret/redact-secret/blob/workbench/553-bearer-sendgrid-twin-decision/docs/decisions/2026-09-21-accept-truncated-and-nested-shapes-under-bearer-token-length-grammar.md"
+            "https://github.com/redact-secret/redact-secret/blob/main/docs/audits/evidence/553/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-21-accept-truncated-and-nested-shapes-under-bearer-token-length-grammar.md"
           ]
         }
       },
       "disposition": {
         "reason": "All five findings reduce to two already-shipped, evidence-reviewed detector decisions, not a detector defect. The three bearer-token-header twins mutate a byte that still leaves both sides of a 40-byte value at or above MIN_TOKEN_LEN (16), so no single mid-value mutation at this index can produce a negative under the documented floor; the twin's chosen mutation index is untenable given that already-tested contract. The sendgrid base62-bearer-twin is correctly declined by sendgrid-token's own exact-length contract but is separately, correctly co-detected by bearer-token as a generic Bearer credential (67 bytes, well over the 16-byte floor) -- expected co-detection, not a discrimination failure. base62-generic-key-twin is a mainline generic-token true positive under the standing decision docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md (api_key= is a HIGH_SIGNAL_NAMES match, warned on unconditionally). Correcting the three benchmark fixtures (moving the bearer-token-header twin's mutation within 16 bytes of either edge; rescoping the two sendgrid twins to expect co-detection) is redact-secret-benchmarks follow-up work, not filed as of this record.",
         "evidence": [
-          "https://github.com/redact-secret/redact-secret/blob/workbench/553-bearer-sendgrid-twin-decision/docs/audits/evidence/553/README.md",
-          "https://github.com/redact-secret/redact-secret/blob/workbench/553-bearer-sendgrid-twin-decision/docs/decisions/2026-09-21-accept-truncated-and-nested-shapes-under-bearer-token-length-grammar.md",
+          "https://github.com/redact-secret/redact-secret/blob/main/docs/audits/evidence/553/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-21-accept-truncated-and-nested-shapes-under-bearer-token-length-grammar.md",
           "https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md"
         ]
       },

@@ -40,7 +40,7 @@ test('the mechanical operator classes settled not-assertable are visible as thei
   assert.ok(notAssertable.every(c => c.open === 0), 'a settled class carries no open entries');
   const operator = notAssertable.find(c => c.rawClasses[0].startsWith('operator='));
   assert.ok(operator.description.length > 10 && !operator.description.includes('`'), 'operator groups describe their effect in the ledger\'s words');
-  // Every entry the ADR (docs/decisions/2026-09-21-settle-mechanical-mutation-review-classes.md) reclassified stayed a `not-assertable` entry, never `resolved`: no per-fixture review happened.
+  // Every entry the ADR (docs/specs/decisions/2026-09-21-settle-mechanical-mutation-review-classes.md) reclassified stayed a `not-assertable` entry, never `resolved`: no per-fixture review happened.
   assert.equal(notAssertable.reduce((n, c) => n + c.resolved, 0), 0);
 });
 
@@ -56,7 +56,7 @@ test('the ledger snippet is a paste-ready fragment and keeps the class on the no
 
 import { changeRows, qualificationGates, candidateProblem } from '../src/evaluation-model.ts';
 const suite = JSON.parse(await readFile(new URL('../qualification/suite-v1.json', import.meta.url), 'utf8'));
-const evidence = JSON.parse(await readFile(new URL('../docs/qualification/engine-v1.json', import.meta.url), 'utf8'));
+const evidence = JSON.parse(await readFile(new URL('../docs/specs/qualification/engine-v1.json', import.meta.url), 'utf8'));
 const pair = (slug, kind, tier, before, after, section = 'fixed-corpus') => ({ slug, kind, tier, section, before, after });
 
 test('changes list only what moved, with the reason; counts are tallies of outcome codes', () => {

@@ -6,10 +6,10 @@ import { contracts } from '../lib/assessment.ts';
 /**
  * Support matrix (issue #509, A8). Projects A3's per-detector evidence
  * (`results-output/support-status.json`, #504) onto the provider x
- * credential-family taxonomy (#502) — A8's display unit, per docs/taxonomy.md.
+ * credential-family taxonomy (#502) — A8's display unit, per docs/specs/taxonomy.md.
  * Never re-derives a status: every entry's `status`/`reason` is carried
  * through verbatim from A3's classification, broadcast across every taxonomy
- * family the deciding detector serves. See docs/support-matrix.md.
+ * family the deciding detector serves. See docs/specs/support-matrix.md.
  */
 
 /** Only the fields of one `support-status.json` family result this module reads. */

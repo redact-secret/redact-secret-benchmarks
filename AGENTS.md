@@ -10,10 +10,12 @@ Agent skills that carry a piece of work end to end, in `.agents/skills/`
 
 | Skill | Direction | Produces |
 | --- | --- | --- |
-| [`resolve-issue`](.agents/skills/resolve-issue/SKILL.md) | issue number → implementation | a workbench branch and verified `wip:` commits, ready for `ghpr` |
-| [`review-pr`](.agents/skills/review-pr/SKILL.md) | open PR → merge-ready | applied fixes and wrap-up (changelog, ADR, docs, issue linkage) |
 | [`release-regression-check`](.agents/skills/release-regression-check/SKILL.md) | pinned product RC commit → regression view | a fixture-level before/after evidence report ahead of a release decision |
 | [`promote-finding`](.agents/skills/promote-finding/SKILL.md) | observed known-gap → product issue | a `reviewed` → `promoted` `benchmarks/known-gaps.json` record and a product-repo issue carrying the handoff |
+
+Issue-to-implementation and PR-review work uses the user-global `resolve-gh-issue`
+and `pr-review` Claude Code skills instead of a repo-local copy; the local
+`resolve-issue`/`review-pr` skills were removed in favor of those.
 
 <!-- graft:start -->
 ## Graft — repo context graph

@@ -14,7 +14,7 @@ human review before presenting results as comparative evidence. The `reviewStatu
 field is shown in every report and the dashboard.
 
 Confirmed findings follow the governed
-[benchmark-to-product promotion lifecycle](../docs/decisions/2026-09-18-govern-benchmark-promotion.md).
+[benchmark-to-product promotion lifecycle](../docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md).
 Review and promotion never rewrite an authored expectation to match scanner
 output. The benchmark fixture and its evidence remain here; only a minimal
 canonical regression and provenance link move into the product repository.
@@ -31,6 +31,6 @@ every fixture carries `assessment.kind` (must-redact, must-not-flag, policy),
 policy, T0 pending), a rationale and evidence links. Negative twins declare
 `twinOf`, `mutation` and `mutationKind`. Kinds, tiers and contracts are defined
 in [`benchmarks/lib/assessment.ts`](../benchmarks/lib/assessment.ts) and
-explained in [the corpus audit](../docs/corpus-audit.md). Historical authored
+explained in [the corpus audit](../docs/reports/2026-09-17/corpus-audit.md). Historical authored
 ranges remain intact even where their input is malformed or policy-specific;
 envelopes are never widened in response to scanner output.

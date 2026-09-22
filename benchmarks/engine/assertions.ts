@@ -10,7 +10,7 @@ export function observe(variant: GeneratedVariant, findings: Finding[]) {
   // own id space, so a corpus-relative `twinOf` would dangle); `transformation.relation ===
   // 'must-flip'` is the engine-native twin signal instead (only `authored.twin` sets it).
   // Scope the reading to the twin's own declared contract family, per
-  // docs/evaluation-methods/02-negative-twin.md — a finding from a different, known family is
+  // docs/specs/evaluation-methods/02-negative-twin.md — a finding from a different, known family is
   // legitimate co-detection, not a twin failure.
   if (variant.transformation.relation === 'must-flip' && variant.fixture.assessment.contract)
     return { ...row, ...scoreRow(row.expected, row.actual, variant.fixture.assessment.contract) };

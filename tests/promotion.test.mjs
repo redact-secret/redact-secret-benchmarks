@@ -71,6 +71,25 @@ test('duplicate product issue numbers are rejected (#106, closes #66\'s no-dupli
   const candidate = clone();
   candidate.issues[1].number = candidate.issues[0].number;
   candidate.issues[1].url = candidate.issues[0].url;
+  candidate.issues[1].promotion.productManifestRecordId = candidate.issues[0].promotion.productManifestRecordId;
+  assert.throws(() => validateKnownGaps(candidate), /duplicate-product-issue/);
+});
+
+test('one product issue may back several records only when each hands off to a different product manifest record', () => {
+  const candidate = clone();
+  candidate.issues[1].number = candidate.issues[0].number;
+  candidate.issues[1].url = candidate.issues[0].url;
+  candidate.issues[1].promotion.productIssue = candidate.issues[0].url;
+  assert.notEqual(candidate.issues[1].promotion.productManifestRecordId, candidate.issues[0].promotion.productManifestRecordId);
+  assert.equal(validateKnownGaps(candidate), candidate);
+  const split = knownGaps.issues.filter(issue => issue.number === 428);
+  assert.equal(split.length, 2);
+  assert.equal(new Set(split.map(issue => issue.promotion.productManifestRecordId)).size, 2);
+  delete candidate.issues[1].promotion;
+  candidate.issues[1].status = 'reviewed';
+  delete candidate.issues[1].history.promoted;
+  delete candidate.issues[1].history.fixed;
+  delete candidate.issues[1].fix;
   assert.throws(() => validateKnownGaps(candidate), /duplicate-product-issue/);
 });
 

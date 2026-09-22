@@ -1,6 +1,12 @@
-# Govern benchmark-to-product regression promotion
+---
+decision_id: decision-govern-benchmark-promotion
+status: accepted
+scope: benchmarks
+title: Govern benchmark-to-product regression promotion
+decided_at: 2026-09-18
+---
 
-Date: 2026-09-18 · Status: accepted
+# Govern benchmark-to-product regression promotion
 
 ## Decision
 
@@ -75,7 +81,7 @@ npm run benchmark:candidate -- \
 Omit `--filter` for the full candidate suite. Filtered evidence is explicitly
 development-scoped and never substitutes for a whole-suite run. The benchmark
 entrypoint and evidence contract are documented in
-[`docs/specs/candidate-evaluation.md`](../candidate-evaluation.md).
+[`docs/specs/candidate-evaluation.md`](../specs/candidate-evaluation.md).
 
 For findings exercised by other Evaluation Engine methods, the ordinary
 published-package discovery command remains separate:

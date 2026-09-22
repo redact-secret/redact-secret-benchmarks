@@ -1,6 +1,14 @@
+---
+decision_id: decision-adopt-measurement-protocol-v4
+status: accepted
+scope: benchmarks
+title: Adopt measurement protocol v4
+decided_at: 2026-09-17
+---
+
 # Adopt measurement protocol v4
 
-Date: 2026-09-17 · Status: accepted · Supersedes: schema-v3 cohort scoring
+Supersedes: schema-v3 cohort scoring
 
 ## Context
 

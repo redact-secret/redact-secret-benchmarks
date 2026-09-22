@@ -1,6 +1,12 @@
-# Produce the first `stable` families
+---
+decision_id: decision-produce-first-four-stable-families
+status: accepted
+scope: benchmarks
+title: Produce the first `stable` families
+decided_at: 2026-09-21
+---
 
-Date: 2026-09-21 · Status: accepted
+# Produce the first `stable` families
 
 ## Context
 
@@ -22,6 +28,14 @@ a recurring, expected state (`chore(benchmarks): update review ledger`,
 `#28`/`#47`): any corpus change perturbs `detector-coverage.json`'s source
 hash, which reshapes every `differential` queue id sourced from that file,
 regardless of whether the individual fixture changed.
+
+## Decision
+
+Resolve each of the 31 pre-existing differential disagreements as
+`redact-secret-only`/`peer-only` against a verified peer-scanner limitation
+(below), not left `open` as if untriaged. Split `pypi-token` out of this
+issue's scope — its macaroon-structure blocker is unresolved — and author
+the fixtures the other three families need to reach `stable`.
 
 ## Triaging the pre-existing differential backlog
 

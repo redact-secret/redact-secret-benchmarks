@@ -1,7 +1,14 @@
+---
+decision_id: decision-settle-mechanical-mutation-review-classes
+status: accepted
+scope: benchmarks
+title: Settle mechanical mutation review classes as `not-assertable`
+decided_at: 2026-09-21
+---
+
 # Settle mechanical mutation review classes as `not-assertable`
 
-Date: 2026-09-21 · Status: accepted · Extends: engine v1.1 review ledger
-(2026-09-19 decision, "The review ledger is a new `benchmarks/review-ledger.json`")
+Extends: engine v1.1 review ledger (2026-09-19 decision, "The review ledger is a new `benchmarks/review-ledger.json`")
 
 ## Context
 
@@ -69,9 +76,8 @@ decided this whole class proves nothing."
 Every open entry in the following seven operator classes is reclassified
 `not-assertable`. All seven are built on `mutate()`'s regex-validity gate
 above; the two beyond the original five were verified against that mechanism
-directly, not assumed from the pattern:
-
-<!-- decided-operators: lexical.invalid-alphabet, lexical.length-minus-one, lexical.prefix-change, boundary.remove-delimiter, lexical.length-plus-one, structural.remove-segment, lexical.replace-last -->
+directly, not assumed from the pattern. The seven ids are recorded in
+`benchmarks/ledger-decisions.json` against this record (#135):
 
 | Operator | Open entries | What it mutates |
 | --- | --- | --- |
@@ -121,12 +127,13 @@ path.
 
 ### Gate
 
-`npm run decisions:validate` (`scripts/check-ledger-decisions.mjs`) fails the
-build if any ledger entry is `not-assertable` for an operator class this or a
-future ADR has not claimed in a `decided-operators` marker. It is the
-`not-assertable` equivalent of requiring a `resolved` entry to carry an actual
-review: a class-level decision needs a checked-in record just as a
-fixture-level one needs a human.
+`npm run ledger:decisions:check` (`scripts/check-ledger-decisions.mjs`) fails
+the build if any ledger entry is `not-assertable` for an operator or decision
+class no entry in `benchmarks/ledger-decisions.json` claims (renamed from
+`decisions:validate`, and moved off ADR-body markers onto that data file, by
+#135). It is the `not-assertable` equivalent of requiring a `resolved` entry
+to carry an actual review: a class-level decision needs a checked-in record
+just as a fixture-level one needs a human.
 
 ## Consequences
 

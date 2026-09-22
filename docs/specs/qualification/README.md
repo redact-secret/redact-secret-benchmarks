@@ -18,7 +18,7 @@
 Execution itself is unchanged from the v1.0 evidence this file replaces: all six
 methods ran with all three pinned scanners. The prior run here was `incomplete`
 because engine v1.1 counts an unreviewed disagreement as an unfinished measurement
-([decision](../decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md)), and
+([decision](../../decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md)), and
 `benchmarks/review-ledger.json` shipped empty — the engine never writes it. Every
 one of the 1,615 queue entries now carries a ledger row: 382 were resolved because
 the authored corpus expectation was already correct and the disagreement was fully

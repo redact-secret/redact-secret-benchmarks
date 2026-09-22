@@ -1,47 +1,36 @@
 /**
  * CI gate: every `benchmarks/review-ledger.json` entry marked `not-assertable`
- * must belong to an operator class an accepted ADR under `docs/specs/decisions/`
- * actually records a decision for (issue #63). Bulk-reclassifying a whole
- * operator class with no paper trail is exactly the failure mode `resolved`
- * ledger entries are protected against by requiring a per-fixture review;
- * `not-assertable` is a per-class decision instead, and this gate is its
- * equivalent: no entry carries that status unless the class it names is
+ * must belong to an operator or decision class `benchmarks/ledger-decisions.json`
+ * maps to an accepted ADR under `docs/decisions/` (issue #63). Bulk-reclassifying
+ * a whole operator class with no paper trail is exactly the failure mode
+ * `resolved` ledger entries are protected against by requiring a per-fixture
+ * review; `not-assertable` is a per-class decision instead, and this gate is
+ * its equivalent: no entry carries that status unless the class it names is
  * checked in as a decision, not merely asserted in a commit message.
  *
- * An ADR opts in with a machine-readable marker comment naming the operator
- * ids it decides, e.g.:
- *   <!-- decided-operators: lexical.invalid-alphabet, lexical.length-minus-one -->
+ * `benchmarks/ledger-decisions.json` maps each decided operator or decision
+ * class id to the `docs/decisions/` file that decided it, e.g.:
+ *   { "decided": { "lexical.invalid-alphabet": "2026-09-21-settle-mechanical-mutation-review-classes.md" } }
+ * A ledger entry for a mutation operator carries `Class: operator=<id>`; one
+ * for a decided class that is not a mutation operator (issue #125:
+ * differential disagreements on `pending` T0 fixtures, which have no operator
+ * at all) carries `Class: decision=<id>` instead. Both check against the same
+ * map. This gate reads only that data file, never an ADR body (#135) --
+ * `decidedOperators()`'s name is kept for the exported call shape existing
+ * tests and callers already use.
  *
- * The same paper trail covers a decided class that is not a mutation operator
- * (issue #125: differential disagreements on `pending` T0 fixtures, which have
- * no operator at all). Such an ADR names the class ids it decides with
- *   <!-- decided-classes: differential.t0-pending-fixture -->
- * and the ledger entry carries `Class: decision=<id>` instead of `operator=<id>`.
- * One decision per id, whichever marker claims it.
- *
- * Run: npm run decisions:validate
+ * Run: npm run ledger:decisions:check
  */
-import { readFile, readdir } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 
 const root = new URL('../', import.meta.url);
-const DECISIONS_DIR = new URL('docs/specs/decisions/', root);
-const MARKER = /<!--\s*decided-(?:operators|classes):\s*([^>]*?)\s*-->/g;
+const LEDGER_DECISIONS = new URL('benchmarks/ledger-decisions.json', root);
 
-/** Every operator or class id an accepted ADR claims, mapped to the file that claims it. Throws on a duplicate claim: one decision per id. */
+/** Every operator or class id `benchmarks/ledger-decisions.json` claims, mapped to the `docs/decisions/` file that claims it. */
 export async function decidedOperators() {
-  const files = (await readdir(DECISIONS_DIR)).filter(name => name.endsWith('.md'));
-  const decided = new Map();
-  for (const file of files) {
-    const text = await readFile(new URL(file, DECISIONS_DIR), 'utf8');
-    for (const match of text.matchAll(MARKER)) {
-      for (const id of match[1].split(',').map(s => s.trim()).filter(Boolean)) {
-        if (decided.has(id)) throw new Error(`operator "${id}" is claimed by both docs/specs/decisions/${decided.get(id)} and docs/specs/decisions/${file}`);
-        decided.set(id, file);
-      }
-    }
-  }
-  return decided;
+  const { decided } = JSON.parse(await readFile(LEDGER_DECISIONS, 'utf8'));
+  return new Map(Object.entries(decided));
 }
 
 const ledgerClassOf = note => /Class: (.+?)\.?\s*$/s.exec(note)?.[1] ?? 'unclassified';
@@ -54,7 +43,7 @@ export function undecidedNotAssertableEntries(ledger, decided) {
     const raw = ledgerClassOf(entry.note);
     const decidedId = /^(?:operator|decision)=(.+)$/.exec(raw)?.[1] ?? null;
     if (!decidedId || !decided.has(decidedId))
-      problems.push(`${id}: marked not-assertable for class "${raw}", which no ADR under docs/specs/decisions/ records a decision for`);
+      problems.push(`${id}: marked not-assertable for class "${raw}", which benchmarks/ledger-decisions.json records no decision for`);
   }
   return problems;
 }

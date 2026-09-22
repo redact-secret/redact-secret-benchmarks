@@ -1,6 +1,14 @@
+---
+decision_id: decision-redesign-benchmark-site
+status: accepted
+scope: benchmarks
+title: Redesign the benchmark site on the Redact Secret design system
+decided_at: 2026-09-19
+---
+
 # Redesign the benchmark site on the Redact Secret design system
 
-Date: 2026-09-19 · Status: accepted for the redesign branch
+Note: accepted for the redesign branch.
 
 ## Context
 

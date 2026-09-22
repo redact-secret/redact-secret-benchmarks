@@ -4,7 +4,7 @@ This is a diff against [`docs/specs/evaluation-engine-v1.md`](evaluation-engine-
 and the measurement protocol in [`docs/specs/measurement-v4.md`](measurement-v4.md).
 Everything not stated here is unchanged. The rationale and the decisions behind
 it are in
-[`docs/specs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md`](decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md).
+[`docs/decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md`](../decisions/2026-09-19-tighten-evaluation-accounting-v1-1.md).
 
 Status: accepted and implemented (issue #26). The floors and the §12 questions
 were settled from a dry run — [`evaluation-engine-v1.1-dry-run.md`](../reports/2026-09-19/evaluation-engine-v1.1-dry-run.md)

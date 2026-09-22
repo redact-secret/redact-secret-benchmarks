@@ -25,8 +25,10 @@ jobs:
         run: npm run support:check:ui
       - name: No detector family arrives without its required evidence (#52)
         run: npm run arrival:check
-      - name: No not-assertable ledger entry lacks a checked-in ADR decision (#63)
+      - name: Every ADR has valid frontmatter and is indexed exactly once (#135)
         run: npm run decisions:validate
+      - name: No not-assertable ledger entry lacks a checked-in ADR decision (#63)
+        run: npm run ledger:decisions:check
       - run: npm run build
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check

@@ -3,7 +3,7 @@ export type Kind = 'must-redact' | 'must-not-flag' | 'policy';
 export type Tier = 'T0' | 'T1' | 'T2' | 'T3';
 export interface Range { start: number; end: number }
 export interface ExpectedRange extends Range { role?: 'secret' | 'companion'; envelope?: Range & { reason?: string } }
-/** Recorded, never inferred (docs/specs/decisions/2026-09-21-check-lexical-separability.md): a `must-not-flag`
+/** Recorded, never inferred (docs/decisions/2026-09-21-check-lexical-separability.md): a `must-not-flag`
  * fixture whose value is provider-published vocabulary that also satisfies its contract's frozen pattern,
  * so no lexical rule can separate it from a positive of the same family. `citation` is the provider page. */
 export interface LexicalExemption { reason: string; citation: string }
@@ -14,7 +14,7 @@ export interface Fixture {
   twinOf?: string; mutation?: string; mutationKind?: string; formatReason?: string; issue?: number;
 }
 export interface Corpus { fixtures: Fixture[]; schemaVersion?: number; reviewStatus?: string; scope?: string; references?: unknown; milestoneReview?: unknown }
-/** `action` (#95, docs/specs/decisions/2026-09-21-add-untargeted-benign-corpus.md Decision 3): the product
+/** `action` (#95, docs/decisions/2026-09-21-add-untargeted-benign-corpus.md Decision 3): the product
  * policy action a finding carried, when the scanner reports one. Only the redact-secret adapter
  * threads it; other scanners carry no action concept and leave it undefined. */
 export interface Finding extends Range { path: string; family?: string; action?: string }
@@ -23,7 +23,7 @@ export type Outcome = 'EXACT' | 'COVERED' | 'OVERBROAD' | 'PARTIAL' | 'MISS';
  * to a different, known family fired on the fixture. It is evidence, not a failure of the twin's own contract. */
 /** `actionCounts` (#95): tally of the product policy action (`redact`/`warn`/`block`/`allow`) carried
  * by a control's findings, when the scanner reports one (redact-secret only). Present only when at
- * least one finding carries an action; never changes `flagged`/`findings` (docs/specs/decisions/2026-09-21-
+ * least one finding carries an action; never changes `flagged`/`findings` (docs/decisions/2026-09-21-
  * add-untargeted-benign-corpus.md, Decision 3 — additive, never a redefinition of falseAlarmRate). */
 export interface RowScore { spanOutcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number; flagged?: boolean; findings?: number; coDetected?: boolean; actionCounts?: Record<string, number> }
 export interface ScoredRow extends RowScore {

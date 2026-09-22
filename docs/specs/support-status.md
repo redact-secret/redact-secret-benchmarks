@@ -102,13 +102,13 @@ displays, via `familiesForDetector`, not the unit this evidence attaches to.
 (twin/benign/metamorphic assertions, scoped to the `redact-secret` scanner),
 its `axesByDetector` (distinct benign taxonomy axes per family, case-level,
 `reporting.ts`'s `summaries()` — see
-[ADR](decisions/2026-09-21-measure-benign-axis-diversity.md)), and its
+[ADR](../decisions/2026-09-21-measure-benign-axis-diversity.md)), and its
 `reviewQueue` resolved against `benchmarks/review-ledger.json`
 (mutation/differential; a queued entry counts as unresolved unless the ledger
 marks it `resolved` or `not-assertable` — the latter a per-operator-class
 decision that no ground truth is inferable by construction, distinct from a
 per-fixture review (issue #63,
-[ADR](decisions/2026-09-21-settle-mechanical-mutation-review-classes.md)); a
+[ADR](../decisions/2026-09-21-settle-mechanical-mutation-review-classes.md)); a
 hard mutation failure counts as unresolved too — no ledger entry ever
 un-reviews an assertion that failed outright). Each
 family's contract `unprobeable` record (#33) is carried into the output

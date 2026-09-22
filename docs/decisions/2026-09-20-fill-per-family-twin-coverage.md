@@ -1,6 +1,12 @@
-# Fill per-family twin coverage below the stable threshold
+---
+decision_id: decision-fill-per-family-twin-coverage
+status: accepted
+scope: benchmarks
+title: Fill per-family twin coverage below the stable threshold
+decided_at: 2026-09-20
+---
 
-Date: 2026-09-20 · Status: accepted
+# Fill per-family twin coverage below the stable threshold
 
 ## Context
 
@@ -22,6 +28,20 @@ a delimiter/separator and an internal marker such as a checksum position) and
 public-vs-secret prefix — exactly `MUTATION_KINDS` in `benchmarks/lib/assessment.ts`.
 Issue #46's "separator" and "checksum/marker" are informal names for the
 `boundary` axis, not new kinds; this work introduces no new `mutationKind`.
+
+## Decision
+
+Add a twin, per the table below, for every dimension each T1 family's
+`providerSource` documents but no twin yet covered. Favor a real, differently
+documented provider prefix over an arbitrary corruption when one exists
+(precedent: `aws-access-key`'s `AIDA` twin); fall back to a corruption that
+still breaks the family's shared stem when the documented alternative is
+itself accepted by the pinned scanner (`gitlab-token`, `slack-token`, below).
+Record a provider-documented dimension this project's single-property twin
+methodology cannot construct — the checksum `github-token` and `npm-token`
+document — as a method-level limitation on the contract's `review` field,
+never as family-level `un-probeable`, since both families already carry a
+discriminated twin on another dimension.
 
 ## The 14 T1 families
 

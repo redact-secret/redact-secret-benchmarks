@@ -125,7 +125,7 @@ export function ledgerClassOf(note: string): string {
 }
 const GROUPS: { id: string; label: string; description: string; match: (raw: string) => boolean }[] = [
   { id: 't0-fixtures', label: 'T0 fixtures', description: 'No reviewed contract yet', match: raw => raw === 't0-pending-fixture' },
-  // #125: the current-queue T0 rows, settled not-assertable under docs/specs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md.
+  // #125: the current-queue T0 rows, settled not-assertable under docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md.
   // Its own group, not folded into `t0-fixtures`: a settled class carries no open entries, and that group still holds stale open rows.
   { id: 'pending-fixtures-decided', label: 'Pending fixtures (decided)', description: 'No ground truth is inferable while the fixture is T0', match: raw => raw === 'decision=differential.t0-pending-fixture' },
   { id: 'confirmed-defects', label: 'Confirmed defects', description: 'Product issue candidates', match: raw => raw.startsWith('confirmed-') },

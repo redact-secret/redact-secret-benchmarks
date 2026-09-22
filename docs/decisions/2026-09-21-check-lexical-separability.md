@@ -1,6 +1,12 @@
-# Check that no fixture pair may be lexically inseparable
+---
+decision_id: decision-check-lexical-separability
+status: accepted
+scope: benchmarks
+title: Check that no fixture pair may be lexically inseparable
+decided_at: 2026-09-21
+---
 
-Date: 2026-09-21 · Status: accepted
+# Check that no fixture pair may be lexically inseparable
 
 ## Context
 

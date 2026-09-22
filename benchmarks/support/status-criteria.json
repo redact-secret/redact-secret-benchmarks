@@ -20,7 +20,7 @@
       },
       "minimumAxes": {
         "value": 3,
-        "rationale": "A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/specs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed."
+        "rationale": "A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed."
       },
       "falseAlarms": {
         "value": 0,

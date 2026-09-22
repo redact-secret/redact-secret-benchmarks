@@ -1,6 +1,12 @@
-# Build the Evaluation Engine as benchmark infrastructure now
+---
+decision_id: decision-build-evaluation-engine-now
+status: accepted
+scope: benchmarks
+title: Build the Evaluation Engine as benchmark infrastructure now
+decided_at: 2026-09-17
+---
 
-Date: 2026-09-17 · Status: accepted
+# Build the Evaluation Engine as benchmark infrastructure now
 
 ## Context
 

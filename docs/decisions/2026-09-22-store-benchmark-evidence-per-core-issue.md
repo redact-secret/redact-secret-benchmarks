@@ -1,6 +1,12 @@
-# Store benchmark measurement evidence per core issue under `evidence/`
+---
+decision_id: decision-store-benchmark-evidence-per-core-issue
+status: accepted
+scope: benchmarks
+title: Store benchmark measurement evidence per core issue under `evidence/`
+decided_at: 2026-09-22
+---
 
-Date: 2026-09-22 · Status: accepted
+# Store benchmark measurement evidence per core issue under `evidence/`
 
 ## Context
 
@@ -35,7 +41,7 @@ evidence storage" is. Nothing else does either:
 
 ## Decision
 
-`evidence/<core-issue-number>/README.md` — see [`evidence/README.md`](../../../evidence/README.md)
+`evidence/<core-issue-number>/README.md` — see [`evidence/README.md`](../../evidence/README.md)
 for the full contract — is the durable, committed location for benchmark
 measurement evidence tied to one `redact-secret/redact-secret` issue. It
 supplies exactly the fields `2026-09-18-govern-benchmark-promotion.md`
@@ -70,7 +76,7 @@ a migration target for content that already has a home.
 - A `known-gaps.json` record reaching `verified` now has a fixed place to
   point its "benchmark rerun evidence against that exact fixed candidate" at,
   rather than inventing a path per record.
-- `docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md` is not
+- `docs/decisions/2026-09-18-govern-benchmark-promotion.md` is not
   edited by this decision — it stays the authority on *what* the evidence
   link must contain and the promotion lifecycle it backs; this decision only
   fixes *where* that link resolves.

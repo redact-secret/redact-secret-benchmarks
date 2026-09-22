@@ -1,6 +1,12 @@
-# Extend negative twins to the assignment context, and publish un-probeable families
+---
+decision_id: decision-extend-twins-to-assignment-context
+status: accepted
+scope: benchmarks
+title: Extend negative twins to the assignment context, and publish un-probeable families
+decided_at: 2026-09-20
+---
 
-Date: 2026-09-20 · Status: accepted
+# Extend negative twins to the assignment context, and publish un-probeable families
 
 ## Context
 

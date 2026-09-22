@@ -1,7 +1,14 @@
+---
+decision_id: decision-tighten-evaluation-accounting-v1-1
+status: accepted
+scope: benchmarks
+title: Tighten evaluation accounting (engine v1.1)
+decided_at: 2026-09-19
+---
+
 # Tighten evaluation accounting (engine v1.1)
 
-Date: 2026-09-19 · Status: accepted · Extends: engine v1.0 qualification,
-measurement protocol v4
+Extends: engine v1.0 qualification, measurement protocol v4
 
 ## Context
 
@@ -132,7 +139,7 @@ standing confusion between the integer `engineVersion: 2` written by
 
 The floors were decided from a read-only dry run over the current corpus
 (`npm run eval:dry-run`, recorded in
-[`docs/reports/2026-09-19/evaluation-engine-v1.1-dry-run.md`](../../reports/2026-09-19/evaluation-engine-v1.1-dry-run.md)),
+[`docs/reports/2026-09-19/evaluation-engine-v1.1-dry-run.md`](../reports/2026-09-19/evaluation-engine-v1.1-dry-run.md)),
 not from the proposal. The dry run is a second scorer over rows an existing run
 already produced; it enforces nothing and prints group keys and counts only.
 
@@ -228,7 +235,7 @@ Decision 5 shipped `twinCoverageFloor: 0.5` without a per-kind shape, and the
 first full dry run showed every scored group below it: `must-redact/T1`
 0.286, `must-redact/T2` 0.194, `policy/T3` 0.000 (all three withheld as
 `insufficient-coverage`, recorded in
-[the dry run](../../reports/2026-09-19/evaluation-engine-v1.1-dry-run.md)). `policy/T3` is decided
+[the dry run](../reports/2026-09-19/evaluation-engine-v1.1-dry-run.md)). `policy/T3` is decided
 first, deliberately, because reaching 0.5 there means authoring twins for 176
 positives — by far the largest cost in scope — and that cost should not be
 paid before deciding whether the axis applies.
@@ -294,7 +301,7 @@ paid before deciding whether the axis applies.
   the issue's own instruction: `redact-secret` 0.859 (T1, n 71) / 0.532
   (T2, n 47); `gitleaks` 0.465 (T1) / 0.489 (T2); `trufflehog` 0.915 (T1) /
   0.426 (T2); `flare-redact` 0.859 (T1) / 0.277 (T2). Full bounds and per-run
-  detail are in the regenerated [dry run](../../reports/2026-09-19/evaluation-engine-v1.1-dry-run.md).
+  detail are in the regenerated [dry run](../reports/2026-09-19/evaluation-engine-v1.1-dry-run.md).
   The target was the corpus-wide figure, not every per-suite one: two of the
   newly-twinned suites clear their own floor as a side effect
   (`context-edges` 17/20, `credential-formats`'s `github-token`/`gitlab-token`

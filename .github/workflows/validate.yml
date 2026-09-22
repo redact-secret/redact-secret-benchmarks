@@ -27,6 +27,8 @@ jobs:
         run: npm run arrival:check
       - name: Every ADR has valid frontmatter and is indexed exactly once (#135)
         run: npm run decisions:validate
+      - name: Performance criteria are derived from the committed release-build evidence, and its schema pin has not drifted (#136)
+        run: npm run performance:criteria:check && npm run performance:schema:check
       - name: No not-assertable ledger entry lacks a checked-in ADR decision (#63)
         run: npm run ledger:decisions:check
       - run: npm run build

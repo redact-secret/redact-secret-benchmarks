@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:redact-secret-benchmarks:performance-assessment:1",
+  "description": "A pinned copy of redact-secret's cross-language assessment result contract (assessment/schema.ts + assessment/complete.ts, core repo), scoped to the fields this repository's acceptance evaluation reads. Core owns the canonical definition; this file is the drift check. See benchmarks/lib/performance-schema.ts.",
+  "type": "object",
+  "required": ["schemaVersion", "status", "repetitions", "performanceProfiles", "requiredSurfaces", "runs", "validationFailures"],
+  "properties": {
+    "schemaVersion": { "const": "1" },
+    "status": { "enum": ["complete", "incomplete"] },
+    "sourceCommit": { "type": "string" },
+    "accuracyCorpus": {
+      "type": "object",
+      "required": ["version", "hash"],
+      "properties": { "version": { "type": "string" }, "hash": { "type": "string" } }
+    },
+    "workloadProfiles": {
+      "type": "object",
+      "required": ["version", "hash"],
+      "properties": { "version": { "type": "string" }, "hash": { "type": "string" } }
+    },
+    "repetitions": { "type": "integer", "minimum": 0 },
+    "performanceProfiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "chunkProfile"],
+        "properties": { "id": { "type": "string" }, "chunkProfile": { "type": "string" } }
+      }
+    },
+    "requiredSurfaces": { "type": "array", "items": { "$ref": "#/definitions/surface" } },
+    "validationFailures": { "type": "array", "items": { "type": "string" } },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["surface", "kind", "profileId", "resultPath", "markdownPath", "path", "status"],
+        "properties": {
+          "surface": { "$ref": "#/definitions/surface" },
+          "kind": { "enum": ["accuracy", "performance"] },
+          "profileId": { "type": "string" },
+          "resultPath": { "type": "string" },
+          "markdownPath": { "type": "string" },
+          "mismatchesPath": { "type": "string" },
+          "failureCode": { "enum": ["runner-failed", "result-missing", "invalid-result"] },
+          "path": { "enum": ["whole-input", "incremental", "standard-input"] },
+          "status": { "enum": ["complete", "failed", "missing", "invalid"] },
+          "result": { "$ref": "#/definitions/assessmentResult" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "surface": { "enum": ["rust-core", "python", "node", "browser-wasm", "cli"] },
+    "assessmentResult": {
+      "type": "object",
+      "required": ["schemaVersion", "surface", "profileId", "provenance"],
+      "properties": {
+        "schemaVersion": { "type": "string" },
+        "surface": { "$ref": "#/definitions/surface" },
+        "profileId": { "type": "string" },
+        "accuracy": {
+          "type": "object",
+          "required": ["truePositives", "falsePositives", "falseNegatives", "policyMismatches"],
+          "properties": {
+            "truePositives": { "type": "integer", "minimum": 0 },
+            "falsePositives": { "type": "integer", "minimum": 0 },
+            "falseNegatives": { "type": "integer", "minimum": 0 },
+            "policyMismatches": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "performance": {
+          "type": "object",
+          "required": ["initialization", "processing", "throughput", "memory"],
+          "properties": {
+            "initialization": { "$ref": "#/definitions/distribution" },
+            "processing": { "$ref": "#/definitions/distribution" },
+            "throughput": { "$ref": "#/definitions/distribution" },
+            "memory": {
+              "type": "object",
+              "required": ["nodeHeap", "nodeRss", "nodeExternal", "browserJsHeap", "wasmLinearMemory", "pythonHeap", "processRss", "streamingBuffer"],
+              "properties": {
+                "nodeHeap": { "$ref": "#/definitions/memoryMetric" },
+                "nodeRss": { "$ref": "#/definitions/memoryMetric" },
+                "nodeExternal": { "$ref": "#/definitions/memoryMetric" },
+                "browserJsHeap": { "$ref": "#/definitions/memoryMetric" },
+                "wasmLinearMemory": { "$ref": "#/definitions/memoryMetric" },
+                "pythonHeap": { "$ref": "#/definitions/memoryMetric" },
+                "processRss": { "$ref": "#/definitions/memoryMetric" },
+                "streamingBuffer": { "$ref": "#/definitions/memoryMetric" }
+              }
+            }
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "required": ["commit", "artifactIdentity", "corpusVersion", "corpusHash", "os", "cpu", "runtime", "command"],
+          "properties": {
+            "commit": { "type": "string" },
+            "artifactIdentity": { "type": "string" },
+            "corpusVersion": { "type": "string" },
+            "corpusHash": { "type": "string" },
+            "os": { "type": "string" },
+            "cpu": { "type": "string" },
+            "runtime": { "type": "string" },
+            "command": { "type": "string" },
+            "buildProfile": { "enum": ["debug", "release"] }
+          }
+        }
+      }
+    },
+    "distribution": {
+      "type": "object",
+      "required": ["unit", "samples", "minimum", "median", "p95", "maximum", "mean", "standardDeviation"],
+      "properties": {
+        "unit": { "enum": ["milliseconds", "bytes-per-second"] },
+        "samples": { "type": "array", "items": { "type": "number" } },
+        "minimum": { "type": "number" },
+        "median": { "type": "number" },
+        "p95": { "type": "number" },
+        "maximum": { "type": "number" },
+        "mean": { "type": "number" },
+        "standardDeviation": { "type": "number" }
+      }
+    },
+    "memoryMetric": {
+      "type": "object",
+      "required": ["unit", "samples", "samplingLimit"],
+      "properties": {
+        "unit": { "const": "bytes" },
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["baselineBytes", "maximumObservedBytes"],
+            "properties": {
+              "baselineBytes": { "type": "number" },
+              "maximumObservedBytes": { "type": "number" }
+            }
+          }
+        },
+        "unavailableReason": { "type": "string" },
+        "samplingLimit": { "type": "string" }
+      }
+    }
+  }
+}

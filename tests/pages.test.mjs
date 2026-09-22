@@ -176,12 +176,22 @@ test('Suite and How to read: published groups untouched; every caveat lives in o
   for (const claim of ['Not a representative sample', 'corpus-relative', 'not issuance', 'policy difference', 'bounded by which twins', 'not a speed benchmark', 'derives none']) assert.ok(guide.includes(claim), claim);
 });
 
+test('Performance: page reads the committed criteria file, verbatim', async () => {
+  const { performancePage } = await load('/src/pages/performance.ts');
+  const criteria = await read('benchmarks/performance-criteria.json');
+  const html = performancePage();
+  assert.ok(html.includes(criteria.criteriaId) && html.includes(criteria.baseline.sourceCommit));
+  assert.ok(html.includes('Linux x86_64 is the only official profile'));
+  for (const criterion of criteria.performance) assert.ok(html.includes(criterion.surface) && html.includes(criterion.profileId));
+});
+
 test('boundary rule: pages measure and record; none asserts product quality or ranks a scanner', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
   const { coveragePage, detectorPage } = await load('/src/pages/coverage.ts');
   const { suitePage } = await load('/src/pages/suite.ts');
   const { howToRead } = await load('/src/pages/how-to-read.ts');
-  const pages = [reportPage(data, 'T1', fixtures), coveragePage(fixtures, 'all'), detectorPage(data, fixtures, 'github-token'), suitePage(data, fixtures, 'accuracy'), howToRead()];
+  const { performancePage } = await load('/src/pages/performance.ts');
+  const pages = [reportPage(data, 'T1', fixtures), coveragePage(fixtures, 'all'), detectorPage(data, fixtures, 'github-token'), suitePage(data, fixtures, 'accuracy'), howToRead(), performancePage()];
   for (const html of pages) {
     const plain = text(html).replace(/Precision, recall and F1 are not exported[^.]*\./, '').replace(/not a product ranking|Not a ranking/g, '');
     assert.ok(!/\b(precision|recall|F1)\b/i.test(plain), 'no rates outside the v4 headline metrics');

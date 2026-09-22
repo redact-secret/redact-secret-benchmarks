@@ -56,7 +56,11 @@
     "eval:candidate": "node --import tsx benchmarks/candidate.ts",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
     "eval:dry-run": "node --import tsx scripts/accounting-dry-run.ts",
-    "eval:milestone": "node scripts/refresh-evaluation-milestone.mjs"
+    "eval:milestone": "node scripts/refresh-evaluation-milestone.mjs",
+    "performance:criteria": "node --import tsx scripts/derive-performance-criteria.mjs",
+    "performance:criteria:check": "node --import tsx scripts/derive-performance-criteria.mjs --check",
+    "performance:schema:check": "node scripts/check-performance-schema.mjs",
+    "performance:evaluate": "node --import tsx benchmarks/evaluate-performance.ts"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",

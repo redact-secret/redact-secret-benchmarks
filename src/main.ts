@@ -37,6 +37,7 @@ const NAV: NavItem[] = [
   { href: '/report', label: 'Report', short: 'Report', current: under('/report') },
   { href: '/coverage', label: 'Coverage', short: 'Coverage', current: under('/coverage', '/suites', '/fixture') },
   { href: '/support', label: 'Support', short: 'Support', current: under('/support') },
+  { href: '/performance', label: 'Performance', short: 'Perf', current: under('/performance') },
   { href: '/workbench', label: 'Workbench', short: 'Workbench', current: under('/workbench') },
   { href: '/how-to-read', label: 'How to read', short: 'Read', current: under('/how-to-read') },
 ].filter(item => !PUBLIC_ONLY || item.href !== '/workbench');
@@ -131,6 +132,7 @@ async function refresh(force = false): Promise<void> {
   const token = ++request, path = location.pathname;
   if (current.kind === 'missing') { if (force) renderPage(`<div class="page-head"><div><h1>Page not found</h1></div></div>${actionEmptyState({ title: 'No page lives at this path', body: 'Search for a detector, a suite or a fixture, or <a href="/report">open the report</a>.' })}`, 'Not found'); return; }
   if (current.kind === 'how-to-read') { if (force) renderPage(howToRead(), 'How to read'); return; }
+  if (current.kind === 'performance') { if (force) { const { performancePage } = await import('./pages/performance'); renderPage(performancePage(), 'Performance'); } return; }
   if (current.kind === 'workbench') return renderWorkbench(current, token, path, force);
   if (current.kind === 'support') return renderSupport(token, path, force);
 

@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "1",
+  "criteriaId": "rc-performance-resource-linux-x64-benchmarks-v1",
+  "fixedAt": "2026-09-22",
+  "derivation": {
+    "repetitions": 5,
+    "percentile": "p95",
+    "margin": "2x observed p95 for timing ceilings (rounded up: whole ms below 10ms, nearest 5ms below 100ms, nearest 50ms below 1000ms, else nearest 100ms); half observed minimum for throughput floors (rounded down: nearest 10,000 bytes/s below 1,000,000, else nearest 100,000); 2.5x observed maximum for memory caps (rounded up to the nearest mebibyte)"
+  },
+  "baseline": {
+    "summaryPath": "evidence/603/summary.json",
+    "sourceCommit": "944341903d5b85686a056d3218f4c33110d7d57b",
+    "accuracyCorpusVersion": "3",
+    "accuracyCorpusHash": "438df062ddde47dcb32ae0aefc4297ed8b8c9e2c3270778c2b1f8809e40bd0dd",
+    "workloadProfilesVersion": "1",
+    "workloadProfilesHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806"
+  },
+  "minimumRepetitions": 5,
+  "environment": {
+    "id": "linux-x64-node22-chromium",
+    "osPrefixes": [
+      "linux-"
+    ],
+    "cpus": [
+      "x86_64",
+      "x64"
+    ],
+    "runtimePrefixes": {
+      "rust-core": [
+        "rustc-"
+      ],
+      "python": [
+        "cpython-3."
+      ],
+      "node": [
+        "node-22."
+      ],
+      "browser-wasm": [
+        "chromium-"
+      ],
+      "cli": [
+        "rustc "
+      ]
+    }
+  },
+  "accuracy": {
+    "falseNegatives": 5,
+    "falsePositives": 1,
+    "policyMismatches": 0,
+    "truePositives": 21
+  },
+  "performance": [
+    {
+      "surface": "browser-wasm",
+      "profileId": "scale-logs-medium-fixed4096",
+      "maxInitializationP95Ms": 30,
+      "maxProcessingP95Ms": 250,
+      "minThroughputBytesPerSecond": 1000000,
+      "memoryCapsBytes": {
+        "browserJsHeap": 99614720
+      }
+    },
+    {
+      "surface": "browser-wasm",
+      "profileId": "scale-logs-small-whole",
+      "maxInitializationP95Ms": 25,
+      "maxProcessingP95Ms": 85,
+      "minThroughputBytesPerSecond": 790000,
+      "memoryCapsBytes": {
+        "browserJsHeap": 25165824
+      }
+    },
+    {
+      "surface": "cli",
+      "profileId": "scale-logs-medium-fixed4096",
+      "maxInitializationP95Ms": 5,
+      "maxProcessingP95Ms": 300,
+      "minThroughputBytesPerSecond": 1000000,
+      "memoryCapsBytes": {
+        "processRss": 8388608
+      }
+    },
+    {
+      "surface": "cli",
+      "profileId": "scale-logs-small-whole",
+      "maxInitializationP95Ms": 5,
+      "maxProcessingP95Ms": 70,
+      "minThroughputBytesPerSecond": 950000,
+      "memoryCapsBytes": {
+        "processRss": 8388608
+      }
+    },
+    {
+      "surface": "node",
+      "profileId": "scale-logs-medium-fixed4096",
+      "maxInitializationP95Ms": 5,
+      "maxProcessingP95Ms": 250,
+      "minThroughputBytesPerSecond": 1200000,
+      "memoryCapsBytes": {
+        "nodeHeap": 54525952,
+        "nodeRss": 235929600,
+        "nodeExternal": 6291456
+      }
+    },
+    {
+      "surface": "node",
+      "profileId": "scale-logs-small-whole",
+      "maxInitializationP95Ms": 5,
+      "maxProcessingP95Ms": 50,
+      "minThroughputBytesPerSecond": 1300000,
+      "memoryCapsBytes": {
+        "nodeHeap": 17825792,
+        "nodeRss": 166723584,
+        "nodeExternal": 6291456
+      }
+    },
+    {
+      "surface": "python",
+      "profileId": "scale-logs-medium-fixed4096",
+      "maxInitializationP95Ms": 2,
+      "maxProcessingP95Ms": 250,
+      "minThroughputBytesPerSecond": 1100000,
+      "memoryCapsBytes": {
+        "pythonHeap": 2097152,
+        "processRss": 53477376
+      }
+    },
+    {
+      "surface": "python",
+      "profileId": "scale-logs-small-whole",
+      "maxInitializationP95Ms": 2,
+      "maxProcessingP95Ms": 55,
+      "minThroughputBytesPerSecond": 1100000,
+      "memoryCapsBytes": {
+        "pythonHeap": 1048576,
+        "processRss": 54525952
+      }
+    },
+    {
+      "surface": "rust-core",
+      "profileId": "scale-logs-medium-fixed4096",
+      "maxInitializationP95Ms": 1,
+      "maxProcessingP95Ms": 300,
+      "minThroughputBytesPerSecond": 1000000,
+      "memoryCapsBytes": {
+        "processRss": 9437184
+      }
+    },
+    {
+      "surface": "rust-core",
+      "profileId": "scale-logs-small-whole",
+      "maxInitializationP95Ms": 1,
+      "maxProcessingP95Ms": 55,
+      "minThroughputBytesPerSecond": 1200000,
+      "memoryCapsBytes": {
+        "processRss": 9437184
+      }
+    }
+  ]
+}

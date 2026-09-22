@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:redact-secret-benchmarks:performance-criteria:1",
+  "description": "This repository's fixed RC performance/resource acceptance criteria. Owned here per redact-secret#603 (DS11) / #136. See benchmarks/lib/performance-acceptance.ts and benchmarks/performance-criteria.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "criteriaId", "fixedAt", "derivation", "baseline", "minimumRepetitions", "environment", "accuracy", "performance"],
+  "properties": {
+    "schemaVersion": { "const": "1" },
+    "criteriaId": { "type": "string", "minLength": 1 },
+    "fixedAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "derivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repetitions", "percentile", "margin"],
+      "properties": {
+        "repetitions": { "type": "integer", "minimum": 5 },
+        "percentile": { "const": "p95" },
+        "margin": { "type": "string", "minLength": 1 }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summaryPath", "sourceCommit", "accuracyCorpusVersion", "accuracyCorpusHash", "workloadProfilesVersion", "workloadProfilesHash"],
+      "properties": {
+        "summaryPath": { "type": "string", "minLength": 1 },
+        "sourceCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "accuracyCorpusVersion": { "type": "string" },
+        "accuracyCorpusHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "workloadProfilesVersion": { "type": "string" },
+        "workloadProfilesHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "minimumRepetitions": { "type": "integer", "minimum": 2 },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "osPrefixes", "cpus", "runtimePrefixes"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "osPrefixes": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "cpus": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "runtimePrefixes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rust-core", "python", "node", "browser-wasm", "cli"],
+          "properties": {
+            "rust-core": { "type": "array", "items": { "type": "string" } },
+            "python": { "type": "array", "items": { "type": "string" } },
+            "node": { "type": "array", "items": { "type": "string" } },
+            "browser-wasm": { "type": "array", "items": { "type": "string" } },
+            "cli": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "accuracy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["truePositives", "falsePositives", "falseNegatives", "policyMismatches"],
+      "properties": {
+        "truePositives": { "type": "integer", "minimum": 0 },
+        "falsePositives": { "type": "integer", "minimum": 0 },
+        "falseNegatives": { "type": "integer", "minimum": 0 },
+        "policyMismatches": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "performance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["surface", "profileId", "maxInitializationP95Ms", "maxProcessingP95Ms", "minThroughputBytesPerSecond", "memoryCapsBytes"],
+        "properties": {
+          "surface": { "enum": ["rust-core", "python", "node", "browser-wasm", "cli"] },
+          "profileId": { "type": "string", "minLength": 1 },
+          "maxInitializationP95Ms": { "type": "number", "exclusiveMinimum": 0 },
+          "maxProcessingP95Ms": { "type": "number", "exclusiveMinimum": 0 },
+          "minThroughputBytesPerSecond": { "type": "number", "exclusiveMinimum": 0 },
+          "memoryCapsBytes": {
+            "type": "object",
+            "additionalProperties": { "type": "number", "exclusiveMinimum": 0 },
+            "properties": {
+              "nodeHeap": { "type": "number", "exclusiveMinimum": 0 },
+              "nodeRss": { "type": "number", "exclusiveMinimum": 0 },
+              "nodeExternal": { "type": "number", "exclusiveMinimum": 0 },
+              "browserJsHeap": { "type": "number", "exclusiveMinimum": 0 },
+              "wasmLinearMemory": { "type": "number", "exclusiveMinimum": 0 },
+              "pythonHeap": { "type": "number", "exclusiveMinimum": 0 },
+              "processRss": { "type": "number", "exclusiveMinimum": 0 },
+              "streamingBuffer": { "type": "number", "exclusiveMinimum": 0 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

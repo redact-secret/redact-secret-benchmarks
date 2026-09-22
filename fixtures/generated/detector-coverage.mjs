@@ -199,6 +199,38 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("github-token", "reference", ["GITHUB_TOKEN=${GITHUB_TOKEN}\n"]);
   add("slack-token", "reference", ["SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}\n"]);
 
+  // #129: docker-token, huggingface-token, linear-token and openai-token were
+  // the last four registered families still reading benignAxes 1 — five
+  // copies of the near-miss shape from the families-loop prefix-only/short-
+  // body/*-identifier-embedding controls above, no placeholder or reference
+  // control among them. Same template as #93/#105/#125: mask (axis
+  // placeholder) and one reference control (axis reference), each family's
+  // own frozen prefix/length (redact-secret#370, see #128, for docker-token's
+  // 27-byte dckr_pat_ body; the other three lengths are `families`' own
+  // per-detector column above). linear-token's two prefixes share one
+  // detector's evidence (#105's DigitalOcean reasoning), so lin_api_ alone
+  // carries both new controls.
+  //
+  // Reference control env-var names are each provider's own documented one,
+  // not invented here: huggingface.co/docs/huggingface_hub/package_reference/
+  // environment_variables (HF_TOKEN); linear's SDK reads LINEAR_API_KEY from
+  // the environment by convention (@linear/sdk's LinearClient); platform.
+  // openai.com's SDK/CLI docs (OPENAI_API_KEY). Docker's personal-access-
+  // token page (docs.docker.com/security/access-tokens/personal-access-
+  // tokens/) documents no env-var name for a PAT at all — docs.docker.com/
+  // guides/gha/ does, for exactly this shell-reference use, naming the
+  // secret DOCKER_PASSWORD ("create a new repository secret named
+  // DOCKER_PASSWORD, containing your Docker access token"), so that name is
+  // used here instead of guessing DOCKER_PAT.
+  add("docker-token", "mask", [`dckr_pat_${"*".repeat(27)}`]);
+  add("docker-token", "reference", ["DOCKER_PASSWORD=${DOCKER_PASSWORD}\n"]);
+  add("huggingface-token", "mask", [`hf_${"*".repeat(34)}`]);
+  add("huggingface-token", "reference", ["HF_TOKEN=${HF_TOKEN}\n"]);
+  add("linear-token", "mask", [`lin_api_${"*".repeat(40)}`]);
+  add("linear-token", "reference", ["LINEAR_API_KEY=${LINEAR_API_KEY}\n"]);
+  add("openai-token", "mask", [`sk-${"*".repeat(48)}`]);
+  add("openai-token", "reference", ["OPENAI_API_KEY=${OPENAI_API_KEY}\n"]);
+
   // beta.4 additions: 17 detectors with no dedicated-prefix-plus-run shape
   // simple enough for the families loop above, added when detectors.json
   // was refreshed to the beta.4 registry snapshot.

@@ -47,5 +47,12 @@ The product-side placement and provenance rules are linked there. Do not copy a
 discovery matrix, generated variants, competitor observations, holdout material,
 or raw result bundles into `redact-secret`.
 
+Durable evidence for one `redact-secret` issue — source revisions, pinned
+scanner versions, the reproduce command, and the one-line result — is
+committed to [`evidence/<issue>/README.md`](evidence/README.md), not to a
+git-ignored `results-output/` path; `redact-secret`'s own evidence archive
+keeps only a permalink to it plus that one-line result. See
+[the evidence decision record](docs/specs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md).
+
 The `promote-finding` skill (see [AGENTS.md](AGENTS.md)) drives one
 `benchmarks/known-gaps.json` record through this lifecycle end to end.

@@ -137,3 +137,10 @@ itself to approve or block a release — hand the regressed fixture list to that
 lifecycle and to the product's two-gate acceptance rule. Do not modify
 benchmark ground truth based on candidate output. Do not invoke `resolve-issue`
 or `review-pr` from here.
+
+`<outdir>` here stays a general, git-ignored release sweep — it is not
+per-issue evidence. When one of its rows backs a specific `redact-secret`
+issue reaching `known-gaps.json`'s `verified` state, that issue's durable
+evidence is committed separately to `evidence/<issue>/README.md` (see
+[`evidence/README.md`](../../../evidence/README.md)), not left only in this
+disposable output directory.

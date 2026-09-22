@@ -17,7 +17,8 @@ export function mutate(c: EvaluationCase, change: (value: string) => string): Re
     content: buffer.subarray(0, span.start).toString() + replacement + buffer.subarray(span.end).toString(),
     expected: c.seed.expected.map(r => ({ ...move(r), ...(r.envelope ? { envelope: move(r.envelope) } : {}) })),
   };
-  const valid = new RegExp(contracts[c.seed.assessment.contract ?? ''].pattern!).test(replacement);
+  const contract = contracts[c.seed.assessment.contract ?? ''];
+  const valid = new RegExp(contract.pattern!).test(replacement) && (contract.validate?.(replacement) ?? true);
   // A failed lexical contract does not prove scanner silence: a valid
   // substring or independent contextual credential may remain. Review it.
   return { fixture, strategy: valid ? 'derived' : 'review-required',

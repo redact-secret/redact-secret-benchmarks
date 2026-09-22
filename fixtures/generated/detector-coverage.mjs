@@ -86,6 +86,14 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // coverage (docker-token, linear-token, google-api-key, notion-token,
   // atlassian-api-token); one representative shape each is enough to move
   // the corpus-wide floor without inventing coverage for every shape.
+  // #128: docker-token's target stays index 1 (dckr_oat_/shape-2), not
+  // shape-1 too, once shape-1 is promoted to a scored positive at its own
+  // frozen 27-byte length. A length twin on shape-1 would be well-founded
+  // (the core's own comment on the frozen grammar documents a 26-byte PAT
+  // suffix as an intentional false negative), but this comment's own "one
+  // representative shape is enough" rule already covers the family's floor
+  // via shape-2's existing twin, so adding a second one is unclaimed scope,
+  // not a shape-1 requirement.
   const twinTargets = { "docker-token": 1, "linear-token": 0, "google-api-key": 0, "notion-token": 0, "atlassian-api-token": 0 };
   const SLACK_TAIL_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-", HEX_ALPHABET = "0123456789abcdef";
   // #569: `slack-token`'s section grammar (#371/#512) and `cloudflare-token`'s
@@ -112,6 +120,11 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     // #104/#107: a flat "pypi-" + random run is not a serialized macaroon (the
     // gap the ADR closed); PYPI_MACAROON_BODY is the verified construction.
     "pypi-token": prefix => prefix + PYPI_MACAROON_BODY,
+    // #128: redact-secret#370 froze two separately sized exact-length shapes
+    // (dckr_pat_ 27 bytes, dckr_oat_ 32 bytes), not one shared length; the
+    // `families` loop's single `length` column can't express that, so this
+    // mirrors buildCommonFormats's already-correct per-prefix lengths.
+    "docker-token": prefix => prefix + synthetic(`detector-coverage:docker-token:${prefix}`, prefix === "dckr_pat_" ? 27 : 32),
   };
   for (const [detector, prefixes, length, alphabet] of families) {
     prefixes.forEach((prefix, index) => {
@@ -413,7 +426,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     ["openai-token", "sk-", 48],
     ["slack-token", "xoxb-", 48],
     ["huggingface-token", "hf_", 34],
-    ["docker-token", "dckr_pat_", 32],
+    ["docker-token", "dckr_pat_", 27],
     ["cloudflare-token", "cfut_", 40],
     ["linear-token", "lin_api_", 40],
   ];

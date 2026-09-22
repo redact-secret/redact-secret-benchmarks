@@ -17,9 +17,11 @@ docs projection or a qualification gate could depend on; this closes that gap.
 
 `buildSupportMatrix` projects [A3's per-detector evidence](support-status.md)
 (`results-output/support-status.json`) onto the [provider x credential-family
-taxonomy](taxonomy.md) (`benchmarks/support/taxonomy.json`) — 72 families
-across 31 providers plus 6 non-provider-specific formats, the unit a reader
-actually cares about. It never re-derives a status: a detector's `status` and
+taxonomy](taxonomy.md) (`benchmarks/support/taxonomy.json`) — 79 families
+across 34 providers plus 6 non-provider-specific formats as of 2026-09-21
+(`taxonomy.json` is the source of truth; `providerCount` and `familyCount`
+below are read from it, never typed), the unit a reader actually cares
+about. It never re-derives a status: a detector's `status` and
 `reasons`, decided once by `classifyFamilySupport`, are broadcast verbatim
 across every taxonomy family that detector serves (`taxonomyFamilies`, from
 `familiesForDetector`). A zero-detector taxonomy family (`detectors: []`)
@@ -36,8 +38,8 @@ becomes `unsupported`, with its reason built from the taxonomy entry's own
   // a format change upstream or a stale evaluation run surfaces as staleness
   // in this field, not as a silently wrong status.
   "sourceReport": { "schemaVersion": 1, "generatedAt": "...", "runId": "...", "revision": "...", "dirty": false, "criteriaSchemaVersion": 1 },
-  "providerCount": 31,
-  "familyCount": 72,
+  "providerCount": 34,
+  "familyCount": 79,
   "distribution": { "stable": 0, "provisional": 0, "pending": 0, "unsupported": 0 },
   "families": [
     {

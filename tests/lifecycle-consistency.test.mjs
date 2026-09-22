@@ -41,14 +41,15 @@ test('manifest cross-reference passes for the three real beta.5 findings that re
   assert.deepEqual(checkManifestCrossReference(knownGaps, productManifest), []);
 });
 
-test('manifest cross-reference fails closed on a product record with no known-gaps.json record behind it (the real #428 shape)', () => {
+test('manifest cross-reference fails closed on a product record with no known-gaps.json record behind it (the shape #428 had before its records landed)', () => {
   const productManifest = {
     records: [{
-      id: 'sendgrid-generic-key-full-span-promotion',
-      benchmarkRecordId: 'product-428-sendgrid',
-      productIssue: 'https://github.com/redact-secret/redact-secret/issues/428',
+      id: 'unrecorded-promotion',
+      benchmarkRecordId: 'product-999-unrecorded',
+      productIssue: 'https://github.com/redact-secret/redact-secret/issues/999',
     }],
   };
+  assert.ok(!knownGaps.issues.some(issue => issue.id === 'product-999-unrecorded'));
   const failures = checkManifestCrossReference(knownGaps, productManifest);
   assert.equal(failures.length, 1);
   assert.match(failures[0], /no benchmarks\/known-gaps\.json record/);

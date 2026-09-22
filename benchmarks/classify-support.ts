@@ -77,8 +77,8 @@ async function main() {
     } catch {}
     console.log(`Running every registered family's evidence through the profile: ${cases.length} cases with ${scanners.map((s: { id: string }) => s.id).join(', ')}…`);
     const report = await runEvaluation({ cases, methods, operators, scanners, ledger, onProgress: console.log });
-    // The unit is a registered detector (issue #504's "42", pinned to the beta.5 registry
-    // snapshot), not a taxonomy sub-family: `contracts` keys are exactly `detectors.json`'s ids.
+    // The unit is a registered detector (issue #504's "42" at filing time; the count follows
+    // `detectors.json`, 46 as of 2026-09-21), not a taxonomy sub-family: `contracts` keys are exactly `detectors.json`'s ids.
     const families = Object.keys(contracts).sort();
     const results = families.map(family => {
       const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger);

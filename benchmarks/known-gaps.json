@@ -1040,6 +1040,278 @@
           ]
         }
       ]
+    },
+    {
+      "id": "product-428-sendgrid",
+      "title": "Promote the SendGrid generic-key whole-span contract (trailing dash, embedded underscore) out of regressions.test.mjs",
+      "url": "https://github.com/redact-secret/redact-secret/issues/428",
+      "number": 428,
+      "fixtures": [
+        "sendgrid-regressions--trailing-dash-generic-key",
+        "sendgrid-regressions--url-safe-generic-key"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.5",
+        "lockHash": "12ed54c60feab89c9b5f99678c2f3bf650071b4416311c1ec44328dee7e5b3f6",
+        "sourceCommit": "0cc48374d005a44334bf727e49125165ec7d4157"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/428"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/16",
+            "https://github.com/redact-secret/redact-secret/issues/428"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-19",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/437"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-19",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+            "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/428",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "sendgrid-generic-key-full-span-promotion",
+        "canonicalFixtureIds": [
+          "sendgrid-token-regression-generic-key-trailing-dash-full-span",
+          "sendgrid-token-regression-generic-key-embedded-underscore"
+        ]
+      },
+      "evidence": [
+        {
+          "fixture": "sendgrid-regressions--trailing-dash-generic-key",
+          "corpusHash": "bb556d9d91dda1a394c83be1cd3763e75ebf9230d5fbdb6ad5abd91368ab459d",
+          "expected": [
+            {
+              "start": 8,
+              "end": 77
+            }
+          ],
+          "actual": [
+            {
+              "start": 8,
+              "end": 77,
+              "type": "sendgrid_api_key",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "sendgrid-regressions--url-safe-generic-key",
+          "corpusHash": "bb556d9d91dda1a394c83be1cd3763e75ebf9230d5fbdb6ad5abd91368ab459d",
+          "expected": [
+            {
+              "start": 8,
+              "end": 77
+            }
+          ],
+          "actual": [
+            {
+              "start": 8,
+              "end": 77,
+              "type": "sendgrid_api_key",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-428-reference-syntax",
+      "title": "Promote the reference-syntax literal-credential positive controls out of regressions.test.mjs",
+      "url": "https://github.com/redact-secret/redact-secret/issues/428",
+      "number": 428,
+      "fixtures": [
+        "reference-syntax--api-key",
+        "reference-syntax--password",
+        "reference-syntax--dotted-password",
+        "reference-syntax--quoted-password",
+        "reference-syntax--client-secret",
+        "reference-syntax--unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.5",
+        "lockHash": "12ed54c60feab89c9b5f99678c2f3bf650071b4416311c1ec44328dee7e5b3f6",
+        "sourceCommit": "0cc48374d005a44334bf727e49125165ec7d4157"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/428"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/16",
+            "https://github.com/redact-secret/redact-secret/issues/428"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-19",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/437"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-19",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+            "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/428",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "reference-syntax-literal-secret-controls-promotion",
+        "canonicalFixtureIds": [
+          "generic-token-regression-windows-env-lookalike-still-detected",
+          "generic-token-regression-sql-bind-lookalike-still-detected"
+        ]
+      },
+      "evidence": [
+        {
+          "fixture": "reference-syntax--api-key",
+          "corpusHash": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
+          "expected": [
+            {
+              "start": 8,
+              "end": 48
+            }
+          ],
+          "actual": [
+            {
+              "start": 8,
+              "end": 48,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "reference-syntax--password",
+          "corpusHash": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
+          "expected": [
+            {
+              "start": 9,
+              "end": 41
+            }
+          ],
+          "actual": [
+            {
+              "start": 9,
+              "end": 41,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "reference-syntax--dotted-password",
+          "corpusHash": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
+          "expected": [
+            {
+              "start": 9,
+              "end": 51
+            }
+          ],
+          "actual": [
+            {
+              "start": 9,
+              "end": 51,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "reference-syntax--quoted-password",
+          "corpusHash": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
+          "expected": [
+            {
+              "start": 10,
+              "end": 42
+            }
+          ],
+          "actual": [
+            {
+              "start": 10,
+              "end": 42,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "reference-syntax--client-secret",
+          "corpusHash": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
+          "expected": [
+            {
+              "start": 14,
+              "end": 54
+            }
+          ],
+          "actual": [
+            {
+              "start": 14,
+              "end": 54,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "reference-syntax--unicode-crlf",
+          "corpusHash": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
+          "expected": [
+            {
+              "start": 14,
+              "end": 54
+            }
+          ],
+          "actual": [
+            {
+              "start": 14,
+              "end": 54,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

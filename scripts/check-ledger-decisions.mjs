@@ -1,6 +1,6 @@
 /**
  * CI gate: every `benchmarks/review-ledger.json` entry marked `not-assertable`
- * must belong to an operator class an accepted ADR under `docs/decisions/`
+ * must belong to an operator class an accepted ADR under `docs/specs/decisions/`
  * actually records a decision for (issue #63). Bulk-reclassifying a whole
  * operator class with no paper trail is exactly the failure mode `resolved`
  * ledger entries are protected against by requiring a per-fixture review;
@@ -25,7 +25,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 
 const root = new URL('../', import.meta.url);
-const DECISIONS_DIR = new URL('docs/decisions/', root);
+const DECISIONS_DIR = new URL('docs/specs/decisions/', root);
 const MARKER = /<!--\s*decided-(?:operators|classes):\s*([^>]*?)\s*-->/g;
 
 /** Every operator or class id an accepted ADR claims, mapped to the file that claims it. Throws on a duplicate claim: one decision per id. */
@@ -36,7 +36,7 @@ export async function decidedOperators() {
     const text = await readFile(new URL(file, DECISIONS_DIR), 'utf8');
     for (const match of text.matchAll(MARKER)) {
       for (const id of match[1].split(',').map(s => s.trim()).filter(Boolean)) {
-        if (decided.has(id)) throw new Error(`operator "${id}" is claimed by both docs/decisions/${decided.get(id)} and docs/decisions/${file}`);
+        if (decided.has(id)) throw new Error(`operator "${id}" is claimed by both docs/specs/decisions/${decided.get(id)} and docs/specs/decisions/${file}`);
         decided.set(id, file);
       }
     }
@@ -54,7 +54,7 @@ export function undecidedNotAssertableEntries(ledger, decided) {
     const raw = ledgerClassOf(entry.note);
     const decidedId = /^(?:operator|decision)=(.+)$/.exec(raw)?.[1] ?? null;
     if (!decidedId || !decided.has(decidedId))
-      problems.push(`${id}: marked not-assertable for class "${raw}", which no ADR under docs/decisions/ records a decision for`);
+      problems.push(`${id}: marked not-assertable for class "${raw}", which no ADR under docs/specs/decisions/ records a decision for`);
   }
   return problems;
 }

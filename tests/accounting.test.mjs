@@ -1,4 +1,4 @@
-// Engine v1.1 accounting: one test per clause of docs/evaluation-engine-v1.1.md §11.
+// Engine v1.1 accounting: one test per clause of docs/specs/evaluation-engine-v1.1.md §11.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';

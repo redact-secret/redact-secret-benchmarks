@@ -1,11 +1,11 @@
 /**
  * CI gate (#106): benchmarks/known-gaps.json is the authoritative promotion
- * ledger (docs/decisions/2026-09-18-govern-benchmark-promotion.md); the
+ * ledger (docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md); the
  * product repository's conformance/benchmark-regressions.json is verified
  * against it live, never trusted as a second source of truth -- the same
- * authority split docs/decisions/2026-09-17-build-evaluation-engine-now.md
+ * authority split docs/specs/decisions/2026-09-17-build-evaluation-engine-now.md
  * already drew for the support matrix, recorded for this pair of ledgers in
- * docs/decisions/2026-09-21-anchor-cross-repo-promotion-authority-in-known-gaps.md.
+ * docs/specs/decisions/2026-09-21-anchor-cross-repo-promotion-authority-in-known-gaps.md.
  *
  * Fails closed: a product issue or manifest record this repo cannot confirm
  * reachable, or a manifest record with no known-gaps.json record behind it,

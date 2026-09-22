@@ -86,7 +86,7 @@ const FORBIDDEN = ['precision', 'recall', 'f1', 'tp', 'fp', 'fn', 'tn', 'contain
 const SCORE_FIELDS = ['spanOutcomes', 'leakedBytes', 'collateralBytes', 'flagged', 'findings', 'coDetected'];
 
 // Never join a report's ranges to different fixture bytes; re-verify every
-// row and every group total client-side (docs/measurement-v4.md §3).
+// row and every group total client-side (docs/specs/measurement-v4.md §3).
 export function reportProblem(report, category, hash, fixtures) {
   if (report?.schemaVersion < 5) return 'Legacy report: rerun npm run bench';
   // Reports are only comparable under one accounting version; the block is re-validated, never trusted.

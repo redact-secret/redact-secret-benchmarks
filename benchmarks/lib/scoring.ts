@@ -77,7 +77,7 @@ export function score(fixtures: Fixture[], findings: Finding[]): { rows: ScoredR
   const rows = fixtures.map((f) => {
     // `family`, when a scanner attributed one, rides along on `actual` so a twin's flagged
     // reading can be scoped to its own contract family (below) and so a published report row
-    // stays self-verifying (docs/measurement-v4.md §3) without a separate, unpublished channel.
+    // stays self-verifying (docs/specs/measurement-v4.md §3) without a separate, unpublished channel.
     // `action` (#95) rides along the same way, for scoreRow's additive actionCounts.
     const actual = [...unique.values()]
       .filter((r) => r.path === f.path)

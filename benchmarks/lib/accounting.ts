@@ -3,7 +3,7 @@ import { aggregateGroups, groupKey } from './lattice.ts';
 // Engine v1.1 accounting: anything unmeasured, unstable or unreviewed consumes
 // denominator, and the published figure is the worst defensible bound. Pure
 // closed-form arithmetic so the browser can re-verify every group without
-// fixture bytes. See docs/evaluation-engine-v1.1.md.
+// fixture bytes. See docs/specs/evaluation-engine-v1.1.md.
 
 export const ACCOUNTING_VERSION = '1.1';
 export const INSUFFICIENT_EVIDENCE = 'insufficient-evidence';

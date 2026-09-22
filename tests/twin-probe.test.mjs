@@ -99,7 +99,7 @@ test('twinProbe separates discriminated, not discriminated and un-probeable, and
 // #46: "targeting stable" is exactly the T1 contracts (the only tier
 // `benchmarks/support/status-criteria.json`'s `stable.positiveContract` can
 // ever certify). Each must carry a twin for every dimension its provider
-// source documents — see docs/decisions/2026-09-20-fill-per-family-twin-coverage.md
+// source documents — see docs/specs/decisions/2026-09-20-fill-per-family-twin-coverage.md
 // for the per-family rationale and the two prefix twins that needed a
 // stem-breaking fallback after an empirically-not-discriminated first attempt.
 // #65: shopify-token, vault-token and stripe-token each gained a `boundary`

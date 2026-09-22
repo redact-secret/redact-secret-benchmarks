@@ -2,7 +2,7 @@
 // Prefix variants are structural examples, not issued/valid credentials.
 import { createHash } from "node:crypto";
 
-// docs/decisions/2026-09-21-author-pypi-macaroon-positives-synthetically.md's
+// docs/specs/decisions/2026-09-21-author-pypi-macaroon-positives-synthetically.md's
 // verified construction: a well-formed libmacaroons v2 body (VERSION,
 // LOCATION("pypi.org"), a reserved Nil-UUID IDENTIFIER, one self-naming
 // caveat, and a SIGNATURE that is deterministic hash filler, never an HMAC or
@@ -144,7 +144,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
         addTwin(detector, `shape-${index + 1}`, ["pypx-" + value.slice(prefix.length)], "prefix namespace: pypx- vs provider-documented pypi-", "prefix");
         // docs.pypi.org/api/secrets's own regex is pypi-[A-Za-z0-9-_]{85,}; one
         // byte short of that documented floor, verified quiet against the
-        // pinned product (docs/decisions/2026-09-21-author-pypi-macaroon-
+        // pinned product (docs/specs/decisions/2026-09-21-author-pypi-macaroon-
         // positives-synthetically.md).
         addTwin(detector, `shape-${index + 1}`, [value.slice(0, prefix.length + 84)], "length: 84-byte body vs the provider's documented {85,} floor", "length", `shape-${index + 1}-length`);
         // Same page's character class is [A-Za-z0-9-_]; a byte outside it
@@ -181,7 +181,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("gitlab-token", "mask", ["glpat-" + "*".repeat(20)]);
   // #93: gitlab-token and npm-token were the only two families already
   // reading stable at the staged floor of 2 axes (near-miss, placeholder;
-  // docs/decisions/2026-09-21-measure-benign-axis-diversity.md). Raising the
+  // docs/specs/decisions/2026-09-21-measure-benign-axis-diversity.md). Raising the
   // floor to 3 in this same change would otherwise regress both, which the
   // acceptance criteria forbid; one reference control each clears it without
   // adding a third near-miss shape.
@@ -302,7 +302,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // #67: HashiCorp's own documentation shows one identical grammar for user,
   // organization and team tokens, so shapes vary the synthetic body, not a
   // kind-specific prefix or structure, since the provider draws no
-  // kind-specific distinction (docs/decisions/2026-09-21-add-terraform-
+  // kind-specific distinction (docs/specs/decisions/2026-09-21-add-terraform-
   // cloud-enterprise-token-detection.md).
   const terraformShapes = {};
   for (const kind of ["user", "organization", "team"]) {
@@ -327,7 +327,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
 
   // #67: Pulumi's own REST API reference documents no kind-specific prefix
   // for personal, organization or team tokens, so shapes vary the synthetic
-  // body under the one documented pul- prefix (docs/decisions/2026-09-21-
+  // body under the one documented pul- prefix (docs/specs/decisions/2026-09-21-
   // freeze-pulumi-access-token-grammar.md).
   const pulumiShapes = {};
   for (const kind of ["personal", "organization", "team"]) {
@@ -350,7 +350,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // #515/#81: docs.supabase.com/guides/platform/personal-access-tokens
   // documents exactly two prefixes (classic sbp_, versioned sbp_v0_), each
   // sharing the identical tool-corroborated 40-byte lowercase-alnum body
-  // (docs/decisions/2026-09-20-scope-supabase-management-token-and-secret-
+  // (docs/specs/decisions/2026-09-20-scope-supabase-management-token-and-secret-
   // key-independence.md). Never mixed with supabase-token's sb_secret_
   // fixtures above; the two credential classes stay evidence-independent.
   const LOWER_ALNUM = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -380,7 +380,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // #520/#81: projectdiscovery/nuclei-templates's firebase-fcm-server-key-
   // disclosure.yaml is the only corroboration source for the exact width;
   // the literal AAAA prefix and ":" separator are the only structural
-  // markers it documents (docs/decisions/2026-09-20-add-firebase-server-
+  // markers it documents (docs/specs/decisions/2026-09-20-add-firebase-server-
   // key-detection-and-client-config-discrimination.md).
   const URL_SAFE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
   const firebaseServerKey = `AAAA${synthetic("coverage:firebase:segment1", 7, URL_SAFE)}:${synthetic("coverage:firebase:segment2", 140, URL_SAFE)}`;
@@ -432,7 +432,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // #105: every digitalocean-token benign control above is a malformed-by-
   // construction near-miss (one axis); stable.benign.minimumAxes = 3 needs
   // distinct reasons, not further truncations of the same shape
-  // (docs/decisions/2026-09-21-measure-benign-axis-diversity.md). mask/
+  // (docs/specs/decisions/2026-09-21-measure-benign-axis-diversity.md). mask/
   // label-prose (axis: placeholder) and reference (axis: reference) mirror
   // the template #93 already applied to the other T1 families that shared
   // this gap. One design, instantiated across the three documented prefixes

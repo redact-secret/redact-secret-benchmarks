@@ -23,9 +23,9 @@ tool-corroborated (T2) `must-redact` rows. Unsupported but evidenced formats
 stay scored; uncertain variants are T0 and unscored. Connection strings, OTP
 URIs, Bearer headers and quoted assignments carry authored envelopes. The
 common-formats suite pairs every positive except the AWS pair with a negative
-twin. See the [full audit](../../docs/corpus-audit.md). Historical mixed-score
+twin. See the [full audit](../../docs/reports/2026-09-17/corpus-audit.md). Historical mixed-score
 tables below describe older runs and are superseded for comparative
-interpretation by schema v4 and the generated [release comparison](../../docs/release-comparison.md).
+interpretation by schema v4 and the generated [release comparison](../../docs/generated/release-comparison.md).
 
 | Category | Files | Expected spans | Coverage |
 | --- | ---: | ---: | --- |
@@ -94,7 +94,7 @@ actual findings against the unchanged expectations for each issue.
 
 The **Beta.3 regressions** cohort follows the final issue decisions reviewed at
 commit `530cafe9737eb5abc9702945394584aeb701d8c1`, not only the original issue
-reproducers. See the [coverage matrix](../../docs/milestone-6-closed-coverage.md).
+reproducers. See the [coverage matrix](../../docs/reports/2026-09-16/milestone-6-closed-coverage.md).
 It has 59 negative fixtures and 33 positive fixtures, grouped by closed issue.
 Its JSON records the target release, review snapshot, and unverified surfaces.
 Connection-string positives mark only the password as secret; scanners
@@ -165,7 +165,7 @@ On 2026-09-17, the unchanged detector-coverage suite was rerun with published
 `@redact-secret/core@0.1.0-beta.4`. Redact Secret scored **198 TP / 0 FP / 0
 FN**: the three nested quoted generic assignments missed by beta.3 now match
 exactly. Gitleaks 8.30.1 and TruffleHog 3.97.4 results were unchanged. See the
-[beta.4 release comparison](../../docs/beta-4-results.md) for all nine suites.
+[beta.4 release comparison](../../docs/reports/beta-4/results.md) for all nine suites.
 
 This corpus remains the 25-family beta.3 registry snapshot. New beta.4 detector
 families are not counted until their taxonomy and independently authored

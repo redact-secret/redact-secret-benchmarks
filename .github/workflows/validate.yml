@@ -18,7 +18,7 @@ jobs:
       - run: npm run fixtures:check
       - run: npm test
       - name: Validate published engine qualification evidence
-        run: npm run eval:validate -- docs/qualification/engine-v1.json
+        run: npm run eval:validate -- docs/specs/qualification/engine-v1.json
       - name: Exercise evaluation engine with the published npm scanner
         run: npm run eval -- --scanner=redact-secret
       - name: The UI carries no support status the generated matrix cannot
@@ -30,6 +30,8 @@ jobs:
       - run: npm run build
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check
+      - name: docs/generated/release-comparison.md matches baselines/*.json
+        run: npm run baseline:report
       - name: Generated inputs must not change tracked files
         run: git diff --exit-code
 

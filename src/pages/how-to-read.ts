@@ -29,5 +29,5 @@ npm run test:integration
 npm run bench -- --strict
 npm run baseline -- --save &lt;version&gt;   # after a complete run
 npm run baseline:report
-npm run dev</code></pre><p class="small">Legacy schema-v1/v2/v3 reports are rejected and must be regenerated. The full rationale is in <code>docs/measurement-v4.md</code> and the decision records in <code>docs/decisions/</code>.</p></section>`;
+npm run dev</code></pre><p class="small">Legacy schema-v1/v2/v3 reports are rejected and must be regenerated. The full rationale is in <code>docs/specs/measurement-v4.md</code> and the decision records in <code>docs/specs/decisions/</code>.</p></section>`;
 }

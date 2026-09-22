@@ -5,7 +5,7 @@ import data from './status-criteria.json';
  * Family support status (issue #503, part of epic #500). A machine-readable
  * profile that decides a provider x credential-family's support status from
  * evidence alone, so no status is ever hand-written into README, docs or UI.
- * See docs/support-status.md.
+ * See docs/specs/support-status.md.
  *
  * This profile is deliberately downstream of, and never a substitute for,
  * `scripts/check-evidence-arrival.mjs` (#52): these floors are pass-rate

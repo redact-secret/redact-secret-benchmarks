@@ -1,6 +1,6 @@
 ---
 name: promote-finding
-description: Drive one benchmarks-to-product finding through the promotion lifecycle — observed, reviewed, promoted — per docs/decisions/2026-09-18-govern-benchmark-promotion.md. Use when asked to promote, review, or advance a known-gap record ("promote product-404", "promote-finding product-404", "review the sendgrid gap"). Stops at the product issue handoff; never authors the product fixture or opens a product-repo PR.
+description: Drive one benchmarks-to-product finding through the promotion lifecycle — observed, reviewed, promoted — per docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md. Use when asked to promote, review, or advance a known-gap record ("promote product-404", "promote-finding product-404", "review the sendgrid gap"). Stops at the product issue handoff; never authors the product fixture or opens a product-repo PR.
 ---
 
 # promote-finding
@@ -78,7 +78,7 @@ corpusHash)`. Confirm each leg:
   reproducible.
 - The evaluation command that produced `evidence[].actual` is nameable:
   `npm run eval:candidate -- --candidate-source-commit <sourceCommit> ...`
-  (see `docs/candidate-evaluation.md`) or
+  (see `docs/specs/candidate-evaluation.md`) or
   `npm run eval -- --scanner=redact-secret`. Re-run it (or cite the exact
   prior run, `runId` and all) if the actual finding is in doubt.
 

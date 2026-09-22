@@ -1,6 +1,6 @@
 import data from './taxonomy.json';
 
-/** Provider x credential-family taxonomy (issue #502). See docs/taxonomy.md. */
+/** Provider x credential-family taxonomy (issue #502). See docs/specs/taxonomy.md. */
 export interface Provider { id: string; name: string }
 export interface Family {
   id: string; provider: string | null; name: string; description: string;

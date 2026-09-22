@@ -31,7 +31,7 @@ interpretation by schema v4 and the generated [release comparison](../../docs/ge
 | --- | ---: | ---: | --- |
 | Reviewed credential formats | 114 | 60 | 18 families, companion contexts, parseable key/JWT controls and 56 one-mutation negative twins |
 | Credential formats | 27 | 27 | Nine shapes × three deterministic values |
-| Context & boundaries | 20 | 23 | One GitHub PAT shape across text contexts |
+| Context & boundaries | 173 | 119 | One GitHub PAT shape across text contexts, plus the 12 scoreable detector-coverage floor families across eight contexts each, with twins for the five that have a provider-domain twin source |
 | Negative controls | 24 | 0 | Placeholders, public identifiers, malformed shapes, ordinary text |
 | SendGrid regressions | 38 | 30 | Three shapes × ten contexts, plus eight negatives |
 | Reference syntax | 26 | 6 | Twenty references/expressions and six literal-secret positives |

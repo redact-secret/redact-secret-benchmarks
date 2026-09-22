@@ -195,6 +195,11 @@ canonical base64 PEM body, decoded text, matching delimiter pair, source file,
 and start line uniquely identify the original range. It never reads expected
 ranges. Both findings then deduplicate under the existing scorer.
 
-Other decoded transformations remain explicit normalization failures.
+A decoded row that repeats a plain row's location (same rule, file, lines and
+start column; only `Secret` decoded, and `EndColumn`, which 8.30.1 reports as
+0 on the decoded row after a UTF-8 BOM) is dropped before
+normalization: it names no new range. Gitleaks does this for a Discord bot
+token, whose first segment is base64 text. Any other decoded transformation
+remains an explicit normalization failure.
 Unit tests cover mismatched/unsupported output and missing source lines; a
 real-binary integration check covers the encoded and decoded PEM path.

@@ -42,7 +42,7 @@ sits near that floor — no code change required:
     "positiveContract": { "requireProviderSource": true, "rationale": "..." },
     "minimumTwinPairs": { "value": 5, "rationale": "..." },
     "twinFailures": { "value": 0, "rationale": "..." },
-    "benign": { "minimumCases": { "value": 5, "rationale": "..." }, "minimumAxes": { "value": 2, "rationale": "..." }, "falseAlarms": { "value": 0, "rationale": "..." } },
+    "benign": { "minimumCases": { "value": 5, "rationale": "..." }, "minimumAxes": { "value": 3, "rationale": "..." }, "falseAlarms": { "value": 0, "rationale": "..." } },
     "metamorphic": { "criticalFailures": { "value": 0, "rationale": "..." } },
     "mutation": { "unresolvedCritical": { "value": 0, "rationale": "..." } },
     "differential": { "unresolvedContractDisagreements": { "value": 0, "rationale": "..." } }
@@ -74,7 +74,8 @@ never reports a bare status with no explanation.
 
 Producing real `FamilySupportEvidence` per family — aggregating
 `benchmarks/engine/reporting.ts`'s `byDetector` summaries, the review ledger,
-and `taxonomy.familiesForDetector` across all 42 registered families — is
+and `taxonomy.familiesForDetector` across every registered family (42 when #504 was filed; 46 as of
+2026-09-21, `benchmarks/detectors.json` being the source of truth) — is
 [#504](https://github.com/redact-secret/redact-secret/issues/504) (A3). This
 issue ships the criteria and the decision function only, proven against
 synthetic evidence in `tests/support-status.test.mjs`; it does not classify
@@ -92,9 +93,10 @@ import { contracts } from '../lib/assessment.ts';
 
 A3 (`benchmarks/classify-support.ts`, `npm run eval:classify`) builds one
 `FamilySupportEvidence` per **registered detector** — `Object.keys(contracts)`,
-exactly `benchmarks/detectors.json`'s 42 ids and #504's "42" — not per
+exactly `benchmarks/detectors.json`'s ids (42 when #504 was filed, 46 as of
+2026-09-21) — not per
 `taxonomy.families[]` entry: the taxonomy's provider:credential-name units are
-finer-grained (72, several per detector) and are the unit A8's support matrix
+finer-grained (79 as of 2026-09-21, several per detector) and are the unit A8's support matrix
 displays, via `familiesForDetector`, not the unit this evidence attaches to.
 `familyEvidence` reads a full `runEvaluation` report's `byDetector` summaries
 (twin/benign/metamorphic assertions, scoped to the `redact-secret` scanner),

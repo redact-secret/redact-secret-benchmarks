@@ -88,8 +88,9 @@ without one.
 
 ## Current counts
 
-72 families across 31 providers plus 6 non-provider-specific formats; 55
-carry at least one detector, 17 currently do not. This is a taxonomy, not a
+79 families across 34 providers plus 6 non-provider-specific formats; 63
+carry at least one detector, 16 currently do not (counts as of 2026-09-21;
+`benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or
 whether it clears A2's (#503) `stable` bar. That classification is A3's job

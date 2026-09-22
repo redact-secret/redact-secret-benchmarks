@@ -141,7 +141,7 @@ def main():
     version = json.loads((ROOT / "package.json").read_text())["dependencies"]["@redact-secret/core"]
     release = version.rsplit("-", 1)[-1]
     rows = inventory(contents["gitleaks"], contents["trufflehog"], contents["flare-redact"], sources)
-    snapshot = {"schemaVersion": 1, "reviewedAt": "2026-09-20",
+    snapshot = {"schemaVersion": 1, "reviewedAt": "2026-09-22",
                 "redactSecretVersion": version,
                 "redactSecretRevision": registry["sourceRevision"],
                 "method": f"Explicit provider-family mapping against the {len(registry['detectors'])} registered {release} detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",

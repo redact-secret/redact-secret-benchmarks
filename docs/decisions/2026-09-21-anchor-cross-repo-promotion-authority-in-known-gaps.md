@@ -1,6 +1,12 @@
-# Anchor cross-repo promotion authority in known-gaps.json
+---
+decision_id: decision-anchor-cross-repo-promotion-authority-in-known-gaps
+status: accepted
+scope: benchmarks
+title: Anchor cross-repo promotion authority in known-gaps.json
+decided_at: 2026-09-21
+---
 
-Date: 2026-09-21 · Status: accepted
+# Anchor cross-repo promotion authority in known-gaps.json
 
 ## Context
 
@@ -14,7 +20,7 @@ product issues without a `benchmarks/known-gaps.json` record. #66 closed
 without answering two of its own acceptance criteria and without confirming
 whether the product's `conformance/benchmark-regressions.json` needs a
 matching check. Left unanswered, the lifecycle
-(`docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md`) stays a convention
+(`docs/decisions/2026-09-18-govern-benchmark-promotion.md`) stays a convention
 a careful person follows rather than a check that fails — the same defect
 class as #90's dead taxonomy: ground truth existing in one place while a
 second place re-derives it by convention.
@@ -25,11 +31,11 @@ The two ledgers live in two repositories:
 which side to trust when they disagree, and whether to check the product
 ledger's live state or a locally cached copy of it.
 
-This is the same question `docs/specs/decisions/2026-09-17-build-evaluation-engine-now.md`
+This is the same question `docs/decisions/2026-09-17-build-evaluation-engine-now.md`
 already answered for the support matrix: *"Stable support-matrix source data
 belongs here because support status is a qualification result backed by
 evaluation evidence. The main repository may publish that result, but does not
-become its source of truth."* `docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md`
+become its source of truth."* `docs/decisions/2026-09-18-govern-benchmark-promotion.md`
 already states the same for the promotion lifecycle itself — *"`benchmarks/known-gaps.json`
 is the authoritative state record"* — but never extended that statement to the
 product-side manifest the lifecycle hands off to, which is the gap #106 closes.

@@ -23,7 +23,8 @@ once it was adopted —
 
 - `slack-token`'s `xoxb-`/`xoxp-`/`xapp-`/`xwfp-`/`xoxe-`/`xoxe.xoxb-`/`xoxe.xoxp-`
   shapes needed `-`-separated digit sections (bot/user/rotation grammars,
-  `docs/decisions/2026-09-{17,20}-freeze-slack-{bot-token-segment,user-and-rotation-token}-grammar.md`
+  [`2026-09-17-freeze-slack-bot-token-segment-grammar.md`](https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/decisions/2026-09-17-freeze-slack-bot-token-segment-grammar.md)
+  and [`2026-09-20-freeze-slack-user-and-rotation-token-grammar.md`](https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/decisions/2026-09-20-freeze-slack-user-and-rotation-token-grammar.md)
   in the product repo) or an exact 20-byte tail (#551's boundary fix);
 - `cloudflare-token`'s `cfut_` shape was missing its trailing 8-hex checksum
   entirely (`^cfut_[A-Za-z0-9]{40}[a-f0-9]{8}$`, `benchmarks/lib/assessment.ts`).
@@ -95,7 +96,7 @@ assumed:
   value under a different, legitimately-applicable family
   (`generic-token`/`bearer-token`) that this corpus's `expected` field never
   excludes — the same "value owned by a broader independent detector"
-  situation `docs/decisions/2026-09-17-freeze-slack-bot-token-segment-grammar.md`
+  situation [`2026-09-17-freeze-slack-bot-token-segment-grammar.md`](https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/decisions/2026-09-17-freeze-slack-bot-token-segment-grammar.md)
   (product repo) already accepted for Slack's own overlap fixtures, just not
   previously named as its own ledger class.
 

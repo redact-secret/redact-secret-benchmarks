@@ -562,7 +562,7 @@
       "description": "Management-API personal access token, prefixed sbp_/sbp_v0_.",
       "detectors": ["supabase-management-token"],
       "sources": ["https://supabase.com/docs/guides/platform/personal-access-tokens"],
-      "note": "#81 backfilled the supabase-management-token detector (redact-secret#535). Deliberately independent of supabase:secret-key's evidence, per docs/decisions/2026-09-20-scope-supabase-management-token-and-secret-key-independence.md."
+      "note": "#81 backfilled the supabase-management-token detector (redact-secret#535). Deliberately independent of supabase:secret-key's evidence, per https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/decisions/2026-09-20-scope-supabase-management-token-and-secret-key-independence.md."
     },
     {
       "id": "vercel:access-token",

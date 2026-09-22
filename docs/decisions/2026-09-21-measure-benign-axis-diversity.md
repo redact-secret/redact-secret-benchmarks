@@ -1,6 +1,12 @@
-# Measure benign axis diversity, not just a bare case count
+---
+decision_id: decision-measure-benign-axis-diversity
+status: accepted
+scope: benchmarks
+title: Measure benign axis diversity, not just a bare case count
+decided_at: 2026-09-21
+---
 
-Date: 2026-09-21 · Status: accepted
+# Measure benign axis diversity, not just a bare case count
 
 ## Context
 

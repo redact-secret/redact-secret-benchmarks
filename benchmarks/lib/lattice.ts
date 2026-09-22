@@ -77,7 +77,7 @@ export function scoreRow(expected: ExpectedRange[], actual: (Range & { family?: 
   const secrets = expected.filter(e => (e.role ?? 'secret') === 'secret');
   if (!secrets.length) {
     // #95: additive tally of the product policy action a finding carried, when the scanner
-    // reports one. Never changes `flagged`/`findings` below (docs/specs/decisions/2026-09-21-
+    // reports one. Never changes `flagged`/`findings` below (docs/decisions/2026-09-21-
     // add-untargeted-benign-corpus.md, Decision 3).
     const actionCounts = actual.reduce<Record<string, number>>((counts, a) => {
       if (a.action !== undefined) counts[a.action] = (counts[a.action] ?? 0) + 1;

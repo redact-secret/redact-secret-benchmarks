@@ -44,7 +44,7 @@ npm run benchmark:candidate -- \
 ## Core-side stub (for reference — authored in `redact-secret`, not here)
 
 What `redact-secret/redact-secret`'s own `docs/audits/evidence/376/` keeps,
-per this repository's [evidence decision](../../docs/specs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md):
+per this repository's [evidence decision](../../docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md):
 
 > Benchmark gate: PASS. Fixed-corpus twin false alarms 24 → 0 (56/56
 > discrimination); 0 required-positive misses. Full evidence:

@@ -1,6 +1,12 @@
-# Correct the five twins #553 ruled untenable
+---
+decision_id: decision-correct-the-five-twins-553-ruled-untenable
+status: accepted
+scope: benchmarks
+title: Correct the five twins #553 ruled untenable
+decided_at: 2026-09-21
+---
 
-Date: 2026-09-21 · Status: accepted
+# Correct the five twins #553 ruled untenable
 
 ## Context
 
@@ -21,6 +27,15 @@ fixtures was built separately, in
 (`benchmarks/lib/lattice.ts`'s `scopeFamily` parameter to `scoreRow`,
 documented in `docs/specs/evaluation-methods/02-negative-twin.md`). This decision
 does not re-litigate that mechanism; it applies it.
+
+## Decision
+
+Correct each of the five twins #553 flagged by the route the table below
+gives it, without removing any: the three `bearer-token` header twins move
+their mutation inside the length floor so the anchored head run itself
+falls under it, and the two SendGrid twins are rescoped to expect
+co-detection under `scopeFamily` rather than treated as a discrimination
+failure.
 
 ## The five, and the route taken
 
@@ -78,7 +93,7 @@ those findings' families:
   `{flagged:false, coDetected:true}`.
 - `base62-generic-key-twin`: `generic-token` fires (`api_key=` is a
   `HIGH_SIGNAL_NAMES` match, warned on unconditionally per
-  `docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md`
+  [`2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md`](https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md)
   — `sendgrid-token` again correctly declined the truncated value).
   `scoreRow([], [{family:'generic-token'}], 'sendgrid-token')` →
   `{flagged:false, coDetected:true}`.

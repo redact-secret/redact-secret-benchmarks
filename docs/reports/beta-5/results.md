@@ -158,7 +158,7 @@ end of this run.
   is re-pinned by the same gate; see that repository's own evidence and
   decision record for the corpus-hash and accuracy-count re-pin. This
   repository's corpus, fixtures, and known-gaps lifecycle are unaffected —
-  per [`docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md`](../../specs/decisions/2026-09-18-govern-benchmark-promotion.md),
+  per [`docs/decisions/2026-09-18-govern-benchmark-promotion.md`](../../decisions/2026-09-18-govern-benchmark-promotion.md),
   the two corpora stay independent and neither is copied into the other.
 - `known-gaps.json` is unaffected by this gate: issues #368–#375 originated
   from proactive contract review (redact-secret#367), not from this

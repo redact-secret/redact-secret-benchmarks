@@ -1,6 +1,14 @@
+---
+decision_id: decision-clear-digitalocean-benign-axis-diversity
+status: accepted
+scope: benchmarks
+title: Clear `benign.minimumAxes` for the three DigitalOcean token families
+decided_at: 2026-09-21
+---
+
 # Clear `benign.minimumAxes` for the three DigitalOcean token families
 
-Date: 2026-09-21 · Status: accepted · Extends: `2026-09-21-measure-benign-axis-diversity.md`, `2026-09-21-resweep-differential-queue-post-d1-d6-issue-98.md`
+Extends: `2026-09-21-measure-benign-axis-diversity.md`, `2026-09-21-resweep-differential-queue-post-d1-d6-issue-98.md`
 
 ## Context
 

@@ -1,6 +1,6 @@
 import type { Fixture, FormatContract } from '../types.ts';
 // docs/specs/measurement-v4.md §2.5 amendment, 2026-09-21 (#84) and
-// docs/specs/decisions/2026-09-21-check-lexical-separability.md: no fixture pair may
+// docs/decisions/2026-09-21-check-lexical-separability.md: no fixture pair may
 // be lexically inseparable. A frozen contract pattern already encodes what
 // discriminates a family's positives — leading literals, segment structure,
 // per-segment length and alphabet class — so a `must-not-flag` fixture whose

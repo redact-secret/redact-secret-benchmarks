@@ -1,11 +1,17 @@
-# Add an untargeted benign corpus: authored-synthetic, T3, action-split, ungated
+---
+decision_id: decision-add-untargeted-benign-corpus
+status: accepted
+scope: benchmarks
+title: Add an untargeted benign corpus: authored-synthetic, T3, action-split, ungated
+decided_at: 2026-09-21
+---
 
-Date: 2026-09-21 · Status: accepted
+# Add an untargeted benign corpus: authored-synthetic, T3, action-split, ungated
 
 ## Context
 
 The existing `negative-controls` category
-([`docs/specs/evaluation-methods/06-benign-lookalikes.md`](../evaluation-methods/06-benign-lookalikes.md))
+([`docs/specs/evaluation-methods/06-benign-lookalikes.md`](../specs/evaluation-methods/06-benign-lookalikes.md))
 measures false alarms on values chosen to test one family's overmatching:
 each control is close enough to a real credential of a specific type to be a
 meaningful negative for that type. It says nothing about a global false-alarm

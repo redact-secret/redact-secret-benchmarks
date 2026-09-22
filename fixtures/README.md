@@ -14,7 +14,7 @@ human review before presenting results as comparative evidence. The `reviewStatu
 field is shown in every report and the dashboard.
 
 Confirmed findings follow the governed
-[benchmark-to-product promotion lifecycle](../docs/specs/decisions/2026-09-18-govern-benchmark-promotion.md).
+[benchmark-to-product promotion lifecycle](../docs/decisions/2026-09-18-govern-benchmark-promotion.md).
 Review and promotion never rewrite an authored expectation to match scanner
 output. The benchmark fixture and its evidence remain here; only a minimal
 canonical regression and provenance link move into the product repository.

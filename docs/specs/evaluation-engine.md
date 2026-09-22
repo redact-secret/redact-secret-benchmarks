@@ -1,6 +1,6 @@
 # Internal evaluation engine
 
-Implements steps 1–4 of the [accepted decision](decisions/2026-09-17-build-evaluation-engine-now.md):
+Implements steps 1–4 of the [accepted decision](../decisions/2026-09-17-build-evaluation-engine-now.md):
 the common engine, Twin and Benign, Metamorphic and Mutation, and Differential.
 This is benchmark infrastructure for detector development. Holdout now has a
 [separate lifecycle](../../holdout/README.md); the [v1 qualification suite](evaluation-engine-v1.md)

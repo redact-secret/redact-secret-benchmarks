@@ -1,8 +1,13 @@
 # Settle differential disagreements on pending fixtures, and sweep the candidate-keyed differential queue (#125)
 
-Date: 2026-09-22 · Status: accepted · Extends: `2026-09-21-resweep-differential-queue-against-pinned-trufflehog.md`,
-`2026-09-21-resweep-differential-queue-post-axis-refactor-issue-120.md` (#120/#122),
-`2026-09-21-settle-mechanical-mutation-review-classes.md` (D7), `2026-09-21-clear-digitalocean-benign-axis-diversity.md` (#105)
+Date: 2026-09-22 · Extends: [`resweep-differential-queue-against-pinned-trufflehog.md`](../2026-09-21/resweep-differential-queue-against-pinned-trufflehog.md),
+[`resweep-differential-queue-post-axis-refactor-issue-120.md`](../2026-09-21/resweep-differential-queue-post-axis-refactor-issue-120.md) (#120/#122),
+[`2026-09-21-settle-mechanical-mutation-review-classes.md`](../../decisions/2026-09-21-settle-mechanical-mutation-review-classes.md) (D7), [`2026-09-21-clear-digitalocean-benign-axis-diversity.md`](../../decisions/2026-09-21-clear-digitalocean-benign-axis-diversity.md) (#105)
+
+This is a measurement report, not a decision record (#135): it is the
+evidence behind the one policy §4 settled. That policy's authoritative
+record is
+[`docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md`](../../decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md).
 
 ## Context
 
@@ -132,9 +137,7 @@ re-keyed by the `detector-coverage.mjs` edit below — the same mechanism
 published package still has the gap, and this repository does not fix product
 output.
 
-## 4. Decision: differential disagreements on pending fixtures are not assertable
-
-<!-- decided-classes: differential.t0-pending-fixture -->
+## 4. Differential disagreements on pending fixtures are not assertable
 
 D2 and the pinned-trufflehog sweep kept `t0-pending-fixture` rows `open`
 "pending fixture review". That was the right call while the rows were
@@ -154,17 +157,13 @@ contract itself may be wrong") does not reach these rows either: a T0 fixture
 asserts no contract, so a disagreement over it is not evidence about the
 family's reviewed contract one way or the other.
 
-Decision:
+Decision (recorded authoritatively in the ADR linked above):
 
 - A differential review-queue entry whose fixture assessment is tier T0 is
   recorded `not-assertable` under `Class: decision=differential.t0-pending-fixture`.
   The note names the fixture and family so the pending reason can be looked
-  up; it settles nothing about either side's output.
-- `scripts/check-ledger-decisions.mjs` accepts a `decided-classes:` marker
-  alongside `decided-operators:` and a `decision=<id>` class alongside
-  `operator=<id>`, with the same one-decision-per-id rule and the same failing
-  test for an unclaimed class. The workbench shows the new class as its own
-  group, `Pending fixtures (decided)`, beside `T0 fixtures`
+  up; it settles nothing about either side's output. The workbench shows the
+  class as its own group, `Pending fixtures (decided)`, beside `T0 fixtures`
   (`src/evaluation-model.ts`): a settled class carries no open entries, and
   the `T0 fixtures` group still holds the stale open rows below.
 - Applied to the 120 current-queue T0 rows (60 candidate-keyed, 60
@@ -230,7 +229,8 @@ published package's own gaps, which §2 shows the candidate build no longer
 has, and which this record does not adjudicate.
 
 `npm run queue:check` (published-package keying, the CI job's mode) passes
-against this ledger. `npm run decisions:validate`, `npm run fixtures:check`,
+against this ledger. `npm run ledger:decisions:check` (renamed from
+`decisions:validate` by #135), `npm run fixtures:check`,
 `npm run pins:manifest:check`, `npm run typecheck` and the unit suite
 (354/354) pass.
 

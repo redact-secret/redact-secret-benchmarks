@@ -1,6 +1,12 @@
-# Author PyPI macaroon positives synthetically
+---
+decision_id: decision-author-pypi-macaroon-positives-synthetically
+status: accepted
+scope: benchmarks
+title: Author PyPI macaroon positives synthetically
+decided_at: 2026-09-21
+---
 
-Date: 2026-09-21 · Status: accepted
+# Author PyPI macaroon positives synthetically
 
 ## Context
 
@@ -195,7 +201,7 @@ The three properties the issue asks to confirm:
 
 ## Lexical separability (scope item 4)
 
-Per `docs/specs/decisions/2026-09-21-check-lexical-separability.md`, the check
+Per `docs/decisions/2026-09-21-check-lexical-separability.md`, the check
 only ever compares a `must-redact` positive's frozen `pattern` against
 `must-not-flag` fixtures declaring the *same* contract. `pypi-token`
 currently has three (`fixtures/generated/detector-coverage.mjs`:

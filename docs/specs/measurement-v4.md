@@ -1,7 +1,7 @@
 # Measurement protocol v4
 
 Status: **accepted and implemented (2026-09-17).** Decision record:
-[`decisions/2026-09-17-adopt-measurement-protocol-v4.md`](decisions/2026-09-17-adopt-measurement-protocol-v4.md),
+[`decisions/2026-09-17-adopt-measurement-protocol-v4.md`](../decisions/2026-09-17-adopt-measurement-protocol-v4.md),
 which also answers the open questions in §8. Report `schemaVersion: 4`, corpus
 schema 2, generated `release-comparison.md`, dashboard rework.
 
@@ -183,7 +183,7 @@ sets rather than loose negatives. Un-twinned positives are reported as a coverag
 gap (`twinned: 138/195`), not silently averaged.
 
 **Amendment, 2026-09-20 (#36).** Two extensions, decided in
-[`2026-09-20-extend-twins-to-assignment-context`](decisions/2026-09-20-extend-twins-to-assignment-context.md):
+[`2026-09-20-extend-twins-to-assignment-context`](../decisions/2026-09-20-extend-twins-to-assignment-context.md):
 
 - A family whose value has no grammar (`generic-token`, `connection-string`)
   cannot have one property of its value mutated. Its twin keeps the value and
@@ -204,7 +204,7 @@ fixture pair may be lexically inseparable: `fixtures:check` runs
 frozen pattern belonging to a `must-redact`, scored-tier positive of the same
 declared contract. A `policy/T3` expectation never conflicts with a
 contract-scoped negative — see
-[`2026-09-21-check-lexical-separability`](decisions/2026-09-21-check-lexical-separability.md)
+[`2026-09-21-check-lexical-separability`](../decisions/2026-09-21-check-lexical-separability.md)
 for the full rule, the boundary-gating identifier-embedding controls (#64)
 need, and the exemption path (`assessment.lexicalExemption`) for a documented
 example that is genuinely unavoidable.
@@ -315,7 +315,7 @@ disagreement there is a policy difference, not a defect.
 
 Each phase lands independently and leaves `main` green.
 
-1. **Merge this spec** + a decision record in `docs/specs/decisions/`. No code.
+1. **Merge this spec** + a decision record in `docs/decisions/`. No code.
 2. **Ground truth migration.** Mechanical `cohort → (kind, tier)` per §2.1; add
  `role: "secret"` to every span; envelope defaults to the span. Assert by test
  that every v4 outcome equals its v3 equivalent — a no-op migration is the

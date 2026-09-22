@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/redact-secret/redact-secret-benchmarks/schemas/adversarial-intake-v1.json",
+  "title": "External adversarial fixture pack intake record v1",
+  "description": "The complete intake record for one externally authored adversarial fixture pack (#139). Structural contract only; lifecycle, credential-safety, expectation-independence, first-run immutability and qualification rules are enforced by benchmarks/lib/adversarial-intake.ts. See adversarial/README.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "title", "sample", "status", "qualification", "author", "implementationExposure", "provenance", "license", "threatCategories", "expectations", "fixtures", "submittedAt", "history", "maintainerEdits"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "title": { "type": "string", "minLength": 1 },
+    "sample": { "type": "boolean", "description": "true only for the documentation sample pack. A sample is validated like any pack but is never returned as evidence." },
+    "status": { "$ref": "#/definitions/status" },
+    "qualification": { "enum": ["externally-authored", "maintainer-regression"] },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attribution", "attributionKind", "affiliation", "contact"],
+      "properties": {
+        "attribution": { "type": "string", "minLength": 1, "description": "The author or custodian identity, or a durable pseudonym." },
+        "attributionKind": { "enum": ["legal-name", "durable-pseudonym", "organization", "custodian"] },
+        "affiliation": { "enum": ["external", "project-maintainer", "project-contributor"] },
+        "contact": { "type": "string", "minLength": 1, "description": "A durable handle (for example a GitHub login) the attribution can be re-verified through. No email addresses of private individuals." }
+      }
+    },
+    "implementationExposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inspectedDetectorImplementation", "detail"],
+      "properties": {
+        "inspectedDetectorImplementation": { "type": "boolean" },
+        "detail": { "type": "string", "minLength": 1 }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["credentialStatus", "construction"],
+      "properties": {
+        "credentialStatus": { "$ref": "#/definitions/credentialStatus" },
+        "construction": { "type": "string", "minLength": 1, "description": "How every credential-like value was constructed, for example random bytes over a documented alphabet." }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spdx", "redistribution", "grant"],
+      "properties": {
+        "spdx": { "type": "string", "minLength": 1 },
+        "redistribution": { "type": "boolean" },
+        "grant": { "type": "string", "minLength": 1 }
+      }
+    },
+    "threatCategories": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/threatCategory" } },
+    "expectations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authoring", "scannerOutputConsulted", "digest"],
+      "properties": {
+        "authoring": { "type": "string", "minLength": 1, "description": "How the author derived every expected range and action without any evaluated scanner." },
+        "scannerOutputConsulted": { "type": "boolean" },
+        "digest": { "$ref": "#/definitions/sha256" }
+      }
+    },
+    "fixtures": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/fixture" } },
+    "submittedAt": { "$ref": "#/definitions/timestamp" },
+    "safetyReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewer", "reviewedAt", "outcome", "notes"],
+      "properties": {
+        "reviewer": { "type": "string", "minLength": 1 },
+        "reviewedAt": { "$ref": "#/definitions/timestamp" },
+        "outcome": { "enum": ["passed", "failed"] },
+        "notes": { "type": "string", "minLength": 1 }
+      }
+    },
+    "firstRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "const": "first-run.json" },
+        "sha256": { "$ref": "#/definitions/sha256" }
+      }
+    },
+    "rejection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reason", "detail"],
+      "properties": {
+        "reason": { "enum": ["real-credential-material", "scanner-derived-expectations", "no-redistribution-permission", "failed-safety-review", "incomplete-record", "other"] },
+        "detail": { "type": "string", "minLength": 1 }
+      }
+    },
+    "history": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status", "at", "by"],
+        "properties": {
+          "status": { "$ref": "#/definitions/status" },
+          "at": { "$ref": "#/definitions/timestamp" },
+          "by": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "maintainerEdits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["at", "by", "material", "summary", "fixtures"],
+        "properties": {
+          "at": { "$ref": "#/definitions/timestamp" },
+          "by": { "type": "string", "minLength": 1 },
+          "material": { "type": "boolean", "description": "true when the edit changes fixture content, an expected range or an expected action. Any material edit removes the externally-authored qualification." },
+          "summary": { "type": "string", "minLength": 1 },
+          "fixtures": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "status": { "enum": ["submitted", "safety-review", "frozen-first-run", "accepted", "rejected", "converted-to-maintainer-regression"] },
+    "credentialStatus": { "enum": ["synthetic", "revoked", "live", "real-derived", "unknown"] },
+    "threatCategory": { "enum": ["encoding-obfuscation", "boundary-splitting", "context-camouflage", "format-mimicry", "benign-lookalike", "multiline-structure", "unicode-confusable", "embedded-structure", "other"] },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "timestamp": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$" },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "integer", "minimum": 0 },
+        "end": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path", "content", "action", "expected", "threatCategories", "credentialStatus", "rationale"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "path": { "type": "string", "minLength": 1 },
+        "content": { "type": "string" },
+        "action": { "enum": ["must-redact", "must-not-flag"] },
+        "expected": { "type": "array", "items": { "$ref": "#/definitions/range" } },
+        "threatCategories": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/threatCategory" } },
+        "credentialStatus": { "$ref": "#/definitions/credentialStatus" },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

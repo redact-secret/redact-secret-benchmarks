@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "description": "Mutations of the synthetic sample pack that `npm run adversarial:check` and tests/adversarial-intake.test.mjs apply in memory. Each `set` is a JSON pointer (\"-\" appends) and value; `firstRun: \"tamper\"` rewrites the frozen first run. `expect` is a regular expression one reported problem must match, or null when the mutated record must validate.",
+  "cases": [
+    {
+      "id": "live-fixture-credential",
+      "set": [{ "pointer": "/fixtures/0/credentialStatus", "value": "live" }],
+      "expect": "must be rejected with reason real-credential-material"
+    },
+    {
+      "id": "revoked-pack-provenance",
+      "set": [{ "pointer": "/provenance/credentialStatus", "value": "revoked" }],
+      "expect": "must be rejected with reason real-credential-material"
+    },
+    {
+      "id": "real-derived-fixture",
+      "set": [{ "pointer": "/fixtures/2/credentialStatus", "value": "real-derived" }],
+      "expect": "must be rejected with reason real-credential-material"
+    },
+    {
+      "id": "unknown-provenance",
+      "set": [{ "pointer": "/provenance/credentialStatus", "value": "unknown" }],
+      "expect": "must be rejected with reason real-credential-material"
+    },
+    {
+      "id": "scanner-consulted-expectations",
+      "set": [{ "pointer": "/expectations/scannerOutputConsulted", "value": true }],
+      "expect": "must be rejected with reason scanner-derived-expectations"
+    },
+    {
+      "id": "expectation-changed-after-first-run",
+      "set": [{ "pointer": "/fixtures/0/expected/0/end", "value": 50 }],
+      "expect": "fixtures differ from the expectations digest committed at submission"
+    },
+    {
+      "id": "first-run-rewritten",
+      "set": [],
+      "firstRun": "tamper",
+      "expect": "does not match the SHA-256 pinned in the intake record"
+    },
+    {
+      "id": "first-run-before-submission",
+      "set": [{ "pointer": "/submittedAt", "value": "2026-09-22T12:30:00Z" }, { "pointer": "/history/0/at", "value": "2026-09-22T12:30:00Z" }],
+      "expect": "first run predates submission"
+    },
+    {
+      "id": "external-claim-by-maintainer",
+      "set": [{ "pointer": "/qualification", "value": "externally-authored" }],
+      "expect": "qualification must be maintainer-regression"
+    },
+    {
+      "id": "material-edit-left-accepted",
+      "set": [
+        { "pointer": "/author/affiliation", "value": "external" },
+        { "pointer": "/maintainerEdits/-", "value": { "at": "2026-09-22T14:00:00Z", "by": "redact-secret-benchmarks maintainers", "material": true, "summary": "Widened an expected range.", "fixtures": ["env-assignment"] } }
+      ],
+      "expect": "status must become converted-to-maintainer-regression"
+    },
+    {
+      "id": "converted-still-externally-authored",
+      "set": [
+        { "pointer": "/author/affiliation", "value": "external" },
+        { "pointer": "/qualification", "value": "externally-authored" },
+        { "pointer": "/status", "value": "converted-to-maintainer-regression" },
+        { "pointer": "/history/-", "value": { "status": "converted-to-maintainer-regression", "at": "2026-09-22T14:00:00Z", "by": "redact-secret-benchmarks maintainers" } },
+        { "pointer": "/maintainerEdits/-", "value": { "at": "2026-09-22T14:00:00Z", "by": "redact-secret-benchmarks maintainers", "material": true, "summary": "Widened an expected range.", "fixtures": ["env-assignment"] } }
+      ],
+      "expect": "qualification must be maintainer-regression, not externally-authored"
+    },
+    {
+      "id": "external-pack-accepted",
+      "set": [
+        { "pointer": "/author/affiliation", "value": "external" },
+        { "pointer": "/qualification", "value": "externally-authored" }
+      ],
+      "expect": null
+    },
+    {
+      "id": "live-credential-rejected-with-reason",
+      "set": [
+        { "pointer": "/fixtures/0/credentialStatus", "value": "live" },
+        { "pointer": "/status", "value": "rejected" },
+        { "pointer": "/history/3", "value": { "status": "rejected", "at": "2026-09-22T13:00:00Z", "by": "redact-secret-benchmarks maintainers" } },
+        { "pointer": "/rejection", "value": { "reason": "real-credential-material", "detail": "The submitter marked the env-assignment value as a live credential." } }
+      ],
+      "expect": null
+    },
+    {
+      "id": "rejected-for-the-wrong-reason",
+      "set": [
+        { "pointer": "/fixtures/0/credentialStatus", "value": "live" },
+        { "pointer": "/status", "value": "rejected" },
+        { "pointer": "/history/3", "value": { "status": "rejected", "at": "2026-09-22T13:00:00Z", "by": "redact-secret-benchmarks maintainers" } },
+        { "pointer": "/rejection", "value": { "reason": "other", "detail": "Unclear." } }
+      ],
+      "expect": "omits the ground that forced rejection"
+    }
+  ]
+}

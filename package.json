@@ -60,7 +60,9 @@
     "performance:criteria": "node --import tsx scripts/derive-performance-criteria.mjs",
     "performance:criteria:check": "node --import tsx scripts/derive-performance-criteria.mjs --check",
     "performance:schema:check": "node scripts/check-performance-schema.mjs",
-    "performance:evaluate": "node --import tsx benchmarks/evaluate-performance.ts"
+    "performance:evaluate": "node --import tsx benchmarks/evaluate-performance.ts",
+    "adversarial:check": "node --import tsx scripts/check-adversarial-intake.mjs",
+    "evidence:query": "node --import tsx benchmarks/evidence-query.ts"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",

@@ -31,6 +31,10 @@ jobs:
         run: npm run performance:criteria:check && npm run performance:schema:check
       - name: No not-assertable ledger entry lacks a checked-in ADR decision (#63)
         run: npm run ledger:decisions:check
+      - name: External adversarial packs satisfy the intake contract, first runs are immutable, and no project-authored evidence is called independent (#139)
+        run: |
+          git fetch --no-tags --depth=1 origin main:refs/remotes/origin/main || true
+          npm run adversarial:check
       - run: npm run build
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check

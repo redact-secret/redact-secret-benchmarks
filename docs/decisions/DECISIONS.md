@@ -29,3 +29,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Settle differential disagreements on pending fixtures as not-assertable](2026-09-22-settle-differential-disagreements-on-pending-fixtures.md)
 - [Store benchmark measurement evidence per core issue under `evidence/`](2026-09-22-store-benchmark-evidence-per-core-issue.md)
 - [Own performance evaluation and recalibrate Linux x86_64 thresholds](2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md)
+- [Define external adversarial fixture intake and provenance](2026-09-22-define-external-adversarial-intake.md)

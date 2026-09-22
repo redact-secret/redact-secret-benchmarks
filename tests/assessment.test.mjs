@@ -75,12 +75,17 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // `^cfut_[A-Za-z0-9]{40}[a-f0-9]{8}$`); corrected to a contract-matching
   // structural shape, both move policy/T3 -> must-redact/T1 (+6 files/+6
   // spans: 3 contexts each).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 262);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 268);
+  // #104/#107: `pypi-token`'s shape-1 was likewise a flat "pypi-" + random
+  // run, never a serialized macaroon; corrected to the ADR-verified
+  // construction (docs/decisions/2026-09-21-author-pypi-macaroon-positives-
+  // synthetically.md), moving policy/T3 -> must-redact/T1 (+3 files/+3 spans:
+  // 3 contexts).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 265);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 271);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
-  assert.deepEqual(tally['policy/T3'], { files: 173, spans: 173 });
+  assert.deepEqual(tally['policy/T3'], { files: 170, spans: 170 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -104,7 +109,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // clear the stable floor of 3 benign axes for those families, plus one
   // reference control each for gitlab-token and npm-token so raising that
   // floor does not regress the two families already reading stable at it.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 345);
+  // #107: 3 new independent negatives for `pypi-token` (public-identifier,
+  // ordinary-prose, encoded-value axes), plus 2 new twins (netted out via
+  // -twins.length) for the length and alphabet dimensions docs.pypi.org
+  // documents alongside the existing prefix twin.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 348);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });
@@ -184,11 +193,13 @@ test('twins mutate exactly one property, pair with their positive and never carr
 });
 
 test('malformed fixtures, missing companions and pending variants cannot pass as must-redact', () => {
-  // #569: slack-token/cloudflare-token shape-1 now generate a contract-matching
-  // structural body (see the tally test above) and correctly promote to must-redact.
-  for (const id of ['anthropic-token-shape-1-bare', 'openai-token-shape-1-bare', 'pypi-token-shape-1-bare', 'docker-token-shape-1-bare', 'vault-token-shape-1-bare', 'vault-token-shape-3-bare', 'private-key-private-key-bare', 'jwt-expired-fabricated-bare', 'aws-access-key-shape-1-bare', 'shopify-token-shape-1-bare', 'connection-string-postgres-bare', 'generic-token-api-key-bare']) assert.equal(get(id).assessment.kind, 'policy', id);
+  // #569/#107: slack-token/cloudflare-token/pypi-token shape-1 now generate a
+  // contract-matching structural body (see the tally test above) and
+  // correctly promote to must-redact.
+  for (const id of ['anthropic-token-shape-1-bare', 'openai-token-shape-1-bare', 'docker-token-shape-1-bare', 'vault-token-shape-1-bare', 'vault-token-shape-3-bare', 'private-key-private-key-bare', 'jwt-expired-fabricated-bare', 'aws-access-key-shape-1-bare', 'shopify-token-shape-1-bare', 'connection-string-postgres-bare', 'generic-token-api-key-bare']) assert.equal(get(id).assessment.kind, 'policy', id);
   assert.equal(get('slack-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('cloudflare-token-shape-1-bare').assessment.kind, 'must-redact');
+  assert.equal(get('pypi-token-shape-1-bare').assessment.kind, 'must-redact');
   for (const id of ['supabase-token-shape-1-bare', 'vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
   assert.equal(get('digitalocean-token-shape-1-bare').assessment.tier, 'T1');
   assert.equal(get('linear-token-shape-1-bare').assessment.tier, 'T2');
@@ -201,7 +212,7 @@ test('malformed fixtures, missing companions and pending variants cannot pass as
   const aws = structuredClone(common.find(f => f.id === 'aws-access-key-pair-plain'));
   aws.expected.pop();
   assert.throws(() => validateAssessment(aws), /pair/);
-  assert.throws(() => validateAssessment({ ...common[0], assessment: { kind: 'must-redact', tier: 'T1', reason: 'Unsupported promotion', contract: 'pypi-token', sources: ['x'] } }), /validator/);
+  assert.throws(() => validateAssessment({ ...common[0], assessment: { kind: 'must-redact', tier: 'T2', reason: 'Unsupported promotion', contract: 'datadog-api-key', sources: ['x'] } }), /validator/);
   assert.throws(() => validateAssessment({ ...common[0], assessment: { kind: 'must-redact', tier: 'T2', reason: 'Tier mismatch', contract: 'github-token', sources: ['x'] } }), /evidence/);
   assert.throws(() => validateAssessment({ ...common[0], assessment: { kind: 'policy', tier: 'T1', reason: 'x', sources: [] } }), /T3/);
   assert.throws(() => validateAssessment({ id: 'missing' }), /assessment/);

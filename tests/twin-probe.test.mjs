@@ -116,7 +116,10 @@ const T1_DIMENSIONS = {
   'vault-token': ['length', 'prefix', 'boundary'],
   'stripe-token': ['public-prefix', 'boundary'],
   'slack-token': ['boundary', 'prefix'],
-  'pypi-token': ['prefix'],
+  // #107: docs.pypi.org/api/secrets documents the pypi- prefix, an {85,}
+  // length floor and an [A-Za-z0-9-_] character class, backing length and
+  // alphabet twins alongside the existing prefix-namespace twin.
+  'pypi-token': ['prefix', 'length', 'alphabet'],
   'cloudflare-token': ['alphabet', 'prefix', 'length'],
   'digitalocean-token': ['length', 'prefix'],
   'npm-token': ['length', 'prefix', 'boundary'],

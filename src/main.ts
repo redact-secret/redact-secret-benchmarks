@@ -26,7 +26,7 @@ const route = () => parseRoute(location.pathname, { suites: suiteIds, publicOnly
 // <details> state survives the 5-second polling re-render.
 const openKeys = new Set<string>();
 
-/** One search for what the sidebar's 42 detector links used to do: detectors, suites and fixture slugs. */
+/** One search for what the sidebar's per-detector links used to do: detectors, suites and fixture slugs. */
 const targets = (): SearchTarget[] => [
   ...registry.detectors.map(d => ({ href: `/coverage/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
   ...categories.map(c => ({ href: `/suites/${c.id}`, label: c.title, hint: 'case suite' })),

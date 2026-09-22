@@ -16,7 +16,7 @@ export interface SupportStatusCopy {
   kind: StatusKind;
   /** Always the status id as the reader sees it; the UI never invents a word for a status. */
   word: string;
-  /** The row gloss: short enough to sit beside 72 families without shouting. */
+  /** The row gloss: short enough to sit beside every taxonomy family (79 as of 2026-09-21) without shouting. */
   short: string;
   /** One sentence for a reader who has not read the qualification profile. */
   meaning: string;

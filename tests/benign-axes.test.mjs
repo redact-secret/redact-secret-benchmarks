@@ -22,3 +22,14 @@ test('detector-coverage — the category the pre-#91 bug mislabelled 156 of 274 
   assert.ok(axes.size >= 3, `detector-coverage axes: ${[...axes].join(', ')}`);
   assert.ok(!axes.has('pending'), 'every detector-coverage control is reviewed, none should be pending');
 });
+
+test('#125: aws-access-key, github-token and slack-token each carry a third, distinct benign axis, derived by controlAxis from the reference control', () => {
+  for (const family of ['aws-access-key', 'github-token', 'slack-token']) {
+    const own = benign.filter(c => c.targets.includes(family));
+    const axes = new Set(own.map(c => c.taxonomy));
+    assert.ok(axes.size >= 3, `${family}: ${[...axes].join(', ')}`);
+    const reference = own.find(c => c.source.category === 'detector-coverage' && c.source.fixtureId === `${family}-reference`);
+    assert.equal(reference?.taxonomy, 'reference', `${family}-reference should land on the reference axis`);
+    assert.ok(axes.has('near-miss') && axes.has('placeholder'), `${family}: the two pre-existing axes stay`);
+  }
+});

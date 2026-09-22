@@ -14,6 +14,18 @@ test('an accepted ADR under docs/decisions/ claims every operator class this rec
     assert.ok(decided.has(id), `${id} has no ADR decision`);
 });
 
+test('#125: an accepted ADR claims the differential pending-fixture decision class through the decided-classes marker', async () => {
+  const decided = await decidedOperators();
+  assert.equal(decided.get('differential.t0-pending-fixture'), '2026-09-22-settle-differential-disagreements-on-pending-fixtures.md');
+});
+
+test('a not-assertable entry under a decision= class passes only when an ADR claims that class', () => {
+  const decisionEntry = id => ({ status: 'not-assertable', firstSeenRun: 'r', note: `Not assertable from this corpus: the fixture is pending. Class: decision=${id}.` });
+  const ledger = { schemaVersion: 1, entries: { decided: decisionEntry('differential.t0-pending-fixture'), undecided: decisionEntry('differential.made-up') } };
+  const problems = undecidedNotAssertableEntries(ledger, new Map([['differential.t0-pending-fixture', 'some-adr.md']]));
+  assert.deepEqual(problems, ['undecided: marked not-assertable for class "decision=differential.made-up", which no ADR under docs/decisions/ records a decision for']);
+});
+
 test('a not-assertable entry for an undecided operator class fails the gate', () => {
   const decided = new Map([['lexical.length-minus-one', 'some-adr.md']]);
   const ledger = {

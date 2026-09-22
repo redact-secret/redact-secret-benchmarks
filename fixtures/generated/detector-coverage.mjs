@@ -176,6 +176,15 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("npm-token", "mask", ["npm_" + "*".repeat(36)]);
   add("npm-token", "reference", ["NPM_TOKEN=${NPM_TOKEN}\n"]);
   add("github-token", "mask", ["ghp_" + "*".repeat(36)]);
+  // #125: aws-access-key, github-token and slack-token each carried only the
+  // near-miss and placeholder axes (benign.minimumAxes 2 < 3). One reference
+  // control each — the provider's own documented environment-variable name
+  // holding a shell reference, never a value — lands the third axis through
+  // the same `reference` suffix rule #93/#105 used for gitlab/npm/DigitalOcean;
+  // the axis is derived by controlAxis, not hand-labelled.
+  add("aws-access-key", "reference", ["AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}\n"]);
+  add("github-token", "reference", ["GITHUB_TOKEN=${GITHUB_TOKEN}\n"]);
+  add("slack-token", "reference", ["SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}\n"]);
 
   // beta.4 additions: 17 detectors with no dedicated-prefix-plus-run shape
   // simple enough for the families loop above, added when detectors.json

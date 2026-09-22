@@ -74,7 +74,7 @@ already-decided operator classes (`lexical.invalid-alphabet`,
 Every one of the 524 new differential entries was checked against its
 fixture's authored `expected` span and the peer's actual observed range
 (`benchmarks/engine/runner.ts`'s own scanner output from this run — gitleaks
-8.30.1, trufflehog 3.97.5, pinned to `qualification/suite-v1.json`), not
+8.30.1, trufflehog 3.97.4, pinned to `qualification/suite-v1.json`), not
 assumed:
 
 - **491** matched an already-established class exactly and mechanically

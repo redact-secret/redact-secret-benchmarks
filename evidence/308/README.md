@@ -75,6 +75,18 @@ Contract `databricks-personal-access-token` (T2, tool-corroborated:
   are `not-assertable` under the D7 operator classes, as for every other
   patterned family.
 
+## Fixed-candidate rerun
+
+The product candidate built from `065ec76c7978ee60c5de8412bd04b91d39c2c275`
+(product `main`, which contains this detector) was run over the full corpus
+after this family landed — databricks-personal-access-token: 6/6 positives EXACT, 0/15 controls flagged. Run identity, artifact hashes and the
+whole-suite table are in [`evidence/670/README.md`](../670/README.md) (run
+`02d79b79-7718-49b6-999b-f6ce603bba50`, raw evidence
+[`evidence/670/candidate-evidence-v1.json`](../670/candidate-evidence-v1.json)).
+The open `differential-coverage-gap` ledger rows above describe the pinned
+published package, not this candidate; they close when a release carrying
+the detector is pinned.
+
 ## Command
 
 ```sh

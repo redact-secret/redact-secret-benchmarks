@@ -80,6 +80,18 @@ scored as policy beside a same-line `confluent` keyword, like
 - 12 mutation review-queue rows are `not-assertable` under the D7 operator
   classes.
 
+## Fixed-candidate rerun
+
+The product candidate built from `065ec76c7978ee60c5de8412bd04b91d39c2c275`
+(product `main`, which contains this detector) was run over the full corpus
+after this family landed — confluent-cloud-api-secret 3/3 and confluent-cloud-api-secret-legacy 3/3 positives EXACT, 0/20 controls flagged. Run identity, artifact hashes and the
+whole-suite table are in [`evidence/670/README.md`](../670/README.md) (run
+`02d79b79-7718-49b6-999b-f6ce603bba50`, raw evidence
+[`evidence/670/candidate-evidence-v1.json`](../670/candidate-evidence-v1.json)).
+The open `differential-coverage-gap` ledger rows above describe the pinned
+published package, not this candidate; they close when a release carrying
+the detector is pinned.
+
 ## Command
 
 ```sh

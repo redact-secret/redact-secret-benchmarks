@@ -6,8 +6,8 @@ record `product-671` names are still leaked by the pinned published package
 trufflehog 3.97.4: 0/3 each); the legacy 40-hex generation, now its own
 `datadog-application-key-legacy` family, is detected exactly by the published
 package and gitleaks (11/11 positives) and missed by trufflehog. The
-fixed-candidate rerun that closes the benchmark gate is recorded in the
-section below once it has run.
+fixed-candidate rerun below closes the benchmark gate: the candidate built
+from product `main` (`065ec76`) detects all three `ddapp_` fixtures exactly.
 
 This file records the benchmark side of
 [redact-secret/redact-secret#671](https://github.com/redact-secret/redact-secret/issues/671)
@@ -68,8 +68,25 @@ shape. No expectation was changed.
 
 ## Fixed-candidate rerun
 
-_Pending — see the follow-up commit that records the candidate build of
-`065ec76c7978ee60c5de8412bd04b91d39c2c275` against this corpus._
+**PASS on the benchmark gate.** The product candidate built from
+`065ec76c7978ee60c5de8412bd04b91d39c2c275` (product `main`, containing the
+#671 fix merged as `2ca56a2`) detects all 3 `ddapp_` fixtures `product-671`
+names byte-exactly (EXACT 3/3) and all 11 legacy positives (EXACT 11/11),
+with 0 false alarms on the 15 Datadog application-key controls. Full run
+identity, artifact hashes, corpus hash, the whole-suite table and the command
+are in [`evidence/670/README.md`](../670/README.md), which shares the same
+run (`02d79b79-7718-49b6-999b-f6ce603bba50`, full suite, 1429/1429 scanned)
+and raw evidence file [`evidence/670/candidate-evidence-v1.json`](../670/candidate-evidence-v1.json).
+
+| Fixture | expected | published 0.1.0-beta.6 | candidate 065ec76 |
+| --- | --- | --- | --- |
+| `datadog-application-key-prefixed-env-marker-bare` | [19,59) | MISS | EXACT |
+| `datadog-application-key-prefixed-env-marker-quoted` | [26,66) | MISS | EXACT |
+| `datadog-application-key-prefixed-env-marker-unicode-crlf` | [40,80) | MISS | EXACT |
+
+`product-671` stays `fixed`, not `verified`: the product's own conformance gate
+("Artifact qualification") fails on every `main` commit from `41fc366`
+through `065ec76`, and the product manifest carries no record for it yet.
 
 ## Command
 

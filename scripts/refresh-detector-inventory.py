@@ -28,6 +28,7 @@ GITLEAKS_FAMILIES = {
     "sendgrid-": "sendgrid-token", "shopify-": "shopify-token",
     "slack-": "slack-token", "stripe-": "stripe-token", "vault-": "vault-token",
     "hashicorp-tf-": "terraform-cloud-token", "pulumi-": "pulumi-access-token",
+    "databricks-": "databricks-personal-access-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -41,6 +42,7 @@ TRUFFLEHOG_FAMILIES = {
     "shopify": "shopify-token", "slack": "slack-token", "stripe": "stripe-token",
     "supabase": "supabase-token", "vercel": "vercel-token",
     "terraformcloud": "terraform-cloud-token", "pulumi": "pulumi-access-token",
+    "databrickstoken": "databricks-personal-access-token",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",
@@ -56,7 +58,7 @@ FLARE_REDACT_FAMILIES = {
     "generic_assignment": "generic-token", "vault_token": "vault-token",
     "huggingface_token": "huggingface-token", "digitalocean_token": "digitalocean-token",
     "linear_key": "linear-token", "supabase_key": "supabase-token", "bearer_token": "bearer-token",
-    "url_credentials": "connection-string",
+    "url_credentials": "connection-string", "databricks_token": "databricks-personal-access-token",
 }
 
 

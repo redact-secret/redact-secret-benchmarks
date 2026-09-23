@@ -499,6 +499,34 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("firebase-server-key", "mask", [`AAAA${"*".repeat(7)}:${"*".repeat(140)}`]);
   add("firebase-server-key", "reference", ["FIREBASE_SERVER_KEY=${FCM_LEGACY_SERVER_KEY}"]);
 
+  // Post-beta.6 registry refresh: families the product landed on main after the
+  // 0.1.0-beta.6 tag (redact-secret/redact-secret#308–#313). Each block is
+  // authored from the provider page and pinned-tool rules its contract in
+  // benchmarks/lib/assessment.ts cites, never from scanner output.
+
+  // redact-secret#308 (product PR #665): Databricks publishes no token grammar
+  // (docs.databricks.com/aws/en/dev-tools/auth/pat); gitleaks 8.30.1's
+  // databricks-api-token rule and trufflehog 3.97.4's databrickstoken detector
+  // both pin `dapi` + exactly 32 lowercase hex, with an optional `-<one digit>`
+  // rotation suffix. learn.microsoft.com's Purview definition fixes the
+  // 32-character body and backs the length twin.
+  const databricksBody = synthetic("coverage:databricks:pat:body", 32, LOWER_HEX);
+  const databricksPat = `dapi${databricksBody}`;
+  positive("databricks-personal-access-token", "bare-shape", [{ secret: databricksPat }]);
+  positive("databricks-personal-access-token", "rotated-shape", [{ secret: `${databricksPat}-2` }]);
+  addTwin("databricks-personal-access-token", "bare-shape", [databricksPat.slice(0, -1)], "length: 31-byte body vs the 32 characters Microsoft Purview's Azure Databricks personal access token definition fixes (learn.microsoft.com: \"A combination of 32 characters\")", "length");
+  // "g" is outside [0-9a-f] whichever body byte it replaces; an uppercase hex
+  // letter would not do, since the Purview definition admits A-F.
+  addTwin("databricks-personal-access-token", "bare-shape", [`dapi${databricksBody.slice(0, 16)}g${databricksBody.slice(17)}`], "alphabet: one non-hex byte vs the tool-corroborated lowercase-hex body (gitleaks: [a-f0-9]{32}; trufflehog: [0-9a-f]{32})", "alphabet", "bare-shape-alphabet");
+  addTwin("databricks-personal-access-token", "rotated-shape", [`${databricksPat}-23`], "boundary: two-digit rotation suffix vs the single digit both pinned tools corroborate (gitleaks: (?:-\\d)?; trufflehog: (-\\d)?)", "boundary");
+  add("databricks-personal-access-token", "prefix-only", ["dapi"]);
+  add("databricks-personal-access-token", "short-body", [`dapi${databricksBody.slice(0, 10)}`]);
+  add("databricks-personal-access-token", "mask", [`dapi${"*".repeat(32)}`]);
+  add("databricks-personal-access-token", "reference", ["DATABRICKS_TOKEN=${DATABRICKS_TOKEN}\n"]);
+  add("databricks-personal-access-token", "label-prose", ["Documentation mentions a Databricks personal access token (dapi prefix) without embedding the token value."]);
+  // A workspace host and a cluster id: the public identifiers issue #308 excludes.
+  add("databricks-personal-access-token", "public-id", ["DATABRICKS_HOST=https://adb-1234567890123456.7.azuredatabricks.net\nDATABRICKS_CLUSTER_ID=0923-164208-abcde123\n"]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

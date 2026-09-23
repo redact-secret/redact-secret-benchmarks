@@ -137,6 +137,10 @@
     {
       "id": "pulumi",
       "name": "Pulumi"
+    },
+    {
+      "id": "databricks",
+      "name": "Databricks"
     }
   ],
   "families": [
@@ -560,8 +564,12 @@
       "provider": "supabase",
       "name": "Personal access token",
       "description": "Management-API personal access token, prefixed sbp_/sbp_v0_.",
-      "detectors": ["supabase-management-token"],
-      "sources": ["https://supabase.com/docs/guides/platform/personal-access-tokens"],
+      "detectors": [
+        "supabase-management-token"
+      ],
+      "sources": [
+        "https://supabase.com/docs/guides/platform/personal-access-tokens"
+      ],
       "note": "#81 backfilled the supabase-management-token detector (redact-secret#535). Deliberately independent of supabase:secret-key's evidence, per https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/decisions/2026-09-20-scope-supabase-management-token-and-secret-key-independence.md."
     },
     {
@@ -791,7 +799,9 @@
       "detectors": [
         "firebase-server-key"
       ],
-      "sources": ["https://github.com/projectdiscovery/nuclei-templates/blob/8cf94b93a389a47bef77b89f8c8915b2755018f0/http/exposures/tokens/firebase-fcm-server-key-disclosure.yaml"],
+      "sources": [
+        "https://github.com/projectdiscovery/nuclei-templates/blob/8cf94b93a389a47bef77b89f8c8915b2755018f0/http/exposures/tokens/firebase-fcm-server-key-disclosure.yaml"
+      ],
       "note": "#81 backfilled the firebase-server-key detector (redact-secret#543). Service-account JSON exports and AIza-prefixed keys are covered elsewhere (private-key, google-api-key), not this family."
     },
     {
@@ -901,6 +911,20 @@
       "detectors": [
         "generic-token"
       ]
+    },
+    {
+      "id": "databricks:personal-access-token",
+      "provider": "databricks",
+      "name": "Personal access token",
+      "description": "dapi-prefixed 32-hex personal access token, optionally suffixed -<digit> after rotation.",
+      "detectors": [
+        "databricks-personal-access-token"
+      ],
+      "sources": [
+        "https://docs.databricks.com/aws/en/dev-tools/auth/pat",
+        "https://learn.microsoft.com/en-us/purview/sit-defn-azure-databricks-personal-access-token"
+      ],
+      "note": "redact-secret#308 (product PR #665) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. OAuth client secrets are a separately documented scope extension, not this family."
     }
   ]
 }

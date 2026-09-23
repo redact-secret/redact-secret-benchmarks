@@ -103,8 +103,12 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // policy/T3, unmatched by the new pattern.
   // #159: 6 new must-redact/T2 positives in detector-coverage — discord-bot-token's
   // current 26/6/38 and 24/6/38 shapes, each across three contexts.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 347);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 353);
+  // Post-beta.6 registry refresh (redact-secret/redact-secret#308, product PR #665):
+  // databricks-personal-access-token joins as must-redact/T2 — two shapes (bare,
+  // rotation-suffixed) across three contexts (+6 files/+6 spans), 3 twins × 3
+  // contexts (netted out below) and 6 independent controls.
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 353);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 359);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -154,7 +158,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // plus a new prefix twin (netted out via -twins.length).
   // #159: 2 new independent negatives (discord-bot-token short-current-final-segment/
   // short-current-first-segment) cover the current-shape length boundaries.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 367);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 373);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

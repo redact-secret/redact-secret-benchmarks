@@ -27,7 +27,7 @@ if (problem) throw new Error(`Cannot derive criteria: ${problem}`);
 
 const criteria = deriveCriteria(summary, {
   criteriaId: 'rc-performance-resource-linux-x64-benchmarks-v1',
-  fixedAt: '2026-09-22',
+  fixedAt: '2026-09-23',
   summaryPath: 'evidence/603/summary.json',
   environment: {
     id: 'linux-x64-node22-chromium',

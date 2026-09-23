@@ -31,3 +31,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Own performance evaluation and recalibrate Linux x86_64 thresholds](2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md)
 - [Define external adversarial fixture intake and provenance](2026-09-22-define-external-adversarial-intake.md)
 - [Lift five families out of un-probeable and widen context coverage for the floor families](2026-09-22-lift-five-families-out-of-un-probeable.md)
+- [Run the performance evaluation for real and retire the by-construction verdict](2026-09-23-run-the-performance-evaluation-for-real.md)

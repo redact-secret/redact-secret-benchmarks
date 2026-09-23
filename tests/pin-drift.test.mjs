@@ -8,6 +8,7 @@ const registry = await read('benchmarks/detectors.json');
 const inventory = await read('benchmarks/detector-inventory.json');
 const packageJson = await read('package.json');
 const knownGaps = await read('benchmarks/known-gaps.json');
+const performanceCriteria = await read('benchmarks/performance-criteria.json');
 
 test('pin consistency check passes against the real, refreshed tree', () => {
   const facts = {
@@ -15,16 +16,18 @@ test('pin consistency check passes against the real, refreshed tree', () => {
     inventoryRedactSecretRevision: inventory.redactSecretRevision,
     inventoryRedactSecretVersion: inventory.redactSecretVersion,
     packageVersion: packageJson.dependencies['@redact-secret/core'],
+    performanceCriteriaSourceCommit: performanceCriteria.baseline.sourceCommit,
   };
   assert.deepEqual(checkPinConsistency(facts), []);
 });
 
-test('pin consistency check passes when both pins align', () => {
+test('pin consistency check passes when every pin aligns', () => {
   const failures = checkPinConsistency({
     registrySourceRevision: 'a'.repeat(40),
     inventoryRedactSecretRevision: 'a'.repeat(40),
     inventoryRedactSecretVersion: '0.1.0-beta.5',
     packageVersion: '0.1.0-beta.5',
+    performanceCriteriaSourceCommit: 'a'.repeat(40),
   });
   assert.deepEqual(failures, []);
 });
@@ -35,12 +38,28 @@ test('pin consistency check flags a registry/inventory revision mismatch', () =>
     inventoryRedactSecretRevision: 'b'.repeat(40),
     inventoryRedactSecretVersion: '0.1.0-beta.5',
     packageVersion: '0.1.0-beta.5',
+    performanceCriteriaSourceCommit: 'b'.repeat(40),
   });
   assert.equal(failures.length, 1);
   assert.match(failures[0], /sourceRevision/);
 });
 
-const baseFacts = { registrySourceRevision: 'a'.repeat(40), inventoryRedactSecretRevision: 'a'.repeat(40), inventoryRedactSecretVersion: '1', packageVersion: '1' };
+test('pin consistency check flags a performance-criteria baseline that does not match the pinned revision', () => {
+  const failures = checkPinConsistency({
+    registrySourceRevision: 'a'.repeat(40),
+    inventoryRedactSecretRevision: 'a'.repeat(40),
+    inventoryRedactSecretVersion: '0.1.0-beta.5',
+    packageVersion: '0.1.0-beta.5',
+    performanceCriteriaSourceCommit: 'c'.repeat(40),
+  });
+  assert.equal(failures.length, 1);
+  assert.match(failures[0], /performance-criteria\.json/);
+});
+
+const baseFacts = {
+  registrySourceRevision: 'a'.repeat(40), inventoryRedactSecretRevision: 'a'.repeat(40),
+  inventoryRedactSecretVersion: '1', packageVersion: '1', performanceCriteriaSourceCommit: 'a'.repeat(40),
+};
 
 test('ancestry check flags a registry revision that is not an ancestor of product main', () => {
   const failures = checkPinAncestry(baseFacts, { issues: [] }, {

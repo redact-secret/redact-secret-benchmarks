@@ -9,6 +9,11 @@ name: Performance evaluation
 # token or artifact handoff: this workflow only reads core's public source at
 # a pinned commit and runs its own public npm scripts.
 #
+# Before building anything, it also checks core's live assessment/complete.ts
+# and assessment/schema.ts (at the same pinned commit it already checked out)
+# against this repository's pinned copy of that contract
+# (benchmarks/lib/performance-schema.ts), and fails fast on drift -- #150.
+#
 # This does not check out core's own acceptance-criteria*.json (core is
 # retiring that ownership) and does not publish anything or gate a release.
 on:
@@ -73,6 +78,10 @@ jobs:
       - name: Install this repository's dependencies (for evaluation, not building core)
         working-directory: benchmarks-repo
         run: npm ci
+
+      - name: Check core's live schema for drift against the pinned contract before building anything
+        working-directory: benchmarks-repo
+        run: node --import tsx scripts/check-performance-schema-drift.mjs --core-repo ../core-repo
 
       - name: Install core's repository and addon dependencies
         working-directory: core-repo

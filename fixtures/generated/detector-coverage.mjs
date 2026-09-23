@@ -287,6 +287,22 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   documentedTwin("microsoft-entra-client-secret", "digit-q-tilde", `${entraPrefix}8Q~${entraSuffix}`);
   add("microsoft-entra-client-secret", "missing-marker", [`${entraPrefix}8${entraSuffix}`]);
   add("microsoft-entra-client-secret", "short-suffix", [`${entraPrefix}8Q~${entraSuffix.slice(0, 28)}`]);
+  // redact-secret-benchmarks#161 / redact-secret#655 (web-search pass): a
+  // leading '-' in the 3-character lead is a real issued shape (TruffleHog
+  // 3.97.4's azure_entra/serviceprincipal/v2 detector and microsoft/security-
+  // utilities SEC101/156 both accept it there; four independent field
+  // reports confirm it, one measured at 8Q~/40) that the product's
+  // PREFIX_LEN=3 alphabet currently excludes — the false negative #161
+  // files, not yet fixed in crates/secret-scan-core/src/detectors/
+  // microsoft_entra.rs. Only the lead's first byte differs from the
+  // digit-q-tilde positive above; its own twins repeat that positive's
+  // marker/length structural properties so this shape has the same
+  // near-miss coverage.
+  const entraLeadingDashPrefix = "-" + synthetic("coverage:entra:leading-dash:prefix-rest", 2, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~");
+  positive("microsoft-entra-client-secret", "leading-dash", [{ secret: `${entraLeadingDashPrefix}8Q~${entraSuffix}` }]);
+  documentedTwin("microsoft-entra-client-secret", "leading-dash", `${entraLeadingDashPrefix}8Q~${entraSuffix}`);
+  add("microsoft-entra-client-secret", "leading-dash-missing-marker", [`${entraLeadingDashPrefix}8${entraSuffix}`]);
+  add("microsoft-entra-client-secret", "leading-dash-short-suffix", [`${entraLeadingDashPrefix}8Q~${entraSuffix.slice(0, 28)}`]);
 
   const azdoPrefix = synthetic("coverage:azdo:prefix", 76);
   const azdoSuffix = synthetic("coverage:azdo:suffix", 4);

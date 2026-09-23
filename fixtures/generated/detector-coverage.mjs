@@ -527,6 +527,36 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // A workspace host and a cluster id: the public identifiers issue #308 excludes.
   add("databricks-personal-access-token", "public-id", ["DATABRICKS_HOST=https://adb-1234567890123456.7.azuredatabricks.net\nDATABRICKS_CLUSTER_ID=0923-164208-abcde123\n"]);
 
+  // redact-secret#309 (product PR #667): docs.confluent.io states "API secrets
+  // created after July 30, 2025 have a cflt prefix followed by 60 characters
+  // consisting of A-Z, a-z, 0-9, + or /", the last 6 a base64 CRC32 of the
+  // prior 54 (not recomputed here: the checksum shares the body's alphabet, the
+  // same shape-only precedent cloudflare-token's tail already sets), and that
+  // earlier secrets "may not include cflt" — a bare 64-byte run both pinned
+  // tools report only beside a `confluent` keyword (gitleaks confluent-secret-key;
+  // trufflehog confluent), the context-gated policy shape below. The API key ID
+  // ("not considered secret information", example ABCD1234567890AB) is the
+  // public-id control.
+  const confluentSecretBody = synthetic("coverage:confluent:secret:body", 60, BASE64_BODY);
+  const confluentSecret = `cflt${confluentSecretBody}`;
+  positive("confluent-cloud-api-secret", "prefixed-shape", [{ secret: confluentSecret }]);
+  addTwin("confluent-cloud-api-secret", "prefixed-shape", [confluentSecret.slice(0, -1)], "length: 63 characters vs the provider-documented 64 (docs.confluent.io: \"a cflt prefix followed by 60 characters\")", "length");
+  addTwin("confluent-cloud-api-secret", "prefixed-shape", [`cflx${confluentSecretBody}`], "prefix namespace: cflx vs the provider-documented cflt prefix", "prefix", "prefixed-shape-prefix");
+  add("confluent-cloud-api-secret", "prefix-only", ["cflt"]);
+  add("confluent-cloud-api-secret", "short-body", [`cflt${confluentSecretBody.slice(0, 10)}`]);
+  add("confluent-cloud-api-secret", "mask", [`cflt${"*".repeat(60)}`]);
+  add("confluent-cloud-api-secret", "reference", ["CONFLUENT_CLOUD_API_SECRET=${CONFLUENT_CLOUD_API_SECRET}\n"]);
+  add("confluent-cloud-api-secret", "label-prose", ["Documentation mentions a Confluent Cloud API secret (cflt prefix) without embedding the secret value."]);
+  add("confluent-cloud-api-secret", "public-id", ["CONFLUENT_CLOUD_API_KEY=ABCD1234567890AB\nKAFKA_CLUSTER_ID=lkc-abc123\n"]);
+  const confluentLegacySecret = synthetic("coverage:confluent:legacy-secret", 64, BASE64_BODY);
+  positive("confluent-cloud-api-secret-legacy", "keyword-context", ["confluent ", { secret: confluentLegacySecret }]);
+  addTwin("confluent-cloud-api-secret-legacy", "keyword-context", ["confluent " + confluentLegacySecret.slice(0, -1)], "length: 63 characters vs the 64 both pinned tools corroborate for an unprefixed secret (gitleaks: [a-z0-9]{64}; trufflehog: [a-zA-Z0-9+/]{64})", "length");
+  add("confluent-cloud-api-secret-legacy", "missing-keyword", [confluentLegacySecret]);
+  add("confluent-cloud-api-secret-legacy", "short-token", ["confluent " + confluentLegacySecret.slice(0, 40)]);
+  add("confluent-cloud-api-secret-legacy", "mask", ["confluent " + "*".repeat(64)]);
+  add("confluent-cloud-api-secret-legacy", "reference", ["sasl.password=${CONFLUENT_CLOUD_API_SECRET}\n"]);
+  add("confluent-cloud-api-secret-legacy", "label-prose", ["Documentation mentions a legacy, unprefixed Confluent Cloud API secret without embedding the secret value."]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

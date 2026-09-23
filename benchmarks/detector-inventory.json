@@ -3,7 +3,7 @@
   "reviewedAt": "2026-09-22",
   "redactSecretVersion": "0.1.0-beta.6",
   "redactSecretRevision": "41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1",
-  "method": "Explicit provider-family mapping against the 47 registered beta.6 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+  "method": "Explicit provider-family mapping against the 49 registered beta.6 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
   "sources": {
     "gitleaks": {
       "version": "8.30.1",
@@ -985,8 +985,8 @@
       "id": "confluent-secret-key",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L347",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "confluent-cloud-api-secret-legacy",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -4159,8 +4159,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1102",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "confluent-cloud-api-secret-legacy",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",

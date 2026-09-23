@@ -107,14 +107,20 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // databricks-personal-access-token joins as must-redact/T2 — two shapes (bare,
   // rotation-suffixed) across three contexts (+6 files/+6 spans), 3 twins × 3
   // contexts (netted out below) and 6 independent controls.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 353);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 359);
+  // redact-secret#309 (product PR #667): confluent-cloud-api-secret (T1, cflt +
+  // 60 base64 × 3 contexts, +3 files/+3 spans; 2 twins × 3 contexts; 6 controls)
+  // and confluent-cloud-api-secret-legacy (keyword-gated, policy/T3 below; 1 twin
+  // × 3 contexts; 5 controls).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 356);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 362);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
   // #112: 32 more — the four keyword-gated Datadog/Twilio families across the
   // same eight context-edges contexts, policy as in detector-coverage.
-  assert.deepEqual(tally['policy/T3'], { files: 199, spans: 199 });
+  // redact-secret#309: 3 more — confluent-cloud-api-secret-legacy's keyword-gated bare
+  // 64-byte value across three contexts, policy as for twilio/datadog.
+  assert.deepEqual(tally['policy/T3'], { files: 202, spans: 202 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -158,7 +164,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // plus a new prefix twin (netted out via -twins.length).
   // #159: 2 new independent negatives (discord-bot-token short-current-final-segment/
   // short-current-first-segment) cover the current-shape length boundaries.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 373);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 384);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

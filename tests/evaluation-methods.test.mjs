@@ -192,8 +192,13 @@ test('flare-redact family labels map only explicitly recognized ids and fail clo
   // No dedicated family exists yet for these real flare-redact detector ids;
   // an unmapped result is not agreement and not a failure (scanners/README.md).
   assert.deepEqual(findingFamily('flare-redact', 'basic_auth'), {});
-  assert.deepEqual(findingFamily('flare-redact', 'netlify_token'), {});
+  assert.deepEqual(findingFamily('flare-redact', 'mailgun_key'), {});
   assert.deepEqual(findingFamily('flare-redact', 'toString'), {});
+  // Post-beta.6 families (redact-secret#308, #310, #311): these flare-redact ids
+  // match the same credential the new families score, so they map now.
+  assert.deepEqual(findingFamily('flare-redact', 'netlify_token'), { family: 'netlify-token' });
+  assert.deepEqual(findingFamily('flare-redact', 'databricks_token'), { family: 'databricks-personal-access-token' });
+  assert.deepEqual(findingFamily('flare-redact', 'postman_key'), { family: 'postman-api-key' });
 });
 
 test('runner drops unmapped family text and respects an adapter classification capability', async () => {

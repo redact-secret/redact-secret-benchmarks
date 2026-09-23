@@ -32,7 +32,10 @@ const trufflehog = {
 // `databricks_token` (dapi + 32 hex, optional rotation digit) is the same
 // credential the post-beta.6 `databricks-personal-access-token` family
 // scores (redact-secret#308); `postman_key` (PMAK- + 24 hex + "-" + 34 hex)
-// is exactly `postman-api-key`'s contracted shape (redact-secret#310).
+// is exactly `postman-api-key`'s contracted shape (redact-secret#310);
+// `netlify_token` (nfp_ + a 36–60-byte alphanumeric body) is the same
+// personal-access-token credential `netlify-token` scores, over a looser
+// width and without the "_" body byte (redact-secret#311).
 // `aws_secret_key` shares `aws-access-key` with `aws_access_key`, matching
 // how the TruffleHog adapter already families both halves of an AWS pair
 // under one label. `basic_auth` (an HTTP Basic-Auth header) has no family
@@ -48,7 +51,7 @@ const flareRedact = {
   huggingface_token: 'huggingface-token', digitalocean_token: 'digitalocean-token',
   linear_key: 'linear-token', supabase_key: 'supabase-token', bearer_token: 'bearer-token',
   url_credentials: 'connection-string', databricks_token: 'databricks-personal-access-token',
-  postman_key: 'postman-api-key',
+  postman_key: 'postman-api-key', netlify_token: 'netlify-token',
 };
 const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };
 export function findingFamily(scanner, label) {

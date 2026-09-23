@@ -578,6 +578,35 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("postman-api-key", "label-prose", ["Documentation mentions a Postman API key (PMAK- prefix, sent in the X-API-Key header) without embedding the key value."]);
   add("postman-api-key", "public-id", ["POSTMAN_COLLECTION_UID=12345678-3fa85f64-5717-4562-b3fc-2c963f66afa6\n"]);
 
+  // redact-secret#311 (product PR #666): Netlify's own 2023-11-07 token-format
+  // announcement (answers.netlify.com, staff-authored) states "All Netlify
+  // authentication tokens will start with a nf prefix followed by a single
+  // identifying character" — nfp for personal access tokens; nfc/nfo/nfu/nfb
+  // are other, out-of-scope token classes — and a 40-character token
+  // capacity. The "_" delimiter and [A-Za-z0-9_] body are tool-corroborated
+  // by trufflehog's netlify/v2 (`nfp_[a-zA-Z0-9_]{36}`, keyword-gated on
+  // `netlify`); gitleaks's netlify-access-token fixes no prefix (a keyword-
+  // and-assignment-gated 40–46-byte body). The bare shape is the contract's
+  // positive; the keyword-context shape (the CLI's documented
+  // NETLIFY_AUTH_TOKEN variable) records what each keyword-gated peer does
+  // once its gate is satisfied.
+  const NETLIFY_BODY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+  const netlifyBody = synthetic("coverage:netlify:pat:body", 36, NETLIFY_BODY);
+  const netlifyPat = `nfp_${netlifyBody}`;
+  positive("netlify-token", "pat-shape", [{ secret: netlifyPat }]);
+  positive("netlify-token", "keyword-context", ["NETLIFY_AUTH_TOKEN=", { secret: netlifyPat }]);
+  addTwin("netlify-token", "pat-shape", [netlifyPat.slice(0, -1)], "length: 39 characters vs the provider-documented 40 (answers.netlify.com: \"increase capacity for the token to 40 characters\")", "length");
+  // nfx is outside the announcement's set of identifying characters, and no
+  // Netlify token class uses it; a real sibling class (nfc/nfo/nfu/nfb) would
+  // be a different secret, not a control.
+  addTwin("netlify-token", "pat-shape", [`nfx_${netlifyBody}`], "prefix namespace: nfx vs the provider-documented identifying characters (nfp/nfc/nfo/nfu/nfb) after the nf prefix", "prefix", "pat-shape-prefix");
+  add("netlify-token", "prefix-only", ["nfp_"]);
+  add("netlify-token", "short-body", [`nfp_${netlifyBody.slice(0, 10)}`]);
+  add("netlify-token", "mask", [`nfp_${"*".repeat(36)}`]);
+  add("netlify-token", "reference", ["NETLIFY_AUTH_TOKEN=${NETLIFY_AUTH_TOKEN}\n"]);
+  add("netlify-token", "label-prose", ["Documentation mentions a Netlify personal access token (nfp_ prefix) without embedding the token value."]);
+  add("netlify-token", "public-id", ["NETLIFY_SITE_ID=3fa85f64-5717-4562-b3fc-2c963f66afa6\n"]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

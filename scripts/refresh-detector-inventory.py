@@ -31,7 +31,7 @@ GITLEAKS_FAMILIES = {
     "databricks-": "databricks-personal-access-token",
     # confluent-access-token is the public key ID, never a secret family here.
     "confluent-secret-key": "confluent-cloud-api-secret-legacy",
-    "postman-": "postman-api-key",
+    "postman-": "postman-api-key", "netlify-": "netlify-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -48,6 +48,9 @@ TRUFFLEHOG_FAMILIES = {
     "databrickstoken": "databricks-personal-access-token",
     "confluent": "confluent-cloud-api-secret-legacy",
     "postman": "postman-api-key",
+    # netlify/v1 is the pre-2023-11 unprefixed, keyword-gated shape shared by
+    # every Netlify token class; only the nfp_-prefixed v2 is this family.
+    "netlify/v2": "netlify-token",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",
@@ -64,7 +67,7 @@ FLARE_REDACT_FAMILIES = {
     "huggingface_token": "huggingface-token", "digitalocean_token": "digitalocean-token",
     "linear_key": "linear-token", "supabase_key": "supabase-token", "bearer_token": "bearer-token",
     "url_credentials": "connection-string", "databricks_token": "databricks-personal-access-token",
-    "postman_key": "postman-api-key",
+    "postman_key": "postman-api-key", "netlify_token": "netlify-token",
 }
 
 

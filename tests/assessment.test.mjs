@@ -113,8 +113,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // × 3 contexts; 5 controls).
   // redact-secret#310 (product PR #668): postman-api-key (T2, PMAK- + 24 hex + "-" +
   // 34 hex × 3 contexts, +3 files/+3 spans; 3 twins × 3 contexts; 6 controls).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 359);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 365);
+  // redact-secret#311 (product PR #666): netlify-token (T1, nfp_ + 36 [A-Za-z0-9_] as a
+  // bare shape and inside a NETLIFY_AUTH_TOKEN assignment, × 3 contexts, +6 files/+6
+  // spans; 2 twins × 3 contexts; 6 controls).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 365);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 371);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -166,7 +169,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // plus a new prefix twin (netted out via -twins.length).
   // #159: 2 new independent negatives (discord-bot-token short-current-final-segment/
   // short-current-first-segment) cover the current-shape length boundaries.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 390);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 396);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

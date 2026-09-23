@@ -3,7 +3,7 @@
   "reviewedAt": "2026-09-22",
   "redactSecretVersion": "0.1.0-beta.6",
   "redactSecretRevision": "41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1",
-  "method": "Explicit provider-family mapping against the 50 registered beta.6 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+  "method": "Explicit provider-family mapping against the 51 registered beta.6 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
   "sources": {
     "gitleaks": {
       "version": "8.30.1",
@@ -409,8 +409,8 @@
       "id": "netlify_token",
       "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1532",
       "activation": "default-detector",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "netlify-token",
+      "status": "related-family"
     },
     {
       "tool": "flare-redact",
@@ -1809,8 +1809,8 @@
       "id": "netlify-access-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2618",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "netlify-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -6985,8 +6985,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1430",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "netlify-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",

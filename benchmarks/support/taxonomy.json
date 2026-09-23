@@ -149,6 +149,10 @@
     {
       "id": "postman",
       "name": "Postman"
+    },
+    {
+      "id": "netlify",
+      "name": "Netlify"
     }
   ],
   "families": [
@@ -972,6 +976,30 @@
         "https://learning.postman.com/docs/developer/postman-api/authentication/"
       ],
       "note": "redact-secret#310 (product PR #668) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The provider page documents only the header, so the grammar is tool-corroborated (T2)."
+    },
+    {
+      "id": "netlify:personal-access-token",
+      "provider": "netlify",
+      "name": "Personal access token",
+      "description": "nfp_-prefixed personal access token: 36 bytes of [A-Za-z0-9_], 40 characters total.",
+      "detectors": [
+        "netlify-token"
+      ],
+      "sources": [
+        "https://answers.netlify.com/t/change-to-the-netlify-authentication-token-format/106146"
+      ],
+      "note": "redact-secret#311 (product PR #666) landed on the product main after 0.1.0-beta.6; the pinned published package predates it."
+    },
+    {
+      "id": "netlify:other-prefixed-tokens",
+      "provider": "netlify",
+      "name": "CLI, OAuth, app and build tokens (nfc_/nfo_/nfu_/nfb_)",
+      "description": "The announcement's four other nf-prefixed token classes, sharing the personal access token's scheme but issued for the CLI, OAuth flows, app.netlify.com and builds.",
+      "detectors": [],
+      "sources": [
+        "https://answers.netlify.com/t/change-to-the-netlify-authentication-token-format/106146"
+      ],
+      "note": "Out of redact-secret#311's explicit scope; each is a distinct credential, so none is a control or positive for netlify:personal-access-token."
     }
   ]
 }

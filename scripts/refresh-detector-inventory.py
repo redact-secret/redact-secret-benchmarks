@@ -38,7 +38,7 @@ GITLEAKS_FAMILIES = {
     "mailchimp-": "mailchimp-api-key",
     # mailgun-signing-key is the superseded 32-8-8 triplet and mailgun-pub-key
     # the public validation key; only the key-prefixed private/signing key maps.
-    "mailgun-private-api-token": "mailgun-api-key",
+    "mailgun-private-api-token": "mailgun-api-key", "okta-": "okta-api-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -59,7 +59,7 @@ TRUFFLEHOG_FAMILIES = {
     # every Netlify token class; only the nfp_-prefixed v2 is this family.
     "netlify/v2": "netlify-token",
     "heroku/v2": "heroku-api-key", "heroku/v1": "heroku-api-key-legacy",
-    "mailchimp": "mailchimp-api-key", "mailgun": "mailgun-api-key",
+    "mailchimp": "mailchimp-api-key", "mailgun": "mailgun-api-key", "okta": "okta-api-token",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",

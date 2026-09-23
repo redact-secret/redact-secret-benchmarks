@@ -689,6 +689,31 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("mailgun-api-key", "label-prose", ["Documentation mentions a Mailgun private API key (key- prefix) without embedding the key value."]);
   add("mailgun-api-key", "public-id", [`MAILGUN_PUBLIC_VALIDATION_KEY=pubkey-${synthetic("coverage:mailgun:public-key:body", 32, LOWER_HEX)}\nMAILGUN_DOMAIN=mg.example.invalid\n`]);
 
+  // redact-secret#315 (product PR #681): developer.okta.com's API-token guide
+  // shows the token only as `Authorization: SSWS 00QCjAl4MlV-WPXM...0HmjFx-vbGua`
+  // (SSWS scheme, a value beginning 00, no length); gitleaks 8.30.1's
+  // okta-access-token rule (okta keyword + assignment, 00[\w=\-]{40}) and
+  // trufflehog 3.97.4's okta detector (\b00[a-zA-Z0-9_-]{40}\b, only alongside
+  // an Okta tenant domain) both pin the 00 prefix and a 40-byte body. One
+  // positive per context the product's gate recognizes: the SSWS header and
+  // an okta-keyword assignment. Tenant domain and OAuth client id are the
+  // public-id control.
+  const oktaBody = synthetic("coverage:okta:api-token:body", 40, ALNUM_DASH);
+  const oktaToken = `00${oktaBody}`;
+  positive("okta-api-token", "ssws-header", ["Authorization: SSWS ", { secret: oktaToken }]);
+  positive("okta-api-token", "keyword-context", ["OKTA_API_TOKEN=", { secret: oktaToken }]);
+  addTwin("okta-api-token", "ssws-header", [`Authorization: SSWS ${oktaToken.slice(0, -1)}`], "length: 39-byte body vs the 40 both pinned tools corroborate (gitleaks: 00[\\w=\\-]{40}; trufflehog: 00[a-zA-Z0-9_-]{40})", "length");
+  addTwin("okta-api-token", "ssws-header", [`Authorization: SSWS 01${oktaBody}`], "prefix namespace: 01 vs the 00 the provider's own SSWS example begins with (developer.okta.com: \"Authorization: SSWS 00QCjAl4MlV-WPXM...0HmjFx-vbGua\")", "prefix", "ssws-header-prefix");
+  // "=" is inside gitleaks's body class and outside trufflehog's and the
+  // contract's, so this twin records that disagreement directly.
+  addTwin("okta-api-token", "keyword-context", [`OKTA_API_TOKEN=00${oktaBody.slice(0, 20)}=${oktaBody.slice(21)}`], "alphabet: one \"=\" byte vs the trufflehog-corroborated [A-Za-z0-9_-] body (gitleaks's okta-access-token rule admits it)", "alphabet");
+  add("okta-api-token", "prefix-only", ["Authorization: SSWS 00"]);
+  add("okta-api-token", "short-body", [`Authorization: SSWS 00${oktaBody.slice(0, 10)}`]);
+  add("okta-api-token", "mask", [`Authorization: SSWS 00${"*".repeat(40)}`]);
+  add("okta-api-token", "reference", ["Authorization: SSWS ${OKTA_API_TOKEN}\n"]);
+  add("okta-api-token", "label-prose", ["Documentation mentions an Okta API token (SSWS authorization scheme) without embedding the token value."]);
+  add("okta-api-token", "public-id", ["OKTA_ORG_URL=https://dev-123456.okta.com\nOKTA_CLIENT_ID=0oa1abcdefghijklmn0h7\n"]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

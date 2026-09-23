@@ -114,6 +114,25 @@ strict mode. It prints metric tables and updates the dashboard reports. It
 fails if a required binary is missing or an integration control fails.
 TruffleHog credential verification remains disabled throughout.
 
+### Reproducing the pinned peer toolchain
+
+CI resolves peers from a read-only directory provisioned by one script, and a
+maintainer reproduces the same toolchain with it. Homebrew metadata is not a
+provenance check (TruffleHog self-updated from 3.97.4 to 3.97.6 under it, #180).
+
+```sh
+npm run peers:provision            # installs into ./.peer-bin (git-ignored, read-only)
+export PATH="$PWD/.peer-bin:$PATH"
+npm run eval:classify && npm run queue:check
+```
+
+Versions come from `qualification/suite-v1.json`; each release archive is checked
+against the SHA-256 checked in at `scanners/peer-checksums.json` before it is
+extracted or run, and a mismatch (or a pin that the checksum file does not carry)
+fails before any evaluation. The provisioning step prints, and CI records in the
+job summary, the resolved version and archive digest. To bump a pin, change the
+suite and copy the new digests from the upstream release checksums file.
+
 ```sh
 npm run bench                       # Update all results; the UI polls every 5 seconds
 npm run bench -- --category=accuracy # Update one category

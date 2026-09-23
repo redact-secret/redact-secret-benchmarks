@@ -1314,6 +1314,76 @@
       ]
     },
     {
+      "id": "product-671",
+      "title": "datadog-application-key: ddapp_-prefixed application keys (current format) go undetected",
+      "url": "https://github.com/redact-secret/redact-secret/issues/671",
+      "number": 671,
+      "fixtures": [
+        "detector-coverage--datadog-application-key-prefixed-env-marker-bare",
+        "detector-coverage--datadog-application-key-prefixed-env-marker-quoted",
+        "detector-coverage--datadog-application-key-prefixed-env-marker-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.6",
+        "lockHash": "391edc5b11bd6134af83f2e3df861cfa7e0bbb600732e19b78578e4258a781a8",
+        "sourceCommit": "7f00ac7b24def94b8207db167d03973e011260ad"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/645",
+          "https://github.com/redact-secret/redact-secret/issues/671"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-22",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/671"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--datadog-application-key-prefixed-env-marker-bare",
+          "corpusHash": "e32b8a36281df22ae208123e667705771062391c92a20d4ed98e594233a2a1cd",
+          "expected": [
+            {
+              "start": 19,
+              "end": 59
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--datadog-application-key-prefixed-env-marker-quoted",
+          "corpusHash": "e32b8a36281df22ae208123e667705771062391c92a20d4ed98e594233a2a1cd",
+          "expected": [
+            {
+              "start": 26,
+              "end": 66
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--datadog-application-key-prefixed-env-marker-unicode-crlf",
+          "corpusHash": "e32b8a36281df22ae208123e667705771062391c92a20d4ed98e594233a2a1cd",
+          "expected": [
+            {
+              "start": 40,
+              "end": 80
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
       "id": "product-672",
       "title": "new-relic-license-key current shape (32-hex + FFFFNRAL) goes undetected",
       "url": "https://github.com/redact-secret/redact-secret/issues/672",

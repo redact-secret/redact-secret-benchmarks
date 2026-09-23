@@ -34,6 +34,17 @@ exists so a permalink to it, plus the one-line result above, is everything
 the core repository's own evidence archive needs to keep — per
 [`evidence/README.md`](../README.md).
 
+## Later runs at a newer pin
+
+The registry pin moved again to product `main` `065ec76` (Mailgun, the Datadog
+application-key split, Okta). The same workflow at that commit evaluated
+**REJECTED** twice against the criteria this file's run produced; those runs
+and the numbers are recorded in [`evidence/683/README.md`](../683/README.md)
+(redact-secret#683). The criteria were deliberately **not** re-derived from
+them, so `baseline.sourceCommit` here stays `41fc366` while the pin is
+`065ec76`, and `npm run pins:check` reports that mismatch until the product
+decides.
+
 ## Source revisions
 
 | Repository | Revision |

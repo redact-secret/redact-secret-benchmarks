@@ -639,6 +639,28 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("heroku-api-key-legacy", "label-prose", ["Documentation mentions a legacy, unprefixed Heroku API key without embedding the key value."]);
   add("heroku-api-key-legacy", "public-id", [`HEROKU_APP_ID=${herokuUuid("app-id")}\n`]);
 
+  // redact-secret#313 (product PR #678): mailchimp.com/developer's fundamentals
+  // page states the shape only by example — "if your API key is
+  // 0123456789abcdef0123456789abcde-us6, then the data center subdomain is us6"
+  // (that example body is 31 hex bytes, documentation noise against both tools'
+  // 32); gitleaks 8.30.1's mailchimp-api-key rule (keyword- and assignment-
+  // gated, -us + exactly two digits) and trufflehog 3.97.4's mailchimp detector
+  // (-us + one or two digits, no keyword) both pin the 32-byte lowercase-hex
+  // body and the literal -us. One positive per digit count, since the two
+  // tools disagree there; each sits in the MAILCHIMP_API_KEY= assignment the
+  // product's frozen grammar (same-line `mailchimp`) and gitleaks's gate share.
+  const mailchimpBody = synthetic("coverage:mailchimp:api-key:body", 32, LOWER_HEX);
+  positive("mailchimp-api-key", "single-digit-datacenter", ["MAILCHIMP_API_KEY=", { secret: `${mailchimpBody}-us6` }]);
+  positive("mailchimp-api-key", "two-digit-datacenter", ["MAILCHIMP_API_KEY=", { secret: `${mailchimpBody}-us21` }]);
+  addTwin("mailchimp-api-key", "two-digit-datacenter", [`MAILCHIMP_API_KEY=${mailchimpBody.slice(0, -1)}-us21`], "length: 31-byte hex body vs the 32 both pinned tools corroborate (gitleaks: [a-f0-9]{32}; trufflehog: [0-9a-f]{32})", "length");
+  addTwin("mailchimp-api-key", "single-digit-datacenter", [`MAILCHIMP_API_KEY=${mailchimpBody}-eu6`], "boundary: -eu data-center literal vs the provider-documented us<N> suffix (mailchimp.com/developer: \"the data center subdomain is us6\")", "boundary");
+  add("mailchimp-api-key", "missing-marker", [`MAILCHIMP_API_KEY=${mailchimpBody}`]);
+  add("mailchimp-api-key", "short-key", [`MAILCHIMP_API_KEY=${mailchimpBody.slice(0, 20)}-us6`]);
+  add("mailchimp-api-key", "mask", [`MAILCHIMP_API_KEY=${"*".repeat(32)}-us6`]);
+  add("mailchimp-api-key", "reference", ["MAILCHIMP_API_KEY=${MAILCHIMP_API_KEY}\n"]);
+  add("mailchimp-api-key", "label-prose", ["Documentation mentions a Mailchimp Marketing API key (32-hex body with a -us<N> data-center suffix) without embedding the key value."]);
+  add("mailchimp-api-key", "public-id", ["MAILCHIMP_AUDIENCE_ID=a1b2c3d4e5\nMAILCHIMP_SERVER_PREFIX=us6\n"]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

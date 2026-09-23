@@ -35,6 +35,7 @@ GITLEAKS_FAMILIES = {
     # prefix lookup is first-match: the HRKU-AA v2 rule must precede the
     # keyword-gated bare-UUID rule it would otherwise be swallowed by.
     "heroku-api-key-v2": "heroku-api-key", "heroku-api-key": "heroku-api-key-legacy",
+    "mailchimp-": "mailchimp-api-key",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -55,6 +56,7 @@ TRUFFLEHOG_FAMILIES = {
     # every Netlify token class; only the nfp_-prefixed v2 is this family.
     "netlify/v2": "netlify-token",
     "heroku/v2": "heroku-api-key", "heroku/v1": "heroku-api-key-legacy",
+    "mailchimp": "mailchimp-api-key",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",

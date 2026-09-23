@@ -157,6 +157,10 @@
     {
       "id": "heroku",
       "name": "Heroku"
+    },
+    {
+      "id": "mailchimp",
+      "name": "Mailchimp"
     }
   ],
   "families": [
@@ -1031,6 +1035,19 @@
         "https://devcenter.heroku.com/changelog-items/2842"
       ],
       "note": "redact-secret#312 (product PR #675). Scored as policy (no value grammar), like twilio:auth-token; an app id on a heroku-named line is the recorded false-positive tradeoff."
+    },
+    {
+      "id": "mailchimp:marketing-api-key",
+      "provider": "mailchimp",
+      "name": "Marketing API key",
+      "description": "32-hex API key followed by a literal -us and a one- or two-digit data-center number; recognized only beside a same-line mailchimp keyword.",
+      "detectors": [
+        "mailchimp-api-key"
+      ],
+      "sources": [
+        "https://mailchimp.com/developer/marketing/docs/fundamentals/"
+      ],
+      "note": "redact-secret#313 (product PR #678) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. Mandrill (transactional) keys are a separate product and not this family."
     }
   ]
 }

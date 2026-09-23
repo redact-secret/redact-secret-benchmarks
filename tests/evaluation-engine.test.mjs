@@ -30,8 +30,8 @@ test('registries reject malformed, duplicate and unknown extensions', () => {
 
 test('all existing corpora bridge deterministically into five methods and all detector targets', () => {
   assert.deepEqual([...new Set(cases.map(c => c.method))].sort(), ['benign', 'differential', 'metamorphic', 'mutation', 'twin']);
-  assert.equal(new Set(cases.flatMap(c => c.targets)).size, 56);
-  assert.equal(cases.filter(c => c.method === 'twin').length, 362);
+  assert.equal(new Set(cases.flatMap(c => c.targets)).size, 57);
+  assert.equal(cases.filter(c => c.method === 'twin').length, 365);
   const before = hash(cases);
   const first = cases.map(c => generateCase(c, methods, operators).variants);
   const second = cases.map(c => generateCase(c, methods, operators).variants);

@@ -182,7 +182,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // plus a new prefix twin (netted out via -twins.length).
   // #159: 2 new independent negatives (discord-bot-token short-current-final-segment/
   // short-current-first-segment) cover the current-shape length boundaries.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 425);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 428);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

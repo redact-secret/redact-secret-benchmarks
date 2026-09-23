@@ -20,7 +20,10 @@ const UPPER_ALNUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 /** [detector, env-var name, prose label, value builder]. */
 export const CONTEXT_FAMILIES = [
   ["datadog-api-key", "DD_API_KEY", "Datadog API key", s => s("value", 32, LOWER_HEX)],
-  ["datadog-application-key", "DD_APPLICATION_KEY", "Datadog application key", s => s("value", 40, LOWER_HEX)],
+  // redact-secret#671 (product PR #679): the bare 40-hex value is the product's own
+  // datadog-application-key-legacy detector since the split; the ddapp_ current
+  // shape has its own contract and stays covered by detector-coverage.
+  ["datadog-application-key-legacy", "DD_APPLICATION_KEY", "Legacy Datadog application key", s => s("value", 40, LOWER_HEX)],
   ["discord-bot-token", "DISCORD_BOT_TOKEN", "Discord bot token",
     s => `${Buffer.from(s("snowflake", 18, DIGITS)).toString("base64url")}.${s("seg2", 6, ALNUM_DASH)}.${s("seg3", 27, ALNUM_DASH)}`],
   ["grafana-cloud-access-policy-token", "GRAFANA_CLOUD_TOKEN", "Grafana Cloud access policy token", s => `glc_${s("body", 32, BASE64_BODY)}`],

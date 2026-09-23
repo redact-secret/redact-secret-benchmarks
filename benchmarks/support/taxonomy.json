@@ -777,11 +777,25 @@
     {
       "id": "datadog:application-key",
       "provider": "datadog",
-      "name": "Application key",
-      "description": "40-character application key.",
+      "name": "Application key (ddapp_-prefixed)",
+      "description": "Current application key: literal ddapp_ prefix, then 34 alphanumeric characters (40 total).",
       "detectors": [
         "datadog-application-key"
-      ]
+      ],
+      "sources": [
+        "https://docs.datadoghq.com/account_management/personal-access-tokens/"
+      ],
+      "note": "redact-secret#671 (product PR #679) split the legacy bare-hex generation into datadog:application-key-legacy; this family keeps the ddapp_ shape only."
+    },
+    {
+      "id": "datadog:application-key-legacy",
+      "provider": "datadog",
+      "name": "Application key (legacy 40-hex)",
+      "description": "Pre-ddapp_ 40-character lowercase-hex application key, still accepted by Datadog; recognized only beside a same-line DD_APPLICATION_KEY / datadog marker.",
+      "detectors": [
+        "datadog-application-key-legacy"
+      ],
+      "note": "redact-secret#671 (product PR #679). Scored as policy (no value grammar), like datadog:api-key."
     },
     {
       "id": "grafana:service-account-token",

@@ -1324,7 +1324,7 @@
         "detector-coverage--datadog-application-key-prefixed-env-marker-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.6",
@@ -1345,7 +1345,35 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/671"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+            "https://github.com/redact-secret/redact-secret/issues/645"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/671"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/679"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/671",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-671",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "2ca56a29ea19f93ec111370a5d4a8115cb8ddf33"
       },
       "evidence": [
         {

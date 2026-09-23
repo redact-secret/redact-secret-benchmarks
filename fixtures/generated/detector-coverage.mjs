@@ -363,10 +363,19 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("datadog-api-key", "missing-marker", [datadogApiKey]);
   add("datadog-api-key", "short-key", ["DD_API_KEY=" + datadogApiKey.slice(0, 20)]);
 
+  // redact-secret#671 (product PR #679): the bare 40-hex generation is now the
+  // product's own `datadog-application-key-legacy` detector, split from the
+  // ddapp_-prefixed current shape below; its fixtures follow the split. The
+  // length twin rests on the Datadog-owned validators and both pinned tools'
+  // exact 40-byte rules (the contract's corroboration), not on a provider page.
   const datadogAppKey = synthetic("coverage:datadog:application-key", 40, LOWER_HEX);
-  positive("datadog-application-key", "env-marker", ["DD_APPLICATION_KEY=", { secret: datadogAppKey }]);
-  add("datadog-application-key", "missing-marker", [datadogAppKey]);
-  add("datadog-application-key", "short-key", ["DD_APPLICATION_KEY=" + datadogAppKey.slice(0, 20)]);
+  positive("datadog-application-key-legacy", "env-marker", ["DD_APPLICATION_KEY=", { secret: datadogAppKey }]);
+  addTwin("datadog-application-key-legacy", "env-marker", ["DD_APPLICATION_KEY=" + datadogAppKey.slice(0, -1)], "length: 39-byte hex body vs the 40 both pinned tools and Datadog's own validators corroborate (trufflehog datadogtoken; gitleaks datadog-access-token; datadog-agent keys.go [a-f0-9]{40})", "length");
+  add("datadog-application-key-legacy", "missing-marker", [datadogAppKey]);
+  add("datadog-application-key-legacy", "short-key", ["DD_APPLICATION_KEY=" + datadogAppKey.slice(0, 20)]);
+  add("datadog-application-key-legacy", "mask", ["DD_APPLICATION_KEY=" + "*".repeat(40)]);
+  add("datadog-application-key-legacy", "reference", ["DD_APPLICATION_KEY=${DATADOG_APPLICATION_KEY}\n"]);
+  add("datadog-application-key-legacy", "label-prose", ["Documentation mentions a legacy 40-character Datadog application key (DD_APPLICATION_KEY marker) without embedding the key value."]);
 
   // #162/redact-secret#645: the current-format `ddapp_` application key, distinct from
   // the legacy grammar-less 40-hex shape above. `ddapp_` is a provider-documented
@@ -946,9 +955,11 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("datadog-api-key", "reference", ["DD_API_KEY=${DATADOG_API_KEY}\n"]);
   add("datadog-api-key", "label-prose", ["Documentation mentions a Datadog API key (DD_API_KEY marker) without embedding the key value."]);
 
-  add("datadog-application-key", "mask", ["DD_APPLICATION_KEY=" + "*".repeat(40)]);
+  // redact-secret#671: the mask now carries the current ddapp_ shape; the legacy
+  // 40-star mask moved to datadog-application-key-legacy with the split above.
+  add("datadog-application-key", "mask", ["DD_APPLICATION_KEY=ddapp_" + "*".repeat(34)]);
   add("datadog-application-key", "reference", ["DD_APPLICATION_KEY=${DATADOG_APPLICATION_KEY}\n"]);
-  add("datadog-application-key", "label-prose", ["Documentation mentions a Datadog application key (DD_APPLICATION_KEY marker) without embedding the key value."]);
+  add("datadog-application-key", "label-prose", ["Documentation mentions a Datadog application key (ddapp_ prefix, DD_APPLICATION_KEY marker) without embedding the key value."]);
 
   add("discord-bot-token", "mask", [`${"*".repeat(24)}.${"*".repeat(6)}.${"*".repeat(27)}`]);
   add("discord-bot-token", "reference", ["DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}\n"]);

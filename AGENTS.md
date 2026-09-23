@@ -17,6 +17,15 @@ Issue-to-implementation and PR-review work uses the user-global `resolve-gh-issu
 and `pr-review` Claude Code skills instead of a repo-local copy; the local
 `resolve-issue`/`review-pr` skills were removed in favor of those.
 
+## Peer scanner version
+
+Before `eval:classify`, `eval:matrix` or `benchmark:candidate`, check that
+`trufflehog --version` is the pinned 3.97.4. It self-updates, and a patch bump
+re-keys the ledger: the same tree read 43 `stable` on 3.97.4 and 5 on 3.97.6
+(#180). If it differs, put a 3.97.4 binary in a read-only directory first on
+`PATH` and rerun; never report the number. Always say which mode (published or
+candidate) a stable count came from.
+
 <!-- graft:start -->
 ## Graft — repo context graph
 

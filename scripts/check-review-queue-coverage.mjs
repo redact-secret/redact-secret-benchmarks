@@ -20,6 +20,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
+import { assertPinnedPeers } from '../scanners/pins.mjs';
 import { createMethods } from '../benchmarks/methods/index.ts';
 import { createOperators } from '../benchmarks/operators/index.ts';
 import { loadCases } from '../benchmarks/engine/cases.ts';
@@ -31,6 +32,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 export async function checkReviewQueueCoverage() {
   const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));
   const ledger = JSON.parse(await readFile(path.join(root, 'benchmarks/review-ledger.json'), 'utf8'));
+  await assertPinnedPeers(available, suite, root);
   const scanners = available.filter(s => Object.hasOwn(suite.scanners, s.id));
   const operators = createOperators(), methods = createMethods();
   const cases = (await loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
@@ -40,7 +42,13 @@ export async function checkReviewQueueCoverage() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const problems = await checkReviewQueueCoverage();
+  let problems;
+  try {
+    problems = await checkReviewQueueCoverage();
+  } catch (error) {
+    console.error(`::error::${error instanceof Error ? error.message : error}`);
+    process.exit(1);
+  }
   for (const problem of problems) console.error(`::error::${problem}`);
   if (problems.length) {
     console.error(`${problems.length} review-queue id(s) have no ledger row.`);

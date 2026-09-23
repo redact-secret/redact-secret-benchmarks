@@ -1614,6 +1614,185 @@
           "actual": []
         }
       ]
+    },
+    {
+      "id": "product-707",
+      "title": "microsoft-entra-client-secret misses secrets whose first character is '-'",
+      "url": "https://github.com/redact-secret/redact-secret/issues/707",
+      "number": 707,
+      "fixtures": [
+        "detector-coverage--microsoft-entra-client-secret-leading-dash-bare",
+        "detector-coverage--microsoft-entra-client-secret-leading-dash-quoted",
+        "detector-coverage--microsoft-entra-client-secret-leading-dash-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "391edc5b11bd6134af83f2e3df861cfa7e0bbb600732e19b78578e4258a781a8",
+        "sourceCommit": "b0ad1fcc925eccc887f9b9c5592bb11155a9c44d"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/655#issuecomment-5784996853",
+          "https://github.com/redact-secret/redact-secret/issues/655#issuecomment-5785640396",
+          "https://github.com/redact-secret/redact-secret/issues/655#issuecomment-5786036909"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-22",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/655#issuecomment-5786154618",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/161"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/161",
+            "https://github.com/redact-secret/redact-secret/blob/main/docs/audits/evidence/655/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/707"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/707",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-707",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--microsoft-entra-client-secret-leading-dash-bare",
+          "corpusHash": "47600c267336c2e7fc0f60f201fd59ff18d3d712d22cac2cb9873ff581a54850",
+          "expected": [
+            {
+              "start": 0,
+              "end": 39
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--microsoft-entra-client-secret-leading-dash-quoted",
+          "corpusHash": "47600c267336c2e7fc0f60f201fd59ff18d3d712d22cac2cb9873ff581a54850",
+          "expected": [
+            {
+              "start": 7,
+              "end": 46
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--microsoft-entra-client-secret-leading-dash-unicode-crlf",
+          "corpusHash": "47600c267336c2e7fc0f60f201fd59ff18d3d712d22cac2cb9873ff581a54850",
+          "expected": [
+            {
+              "start": 21,
+              "end": 60
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-708",
+      "title": "docker-token rejects the 27-byte dckr_oat_ body that Docker's own API reference shows",
+      "url": "https://github.com/redact-secret/redact-secret/issues/708",
+      "number": 708,
+      "fixtures": [
+        "detector-coverage--docker-token-oat-27-bare",
+        "detector-coverage--docker-token-oat-27-quoted",
+        "detector-coverage--docker-token-oat-27-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "391edc5b11bd6134af83f2e3df861cfa7e0bbb600732e19b78578e4258a781a8",
+        "sourceCommit": "b0ad1fcc925eccc887f9b9c5592bb11155a9c44d"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/647#issuecomment-5784905657",
+          "https://github.com/redact-secret/redact-secret/issues/647#issuecomment-5785379682",
+          "https://github.com/redact-secret/redact-secret/issues/708"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/main/docs/audits/evidence/647/README.md"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/647#issuecomment-5784905657",
+            "https://github.com/redact-secret/redact-secret/issues/708"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/708"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/708",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-708",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--docker-token-oat-27-bare",
+          "corpusHash": "45ff102e8437d6218cd9f67423a744addd984d45338e3586e75b6fa359d0ca5d",
+          "expected": [
+            {
+              "start": 0,
+              "end": 36
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--docker-token-oat-27-quoted",
+          "corpusHash": "45ff102e8437d6218cd9f67423a744addd984d45338e3586e75b6fa359d0ca5d",
+          "expected": [
+            {
+              "start": 7,
+              "end": 43
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--docker-token-oat-27-unicode-crlf",
+          "corpusHash": "45ff102e8437d6218cd9f67423a744addd984d45338e3586e75b6fa359d0ca5d",
+          "expected": [
+            {
+              "start": 21,
+              "end": 57
+            }
+          ],
+          "actual": []
+        }
+      ]
     }
   ]
 }

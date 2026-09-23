@@ -363,10 +363,19 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("datadog-api-key", "missing-marker", [datadogApiKey]);
   add("datadog-api-key", "short-key", ["DD_API_KEY=" + datadogApiKey.slice(0, 20)]);
 
+  // redact-secret#671 (product PR #679): the bare 40-hex generation is now the
+  // product's own `datadog-application-key-legacy` detector, split from the
+  // ddapp_-prefixed current shape below; its fixtures follow the split. The
+  // length twin rests on the Datadog-owned validators and both pinned tools'
+  // exact 40-byte rules (the contract's corroboration), not on a provider page.
   const datadogAppKey = synthetic("coverage:datadog:application-key", 40, LOWER_HEX);
-  positive("datadog-application-key", "env-marker", ["DD_APPLICATION_KEY=", { secret: datadogAppKey }]);
-  add("datadog-application-key", "missing-marker", [datadogAppKey]);
-  add("datadog-application-key", "short-key", ["DD_APPLICATION_KEY=" + datadogAppKey.slice(0, 20)]);
+  positive("datadog-application-key-legacy", "env-marker", ["DD_APPLICATION_KEY=", { secret: datadogAppKey }]);
+  addTwin("datadog-application-key-legacy", "env-marker", ["DD_APPLICATION_KEY=" + datadogAppKey.slice(0, -1)], "length: 39-byte hex body vs the 40 both pinned tools and Datadog's own validators corroborate (trufflehog datadogtoken; gitleaks datadog-access-token; datadog-agent keys.go [a-f0-9]{40})", "length");
+  add("datadog-application-key-legacy", "missing-marker", [datadogAppKey]);
+  add("datadog-application-key-legacy", "short-key", ["DD_APPLICATION_KEY=" + datadogAppKey.slice(0, 20)]);
+  add("datadog-application-key-legacy", "mask", ["DD_APPLICATION_KEY=" + "*".repeat(40)]);
+  add("datadog-application-key-legacy", "reference", ["DD_APPLICATION_KEY=${DATADOG_APPLICATION_KEY}\n"]);
+  add("datadog-application-key-legacy", "label-prose", ["Documentation mentions a legacy 40-character Datadog application key (DD_APPLICATION_KEY marker) without embedding the key value."]);
 
   // #162/redact-secret#645: the current-format `ddapp_` application key, distinct from
   // the legacy grammar-less 40-hex shape above. `ddapp_` is a provider-documented
@@ -498,6 +507,221 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("firebase-server-key", "short-body", [firebaseServerKey.slice(0, 40)]);
   add("firebase-server-key", "mask", [`AAAA${"*".repeat(7)}:${"*".repeat(140)}`]);
   add("firebase-server-key", "reference", ["FIREBASE_SERVER_KEY=${FCM_LEGACY_SERVER_KEY}"]);
+
+  // Post-beta.6 registry refresh: families the product landed on main after the
+  // 0.1.0-beta.6 tag (redact-secret/redact-secret#308–#313). Each block is
+  // authored from the provider page and pinned-tool rules its contract in
+  // benchmarks/lib/assessment.ts cites, never from scanner output.
+
+  // redact-secret#308 (product PR #665): Databricks publishes no token grammar
+  // (docs.databricks.com/aws/en/dev-tools/auth/pat); gitleaks 8.30.1's
+  // databricks-api-token rule and trufflehog 3.97.4's databrickstoken detector
+  // both pin `dapi` + exactly 32 lowercase hex, with an optional `-<one digit>`
+  // rotation suffix. learn.microsoft.com's Purview definition fixes the
+  // 32-character body and backs the length twin.
+  const databricksBody = synthetic("coverage:databricks:pat:body", 32, LOWER_HEX);
+  const databricksPat = `dapi${databricksBody}`;
+  positive("databricks-personal-access-token", "bare-shape", [{ secret: databricksPat }]);
+  positive("databricks-personal-access-token", "rotated-shape", [{ secret: `${databricksPat}-2` }]);
+  addTwin("databricks-personal-access-token", "bare-shape", [databricksPat.slice(0, -1)], "length: 31-byte body vs the 32 characters Microsoft Purview's Azure Databricks personal access token definition fixes (learn.microsoft.com: \"A combination of 32 characters\")", "length");
+  // "g" is outside [0-9a-f] whichever body byte it replaces; an uppercase hex
+  // letter would not do, since the Purview definition admits A-F.
+  addTwin("databricks-personal-access-token", "bare-shape", [`dapi${databricksBody.slice(0, 16)}g${databricksBody.slice(17)}`], "alphabet: one non-hex byte vs the tool-corroborated lowercase-hex body (gitleaks: [a-f0-9]{32}; trufflehog: [0-9a-f]{32})", "alphabet", "bare-shape-alphabet");
+  addTwin("databricks-personal-access-token", "rotated-shape", [`${databricksPat}-23`], "boundary: two-digit rotation suffix vs the single digit both pinned tools corroborate (gitleaks: (?:-\\d)?; trufflehog: (-\\d)?)", "boundary");
+  add("databricks-personal-access-token", "prefix-only", ["dapi"]);
+  add("databricks-personal-access-token", "short-body", [`dapi${databricksBody.slice(0, 10)}`]);
+  add("databricks-personal-access-token", "mask", [`dapi${"*".repeat(32)}`]);
+  add("databricks-personal-access-token", "reference", ["DATABRICKS_TOKEN=${DATABRICKS_TOKEN}\n"]);
+  add("databricks-personal-access-token", "label-prose", ["Documentation mentions a Databricks personal access token (dapi prefix) without embedding the token value."]);
+  // A workspace host and a cluster id: the public identifiers issue #308 excludes.
+  add("databricks-personal-access-token", "public-id", ["DATABRICKS_HOST=https://adb-1234567890123456.7.azuredatabricks.net\nDATABRICKS_CLUSTER_ID=0923-164208-abcde123\n"]);
+
+  // redact-secret#309 (product PR #667): docs.confluent.io states "API secrets
+  // created after July 30, 2025 have a cflt prefix followed by 60 characters
+  // consisting of A-Z, a-z, 0-9, + or /", the last 6 a base64 CRC32 of the
+  // prior 54 (not recomputed here: the checksum shares the body's alphabet, the
+  // same shape-only precedent cloudflare-token's tail already sets), and that
+  // earlier secrets "may not include cflt" — a bare 64-byte run both pinned
+  // tools report only beside a `confluent` keyword (gitleaks confluent-secret-key;
+  // trufflehog confluent), the context-gated policy shape below. The API key ID
+  // ("not considered secret information", example ABCD1234567890AB) is the
+  // public-id control.
+  const confluentSecretBody = synthetic("coverage:confluent:secret:body", 60, BASE64_BODY);
+  const confluentSecret = `cflt${confluentSecretBody}`;
+  positive("confluent-cloud-api-secret", "prefixed-shape", [{ secret: confluentSecret }]);
+  addTwin("confluent-cloud-api-secret", "prefixed-shape", [confluentSecret.slice(0, -1)], "length: 63 characters vs the provider-documented 64 (docs.confluent.io: \"a cflt prefix followed by 60 characters\")", "length");
+  addTwin("confluent-cloud-api-secret", "prefixed-shape", [`cflx${confluentSecretBody}`], "prefix namespace: cflx vs the provider-documented cflt prefix", "prefix", "prefixed-shape-prefix");
+  add("confluent-cloud-api-secret", "prefix-only", ["cflt"]);
+  add("confluent-cloud-api-secret", "short-body", [`cflt${confluentSecretBody.slice(0, 10)}`]);
+  add("confluent-cloud-api-secret", "mask", [`cflt${"*".repeat(60)}`]);
+  add("confluent-cloud-api-secret", "reference", ["CONFLUENT_CLOUD_API_SECRET=${CONFLUENT_CLOUD_API_SECRET}\n"]);
+  add("confluent-cloud-api-secret", "label-prose", ["Documentation mentions a Confluent Cloud API secret (cflt prefix) without embedding the secret value."]);
+  add("confluent-cloud-api-secret", "public-id", ["CONFLUENT_CLOUD_API_KEY=ABCD1234567890AB\nKAFKA_CLUSTER_ID=lkc-abc123\n"]);
+  const confluentLegacySecret = synthetic("coverage:confluent:legacy-secret", 64, BASE64_BODY);
+  positive("confluent-cloud-api-secret-legacy", "keyword-context", ["confluent ", { secret: confluentLegacySecret }]);
+  addTwin("confluent-cloud-api-secret-legacy", "keyword-context", ["confluent " + confluentLegacySecret.slice(0, -1)], "length: 63 characters vs the 64 both pinned tools corroborate for an unprefixed secret (gitleaks: [a-z0-9]{64}; trufflehog: [a-zA-Z0-9+/]{64})", "length");
+  add("confluent-cloud-api-secret-legacy", "missing-keyword", [confluentLegacySecret]);
+  add("confluent-cloud-api-secret-legacy", "short-token", ["confluent " + confluentLegacySecret.slice(0, 40)]);
+  add("confluent-cloud-api-secret-legacy", "mask", ["confluent " + "*".repeat(64)]);
+  add("confluent-cloud-api-secret-legacy", "reference", ["sasl.password=${CONFLUENT_CLOUD_API_SECRET}\n"]);
+  add("confluent-cloud-api-secret-legacy", "label-prose", ["Documentation mentions a legacy, unprefixed Confluent Cloud API secret without embedding the secret value."]);
+
+  // redact-secret#310 (product PR #668): learning.postman.com documents only the
+  // X-API-Key header, no key grammar; gitleaks 8.30.1's postman-api-token rule
+  // pins PMAK- + 24 hex + "-" + 34 hex, trufflehog 3.97.4's postman detector the
+  // same prefix over a looser 59-byte [A-Za-z0-9-] body.
+  const postmanSegment1 = synthetic("coverage:postman:segment-1", 24, LOWER_HEX);
+  const postmanSegment2 = synthetic("coverage:postman:segment-2", 34, LOWER_HEX);
+  const postmanKey = `PMAK-${postmanSegment1}-${postmanSegment2}`;
+  positive("postman-api-key", "structured-shape", [{ secret: postmanKey }]);
+  addTwin("postman-api-key", "structured-shape", [postmanKey.slice(0, -1)], "length: 33-byte second segment vs the 34 gitleaks corroborates (58-byte body vs the 59 both pinned tools corroborate)", "length");
+  // A hex byte in place of the internal dash keeps the 59-byte width trufflehog's
+  // looser [A-Za-z0-9-]{59} body accepts, so this twin also records that tool's
+  // wider shape against gitleaks's structured one.
+  addTwin("postman-api-key", "structured-shape", [`PMAK-${postmanSegment1}0${postmanSegment2}`], "boundary: no internal separator at body offset 24 vs the gitleaks-corroborated literal \"-\" between the 24- and 34-byte hex segments", "boundary", "structured-shape-separator");
+  addTwin("postman-api-key", "structured-shape", [`PMAK-${postmanSegment1}-${postmanSegment2.slice(0, 10)}g${postmanSegment2.slice(11)}`], "alphabet: one non-hex byte in the second segment vs the gitleaks-corroborated hex segments", "alphabet", "structured-shape-alphabet");
+  add("postman-api-key", "prefix-only", ["PMAK-"]);
+  add("postman-api-key", "short-body", [`PMAK-${postmanSegment1.slice(0, 10)}`]);
+  add("postman-api-key", "mask", [`PMAK-${"*".repeat(24)}-${"*".repeat(34)}`]);
+  add("postman-api-key", "reference", ["POSTMAN_API_KEY=${POSTMAN_API_KEY}\n"]);
+  add("postman-api-key", "label-prose", ["Documentation mentions a Postman API key (PMAK- prefix, sent in the X-API-Key header) without embedding the key value."]);
+  add("postman-api-key", "public-id", ["POSTMAN_COLLECTION_UID=12345678-3fa85f64-5717-4562-b3fc-2c963f66afa6\n"]);
+
+  // redact-secret#311 (product PR #666): Netlify's own 2023-11-07 token-format
+  // announcement (answers.netlify.com, staff-authored) states "All Netlify
+  // authentication tokens will start with a nf prefix followed by a single
+  // identifying character" — nfp for personal access tokens; nfc/nfo/nfu/nfb
+  // are other, out-of-scope token classes — and a 40-character token
+  // capacity. The "_" delimiter and [A-Za-z0-9_] body are tool-corroborated
+  // by trufflehog's netlify/v2 (`nfp_[a-zA-Z0-9_]{36}`, keyword-gated on
+  // `netlify`); gitleaks's netlify-access-token fixes no prefix (a keyword-
+  // and-assignment-gated 40–46-byte body). The bare shape is the contract's
+  // positive; the keyword-context shape (the CLI's documented
+  // NETLIFY_AUTH_TOKEN variable) records what each keyword-gated peer does
+  // once its gate is satisfied.
+  const NETLIFY_BODY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+  const netlifyBody = synthetic("coverage:netlify:pat:body", 36, NETLIFY_BODY);
+  const netlifyPat = `nfp_${netlifyBody}`;
+  positive("netlify-token", "pat-shape", [{ secret: netlifyPat }]);
+  positive("netlify-token", "keyword-context", ["NETLIFY_AUTH_TOKEN=", { secret: netlifyPat }]);
+  addTwin("netlify-token", "pat-shape", [netlifyPat.slice(0, -1)], "length: 39 characters vs the provider-documented 40 (answers.netlify.com: \"increase capacity for the token to 40 characters\")", "length");
+  // nfx is outside the announcement's set of identifying characters, and no
+  // Netlify token class uses it; a real sibling class (nfc/nfo/nfu/nfb) would
+  // be a different secret, not a control.
+  addTwin("netlify-token", "pat-shape", [`nfx_${netlifyBody}`], "prefix namespace: nfx vs the provider-documented identifying characters (nfp/nfc/nfo/nfu/nfb) after the nf prefix", "prefix", "pat-shape-prefix");
+  add("netlify-token", "prefix-only", ["nfp_"]);
+  add("netlify-token", "short-body", [`nfp_${netlifyBody.slice(0, 10)}`]);
+  add("netlify-token", "mask", [`nfp_${"*".repeat(36)}`]);
+  add("netlify-token", "reference", ["NETLIFY_AUTH_TOKEN=${NETLIFY_AUTH_TOKEN}\n"]);
+  add("netlify-token", "label-prose", ["Documentation mentions a Netlify personal access token (nfp_ prefix) without embedding the token value."]);
+  add("netlify-token", "public-id", ["NETLIFY_SITE_ID=3fa85f64-5717-4562-b3fc-2c963f66afa6\n"]);
+
+  // redact-secret#312 (product PR #675): devcenter.heroku.com/articles/oauth
+  // states "Heroku OAuth access tokens are 65 characters long and prefixed
+  // with HRKU-" with a HRKU-AA… example; gitleaks 8.30.1's heroku-api-key-v2
+  // rule and trufflehog 3.97.4's heroku/v2 detector both fix the literal
+  // HRKU-AA marker plus 58 bytes of [A-Za-z0-9_-], no keyword needed. The
+  // pre-prefix generation is a bare UUID (the 2024-03-07 changelog's
+  // "57dce771-…" example) both tools report only beside a `heroku` keyword
+  // (gitleaks additionally needs an assignment operator, hence the
+  // HEROKU_API_KEY= form), the context-gated policy shape below. An app id is
+  // the same UUID shape on a line that also names heroku: the public-id
+  // control issue #312's own scope requires to stay clean.
+  const herokuCurrentBody = synthetic("coverage:heroku:current:body", 58, ALNUM_DASH);
+  const herokuCurrent = `HRKU-AA${herokuCurrentBody}`;
+  positive("heroku-api-key", "prefixed-shape", [{ secret: herokuCurrent }]);
+  addTwin("heroku-api-key", "prefixed-shape", [herokuCurrent.slice(0, -1)], "length: 64 characters vs the provider-documented 65 (devcenter.heroku.com: \"65 characters long and prefixed with HRKU-\")", "length");
+  addTwin("heroku-api-key", "prefixed-shape", [`HRKX-AA${herokuCurrentBody}`], "prefix namespace: HRKX- vs the provider-documented HRKU- prefix", "prefix", "prefixed-shape-prefix");
+  add("heroku-api-key", "prefix-only", ["HRKU-"]);
+  add("heroku-api-key", "short-body", [`HRKU-AA${herokuCurrentBody.slice(0, 10)}`]);
+  add("heroku-api-key", "mask", [`HRKU-${"*".repeat(60)}`]);
+  add("heroku-api-key", "reference", ["HEROKU_API_KEY=${HEROKU_API_KEY}\n"]);
+  add("heroku-api-key", "label-prose", ["Documentation mentions a Heroku OAuth access token (HRKU- prefix) without embedding the token value."]);
+  const herokuUuid = label => [8, 4, 4, 4, 12].map((width, index) => synthetic(`coverage:heroku:${label}:segment-${index}`, width, LOWER_HEX)).join("-");
+  const herokuLegacy = herokuUuid("legacy");
+  positive("heroku-api-key-legacy", "keyword-context", ["HEROKU_API_KEY=", { secret: herokuLegacy }]);
+  addTwin("heroku-api-key-legacy", "keyword-context", [`HEROKU_API_KEY=${herokuLegacy.slice(0, -1)}`], "length: 35 characters vs the 8-4-4-4-12 UUID shape (36) both pinned tools corroborate for a pre-HRKU token", "length");
+  add("heroku-api-key-legacy", "missing-keyword", [herokuLegacy]);
+  add("heroku-api-key-legacy", "short-token", [`HEROKU_API_KEY=${herokuLegacy.slice(0, 18)}`]);
+  add("heroku-api-key-legacy", "mask", ["HEROKU_API_KEY=********-****-****-****-************\n"]);
+  add("heroku-api-key-legacy", "reference", ["machine api.heroku.com\n  login fixture@example.invalid\n  password ${HEROKU_API_KEY}\n"]);
+  add("heroku-api-key-legacy", "label-prose", ["Documentation mentions a legacy, unprefixed Heroku API key without embedding the key value."]);
+  add("heroku-api-key-legacy", "public-id", [`HEROKU_APP_ID=${herokuUuid("app-id")}\n`]);
+
+  // redact-secret#313 (product PR #678): mailchimp.com/developer's fundamentals
+  // page states the shape only by example — "if your API key is
+  // 0123456789abcdef0123456789abcde-us6, then the data center subdomain is us6"
+  // (that example body is 31 hex bytes, documentation noise against both tools'
+  // 32); gitleaks 8.30.1's mailchimp-api-key rule (keyword- and assignment-
+  // gated, -us + exactly two digits) and trufflehog 3.97.4's mailchimp detector
+  // (-us + one or two digits, no keyword) both pin the 32-byte lowercase-hex
+  // body and the literal -us. One positive per digit count, since the two
+  // tools disagree there; each sits in the MAILCHIMP_API_KEY= assignment the
+  // product's frozen grammar (same-line `mailchimp`) and gitleaks's gate share.
+  const mailchimpBody = synthetic("coverage:mailchimp:api-key:body", 32, LOWER_HEX);
+  positive("mailchimp-api-key", "single-digit-datacenter", ["MAILCHIMP_API_KEY=", { secret: `${mailchimpBody}-us6` }]);
+  positive("mailchimp-api-key", "two-digit-datacenter", ["MAILCHIMP_API_KEY=", { secret: `${mailchimpBody}-us21` }]);
+  addTwin("mailchimp-api-key", "two-digit-datacenter", [`MAILCHIMP_API_KEY=${mailchimpBody.slice(0, -1)}-us21`], "length: 31-byte hex body vs the 32 both pinned tools corroborate (gitleaks: [a-f0-9]{32}; trufflehog: [0-9a-f]{32})", "length");
+  addTwin("mailchimp-api-key", "single-digit-datacenter", [`MAILCHIMP_API_KEY=${mailchimpBody}-eu6`], "boundary: -eu data-center literal vs the provider-documented us<N> suffix (mailchimp.com/developer: \"the data center subdomain is us6\")", "boundary");
+  add("mailchimp-api-key", "missing-marker", [`MAILCHIMP_API_KEY=${mailchimpBody}`]);
+  add("mailchimp-api-key", "short-key", [`MAILCHIMP_API_KEY=${mailchimpBody.slice(0, 20)}-us6`]);
+  add("mailchimp-api-key", "mask", [`MAILCHIMP_API_KEY=${"*".repeat(32)}-us6`]);
+  add("mailchimp-api-key", "reference", ["MAILCHIMP_API_KEY=${MAILCHIMP_API_KEY}\n"]);
+  add("mailchimp-api-key", "label-prose", ["Documentation mentions a Mailchimp Marketing API key (32-hex body with a -us<N> data-center suffix) without embedding the key value."]);
+  add("mailchimp-api-key", "public-id", ["MAILCHIMP_AUDIENCE_ID=a1b2c3d4e5\nMAILCHIMP_SERVER_PREFIX=us6\n"]);
+
+  // redact-secret#314 (product PR #680): Mailgun's prose documents no key
+  // grammar; gitleaks 8.30.1's mailgun-private-api-token rule (keyword- and
+  // assignment-gated, key- + 32 hex) and trufflehog 3.97.4's "Key-MailGun
+  // Token" pattern (key- + 32 [a-z0-9], no keyword) agree on the literal key-
+  // and the 32-byte body and disagree on the alphabet; the contract follows
+  // the wider [a-z0-9] the product froze from an observed real key. Mailgun's
+  // current account API shows the same key- shape for the HTTP webhook signing
+  // key, so one family carries both credentials: one positive per documented
+  // role, each in the assignment context the product's same-line `mailgun`
+  // gate and gitleaks's gate share. pubkey- (the public validation key) is the
+  // public-id control; the superseded 32-8-8 hex triplet both tools still call
+  // a signing key is a known unsupported variant and is not fixtured.
+  const LOWER_ALNUM_BODY = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const mailgunBody = synthetic("coverage:mailgun:private-key:body", 32, LOWER_ALNUM_BODY);
+  const mailgunKey = `key-${mailgunBody}`;
+  positive("mailgun-api-key", "private-api-key", ["MAILGUN_API_KEY=", { secret: mailgunKey }]);
+  positive("mailgun-api-key", "http-signing-key", ["MAILGUN_WEBHOOK_SIGNING_KEY=", { secret: `key-${synthetic("coverage:mailgun:signing-key:body", 32, LOWER_ALNUM_BODY)}` }]);
+  addTwin("mailgun-api-key", "private-api-key", [`MAILGUN_API_KEY=${mailgunKey.slice(0, -1)}`], "length: 31-byte body vs the 32 both pinned tools corroborate (gitleaks: key-[a-f0-9]{32}; trufflehog: key-[a-z0-9]{32})", "length");
+  addTwin("mailgun-api-key", "private-api-key", [`MAILGUN_API_KEY=kex-${mailgunBody}`], "prefix namespace: kex- vs the key- literal both pinned tools corroborate and Mailgun's own API examples carry", "prefix", "private-api-key-prefix");
+  // "A" is outside [a-z0-9] whichever body byte it replaces.
+  addTwin("mailgun-api-key", "private-api-key", [`MAILGUN_API_KEY=key-${mailgunBody.slice(0, 10)}A${mailgunBody.slice(11)}`], "alphabet: one uppercase byte vs the tool-corroborated lowercase [a-z0-9] body", "alphabet", "private-api-key-alphabet");
+  add("mailgun-api-key", "prefix-only", ["MAILGUN_API_KEY=key-"]);
+  add("mailgun-api-key", "short-body", [`MAILGUN_API_KEY=key-${mailgunBody.slice(0, 10)}`]);
+  add("mailgun-api-key", "mask", [`MAILGUN_API_KEY=key-${"*".repeat(32)}`]);
+  add("mailgun-api-key", "reference", ["MAILGUN_API_KEY=${MAILGUN_API_KEY}\n"]);
+  add("mailgun-api-key", "label-prose", ["Documentation mentions a Mailgun private API key (key- prefix) without embedding the key value."]);
+  add("mailgun-api-key", "public-id", [`MAILGUN_PUBLIC_VALIDATION_KEY=pubkey-${synthetic("coverage:mailgun:public-key:body", 32, LOWER_HEX)}\nMAILGUN_DOMAIN=mg.example.invalid\n`]);
+
+  // redact-secret#315 (product PR #681): developer.okta.com's API-token guide
+  // shows the token only as `Authorization: SSWS 00QCjAl4MlV-WPXM...0HmjFx-vbGua`
+  // (SSWS scheme, a value beginning 00, no length); gitleaks 8.30.1's
+  // okta-access-token rule (okta keyword + assignment, 00[\w=\-]{40}) and
+  // trufflehog 3.97.4's okta detector (\b00[a-zA-Z0-9_-]{40}\b, only alongside
+  // an Okta tenant domain) both pin the 00 prefix and a 40-byte body. One
+  // positive per context the product's gate recognizes: the SSWS header and
+  // an okta-keyword assignment. Tenant domain and OAuth client id are the
+  // public-id control.
+  const oktaBody = synthetic("coverage:okta:api-token:body", 40, ALNUM_DASH);
+  const oktaToken = `00${oktaBody}`;
+  positive("okta-api-token", "ssws-header", ["Authorization: SSWS ", { secret: oktaToken }]);
+  positive("okta-api-token", "keyword-context", ["OKTA_API_TOKEN=", { secret: oktaToken }]);
+  addTwin("okta-api-token", "ssws-header", [`Authorization: SSWS ${oktaToken.slice(0, -1)}`], "length: 39-byte body vs the 40 both pinned tools corroborate (gitleaks: 00[\\w=\\-]{40}; trufflehog: 00[a-zA-Z0-9_-]{40})", "length");
+  addTwin("okta-api-token", "ssws-header", [`Authorization: SSWS 01${oktaBody}`], "prefix namespace: 01 vs the 00 the provider's own SSWS example begins with (developer.okta.com: \"Authorization: SSWS 00QCjAl4MlV-WPXM...0HmjFx-vbGua\")", "prefix", "ssws-header-prefix");
+  // "=" is inside gitleaks's body class and outside trufflehog's and the
+  // contract's, so this twin records that disagreement directly.
+  addTwin("okta-api-token", "keyword-context", [`OKTA_API_TOKEN=00${oktaBody.slice(0, 20)}=${oktaBody.slice(21)}`], "alphabet: one \"=\" byte vs the trufflehog-corroborated [A-Za-z0-9_-] body (gitleaks's okta-access-token rule admits it)", "alphabet");
+  add("okta-api-token", "prefix-only", ["Authorization: SSWS 00"]);
+  add("okta-api-token", "short-body", [`Authorization: SSWS 00${oktaBody.slice(0, 10)}`]);
+  add("okta-api-token", "mask", [`Authorization: SSWS 00${"*".repeat(40)}`]);
+  add("okta-api-token", "reference", ["Authorization: SSWS ${OKTA_API_TOKEN}\n"]);
+  add("okta-api-token", "label-prose", ["Documentation mentions an Okta API token (SSWS authorization scheme) without embedding the token value."]);
+  add("okta-api-token", "public-id", ["OKTA_ORG_URL=https://dev-123456.okta.com\nOKTA_CLIENT_ID=0oa1abcdefghijklmn0h7\n"]);
 
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
@@ -731,9 +955,11 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("datadog-api-key", "reference", ["DD_API_KEY=${DATADOG_API_KEY}\n"]);
   add("datadog-api-key", "label-prose", ["Documentation mentions a Datadog API key (DD_API_KEY marker) without embedding the key value."]);
 
-  add("datadog-application-key", "mask", ["DD_APPLICATION_KEY=" + "*".repeat(40)]);
+  // redact-secret#671: the mask now carries the current ddapp_ shape; the legacy
+  // 40-star mask moved to datadog-application-key-legacy with the split above.
+  add("datadog-application-key", "mask", ["DD_APPLICATION_KEY=ddapp_" + "*".repeat(34)]);
   add("datadog-application-key", "reference", ["DD_APPLICATION_KEY=${DATADOG_APPLICATION_KEY}\n"]);
-  add("datadog-application-key", "label-prose", ["Documentation mentions a Datadog application key (DD_APPLICATION_KEY marker) without embedding the key value."]);
+  add("datadog-application-key", "label-prose", ["Documentation mentions a Datadog application key (ddapp_ prefix, DD_APPLICATION_KEY marker) without embedding the key value."]);
 
   add("discord-bot-token", "mask", [`${"*".repeat(24)}.${"*".repeat(6)}.${"*".repeat(27)}`]);
   add("discord-bot-token", "reference", ["DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}\n"]);

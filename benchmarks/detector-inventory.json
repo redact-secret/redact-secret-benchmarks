@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "reviewedAt": "2026-09-22",
   "redactSecretVersion": "0.1.0-beta.6",
-  "redactSecretRevision": "079095e766e4a71e2b7e29413ed17be37bb3315d",
-  "method": "Explicit provider-family mapping against the 46 registered beta.6 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+  "redactSecretRevision": "065ec76c7978ee60c5de8412bd04b91d39c2c275",
+  "method": "Explicit provider-family mapping against the 57 registered beta.6 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
   "sources": {
     "gitleaks": {
       "version": "8.30.1",
@@ -153,8 +153,8 @@
       "id": "databricks_token",
       "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1372",
       "activation": "default-detector",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "databricks-personal-access-token",
+      "status": "related-family"
     },
     {
       "tool": "flare-redact",
@@ -401,16 +401,16 @@
       "id": "mailgun_key",
       "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1615",
       "activation": "default-detector",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "mailgun-api-key",
+      "status": "related-family"
     },
     {
       "tool": "flare-redact",
       "id": "netlify_token",
       "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1532",
       "activation": "default-detector",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "netlify-token",
+      "status": "related-family"
     },
     {
       "tool": "flare-redact",
@@ -505,8 +505,8 @@
       "id": "postman_key",
       "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1412",
       "activation": "default-detector",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "postman-api-key",
+      "status": "related-family"
     },
     {
       "tool": "flare-redact",
@@ -985,8 +985,8 @@
       "id": "confluent-secret-key",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L347",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "confluent-cloud-api-secret-legacy",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -1017,8 +1017,8 @@
       "id": "databricks-api-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L382",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "databricks-personal-access-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -1529,16 +1529,16 @@
       "id": "heroku-api-key",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2345",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "heroku-api-key-legacy",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
       "id": "heroku-api-key-v2",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2351",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "heroku-api-key",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -1729,16 +1729,16 @@
       "id": "mailchimp-api-key",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2545",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "mailchimp-api-key",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
       "id": "mailgun-private-api-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2551",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "mailgun-api-key",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -1809,8 +1809,8 @@
       "id": "netlify-access-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2618",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "netlify-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -1889,8 +1889,8 @@
       "id": "okta-access-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2697",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "okta-api-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -1977,8 +1977,8 @@
       "id": "postman-api-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2771",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "postman-api-key",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -4159,8 +4159,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1102",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "confluent-cloud-api-secret-legacy",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -4384,8 +4384,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1128",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "databricks-personal-access-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -5797,8 +5797,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1289",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "heroku-api-key-legacy",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -5806,8 +5806,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1290",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "heroku-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -6589,8 +6589,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1383",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "mailchimp-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -6607,8 +6607,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1385",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "mailgun-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -6985,8 +6985,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1430",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "netlify-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -7264,8 +7264,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1461",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "okta-api-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -7867,8 +7867,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1528",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "postman-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",

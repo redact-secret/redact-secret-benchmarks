@@ -1,5 +1,5 @@
 {
-  "sourceRevision": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+  "sourceRevision": "065ec76c7978ee60c5de8412bd04b91d39c2c275",
   "sourcePath": "crates/secret-scan-core/src/detectors/mod.rs",
   "detectors": [
     {
@@ -139,6 +139,10 @@
       "title": "Datadog application keys"
     },
     {
+      "id": "datadog-application-key-legacy",
+      "title": "Datadog application keys (legacy 40-hex)"
+    },
+    {
       "id": "grafana-service-account-token",
       "title": "Grafana service account tokens"
     },
@@ -155,6 +159,18 @@
       "title": "New Relic license keys"
     },
     {
+      "id": "mailchimp-api-key",
+      "title": "Mailchimp Marketing API keys"
+    },
+    {
+      "id": "mailgun-api-key",
+      "title": "Mailgun API and HTTP signing keys"
+    },
+    {
+      "id": "okta-api-token",
+      "title": "Okta API tokens"
+    },
+    {
       "id": "firebase-server-key",
       "title": "Firebase server keys"
     },
@@ -165,6 +181,34 @@
     {
       "id": "pulumi-access-token",
       "title": "Pulumi access tokens"
+    },
+    {
+      "id": "databricks-personal-access-token",
+      "title": "Databricks personal access tokens"
+    },
+    {
+      "id": "confluent-cloud-api-secret",
+      "title": "Confluent Cloud API secrets"
+    },
+    {
+      "id": "confluent-cloud-api-secret-legacy",
+      "title": "Confluent Cloud API secrets (legacy, unprefixed)"
+    },
+    {
+      "id": "netlify-token",
+      "title": "Netlify personal access tokens"
+    },
+    {
+      "id": "postman-api-key",
+      "title": "Postman API keys"
+    },
+    {
+      "id": "heroku-api-key",
+      "title": "Heroku API tokens"
+    },
+    {
+      "id": "heroku-api-key-legacy",
+      "title": "Heroku API tokens (legacy UUID)"
     },
     {
       "id": "jwt",

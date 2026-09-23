@@ -137,6 +137,38 @@
     {
       "id": "pulumi",
       "name": "Pulumi"
+    },
+    {
+      "id": "databricks",
+      "name": "Databricks"
+    },
+    {
+      "id": "confluent",
+      "name": "Confluent Cloud"
+    },
+    {
+      "id": "postman",
+      "name": "Postman"
+    },
+    {
+      "id": "netlify",
+      "name": "Netlify"
+    },
+    {
+      "id": "heroku",
+      "name": "Heroku"
+    },
+    {
+      "id": "mailchimp",
+      "name": "Mailchimp"
+    },
+    {
+      "id": "mailgun",
+      "name": "Mailgun"
+    },
+    {
+      "id": "okta",
+      "name": "Okta"
     }
   ],
   "families": [
@@ -560,8 +592,12 @@
       "provider": "supabase",
       "name": "Personal access token",
       "description": "Management-API personal access token, prefixed sbp_/sbp_v0_.",
-      "detectors": ["supabase-management-token"],
-      "sources": ["https://supabase.com/docs/guides/platform/personal-access-tokens"],
+      "detectors": [
+        "supabase-management-token"
+      ],
+      "sources": [
+        "https://supabase.com/docs/guides/platform/personal-access-tokens"
+      ],
       "note": "#81 backfilled the supabase-management-token detector (redact-secret#535). Deliberately independent of supabase:secret-key's evidence, per https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/decisions/2026-09-20-scope-supabase-management-token-and-secret-key-independence.md."
     },
     {
@@ -741,11 +777,25 @@
     {
       "id": "datadog:application-key",
       "provider": "datadog",
-      "name": "Application key",
-      "description": "40-character application key.",
+      "name": "Application key (ddapp_-prefixed)",
+      "description": "Current application key: literal ddapp_ prefix, then 34 alphanumeric characters (40 total).",
       "detectors": [
         "datadog-application-key"
-      ]
+      ],
+      "sources": [
+        "https://docs.datadoghq.com/account_management/personal-access-tokens/"
+      ],
+      "note": "redact-secret#671 (product PR #679) split the legacy bare-hex generation into datadog:application-key-legacy; this family keeps the ddapp_ shape only."
+    },
+    {
+      "id": "datadog:application-key-legacy",
+      "provider": "datadog",
+      "name": "Application key (legacy 40-hex)",
+      "description": "Pre-ddapp_ 40-character lowercase-hex application key, still accepted by Datadog; recognized only beside a same-line DD_APPLICATION_KEY / datadog marker.",
+      "detectors": [
+        "datadog-application-key-legacy"
+      ],
+      "note": "redact-secret#671 (product PR #679). Scored as policy (no value grammar), like datadog:api-key."
     },
     {
       "id": "grafana:service-account-token",
@@ -791,7 +841,9 @@
       "detectors": [
         "firebase-server-key"
       ],
-      "sources": ["https://github.com/projectdiscovery/nuclei-templates/blob/8cf94b93a389a47bef77b89f8c8915b2755018f0/http/exposures/tokens/firebase-fcm-server-key-disclosure.yaml"],
+      "sources": [
+        "https://github.com/projectdiscovery/nuclei-templates/blob/8cf94b93a389a47bef77b89f8c8915b2755018f0/http/exposures/tokens/firebase-fcm-server-key-disclosure.yaml"
+      ],
       "note": "#81 backfilled the firebase-server-key detector (redact-secret#543). Service-account JSON exports and AIza-prefixed keys are covered elsewhere (private-key, google-api-key), not this family."
     },
     {
@@ -901,6 +953,171 @@
       "detectors": [
         "generic-token"
       ]
+    },
+    {
+      "id": "databricks:personal-access-token",
+      "provider": "databricks",
+      "name": "Personal access token",
+      "description": "dapi-prefixed 32-hex personal access token, optionally suffixed -<digit> after rotation.",
+      "detectors": [
+        "databricks-personal-access-token"
+      ],
+      "sources": [
+        "https://docs.databricks.com/aws/en/dev-tools/auth/pat",
+        "https://learn.microsoft.com/en-us/purview/sit-defn-azure-databricks-personal-access-token"
+      ],
+      "note": "redact-secret#308 (product PR #665) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. OAuth client secrets are a separately documented scope extension, not this family."
+    },
+    {
+      "id": "confluent:cloud-api-secret",
+      "provider": "confluent",
+      "name": "Cloud API secret (cflt-prefixed)",
+      "description": "API secret created after 2025-07-30: literal cflt prefix, then 60 base64-body bytes, the last 6 a CRC32 checksum.",
+      "detectors": [
+        "confluent-cloud-api-secret"
+      ],
+      "sources": [
+        "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html"
+      ],
+      "note": "redact-secret#309 (product PR #667) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The API key ID (\"not considered secret information\") is never a positive."
+    },
+    {
+      "id": "confluent:cloud-api-secret-legacy",
+      "provider": "confluent",
+      "name": "Cloud API secret (unprefixed, pre-2025-07-30)",
+      "description": "Unprefixed 64-byte base64-body API secret, recognized only beside a same-line confluent keyword.",
+      "detectors": [
+        "confluent-cloud-api-secret-legacy"
+      ],
+      "sources": [
+        "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html"
+      ],
+      "note": "redact-secret#309 (product PR #667). Scored as policy (no value grammar), like twilio:auth-token."
+    },
+    {
+      "id": "postman:api-key",
+      "provider": "postman",
+      "name": "API key",
+      "description": "PMAK-prefixed API key: 24 hex bytes, a literal \"-\", then 34 hex bytes (59-byte body); sent in the X-API-Key header.",
+      "detectors": [
+        "postman-api-key"
+      ],
+      "sources": [
+        "https://learning.postman.com/docs/developer/postman-api/authentication/"
+      ],
+      "note": "redact-secret#310 (product PR #668) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The provider page documents only the header, so the grammar is tool-corroborated (T2)."
+    },
+    {
+      "id": "netlify:personal-access-token",
+      "provider": "netlify",
+      "name": "Personal access token",
+      "description": "nfp_-prefixed personal access token: 36 bytes of [A-Za-z0-9_], 40 characters total.",
+      "detectors": [
+        "netlify-token"
+      ],
+      "sources": [
+        "https://answers.netlify.com/t/change-to-the-netlify-authentication-token-format/106146"
+      ],
+      "note": "redact-secret#311 (product PR #666) landed on the product main after 0.1.0-beta.6; the pinned published package predates it."
+    },
+    {
+      "id": "netlify:other-prefixed-tokens",
+      "provider": "netlify",
+      "name": "CLI, OAuth, app and build tokens (nfc_/nfo_/nfu_/nfb_)",
+      "description": "The announcement's four other nf-prefixed token classes, sharing the personal access token's scheme but issued for the CLI, OAuth flows, app.netlify.com and builds.",
+      "detectors": [],
+      "sources": [
+        "https://answers.netlify.com/t/change-to-the-netlify-authentication-token-format/106146"
+      ],
+      "note": "Out of redact-secret#311's explicit scope; each is a distinct credential, so none is a control or positive for netlify:personal-access-token."
+    },
+    {
+      "id": "heroku:oauth-access-token",
+      "provider": "heroku",
+      "name": "OAuth access token (HRKU-prefixed)",
+      "description": "65-character OAuth access token: literal HRKU-AA marker, then 58 bytes of [A-Za-z0-9_-].",
+      "detectors": [
+        "heroku-api-key"
+      ],
+      "sources": [
+        "https://devcenter.heroku.com/articles/oauth",
+        "https://devcenter.heroku.com/changelog-items/2842"
+      ],
+      "note": "redact-secret#312 (product PR #675) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The changelog's 41-byte HRKU-prefixed UUID example is an undocumented-width variant outside the contract."
+    },
+    {
+      "id": "heroku:legacy-api-key",
+      "provider": "heroku",
+      "name": "Legacy API key (bare UUID)",
+      "description": "Pre-2024-04 unprefixed 8-4-4-4-12 hex UUID token, still valid until regenerated; recognized only beside a same-line heroku keyword.",
+      "detectors": [
+        "heroku-api-key-legacy"
+      ],
+      "sources": [
+        "https://devcenter.heroku.com/changelog-items/2842"
+      ],
+      "note": "redact-secret#312 (product PR #675). Scored as policy (no value grammar), like twilio:auth-token; an app id on a heroku-named line is the recorded false-positive tradeoff."
+    },
+    {
+      "id": "mailchimp:marketing-api-key",
+      "provider": "mailchimp",
+      "name": "Marketing API key",
+      "description": "32-hex API key followed by a literal -us and a one- or two-digit data-center number; recognized only beside a same-line mailchimp keyword.",
+      "detectors": [
+        "mailchimp-api-key"
+      ],
+      "sources": [
+        "https://mailchimp.com/developer/marketing/docs/fundamentals/"
+      ],
+      "note": "redact-secret#313 (product PR #678) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. Mandrill (transactional) keys are a separate product and not this family."
+    },
+    {
+      "id": "mailgun:private-api-key",
+      "provider": "mailgun",
+      "name": "Private API key and HTTP webhook signing key",
+      "description": "key- followed by 32 lowercase alphanumeric bytes; Mailgun's current API reference shows the same shape for the account HTTP signing key. Recognized only beside a same-line mailgun keyword.",
+      "detectors": [
+        "mailgun-api-key"
+      ],
+      "sources": [
+        "https://documentation.mailgun.com/docs/mailgun/api-reference/openapi-final/tag/Account-Management/"
+      ],
+      "note": "redact-secret#314 (product PR #680) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. One detector covers both credentials because the provider's current interface gives them one shape."
+    },
+    {
+      "id": "mailgun:public-validation-key",
+      "provider": "mailgun",
+      "name": "Public validation key (pubkey-)",
+      "description": "pubkey- followed by 32 bytes; Mailgun's public email-validation key, not a secret.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+      ],
+      "note": "Documented public per redact-secret#314's scope; gitleaks 8.30.1's mailgun-pub-key rule still flags it, which the mailgun-api-key public-id control records."
+    },
+    {
+      "id": "mailgun:legacy-signing-key-triplet",
+      "provider": "mailgun",
+      "name": "Legacy 32-8-8 hex signing key",
+      "description": "Dash-segmented 32-8-8 hex triplet both pinned tools call a signing key; absent from Mailgun's current API reference.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+      ],
+      "note": "Known unsupported legacy variant per redact-secret#314 (product PR #680); not fixtured because the provider no longer documents it."
+    },
+    {
+      "id": "okta:api-token",
+      "provider": "okta",
+      "name": "Management API token (SSWS)",
+      "description": "00-prefixed 42-character API token sent as Authorization: SSWS; recognized beside the SSWS scheme or a same-line okta keyword.",
+      "detectors": [
+        "okta-api-token"
+      ],
+      "sources": [
+        "https://developer.okta.com/docs/guides/create-an-api-token/main/"
+      ],
+      "note": "redact-secret#315 (product PR #681) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. OAuth access/ID tokens are JWTs and belong to the jwt family, not this one."
     }
   ]
 }

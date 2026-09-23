@@ -2033,18 +2033,6 @@
   "detector-coverage--datadog-api-key-missing-marker": [
     "datadog-api-key"
   ],
-  "detector-coverage--datadog-application-key-env-marker-bare": [
-    "datadog-application-key"
-  ],
-  "detector-coverage--datadog-application-key-env-marker-quoted": [
-    "datadog-application-key"
-  ],
-  "detector-coverage--datadog-application-key-env-marker-unicode-crlf": [
-    "datadog-application-key"
-  ],
-  "detector-coverage--datadog-application-key-missing-marker": [
-    "datadog-application-key"
-  ],
   "detector-coverage--grafana-service-account-token-checksum-segment-bare": [
     "grafana-service-account-token"
   ],
@@ -2074,9 +2062,6 @@
   ],
   "detector-coverage--datadog-api-key-short-key": [
     "datadog-api-key"
-  ],
-  "detector-coverage--datadog-application-key-short-key": [
-    "datadog-application-key"
   ],
   "detector-coverage--new-relic-license-key-short-key": [
     "new-relic-license-key"
@@ -3209,30 +3194,6 @@
   "context-edges--datadog-api-key-bom-twin": [
     "datadog-api-key"
   ],
-  "context-edges--datadog-application-key-no-final-newline": [
-    "datadog-application-key"
-  ],
-  "context-edges--datadog-application-key-single-quotes": [
-    "datadog-application-key"
-  ],
-  "context-edges--datadog-application-key-json": [
-    "datadog-application-key"
-  ],
-  "context-edges--datadog-application-key-yaml": [
-    "datadog-application-key"
-  ],
-  "context-edges--datadog-application-key-toml": [
-    "datadog-application-key"
-  ],
-  "context-edges--datadog-application-key-python": [
-    "datadog-application-key"
-  ],
-  "context-edges--datadog-application-key-markdown": [
-    "datadog-application-key"
-  ],
-  "context-edges--datadog-application-key-bom": [
-    "datadog-application-key"
-  ],
   "context-edges--discord-bot-token-no-final-newline": [
     "discord-bot-token"
   ],
@@ -3709,5 +3670,569 @@
   ],
   "detector-coverage--discord-bot-token-short-current-first-segment": [
     "discord-bot-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-bare": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-quoted": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-unicode-crlf": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-rotated-shape-bare": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-rotated-shape-quoted": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-rotated-shape-unicode-crlf": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-bare-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-quoted-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-unicode-crlf-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-alphabet-bare-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-alphabet-quoted-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-bare-shape-alphabet-unicode-crlf-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-rotated-shape-bare-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-rotated-shape-quoted-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-rotated-shape-unicode-crlf-twin": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-prefix-only": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-short-body": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-mask": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-reference": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-label-prose": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--databricks-personal-access-token-public-id": [
+    "databricks-personal-access-token"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-bare": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-quoted": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-unicode-crlf": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-bare-twin": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-quoted-twin": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-unicode-crlf-twin": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-prefix-bare-twin": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-prefix-quoted-twin": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefixed-shape-prefix-unicode-crlf-twin": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-prefix-only": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-short-body": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-mask": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-reference": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-label-prose": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-public-id": [
+    "confluent-cloud-api-secret"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-keyword-context-bare": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-keyword-context-quoted": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-keyword-context-unicode-crlf": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-keyword-context-bare-twin": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-keyword-context-quoted-twin": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-keyword-context-unicode-crlf-twin": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-missing-keyword": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-short-token": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-mask": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-reference": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--confluent-cloud-api-secret-legacy-label-prose": [
+    "confluent-cloud-api-secret-legacy"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-bare": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-quoted": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-unicode-crlf": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-bare-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-quoted-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-unicode-crlf-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-separator-bare-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-separator-quoted-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-separator-unicode-crlf-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-alphabet-bare-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-alphabet-quoted-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-structured-shape-alphabet-unicode-crlf-twin": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-prefix-only": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-short-body": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-mask": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-reference": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-label-prose": [
+    "postman-api-key"
+  ],
+  "detector-coverage--postman-api-key-public-id": [
+    "postman-api-key"
+  ],
+  "detector-coverage--netlify-token-pat-shape-bare": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-pat-shape-quoted": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-pat-shape-unicode-crlf": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-pat-shape-bare-twin": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-pat-shape-quoted-twin": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-pat-shape-unicode-crlf-twin": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-pat-shape-prefix-bare-twin": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-pat-shape-prefix-quoted-twin": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-pat-shape-prefix-unicode-crlf-twin": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-prefix-only": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-short-body": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-mask": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-reference": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-label-prose": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-public-id": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-keyword-context-bare": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-keyword-context-quoted": [
+    "netlify-token"
+  ],
+  "detector-coverage--netlify-token-keyword-context-unicode-crlf": [
+    "netlify-token"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-bare": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-quoted": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-unicode-crlf": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-bare-twin": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-quoted-twin": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-unicode-crlf-twin": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-prefix-bare-twin": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-prefix-quoted-twin": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefixed-shape-prefix-unicode-crlf-twin": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-prefix-only": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-short-body": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-mask": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-reference": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-label-prose": [
+    "heroku-api-key"
+  ],
+  "detector-coverage--heroku-api-key-legacy-keyword-context-bare": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-keyword-context-quoted": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-keyword-context-unicode-crlf": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-keyword-context-bare-twin": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-keyword-context-quoted-twin": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-keyword-context-unicode-crlf-twin": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-missing-keyword": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-short-token": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-mask": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-reference": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-label-prose": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--heroku-api-key-legacy-public-id": [
+    "heroku-api-key-legacy"
+  ],
+  "detector-coverage--mailchimp-api-key-single-digit-datacenter-bare": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-single-digit-datacenter-quoted": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-single-digit-datacenter-unicode-crlf": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-two-digit-datacenter-bare": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-two-digit-datacenter-quoted": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-two-digit-datacenter-unicode-crlf": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-two-digit-datacenter-bare-twin": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-two-digit-datacenter-quoted-twin": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-two-digit-datacenter-unicode-crlf-twin": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-single-digit-datacenter-bare-twin": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-single-digit-datacenter-quoted-twin": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-single-digit-datacenter-unicode-crlf-twin": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-missing-marker": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-short-key": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-mask": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-reference": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-label-prose": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailchimp-api-key-public-id": [
+    "mailchimp-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-bare": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-quoted": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-unicode-crlf": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-http-signing-key-bare": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-http-signing-key-quoted": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-http-signing-key-unicode-crlf": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-bare-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-quoted-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-unicode-crlf-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-prefix-bare-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-prefix-quoted-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-prefix-unicode-crlf-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-alphabet-bare-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-alphabet-quoted-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-private-api-key-alphabet-unicode-crlf-twin": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-prefix-only": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-short-body": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-mask": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-reference": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-label-prose": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--mailgun-api-key-public-id": [
+    "mailgun-api-key"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-bare": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-quoted": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-unicode-crlf": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-keyword-context-bare": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-keyword-context-quoted": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-keyword-context-unicode-crlf": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-bare-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-quoted-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-unicode-crlf-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-prefix-bare-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-prefix-quoted-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-ssws-header-prefix-unicode-crlf-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-keyword-context-bare-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-keyword-context-quoted-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-keyword-context-unicode-crlf-twin": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-prefix-only": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-short-body": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-mask": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-reference": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-label-prose": [
+    "okta-api-token"
+  ],
+  "detector-coverage--okta-api-token-public-id": [
+    "okta-api-token"
+  ],
+  "context-edges--datadog-application-key-legacy-no-final-newline": [
+    "datadog-application-key-legacy"
+  ],
+  "context-edges--datadog-application-key-legacy-single-quotes": [
+    "datadog-application-key-legacy"
+  ],
+  "context-edges--datadog-application-key-legacy-json": [
+    "datadog-application-key-legacy"
+  ],
+  "context-edges--datadog-application-key-legacy-yaml": [
+    "datadog-application-key-legacy"
+  ],
+  "context-edges--datadog-application-key-legacy-toml": [
+    "datadog-application-key-legacy"
+  ],
+  "context-edges--datadog-application-key-legacy-python": [
+    "datadog-application-key-legacy"
+  ],
+  "context-edges--datadog-application-key-legacy-markdown": [
+    "datadog-application-key-legacy"
+  ],
+  "context-edges--datadog-application-key-legacy-bom": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-env-marker-bare": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-env-marker-quoted": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-env-marker-unicode-crlf": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-env-marker-bare-twin": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-env-marker-quoted-twin": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-env-marker-unicode-crlf-twin": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-missing-marker": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-short-key": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-mask": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-reference": [
+    "datadog-application-key-legacy"
+  ],
+  "detector-coverage--datadog-application-key-legacy-label-prose": [
+    "datadog-application-key-legacy"
   ]
 }

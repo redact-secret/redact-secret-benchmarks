@@ -164,7 +164,7 @@ test("generated corpora are deterministic, valid, and match the checked-in files
   const corpora = buildCorpora();
   assert.deepEqual(
     Object.values(corpora).map((c) => c.fixtures.length),
-    [42, 173, 24, 49, 26, 92, 669, 144],
+    [42, 173, 24, 49, 26, 92, 844, 144],
   );
   for (const [id, corpus] of Object.entries(corpora)) {
     assert.equal(corpus.schemaVersion, 2);

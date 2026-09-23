@@ -2,13 +2,20 @@
 
 **Result:** PASS. A real `.github/workflows/performance-evaluation.yml`
 execution against the exact commit `benchmarks/pin-manifest.json` pins
-(`079095e766e4a71e2b7e29413ed17be37bb3315d`, beta.6) evaluated **ACCEPTED**,
-all 46 timing, throughput, and observable-memory checks passing, against
+(`41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1`, product `main` after the
+post-beta.6 detector families landed) evaluated **ACCEPTED**, all 46 timing,
+throughput, and observable-memory checks passing, against
 `benchmarks/performance-criteria.json` as it stood at measurement time —
-thresholds derived from an earlier, unrelated run
-(`944341903d5b85686a056d3218f4c33110d7d57b`, beta.4). This is a genuine,
-non-circular verdict: the thresholds it was checked against were fixed
-before, and independently of, this run.
+thresholds derived from the previous pin's own release-build run
+(`079095e766e4a71e2b7e29413ed17be37bb3315d`, beta.6; run 35861463332, which
+had itself evaluated ACCEPTED against the beta.4-derived thresholds before
+it). This is a genuine, non-circular verdict: the thresholds it was checked
+against were fixed before, and independently of, this run.
+
+The pin moved because `benchmarks/detectors.json` was refreshed to the first
+product commit carrying every family from redact-secret#308–#313; #150's
+rule that the evaluated core revision must match the pin manifest
+(`npm run pins:check`) is what required this re-run.
 
 This same run's `summary.json` (committed here, replacing the beta.4 one) was
 then used to recalibrate `benchmarks/performance-criteria.json` for future
@@ -27,12 +34,23 @@ exists so a permalink to it, plus the one-line result above, is everything
 the core repository's own evidence archive needs to keep — per
 [`evidence/README.md`](../README.md).
 
+## Later runs at a newer pin
+
+The registry pin moved again to product `main` `065ec76` (Mailgun, the Datadog
+application-key split, Okta). The same workflow at that commit evaluated
+**REJECTED** twice against the criteria this file's run produced; those runs
+and the numbers are recorded in [`evidence/683/README.md`](../683/README.md)
+(redact-secret#683). The criteria were deliberately **not** re-derived from
+them, so `baseline.sourceCommit` here stays `41fc366` while the pin is
+`065ec76`, and `npm run pins:check` reports that mismatch until the product
+decides.
+
 ## Source revisions
 
 | Repository | Revision |
 | --- | --- |
-| `redact-secret` (measured) | `079095e766e4a71e2b7e29413ed17be37bb3315d` (0.1.0-beta.6) — the commit `benchmarks/pin-manifest.json`'s `pins.redactSecretRevision` names at measurement time. |
-| `redact-secret-benchmarks` | `main` HEAD (`4bd622d9a1b92f6c144ce8fb6a33df8fcd26337a`) at measurement time — the workflow ref this run was dispatched against and the criteria file it evaluated `summary.json` with. |
+| `redact-secret` (measured) | `41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1` (product `main`, unreleased; the registry pin after the post-beta.6 refresh) — the commit `benchmarks/pin-manifest.json`'s `pins.redactSecretRevision` names at measurement time. The published npm package this repository scores accuracy against stays 0.1.0-beta.6 (`079095e`). |
+| `redact-secret-benchmarks` | `0c0825a9d70f64b3bccaac89472798ea3abd6271` (branch `milocosmopolitan/new-detectors-fixture`, the registry-refresh commit) at measurement time — the workflow ref this run was dispatched against and the criteria file it evaluated `summary.json` with. |
 
 ## Pinned scanner versions
 
@@ -51,12 +69,17 @@ own `provenance.artifactIdentity`, `provenance.runtime`, and (for `rust-core`)
 
 The raw evidence (`summary.json`, `acceptance.json`, `acceptance.md`,
 alongside this README) is this repository's own `ubuntu-latest` CI run:
-[`performance-evaluation` run 35861463332](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35861463332),
-dispatched against `main` and reproducible by anyone with:
+[`performance-evaluation` run 35868842776](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35868842776),
+dispatched against the branch carrying the refreshed pin and reproducible by
+anyone with:
 
 ```sh
-gh workflow run performance-evaluation.yml --ref main
+gh workflow run performance-evaluation.yml --ref <branch or main carrying the pin>
 ```
+
+The previous baseline at beta.6 (run 35861463332, the #150 intake) is
+superseded by this file; its verdict remains recorded in
+`docs/decisions/2026-09-23-run-the-performance-evaluation-for-real.md`.
 
 which checks out core at `benchmarks/pin-manifest.json`'s
 `pins.redactSecretRevision`, builds every surface's release artifact, and

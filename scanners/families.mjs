@@ -25,10 +25,17 @@ const trufflehog = {
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;
-// providers with no family in this corpus (Sentry, Airtable, Postman, Figma,
+// providers with no family in this corpus (Sentry, Airtable, Figma,
 // Notion, Doppler, Square, Azure, Discord, Telegram, New Relic, Groq, xAI,
-// Perplexity, OpenRouter, Replicate, Databricks, GCP, Mailgun, Netlify,
+// Perplexity, OpenRouter, Replicate, GCP,
 // Google, Twilio, Stripe webhook secrets) stay unmapped rather than guessed.
+// `databricks_token` (dapi + 32 hex, optional rotation digit) is the same
+// credential the post-beta.6 `databricks-personal-access-token` family
+// scores (redact-secret#308); `postman_key` (PMAK- + 24 hex + "-" + 34 hex)
+// is exactly `postman-api-key`'s contracted shape (redact-secret#310);
+// `netlify_token` (nfp_ + a 36–60-byte alphanumeric body) is the same
+// personal-access-token credential `netlify-token` scores, over a looser
+// width and without the "_" body byte (redact-secret#311).
 // `aws_secret_key` shares `aws-access-key` with `aws_access_key`, matching
 // how the TruffleHog adapter already families both halves of an AWS pair
 // under one label. `basic_auth` (an HTTP Basic-Auth header) has no family
@@ -43,7 +50,11 @@ const flareRedact = {
   generic_assignment: 'generic-token', vault_token: 'vault-token',
   huggingface_token: 'huggingface-token', digitalocean_token: 'digitalocean-token',
   linear_key: 'linear-token', supabase_key: 'supabase-token', bearer_token: 'bearer-token',
-  url_credentials: 'connection-string',
+  url_credentials: 'connection-string', databricks_token: 'databricks-personal-access-token',
+  postman_key: 'postman-api-key', netlify_token: 'netlify-token',
+  // key-[a-f0-9]{32}: the private API key `mailgun-api-key` scores, over
+  // gitleaks's narrower hex-only body (redact-secret#314).
+  mailgun_key: 'mailgun-api-key',
 };
 const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };
 export function findingFamily(scanner, label) {

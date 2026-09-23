@@ -103,14 +103,42 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // policy/T3, unmatched by the new pattern.
   // #159: 6 new must-redact/T2 positives in detector-coverage — discord-bot-token's
   // current 26/6/38 and 24/6/38 shapes, each across three contexts.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 347);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 353);
+  // Post-beta.6 registry refresh (redact-secret/redact-secret#308, product PR #665):
+  // databricks-personal-access-token joins as must-redact/T2 — two shapes (bare,
+  // rotation-suffixed) across three contexts (+6 files/+6 spans), 3 twins × 3
+  // contexts (netted out below) and 6 independent controls.
+  // redact-secret#309 (product PR #667): confluent-cloud-api-secret (T1, cflt +
+  // 60 base64 × 3 contexts, +3 files/+3 spans; 2 twins × 3 contexts; 6 controls)
+  // and confluent-cloud-api-secret-legacy (keyword-gated, policy/T3 below; 1 twin
+  // × 3 contexts; 5 controls).
+  // redact-secret#310 (product PR #668): postman-api-key (T2, PMAK- + 24 hex + "-" +
+  // 34 hex × 3 contexts, +3 files/+3 spans; 3 twins × 3 contexts; 6 controls).
+  // redact-secret#311 (product PR #666): netlify-token (T1, nfp_ + 36 [A-Za-z0-9_] as a
+  // bare shape and inside a NETLIFY_AUTH_TOKEN assignment, × 3 contexts, +6 files/+6
+  // spans; 2 twins × 3 contexts; 6 controls).
+  // redact-secret#312 (product PR #675): heroku-api-key (T1, HRKU-AA + 58 × 3 contexts,
+  // +3 files/+3 spans; 2 twins × 3 contexts; 5 controls) and heroku-api-key-legacy
+  // (keyword-gated bare UUID, policy/T3 below; 1 twin × 3 contexts; 6 controls).
+  // redact-secret#313 (product PR #678): mailchimp-api-key (T2, 32 hex + -us<N> in a
+  // MAILCHIMP_API_KEY= assignment, one- and two-digit data centers × 3 contexts,
+  // +6 files/+6 spans; 2 twins × 3 contexts; 6 controls).
+  // redact-secret#314 (product PR #680): mailgun-api-key (T2, key- + 32 [a-z0-9] as a
+  // private API key and as an HTTP signing key, × 3 contexts, +6 files/+6 spans; 3
+  // twins × 3 contexts; 6 controls).
+  // redact-secret#315 (product PR #681): okta-api-token (T2, 00 + 40 [A-Za-z0-9_-] in an
+  // SSWS header and in an OKTA_API_TOKEN= assignment, × 3 contexts, +6 files/+6
+  // spans; 3 twins × 3 contexts; 6 controls).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 386);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 392);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
   // #112: 32 more — the four keyword-gated Datadog/Twilio families across the
   // same eight context-edges contexts, policy as in detector-coverage.
-  assert.deepEqual(tally['policy/T3'], { files: 199, spans: 199 });
+  // redact-secret#309: 3 more — confluent-cloud-api-secret-legacy's keyword-gated bare
+  // 64-byte value across three contexts, policy as for twilio/datadog.
+  // redact-secret#312: 3 more — heroku-api-key-legacy's keyword-gated bare UUID.
+  assert.deepEqual(tally['policy/T3'], { files: 205, spans: 205 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -154,7 +182,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // plus a new prefix twin (netted out via -twins.length).
   // #159: 2 new independent negatives (discord-bot-token short-current-final-segment/
   // short-current-first-segment) cover the current-shape length boundaries.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 367);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 428);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

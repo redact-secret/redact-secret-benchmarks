@@ -1,31 +1,31 @@
 {
   "schemaVersion": "1",
-  "status": "accepted",
+  "status": "rejected",
   "criteriaId": "rc-performance-resource-linux-x64-benchmarks-v1",
   "criteriaFixedAt": "2026-09-23",
   "environmentId": "linux-x64-node22-chromium",
-  "sourceCommit": "41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1",
+  "sourceCommit": "065ec76c7978ee60c5de8412bd04b91d39c2c275",
   "summaryPath": "evidence/603/summary.json",
   "checks": [
     {
       "key": "browser-wasm:performance:scale-logs-medium-fixed4096:initialization-p95-ms",
-      "observed": 10.5,
+      "observed": 16,
       "operator": "<=",
-      "threshold": 30,
+      "threshold": 25,
       "passed": true
     },
     {
       "key": "browser-wasm:performance:scale-logs-medium-fixed4096:processing-p95-ms",
-      "observed": 102.10000000003492,
+      "observed": 187.09999999997672,
       "operator": "<=",
       "threshold": 250,
       "passed": true
     },
     {
       "key": "browser-wasm:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second",
-      "observed": 2567619.980410483,
+      "observed": 1401143.7733833918,
       "operator": ">=",
-      "threshold": 1000000,
+      "threshold": 1200000,
       "passed": true
     },
     {
@@ -37,23 +37,23 @@
     },
     {
       "key": "browser-wasm:performance:scale-logs-small-whole:initialization-p95-ms",
-      "observed": 14,
+      "observed": 12.299999999988358,
       "operator": "<=",
-      "threshold": 20,
+      "threshold": 30,
       "passed": true
     },
     {
       "key": "browser-wasm:performance:scale-logs-small-whole:processing-p95-ms",
-      "observed": 22.29999999998836,
+      "observed": 43.10000000000582,
       "operator": "<=",
-      "threshold": 60,
+      "threshold": 45,
       "passed": true
     },
     {
       "key": "browser-wasm:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second",
-      "observed": 2939641.255606916,
+      "observed": 1520974.4779580312,
       "operator": ">=",
-      "threshold": 1000000,
+      "threshold": 1400000,
       "passed": true
     },
     {
@@ -65,135 +65,135 @@
     },
     {
       "key": "cli:performance:scale-logs-medium-fixed4096:initialization-p95-ms",
-      "observed": 1.9440309999999954,
+      "observed": 2.5184220000001005,
       "operator": "<=",
-      "threshold": 5,
+      "threshold": 4,
       "passed": true
     },
     {
       "key": "cli:performance:scale-logs-medium-fixed4096:processing-p95-ms",
-      "observed": 81.78717900000001,
+      "observed": 180.83409499999993,
       "operator": "<=",
-      "threshold": 300,
+      "threshold": 200,
       "passed": true
     },
     {
       "key": "cli:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second",
-      "observed": 3205319.0146098565,
+      "observed": 1449693.4330884896,
       "operator": ">=",
-      "threshold": 1000000,
-      "passed": true
+      "threshold": 1600000,
+      "passed": false
     },
     {
       "key": "cli:performance:scale-logs-medium-fixed4096:memory-processRss-maximum-bytes",
-      "observed": 3321856,
+      "observed": 3231744,
       "operator": "<=",
       "threshold": 8388608,
       "passed": true
     },
     {
       "key": "cli:performance:scale-logs-small-whole:initialization-p95-ms",
-      "observed": 1.622995000000003,
+      "observed": 2.4938270000000102,
       "operator": "<=",
-      "threshold": 6,
+      "threshold": 4,
       "passed": true
     },
     {
       "key": "cli:performance:scale-logs-small-whole:processing-p95-ms",
-      "observed": 22.247591,
+      "observed": 47.61681500000003,
       "operator": "<=",
-      "threshold": 85,
-      "passed": true
+      "threshold": 45,
+      "passed": false
     },
     {
       "key": "cli:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second",
-      "observed": 2946566.2147420812,
+      "observed": 1376698.5465113523,
       "operator": ">=",
-      "threshold": 770000,
-      "passed": true
+      "threshold": 1400000,
+      "passed": false
     },
     {
       "key": "cli:performance:scale-logs-small-whole:memory-processRss-maximum-bytes",
-      "observed": 3325952,
+      "observed": 3207168,
       "operator": "<=",
       "threshold": 8388608,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-medium-fixed4096:initialization-p95-ms",
-      "observed": 4.3737680000000125,
+      "observed": 5.9498629999999935,
       "operator": "<=",
-      "threshold": 10,
+      "threshold": 9,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-medium-fixed4096:processing-p95-ms",
-      "observed": 91.20869800000003,
+      "observed": 178.35778100000005,
       "operator": "<=",
-      "threshold": 250,
+      "threshold": 200,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second",
-      "observed": 2874221.491463456,
+      "observed": 1469820.9325669953,
       "operator": ">=",
-      "threshold": 1100000,
+      "threshold": 1400000,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-medium-fixed4096:memory-nodeHeap-maximum-bytes",
-      "observed": 21701712,
+      "observed": 21701464,
       "operator": "<=",
       "threshold": 54525952,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-medium-fixed4096:memory-nodeRss-maximum-bytes",
-      "observed": 94965760,
+      "observed": 95617024,
       "operator": "<=",
       "threshold": 238026752,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-medium-fixed4096:memory-nodeExternal-maximum-bytes",
-      "observed": 2348236,
+      "observed": 2348242,
       "operator": "<=",
       "threshold": 6291456,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-small-whole:initialization-p95-ms",
-      "observed": 4.2059599999999975,
+      "observed": 6.007730999999993,
       "operator": "<=",
-      "threshold": 10,
+      "threshold": 9,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-small-whole:processing-p95-ms",
-      "observed": 20.05687900000001,
+      "observed": 35.950008999999994,
       "operator": "<=",
-      "threshold": 50,
+      "threshold": 45,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second",
-      "observed": 3268404.8201118414,
+      "observed": 1823476.594957181,
       "operator": ">=",
-      "threshold": 1400000,
+      "threshold": 1600000,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-small-whole:memory-nodeHeap-maximum-bytes",
-      "observed": 7405848,
+      "observed": 7470912,
       "operator": "<=",
       "threshold": 18874368,
       "passed": true
     },
     {
       "key": "node:performance:scale-logs-small-whole:memory-nodeRss-maximum-bytes",
-      "observed": 70074368,
+      "observed": 67944448,
       "operator": "<=",
-      "threshold": 164626432,
+      "threshold": 176160768,
       "passed": true
     },
     {
@@ -205,23 +205,23 @@
     },
     {
       "key": "python:performance:scale-logs-medium-fixed4096:initialization-p95-ms",
-      "observed": 0.623854,
+      "observed": 0.947134,
       "operator": "<=",
       "threshold": 2,
       "passed": true
     },
     {
       "key": "python:performance:scale-logs-medium-fixed4096:processing-p95-ms",
-      "observed": 89.080396,
+      "observed": 172.348248,
       "operator": "<=",
-      "threshold": 300,
+      "threshold": 200,
       "passed": true
     },
     {
       "key": "python:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second",
-      "observed": 2942892.171247196,
+      "observed": 1521071.4529572704,
       "operator": ">=",
-      "threshold": 960000,
+      "threshold": 1400000,
       "passed": true
     },
     {
@@ -233,30 +233,30 @@
     },
     {
       "key": "python:performance:scale-logs-medium-fixed4096:memory-processRss-maximum-bytes",
-      "observed": 21286912,
+      "observed": 21274624,
       "operator": "<=",
       "threshold": 53477376,
       "passed": true
     },
     {
       "key": "python:performance:scale-logs-small-whole:initialization-p95-ms",
-      "observed": 0.57365,
+      "observed": 0.942024,
       "operator": "<=",
       "threshold": 2,
       "passed": true
     },
     {
       "key": "python:performance:scale-logs-small-whole:processing-p95-ms",
-      "observed": 17.906993,
+      "observed": 34.385143,
       "operator": "<=",
-      "threshold": 50,
+      "threshold": 40,
       "passed": true
     },
     {
       "key": "python:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second",
-      "observed": 3660804.468958021,
+      "observed": 1906462.9162659,
       "operator": ">=",
-      "threshold": 1300000,
+      "threshold": 1800000,
       "passed": true
     },
     {
@@ -268,67 +268,73 @@
     },
     {
       "key": "python:performance:scale-logs-small-whole:memory-processRss-maximum-bytes",
-      "observed": 21442560,
+      "observed": 21528576,
       "operator": "<=",
       "threshold": 54525952,
       "passed": true
     },
     {
       "key": "rust-core:performance:scale-logs-medium-fixed4096:initialization-p95-ms",
-      "observed": 0.018137,
+      "observed": 0.022452,
       "operator": "<=",
       "threshold": 1,
       "passed": true
     },
     {
       "key": "rust-core:performance:scale-logs-medium-fixed4096:processing-p95-ms",
-      "observed": 82.309673,
+      "observed": 184.62446,
       "operator": "<=",
-      "threshold": 300,
+      "threshold": 200,
       "passed": true
     },
     {
       "key": "rust-core:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second",
-      "observed": 3184971.9534179172,
+      "observed": 1419931.0318903574,
       "operator": ">=",
-      "threshold": 1000000,
-      "passed": true
+      "threshold": 1500000,
+      "passed": false
     },
     {
       "key": "rust-core:performance:scale-logs-medium-fixed4096:memory-processRss-maximum-bytes",
-      "observed": 3964928,
+      "observed": 3735552,
       "operator": "<=",
       "threshold": 10485760,
       "passed": true
     },
     {
       "key": "rust-core:performance:scale-logs-small-whole:initialization-p95-ms",
-      "observed": 0.016555,
+      "observed": 0.021058999999999998,
       "operator": "<=",
       "threshold": 1,
       "passed": true
     },
     {
       "key": "rust-core:performance:scale-logs-small-whole:processing-p95-ms",
-      "observed": 19.018422,
+      "observed": 39.109346,
       "operator": "<=",
-      "threshold": 55,
+      "threshold": 40,
       "passed": true
     },
     {
       "key": "rust-core:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second",
-      "observed": 3446868.5151691344,
+      "observed": 1676172.237705023,
       "operator": ">=",
-      "threshold": 1200000,
-      "passed": true
+      "threshold": 1700000,
+      "passed": false
     },
     {
       "key": "rust-core:performance:scale-logs-small-whole:memory-processRss-maximum-bytes",
-      "observed": 3854336,
+      "observed": 3784704,
       "operator": "<=",
       "threshold": 10485760,
       "passed": true
     }
   ],
-  "failures": []
+  "failures": [
+    "cli:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second:threshold-not-met",
+    "cli:performance:scale-logs-small-whole:processing-p95-ms:threshold-not-met",
+    "cli:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second:threshold-not-met",
+    "rust-core:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second:threshold-not-met",
+    "rust-core:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second:threshold-not-met"
+  ]
 }

@@ -88,10 +88,15 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #112: 64 new must-redact/T2 positives in context-edges — the eight
   // pattern-contracted families that sat at the detector-coverage floor, each
   // across eight text contexts (fixtures/generated/context-families.mjs).
+  // #160: 3 new must-redact/T2 positives (new-relic-license-key's currently
+  // issued 32-hex-plus-FFFFNRAL generation, one per context) now that
+  // trufflehog 3.97.4's newreliclicensekey detector corroborates the shape
+  // (redact-secret/redact-secret#656); the legacy all-hex generation stays
+  // policy/T3, unmatched by the new pattern.
   // #159: 6 new must-redact/T2 positives in detector-coverage — discord-bot-token's
   // current 26/6/38 and 24/6/38 shapes, each across three contexts.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 338);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 344);
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 341);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 347);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.

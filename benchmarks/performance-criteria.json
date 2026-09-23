@@ -9,7 +9,7 @@
   },
   "baseline": {
     "summaryPath": "evidence/603/summary.json",
-    "sourceCommit": "41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1",
+    "sourceCommit": "15fce66e7c2d45003d7c6e31a341e5bc875a7326",
     "accuracyCorpusVersion": "3",
     "accuracyCorpusHash": "438df062ddde47dcb32ae0aefc4297ed8b8c9e2c3270778c2b1f8809e40bd0dd",
     "workloadProfilesVersion": "1",
@@ -53,9 +53,9 @@
     {
       "surface": "browser-wasm",
       "profileId": "scale-logs-medium-fixed4096",
-      "maxInitializationP95Ms": 25,
-      "maxProcessingP95Ms": 250,
-      "minThroughputBytesPerSecond": 1200000,
+      "maxInitializationP95Ms": 35,
+      "maxProcessingP95Ms": 200,
+      "minThroughputBytesPerSecond": 1400000,
       "memoryCapsBytes": {
         "browserJsHeap": 99614720
       }
@@ -63,9 +63,9 @@
     {
       "surface": "browser-wasm",
       "profileId": "scale-logs-small-whole",
-      "maxInitializationP95Ms": 30,
-      "maxProcessingP95Ms": 45,
-      "minThroughputBytesPerSecond": 1400000,
+      "maxInitializationP95Ms": 40,
+      "maxProcessingP95Ms": 55,
+      "minThroughputBytesPerSecond": 1200000,
       "memoryCapsBytes": {
         "browserJsHeap": 25165824
       }
@@ -73,7 +73,7 @@
     {
       "surface": "cli",
       "profileId": "scale-logs-medium-fixed4096",
-      "maxInitializationP95Ms": 4,
+      "maxInitializationP95Ms": 6,
       "maxProcessingP95Ms": 200,
       "minThroughputBytesPerSecond": 1600000,
       "memoryCapsBytes": {
@@ -83,8 +83,8 @@
     {
       "surface": "cli",
       "profileId": "scale-logs-small-whole",
-      "maxInitializationP95Ms": 4,
-      "maxProcessingP95Ms": 45,
+      "maxInitializationP95Ms": 6,
+      "maxProcessingP95Ms": 50,
       "minThroughputBytesPerSecond": 1400000,
       "memoryCapsBytes": {
         "processRss": 8388608
@@ -93,24 +93,24 @@
     {
       "surface": "node",
       "profileId": "scale-logs-medium-fixed4096",
-      "maxInitializationP95Ms": 9,
+      "maxInitializationP95Ms": 15,
       "maxProcessingP95Ms": 200,
-      "minThroughputBytesPerSecond": 1400000,
+      "minThroughputBytesPerSecond": 1600000,
       "memoryCapsBytes": {
         "nodeHeap": 54525952,
-        "nodeRss": 238026752,
+        "nodeRss": 239075328,
         "nodeExternal": 6291456
       }
     },
     {
       "surface": "node",
       "profileId": "scale-logs-small-whole",
-      "maxInitializationP95Ms": 9,
-      "maxProcessingP95Ms": 45,
-      "minThroughputBytesPerSecond": 1600000,
+      "maxInitializationP95Ms": 15,
+      "maxProcessingP95Ms": 30,
+      "minThroughputBytesPerSecond": 2200000,
       "memoryCapsBytes": {
         "nodeHeap": 18874368,
-        "nodeRss": 176160768,
+        "nodeRss": 169869312,
         "nodeExternal": 6291456
       }
     },
@@ -118,8 +118,8 @@
       "surface": "python",
       "profileId": "scale-logs-medium-fixed4096",
       "maxInitializationP95Ms": 2,
-      "maxProcessingP95Ms": 200,
-      "minThroughputBytesPerSecond": 1400000,
+      "maxProcessingP95Ms": 150,
+      "minThroughputBytesPerSecond": 1800000,
       "memoryCapsBytes": {
         "pythonHeap": 2097152,
         "processRss": 53477376
@@ -129,8 +129,8 @@
       "surface": "python",
       "profileId": "scale-logs-small-whole",
       "maxInitializationP95Ms": 2,
-      "maxProcessingP95Ms": 40,
-      "minThroughputBytesPerSecond": 1800000,
+      "maxProcessingP95Ms": 30,
+      "minThroughputBytesPerSecond": 2200000,
       "memoryCapsBytes": {
         "pythonHeap": 1048576,
         "processRss": 54525952
@@ -140,20 +140,20 @@
       "surface": "rust-core",
       "profileId": "scale-logs-medium-fixed4096",
       "maxInitializationP95Ms": 1,
-      "maxProcessingP95Ms": 200,
-      "minThroughputBytesPerSecond": 1500000,
+      "maxProcessingP95Ms": 150,
+      "minThroughputBytesPerSecond": 1900000,
       "memoryCapsBytes": {
-        "processRss": 10485760
+        "processRss": 9437184
       }
     },
     {
       "surface": "rust-core",
       "profileId": "scale-logs-small-whole",
       "maxInitializationP95Ms": 1,
-      "maxProcessingP95Ms": 40,
-      "minThroughputBytesPerSecond": 1700000,
+      "maxProcessingP95Ms": 30,
+      "minThroughputBytesPerSecond": 2200000,
       "memoryCapsBytes": {
-        "processRss": 10485760
+        "processRss": 9437184
       }
     }
   ]

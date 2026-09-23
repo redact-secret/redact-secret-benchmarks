@@ -96,16 +96,15 @@ file's own `derivation` field):
 The current criteria were derived from
 [`evidence/603/summary.json`](../../evidence/603/summary.json), this
 repository's own real
-[`performance-evaluation.yml` run](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35868842776)
+[`performance-evaluation.yml` run](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35878900954)
 against the commit `benchmarks/pin-manifest.json` pinned at measurement time
-(`41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1`, the registry pin after the
-post-beta.6 family refresh) — release builds, five repetitions, matching the
+(`15fce66e7c2d45003d7c6e31a341e5bc875a7326`, product `main` after the #683
+throughput fix) — release builds, five repetitions, matching the
 current pin (`npm run pins:check` fails otherwise; see #150). This run's own
 evaluation, recorded in
 [`evidence/603/acceptance.md`](../../evidence/603/acceptance.md), reports
 `ACCEPTED` with all 46 checks passing against the criteria that were
-committed *before* this run — the beta.6 baseline derived from run
-35861463332 — which makes that verdict genuine, not self-referential. The recalibration this run
+committed *before* this run — derived from the `41fc366` run 35868842776 — which makes that verdict genuine, not self-referential. The recalibration this run
 then produced is not itself re-checked against the same run for a second
 "ACCEPTED": any threshold derived with a margin necessarily accepts the run
 it came from, so that would demonstrate nothing.

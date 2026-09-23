@@ -1312,6 +1312,76 @@
           ]
         }
       ]
+    },
+    {
+      "id": "product-672",
+      "title": "new-relic-license-key current shape (32-hex + FFFFNRAL) goes undetected",
+      "url": "https://github.com/redact-secret/redact-secret/issues/672",
+      "number": 672,
+      "fixtures": [
+        "detector-coverage--new-relic-license-key-current-format-bare",
+        "detector-coverage--new-relic-license-key-current-format-quoted",
+        "detector-coverage--new-relic-license-key-current-format-unicode-crlf"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.6",
+        "lockHash": "391edc5b11bd6134af83f2e3df861cfa7e0bbb600732e19b78578e4258a781a8",
+        "sourceCommit": "7f00ac7b24def94b8207db167d03973e011260ad"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/656#issuecomment-5784943534",
+          "https://github.com/redact-secret/redact-secret/issues/656#issuecomment-5785640607",
+          "https://github.com/redact-secret/redact-secret/issues/656#issuecomment-5786035362"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/672"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--new-relic-license-key-current-format-bare",
+          "corpusHash": "fffa0619fdfc286fc5fc118d956e4291a4127cc5759e687bf57f45478d841660",
+          "expected": [
+            {
+              "start": 9,
+              "end": 49
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--new-relic-license-key-current-format-quoted",
+          "corpusHash": "fffa0619fdfc286fc5fc118d956e4291a4127cc5759e687bf57f45478d841660",
+          "expected": [
+            {
+              "start": 16,
+              "end": 56
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "detector-coverage--new-relic-license-key-current-format-unicode-crlf",
+          "corpusHash": "fffa0619fdfc286fc5fc118d956e4291a4127cc5759e687bf57f45478d841660",
+          "expected": [
+            {
+              "start": 30,
+              "end": 70
+            }
+          ],
+          "actual": []
+        }
+      ]
     }
   ]
 }

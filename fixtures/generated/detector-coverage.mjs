@@ -344,6 +344,14 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   addTwin("new-relic-license-key", "keyword-context", ["newrelic " + newRelicLicenseKey.slice(0, -1)], "length: 39 vs provider-documented 40-character hexadecimal string");
   add("new-relic-license-key", "missing-keyword", [newRelicLicenseKey]);
   add("new-relic-license-key", "short-key", ["newrelic " + newRelicLicenseKey.slice(0, 20)]);
+  // #160: the currently issued generation (redact-secret/redact-secret#656) is 32
+  // lowercase hex bytes plus the literal marker trufflehog 3.97.4's newreliclicensekey
+  // detector requires, FFFFNRAL; the legacy all-hex value above is a still-issued, but
+  // now non-current, earlier generation, not a malformed instance of this one.
+  const newRelicLicenseKeyCurrent = synthetic("coverage:new-relic:license-key:current", 32, LOWER_HEX) + "FFFFNRAL";
+  positive("new-relic-license-key", "current-format", ["newrelic ", { secret: newRelicLicenseKeyCurrent }]);
+  addTwin("new-relic-license-key", "current-format", ["newrelic " + newRelicLicenseKeyCurrent.slice(0, -1)], "length: 39 vs the provider-documented 40 characters (docs.newrelic.com: \"New Relic ingest license key (40 chars, suffix NRAL)\")");
+  addTwin("new-relic-license-key", "current-format", ["newrelic " + newRelicLicenseKeyCurrent.slice(0, -1) + "X"], "marker: FFFFNRAX suffix vs the provider-documented NRAL suffix (docs.newrelic.com: \"New Relic ingest license key (40 chars, suffix NRAL)\")", "boundary", "current-format-marker");
 
   // #67: HashiCorp's own documentation shows one identical grammar for user,
   // organization and team tokens, so shapes vary the synthetic body, not a

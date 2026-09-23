@@ -15,11 +15,14 @@ const twins = fixtures.filter(f => f.twinOf);
 const bytesOf = (f, r) => Buffer.from(f.content).subarray(r.start, r.end).toString();
 
 // The 22 families issue #36 found with no twin anywhere in the corpus.
-const TWINNED = ['aws-access-key', 'generic-token', 'connection-string', 'otpauth-uri', 'bearer-token', 'pypi-token', 'new-relic-license-key', 'azure-devops-personal-access-token'];
+// #162: datadog-application-key joins this list, not LIFTED below — its ddapp_-prefixed
+// shape is a newly documented format the un-probeable record never covered, not a
+// re-check that lifted the existing (still un-probeable) legacy-shape record.
+const TWINNED = ['aws-access-key', 'generic-token', 'connection-string', 'otpauth-uri', 'bearer-token', 'pypi-token', 'new-relic-license-key', 'azure-devops-personal-access-token', 'datadog-application-key'];
 // #36 un-probeable families a 2026-09-22 re-check found a provider-domain source for
 // (docs/decisions/2026-09-22-lift-five-families-out-of-un-probeable.md).
 const LIFTED = ['datadog-api-key', 'new-relic-user-api-key', 'grafana-service-account-token', 'grafana-cloud-access-policy-token', 'microsoft-entra-client-secret'];
-const UNPROBEABLE = ['vercel-token', 'supabase-token', 'discord-bot-token', 'telegram-bot-token', 'datadog-application-key', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
+const UNPROBEABLE = ['vercel-token', 'supabase-token', 'discord-bot-token', 'telegram-bot-token', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
 
 test('every detector family either has a twin or is recorded un-probeable, never both and never neither', () => {
   assert.equal(TWINNED.length + LIFTED.length + UNPROBEABLE.length, 22);
@@ -132,6 +135,10 @@ const T1_DIMENSIONS = {
   'terraform-cloud-token': ['length', 'boundary'],
   'pulumi-access-token': ['length', 'alphabet'],
   'supabase-management-token': ['length', 'alphabet'],
+  // #162: only the ddapp_ prefix is provider-documented; body length and alphabet stay
+  // tool/code-corroborated only (see the contract's review note), so no length/alphabet
+  // twin is authored here.
+  'datadog-application-key': ['prefix'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -153,6 +160,6 @@ test('every T1 ("stable"-track) family has a twin for each structural dimension 
 test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
-  assert.equal(probe.counts['un-probeable'], 9);
-  assert.equal(probe.counts['not-measured'], 37);
+  assert.equal(probe.counts['un-probeable'], 8);
+  assert.equal(probe.counts['not-measured'], 38);
 });

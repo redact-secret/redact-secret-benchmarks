@@ -332,6 +332,22 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("datadog-application-key", "missing-marker", [datadogAppKey]);
   add("datadog-application-key", "short-key", ["DD_APPLICATION_KEY=" + datadogAppKey.slice(0, 20)]);
 
+  // #162/redact-secret#645: the current-format `ddapp_` application key, distinct from
+  // the legacy grammar-less 40-hex shape above. `ddapp_` is a provider-documented
+  // identifying prefix (docs.datadoghq.com's personal-access-tokens and
+  // service-access-tokens comparison tables); the 34-character alphanumeric body is
+  // corroborated only by Datadog-owned code (Agent validator/scrubber, CloudFormation
+  // and ARM templates) and AWS's partner doc, never by that provider-domain page.
+  const datadogAppKeyPrefixedBody = synthetic("coverage:datadog:application-key-prefixed-body", 34);
+  const datadogAppKeyPrefixed = `ddapp_${datadogAppKeyPrefixedBody}`;
+  positive("datadog-application-key", "prefixed-env-marker", ["DD_APPLICATION_KEY=", { secret: datadogAppKeyPrefixed }]);
+  addTwin("datadog-application-key", "prefixed-env-marker", ["DD_APPLICATION_KEY=ddapx_" + datadogAppKeyPrefixedBody], "prefix namespace: ddapx_ vs provider-documented ddapp_ (new) application-key prefix", "prefix");
+  // No missing-marker control: ddapp_ is self-identifying (unlike the legacy bare-hex
+  // shape), so a bare value with no marker still satisfies the contract's pattern and
+  // is not a valid near-miss — the families loop's prefixed shapes use the same
+  // prefix-only/short-body pair instead of a missing-marker control, for the same reason.
+  add("datadog-application-key", "prefixed-short-key", ["DD_APPLICATION_KEY=" + datadogAppKeyPrefixed.slice(0, 20)]);
+
   const grafanaSaBody = synthetic("coverage:grafana-sa:body", 32);
   const grafanaSaChecksum = synthetic("coverage:grafana-sa:checksum", 8, LOWER_HEX);
   positive("grafana-service-account-token", "checksum-segment", [{ secret: `glsa_${grafanaSaBody}_${grafanaSaChecksum}` }]);

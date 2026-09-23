@@ -50,6 +50,10 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   const anthropic = value('anthropic', 93);
   token('anthropic-token', 'api03', 'sk-ant-api03-' + anthropic + 'AA');
   addTwin('anthropic-token', 'api03', 'sk-ant-api04-' + anthropic + 'AA', 'prefix', 'prefix namespace: sk-ant-api04- vs contracted sk-ant-api03-');
+  // #112: Anthropic's own key-type table documents these as real sibling
+  // credential classes, not Claude API keys covered by this contract.
+  addTwin('anthropic-token', 'api03', 'sk-ant-api01-' + anthropic + 'AA', 'prefix', 'prefix namespace: sk-ant-api01- (Compliance Access Key) vs contracted sk-ant-api03-', '', 'api03-compliance-prefix');
+  addTwin('anthropic-token', 'api03', 'sk-ant-admin01-' + anthropic + 'AA', 'prefix', 'prefix namespace: sk-ant-admin01- (Admin API key) vs contracted sk-ant-api03-', '', 'api03-admin-prefix');
   const openaiLeft = value('openai-left', 20), openaiRight = value('openai-right', 20);
   token('openai-token', 'legacy', 'sk-' + openaiLeft + 'T3BlbkFJ' + openaiRight);
   addTwin('openai-token', 'legacy', 'sk-' + openaiLeft + 'T3BlbkFK' + openaiRight, 'boundary', 'internal marker: T3BlbkFK vs contracted T3BlbkFJ');
@@ -106,6 +110,9 @@ export function buildCommonFormats({ fixture, synthetic, wrap }) {
   const hf = value('hf', 34, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
   token('huggingface-token', 'user', 'hf_' + hf);
   addTwin('huggingface-token', 'user', 'hf_' + hf.slice(0, 33), 'length', 'length: 33 vs contracted 34');
+  // #112 (redact-secret#654): hx_ breaks only the hf_ prefix huggingface.co's SDK
+  // reference documents; the 34-letter body is unchanged.
+  addTwin('huggingface-token', 'user', 'hx_' + hf, 'prefix', 'prefix namespace: hx_ vs the provider-documented hf_ user access-token prefix', '', 'user-prefix');
   const dockerPat = value('docker-pat', 27), dockerOat = value('docker-oat', 32);
   token('docker-token', 'pat', 'dckr_pat_' + dockerPat);
   addTwin('docker-token', 'pat', 'dckr_pat_' + dockerPat.slice(0, 26), 'length', 'length: 26 vs contracted 27');

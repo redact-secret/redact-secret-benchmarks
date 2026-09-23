@@ -115,7 +115,9 @@ test('twinProbe separates discriminated, not discriminated and un-probeable, and
 // record as un-probeable. cloudflare-token gained a `length` twin on the
 // same tool-corroborated standing already used for its `alphabet` twin.
 const T1_DIMENSIONS = {
+  'anthropic-token': ['prefix'],
   'aws-access-key': ['prefix'],
+  'azure-devops-personal-access-token': ['length', 'boundary'],
   'github-token': ['length', 'prefix'],
   'gitlab-token': ['length', 'prefix'],
   'shopify-token': ['prefix', 'boundary'],
@@ -128,6 +130,12 @@ const T1_DIMENSIONS = {
   'pypi-token': ['prefix', 'length', 'alphabet'],
   'cloudflare-token': ['alphabet', 'prefix', 'length'],
   'digitalocean-token': ['length', 'prefix'],
+  'google-api-key': ['length', 'prefix'],
+  'grafana-cloud-access-policy-token': ['prefix'],
+  'grafana-service-account-token': ['prefix'],
+  'linear-token': ['length'],
+  'new-relic-user-api-key': ['prefix'],
+  'notion-token': ['length', 'prefix'],
   'npm-token': ['length', 'prefix', 'boundary'],
   'sendgrid-token': ['boundary', 'length'],
   'private-key': ['prefix', 'public-prefix'],
@@ -142,8 +150,23 @@ const T1_DIMENSIONS = {
   'heroku-api-key': ['length', 'prefix'],
   // #162: only the ddapp_ prefix is provider-documented; body length and alphabet stay
   // tool/code-corroborated only (see the contract's review note), so no length/alphabet
-  // twin is authored here.
-  'datadog-application-key': ['prefix'],
+  // twin is authored here. #112: a boundary twin drops the "_" of that same documented
+  // ddapp_ literal.
+  'datadog-application-key': ['prefix', 'boundary'],
+  // #112 (redact-secret#644/#654/#655/#656): re-tiered on provider evidence. Each twin
+  // mutates only what that source establishes: Datadog's exact API-key length; the hf_
+  // prefix and example-strength 34-character length; the Entra examples' width (the
+  // Purview maximum of 40 backs the 41-character twin); New Relic's 40-character total
+  // and NRAL suffix.
+  // The Datadog marker is keyword context, which a T1 contract cannot twin (context
+  // twins are policy-tier only); the Entra Q~ marker carries a boundary twin. #112
+  // (redact-secret#647/#648/#708): docker-token's provider source states the dckr_pat_/
+  // dckr_oat_ prefixes; its length twins bracket both exact OAT widths.
+  'datadog-api-key': ['length'],
+  'docker-token': ['length', 'prefix'],
+  'huggingface-token': ['length', 'prefix'],
+  'microsoft-entra-client-secret': ['length', 'boundary'],
+  'new-relic-license-key': ['length', 'boundary'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {

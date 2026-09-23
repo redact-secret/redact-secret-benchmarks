@@ -194,6 +194,17 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
         addTwin(detector, `shape-${index + 1}`, [prefix + "!" + value.slice(prefix.length + 1)], "alphabet: a byte outside the provider-documented [A-Za-z0-9-_] class immediately after the prefix", "alphabet", `shape-${index + 1}-alphabet`);
       }
       if (documentedTwins[detector]) documentedTwin(detector, `shape-${index + 1}`, value);
+      // #112: one additional three-context twin moves each previously thin
+      // family above the five-pair floor without claiming undocumented
+      // alternate prefixes. These mutate only the contracted prefix/marker.
+      if (detector === "google-api-key")
+        addTwin(detector, `shape-${index + 1}`, ["AIzx" + value.slice(prefix.length)], "prefix namespace: AIzx vs the provider-example AIza prefix", "prefix", `shape-${index + 1}-prefix`);
+      if (detector === "notion-token")
+        addTwin(detector, `shape-${index + 1}`, ["secrex_" + value.slice(prefix.length)], "prefix namespace: secrex_ vs the provider-documented legacy secret_ prefix", "prefix", `shape-${index + 1}-prefix`);
+      // #112 (redact-secret#654): huggingface.co's SDK reference types the user
+      // access token as hf_${string}; hx_ breaks only that provider-documented prefix.
+      if (detector === "huggingface-token")
+        addTwin(detector, `shape-${index + 1}`, ["hx_" + value.slice(prefix.length)], "prefix namespace: hx_ vs the provider-documented hf_ user access-token prefix", "prefix", `shape-${index + 1}-prefix`);
     });
     add(detector, "prefix-only", [prefixes.join("\n")]);
     add(detector, "short-body", [prefixes.map(prefix => prefix + "abc").join("\n")]);
@@ -267,6 +278,17 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // used here instead of guessing DOCKER_PAT.
   add("docker-token", "mask", [`dckr_pat_${"*".repeat(27)}`]);
   add("docker-token", "reference", ["DOCKER_PASSWORD=${DOCKER_PASSWORD}\n"]);
+  // #112 / redact-secret#708 (evidence #647): Docker's Hub API spec shows an
+  // Organization Access Token with a 27-character alphanumeric body, and the
+  // contract now accepts that exact width beside the tool-corroborated 32.
+  // The 26/28 twins bracket the new exact width; the dckx_ twin breaks the
+  // dckr_ stem of the provider-documented dckr_oat_* format.
+  const dockerOat27Body = synthetic("coverage:docker:oat-27:body", 27);
+  const dockerOat27 = `dckr_oat_${dockerOat27Body}`;
+  positive("docker-token", "oat-27", [{ secret: dockerOat27 }]);
+  addTwin("docker-token", "oat-27", [dockerOat27.slice(0, -1)], "length: 26-byte dckr_oat_ body vs the exact 27 Docker's Hub API example shows", "length", "oat-27-short");
+  addTwin("docker-token", "oat-27", [dockerOat27 + synthetic("coverage:docker:oat-27:extra", 1)], "length: 28-byte dckr_oat_ body vs the exact 27 Docker's Hub API example shows (and not the tool-corroborated 32)", "length", "oat-27-long");
+  addTwin("docker-token", "oat-27", [`dckx_oat_${dockerOat27Body}`], "prefix namespace: dckx_oat_ vs the provider-documented dckr_oat_ Organization Access Token prefix", "prefix", "oat-27-prefix");
   add("huggingface-token", "mask", [`hf_${"*".repeat(34)}`]);
   add("huggingface-token", "reference", ["HF_TOKEN=${HF_TOKEN}\n"]);
   add("linear-token", "mask", [`lin_api_${"*".repeat(40)}`]);
@@ -285,6 +307,9 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   const entraSuffix = synthetic("coverage:entra:suffix", 33, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.~-");
   positive("microsoft-entra-client-secret", "digit-q-tilde", [{ secret: `${entraPrefix}8Q~${entraSuffix}` }]);
   documentedTwin("microsoft-entra-client-secret", "digit-q-tilde", `${entraPrefix}8Q~${entraSuffix}`);
+  // #112 (redact-secret#655): the Graph PowerShell examples fix the Q~ marker at
+  // offset 4; 8R~ breaks only that marker, width unchanged.
+  addTwin("microsoft-entra-client-secret", "digit-q-tilde", [`${entraPrefix}8R~${entraSuffix}`], "marker: 8R~ vs the Q~ marker the provider's Add-MgApplicationPassword examples show at offset 4", "boundary", "digit-q-tilde-marker");
   add("microsoft-entra-client-secret", "missing-marker", [`${entraPrefix}8${entraSuffix}`]);
   add("microsoft-entra-client-secret", "short-suffix", [`${entraPrefix}8Q~${entraSuffix.slice(0, 28)}`]);
   // redact-secret-benchmarks#161 / redact-secret#655 (web-search pass): a
@@ -308,6 +333,7 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   const azdoSuffix = synthetic("coverage:azdo:suffix", 4);
   positive("azure-devops-personal-access-token", "azdo-marker", [{ secret: `${azdoPrefix}AZDO${azdoSuffix}` }]);
   addTwin("azure-devops-personal-access-token", "azdo-marker", [`${azdoPrefix}AZDO${azdoSuffix}`.slice(0, -1)], "length: 83 vs provider-documented 84 characters; AZDO signature position unchanged");
+  addTwin("azure-devops-personal-access-token", "azdo-marker", [`${azdoPrefix}AZDX${azdoSuffix}`], "marker: AZDX vs provider-documented AZDO at positions 76-80", "boundary", "azdo-marker-signature");
   add("azure-devops-personal-access-token", "missing-marker", [azdoPrefix + azdoSuffix + "XXXX"]);
   add("azure-devops-personal-access-token", "short-body", [`${azdoPrefix.slice(0, 70)}AZDO${azdoSuffix}`]);
 
@@ -387,6 +413,10 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   const datadogAppKeyPrefixed = `ddapp_${datadogAppKeyPrefixedBody}`;
   positive("datadog-application-key", "prefixed-env-marker", ["DD_APPLICATION_KEY=", { secret: datadogAppKeyPrefixed }]);
   addTwin("datadog-application-key", "prefixed-env-marker", ["DD_APPLICATION_KEY=ddapx_" + datadogAppKeyPrefixedBody], "prefix namespace: ddapx_ vs provider-documented ddapp_ (new) application-key prefix", "prefix");
+  // #112: a second provider-backed twin, same standing as stripe/shopify's boundary
+  // twins (#65): the "_" is part of the documented ddapp_ literal, so dropping it
+  // breaks the prefix without touching the tool-corroborated body.
+  addTwin("datadog-application-key", "prefixed-env-marker", ["DD_APPLICATION_KEY=ddapp" + datadogAppKeyPrefixedBody], "boundary: missing \"_\" delimiter after the provider-documented ddapp_ (new) application-key prefix", "boundary", "prefixed-env-marker-boundary");
   // No missing-marker control: ddapp_ is self-identifying (unlike the legacy bare-hex
   // shape), so a bare value with no marker still satisfies the contract's pattern and
   // is not a valid near-miss — the families loop's prefixed shapes use the same
@@ -960,6 +990,9 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("datadog-application-key", "mask", ["DD_APPLICATION_KEY=ddapp_" + "*".repeat(34)]);
   add("datadog-application-key", "reference", ["DD_APPLICATION_KEY=${DATADOG_APPLICATION_KEY}\n"]);
   add("datadog-application-key", "label-prose", ["Documentation mentions a Datadog application key (ddapp_ prefix, DD_APPLICATION_KEY marker) without embedding the key value."]);
+  // #112: fifth benign control on a fourth axis (ordinary-prose, pypi-token's #107
+  // template) rather than another near-miss shape.
+  add("datadog-application-key", "ordinary-prose", ["We rotate our Datadog application keys every quarter as part of routine key hygiene.\n"]);
 
   add("discord-bot-token", "mask", [`${"*".repeat(24)}.${"*".repeat(6)}.${"*".repeat(27)}`]);
   add("discord-bot-token", "reference", ["DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}\n"]);

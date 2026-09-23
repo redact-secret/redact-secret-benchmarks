@@ -128,8 +128,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#315 (product PR #681): okta-api-token (T2, 00 + 40 [A-Za-z0-9_-] in an
   // SSWS header and in an OKTA_API_TOKEN= assignment, × 3 contexts, +6 files/+6
   // spans; 3 twins × 3 contexts; 6 controls).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 386);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 392);
+  // #112 / redact-secret#708: docker-token's dckr_oat_ branch accepts the exact 27-byte
+  // body Docker's Hub API example shows; one new must-redact/T1 positive × 3 contexts
+  // (+3 files/+3 spans), 3 twins × 3 contexts (netted out below).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 389);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 395);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -182,7 +185,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // plus a new prefix twin (netted out via -twins.length).
   // #159: 2 new independent negatives (discord-bot-token short-current-final-segment/
   // short-current-first-segment) cover the current-shape length boundaries.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 428);
+  // #112: 1 new independent negative (datadog-application-key-ordinary-prose) lands a
+  // fifth benign case on a fourth axis; the new huggingface-token prefix and
+  // datadog-application-key boundary twins are netted out via -twins.length.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 429);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });
@@ -243,7 +249,7 @@ test('corpus validation rejects malformed roles, envelopes and twins', () => {
 
 test('twins mutate exactly one property, pair with their positive and never carry spans', () => {
   const twins = common.filter(f => f.twinOf);
-  assert.equal(twins.length, 86);
+  assert.equal(twins.length, 92);
   const untwinned = common.filter(f => f.assessment.kind === 'must-redact' && !twins.some(t => t.twinOf === f.id));
   assert.deepEqual(untwinned.map(f => f.id), ['aws-access-key-pair-plain', 'aws-access-key-pair-unicode-crlf'], 'the ID/secret pair has no single-mutation twin yet');
   for (const t of twins) {
@@ -270,10 +276,10 @@ test('malformed fixtures, missing companions and pending variants cannot pass as
   assert.equal(get('cloudflare-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('pypi-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('docker-token-shape-1-bare').assessment.kind, 'must-redact');
-  assert.equal(get('docker-token-shape-1-bare').assessment.tier, 'T2');
+  assert.equal(get('docker-token-shape-1-bare').assessment.tier, 'T1');
   for (const id of ['supabase-token-shape-1-bare', 'vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
   assert.equal(get('digitalocean-token-shape-1-bare').assessment.tier, 'T1');
-  assert.equal(get('linear-token-shape-1-bare').assessment.tier, 'T2');
+  assert.equal(get('linear-token-shape-1-bare').assessment.tier, 'T1');
   const anthropic = structuredClone(common.find(f => f.id === 'anthropic-token-api03-plain'));
   anthropic.content = anthropic.content.replace(/AA\n/, 'AB\n');
   assert.throws(() => validateAssessment(anthropic), /contract/);
@@ -283,7 +289,7 @@ test('malformed fixtures, missing companions and pending variants cannot pass as
   const aws = structuredClone(common.find(f => f.id === 'aws-access-key-pair-plain'));
   aws.expected.pop();
   assert.throws(() => validateAssessment(aws), /pair/);
-  assert.throws(() => validateAssessment({ ...common[0], assessment: { kind: 'must-redact', tier: 'T2', reason: 'Unsupported promotion', contract: 'datadog-api-key', sources: ['x'] } }), /validator/);
+  assert.throws(() => validateAssessment({ ...common[0], assessment: { kind: 'must-redact', tier: 'T1', reason: 'Unsupported promotion', contract: 'datadog-api-key', sources: ['x'] } }), /validator/);
   assert.throws(() => validateAssessment({ ...common[0], assessment: { kind: 'must-redact', tier: 'T2', reason: 'Tier mismatch', contract: 'github-token', sources: ['x'] } }), /evidence/);
   assert.throws(() => validateAssessment({ ...common[0], assessment: { kind: 'policy', tier: 'T1', reason: 'x', sources: [] } }), /T3/);
   assert.throws(() => validateAssessment({ id: 'missing' }), /assessment/);
@@ -372,7 +378,8 @@ test('cross-suite views aggregate only the newest run id and name stale suites',
 });
 
 test('format-correct unsupported controls stay included regardless of scanner output', () => {
-  const selected = common.filter(f => /docker-token|cloudflare-token|stripe-token-test/.test(f.id));
+  // #112: docker-token moved to T1, so openai-token supplies the T2 selection.
+  const selected = common.filter(f => /openai-token|cloudflare-token|stripe-token-test/.test(f.id));
   const result = scoreReport(selected, [], lax);
   assert.equal(result.groups['must-redact/T2'].leakedSpans, selected.filter(f => f.assessment.kind === 'must-redact' && f.assessment.tier === 'T2').length);
   assert.equal(result.groups['must-redact/T1'].leakedSpanRate.point, 1);

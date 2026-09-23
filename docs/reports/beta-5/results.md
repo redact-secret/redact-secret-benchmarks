@@ -55,7 +55,7 @@ Unicode/CRLF context) are now silent. One row scored `PARTIAL` against a
 | [#373](https://github.com/redact-secret/redact-secret/issues/373) | `cloudflare-token` | `user` non-hex checksum suffix | `cfut_[A-Za-z0-9]{40}[0-9a-f]{8}` |
 | [#374](https://github.com/redact-secret/redact-secret/issues/374) | `linear-token` | `api` 39-vs-40 byte body | `lin_api_[A-Za-z0-9]{40}` |
 | [#375](https://github.com/redact-secret/redact-secret/issues/375) | shared context/streaming | paired-precision context matrix (product-side conformance only; no benchmark corpus change) | — |
-| [#367](https://github.com/redact-secret/redact-secret/issues/367) | all seven | contract freeze this table's fixes implement | [precision-contracts.json](https://github.com/redact-secret/redact-secret/blob/main/docs/audits/evidence/367/precision-contracts.json) |
+| [#367](https://github.com/redact-secret/redact-secret/issues/367) | all seven | contract freeze this table's fixes implement | [precision-contracts.json](https://github.com/redact-secret/redact-secret/blob/de6add470321f40d7b1cb36808d9f4559e6c2e99/docs/audits/evidence/367/precision-contracts.json) |
 
 Twelve unique mutations produce the 24 fixed-corpus context instances (each
 mutation frozen in a plain and a Unicode/CRLF context); see

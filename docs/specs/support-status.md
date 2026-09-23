@@ -83,6 +83,22 @@ any real family. The starting numbers in `status-criteria.json` (5 twin
 pairs, 5 benign cases, zero tolerance elsewhere) are a first proposal and may
 be tuned once A3 runs them against real data, per #503.
 
+## Peer scanner pins
+
+A support classification or review-queue coverage claim is valid only when every
+peer scanner (`gitleaks`, `trufflehog`) resolves to exactly the version pinned in
+`qualification/suite-v1.json` ([ADR](../decisions/2026-09-23-require-pinned-peer-scanners-for-classification.md)).
+`eval:classify` and `queue:check` resolve each peer's version before evaluating
+and exit non-zero, writing no classification and reporting no coverage, when a
+peer is unavailable, reports unparseable output, or differs from its pin. The
+error names the scanner, the expected and observed versions, the suite file, and
+the remediation. Peer version is part of a review-ledger id, so a patch bump
+re-keys the ledger (#180: 27 `stable` families on TruffleHog 3.97.4, 5 on 3.97.6).
+
+Remediation: put the pinned binary in a read-only directory first on `PATH`
+(peers self-update) and rerun. Exploratory `eval` runs are not gated and may use
+other versions; their output is not a classification or coverage claim.
+
 ## Consuming this from A3/A8
 
 ```ts

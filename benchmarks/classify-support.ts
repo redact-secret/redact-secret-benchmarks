@@ -5,6 +5,7 @@ import { platform, arch } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
+import { assertPinnedPeers } from '../scanners/pins.mjs';
 import { candidateConfiguration, installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
 import { createMethods } from './methods/index.ts';
 import { createOperators } from './operators/index.ts';
@@ -37,6 +38,8 @@ async function main() {
 
   const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));
   const ledger: ReviewLedger = JSON.parse(await readFile(path.join(root, 'benchmarks/review-ledger.json'), 'utf8'));
+  // A classification is a claim: refuse before evaluating, and before writing anything, unless every peer is the pinned version.
+  await assertPinnedPeers(available, suite, root);
 
   let installation: Awaited<ReturnType<typeof installCandidate>> | undefined;
   let product: { sourceCommit: string; packageName: string; declaredVersion: string; artifacts: { role: string; sha256: string }[] } | null = null;

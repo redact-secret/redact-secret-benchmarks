@@ -161,6 +161,10 @@
     {
       "id": "mailchimp",
       "name": "Mailchimp"
+    },
+    {
+      "id": "mailgun",
+      "name": "Mailgun"
     }
   ],
   "families": [
@@ -1048,6 +1052,41 @@
         "https://mailchimp.com/developer/marketing/docs/fundamentals/"
       ],
       "note": "redact-secret#313 (product PR #678) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. Mandrill (transactional) keys are a separate product and not this family."
+    },
+    {
+      "id": "mailgun:private-api-key",
+      "provider": "mailgun",
+      "name": "Private API key and HTTP webhook signing key",
+      "description": "key- followed by 32 lowercase alphanumeric bytes; Mailgun's current API reference shows the same shape for the account HTTP signing key. Recognized only beside a same-line mailgun keyword.",
+      "detectors": [
+        "mailgun-api-key"
+      ],
+      "sources": [
+        "https://documentation.mailgun.com/docs/mailgun/api-reference/openapi-final/tag/Account-Management/"
+      ],
+      "note": "redact-secret#314 (product PR #680) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. One detector covers both credentials because the provider's current interface gives them one shape."
+    },
+    {
+      "id": "mailgun:public-validation-key",
+      "provider": "mailgun",
+      "name": "Public validation key (pubkey-)",
+      "description": "pubkey- followed by 32 bytes; Mailgun's public email-validation key, not a secret.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+      ],
+      "note": "Documented public per redact-secret#314's scope; gitleaks 8.30.1's mailgun-pub-key rule still flags it, which the mailgun-api-key public-id control records."
+    },
+    {
+      "id": "mailgun:legacy-signing-key-triplet",
+      "provider": "mailgun",
+      "name": "Legacy 32-8-8 hex signing key",
+      "description": "Dash-segmented 32-8-8 hex triplet both pinned tools call a signing key; absent from Mailgun's current API reference.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+      ],
+      "note": "Known unsupported legacy variant per redact-secret#314 (product PR #680); not fixtured because the provider no longer documents it."
     }
   ]
 }

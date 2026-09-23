@@ -122,8 +122,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#313 (product PR #678): mailchimp-api-key (T2, 32 hex + -us<N> in a
   // MAILCHIMP_API_KEY= assignment, one- and two-digit data centers × 3 contexts,
   // +6 files/+6 spans; 2 twins × 3 contexts; 6 controls).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 374);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 380);
+  // redact-secret#314 (product PR #680): mailgun-api-key (T2, key- + 32 [a-z0-9] as a
+  // private API key and as an HTTP signing key, × 3 contexts, +6 files/+6 spans; 3
+  // twins × 3 contexts; 6 controls).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 380);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 386);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -176,7 +179,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // plus a new prefix twin (netted out via -twins.length).
   // #159: 2 new independent negatives (discord-bot-token short-current-final-segment/
   // short-current-first-segment) cover the current-shape length boundaries.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 413);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 419);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

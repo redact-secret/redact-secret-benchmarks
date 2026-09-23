@@ -27,7 +27,7 @@ const trufflehog = {
 // is genuinely the same credential type as an existing family are mapped;
 // providers with no family in this corpus (Sentry, Airtable, Figma,
 // Notion, Doppler, Square, Azure, Discord, Telegram, New Relic, Groq, xAI,
-// Perplexity, OpenRouter, Replicate, GCP, Mailgun,
+// Perplexity, OpenRouter, Replicate, GCP,
 // Google, Twilio, Stripe webhook secrets) stay unmapped rather than guessed.
 // `databricks_token` (dapi + 32 hex, optional rotation digit) is the same
 // credential the post-beta.6 `databricks-personal-access-token` family
@@ -52,6 +52,9 @@ const flareRedact = {
   linear_key: 'linear-token', supabase_key: 'supabase-token', bearer_token: 'bearer-token',
   url_credentials: 'connection-string', databricks_token: 'databricks-personal-access-token',
   postman_key: 'postman-api-key', netlify_token: 'netlify-token',
+  // key-[a-f0-9]{32}: the private API key `mailgun-api-key` scores, over
+  // gitleaks's narrower hex-only body (redact-secret#314).
+  mailgun_key: 'mailgun-api-key',
 };
 const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };
 export function findingFamily(scanner, label) {

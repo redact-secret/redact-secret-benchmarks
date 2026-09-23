@@ -661,6 +661,34 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("mailchimp-api-key", "label-prose", ["Documentation mentions a Mailchimp Marketing API key (32-hex body with a -us<N> data-center suffix) without embedding the key value."]);
   add("mailchimp-api-key", "public-id", ["MAILCHIMP_AUDIENCE_ID=a1b2c3d4e5\nMAILCHIMP_SERVER_PREFIX=us6\n"]);
 
+  // redact-secret#314 (product PR #680): Mailgun's prose documents no key
+  // grammar; gitleaks 8.30.1's mailgun-private-api-token rule (keyword- and
+  // assignment-gated, key- + 32 hex) and trufflehog 3.97.4's "Key-MailGun
+  // Token" pattern (key- + 32 [a-z0-9], no keyword) agree on the literal key-
+  // and the 32-byte body and disagree on the alphabet; the contract follows
+  // the wider [a-z0-9] the product froze from an observed real key. Mailgun's
+  // current account API shows the same key- shape for the HTTP webhook signing
+  // key, so one family carries both credentials: one positive per documented
+  // role, each in the assignment context the product's same-line `mailgun`
+  // gate and gitleaks's gate share. pubkey- (the public validation key) is the
+  // public-id control; the superseded 32-8-8 hex triplet both tools still call
+  // a signing key is a known unsupported variant and is not fixtured.
+  const LOWER_ALNUM_BODY = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const mailgunBody = synthetic("coverage:mailgun:private-key:body", 32, LOWER_ALNUM_BODY);
+  const mailgunKey = `key-${mailgunBody}`;
+  positive("mailgun-api-key", "private-api-key", ["MAILGUN_API_KEY=", { secret: mailgunKey }]);
+  positive("mailgun-api-key", "http-signing-key", ["MAILGUN_WEBHOOK_SIGNING_KEY=", { secret: `key-${synthetic("coverage:mailgun:signing-key:body", 32, LOWER_ALNUM_BODY)}` }]);
+  addTwin("mailgun-api-key", "private-api-key", [`MAILGUN_API_KEY=${mailgunKey.slice(0, -1)}`], "length: 31-byte body vs the 32 both pinned tools corroborate (gitleaks: key-[a-f0-9]{32}; trufflehog: key-[a-z0-9]{32})", "length");
+  addTwin("mailgun-api-key", "private-api-key", [`MAILGUN_API_KEY=kex-${mailgunBody}`], "prefix namespace: kex- vs the key- literal both pinned tools corroborate and Mailgun's own API examples carry", "prefix", "private-api-key-prefix");
+  // "A" is outside [a-z0-9] whichever body byte it replaces.
+  addTwin("mailgun-api-key", "private-api-key", [`MAILGUN_API_KEY=key-${mailgunBody.slice(0, 10)}A${mailgunBody.slice(11)}`], "alphabet: one uppercase byte vs the tool-corroborated lowercase [a-z0-9] body", "alphabet", "private-api-key-alphabet");
+  add("mailgun-api-key", "prefix-only", ["MAILGUN_API_KEY=key-"]);
+  add("mailgun-api-key", "short-body", [`MAILGUN_API_KEY=key-${mailgunBody.slice(0, 10)}`]);
+  add("mailgun-api-key", "mask", [`MAILGUN_API_KEY=key-${"*".repeat(32)}`]);
+  add("mailgun-api-key", "reference", ["MAILGUN_API_KEY=${MAILGUN_API_KEY}\n"]);
+  add("mailgun-api-key", "label-prose", ["Documentation mentions a Mailgun private API key (key- prefix) without embedding the key value."]);
+  add("mailgun-api-key", "public-id", [`MAILGUN_PUBLIC_VALIDATION_KEY=pubkey-${synthetic("coverage:mailgun:public-key:body", 32, LOWER_HEX)}\nMAILGUN_DOMAIN=mg.example.invalid\n`]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

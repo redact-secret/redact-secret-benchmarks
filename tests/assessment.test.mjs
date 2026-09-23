@@ -88,8 +88,14 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #112: 64 new must-redact/T2 positives in context-edges — the eight
   // pattern-contracted families that sat at the detector-coverage floor, each
   // across eight text contexts (fixtures/generated/context-families.mjs).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 332);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 338);
+  // #161: `microsoft-entra-client-secret`'s lead alphabet widened to include
+  // '-' (redact-secret#655's web-search pass: TruffleHog 3.97.4's
+  // azure_entra/serviceprincipal/v2 detector and microsoft/security-utilities
+  // SEC101/156 both accept it there; four independent field reports confirm
+  // a real leading '-'). New must-redact/T2 leading-dash positive (+3
+  // files/+3 spans: 3 contexts).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 335);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 341);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -132,7 +138,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #129: 8 new independent negatives (mask/reference each for docker-token,
   // huggingface-token, linear-token, openai-token) land the third benign axis
   // each of those four families lacked — the last families still at 1.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 362);
+  // #161: `microsoft-entra-client-secret`'s leading-dash positive adds 2 new
+  // independent negatives (missing-marker, short-suffix) and 3 new twins
+  // (netted out via -twins.length): net +2.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 364);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

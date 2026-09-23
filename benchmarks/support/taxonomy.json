@@ -153,6 +153,10 @@
     {
       "id": "netlify",
       "name": "Netlify"
+    },
+    {
+      "id": "heroku",
+      "name": "Heroku"
     }
   ],
   "families": [
@@ -1000,6 +1004,33 @@
         "https://answers.netlify.com/t/change-to-the-netlify-authentication-token-format/106146"
       ],
       "note": "Out of redact-secret#311's explicit scope; each is a distinct credential, so none is a control or positive for netlify:personal-access-token."
+    },
+    {
+      "id": "heroku:oauth-access-token",
+      "provider": "heroku",
+      "name": "OAuth access token (HRKU-prefixed)",
+      "description": "65-character OAuth access token: literal HRKU-AA marker, then 58 bytes of [A-Za-z0-9_-].",
+      "detectors": [
+        "heroku-api-key"
+      ],
+      "sources": [
+        "https://devcenter.heroku.com/articles/oauth",
+        "https://devcenter.heroku.com/changelog-items/2842"
+      ],
+      "note": "redact-secret#312 (product PR #675) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The changelog's 41-byte HRKU-prefixed UUID example is an undocumented-width variant outside the contract."
+    },
+    {
+      "id": "heroku:legacy-api-key",
+      "provider": "heroku",
+      "name": "Legacy API key (bare UUID)",
+      "description": "Pre-2024-04 unprefixed 8-4-4-4-12 hex UUID token, still valid until regenerated; recognized only beside a same-line heroku keyword.",
+      "detectors": [
+        "heroku-api-key-legacy"
+      ],
+      "sources": [
+        "https://devcenter.heroku.com/changelog-items/2842"
+      ],
+      "note": "redact-secret#312 (product PR #675). Scored as policy (no value grammar), like twilio:auth-token; an app id on a heroku-named line is the recorded false-positive tradeoff."
     }
   ]
 }

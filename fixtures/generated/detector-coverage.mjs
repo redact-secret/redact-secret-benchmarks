@@ -607,6 +607,38 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("netlify-token", "label-prose", ["Documentation mentions a Netlify personal access token (nfp_ prefix) without embedding the token value."]);
   add("netlify-token", "public-id", ["NETLIFY_SITE_ID=3fa85f64-5717-4562-b3fc-2c963f66afa6\n"]);
 
+  // redact-secret#312 (product PR #675): devcenter.heroku.com/articles/oauth
+  // states "Heroku OAuth access tokens are 65 characters long and prefixed
+  // with HRKU-" with a HRKU-AA… example; gitleaks 8.30.1's heroku-api-key-v2
+  // rule and trufflehog 3.97.4's heroku/v2 detector both fix the literal
+  // HRKU-AA marker plus 58 bytes of [A-Za-z0-9_-], no keyword needed. The
+  // pre-prefix generation is a bare UUID (the 2024-03-07 changelog's
+  // "57dce771-…" example) both tools report only beside a `heroku` keyword
+  // (gitleaks additionally needs an assignment operator, hence the
+  // HEROKU_API_KEY= form), the context-gated policy shape below. An app id is
+  // the same UUID shape on a line that also names heroku: the public-id
+  // control issue #312's own scope requires to stay clean.
+  const herokuCurrentBody = synthetic("coverage:heroku:current:body", 58, ALNUM_DASH);
+  const herokuCurrent = `HRKU-AA${herokuCurrentBody}`;
+  positive("heroku-api-key", "prefixed-shape", [{ secret: herokuCurrent }]);
+  addTwin("heroku-api-key", "prefixed-shape", [herokuCurrent.slice(0, -1)], "length: 64 characters vs the provider-documented 65 (devcenter.heroku.com: \"65 characters long and prefixed with HRKU-\")", "length");
+  addTwin("heroku-api-key", "prefixed-shape", [`HRKX-AA${herokuCurrentBody}`], "prefix namespace: HRKX- vs the provider-documented HRKU- prefix", "prefix", "prefixed-shape-prefix");
+  add("heroku-api-key", "prefix-only", ["HRKU-"]);
+  add("heroku-api-key", "short-body", [`HRKU-AA${herokuCurrentBody.slice(0, 10)}`]);
+  add("heroku-api-key", "mask", [`HRKU-${"*".repeat(60)}`]);
+  add("heroku-api-key", "reference", ["HEROKU_API_KEY=${HEROKU_API_KEY}\n"]);
+  add("heroku-api-key", "label-prose", ["Documentation mentions a Heroku OAuth access token (HRKU- prefix) without embedding the token value."]);
+  const herokuUuid = label => [8, 4, 4, 4, 12].map((width, index) => synthetic(`coverage:heroku:${label}:segment-${index}`, width, LOWER_HEX)).join("-");
+  const herokuLegacy = herokuUuid("legacy");
+  positive("heroku-api-key-legacy", "keyword-context", ["HEROKU_API_KEY=", { secret: herokuLegacy }]);
+  addTwin("heroku-api-key-legacy", "keyword-context", [`HEROKU_API_KEY=${herokuLegacy.slice(0, -1)}`], "length: 35 characters vs the 8-4-4-4-12 UUID shape (36) both pinned tools corroborate for a pre-HRKU token", "length");
+  add("heroku-api-key-legacy", "missing-keyword", [herokuLegacy]);
+  add("heroku-api-key-legacy", "short-token", [`HEROKU_API_KEY=${herokuLegacy.slice(0, 18)}`]);
+  add("heroku-api-key-legacy", "mask", ["HEROKU_API_KEY=********-****-****-****-************\n"]);
+  add("heroku-api-key-legacy", "reference", ["machine api.heroku.com\n  login fixture@example.invalid\n  password ${HEROKU_API_KEY}\n"]);
+  add("heroku-api-key-legacy", "label-prose", ["Documentation mentions a legacy, unprefixed Heroku API key without embedding the key value."]);
+  add("heroku-api-key-legacy", "public-id", [`HEROKU_APP_ID=${herokuUuid("app-id")}\n`]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

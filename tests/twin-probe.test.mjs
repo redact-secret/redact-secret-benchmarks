@@ -139,6 +139,7 @@ const T1_DIMENSIONS = {
   // provider-documented; body alphabets stay tool-corroborated, so no alphabet twin.
   'confluent-cloud-api-secret': ['length', 'prefix'],
   'netlify-token': ['length', 'prefix'],
+  'heroku-api-key': ['length', 'prefix'],
   // #162: only the ddapp_ prefix is provider-documented; body length and alphabet stay
   // tool/code-corroborated only (see the contract's review note), so no length/alphabet
   // twin is authored here.
@@ -165,5 +166,5 @@ test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
   assert.equal(probe.counts['un-probeable'], 8);
-  assert.equal(probe.counts['not-measured'], 43);
+  assert.equal(probe.counts['not-measured'], 45);
 });

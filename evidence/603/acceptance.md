@@ -3,56 +3,56 @@
 - Status: **ACCEPTED**
 - Criteria: `rc-performance-resource-linux-x64-benchmarks-v1` (fixed 2026-09-23)
 - Environment profile: `linux-x64-node22-chromium`
-- Source commit: `15fce66e7c2d45003d7c6e31a341e5bc875a7326`
+- Source commit: `fdca511d5a161202deebfd5906b17d7218ef9b2c`
 - Complete assessment: [summary](evidence/603/summary.json)
 
 ## Threshold checks
 
 | Check | Observed | Requirement | Result |
 | --- | ---: | ---: | --- |
-| browser-wasm:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 16.79999999998836 | <= 25 | pass |
-| browser-wasm:performance:scale-logs-medium-fixed4096:processing-p95-ms | 87.39999999999418 | <= 250 | pass |
-| browser-wasm:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 2999473.684210726 | >= 1200000 | pass |
+| browser-wasm:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 12 | <= 35 | pass |
+| browser-wasm:performance:scale-logs-medium-fixed4096:processing-p95-ms | 60.90000000002328 | <= 200 | pass |
+| browser-wasm:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 4304663.382592771 | >= 1400000 | pass |
 | browser-wasm:performance:scale-logs-medium-fixed4096:memory-browserJsHeap-maximum-bytes | 39600000 | <= 99614720 | pass |
-| browser-wasm:performance:scale-logs-small-whole:initialization-p95-ms | 17.89999999999418 | <= 30 | pass |
-| browser-wasm:performance:scale-logs-small-whole:processing-p95-ms | 25.800000000017462 | <= 45 | pass |
-| browser-wasm:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 2540852.713176575 | >= 1400000 | pass |
+| browser-wasm:performance:scale-logs-small-whole:initialization-p95-ms | 8.099999999976717 | <= 40 | pass |
+| browser-wasm:performance:scale-logs-small-whole:processing-p95-ms | 15.70000000006985 | <= 55 | pass |
+| browser-wasm:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 4175414.012720277 | >= 1200000 | pass |
 | browser-wasm:performance:scale-logs-small-whole:memory-browserJsHeap-maximum-bytes | 10000000 | <= 25165824 | pass |
-| cli:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 2.764870999999971 | <= 4 | pass |
-| cli:performance:scale-logs-medium-fixed4096:processing-p95-ms | 81.39497 | <= 200 | pass |
-| cli:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 3220764.1332136374 | >= 1600000 | pass |
-| cli:performance:scale-logs-medium-fixed4096:memory-processRss-maximum-bytes | 3223552 | <= 8388608 | pass |
-| cli:performance:scale-logs-small-whole:initialization-p95-ms | 2.686489999999992 | <= 4 | pass |
-| cli:performance:scale-logs-small-whole:processing-p95-ms | 23.363432999999986 | <= 45 | pass |
-| cli:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 2805837.6523689837 | >= 1400000 | pass |
-| cli:performance:scale-logs-small-whole:memory-processRss-maximum-bytes | 3219456 | <= 8388608 | pass |
-| node:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 6.00643500000001 | <= 9 | pass |
-| node:performance:scale-logs-medium-fixed4096:processing-p95-ms | 77.39709299999998 | <= 200 | pass |
-| node:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 3387129.798272915 | >= 1400000 | pass |
-| node:performance:scale-logs-medium-fixed4096:memory-nodeHeap-maximum-bytes | 21730072 | <= 54525952 | pass |
-| node:performance:scale-logs-medium-fixed4096:memory-nodeRss-maximum-bytes | 95629312 | <= 238026752 | pass |
-| node:performance:scale-logs-medium-fixed4096:memory-nodeExternal-maximum-bytes | 2348317 | <= 6291456 | pass |
-| node:performance:scale-logs-small-whole:initialization-p95-ms | 5.886623 | <= 9 | pass |
-| node:performance:scale-logs-small-whole:processing-p95-ms | 14.603887 | <= 45 | pass |
-| node:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 4488804.932549807 | >= 1600000 | pass |
-| node:performance:scale-logs-small-whole:memory-nodeHeap-maximum-bytes | 7470792 | <= 18874368 | pass |
-| node:performance:scale-logs-small-whole:memory-nodeRss-maximum-bytes | 67788800 | <= 176160768 | pass |
+| cli:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 1.7540480000000116 | <= 6 | pass |
+| cli:performance:scale-logs-medium-fixed4096:processing-p95-ms | 45.65577099999996 | <= 200 | pass |
+| cli:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 5741968.523541093 | >= 1600000 | pass |
+| cli:performance:scale-logs-medium-fixed4096:memory-processRss-maximum-bytes | 3350528 | <= 8388608 | pass |
+| cli:performance:scale-logs-small-whole:initialization-p95-ms | 1.7953970000000083 | <= 6 | pass |
+| cli:performance:scale-logs-small-whole:processing-p95-ms | 12.843874 | <= 50 | pass |
+| cli:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 5103911.794836978 | >= 1400000 | pass |
+| cli:performance:scale-logs-small-whole:memory-processRss-maximum-bytes | 3276800 | <= 8388608 | pass |
+| node:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 4.793255999999985 | <= 15 | pass |
+| node:performance:scale-logs-medium-fixed4096:processing-p95-ms | 52.38368 | <= 200 | pass |
+| node:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 5004497.5839803545 | >= 1600000 | pass |
+| node:performance:scale-logs-medium-fixed4096:memory-nodeHeap-maximum-bytes | 21701360 | <= 54525952 | pass |
+| node:performance:scale-logs-medium-fixed4096:memory-nodeRss-maximum-bytes | 94896128 | <= 239075328 | pass |
+| node:performance:scale-logs-medium-fixed4096:memory-nodeExternal-maximum-bytes | 2348326 | <= 6291456 | pass |
+| node:performance:scale-logs-small-whole:initialization-p95-ms | 4.288857 | <= 15 | pass |
+| node:performance:scale-logs-small-whole:processing-p95-ms | 9.722729000000001 | <= 30 | pass |
+| node:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 6742345.693271919 | >= 2200000 | pass |
+| node:performance:scale-logs-small-whole:memory-nodeHeap-maximum-bytes | 7563720 | <= 18874368 | pass |
+| node:performance:scale-logs-small-whole:memory-nodeRss-maximum-bytes | 67448832 | <= 169869312 | pass |
 | node:performance:scale-logs-small-whole:memory-nodeExternal-maximum-bytes | 2316568 | <= 6291456 | pass |
-| python:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 0.975002 | <= 2 | pass |
-| python:performance:scale-logs-medium-fixed4096:processing-p95-ms | 69.475909 | <= 200 | pass |
-| python:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 3773307.953408713 | >= 1400000 | pass |
+| python:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 0.707793 | <= 2 | pass |
+| python:performance:scale-logs-medium-fixed4096:processing-p95-ms | 44.949518 | <= 150 | pass |
+| python:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 5832187.12156157 | >= 1800000 | pass |
 | python:performance:scale-logs-medium-fixed4096:memory-pythonHeap-maximum-bytes | 537604 | <= 2097152 | pass |
 | python:performance:scale-logs-medium-fixed4096:memory-processRss-maximum-bytes | 21286912 | <= 53477376 | pass |
-| python:performance:scale-logs-small-whole:initialization-p95-ms | 0.939196 | <= 2 | pass |
-| python:performance:scale-logs-small-whole:processing-p95-ms | 14.538285 | <= 40 | pass |
-| python:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 4509060.043877252 | >= 1800000 | pass |
+| python:performance:scale-logs-small-whole:initialization-p95-ms | 0.617996 | <= 2 | pass |
+| python:performance:scale-logs-small-whole:processing-p95-ms | 9.177388 | <= 30 | pass |
+| python:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 7142991.012257518 | >= 2200000 | pass |
 | python:performance:scale-logs-small-whole:memory-pythonHeap-maximum-bytes | 75205 | <= 1048576 | pass |
-| python:performance:scale-logs-small-whole:memory-processRss-maximum-bytes | 21512192 | <= 54525952 | pass |
-| rust-core:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 0.021891 | <= 1 | pass |
-| rust-core:performance:scale-logs-medium-fixed4096:processing-p95-ms | 68.871434 | <= 200 | pass |
-| rust-core:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 3806425.752656755 | >= 1500000 | pass |
-| rust-core:performance:scale-logs-medium-fixed4096:memory-processRss-maximum-bytes | 3735552 | <= 10485760 | pass |
-| rust-core:performance:scale-logs-small-whole:initialization-p95-ms | 0.021429 | <= 1 | pass |
-| rust-core:performance:scale-logs-small-whole:processing-p95-ms | 14.387782999999999 | <= 40 | pass |
-| rust-core:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 4556226.626437166 | >= 1700000 | pass |
-| rust-core:performance:scale-logs-small-whole:memory-processRss-maximum-bytes | 3768320 | <= 10485760 | pass |
+| python:performance:scale-logs-small-whole:memory-processRss-maximum-bytes | 21450752 | <= 54525952 | pass |
+| rust-core:performance:scale-logs-medium-fixed4096:initialization-p95-ms | 0.016793 | <= 1 | pass |
+| rust-core:performance:scale-logs-medium-fixed4096:processing-p95-ms | 43.554065 | <= 150 | pass |
+| rust-core:performance:scale-logs-medium-fixed4096:throughput-minimum-bytes-per-second | 6019047.820220684 | >= 1900000 | pass |
+| rust-core:performance:scale-logs-medium-fixed4096:memory-processRss-maximum-bytes | 3866624 | <= 9437184 | pass |
+| rust-core:performance:scale-logs-small-whole:initialization-p95-ms | 0.019848 | <= 1 | pass |
+| rust-core:performance:scale-logs-small-whole:processing-p95-ms | 9.008795 | <= 30 | pass |
+| rust-core:performance:scale-logs-small-whole:throughput-minimum-bytes-per-second | 7276666.857221194 | >= 2200000 | pass |
+| rust-core:performance:scale-logs-small-whole:memory-processRss-maximum-bytes | 3895296 | <= 9437184 | pass |

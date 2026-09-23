@@ -96,10 +96,9 @@ file's own `derivation` field):
 The current criteria were derived from
 [`evidence/603/summary.json`](../../evidence/603/summary.json), this
 repository's own real
-[`performance-evaluation.yml` run](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35878900954)
+[`performance-evaluation.yml` run](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35934055036)
 against the commit `benchmarks/pin-manifest.json` pinned at measurement time
-(`15fce66e7c2d45003d7c6e31a341e5bc875a7326`, product `main` after the #683
-throughput fix) — release builds, five repetitions, matching the
+(`fdca511d5a161202deebfd5906b17d7218ef9b2c`, product `main` after #709) — release builds, five repetitions, matching the
 current pin (`npm run pins:check` fails otherwise; see #150). This run's own
 evaluation, recorded in
 [`evidence/603/acceptance.md`](../../evidence/603/acceptance.md), reports

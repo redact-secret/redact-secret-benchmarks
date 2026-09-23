@@ -20,6 +20,23 @@ import { describeCase, describeVariant, summaries } from './reporting.ts';
 import { ACCOUNTING_VERSION, accountCounts, unresolvedGroups, validateAccounting, floorFor } from '../lib/accounting.ts';
 import suite from '../../qualification/suite-v1.json';
 
+/** The product scanner under test. Its identity changes every release and between published and candidate runs, so it never keys a review. */
+const PRODUCT_SCANNER = 'redact-secret';
+
+/**
+ * Ledger id of a queue entry. The product scanner's version, mode and
+ * configuration are dropped so a settled review survives a new product version
+ * and a candidate run. Peer identity stays: a new peer version can change a
+ * disagreement and must be reviewed again.
+ */
+export function reviewEntryId(caseId: string, sourceHash: unknown, entry: Record<string, any>, legacy = false) {
+  const tools = entry.evidence?.tools;
+  const keyed = !legacy && Array.isArray(tools)
+    ? { ...entry, evidence: { ...entry.evidence, tools: tools.map((t: any) => (t?.id === PRODUCT_SCANNER ? { id: t.id } : t)) } }
+    : entry;
+  return hash({ case: caseId, source: sourceHash, ...keyed });
+}
+
 export const ENGINE_VERSION = '1.1.0';
 
 // Replays are compared as sorted `path:start:end[:family]` tuples (v1.1 §8).
@@ -121,7 +138,7 @@ export async function executeEvaluation({ cases, methods, operators, scanners, p
     const result = g.method.evaluate({ case: g.case, variants: g.variants, observations });
     const description = describeCase(g.case);
     for (const entry of result.queue) reviewQueue.push({
-      id: hash({ case: g.case.id, source: g.case.provenance.sourceHash, ...entry }),
+      id: reviewEntryId(g.case.id, g.case.provenance.sourceHash, entry),
       caseId: g.case.id, method: g.case.method, targets: g.case.targets, ...entry,
     });
     for (const v of g.variants.filter(v => v.strategy === 'review-required')) reviewQueue.push({

@@ -17,7 +17,7 @@ per [`evidence/README.md`](../README.md).
 | --- | --- |
 | `redact-secret` (published package under test) | `079095e766e4a71e2b7e29413ed17be37bb3315d` (0.1.0-beta.6), the last release tag; does not contain the detector. |
 | `redact-secret` (detector landed) | `41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1` (merge of PR #678) on `main`, unreleased at measurement time; this is also the registry pin. |
-| `redact-secret-benchmarks` | the commit that adds this file (working tree on top of `6b990a50624673826561a337ca6ed50183e9e7bc`), clean apart from that change. |
+| `redact-secret-benchmarks` | the commit that adds this file (working tree on top of `6b623fb (the heroku-api-key commit, rewritten once to scrub a quoted documentation example token)`), clean apart from that change. |
 
 ## Pinned scanner versions
 

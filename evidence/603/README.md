@@ -43,7 +43,9 @@ criteria were deliberately not re-derived from those runs. Product
 [#684](https://github.com/redact-secret/redact-secret/pull/684) fixed the
 regression, and product `main` `15fce66e7c2d45003d7c6e31a341e5bc875a7326`
 then evaluated **ACCEPTED**, 46/46, against those same unchanged `41fc366`
-criteria ([run 35878900954](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35878900954)).
+criteria (run 35878900954). After the #709 detector changes, product `main`
+`fdca511d5a161202deebfd5906b17d7218ef9b2c` evaluated **ACCEPTED** against the
+`15fce66` criteria ([run 35934055036](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35934055036)).
 That run's `summary.json`, `acceptance.json` and `acceptance.md` are what this
 directory now holds, and `benchmarks/performance-criteria.json` was
 recalibrated from it, so `baseline.sourceCommit` matches the pin again. The
@@ -54,8 +56,8 @@ above and in the decision records.
 
 | Repository | Revision |
 | --- | --- |
-| `redact-secret` (measured) | `15fce66e7c2d45003d7c6e31a341e5bc875a7326` (product `main` after #684; the registry pin). The earlier `41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1` run supplied the criteria this one was checked against — the commit `benchmarks/pin-manifest.json`'s `pins.redactSecretRevision` names at measurement time. The published npm package this repository scores accuracy against stays 0.1.0-beta.6 (`079095e`). |
-| `redact-secret-benchmarks` | `fedf7d2` (branch `chore/repin-product-15fce66`, the registry re-pin commit) at measurement time — the workflow ref this run was dispatched against and the criteria file it evaluated `summary.json` with. |
+| `redact-secret` (measured) | `fdca511d5a161202deebfd5906b17d7218ef9b2c` (product `main` after #709; the registry pin). Before it, `15fce66e7c2d45003d7c6e31a341e5bc875a7326` (after #684) supplied the criteria. The earlier `41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1` run supplied the criteria this one was checked against — the commit `benchmarks/pin-manifest.json`'s `pins.redactSecretRevision` names at measurement time. The published npm package this repository scores accuracy against stays 0.1.0-beta.6 (`079095e`). |
+| `redact-secret-benchmarks` | `workbench/repin-registry-fdca511`, the registry re-pin commit at measurement time — the workflow ref this run was dispatched against and the criteria file it evaluated `summary.json` with. |
 
 ## Pinned scanner versions
 
@@ -74,7 +76,7 @@ own `provenance.artifactIdentity`, `provenance.runtime`, and (for `rust-core`)
 
 The raw evidence (`summary.json`, `acceptance.json`, `acceptance.md`,
 alongside this README) is this repository's own `ubuntu-latest` CI run:
-[`performance-evaluation` run 35878900954](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35878900954),
+[`performance-evaluation` run 35934055036](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35934055036),
 dispatched against the branch carrying the refreshed pin and reproducible by
 anyone with:
 

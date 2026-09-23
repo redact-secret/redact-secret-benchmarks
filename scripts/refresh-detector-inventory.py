@@ -31,6 +31,7 @@ GITLEAKS_FAMILIES = {
     "databricks-": "databricks-personal-access-token",
     # confluent-access-token is the public key ID, never a secret family here.
     "confluent-secret-key": "confluent-cloud-api-secret-legacy",
+    "postman-": "postman-api-key",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -46,6 +47,7 @@ TRUFFLEHOG_FAMILIES = {
     "terraformcloud": "terraform-cloud-token", "pulumi": "pulumi-access-token",
     "databrickstoken": "databricks-personal-access-token",
     "confluent": "confluent-cloud-api-secret-legacy",
+    "postman": "postman-api-key",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",
@@ -62,6 +64,7 @@ FLARE_REDACT_FAMILIES = {
     "huggingface_token": "huggingface-token", "digitalocean_token": "digitalocean-token",
     "linear_key": "linear-token", "supabase_key": "supabase-token", "bearer_token": "bearer-token",
     "url_credentials": "connection-string", "databricks_token": "databricks-personal-access-token",
+    "postman_key": "postman-api-key",
 }
 
 

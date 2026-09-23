@@ -145,6 +145,10 @@
     {
       "id": "confluent",
       "name": "Confluent Cloud"
+    },
+    {
+      "id": "postman",
+      "name": "Postman"
     }
   ],
   "families": [
@@ -955,6 +959,19 @@
         "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html"
       ],
       "note": "redact-secret#309 (product PR #667). Scored as policy (no value grammar), like twilio:auth-token."
+    },
+    {
+      "id": "postman:api-key",
+      "provider": "postman",
+      "name": "API key",
+      "description": "PMAK-prefixed API key: 24 hex bytes, a literal \"-\", then 34 hex bytes (59-byte body); sent in the X-API-Key header.",
+      "detectors": [
+        "postman-api-key"
+      ],
+      "sources": [
+        "https://learning.postman.com/docs/developer/postman-api/authentication/"
+      ],
+      "note": "redact-secret#310 (product PR #668) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The provider page documents only the header, so the grammar is tool-corroborated (T2)."
     }
   ]
 }

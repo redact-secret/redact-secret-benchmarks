@@ -557,6 +557,27 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("confluent-cloud-api-secret-legacy", "reference", ["sasl.password=${CONFLUENT_CLOUD_API_SECRET}\n"]);
   add("confluent-cloud-api-secret-legacy", "label-prose", ["Documentation mentions a legacy, unprefixed Confluent Cloud API secret without embedding the secret value."]);
 
+  // redact-secret#310 (product PR #668): learning.postman.com documents only the
+  // X-API-Key header, no key grammar; gitleaks 8.30.1's postman-api-token rule
+  // pins PMAK- + 24 hex + "-" + 34 hex, trufflehog 3.97.4's postman detector the
+  // same prefix over a looser 59-byte [A-Za-z0-9-] body.
+  const postmanSegment1 = synthetic("coverage:postman:segment-1", 24, LOWER_HEX);
+  const postmanSegment2 = synthetic("coverage:postman:segment-2", 34, LOWER_HEX);
+  const postmanKey = `PMAK-${postmanSegment1}-${postmanSegment2}`;
+  positive("postman-api-key", "structured-shape", [{ secret: postmanKey }]);
+  addTwin("postman-api-key", "structured-shape", [postmanKey.slice(0, -1)], "length: 33-byte second segment vs the 34 gitleaks corroborates (58-byte body vs the 59 both pinned tools corroborate)", "length");
+  // A hex byte in place of the internal dash keeps the 59-byte width trufflehog's
+  // looser [A-Za-z0-9-]{59} body accepts, so this twin also records that tool's
+  // wider shape against gitleaks's structured one.
+  addTwin("postman-api-key", "structured-shape", [`PMAK-${postmanSegment1}0${postmanSegment2}`], "boundary: no internal separator at body offset 24 vs the gitleaks-corroborated literal \"-\" between the 24- and 34-byte hex segments", "boundary", "structured-shape-separator");
+  addTwin("postman-api-key", "structured-shape", [`PMAK-${postmanSegment1}-${postmanSegment2.slice(0, 10)}g${postmanSegment2.slice(11)}`], "alphabet: one non-hex byte in the second segment vs the gitleaks-corroborated hex segments", "alphabet", "structured-shape-alphabet");
+  add("postman-api-key", "prefix-only", ["PMAK-"]);
+  add("postman-api-key", "short-body", [`PMAK-${postmanSegment1.slice(0, 10)}`]);
+  add("postman-api-key", "mask", [`PMAK-${"*".repeat(24)}-${"*".repeat(34)}`]);
+  add("postman-api-key", "reference", ["POSTMAN_API_KEY=${POSTMAN_API_KEY}\n"]);
+  add("postman-api-key", "label-prose", ["Documentation mentions a Postman API key (PMAK- prefix, sent in the X-API-Key header) without embedding the key value."]);
+  add("postman-api-key", "public-id", ["POSTMAN_COLLECTION_UID=12345678-3fa85f64-5717-4562-b3fc-2c963f66afa6\n"]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

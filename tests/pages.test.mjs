@@ -113,10 +113,10 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: f.slug, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), productRows, contracts);
   const measured = text(coveragePage(fixtures, 'all', data));
   assert.ok(measured.includes(`${probe.counts.discriminated} discriminated · ${probe.counts['not-discriminated']} not discriminated · ${probe.counts['un-probeable']} un-probeable`), 'three separate lines');
-  assert.equal(probe.counts['un-probeable'], 9);
-  assert.equal(probe.counts.discriminated + probe.counts['not-discriminated'], 37, 'the test product reports every secret exactly and nothing else');
+  assert.equal(probe.counts['un-probeable'], 8);
+  assert.equal(probe.counts.discriminated + probe.counts['not-discriminated'], 38, 'the test product reports every secret exactly and nothing else');
   for (const entry of probe.entries.filter(x => x.status === 'un-probeable')) assert.ok(measured.replaceAll('&quot;', '"').replaceAll('&#39;', "'").includes(entry.reason), entry.id);
-  assert.ok(text(coveragePage(fixtures, 'all')).includes('37 not measured'), 'without a run nothing is claimed');
+  assert.ok(text(coveragePage(fixtures, 'all')).includes('38 not measured'), 'without a run nothing is claimed');
   assert.ok(!coveragePage(fixtures, 'thin', data).includes('id="twin-probe"'));
   assert.ok(text(detectorPage(data, fixtures, 'vercel-token')).includes('Un-probeable'));
   assert.ok(detectorPage(data, fixtures, 'bearer-token').includes('Twin source'));

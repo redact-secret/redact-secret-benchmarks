@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "1f75495e887e11c649c0a13a505599ec20c62f12",
+  "revision": "2fab58c6de19cce615eb907f86ffe55a7f106f72",
   "pins": {
     "sourceRevision": "079095e766e4a71e2b7e29413ed17be37bb3315d",
     "redactSecretRevision": "079095e766e4a71e2b7e29413ed17be37bb3315d",
@@ -12,12 +12,12 @@
     "accuracy": "33c2a504fe7c3c200f7458b903104844d695fea8296dc6977038273358f72e33",
     "token-contexts": "1a38c702ee7fbf6febdfb4f856fccef65966812e23bfa751322c84242ec441ac",
     "credential-formats": "8a314552eea2e9db66ed49750294ad59a8b10bc4c33fcf471f2eaee059b8af4f",
-    "context-edges": "d755eca7a085a147b39f3a914184437b8f1e3516d3ab825a64d1f9ff1072d288",
+    "context-edges": "2445ffd58217892df3d51ac229b4069239ecc3b712a600c87cfeb558b573372a",
     "negative-controls": "90cb2e615a5afa71f8d52ba70454d5d65cb9b206af78ac292f02cb0f9ee57a7b",
     "sendgrid-regressions": "bb556d9d91dda1a394c83be1cd3763e75ebf9230d5fbdb6ad5abd91368ab459d",
     "reference-syntax": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
     "milestone-6-closed": "388b26e3703fc5a80b1ca0cd65232873e765a0a0b59148ba0e6998fd6c8ff766",
-    "detector-coverage": "0a6dcd966f0b3d002364584f49e317d16cf91aae9d1a2e16f4025c9fc9938645",
+    "detector-coverage": "6b8475a862bf79cdb4f0262b64e5ecd87651e054f0324002117b6237a26cf104",
     "real-world-shapes": "8c0e2f60d87286f8acaa81664308ff291b36dc53474b30e344e43625697ffd0f"
   },
   "fixtureIds": [
@@ -507,6 +507,13 @@
     "detector-coverage--datadog-application-key-label-prose",
     "detector-coverage--datadog-application-key-mask",
     "detector-coverage--datadog-application-key-missing-marker",
+    "detector-coverage--datadog-application-key-prefixed-env-marker-bare",
+    "detector-coverage--datadog-application-key-prefixed-env-marker-bare-twin",
+    "detector-coverage--datadog-application-key-prefixed-env-marker-quoted",
+    "detector-coverage--datadog-application-key-prefixed-env-marker-quoted-twin",
+    "detector-coverage--datadog-application-key-prefixed-env-marker-unicode-crlf",
+    "detector-coverage--datadog-application-key-prefixed-env-marker-unicode-crlf-twin",
+    "detector-coverage--datadog-application-key-prefixed-short-key",
     "detector-coverage--datadog-application-key-reference",
     "detector-coverage--datadog-application-key-short-key",
     "detector-coverage--digitalocean-token-dash-identifier-embedding",

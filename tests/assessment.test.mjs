@@ -88,6 +88,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #112: 64 new must-redact/T2 positives in context-edges — the eight
   // pattern-contracted families that sat at the detector-coverage floor, each
   // across eight text contexts (fixtures/generated/context-families.mjs).
+  // #162: datadog-application-key's ddapp_-prefixed shape (3 contexts) moves
+  // policy/T3 -> must-redact/T1 (+3 files/+3 spans).
   // #160: 3 new must-redact/T2 positives (new-relic-license-key's currently
   // issued 32-hex-plus-FFFFNRAL generation, one per context) now that
   // trufflehog 3.97.4's newreliclicensekey detector corroborates the shape
@@ -95,8 +97,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // policy/T3, unmatched by the new pattern.
   // #159: 6 new must-redact/T2 positives in detector-coverage — discord-bot-token's
   // current 26/6/38 and 24/6/38 shapes, each across three contexts.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 341);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 347);
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 344);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 350);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -139,9 +141,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #129: 8 new independent negatives (mask/reference each for docker-token,
   // huggingface-token, linear-token, openai-token) land the third benign axis
   // each of those four families lacked — the last families still at 1.
+  // #162: 1 new independent negative (datadog-application-key-prefixed-short-key)
+  // plus a new prefix twin (netted out via -twins.length).
   // #159: 2 new independent negatives (discord-bot-token short-current-final-segment/
   // short-current-first-segment) cover the current-shape length boundaries.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 364);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 365);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

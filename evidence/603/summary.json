@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "status": "complete",
-  "sourceCommit": "944341903d5b85686a056d3218f4c33110d7d57b",
+  "sourceCommit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
   "accuracyCorpus": {
     "version": "3",
     "hash": "438df062ddde47dcb32ae0aefc4297ed8b8c9e2c3270778c2b1f8809e40bd0dd"
@@ -45,10 +45,10 @@
         },
         "profileId": "accuracy-corpus",
         "provenance": {
-          "artifactIdentity": "redact-secret@0.1.0-beta.4",
+          "artifactIdentity": "redact-secret@0.1.0-beta.6",
           "buildProfile": "release",
-          "command": "[\"target/release/examples/assessment_adapter\",\"accuracy\",\"--json-out\",\"assessment-output/rust-core/accuracy-corpus.json\",\"--markdown-out\",\"assessment-output/rust-core/accuracy-corpus.md\",\"--mismatches-out\",\"assessment-output/rust-core/accuracy-corpus-mismatches.json\"]",
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
+          "command": "[\"target/release/examples/assessment_adapter\",\"accuracy\",\"--json-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/accuracy-corpus.json\",\"--markdown-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/accuracy-corpus.md\",\"--mismatches-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/accuracy-corpus-mismatches.json\"]",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
           "corpusHash": "438df062ddde47dcb32ae0aefc4297ed8b8c9e2c3270778c2b1f8809e40bd0dd",
           "corpusVersion": "3",
           "cpu": "x86_64",
@@ -70,19 +70,19 @@
       "result": {
         "performance": {
           "initialization": {
-            "maximum": 0.019126,
-            "mean": 0.009213599999999999,
-            "median": 0.007044,
-            "minimum": 0.006302,
-            "p95": 0.019126,
+            "maximum": 0.021342,
+            "mean": 0.0096764,
+            "median": 0.0069310000000000005,
+            "minimum": 0.0061589999999999995,
+            "p95": 0.021342,
             "samples": [
-              0.019126,
-              0.007044,
-              0.007174000000000001,
-              0.006422,
-              0.006302
+              0.021342,
+              0.00708,
+              0.0069310000000000005,
+              0.00687,
+              0.0061589999999999995
             ],
-            "standardDeviation": 0.004967761089263452,
+            "standardDeviation": 0.0058414505253404315,
             "unit": "milliseconds"
           },
           "memory": {
@@ -113,24 +113,24 @@
             "processRss": {
               "samples": [
                 {
-                  "baselineBytes": 3727360,
-                  "maximumObservedBytes": 3727360
+                  "baselineBytes": 3829760,
+                  "maximumObservedBytes": 3833856
                 },
                 {
-                  "baselineBytes": 3731456,
-                  "maximumObservedBytes": 3731456
+                  "baselineBytes": 3833856,
+                  "maximumObservedBytes": 3837952
                 },
                 {
-                  "baselineBytes": 3735552,
-                  "maximumObservedBytes": 3735552
+                  "baselineBytes": 3842048,
+                  "maximumObservedBytes": 3842048
                 },
                 {
-                  "baselineBytes": 3739648,
-                  "maximumObservedBytes": 3739648
+                  "baselineBytes": 3842048,
+                  "maximumObservedBytes": 3846144
                 },
                 {
-                  "baselineBytes": 3739648,
-                  "maximumObservedBytes": 3739648
+                  "baselineBytes": 3846144,
+                  "maximumObservedBytes": 3846144
                 }
               ],
               "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks.",
@@ -156,44 +156,44 @@
             }
           },
           "processing": {
-            "maximum": 27.007543,
-            "mean": 26.8185024,
-            "median": 26.791891000000003,
-            "minimum": 26.654965,
-            "p95": 27.007543,
+            "maximum": 26.989392000000002,
+            "mean": 26.5299968,
+            "median": 26.371301,
+            "minimum": 26.16028,
+            "p95": 26.989392000000002,
             "samples": [
-              26.654965,
-              26.791891000000003,
-              26.877802,
-              26.760310999999998,
-              27.007543
+              26.768746999999998,
+              26.16028,
+              26.371301,
+              26.989392000000002,
+              26.360264
             ],
-            "standardDeviation": 0.1183990522353951,
+            "standardDeviation": 0.3028959228245903,
             "unit": "milliseconds"
           },
           "throughput": {
-            "maximum": 2459354.195362853,
-            "mean": 2444404.8050297406,
-            "median": 2446785.111211448,
-            "minimum": 2427247.8248021305,
-            "p95": 2459354.195362853,
+            "maximum": 2505860.029021096,
+            "mean": 2471259.6599515365,
+            "median": 2485808.3414238836,
+            "minimum": 2428880.205971294,
+            "p95": 2505860.029021096,
             "samples": [
-              2459354.195362853,
-              2446785.111211448,
-              2438964.3170970604,
-              2449672.5766752115,
-              2427247.8248021305
+              2448900.5779762496,
+              2505860.029021096,
+              2485808.3414238836,
+              2428880.205971294,
+              2486849.14536516
             ],
-            "standardDeviation": 10778.315512504701,
+            "standardDeviation": 28099.211356321743,
             "unit": "bytes-per-second"
           }
         },
         "profileId": "scale-logs-small-whole",
         "provenance": {
-          "artifactIdentity": "redact-secret@0.1.0-beta.4",
+          "artifactIdentity": "redact-secret@0.1.0-beta.6",
           "buildProfile": "release",
-          "command": "[\"target/release/examples/assessment_adapter\",\"performance\",\"--profile\",\"scale-logs-small-whole\",\"--runs\",\"5\",\"--json-out\",\"assessment-output/rust-core/scale-logs-small-whole.json\",\"--markdown-out\",\"assessment-output/rust-core/scale-logs-small-whole.md\"]",
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
+          "command": "[\"target/release/examples/assessment_adapter\",\"performance\",\"--profile\",\"scale-logs-small-whole\",\"--runs\",\"5\",\"--json-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/scale-logs-small-whole.json\",\"--markdown-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/scale-logs-small-whole.md\"]",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "corpusVersion": "1",
           "cpu": "x86_64",
@@ -215,19 +215,19 @@
       "result": {
         "performance": {
           "initialization": {
-            "maximum": 0.017683,
-            "mean": 0.010126800000000002,
-            "median": 0.007795000000000001,
-            "minimum": 0.007073,
-            "p95": 0.017683,
+            "maximum": 0.019038,
+            "mean": 0.0091694,
+            "median": 0.0069500000000000004,
+            "minimum": 0.006169,
+            "p95": 0.019038,
             "samples": [
-              0.017683,
-              0.010409,
-              0.007795000000000001,
-              0.007673999999999999,
-              0.007073
+              0.019038,
+              0.00703,
+              0.00666,
+              0.0069500000000000004,
+              0.006169
             ],
-            "standardDeviation": 0.003948544258331164,
+            "standardDeviation": 0.004943511367439139,
             "unit": "milliseconds"
           },
           "memory": {
@@ -258,24 +258,24 @@
             "processRss": {
               "samples": [
                 {
-                  "baselineBytes": 3694592,
-                  "maximumObservedBytes": 3698688
+                  "baselineBytes": 3735552,
+                  "maximumObservedBytes": 3735552
                 },
                 {
-                  "baselineBytes": 3719168,
-                  "maximumObservedBytes": 3727360
+                  "baselineBytes": 3756032,
+                  "maximumObservedBytes": 3756032
                 },
                 {
-                  "baselineBytes": 3739648,
-                  "maximumObservedBytes": 3739648
+                  "baselineBytes": 3772416,
+                  "maximumObservedBytes": 3772416
                 },
                 {
-                  "baselineBytes": 3743744,
-                  "maximumObservedBytes": 3743744
+                  "baselineBytes": 3776512,
+                  "maximumObservedBytes": 3776512
                 },
                 {
-                  "baselineBytes": 3747840,
-                  "maximumObservedBytes": 3747840
+                  "baselineBytes": 3780608,
+                  "maximumObservedBytes": 3780608
                 }
               ],
               "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks.",
@@ -301,44 +301,44 @@
             }
           },
           "processing": {
-            "maximum": 125.68791100000001,
-            "mean": 123.75464280000001,
-            "median": 123.266649,
-            "minimum": 122.641972,
-            "p95": 125.68791100000001,
+            "maximum": 126.598133,
+            "mean": 125.46330579999999,
+            "median": 125.964208,
+            "minimum": 122.729107,
+            "p95": 126.598133,
             "samples": [
-              124.265146,
-              122.911536,
-              125.68791100000001,
-              122.641972,
-              123.266649
+              125.77751500000001,
+              122.729107,
+              126.247566,
+              125.964208,
+              126.598133
             ],
-            "standardDeviation": 1.1122178549689685,
+            "standardDeviation": 1.3948742128532472,
             "unit": "milliseconds"
           },
           "throughput": {
-            "maximum": 2137555.3224144178,
-            "mean": 2118506.639168938,
-            "median": 2126722.857534644,
-            "minimum": 2085753.4978045737,
-            "p95": 2137555.3224144178,
+            "maximum": 2136037.7045683223,
+            "mean": 2089749.6789447027,
+            "median": 2081178.4884163286,
+            "minimum": 2070757.2362066351,
+            "p95": 2136037.7045683223,
             "samples": [
-              2109634.184954806,
-              2132867.3331362484,
-              2085753.4978045737,
-              2137555.3224144178,
-              2126722.857534644
+              2084267.6053824087,
+              2136037.7045683223,
+              2076507.3601498185,
+              2081178.4884163286,
+              2070757.2362066351
             ],
-            "standardDeviation": 18910.72088450479,
+            "standardDeviation": 23588.86026061062,
             "unit": "bytes-per-second"
           }
         },
         "profileId": "scale-logs-medium-fixed4096",
         "provenance": {
-          "artifactIdentity": "redact-secret@0.1.0-beta.4",
+          "artifactIdentity": "redact-secret@0.1.0-beta.6",
           "buildProfile": "release",
-          "command": "[\"target/release/examples/assessment_adapter\",\"performance\",\"--profile\",\"scale-logs-medium-fixed4096\",\"--runs\",\"5\",\"--json-out\",\"assessment-output/rust-core/scale-logs-medium-fixed4096.json\",\"--markdown-out\",\"assessment-output/rust-core/scale-logs-medium-fixed4096.md\"]",
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
+          "command": "[\"target/release/examples/assessment_adapter\",\"performance\",\"--profile\",\"scale-logs-medium-fixed4096\",\"--runs\",\"5\",\"--json-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/scale-logs-medium-fixed4096.json\",\"--markdown-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/scale-logs-medium-fixed4096.md\"]",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "corpusVersion": "1",
           "cpu": "x86_64",
@@ -369,14 +369,14 @@
           "policyMismatches": 0
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "redact-secret==0.1.0b4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "redact-secret==0.1.0b6",
           "corpusVersion": "3",
           "corpusHash": "438df062ddde47dcb32ae0aefc4297ed8b8c9e2c3270778c2b1f8809e40bd0dd",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "cpython-3.12.14",
-          "command": "node scripts/assessment-python-run.mjs --python .venv/bin/python --json-out assessment-output/python/accuracy-corpus.json --markdown-out assessment-output/python/accuracy-corpus.md --mismatches-out assessment-output/python/accuracy-corpus-mismatches.json"
+          "command": "node scripts/assessment-python-run.mjs --python .venv/bin/python --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/accuracy-corpus.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/accuracy-corpus.md --mismatches-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/accuracy-corpus-mismatches.json"
         }
       },
       "path": "whole-input",
@@ -396,50 +396,50 @@
           "initialization": {
             "unit": "milliseconds",
             "samples": [
-              0.82436,
-              0.814381,
-              0.832936,
-              0.828969,
-              0.820642
+              0.702987,
+              0.754033,
+              0.801802,
+              0.741764,
+              0.688205
             ],
-            "minimum": 0.814381,
-            "median": 0.82436,
-            "p95": 0.832936,
-            "maximum": 0.832936,
-            "mean": 0.8242575999999999,
-            "standardDeviation": 0.0064520104339655165
+            "minimum": 0.688205,
+            "median": 0.741764,
+            "p95": 0.801802,
+            "maximum": 0.801802,
+            "mean": 0.7377581999999999,
+            "standardDeviation": 0.040117526959671884
           },
           "processing": {
             "unit": "milliseconds",
             "samples": [
-              23.548526,
-              23.662601,
-              27.499768,
-              24.564706,
-              26.487697
+              23.981273,
+              23.62731,
+              23.603195,
+              24.257319,
+              23.564628
             ],
-            "minimum": 23.548526,
-            "median": 24.564706,
-            "p95": 27.499768,
-            "maximum": 27.499768,
-            "mean": 25.1526596,
-            "standardDeviation": 1.5767340533257477
+            "minimum": 23.564628,
+            "median": 23.62731,
+            "p95": 24.257319,
+            "maximum": 24.257319,
+            "mean": 23.806745,
+            "standardDeviation": 0.27045410541309955
           },
           "throughput": {
             "unit": "bytes-per-second",
             "samples": [
-              2783783.579490283,
-              2770363.2411331283,
-              2383801.9288017265,
-              2668625.4661464295,
-              2474884.849369879
+              2733549.6326654553,
+              2774501.2022104925,
+              2777335.8649115087,
+              2702442.0959298923,
+              2781881.3859484647
             ],
-            "minimum": 2383801.9288017265,
-            "median": 2668625.4661464295,
-            "p95": 2783783.579490283,
-            "maximum": 2783783.579490283,
-            "mean": 2616291.8129882896,
-            "standardDeviation": 160360.708203902
+            "minimum": 2702442.0959298923,
+            "median": 2774501.2022104925,
+            "p95": 2781881.3859484647,
+            "maximum": 2781881.3859484647,
+            "mean": 2753942.036333163,
+            "standardDeviation": 31044.00670963015
           },
           "memory": {
             "nodeHeap": {
@@ -489,7 +489,7 @@
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 75205
+                  "maximumObservedBytes": 75160
                 },
                 {
                   "baselineBytes": 0,
@@ -502,24 +502,24 @@
               "unit": "bytes",
               "samples": [
                 {
-                  "baselineBytes": 21340160,
+                  "baselineBytes": 21397504,
+                  "maximumObservedBytes": 21409792
+                },
+                {
+                  "baselineBytes": 21442560,
+                  "maximumObservedBytes": 21454848
+                },
+                {
+                  "baselineBytes": 21336064,
+                  "maximumObservedBytes": 21348352
+                },
+                {
+                  "baselineBytes": 21327872,
                   "maximumObservedBytes": 21340160
                 },
                 {
-                  "baselineBytes": 21282816,
-                  "maximumObservedBytes": 21291008
-                },
-                {
-                  "baselineBytes": 21434368,
-                  "maximumObservedBytes": 21442560
-                },
-                {
-                  "baselineBytes": 21204992,
-                  "maximumObservedBytes": 21213184
-                },
-                {
-                  "baselineBytes": 21434368,
-                  "maximumObservedBytes": 21442560
+                  "baselineBytes": 21426176,
+                  "maximumObservedBytes": 21438464
                 }
               ],
               "samplingLimit": "Unix ru_maxrss high-water marks sampled immediately before and after a separate untimed processing pass; the value includes the Python interpreter, native extension, allocator, and earlier process activity and cannot isolate Rust-only memory."
@@ -533,14 +533,14 @@
           }
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "redact-secret==0.1.0b4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "redact-secret==0.1.0b6",
           "corpusVersion": "1",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "cpython-3.12.14",
-          "command": "node scripts/assessment-python-performance.mjs --python .venv/bin/python --profile scale-logs-small-whole --runs 5 --json-out assessment-output/python/scale-logs-small-whole.json --markdown-out assessment-output/python/scale-logs-small-whole.md"
+          "command": "node scripts/assessment-python-performance.mjs --python .venv/bin/python --profile scale-logs-small-whole --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/scale-logs-small-whole.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/scale-logs-small-whole.md"
         }
       },
       "path": "whole-input",
@@ -560,50 +560,50 @@
           "initialization": {
             "unit": "milliseconds",
             "samples": [
-              0.829398,
-              0.853043,
-              0.853734,
-              0.839278,
-              0.850989
+              0.760411,
+              0.790946,
+              0.844946,
+              0.784467,
+              0.787352
             ],
-            "minimum": 0.829398,
-            "median": 0.850989,
-            "p95": 0.853734,
-            "maximum": 0.853734,
-            "mean": 0.8452884,
-            "standardDeviation": 0.009514079474126766
+            "minimum": 0.760411,
+            "median": 0.787352,
+            "p95": 0.844946,
+            "maximum": 0.844946,
+            "mean": 0.7936244,
+            "standardDeviation": 0.027811549288739742
           },
           "processing": {
             "unit": "milliseconds",
             "samples": [
-              109.079884,
-              113.653596,
-              113.019231,
-              112.720613,
-              115.543756
+              113.823981,
+              135.506363,
+              114.719052,
+              113.533703,
+              116.922181
             ],
-            "minimum": 109.079884,
-            "median": 113.019231,
-            "p95": 115.543756,
-            "maximum": 115.543756,
-            "mean": 112.803416,
-            "standardDeviation": 2.104775159206225
+            "minimum": 113.533703,
+            "median": 114.719052,
+            "p95": 135.506363,
+            "maximum": 135.506363,
+            "mean": 118.901056,
+            "standardDeviation": 8.387210419062153
           },
           "throughput": {
             "unit": "bytes-per-second",
             "samples": [
-              2403321.220986997,
-              2306605.4152831207,
-              2319552.147722541,
-              2325697.075476337,
-              2268872.0626322725
+              2303152.6194818295,
+              1934625.0183100258,
+              2285182.7610988277,
+              2309041.2192404224,
+              2242123.7592206732
             ],
-            "minimum": 2268872.0626322725,
-            "median": 2319552.147722541,
-            "p95": 2403321.220986997,
-            "maximum": 2403321.220986997,
-            "mean": 2324809.5844202535,
-            "standardDeviation": 43938.373832329424
+            "minimum": 1934625.0183100258,
+            "median": 2285182.7610988277,
+            "p95": 2309041.2192404224,
+            "maximum": 2309041.2192404224,
+            "mean": 2214825.0754703553,
+            "standardDeviation": 142046.42260342048
           },
           "memory": {
             "nodeHeap": {
@@ -641,23 +641,23 @@
               "samples": [
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 537596
+                  "maximumObservedBytes": 537604
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 537596
+                  "maximumObservedBytes": 537604
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 537596
+                  "maximumObservedBytes": 537604
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 537596
+                  "maximumObservedBytes": 537604
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 537596
+                  "maximumObservedBytes": 537467
                 }
               ],
               "samplingLimit": "Measured by tracemalloc during a separate untimed processing pass; it observes Python allocations made after tracing starts, not the interpreter's pre-existing heap or native Rust allocations."
@@ -666,24 +666,24 @@
               "unit": "bytes",
               "samples": [
                 {
-                  "baselineBytes": 21123072,
-                  "maximumObservedBytes": 21123072
+                  "baselineBytes": 21176320,
+                  "maximumObservedBytes": 21176320
                 },
                 {
-                  "baselineBytes": 21106688,
-                  "maximumObservedBytes": 21106688
+                  "baselineBytes": 21172224,
+                  "maximumObservedBytes": 21172224
                 },
                 {
-                  "baselineBytes": 21123072,
-                  "maximumObservedBytes": 21123072
+                  "baselineBytes": 21250048,
+                  "maximumObservedBytes": 21250048
                 },
                 {
-                  "baselineBytes": 21069824,
-                  "maximumObservedBytes": 21069824
+                  "baselineBytes": 21250048,
+                  "maximumObservedBytes": 21250048
                 },
                 {
-                  "baselineBytes": 21123072,
-                  "maximumObservedBytes": 21123072
+                  "baselineBytes": 21270528,
+                  "maximumObservedBytes": 21270528
                 }
               ],
               "samplingLimit": "Unix ru_maxrss high-water marks sampled immediately before and after a separate untimed processing pass; the value includes the Python interpreter, native extension, allocator, and earlier process activity and cannot isolate Rust-only memory."
@@ -697,14 +697,14 @@
           }
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "redact-secret==0.1.0b4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "redact-secret==0.1.0b6",
           "corpusVersion": "1",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "cpython-3.12.14",
-          "command": "node scripts/assessment-python-performance.mjs --python .venv/bin/python --profile scale-logs-medium-fixed4096 --runs 5 --json-out assessment-output/python/scale-logs-medium-fixed4096.json --markdown-out assessment-output/python/scale-logs-medium-fixed4096.md"
+          "command": "node scripts/assessment-python-performance.mjs --python .venv/bin/python --profile scale-logs-medium-fixed4096 --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/scale-logs-medium-fixed4096.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/scale-logs-medium-fixed4096.md"
         }
       },
       "path": "incremental",
@@ -728,14 +728,14 @@
           "policyMismatches": 0
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "@redact-secret/core@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "@redact-secret/core@0.1.0-beta.6",
           "corpusVersion": "3",
           "corpusHash": "438df062ddde47dcb32ae0aefc4297ed8b8c9e2c3270778c2b1f8809e40bd0dd",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "node-22.23.2",
-          "command": "node scripts/assessment-run.mjs --json-out assessment-output/node/accuracy-corpus.json --markdown-out assessment-output/node/accuracy-corpus.md --mismatches-out assessment-output/node/accuracy-corpus-mismatches.json"
+          "command": "node scripts/assessment-run.mjs --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/accuracy-corpus.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/accuracy-corpus.md --mismatches-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/accuracy-corpus-mismatches.json"
         }
       },
       "path": "whole-input",
@@ -755,74 +755,74 @@
           "initialization": {
             "unit": "milliseconds",
             "samples": [
-              2.235405,
-              2.2186939999999993,
-              2.2359560000000016,
-              2.2325699999999955,
-              2.254962000000006
+              4.4452560000000005,
+              4.777837999999996,
+              4.374863000000005,
+              4.3784980000000004,
+              4.221375999999999
             ],
-            "minimum": 2.2186939999999993,
-            "median": 2.235405,
-            "p95": 2.254962000000006,
-            "maximum": 2.254962000000006,
-            "mean": 2.2355174000000004,
-            "standardDeviation": 0.011575935618344555
+            "minimum": 4.221375999999999,
+            "median": 4.3784980000000004,
+            "p95": 4.777837999999996,
+            "maximum": 4.777837999999996,
+            "mean": 4.4395662,
+            "standardDeviation": 0.18438165690588454
           },
           "processing": {
             "unit": "milliseconds",
             "samples": [
-              23.03142299999999,
-              23.14348199999999,
-              23.357832000000002,
-              22.949961000000002,
-              23.426551000000003
+              23.083118,
+              22.814481999999998,
+              22.869973,
+              22.48836,
+              23.230976000000013
             ],
-            "minimum": 22.949961000000002,
-            "median": 23.14348199999999,
-            "p95": 23.426551000000003,
-            "maximum": 23.426551000000003,
-            "mean": 23.1818498,
-            "standardDeviation": 0.18369601944451888
+            "minimum": 22.48836,
+            "median": 22.869973,
+            "p95": 23.230976000000013,
+            "maximum": 23.230976000000013,
+            "mean": 22.8973818,
+            "standardDeviation": 0.2532609240671794
           },
           "throughput": {
             "unit": "bytes-per-second",
             "samples": [
-              2846285.268608893,
-              2832503.76931181,
-              2806510.4672385687,
-              2856388.296258978,
-              2798277.9027096215
+              2839910.9687001556,
+              2873350.357023228,
+              2866378.547976423,
+              2915019.147683513,
+              2821835.810944834
             ],
-            "minimum": 2798277.9027096215,
-            "median": 2832503.76931181,
-            "p95": 2856388.296258978,
-            "maximum": 2856388.296258978,
-            "mean": 2827993.1408255743,
-            "standardDeviation": 22386.304746441994
+            "minimum": 2821835.810944834,
+            "median": 2866378.547976423,
+            "p95": 2915019.147683513,
+            "maximum": 2915019.147683513,
+            "mean": 2863298.9664656306,
+            "standardDeviation": 31785.792816455596
           },
           "memory": {
             "nodeHeap": {
               "unit": "bytes",
               "samples": [
                 {
-                  "baselineBytes": 6968440,
-                  "maximumObservedBytes": 7069680
+                  "baselineBytes": 7400200,
+                  "maximumObservedBytes": 7470536
                 },
                 {
-                  "baselineBytes": 6972400,
-                  "maximumObservedBytes": 7069824
+                  "baselineBytes": 7263664,
+                  "maximumObservedBytes": 7334000
                 },
                 {
-                  "baselineBytes": 7000664,
-                  "maximumObservedBytes": 7071368
+                  "baselineBytes": 7317464,
+                  "maximumObservedBytes": 7402536
                 },
                 {
-                  "baselineBytes": 6968168,
-                  "maximumObservedBytes": 7069680
+                  "baselineBytes": 7400056,
+                  "maximumObservedBytes": 7470392
                 },
                 {
-                  "baselineBytes": 6967968,
-                  "maximumObservedBytes": 7069824
+                  "baselineBytes": 7317464,
+                  "maximumObservedBytes": 7402536
                 }
               ],
               "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks."
@@ -831,24 +831,24 @@
               "unit": "bytes",
               "samples": [
                 {
-                  "baselineBytes": 66289664,
-                  "maximumObservedBytes": 66293760
+                  "baselineBytes": 65679360,
+                  "maximumObservedBytes": 65744896
                 },
                 {
-                  "baselineBytes": 66043904,
-                  "maximumObservedBytes": 66043904
+                  "baselineBytes": 65622016,
+                  "maximumObservedBytes": 65626112
                 },
                 {
-                  "baselineBytes": 66441216,
-                  "maximumObservedBytes": 66445312
+                  "baselineBytes": 65699840,
+                  "maximumObservedBytes": 65712128
                 },
                 {
-                  "baselineBytes": 66678784,
-                  "maximumObservedBytes": 66678784
+                  "baselineBytes": 65724416,
+                  "maximumObservedBytes": 65794048
                 },
                 {
-                  "baselineBytes": 66531328,
-                  "maximumObservedBytes": 66531328
+                  "baselineBytes": 65695744,
+                  "maximumObservedBytes": 65708032
                 }
               ],
               "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks."
@@ -857,24 +857,24 @@
               "unit": "bytes",
               "samples": [
                 {
-                  "baselineBytes": 2289891,
-                  "maximumObservedBytes": 2289931
+                  "baselineBytes": 2316083,
+                  "maximumObservedBytes": 2316123
                 },
                 {
-                  "baselineBytes": 2289891,
-                  "maximumObservedBytes": 2289931
+                  "baselineBytes": 2316083,
+                  "maximumObservedBytes": 2316123
                 },
                 {
-                  "baselineBytes": 2289891,
-                  "maximumObservedBytes": 2289931
+                  "baselineBytes": 2316083,
+                  "maximumObservedBytes": 2316123
                 },
                 {
-                  "baselineBytes": 2289891,
-                  "maximumObservedBytes": 2289931
+                  "baselineBytes": 2316083,
+                  "maximumObservedBytes": 2316123
                 },
                 {
-                  "baselineBytes": 2289891,
-                  "maximumObservedBytes": 2289931
+                  "baselineBytes": 2316083,
+                  "maximumObservedBytes": 2316123
                 }
               ],
               "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks. External memory can overlap RSS and must not be summed with it."
@@ -912,14 +912,14 @@
           }
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "@redact-secret/core@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "@redact-secret/core@0.1.0-beta.6",
           "corpusVersion": "1",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "node-22.23.2",
-          "command": "node scripts/assessment-node-performance.mjs --profile scale-logs-small-whole --runs 5 --addon-dir bindings/node --json-out assessment-output/node/scale-logs-small-whole.json --markdown-out assessment-output/node/scale-logs-small-whole.md"
+          "command": "node scripts/assessment-node-performance.mjs --profile scale-logs-small-whole --runs 5 --addon-dir bindings/node --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/scale-logs-small-whole.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/scale-logs-small-whole.md"
         }
       },
       "path": "whole-input",
@@ -939,74 +939,74 @@
           "initialization": {
             "unit": "milliseconds",
             "samples": [
-              2.412786000000011,
-              2.357732999999996,
-              2.3287890000000004,
-              2.298423000000014,
-              2.367260999999985
+              4.897433000000007,
+              4.50821000000002,
+              4.509481999999991,
+              4.876393000000007,
+              4.960307
             ],
-            "minimum": 2.298423000000014,
-            "median": 2.357732999999996,
-            "p95": 2.412786000000011,
-            "maximum": 2.412786000000011,
-            "mean": 2.3529984000000015,
-            "standardDeviation": 0.03837959000093497
+            "minimum": 4.50821000000002,
+            "median": 4.876393000000007,
+            "p95": 4.960307,
+            "maximum": 4.960307,
+            "mean": 4.750365000000005,
+            "standardDeviation": 0.19912376075496294
           },
           "processing": {
             "unit": "milliseconds",
             "samples": [
-              107.03277100000003,
-              106.74360899999999,
-              106.033454,
-              104.936957,
-              104.98983600000003
+              114.841993,
+              117.37867399999999,
+              113.62309500000003,
+              113.398774,
+              110.97556000000003
             ],
-            "minimum": 104.936957,
-            "median": 106.033454,
-            "p95": 107.03277100000003,
-            "maximum": 107.03277100000003,
-            "mean": 105.9473254,
-            "standardDeviation": 0.866868861219179
+            "minimum": 110.97556000000003,
+            "median": 113.62309500000003,
+            "p95": 117.37867399999999,
+            "maximum": 117.37867399999999,
+            "mean": 114.04361920000001,
+            "standardDeviation": 2.0864153197761235
           },
           "throughput": {
             "unit": "bytes-per-second",
             "samples": [
-              2449287.2374573946,
-              2455922.208888403,
-              2472370.653888159,
-              2498204.7078037527,
-              2496946.4663227014
+              2282736.420291835,
+              2233403.999775973,
+              2307224.600773284,
+              2311788.6618421464,
+              2362267.872313507
             ],
-            "minimum": 2449287.2374573946,
-            "median": 2472370.653888159,
-            "p95": 2498204.7078037527,
-            "maximum": 2498204.7078037527,
-            "mean": 2474546.2548720823,
-            "standardDeviation": 20253.879417787863
+            "minimum": 2233403.999775973,
+            "median": 2307224.600773284,
+            "p95": 2362267.872313507,
+            "maximum": 2362267.872313507,
+            "mean": 2299484.310999349,
+            "standardDeviation": 41952.79271100985
           },
           "memory": {
             "nodeHeap": {
               "unit": "bytes",
               "samples": [
                 {
-                  "baselineBytes": 21371688,
-                  "maximumObservedBytes": 21666160
+                  "baselineBytes": 21697120,
+                  "maximumObservedBytes": 21697120
                 },
                 {
-                  "baselineBytes": 21347496,
-                  "maximumObservedBytes": 21640880
+                  "baselineBytes": 21682456,
+                  "maximumObservedBytes": 21682456
                 },
                 {
-                  "baselineBytes": 21352000,
-                  "maximumObservedBytes": 21645680
+                  "baselineBytes": 21658704,
+                  "maximumObservedBytes": 21658704
                 },
                 {
-                  "baselineBytes": 21371360,
-                  "maximumObservedBytes": 21665832
+                  "baselineBytes": 21651192,
+                  "maximumObservedBytes": 21651192
                 },
                 {
-                  "baselineBytes": 21333728,
-                  "maximumObservedBytes": 21626432
+                  "baselineBytes": 21722384,
+                  "maximumObservedBytes": 21722384
                 }
               ],
               "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks."
@@ -1015,24 +1015,24 @@
               "unit": "bytes",
               "samples": [
                 {
-                  "baselineBytes": 93728768,
-                  "maximumObservedBytes": 93728768
+                  "baselineBytes": 93569024,
+                  "maximumObservedBytes": 93569024
                 },
                 {
-                  "baselineBytes": 93577216,
-                  "maximumObservedBytes": 93577216
+                  "baselineBytes": 94769152,
+                  "maximumObservedBytes": 94769152
                 },
                 {
-                  "baselineBytes": 93761536,
-                  "maximumObservedBytes": 93761536
+                  "baselineBytes": 94683136,
+                  "maximumObservedBytes": 94683136
                 },
                 {
-                  "baselineBytes": 93732864,
-                  "maximumObservedBytes": 93732864
+                  "baselineBytes": 94826496,
+                  "maximumObservedBytes": 94826496
                 },
                 {
-                  "baselineBytes": 93982720,
-                  "maximumObservedBytes": 93982720
+                  "baselineBytes": 94932992,
+                  "maximumObservedBytes": 94932992
                 }
               ],
               "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks."
@@ -1041,24 +1041,24 @@
               "unit": "bytes",
               "samples": [
                 {
-                  "baselineBytes": 2321617,
-                  "maximumObservedBytes": 2321657
+                  "baselineBytes": 2347870,
+                  "maximumObservedBytes": 2347910
                 },
                 {
-                  "baselineBytes": 2321507,
-                  "maximumObservedBytes": 2321547
+                  "baselineBytes": 2347665,
+                  "maximumObservedBytes": 2347705
                 },
                 {
-                  "baselineBytes": 2321675,
-                  "maximumObservedBytes": 2321715
+                  "baselineBytes": 2347605,
+                  "maximumObservedBytes": 2347645
                 },
                 {
-                  "baselineBytes": 2321624,
-                  "maximumObservedBytes": 2321664
+                  "baselineBytes": 2347572,
+                  "maximumObservedBytes": 2347612
                 },
                 {
-                  "baselineBytes": 2321466,
-                  "maximumObservedBytes": 2321506
+                  "baselineBytes": 2347958,
+                  "maximumObservedBytes": 2347998
                 }
               ],
               "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks. External memory can overlap RSS and must not be summed with it."
@@ -1096,14 +1096,14 @@
           }
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "@redact-secret/core@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "@redact-secret/core@0.1.0-beta.6",
           "corpusVersion": "1",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "node-22.23.2",
-          "command": "node scripts/assessment-node-performance.mjs --profile scale-logs-medium-fixed4096 --runs 5 --addon-dir bindings/node --json-out assessment-output/node/scale-logs-medium-fixed4096.json --markdown-out assessment-output/node/scale-logs-medium-fixed4096.md"
+          "command": "node scripts/assessment-node-performance.mjs --profile scale-logs-medium-fixed4096 --runs 5 --addon-dir bindings/node --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/scale-logs-medium-fixed4096.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/scale-logs-medium-fixed4096.md"
         }
       },
       "path": "incremental",
@@ -1127,14 +1127,14 @@
           "policyMismatches": 0
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.6",
           "corpusVersion": "3",
           "corpusHash": "438df062ddde47dcb32ae0aefc4297ed8b8c9e2c3270778c2b1f8809e40bd0dd",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "chromium-153.0.8010.12",
-          "command": "node scripts/assessment-browser-run.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret/redact-secret/bindings/wasm/pkg --json-out assessment-output/browser-wasm/accuracy-corpus.json --markdown-out assessment-output/browser-wasm/accuracy-corpus.md --mismatches-out assessment-output/browser-wasm/accuracy-corpus-mismatches.json"
+          "command": "node scripts/assessment-browser-run.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/core-repo/bindings/wasm/pkg --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/accuracy-corpus.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/accuracy-corpus.md --mismatches-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/accuracy-corpus-mismatches.json"
         }
       },
       "path": "whole-input",
@@ -1154,50 +1154,50 @@
           "initialization": {
             "unit": "milliseconds",
             "samples": [
-              8.89999999999418,
-              10.099999999976717,
-              7.100000000005821,
-              10.700000000011642,
-              7.100000000005821
+              10,
+              10,
+              8.299999999988358,
+              7.2999999999883585,
+              7.400000000023283
             ],
-            "minimum": 7.100000000005821,
-            "median": 8.89999999999418,
-            "p95": 10.700000000011642,
-            "maximum": 10.700000000011642,
-            "mean": 8.779999999998836,
-            "standardDeviation": 1.4891608375150567
+            "minimum": 7.2999999999883585,
+            "median": 8.299999999988358,
+            "p95": 10,
+            "maximum": 10,
+            "mean": 8.6,
+            "standardDeviation": 1.1949895397016137
           },
           "processing": {
             "unit": "milliseconds",
             "samples": [
-              41.20000000001164,
-              27.39999999999418,
-              27.199999999982538,
-              27.39999999999418,
-              28.60000000000582
+              29.899999999965075,
+              28.099999999976717,
+              27.199999999953434,
+              28.79999999998836,
+              25.099999999976717
             ],
-            "minimum": 27.199999999982538,
-            "median": 27.39999999999418,
-            "p95": 41.20000000001164,
-            "maximum": 41.20000000001164,
-            "mean": 30.359999999997672,
-            "standardDeviation": 5.442646415125847
+            "minimum": 25.099999999976717,
+            "median": 28.099999999976717,
+            "p95": 29.899999999965075,
+            "maximum": 29.899999999965075,
+            "mean": 27.81999999997206,
+            "standardDeviation": 1.6216041440501598
           },
           "throughput": {
             "unit": "bytes-per-second",
             "samples": [
-              1591116.5048539191,
-              2392481.7518253257,
-              2410073.529413312,
-              2392481.7518253257,
-              2292097.9020974357
+              2192441.471574467,
+              2332882.562279513,
+              2410073.5294158906,
+              2276180.5555564757,
+              2611713.147412781
             ],
-            "minimum": 1591116.5048539191,
-            "median": 2392481.7518253257,
-            "p95": 2410073.529413312,
-            "maximum": 2410073.529413312,
-            "mean": 2215650.2880030638,
-            "standardDeviation": 315032.0028158474
+            "minimum": 2192441.471574467,
+            "median": 2332882.562279513,
+            "p95": 2611713.147412781,
+            "maximum": 2611713.147412781,
+            "mean": 2364658.2532478254,
+            "standardDeviation": 142544.93007854317
           },
           "memory": {
             "nodeHeap": {
@@ -1271,14 +1271,14 @@
           }
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.6",
           "corpusVersion": "1",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "chromium-153.0.8010.12",
-          "command": "node scripts/assessment-browser-performance.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret/redact-secret/bindings/wasm/pkg --profile scale-logs-small-whole --runs 5 --json-out assessment-output/browser-wasm/scale-logs-small-whole.json --markdown-out assessment-output/browser-wasm/scale-logs-small-whole.md"
+          "command": "node scripts/assessment-browser-performance.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/core-repo/bindings/wasm/pkg --profile scale-logs-small-whole --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/scale-logs-small-whole.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/scale-logs-small-whole.md"
         }
       },
       "path": "whole-input",
@@ -1298,50 +1298,50 @@
           "initialization": {
             "unit": "milliseconds",
             "samples": [
-              14.199999999982538,
-              13.89999999999418,
-              13.60000000000582,
-              13.700000000011642,
-              14.10000000000582
+              12.600000000034925,
+              11.799999999988358,
+              11.100000000034925,
+              11.199999999953434,
+              11.400000000023283
             ],
-            "minimum": 13.60000000000582,
-            "median": 13.89999999999418,
-            "p95": 14.199999999982538,
-            "maximum": 14.199999999982538,
-            "mean": 13.9,
-            "standardDeviation": 0.2280350850126804
+            "minimum": 11.100000000034925,
+            "median": 11.400000000023283,
+            "p95": 12.600000000034925,
+            "maximum": 12.600000000034925,
+            "mean": 11.620000000006986,
+            "standardDeviation": 0.5455272678898481
           },
           "processing": {
             "unit": "milliseconds",
             "samples": [
-              123.09999999997672,
-              122.90000000002328,
-              122,
-              122.10000000000582,
-              119.30000000001746
+              120.5,
+              121.5,
+              121.60000000003492,
+              121.10000000003492,
+              121.79999999998836
             ],
-            "minimum": 119.30000000001746,
-            "median": 122.10000000000582,
-            "p95": 123.09999999997672,
-            "maximum": 123.09999999997672,
-            "mean": 121.88000000000466,
-            "standardDeviation": 1.3599999999928782
+            "minimum": 120.5,
+            "median": 121.5,
+            "p95": 121.79999999998836,
+            "maximum": 121.79999999998836,
+            "mean": 121.30000000001164,
+            "standardDeviation": 0.46043457732784215
           },
           "throughput": {
             "unit": "bytes-per-second",
             "samples": [
-              2129601.9496348463,
-              2133067.534580556,
-              2148803.278688525,
-              2147043.4070433048,
-              2197435.037719712
+              2175551.867219917,
+              2157646.0905349795,
+              2155871.7105256966,
+              2164772.914945701,
+              2152331.6912974142
             ],
-            "minimum": 2129601.9496348463,
-            "median": 2147043.4070433048,
-            "p95": 2197435.037719712,
-            "maximum": 2197435.037719712,
-            "mean": 2151190.241533389,
-            "standardDeviation": 24314.447789824135
+            "minimum": 2152331.6912974142,
+            "median": 2157646.0905349795,
+            "p95": 2175551.867219917,
+            "maximum": 2175551.867219917,
+            "mean": 2161234.854904742,
+            "standardDeviation": 8226.829037208843
           },
           "memory": {
             "nodeHeap": {
@@ -1415,14 +1415,14 @@
           }
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.6",
           "corpusVersion": "1",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "chromium-153.0.8010.12",
-          "command": "node scripts/assessment-browser-performance.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret/redact-secret/bindings/wasm/pkg --profile scale-logs-medium-fixed4096 --runs 5 --json-out assessment-output/browser-wasm/scale-logs-medium-fixed4096.json --markdown-out assessment-output/browser-wasm/scale-logs-medium-fixed4096.md"
+          "command": "node scripts/assessment-browser-performance.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/core-repo/bindings/wasm/pkg --profile scale-logs-medium-fixed4096 --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/scale-logs-medium-fixed4096.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/scale-logs-medium-fixed4096.md"
         }
       },
       "path": "incremental",
@@ -1446,14 +1446,14 @@
           "policyMismatches": 0
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "redact-secret@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "redact-secret@0.1.0-beta.6",
           "corpusVersion": "3",
           "corpusHash": "438df062ddde47dcb32ae0aefc4297ed8b8c9e2c3270778c2b1f8809e40bd0dd",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
-          "command": "node scripts/assessment-cli-run.mjs --binary target/release/redact-secret --json-out assessment-output/cli/accuracy-corpus.json --markdown-out assessment-output/cli/accuracy-corpus.md --mismatches-out assessment-output/cli/accuracy-corpus-mismatches.json"
+          "command": "node scripts/assessment-cli-run.mjs --binary target/release/redact-secret --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/accuracy-corpus.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/accuracy-corpus.md --mismatches-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/accuracy-corpus-mismatches.json"
         }
       },
       "path": "whole-input",
@@ -1473,50 +1473,50 @@
           "initialization": {
             "unit": "milliseconds",
             "samples": [
-              2.1946390000000093,
-              1.9824120000000107,
-              1.9490799999999808,
-              1.9376490000000217,
-              1.9600810000000024
+              2.813369999999999,
+              1.9338130000000149,
+              1.9564269999999908,
+              1.9539029999999684,
+              1.9684540000000084
             ],
-            "minimum": 1.9376490000000217,
-            "median": 1.9600810000000024,
-            "p95": 2.1946390000000093,
-            "maximum": 2.1946390000000093,
-            "mean": 2.004772200000005,
-            "standardDeviation": 0.09607687418187799
+            "minimum": 1.9338130000000149,
+            "median": 1.9564269999999908,
+            "p95": 2.813369999999999,
+            "maximum": 2.813369999999999,
+            "mean": 2.125193399999996,
+            "standardDeviation": 0.3442682758272113
           },
           "processing": {
             "unit": "milliseconds",
             "samples": [
-              33.317372000000006,
-              33.615825,
-              34.28449900000001,
-              34.449126000000035,
-              33.80589500000002
+              33.060799,
+              32.67049399999999,
+              32.730767000000014,
+              32.74145299999998,
+              42.22219899999999
             ],
-            "minimum": 33.317372000000006,
-            "median": 33.80589500000002,
-            "p95": 34.449126000000035,
-            "maximum": 34.449126000000035,
-            "mean": 33.89454340000002,
-            "standardDeviation": 0.41911729634870387
+            "minimum": 32.67049399999999,
+            "median": 32.74145299999998,
+            "p95": 42.22219899999999,
+            "maximum": 42.22219899999999,
+            "mean": 34.6851424,
+            "standardDeviation": 3.7709954530905256
           },
           "throughput": {
             "unit": "bytes-per-second",
             "samples": [
-              1967562.1474586888,
-              1950093.4455721374,
-              1912059.4412069425,
-              1902922.0073681965,
-              1939129.2554153632
+              1982831.6913937863,
+              2006520.0116043554,
+              2002825.048371154,
+              2002171.3758396748,
+              1552595.5907696807
             ],
-            "minimum": 1902922.0073681965,
-            "median": 1939129.2554153632,
-            "p95": 1967562.1474586888,
-            "maximum": 1967562.1474586888,
-            "mean": 1934353.2594042658,
-            "standardDeviation": 23909.545285005675
+            "minimum": 1552595.5907696807,
+            "median": 2002171.3758396748,
+            "p95": 2006520.0116043554,
+            "maximum": 2006520.0116043554,
+            "mean": 1909388.74359573,
+            "standardDeviation": 178588.1651207521
           },
           "memory": {
             "nodeHeap": {
@@ -1560,23 +1560,23 @@
               "samples": [
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 3063808
-                },
-                {
-                  "baselineBytes": 0,
-                  "maximumObservedBytes": 2916352
-                },
-                {
-                  "baselineBytes": 0,
-                  "maximumObservedBytes": 3051520
-                },
-                {
-                  "baselineBytes": 0,
-                  "maximumObservedBytes": 3039232
+                  "maximumObservedBytes": 3227648
                 },
                 {
                   "baselineBytes": 0,
                   "maximumObservedBytes": 3100672
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3244032
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3198976
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3190784
                 }
               ],
               "samplingLimit": "A separate, untimed /usr/bin/time-wrapped repetition's whole-process maximum resident set size; it includes process startup, argument parsing, the Rust runtime, and the entire scan, and cannot isolate steady-state or Rust-only memory."
@@ -1590,14 +1590,14 @@
           }
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "redact-secret@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "redact-secret@0.1.0-beta.6",
           "corpusVersion": "1",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
-          "command": "node scripts/assessment-cli-performance.mjs --binary target/release/redact-secret --profile scale-logs-small-whole --runs 5 --json-out assessment-output/cli/scale-logs-small-whole.json --markdown-out assessment-output/cli/scale-logs-small-whole.md"
+          "command": "node scripts/assessment-cli-performance.mjs --binary target/release/redact-secret --profile scale-logs-small-whole --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/scale-logs-small-whole.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/scale-logs-small-whole.md"
         }
       },
       "path": "whole-input",
@@ -1617,50 +1617,50 @@
           "initialization": {
             "unit": "milliseconds",
             "samples": [
-              2.2328800000000086,
-              1.96022099999999,
-              1.9767719999999827,
-              1.9780040000000554,
-              1.9984019999999418
+              1.903328000000002,
+              2.0494640000000004,
+              2.1236229999999523,
+              2.092477000000031,
+              2.0980749999998807
             ],
-            "minimum": 1.96022099999999,
-            "median": 1.9780040000000554,
-            "p95": 2.2328800000000086,
-            "maximum": 2.2328800000000086,
-            "mean": 2.0292557999999956,
-            "standardDeviation": 0.10252987045422873
+            "minimum": 1.903328000000002,
+            "median": 2.092477000000031,
+            "p95": 2.1236229999999523,
+            "maximum": 2.1236229999999523,
+            "mean": 2.0533933999999734,
+            "standardDeviation": 0.07872894556030136
           },
           "processing": {
             "unit": "milliseconds",
             "samples": [
-              125.589568,
-              125.68521900000002,
-              126.05836599999998,
-              127.47920899999997,
-              127.06109300000003
+              123.174286,
+              124.54042099999998,
+              124.40202699999998,
+              123.77402999999993,
+              125.03346899999997
             ],
-            "minimum": 125.589568,
-            "median": 126.05836599999998,
-            "p95": 127.47920899999997,
-            "maximum": 127.47920899999997,
-            "mean": 126.37469099999998,
-            "standardDeviation": 0.7593364191800573
+            "minimum": 123.174286,
+            "median": 124.40202699999998,
+            "p95": 125.03346899999997,
+            "maximum": 125.03346899999997,
+            "mean": 124.18484659999997,
+            "standardDeviation": 0.6455638563254905
           },
           "throughput": {
             "unit": "bytes-per-second",
             "samples": [
-              2087386.7485554211,
-              2085798.1717006832,
-              2079623.973548888,
-              2056445.1415759886,
-              2063212.2218561422
+              2128317.593819866,
+              2104971.204489505,
+              2107312.929876939,
+              2118004.883576952,
+              2096670.612250229
             ],
-            "minimum": 2056445.1415759886,
-            "median": 2079623.973548888,
-            "p95": 2087386.7485554211,
-            "maximum": 2087386.7485554211,
-            "mean": 2074493.2514474248,
-            "standardDeviation": 12436.749554925605
+            "minimum": 2096670.612250229,
+            "median": 2107312.929876939,
+            "p95": 2128317.593819866,
+            "maximum": 2128317.593819866,
+            "mean": 2111055.444802698,
+            "standardDeviation": 10992.945862586592
           },
           "memory": {
             "nodeHeap": {
@@ -1704,23 +1704,23 @@
               "samples": [
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 3117056
+                  "maximumObservedBytes": 3162112
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 3108864
+                  "maximumObservedBytes": 3317760
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 3014656
+                  "maximumObservedBytes": 3248128
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 3166208
+                  "maximumObservedBytes": 3284992
                 },
                 {
                   "baselineBytes": 0,
-                  "maximumObservedBytes": 3117056
+                  "maximumObservedBytes": 3260416
                 }
               ],
               "samplingLimit": "A separate, untimed /usr/bin/time-wrapped repetition's whole-process maximum resident set size; it includes process startup, argument parsing, the Rust runtime, and the entire scan, and cannot isolate steady-state or Rust-only memory."
@@ -1734,14 +1734,14 @@
           }
         },
         "provenance": {
-          "commit": "944341903d5b85686a056d3218f4c33110d7d57b",
-          "artifactIdentity": "redact-secret@0.1.0-beta.4",
+          "commit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+          "artifactIdentity": "redact-secret@0.1.0-beta.6",
           "corpusVersion": "1",
           "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
           "os": "linux-6.17.0-1022-azure",
           "cpu": "x64",
           "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
-          "command": "node scripts/assessment-cli-performance.mjs --binary target/release/redact-secret --profile scale-logs-medium-fixed4096 --runs 5 --json-out assessment-output/cli/scale-logs-medium-fixed4096.json --markdown-out assessment-output/cli/scale-logs-medium-fixed4096.md"
+          "command": "node scripts/assessment-cli-performance.mjs --binary target/release/redact-secret --profile scale-logs-medium-fixed4096 --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/scale-logs-medium-fixed4096.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/scale-logs-medium-fixed4096.md"
         }
       },
       "path": "standard-input",

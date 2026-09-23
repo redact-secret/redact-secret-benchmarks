@@ -17,17 +17,19 @@ const isAncestor = status => status === 'identical' || status === 'ahead';
 async function main() {
   const root = new URL('../', import.meta.url);
   const read = async path => JSON.parse(await readFile(new URL(path, root), 'utf8'));
-  const [registry, inventory, packageJson, knownGaps] = await Promise.all([
+  const [registry, inventory, packageJson, knownGaps, performanceCriteria] = await Promise.all([
     read('benchmarks/detectors.json'),
     read('benchmarks/detector-inventory.json'),
     read('package.json'),
     read('benchmarks/known-gaps.json'),
+    read('benchmarks/performance-criteria.json'),
   ]);
   const facts = {
     registrySourceRevision: registry.sourceRevision,
     inventoryRedactSecretRevision: inventory.redactSecretRevision,
     inventoryRedactSecretVersion: inventory.redactSecretVersion,
     packageVersion: packageJson.dependencies['@redact-secret/core'],
+    performanceCriteriaSourceCommit: performanceCriteria.baseline.sourceCommit,
   };
 
   const failures = checkPinConsistency(facts);

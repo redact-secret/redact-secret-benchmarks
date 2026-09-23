@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "7b08983781fbef874220eb10851c3692396a75e3",
+  "revision": "1f75495e887e11c649c0a13a505599ec20c62f12",
   "pins": {
     "sourceRevision": "079095e766e4a71e2b7e29413ed17be37bb3315d",
     "redactSecretRevision": "079095e766e4a71e2b7e29413ed17be37bb3315d",
@@ -17,7 +17,7 @@
     "sendgrid-regressions": "bb556d9d91dda1a394c83be1cd3763e75ebf9230d5fbdb6ad5abd91368ab459d",
     "reference-syntax": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e",
     "milestone-6-closed": "388b26e3703fc5a80b1ca0cd65232873e765a0a0b59148ba0e6998fd6c8ff766",
-    "detector-coverage": "fffa0619fdfc286fc5fc118d956e4291a4127cc5759e687bf57f45478d841660",
+    "detector-coverage": "0a6dcd966f0b3d002364584f49e317d16cf91aae9d1a2e16f4025c9fc9938645",
     "real-world-shapes": "8c0e2f60d87286f8acaa81664308ff291b36dc53474b30e344e43625697ffd0f"
   },
   "fixtureIds": [
@@ -534,8 +534,16 @@
     "detector-coverage--discord-bot-token-mask",
     "detector-coverage--discord-bot-token-missing-segment",
     "detector-coverage--discord-bot-token-reference",
+    "detector-coverage--discord-bot-token-short-current-final-segment",
+    "detector-coverage--discord-bot-token-short-current-first-segment",
     "detector-coverage--discord-bot-token-short-final-segment",
     "detector-coverage--discord-bot-token-three-segments-bare",
+    "detector-coverage--discord-bot-token-three-segments-current-new-bot-bare",
+    "detector-coverage--discord-bot-token-three-segments-current-new-bot-quoted",
+    "detector-coverage--discord-bot-token-three-segments-current-new-bot-unicode-crlf",
+    "detector-coverage--discord-bot-token-three-segments-current-reset-bot-bare",
+    "detector-coverage--discord-bot-token-three-segments-current-reset-bot-quoted",
+    "detector-coverage--discord-bot-token-three-segments-current-reset-bot-unicode-crlf",
     "detector-coverage--discord-bot-token-three-segments-quoted",
     "detector-coverage--discord-bot-token-three-segments-unicode-crlf",
     "detector-coverage--docker-token-dash-identifier-embedding",

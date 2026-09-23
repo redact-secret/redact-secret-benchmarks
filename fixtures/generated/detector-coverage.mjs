@@ -314,6 +314,26 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   positive("discord-bot-token", "three-segments", [{ secret: `${discordSeg1}.${discordSeg2}.${discordSeg3}` }]);
   add("discord-bot-token", "missing-segment", [`${discordSeg1}.${discordSeg3}`]);
   add("discord-bot-token", "short-final-segment", [`${discordSeg1}.${discordSeg2}.${discordSeg3.slice(0, 20)}`]);
+  // #159: current issued shapes (redact-secret/redact-secret#646). Segment 3
+  // grew from 27 to 38 characters around May 2022; segment 1 grows from 24 to
+  // 26 characters once a bot's snowflake ID reaches 19 digits (2022-07-22
+  // onward). A 19-digit snowflake starts with "1" (arithmetic, not policy);
+  // base64url of an ASCII "1" begins "MT", matching the cited evidence.
+  const discordDigits19 = "1" + synthetic("coverage:discord:snowflake-digits-19", 18, "0123456789");
+  const discordSeg1Current = Buffer.from(discordDigits19).toString("base64url");
+  const discordSeg2Current = synthetic("coverage:discord:seg2-current", 6, ALNUM_DASH);
+  const discordSeg3Current = synthetic("coverage:discord:seg3-current", 38, ALNUM_DASH);
+  // 26/6/38: a bot created on or after 2022-07-22 (19-digit ID).
+  positive("discord-bot-token", "three-segments-current-new-bot", [{ secret: `${discordSeg1Current}.${discordSeg2Current}.${discordSeg3Current}` }]);
+  // 24/6/38: an older bot (18-digit ID) whose token was reset after May 2022.
+  positive("discord-bot-token", "three-segments-current-reset-bot", [{ secret: `${discordSeg1}.${discordSeg2Current}.${discordSeg3Current}` }]);
+  // Near misses (§2.5, not formal twins — discord-bot-token has no
+  // provider-domain twinSource and stays recorded un-probeable): one per
+  // newly documented structural property the current shapes add over the
+  // legacy contract. missing-segment/short-final-segment above already cover
+  // the pre-existing three-segment and truncated-final-segment properties.
+  add("discord-bot-token", "short-current-final-segment", [`${discordSeg1Current}.${discordSeg2Current}.${discordSeg3Current.slice(0, -1)}`]);
+  add("discord-bot-token", "short-current-first-segment", [`${discordSeg1Current.slice(0, -1)}.${discordSeg2Current}.${discordSeg3Current}`]);
 
   const sentryOrgPayload = synthetic("coverage:sentry-org:payload", 26, BASE64_BODY);
   const sentryOrgSignature = synthetic("coverage:sentry-org:signature", 43, BASE64_BODY);

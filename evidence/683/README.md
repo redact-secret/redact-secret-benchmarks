@@ -1,4 +1,4 @@
-# Evidence: redact-secret#683 — performance evaluation REJECTED at product main 065ec76
+# Evidence: redact-secret#683 — performance evaluation REJECTED at product main 065ec76 (fixed by product #684)
 
 **Result:** REJECTED, reproduced. Product `main` at
 `065ec76c7978ee60c5de8412bd04b91d39c2c275` fails this repository's fixed
@@ -7,6 +7,8 @@ derived from the `41fc366` run) in two consecutive `performance-evaluation.yml`
 runs — 7/46 checks, then 5/46 — every failure a `scale-logs` throughput floor
 or processing p95 ceiling, on `rust-core`, `cli` and `node` alike;
 throughput is roughly half of the `41fc366` baseline run.
+
+**Resolved:** product [#684](https://github.com/redact-secret/redact-secret/pull/684) (`15fce66`) fixed it; that commit evaluated ACCEPTED, 46/46, against these same criteria ([`evidence/603/`](../603/README.md)), and the criteria were then recalibrated from that run. The rest of this file records the rejected runs as they were.
 
 Filed as [redact-secret/redact-secret#683](https://github.com/redact-secret/redact-secret/issues/683).
 Format per [`evidence/README.md`](../README.md). The criteria in

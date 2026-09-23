@@ -34,23 +34,28 @@ exists so a permalink to it, plus the one-line result above, is everything
 the core repository's own evidence archive needs to keep — per
 [`evidence/README.md`](../README.md).
 
-## Later runs at a newer pin
+## Later runs at newer pins
 
-The registry pin moved again to product `main` `065ec76` (Mailgun, the Datadog
-application-key split, Okta). The same workflow at that commit evaluated
-**REJECTED** twice against the criteria this file's run produced; those runs
-and the numbers are recorded in [`evidence/683/README.md`](../683/README.md)
-(redact-secret#683). The criteria were deliberately **not** re-derived from
-them, so `baseline.sourceCommit` here stays `41fc366` while the pin is
-`065ec76`, and `npm run pins:check` reports that mismatch until the product
-decides.
+Product `main` `065ec76` (Mailgun, the Datadog application-key split, Okta)
+evaluated **REJECTED** twice against the criteria the `41fc366` run produced
+([`evidence/683/README.md`](../683/README.md), redact-secret#683); the
+criteria were deliberately not re-derived from those runs. Product
+[#684](https://github.com/redact-secret/redact-secret/pull/684) fixed the
+regression, and product `main` `15fce66e7c2d45003d7c6e31a341e5bc875a7326`
+then evaluated **ACCEPTED**, 46/46, against those same unchanged `41fc366`
+criteria ([run 35878900954](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35878900954)).
+That run's `summary.json`, `acceptance.json` and `acceptance.md` are what this
+directory now holds, and `benchmarks/performance-criteria.json` was
+recalibrated from it, so `baseline.sourceCommit` matches the pin again. The
+`41fc366` run (35868842776) is superseded here; its verdict is still recorded
+above and in the decision records.
 
 ## Source revisions
 
 | Repository | Revision |
 | --- | --- |
-| `redact-secret` (measured) | `41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1` (product `main`, unreleased; the registry pin after the post-beta.6 refresh) — the commit `benchmarks/pin-manifest.json`'s `pins.redactSecretRevision` names at measurement time. The published npm package this repository scores accuracy against stays 0.1.0-beta.6 (`079095e`). |
-| `redact-secret-benchmarks` | `0c0825a9d70f64b3bccaac89472798ea3abd6271` (branch `milocosmopolitan/new-detectors-fixture`, the registry-refresh commit) at measurement time — the workflow ref this run was dispatched against and the criteria file it evaluated `summary.json` with. |
+| `redact-secret` (measured) | `15fce66e7c2d45003d7c6e31a341e5bc875a7326` (product `main` after #684; the registry pin). The earlier `41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1` run supplied the criteria this one was checked against — the commit `benchmarks/pin-manifest.json`'s `pins.redactSecretRevision` names at measurement time. The published npm package this repository scores accuracy against stays 0.1.0-beta.6 (`079095e`). |
+| `redact-secret-benchmarks` | `fedf7d2` (branch `chore/repin-product-15fce66`, the registry re-pin commit) at measurement time — the workflow ref this run was dispatched against and the criteria file it evaluated `summary.json` with. |
 
 ## Pinned scanner versions
 
@@ -69,7 +74,7 @@ own `provenance.artifactIdentity`, `provenance.runtime`, and (for `rust-core`)
 
 The raw evidence (`summary.json`, `acceptance.json`, `acceptance.md`,
 alongside this README) is this repository's own `ubuntu-latest` CI run:
-[`performance-evaluation` run 35868842776](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35868842776),
+[`performance-evaluation` run 35878900954](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35878900954),
 dispatched against the branch carrying the refreshed pin and reproducible by
 anyone with:
 

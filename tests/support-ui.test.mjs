@@ -155,3 +155,17 @@ test('families read in provider order, with the non-provider-specific formats la
   assert.equal(providerName(null), 'Not provider-specific');
   assert.equal(providerName('github'), taxonomy.providers.find(p => p.id === 'github').name);
 });
+
+test('the page says which redact-secret the statuses were measured against', () => {
+  const published = mixed();
+  assert.equal(supportMatrixProblem(published), null);
+  assert.match(text(supportPage(published, null)), /Measured the published redact-secret package/);
+  const candidate = mixed();
+  candidate.sourceReport.product = { sourceCommit: 'a'.repeat(40), packageName: '@redact-secret/core', declaredVersion: '0.1.0-beta.7', artifacts: [{ role: 'package', sha256: 'b'.repeat(64) }] };
+  assert.equal(supportMatrixProblem(candidate), null);
+  const html = supportPage(candidate, null);
+  assert.match(text(html), /Measured candidate redact-secret 0\.1\.0-beta\.7 at aaaaaaa/);
+  assert.match(html, /href="https:\/\/github\.com\/redact-secret\/redact-secret\/commit\/a{40}"/);
+  candidate.sourceReport.product.sourceCommit = 'main';
+  assert.match(supportMatrixProblem(candidate), /Invalid support-matrix contract/);
+});

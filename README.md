@@ -144,7 +144,7 @@ npm run compare                      # Integration checks, then strict compariso
 npm run test:coverage                # Tests + coverage for scoring and scanner adapters
 npm run test:redaction               # Published npm scan/redact parity over every registered fixture
 npm run fixtures:check               # Verify generated fixtures have not drifted
-npm run baseline -- --save 0.1.0-beta.6  # Store (fixture, scanner) → outcome from a complete run
+npm run baseline -- --save 0.1.0-beta.7  # Store (fixture, scanner) → outcome from a complete run
 npm run baseline:report              # Regenerate docs/generated/release-comparison.md from baselines/
 npm run build                       # Type-check and build a static dashboard snapshot
 npm run preview                     # Preview that snapshot
@@ -194,7 +194,7 @@ drift as corpora are added, and this table is not regenerated automatically. See
 [the expanded corpus notes](fixtures/generated/README.md) for generation,
 source references, and per-category limitations, and
 [docs/reports/](docs/reports/) for the dated growth history and per-release
-results (beta.3 through beta.6, the SendGrid investigation, and the
+results (beta.3 through beta.7, the SendGrid investigation, and the
 closed-issue coverage matrix). Durable measurement evidence tied to one
 `redact-secret` issue lives in [`evidence/<issue>/`](evidence/README.md), not
 in that repository's own frozen-evidence archive — see

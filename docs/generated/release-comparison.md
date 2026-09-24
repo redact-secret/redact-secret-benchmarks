@@ -226,6 +226,82 @@ Suites are summed here for readability only; per-suite groups are in the baselin
 
 Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
 
+## 0.1.0-beta.7
+
+Run `2026-09-24T11:27:52.885Z-43bb90` · revision `b41e400906ace2fa750642a58040017f7fbdc178` · saved 2026-09-24T11:28:53.908Z · **accounting v1.1** (rates are point estimates here; the dashboard headline is the Wilson bound; twins follow the strict EXACT/COVERED reading)
+
+Scanner versions: redact-secret 0.1.0-beta.7 · gitleaks 8.30.1 · trufflehog 3.97.4 · flare-redact 1.6.1
+
+### Must not flag · T1 Provider-documented
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 6 | 0 | 0.0% |
+| gitleaks | 6 | 0 | 0.0% |
+| trufflehog | 6 | 0 | 0.0% |
+| flare-redact | 6 | 0 | 0.0% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must not flag · T2 Tool-corroborated
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 545 | 0 | 0.0% |
+| gitleaks | 545 | 24 | 4.4% |
+| trufflehog | 545 | 39 | 7.2% |
+| flare-redact | 545 | 51 | 9.4% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must not flag · T3 Project policy
+
+| Scanner | Files | False alarms | Rate |
+| --- | ---: | ---: | ---: |
+| redact-secret | 291 | 0 | 0.0% |
+| gitleaks | 291 | 0 | 0.0% |
+| trufflehog | 291 | 10 | 3.4% |
+| flare-redact | 291 | 16 | 5.5% |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must redact · T1 Provider-documented
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 300 | 306 | 0 | 0.0% | 0.000 | 270 / 270 |
+| gitleaks | 300 | 306 | 50 | 16.3% | 0.000 | 191 / 270 |
+| trufflehog | 300 | 306 | 67 | 21.9% | 0.000 | 180 / 270 |
+| flare-redact | 300 | 306 | 118 | 38.6% | 0.001 | 120 / 270 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Must redact · T2 Tool-corroborated
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 89 | 89 | 0 | 0.0% | 0.000 | 54 / 54 |
+| gitleaks | 89 | 89 | 40 | 44.9% | 0.000 | 39 / 54 |
+| trufflehog | 89 | 89 | 49 | 55.1% | 0.000 | 20 / 54 |
+| flare-redact | 89 | 89 | 56 | 62.9% | 0.000 | 15 / 54 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
+### Pending · T0 Pending
+
+30 files, unscored.
+
+### Policy · T3 Project policy
+
+| Scanner | Files | Spans | Leaked spans | Leaked span rate | Collateral ratio | Twins discriminated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| redact-secret | 205 | 205 | 0 | 0.0% | 0.000 | 74 / 74 |
+| gitleaks | 205 | 205 | 113 | 55.1% | 0.000 | 35 / 74 |
+| trufflehog | 205 | 205 | 186 | 90.7% | 0.000 | 10 / 74 |
+| flare-redact | 205 | 205 | 117 | 57.1% | 0.011 | 21 / 74 |
+
+Suites are summed here for readability only; per-suite groups are in the baseline file and the dashboard never sums across suites with different run ids.
+
 ## Changed rows: 0.1.0-beta.4 → 0.1.0-beta.5
 
 51 (fixture, scanner) outcomes changed · 222 fixtures added · 0 fixtures removed. Corpus hashes differ; only fixtures present in both baselines are compared.
@@ -384,4 +460,8 @@ Suites are summed here for readability only; per-suite groups are in the baselin
 | detector-coverage--bearer-token-header-bare-twin | redact-secret | `flagged:1` | `clean` |
 | detector-coverage--bearer-token-header-quoted-twin | redact-secret | `flagged:1` | `clean` |
 | detector-coverage--bearer-token-header-unicode-crlf-twin | redact-secret | `flagged:1` | `clean` |
+
+## Changed rows: 0.1.0-beta.6 → 0.1.0-beta.7
+
+0 (fixture, scanner) outcomes changed · 400 fixtures added · 5 fixtures removed. Corpus hashes differ; only fixtures present in both baselines are compared.
 

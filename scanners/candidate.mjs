@@ -54,7 +54,10 @@ async function nodePackageName(tarball) {
   }
 }
 
-export async function loadCandidate(installation, ruleset) {
+// `actions` carries the product policy action (#95) on each finding, as the
+// published adapter does; `bench` needs it for scoreRow's actionCounts. Off by
+// default so eval:candidate and eval:classify output is unchanged.
+export async function loadCandidate(installation, ruleset, { actions = false } = {}) {
   try {
     const module = await import(`${pathToFileURL(path.join(installation.root, 'node_modules/@redact-secret/core/dist/index.js')).href}?candidate=${Date.now()}`);
     if (typeof module.initialize !== 'function' || typeof module.scan !== 'function') throw new Error('api');
@@ -73,6 +76,7 @@ export async function loadCandidate(installation, ruleset) {
             start: Buffer.byteLength(text.slice(0, finding.start)),
             end: Buffer.byteLength(text.slice(0, finding.end)),
             ...findingFamily('redact-secret', finding.detector),
+            ...(actions && finding.action !== undefined ? { action: finding.action } : {}),
           });
         }
         return results;

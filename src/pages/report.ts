@@ -15,16 +15,18 @@ export const redactKey = (level: Level) => (level === 'T3' ? 'policy/T3' : `must
 export const controlKey = (level: Level) => `must-not-flag/${level}`;
 
 /**
- * Report: three answers, each one Figure. Published package results only;
- * candidate evidence lives in the Workbench. Other scanners are reference
- * rows in run order: no sort, no rank, no winner.
+ * Report: three answers, each one Figure. Production reads the published
+ * package; a staging run may measure an unreleased candidate (#201), and the
+ * eyebrow then names it. Other scanners are reference rows in run order: no
+ * sort, no rank, no winner.
  */
 export function reportPage(data: BenchData, level: Level, fixtures: Fixture[]): string {
-  const version = data.run?.scannerVersions[PRODUCT], runId = runIdOf(data);
+  const version = data.run?.scannerVersions[PRODUCT], runId = runIdOf(data), candidate = data.run?.candidate;
+  const measured = `${PRODUCT}${version ? ` ${version}` : ''}${candidate ? ` · candidate ${candidate.sourceCommit.slice(0, 7)} · unreleased` : ''}`;
   const seg = `<div class="seg" role="group" aria-label="Evidence level">${LEVELS.map(l => `<a href="/report${l === 'T1' ? '' : `?level=${l}`}"${l === level ? ' aria-current="true"' : ''} aria-label="${e(tierTitle(l))}"><span class="wide">${e(tierTitle(l))}</span><span class="narrow">${SHORT[l]}</span></a>`).join('')}</div>`;
   const summary = data.summaryProblem ? undefined : data.summary;
   const reports = currentReports(data), scanners = summary?.scanners ?? [];
-  const head = `<div class="page-head"><div><p class="eyebrow">${e(`${PRODUCT}${version ? ` ${version}` : ''}`.toUpperCase())}</p><h1>What the benchmark shows</h1><div class="meta">${runId ? `<span>Run <b>${e(runId.slice(0, 10))}</b></span>` : ''}${summary ? `<span>Same ${fixtures.length.toLocaleString('en-US')} inputs for ${scanners.length} scanners</span><span>Accounting <b>v${e(summary.accountingVersion)}</b></span>` : ''}<a href="/how-to-read">How to read these numbers</a></div></div>${seg}</div>`;
+  const head = `<div class="page-head"><div><p class="eyebrow"${candidate ? ' data-candidate' : ''}>${e(measured.toUpperCase())}</p><h1>What the benchmark shows</h1><div class="meta">${runId ? `<span>Run <b>${e(runId.slice(0, 10))}</b></span>` : ''}${summary ? `<span>Same ${fixtures.length.toLocaleString('en-US')} inputs for ${scanners.length} scanners</span><span>Accounting <b>v${e(summary.accountingVersion)}</b></span>` : ''}<a href="/how-to-read">How to read these numbers</a></div></div>${seg}</div>`;
   if (!hasResults(data) || !summary) return head + runStates(data);
 
   const floors = summary.accounting as unknown as Floors, mine = groupsOf(summary, PRODUCT);

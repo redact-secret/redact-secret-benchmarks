@@ -89423,6 +89423,204 @@
       "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
       "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. trufflehog reports no finding for the nfp_ token here: its netlify/v2 detector pins the same nfp_ plus 36-byte shape but only reports it after a netlify keyword, and this fixture carries none (netlify-token contract). Probed at the pinned version: the same value written as NETLIFY_AUTH_TOKEN=<token> is reported (Netlify), so the difference is keyword context, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "0bfb2f1d27b7ab84579eccf2b8912458af04d3bad59235a6cefecfc16d199da0": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "a0ad7f9328f80afcce7bfb48392b661d238046e6e08320c965916b356a7b6b32": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "c0905c6a496579eb3236ff8ffcba06e6c49430a15d1e2c49ea47f416d530d8a6": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "e9465b54156a466c46db78ea1a66d5d95d9e28d23a25ed7d5ec544e9033b56b4": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "0b2380ec44f6dc107d4f56593137bfea3e5b4f9254d840995899a1e0c4a9598e": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "585dcd1740a5871c740be4b7c42971024f494e57c6402debd84270bc64d9bba3": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "3bbccd64dde864449218946910f6c7a57e414e319e9ff668db074eb5934017d3": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "6f8cbe859965b944e1c95bc874ad2b429799b913992c6e73939470cb7dc6cf00": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "8b4d595a925fe8638c284ae59230d2a81b1b3bc55d30aed4fc4d2c4620135e6a": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "b19d25b45e752c4efcc9cdb9f62fa0d606a894ec23d2c115c61ad1dfe93ebd4f": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "11a35061dc892a587f7c6a77a4757920d2af57d063b4cde485b6924bbea826e8": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "28d853bbdc5fcf2a2483014d939b8fb03880ab7160739e6685c269788172f939": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "07b4956b3402edf275105f4bc46b9d60155e01e6663c88b0fac7ebc68560daa0": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "1d33952fa26c5c89a63037c921a4970f2f7c0ec6e5f35c7e6ee4dcf8bc1a4a13": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "e28fc32e2205c56ba39a0c8dd8784a1cbda26a44b789ed046b74497c94ff1430": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "0709f1e1d3b92f4f7d560d09871eeff576f3cdf609f3f03cdf0b2c00b7485ea8": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "15c51c78fd27742ff4d8150d6753841987c98cfbc52c51ac8795356a7d73cc9b": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "850fc4c2df5011599f822fb968b73a3a778e4f3e199a69111aea942a8a23b5a2": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "d652533961a6f8585c7aaa5005336cc71f6b0a6ce51a0dec26589e598f13c14e": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "9cf1aae68e11022642f459ce9a6e8b71db1a658a3f55ab2e65338ca98e6cfd47": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "db4b38234ff460c020bedf43752acde4547909e695bb9e23c68169e1d0b940bd": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "19626aa8ad9900a1c199abff924c51ba42f026eade573870bf8fcff75cf55594": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "3144e48932c8c06c69ac168597046d85c45f45aac2d1640ba35ce21cbc038a6d": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "d2a5185ee2dc7ce7ebb6e8d1037f4d2a2c894ce7a63a18e489b2c3cbe8ea1f7f": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "5d2bf6ef7fd4030c735f830d7ebc52be9b8d21989067434d1ac69330c03f306d": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "b91fcd6350c27caaf9a3908c27ae9cd66519ffbbef81899cd674273a06a2c5e9": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "d4862a63d696972b8b2c2b2b8c97e6f43ae4b858dcb1011473ad7e2bb1314e3d": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "14698d04f6d2a08ef1d4ffb8124cabe0ebeb3dddbede9680d2a3d7f910fc0352": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "e690a9658b419115a49a28dd072876e0d67d8881a49bd6e96e5a20b2962ea1ef": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "0350a442f2c40394073dfd382b65783b22720fb50f89f7abf1480b9e37ec8429": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "b0526372d96935437beac2273b43d82c8ec9af3daccd3f426e0ec3522a591cad": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "44e5c560af19c8d1fa8ca38b025a0169053272de8bf60650d57c8642ae1b432b": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "ce5fb83c33bf9625d8864230e41fb12353a6e294477c58d767bd5cd845b4417a": {
+      "status": "resolved",
+      "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     }
   }
 }

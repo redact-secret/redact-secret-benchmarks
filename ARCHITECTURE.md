@@ -104,7 +104,9 @@ maintainers, and these bookmarkable routes:
 - `/report`: three answers (leaked, false alarms, twin discrimination) as the
   published pessimistic bound with its observed fraction and n. `?level=T2` and
   `?level=T3` switch the evidence level; T1 is first. Other scanners are
-  reference rows in run order, never ranked. Published package results only.
+  reference rows in run order, never ranked. Production reads the published
+  package; staging reads the qualified `main` candidate and labels it
+  unreleased (#201).
 - `/coverage`: detector families by fixture count, with the minimum
   sample size drawn on every bar. `?show=thin` keeps the families at that
   minimum; `?show=inventory` is the Gitleaks/TruffleHog inventory of families

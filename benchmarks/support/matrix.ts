@@ -35,8 +35,12 @@ export interface SupportStatusReport {
   revision: string;
   dirty: boolean | null;
   criteriaSchemaVersion: 1;
+  /** Set only on a candidate run (eval:classify --candidate-*): the redact-secret build measured instead of the published package. */
+  product?: SupportProduct | null;
   families: SupportStatusFamilyResult[];
 }
+
+export interface SupportProduct { sourceCommit: string; packageName: string; declaredVersion: string; artifacts: { role: string; sha256: string }[] }
 
 export interface ProviderSource { url: string; observedAt: string; formatVersion: string; covers: string }
 

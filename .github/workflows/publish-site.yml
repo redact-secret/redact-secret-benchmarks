@@ -176,9 +176,27 @@ jobs:
           [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
 
       # --strict: a scanner that is unavailable fails the run instead of being
-      # published as an "unavailable" row.
+      # published as an "unavailable" row. Staging (#201) measures redact-secret
+      # from the qualified main candidate, so its Report shows how main behaves
+      # now; every report and run.json name that candidate as unreleased.
+      # Production measures the released lockfile package.
       - name: Measure the corpus
-        run: npm run bench -- --strict
+        env:
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
+          NODE_PACKAGE: ${{ steps.candidate.outputs.node }}
+          WASM_PACKAGE: ${{ steps.candidate.outputs.wasm }}
+        run: |
+          set -euo pipefail
+          if [ "$TARGET" = staging ]; then
+            npm run bench -- --strict \
+              --candidate-package="$CORE_PACKAGE" \
+              --candidate-node-package="$NODE_PACKAGE" \
+              --candidate-wasm-package="$WASM_PACKAGE" \
+              --candidate-source-commit="$PRODUCT_COMMIT"
+          else
+            npm run bench -- --strict
+          fi
 
       - name: Produce the evaluation report the site reads
         run: |
@@ -208,6 +226,26 @@ jobs:
           --product-state clean
           --expected-artifact-sha256 "$CORE_SHA256"
           --output-dir "$GITHUB_WORKSPACE/public/results"
+
+      # Staging only: classify every family's support against the same
+      # candidate build and publish the matrix the Support page reads. The
+      # matrix records the candidate it measured, and the page says so.
+      - name: Classify support against the redact-secret main commit
+        if: env.TARGET == 'staging'
+        env:
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
+          NODE_PACKAGE: ${{ steps.candidate.outputs.node }}
+          WASM_PACKAGE: ${{ steps.candidate.outputs.wasm }}
+        run: |
+          set -euo pipefail
+          npm run eval:classify -- \
+            --candidate-package="$CORE_PACKAGE" \
+            --candidate-node-package="$NODE_PACKAGE" \
+            --candidate-wasm-package="$WASM_PACKAGE" \
+            --candidate-source-commit="$PRODUCT_COMMIT"
+          npm run eval:matrix
+          npm run eval:publish:matrix
 
       # The page marks which environment served it and which commit built it
       # (#155); an unset VITE_SITE_ENV builds as "local", never production.
@@ -259,6 +297,7 @@ jobs:
             echo
             echo "- benchmarks commit: \`${{ github.sha }}\`"
             echo "- run id: $(jq -r .runId public/results/run.json)"
+            echo "- redact-secret measured: $(jq -r '.scannerVersions["redact-secret"] + (if .candidate then " (candidate " + .candidate.sourceCommit[0:7] + ", unreleased)" else " (released)" end)' public/results/run.json)"
             if [ "$TARGET" = staging ]; then
               echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"
             fi

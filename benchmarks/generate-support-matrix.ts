@@ -32,6 +32,9 @@ async function main() {
     sourceReport: {
       schemaVersion: statusReport.schemaVersion, generatedAt: statusReport.generatedAt, runId: statusReport.runId,
       revision: statusReport.revision, dirty: statusReport.dirty, criteriaSchemaVersion: statusReport.criteriaSchemaVersion,
+      // Which redact-secret was measured: absent for the published package,
+      // so a published-mode matrix stays byte-identical to before.
+      ...(statusReport.product ? { product: statusReport.product } : {}),
     },
     providerCount: taxonomy.providers.length,
     familyCount: families.length,

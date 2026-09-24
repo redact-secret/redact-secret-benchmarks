@@ -65,6 +65,7 @@
     "performance:evaluate": "node --import tsx benchmarks/evaluate-performance.ts",
     "adversarial:check": "node --import tsx scripts/check-adversarial-intake.mjs",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",
+    "observations:capture": "node --import tsx scripts/capture-empirical-observation.ts",
     "peers:provision": "node scripts/provision-peers.mjs"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",

@@ -2,18 +2,21 @@ import Ajv from 'ajv';
 import schema from '../../schemas/empirical-observations-v1.json';
 import data from './empirical-observations.json';
 
+export interface EmpiricalObservation {
+  provider: string; credentialFamily: string; observedAt: string; issuedAt: string; issuanceRoute: string;
+  subjectKind: 'account' | 'project'; subjectId: string;
+  evidenceBasis: 'empirically-observed'; independenceClass: 'provider-issuance';
+  structure: { totalLength: number; prefix: string | null; segmentLengths: number[]; alphabetClasses: string[]; separators: string[]; checksumBehavior: string };
+  revokedAfterObservation: boolean; rawValueRetained: false;
+}
+
 export interface EmpiricalFamilyRecord {
   family: string;
   mode: 'shape' | 'context-constrained';
   supportsBareValues: boolean;
   uncertainty: string;
   supportedContexts: string[];
-  observations: {
-    provider: string; observedAt: string; issuedAt: string; issuanceRoute: string; subjectKind: 'account' | 'project'; subjectId: string;
-    evidenceBasis: 'empirically-observed'; independenceClass: 'provider-issuance';
-    structure: { totalLength: number; prefix: string | null; segmentLengths: number[]; alphabetClasses: string[]; separators: string[]; checksumBehavior: string };
-    revokedAfterObservation: boolean; rawValueRetained: false;
-  }[];
+  observations: EmpiricalObservation[];
   corroboration: { class: string; reference: string }[];
   contradictions: string[];
 }
@@ -28,6 +31,8 @@ export function validateEmpiricalObservations(value: unknown): EmpiricalObservat
   const file = value as unknown as EmpiricalObservationFile;
   if (new Set(file.families.map(family => family.family)).size !== file.families.length)
     throw new Error('Duplicate empirical observation family');
+  if (file.families.some(family => family.observations.some(observation => observation.credentialFamily !== family.family)))
+    throw new Error('Empirical observation family mismatch');
   return file;
 }
 

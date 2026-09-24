@@ -31,6 +31,10 @@ const trufflehog = {
   // body); OpenRouter is `sk-or-v1-` only, never the `sk-or-mgmt-` management key.
   Replicate: 'replicate-api-token', Groq: 'groq-api-key', XAI: 'xai-api-key',
   OpenRouter: 'openrouter-api-key',
+  // Beta.8 arrival families (#210): trufflehog 3.97.4's langsmith detector
+  // (lsv2_(pt|sk)_<32 hex>_<10 hex>) and langfuse detector (sk-lf-<uuid>,
+  // keyword- and pk-gated) report exactly the credential those families measure.
+  LangSmith: 'langsmith-api-key', Langfuse: 'langfuse-secret-key',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;

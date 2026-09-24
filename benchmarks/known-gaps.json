@@ -2088,7 +2088,7 @@
         "beta8-209--confluent-cloud-api-secret-cli-api-key-create-json-checksum-prefix-included-twin"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2121,6 +2121,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/738"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/b8515bc7dbb223a4ad778e840b40ad7e17732837",
+            "https://github.com/redact-secret/redact-secret/pull/750"
           ]
         }
       },
@@ -2173,7 +2180,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "b8515bc7dbb223a4ad778e840b40ad7e17732837"
+      }
     },
     {
       "id": "product-739",
@@ -2276,7 +2286,7 @@
         "beta8-209--heroku-api-key-authorizations-create-g1"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2314,6 +2324,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/740"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f0c713c9f0baa373688dba67f58cd9d9ceaa4a55",
+            "https://github.com/redact-secret/redact-secret/pull/751"
+          ]
         }
       },
       "promotion": {
@@ -2345,7 +2362,10 @@
           ],
           "actual": []
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f0c713c9f0baa373688dba67f58cd9d9ceaa4a55"
+      }
     },
     {
       "id": "product-749",
@@ -2356,7 +2376,7 @@
         "beta8-209--google-api-key-firebase-web-config"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2395,6 +2415,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/749"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f7245262bd4ec9754abdcddedbdd411e4ca6b113",
+            "https://github.com/redact-secret/redact-secret/pull/753"
+          ]
         }
       },
       "promotion": {
@@ -2415,7 +2442,10 @@
           ],
           "actual": []
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f7245262bd4ec9754abdcddedbdd411e4ca6b113"
+      }
     },
     {
       "id": "product-741",
@@ -2435,7 +2465,7 @@
         "beta8-207--atlassian-api-token-ticket-paste"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2470,6 +2500,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/741"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/a4d7c595ce3a478192dc0bc95dfe7efbce06f646",
+            "https://github.com/redact-secret/redact-secret/pull/752"
           ]
         }
       },
@@ -2670,7 +2707,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "a4d7c595ce3a478192dc0bc95dfe7efbce06f646"
+      }
     },
     {
       "id": "product-742",
@@ -2683,7 +2723,7 @@
         "beta8-207--supabase-token-dash-delimiter-twin"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2716,6 +2756,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/742"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/a4d7c595ce3a478192dc0bc95dfe7efbce06f646",
+            "https://github.com/redact-secret/redact-secret/pull/752"
           ]
         }
       },
@@ -2768,7 +2815,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "a4d7c595ce3a478192dc0bc95dfe7efbce06f646"
+      }
     },
     {
       "id": "product-743-multi-line",
@@ -2780,7 +2830,7 @@
         "beta8-207--heroku-api-key-legacy-auth-token-output"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2814,6 +2864,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/743"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f0c713c9f0baa373688dba67f58cd9d9ceaa4a55",
+            "https://github.com/redact-secret/redact-secret/pull/751"
+          ]
         }
       },
       "promotion": {
@@ -2845,7 +2902,10 @@
           ],
           "actual": []
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f0c713c9f0baa373688dba67f58cd9d9ceaa4a55"
+      }
     },
     {
       "id": "product-743-url-path",
@@ -2856,7 +2916,7 @@
         "beta8-207--heroku-api-key-legacy-app-url-path-public-id"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2892,6 +2952,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/743"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f0c713c9f0baa373688dba67f58cd9d9ceaa4a55",
+            "https://github.com/redact-secret/redact-secret/pull/751"
+          ]
         }
       },
       "promotion": {
@@ -2915,7 +2982,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f0c713c9f0baa373688dba67f58cd9d9ceaa4a55"
+      }
     },
     {
       "id": "product-744",
@@ -2927,7 +2997,7 @@
         "beta8-207--confluent-cloud-api-secret-legacy-image-digest-encoded-value"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2962,6 +3032,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/744"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/95166f152a1f4e656f5e227655ac570c9b0cdd8e",
+            "https://github.com/redact-secret/redact-secret/pull/755"
           ]
         }
       },
@@ -3000,7 +3077,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "95166f152a1f4e656f5e227655ac570c9b0cdd8e"
+      }
     },
     {
       "id": "product-745",
@@ -3011,7 +3091,7 @@
         "beta8-207--bearer-token-your-access-token-placeholder"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3047,6 +3127,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/745"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/95166f152a1f4e656f5e227655ac570c9b0cdd8e",
+            "https://github.com/redact-secret/redact-secret/pull/755"
+          ]
         }
       },
       "promotion": {
@@ -3070,7 +3157,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "95166f152a1f4e656f5e227655ac570c9b0cdd8e"
+      }
     },
     {
       "id": "product-746",
@@ -3081,7 +3171,7 @@
         "beta8-207--twilio-api-key-secret-wrong-companion-near-miss"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3117,6 +3207,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/746"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/95166f152a1f4e656f5e227655ac570c9b0cdd8e",
+            "https://github.com/redact-secret/redact-secret/pull/755"
+          ]
         }
       },
       "promotion": {
@@ -3140,7 +3237,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "95166f152a1f4e656f5e227655ac570c9b0cdd8e"
+      }
     },
     {
       "id": "product-747",
@@ -3151,7 +3251,7 @@
         "beta8-207--atlassian-api-token-account-id-public-id"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3187,6 +3287,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/747"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/a4d7c595ce3a478192dc0bc95dfe7efbce06f646",
+            "https://github.com/redact-secret/redact-secret/pull/752"
+          ]
         }
       },
       "promotion": {
@@ -3210,7 +3317,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "a4d7c595ce3a478192dc0bc95dfe7efbce06f646"
+      }
     },
     {
       "id": "product-754",
@@ -3224,7 +3334,7 @@
         "beta8-213c--new-relic-license-key-helm-bundle-values"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3261,6 +3371,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/754"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/c8b6caf8259de00331376286faed5f65708f7fa6",
+            "https://github.com/redact-secret/redact-secret/pull/757"
           ]
         }
       },
@@ -3315,7 +3432,10 @@
           ],
           "actual": []
         }
-      ]
+      ],
+      "fix": {
+        "commit": "c8b6caf8259de00331376286faed5f65708f7fa6"
+      }
     },
     {
       "id": "product-756",
@@ -3327,7 +3447,7 @@
         "beta8-212--pinecone-api-key-header-placeholder-placeholder"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3361,6 +3481,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/756"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/99d83c4c4d8070da754fcf021f1be43cdebd7afc",
+            "https://github.com/redact-secret/redact-secret/pull/758"
           ]
         }
       },
@@ -3399,7 +3526,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "99d83c4c4d8070da754fcf021f1be43cdebd7afc"
+      }
     }
   ]
 }

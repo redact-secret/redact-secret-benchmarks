@@ -113,11 +113,12 @@
           },
           "empiricalEvidence": {
             "type": ["object", "null"], "additionalProperties": false,
-            "required": ["observations", "subjects", "issuanceDates", "corroborationClasses", "contradictions", "uncertainty", "supportedContexts", "mode", "supportsBareValues"],
+            "required": ["observations", "subjects", "issuanceDates", "corroborationReferences", "corroborationOwners", "corroborationClasses", "contradictions", "boundedContradictions", "uncertainty", "supportedContexts", "mode", "supportsBareValues"],
             "properties": {
               "observations": { "type": "integer", "minimum": 0 }, "subjects": { "type": "integer", "minimum": 0 },
               "issuanceDates": { "type": "integer", "minimum": 0 }, "corroborationClasses": { "type": "array", "items": { "type": "string" } },
-              "contradictions": { "type": "integer", "minimum": 0 }, "uncertainty": { "type": ["string", "null"] },
+              "corroborationReferences": { "type": "integer", "minimum": 0 }, "corroborationOwners": { "type": "integer", "minimum": 0 },
+              "contradictions": { "type": "integer", "minimum": 0 }, "boundedContradictions": { "type": "integer", "minimum": 0 }, "uncertainty": { "type": ["string", "null"] },
               "supportedContexts": { "type": "array", "items": { "type": "string" } }, "mode": { "enum": ["shape", "context-constrained", null] },
               "supportsBareValues": { "type": "boolean" }
             }

@@ -13,10 +13,18 @@
     },
     "empirical": {
       "tier": "T2",
-      "minimumObservations": { "value": 5, "rationale": "Five safe provider-issued observations are the minimum empirical sample." },
-      "minimumSubjects": { "value": 2, "rationale": "Observations must span at least two pseudonymous accounts or projects." },
-      "minimumIssuanceDates": { "value": 2, "rationale": "Observations must span at least two issuance dates." },
-      "minimumCorroborationClasses": { "value": 2, "rationale": "Two independent corroboration classes must agree with the observed structure." },
+      "minimumObservations": { "value": 5, "rationale": "Observed route (#205): five safe provider-issued observations are the minimum empirical sample. Since the 2026-09-24 amendment of #177 this route is optional: meeting it strengthens a T2 family's evidence basis to empirically-observed, and the corroborated route qualifies without any observation." },
+      "minimumSubjects": { "value": 2, "rationale": "Observed route: observations must span at least two pseudonymous accounts or projects." },
+      "minimumIssuanceDates": { "value": 2, "rationale": "Observed route: observations must span at least two issuance dates." },
+      "minimumCorroborationClasses": { "value": 2, "rationale": "Observed route: two corroboration classes, summary classes excluded, must agree with the observed structure." },
+      "corroborated": {
+        "minimumReferences": { "value": 3, "rationale": "Corroborated route (#177 amendment, 2026-09-24): at least three verified, dated references, each corroborating the shape the contract freezes. One rule or one example is a single point of failure." },
+        "minimumOwners": { "value": 3, "rationale": "The references must come from at least three distinct owners (a scanner vendor, the provider, a third party, this project's research). Two rules from one vendor, or a provider's docs page and its SDK, are one voice." },
+        "minimumClasses": { "value": 2, "rationale": "At least two corroboration classes other than a summary class. Peer scanner rules copy one another (#215 found tool shapes 'possibly copied from one source'), so scanner rules alone never qualify: one reference must be provider-owned code, a provider example or an independent implementation." },
+        "summaryClasses": { "classes": ["independent-research"], "rationale": "A research pass aggregates other sources and carries their caveats. It counts as a reference and as an owner, never as a corroboration class, because it adds no evidence beyond the sources it cites." },
+        "rationale": "Independent corroboration replaces provider-issued observations as the required basis for T2 empirical qualification (maintainer direction 2026-09-24, amending #177). The family stays T2 with evidence basis independently-corroborated; observations, when present, strengthen it and are validated exactly as #205 defines."
+      },
+      "unresolvedContradictions": { "value": 0, "rationale": "An unresolved contradiction among observations or corroborating sources puts the shape itself in doubt. A contradiction the contract deliberately excludes is recorded as bounded, with the bound stated, and carried into the family's uncertainty and supported contexts." },
       "minimumPositiveCases": { "value": 10, "rationale": "The empirical fixture profile requires ten independently authored positive or supported-context fixtures." },
       "minimumPositiveAxes": { "value": 6, "rationale": "Empirical positives must span at least six source-context axes." },
       "minimumBenignCases": { "value": 14, "rationale": "The empirical fixture profile requires fourteen non-twin benign controls." },
@@ -27,7 +35,7 @@
         "minimumConfusionAxes": { "value": 6, "rationale": "Opaque values require six context-confusion axes." },
         "minimumFixtures": { "value": 48, "rationale": "The context-constrained empirical profile contains at least 48 fixtures." }
       },
-      "rationale": "T2 remains empirical provenance and qualifies only through observation, corroboration, fixture, behavioral, uncertainty, and context gates."
+      "rationale": "T2 remains empirical provenance and is never relabelled T1. It qualifies through independent corroboration or through provider-issued observations plus corroboration, and in either case through the unchanged fixture, behavioral, contradiction, uncertainty and supported-context gates."
     },
     "twinFailures": {
       "value": 0,

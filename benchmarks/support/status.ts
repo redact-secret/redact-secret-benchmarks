@@ -23,6 +23,15 @@ export type SupportStatus = 'stable' | 'provisional' | 'pending' | 'unsupported'
 export type EvidenceBasis = 'provider-documented' | 'independently-corroborated' | 'empirically-observed' | 'project-policy' | 'none';
 export type QualificationProfile = 'documented' | 'empirical';
 
+/** Reader-facing names for each evidence basis; the UI shows the machine value beside it. */
+export const EVIDENCE_BASIS_LABEL: Record<EvidenceBasis, string> = {
+  'provider-documented': 'Provider-documented',
+  'independently-corroborated': 'Corroborated by external sources (no provider-issued observation required)',
+  'empirically-observed': 'Provider-issued observations',
+  'project-policy': 'Project policy',
+  none: 'None',
+};
+
 interface Threshold { value: number; rationale: string }
 
 export interface StatusCriteria {
@@ -36,7 +45,14 @@ export interface StatusCriteria {
     empirical: {
       tier: 'T2'; rationale: string;
       minimumObservations: Threshold; minimumSubjects: Threshold; minimumIssuanceDates: Threshold;
-      minimumCorroborationClasses: Threshold; minimumPositiveCases: Threshold; minimumPositiveAxes: Threshold;
+      minimumCorroborationClasses: Threshold;
+      /** The corroborated route (#177 amendment, 2026-09-24): qualifies a T2 family with no provider-issued observation. */
+      corroborated: {
+        minimumReferences: Threshold; minimumOwners: Threshold; minimumClasses: Threshold;
+        summaryClasses: { classes: string[]; rationale: string }; rationale: string;
+      };
+      unresolvedContradictions: Threshold;
+      minimumPositiveCases: Threshold; minimumPositiveAxes: Threshold;
       minimumBenignCases: Threshold; minimumControlAxes: Threshold; minimumTwinPairs: Threshold;
       contextConstrained: { minimumContextTwinPairs: Threshold; minimumConfusionAxes: Threshold; minimumFixtures: Threshold };
     };
@@ -63,7 +79,9 @@ export function validateStatusCriteria(value: unknown): StatusCriteria {
   if (!s || s.documented?.tier !== 'T1' || s.documented.requireProviderSource !== true || !s.documented.rationale ||
       !thresholds(s.documented as unknown as Record<string, unknown>, ['minimumPositiveCases', 'minimumPositiveAxes', 'minimumBenignCases', 'minimumControlAxes', 'minimumTwinPairs']) ||
       s.empirical?.tier !== 'T2' || !s.empirical.rationale ||
-      !thresholds(s.empirical as unknown as Record<string, unknown>, ['minimumObservations', 'minimumSubjects', 'minimumIssuanceDates', 'minimumCorroborationClasses', 'minimumPositiveCases', 'minimumPositiveAxes', 'minimumBenignCases', 'minimumControlAxes', 'minimumTwinPairs']) ||
+      !thresholds(s.empirical as unknown as Record<string, unknown>, ['minimumObservations', 'minimumSubjects', 'minimumIssuanceDates', 'minimumCorroborationClasses', 'unresolvedContradictions', 'minimumPositiveCases', 'minimumPositiveAxes', 'minimumBenignCases', 'minimumControlAxes', 'minimumTwinPairs']) ||
+      !thresholds(s.empirical.corroborated as unknown as Record<string, unknown>, ['minimumReferences', 'minimumOwners', 'minimumClasses']) ||
+      !s.empirical.corroborated.rationale || !Array.isArray(s.empirical.corroborated.summaryClasses?.classes) || !s.empirical.corroborated.summaryClasses.rationale ||
       !thresholds(s.empirical.contextConstrained as unknown as Record<string, unknown>, ['minimumContextTwinPairs', 'minimumConfusionAxes', 'minimumFixtures']) ||
       !threshold(s.twinFailures) ||
       !threshold(s.benign?.minimumCases) || !threshold(s.benign?.minimumAxes) || !threshold(s.benign?.falseAlarms) ||
@@ -95,8 +113,13 @@ export interface FamilySupportEvidence {
   observationCount: number;
   observationSubjects: number;
   observationIssuanceDates: number;
+  /** Verified corroborating references, the distinct owners behind them, and their distinct classes (`empirical.ts`). */
+  corroborationReferences: number;
+  corroborationOwners: number;
   corroborationClasses: string[];
-  observationContradictions: number;
+  /** Contradictions that block qualification, and those the contract deliberately bounds (recorded, never deleted). */
+  unresolvedContradictions: number;
+  boundedContradictions: number;
   uncertainty: string | null;
   supportedContexts: string[];
   empiricalMode: 'shape' | 'context-constrained' | null;
@@ -153,6 +176,45 @@ function behavioralFailures(evidence: FamilySupportEvidence, criteria: StatusCri
   return reasons;
 }
 
+/** The evidence counts a route reads; a subset of `FamilySupportEvidence`, so `evidence.ts` can derive the basis before the record exists. */
+type RouteEvidence = Pick<FamilySupportEvidence, 'observationCount' | 'observationSubjects' | 'observationIssuanceDates' | 'corroborationReferences' | 'corroborationOwners' | 'corroborationClasses'>;
+export interface EmpiricalRoute {
+  /** `observed` when the #205 observation bar is met, else `corroborated` when the corroboration bar is, else null. */
+  route: 'observed' | 'corroborated' | null;
+  qualifies: boolean;
+  /** Why each route is short, criterion by criterion; empty when that route's counts are met. */
+  observed: string[];
+  corroborated: string[];
+}
+
+/**
+ * Which T2 evidence route the records meet (#177 as amended 2026-09-24). The
+ * corroborated route needs no provider-issued observation; the observed route
+ * is the #205 bar, unchanged, and strengthens the basis when met. Neither
+ * route relaxes the contradiction, uncertainty, context, fixture or behavioral
+ * gates, which `qualificationFailures` checks for both.
+ */
+export function empiricalRoute(evidence: RouteEvidence, criteria: StatusCriteria = statusCriteria): EmpiricalRoute {
+  const p = criteria.stable.empirical, c = p.corroborated;
+  const counted = evidence.corroborationClasses.filter(item => !c.summaryClasses.classes.includes(item)).length;
+  const short = (reasons: string[], id: string, point: number, threshold: Threshold) => {
+    if (point < threshold.value) reasons.push(`${id}: ${point} < ${threshold.value} — ${threshold.rationale}`);
+  };
+  const observed: string[] = [], corroborated: string[] = [];
+  short(observed, 'empirical.minimumObservations', evidence.observationCount, p.minimumObservations);
+  short(observed, 'empirical.minimumSubjects', evidence.observationSubjects, p.minimumSubjects);
+  short(observed, 'empirical.minimumIssuanceDates', evidence.observationIssuanceDates, p.minimumIssuanceDates);
+  short(observed, 'empirical.minimumCorroborationClasses', counted, p.minimumCorroborationClasses);
+  short(corroborated, 'empirical.corroborated.minimumReferences', evidence.corroborationReferences, c.minimumReferences);
+  short(corroborated, 'empirical.corroborated.minimumOwners', evidence.corroborationOwners, c.minimumOwners);
+  short(corroborated, 'empirical.corroborated.minimumClasses', counted, c.minimumClasses);
+  const route = !observed.length ? 'observed' : !corroborated.length ? 'corroborated' : null;
+  return { route, qualifies: route !== null, observed, corroborated };
+}
+
+/** The evidence basis a T2 route implies: observations only when the #205 bar is met; otherwise corroboration, the T2 default. */
+export const basisForRoute = (route: EmpiricalRoute): EvidenceBasis => route.route === 'observed' ? 'empirically-observed' : 'independently-corroborated';
+
 function qualificationFailures(evidence: FamilySupportEvidence, criteria: StatusCriteria): { profile: QualificationProfile | null; reasons: string[] } {
   const check = (reasons: string[], id: string, point: number, threshold: Threshold) => {
     if (point < threshold.value) reasons.push(`${id}: ${point} < ${threshold.value} — ${threshold.rationale}`);
@@ -169,12 +231,14 @@ function qualificationFailures(evidence: FamilySupportEvidence, criteria: Status
   }
   if (evidence.positiveContractTier === 'T2') {
     const p = criteria.stable.empirical, reasons: string[] = [];
-    if (evidence.evidenceBasis !== 'empirically-observed') reasons.push(`empirical.evidenceBasis: ${evidence.evidenceBasis} — ${p.rationale}`);
-    check(reasons, 'empirical.minimumObservations', evidence.observationCount, p.minimumObservations);
-    check(reasons, 'empirical.minimumSubjects', evidence.observationSubjects, p.minimumSubjects);
-    check(reasons, 'empirical.minimumIssuanceDates', evidence.observationIssuanceDates, p.minimumIssuanceDates);
-    check(reasons, 'empirical.minimumCorroborationClasses', evidence.corroborationClasses.length, p.minimumCorroborationClasses);
-    if (evidence.observationContradictions) reasons.push(`empirical.contradictions: ${evidence.observationContradictions} unresolved — contradictory observations block qualification`);
+    const route = empiricalRoute(evidence, criteria);
+    if (evidence.evidenceBasis !== 'empirically-observed' && evidence.evidenceBasis !== 'independently-corroborated')
+      reasons.push(`empirical.evidenceBasis: ${evidence.evidenceBasis} — ${p.rationale}`);
+    else if (evidence.evidenceBasis !== basisForRoute(route))
+      reasons.push(`empirical.evidenceBasis: ${evidence.evidenceBasis} does not match the evidence (${basisForRoute(route)}) — a basis is derived from the records, never asserted`);
+    if (!route.qualifies) reasons.push(...route.corroborated.map(reason => `${reason} (corroborated route)`), ...route.observed.map(reason => `${reason} (observed route, optional)`));
+    if (evidence.unresolvedContradictions > p.unresolvedContradictions.value)
+      reasons.push(`empirical.unresolvedContradictions: ${evidence.unresolvedContradictions} > ${p.unresolvedContradictions.value} — ${p.unresolvedContradictions.rationale}`);
     if (!evidence.uncertainty?.trim()) reasons.push('empirical.uncertainty: missing — explicit uncertainty is required');
     if (!evidence.supportedContexts.length) reasons.push('empirical.supportedContexts: none — supported-context limits are required');
     check(reasons, 'empirical.minimumPositiveCases', evidence.positiveCases, p.minimumPositiveCases);

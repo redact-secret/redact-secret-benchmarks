@@ -57,9 +57,9 @@
       "family": "atlassian-api-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 40,
@@ -106,8 +106,8 @@
         {
           "cell": "positiveCases",
           "actual": 5,
-          "required": 6,
-          "shortfall": 1
+          "required": 10,
+          "shortfall": 5
         }
       ]
     },
@@ -367,9 +367,9 @@
       "family": "confluent-cloud-api-secret-legacy",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "context-constrained-empirical"
       ],
@@ -415,14 +415,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 1,
-          "required": 6,
-          "shortfall": 5
-        }
-      ]
+      "debt": []
     },
     {
       "family": "connection-string",
@@ -471,9 +464,9 @@
       "family": "databricks-personal-access-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 21,
@@ -506,26 +499,32 @@
         {
           "cell": "totalFixtures",
           "actual": 21,
-          "required": 24,
-          "shortfall": 3
+          "required": 40,
+          "shortfall": 19
         },
         {
           "cell": "positiveCases",
           "actual": 0,
-          "required": 6,
-          "shortfall": 6
+          "required": 10,
+          "shortfall": 10
         },
         {
           "cell": "benignControls",
           "actual": 6,
-          "required": 8,
-          "shortfall": 2
+          "required": 14,
+          "shortfall": 8
         },
         {
           "cell": "positiveContextAxes",
           "actual": 1,
-          "required": 4,
-          "shortfall": 3
+          "required": 6,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 4,
+          "required": 5,
+          "shortfall": 1
         }
       ]
     },
@@ -639,9 +638,9 @@
       "family": "datadog-application-key-legacy",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 19,
@@ -676,26 +675,20 @@
         {
           "cell": "totalFixtures",
           "actual": 19,
-          "required": 24,
-          "shortfall": 5
-        },
-        {
-          "cell": "benignControls",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
+          "required": 48,
+          "shortfall": 29
         },
         {
           "cell": "twinPairs",
           "actual": 3,
-          "required": 5,
-          "shortfall": 2
+          "required": 10,
+          "shortfall": 7
         },
         {
-          "cell": "controlAxes",
-          "actual": 3,
-          "required": 4,
-          "shortfall": 1
+          "cell": "confusionAxes",
+          "actual": 4,
+          "required": 6,
+          "shortfall": 2
         }
       ]
     },
@@ -745,9 +738,9 @@
       "family": "discord-bot-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -845,9 +838,9 @@
       "family": "firebase-server-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 40,
@@ -894,8 +887,8 @@
         {
           "cell": "positiveCases",
           "actual": 5,
-          "required": 6,
-          "shortfall": 1
+          "required": 10,
+          "shortfall": 5
         }
       ]
     },
@@ -1487,9 +1480,9 @@
       "family": "heroku-api-key-legacy",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "context-constrained-empirical"
       ],
@@ -1535,14 +1528,7 @@
           "twin:length"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "huggingface-token",
@@ -1795,9 +1781,9 @@
       "family": "mailchimp-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 18,
@@ -1829,17 +1815,23 @@
         {
           "cell": "totalFixtures",
           "actual": 18,
-          "required": 24,
-          "shortfall": 6
+          "required": 40,
+          "shortfall": 22
         },
         {
           "cell": "positiveCases",
           "actual": 0,
-          "required": 6,
-          "shortfall": 6
+          "required": 10,
+          "shortfall": 10
         },
         {
           "cell": "benignControls",
+          "actual": 6,
+          "required": 14,
+          "shortfall": 8
+        },
+        {
+          "cell": "twinPairs",
           "actual": 6,
           "required": 8,
           "shortfall": 2
@@ -1847,8 +1839,14 @@
         {
           "cell": "positiveContextAxes",
           "actual": 1,
-          "required": 4,
-          "shortfall": 3
+          "required": 6,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 4,
+          "required": 5,
+          "shortfall": 1
         }
       ]
     },
@@ -1856,9 +1854,9 @@
       "family": "mailgun-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 21,
@@ -1891,26 +1889,32 @@
         {
           "cell": "totalFixtures",
           "actual": 21,
-          "required": 24,
-          "shortfall": 3
+          "required": 40,
+          "shortfall": 19
         },
         {
           "cell": "positiveCases",
           "actual": 3,
-          "required": 6,
-          "shortfall": 3
+          "required": 10,
+          "shortfall": 7
         },
         {
           "cell": "benignControls",
           "actual": 6,
-          "required": 8,
-          "shortfall": 2
+          "required": 14,
+          "shortfall": 8
         },
         {
           "cell": "positiveContextAxes",
           "actual": 1,
-          "required": 4,
-          "shortfall": 3
+          "required": 6,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 4,
+          "required": 5,
+          "shortfall": 1
         }
       ]
     },
@@ -2270,9 +2274,9 @@
       "family": "okta-api-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 21,
@@ -2305,26 +2309,32 @@
         {
           "cell": "totalFixtures",
           "actual": 21,
-          "required": 24,
-          "shortfall": 3
+          "required": 40,
+          "shortfall": 19
         },
         {
           "cell": "positiveCases",
           "actual": 0,
-          "required": 6,
-          "shortfall": 6
+          "required": 10,
+          "shortfall": 10
         },
         {
           "cell": "benignControls",
           "actual": 6,
-          "required": 8,
-          "shortfall": 2
+          "required": 14,
+          "shortfall": 8
         },
         {
           "cell": "positiveContextAxes",
           "actual": 1,
-          "required": 4,
-          "shortfall": 3
+          "required": 6,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 4,
+          "required": 5,
+          "shortfall": 1
         }
       ]
     },
@@ -2332,9 +2342,9 @@
       "family": "openai-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 28,
@@ -2362,22 +2372,40 @@
       },
       "debt": [
         {
+          "cell": "totalFixtures",
+          "actual": 28,
+          "required": 40,
+          "shortfall": 12
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 9,
+          "required": 10,
+          "shortfall": 1
+        },
+        {
           "cell": "benignControls",
           "actual": 7,
+          "required": 14,
+          "shortfall": 7
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 6,
           "required": 8,
-          "shortfall": 1
+          "shortfall": 2
         },
         {
           "cell": "positiveContextAxes",
           "actual": 1,
-          "required": 4,
-          "shortfall": 3
+          "required": 6,
+          "shortfall": 5
         },
         {
           "cell": "controlAxes",
           "actual": 3,
-          "required": 4,
-          "shortfall": 1
+          "required": 5,
+          "shortfall": 2
         }
       ]
     },
@@ -2668,9 +2696,9 @@
       "family": "postman-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 18,
@@ -2703,26 +2731,32 @@
         {
           "cell": "totalFixtures",
           "actual": 18,
-          "required": 24,
-          "shortfall": 6
+          "required": 40,
+          "shortfall": 22
         },
         {
           "cell": "positiveCases",
           "actual": 0,
-          "required": 6,
-          "shortfall": 6
+          "required": 10,
+          "shortfall": 10
         },
         {
           "cell": "benignControls",
           "actual": 6,
-          "required": 8,
-          "shortfall": 2
+          "required": 14,
+          "shortfall": 8
         },
         {
           "cell": "positiveContextAxes",
           "actual": 1,
-          "required": 4,
-          "shortfall": 3
+          "required": 6,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 4,
+          "required": 5,
+          "shortfall": 1
         }
       ]
     },
@@ -2972,9 +3006,9 @@
       "family": "sentry-org-auth-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -3031,9 +3065,9 @@
       "family": "sentry-user-auth-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -3495,9 +3529,9 @@
       "family": "telegram-bot-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -3595,9 +3629,9 @@
       "family": "twilio-api-key-secret",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -3656,9 +3690,9 @@
       "family": "twilio-auth-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",

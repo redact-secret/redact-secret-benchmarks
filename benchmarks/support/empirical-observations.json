@@ -1,4 +1,1411 @@
 {
   "schemaVersion": 1,
-  "families": []
+  "families": [
+    {
+      "family": "atlassian-api-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Atlassian publishes no token grammar. Its docs call the length 'varied', and its staff said in 2022 that tokens are opaque, then in 2025 that the ATAT prefix can be relied on. The 12-character ATATT3xFfGF0 header, the 192-character length and the =<8 uppercase hex> CRC32 suffix are empirical: one maintainer-issued key, a five-key report and scanner samples. The maintainer could not confirm the CRC32 on an issued key.",
+      "supportedContexts": [
+        "bare ATAT... token anywhere on a line, quoted or unquoted",
+        "env/YAML/JSON/compose assignment (JIRA_API_TOKEN=..., settings.json, Pipelines variable)",
+        "CLI argument or curl -u email:token Basic auth",
+        "client-library config, debug log line, pasted ticket text"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "atlassian-api-token rule (L181-184): \\bATATT3 + exactly 186 [A-Za-z0-9_\\-=] (192 total); ATAT prefix, base64url body with '='"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/jiratoken/v2/jiratoken_v2.go",
+          "observedAt": "2026-09-24",
+          "supports": "jiratoken v2 detector (L37-38, 'tokens created after Jan 18 2023 use a variable length'): ATATT + body + '=' + 8 alnum; the ATAT prefix and '=' suffix separator (not the ATCT 'atlassian' detector)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/atlassian.yml#L3-L8",
+          "observedAt": "2026-09-24",
+          "supports": "'Atlassian Cloud API Token' rule: ATATT3xFfGF0 + 20-200 [A-Za-z0-9_-] + '=' + [0-9A-F]{8}; the optional =<8 uppercase hex> suffix"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "samsung",
+          "reference": "https://github.com/Samsung/CredSweeper/blob/v1.18.5/credsweeper/rules/config.yaml#L1148-L1153",
+          "observedAt": "2026-09-24",
+          "supports": "ATATT3xFfGF0 + 80-800 [0-9A-Za-z_-] + '=' (or %3D) + [A-F0-9]{8}; its value_atlassian_token_check.py filter at the same tag checks the suffix as CRC32 of the preceding bytes"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "datadog",
+          "reference": "https://github.com/DataDog/dd-sensitive-data-scanner/blob/4e53b6ac37ab4b6699f4331868a1c486f0d21147/sds/src/secondary_validation/atlassian_token_checksum.rs#L24-L42",
+          "observedAt": "2026-09-24",
+          "supports": "AtlassianTokenChecksum: trailing 8 hex = big-endian CRC32 over everything before them, '=' included; body alphabet [A-Za-z0-9_=-]"
+        },
+        {
+          "class": "provider-example",
+          "owner": "atlassian",
+          "reference": "https://community.atlassian.com/forums/Bitbucket-questions/Can-we-confirm-BitBucket-s-token-prefixes/qaq-p/3093481",
+          "observedAt": "2026-09-24",
+          "supports": "answer from an 'Atlassian Team' account (2025-08-25) on Atlassian's community site: 'You can rely on' API token prefix ATAT (ATBB, ATCT are other kinds); prefix only"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/trajan/blob/1a041cbfcc8f3cea64e47a66298e1ec7ab4a0a7a/pkg/bitbucket/bitbucket.go#L52-L62",
+          "observedAt": "2026-09-24",
+          "supports": "Bitbucket client picks Basic+email auth when the token has the ATATT3x prefix, Bearer for ATCTT3x; ATAT prefix as the API-token identifier"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/643",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 second-pass, broad-discovery and web-search passes plus the maintainer's answers: 192 = 12 header + 171 body + '=' + 8 uppercase hex, CRC32 on real samples"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "An unaffiliated 2026 r/jira reply says 'Atlassian does not use prefixes for api keys'; another says the shared header is base64(email:token).",
+          "status": "settled",
+          "bound": "An Atlassian Team answer on Atlassian's own community site (2025-08-25) says the ATAT prefix can be relied on, and the maintainer-issued key and every sample carry it; the unaffiliated no-prefix claim is refuted, so the unprefixed near-miss follows the provider statement.",
+          "settledBy": "https://community.atlassian.com/forums/Bitbucket-questions/Can-we-confirm-BitBucket-s-token-prefixes/qaq-p/3093481"
+        },
+        {
+          "statement": "Atlassian staff (2022-10-13): API tokens are opaque and clients 'cannot depend on their size, structure, or format'; staff (2025-08-25): 'You can rely on' ATAT.",
+          "status": "bounded",
+          "bound": "The 2022 post predates the 2023-01-18 format change, when tokens were 24-char unprefixed. That generation is deliberately excluded (all expired by 2026-05-12 per Atlassian's support page) and no fixture uses a 24-char unprefixed value. For the current generation the provider's later staff statement names ATAT."
+        },
+        {
+          "statement": "Length: support docs say 'varied' and staff say 'no specified range', but every observed token is 192. Other reports: 108-char exception tokens (ID-8131, expired), one unsupported 193-char claim (2023). gitleaks hard-codes 186 after ATATT3.",
+          "status": "bounded",
+          "bound": "The contract keeps a 100-character body floor with no maximum, so it admits 108, 192 and 193. The only length twins sit below the floor (99-char body), and no source reports a token that short."
+        },
+        {
+          "statement": "Header length: staff give ATAT (4); tools use ATATT (5), ATATT3 (6) or ATATT3xFfGF0 (12).",
+          "status": "bounded",
+          "bound": "The contract anchors only the staff-confirmed ATAT. No fixture asserts on the 5th-12th characters (the prefix twin mutates to ATAQ, which no source names)."
+        },
+        {
+          "statement": "Suffix: Nosey Parker, CredSweeper and all samples use '=' + uppercase hex; TruffleHog accepts [A-Za-z0-9]{8}, DataDog also decodes lowercase hex, and gitleaks allows '=' anywhere in the body.",
+          "status": "bounded",
+          "bound": "The contract admits only the optional =[0-9A-F]{8} suffix. No fixture uses a lowercase or non-hex suffix or a mid-body '='."
+        },
+        {
+          "statement": "TruffleHog's jiratoken v2 body admits '+' and '/'; no observed sample contains either. CredSweeper also matches a URL-escaped %3D in place of '='.",
+          "status": "bounded",
+          "bound": "Excluded by the contract's [A-Za-z0-9_-] body. The alphabet twin uses '!', and no fixture uses '+', '/' or %3D."
+        }
+      ]
+    },
+    {
+      "family": "confluent-cloud-api-secret-legacy",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "Confluent documents no grammar for the unprefixed pre-2025-07-30 secret: the 64-character [A-Za-z0-9+/] shape rests on provider examples, the provider's Terraform test data and two peer rules, while one provider Basic-auth example is shorter (about 60) and no new legacy secret can be issued to re-check. A bare 64-byte base64-alphabet run has no marker of its own (a 64-hex digest fits it too), so the value is only claimed beside a confluent keyword.",
+      "supportedContexts": [
+        "same line as a case-insensitive confluent keyword",
+        "CONFLUENT_CLOUD_API_SECRET=<secret> in env, shell export, CI/k8s YAML",
+        "confluent api-key store <key-id> <secret>",
+        "curl -u <key-id>:<secret> https://api.confluent.cloud/...",
+        "schema.registry.url=https://<key-id>:<secret>@psrc-....confluent.cloud",
+        "librdkafka config line carrying a *.confluent.cloud bootstrap host and sasl.password",
+        "confluent_cloud_api_secret = \"<secret>\" (tfvars), confluentApiSecret JS constant"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml#L347-L350",
+          "observedAt": "2026-09-24",
+          "supports": "confluent-secret-key: confluent keyword in the key, assignment operator, exactly 64 body chars (context gate + 64-byte width)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/confluent/confluent.go#L28-L29",
+          "observedAt": "2026-09-24",
+          "supports": "confluent detector: confluent keyword prefix then exactly 64 [a-zA-Z0-9+/] (context gate + width + base64 alphabet)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "confluentinc",
+          "reference": "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+          "observedAt": "2026-09-24",
+          "supports": "API secrets created before 2025-07-30 'may not include cflt; both old and new formats continue to work' (unprefixed generation exists and stays live); no legacy grammar stated"
+        },
+        {
+          "class": "provider-example",
+          "owner": "confluentinc",
+          "reference": "https://docs.confluent.io/cloud/current/flink/operate-and-deploy/generate-api-key-for-flink.html",
+          "observedAt": "2026-09-24",
+          "supports": "two unprefixed 64-character secret examples, one containing + and / (width + base64 alphabet, no = padding)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "confluentinc",
+          "reference": "https://github.com/confluentinc/terraform-provider-confluent/tree/e91d29b9f60b1df4f4cd4196efef73b141aa5fa2/internal/testdata/apikey",
+          "observedAt": "2026-09-24",
+          "supports": "create_{cloud,flink,global,kafka,tableflow}_api_key.json: spec.secret is 64 unprefixed [A-Za-z0-9+/] in all five, + or / in four (width + alphabet); test data, possibly synthetic"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/233",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 broad-discovery pass aggregating provider pages, Terraform test data, peer rules and caveats (cut-over wording, 60/64 length, gitleaks alphabet)"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Cut-over wording differs across three provider pages: the API-key overview says secrets before 2025-07-30 'may not include cflt'; the release notes say 'on or after July 30, 2025' and 'do not have the cflt prefix'; the identity FAQ says 'Starting July 30, 2025' and 'might not have' (#233). Whether an unprefixed secret can still be minted after the cut-over is unresolved.",
+          "status": "bounded",
+          "bound": "The contract claims only the lexical shape of an unprefixed secret beside a confluent keyword and makes no issuance-date claim; no fixture asserts anything about creation date or post-cut-over unprefixed issuance."
+        },
+        {
+          "statement": "Length: every CLI-table placeholder, the Flink JSON example and the Terraform test data show 64 characters, but the Connect API Basic-auth example on docs.confluent.io/cloud/current/connectors/connect-api-section.html shows a shorter secret (#233 counted 60; my 2026-09-24 count of the served page is 59).",
+          "status": "bounded",
+          "bound": "Positives use 64 and the contract records the 60/64 ambiguity; no fixture asserts redaction or silence on a 59- or 60-character value. The 63-char length twin and 66-char overlong control rest on both pinned tools' exact 64-byte rules, not on that example."
+        }
+      ]
+    },
+    {
+      "family": "databricks-personal-access-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "No Databricks page states the token grammar; dapi + 32 lowercase hex rests on tools, and the optional -<digit> suffix has no provider source at all (its meaning, digit count and even existence differ across tools). Microsoft Purview gives only a 32-character length, admits A-F, and its own example contradicts its pattern; no issued token has been measured (redact-secret#697/#698 open).",
+      "supportedContexts": [
+        "bare value (the dapi prefix is the only marker; no keyword or workspace host required)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)",
+        "optional -<one digit> rotation suffix inside the span"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "databricks-api-token: dapi + exactly 32 lowercase hex, optional '-' + one digit"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/databrickstoken/databrickstoken.go",
+          "observedAt": "2026-09-24",
+          "supports": "databrickstoken: dapi + exactly 32 lowercase hex, optional '-' + one digit (verification additionally needs a workspace host)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/v0.24.0/crates/noseyparker/data/default/builtin/rules/databricks.yml",
+          "observedAt": "2026-09-24",
+          "supports": "np.databricks.1: dapi + exactly 32 lowercase hex (its suffix rule allows several digits, see contradictions)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "microsoft",
+          "reference": "https://learn.microsoft.com/en-us/purview/sit-defn-azure-databricks-personal-access-token",
+          "observedAt": "2026-09-24",
+          "supports": "32-character body with dapi as a keyword (length only; admits A-F)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800564692",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-23 broad-discovery pass: every tool agrees on dapi + 32 lowercase hex; 62 public-code candidates, 19 with a one-digit suffix, none multi-digit or uppercase at exact length (cited by #697/#698)"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Purview admits uppercase A-F in the 32-character body; the contract is lowercase-only (redact-secret#697).",
+          "status": "bounded",
+          "bound": "The contract review names uppercase as an intentional false negative, and the generator deliberately uses a non-hex 'g' (not A-F) for the alphabet twin, so no positive or twin carries uppercase hex."
+        },
+        {
+          "statement": "Nosey Parker allows a multi-digit suffix (-[0-9]+); the contract allows exactly one digit and its rotated-shape boundary twin asserts silence on a two-digit suffix (redact-secret#698).",
+          "status": "unresolved"
+        },
+        {
+          "statement": "plenoai, CredSweeper and secrets-patterns-db have no suffix and no provider source says what the suffix is; the contract puts '-<digit>' inside the positive's secret span (redact-secret#698).",
+          "status": "unresolved"
+        },
+        {
+          "statement": "Purview's own format example is 30 characters and contains letters past f, disagreeing with its stated 32-character hex pattern and with the contract's lowercase-hex body (the alphabet twin asserts silence on a non-hex byte).",
+          "status": "unresolved"
+        }
+      ]
+    },
+    {
+      "family": "datadog-application-key-legacy",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "Datadog's own domain documents no grammar for the pre-ddapp_ application key; the 40 lowercase-hex shape rests on Datadog-owned validators (Agent, CloudFormation, ARM/PowerShell), the v1 OpenAPI hash field's 40-character bounds, and peer rules. The Agent scrubber alone accepts either hex case, and Datadog calls application keys legacy features after Q3 2026. A bare 40-hex run has no marker (it fits a SHA-1 digest), so the value is only claimed beside a DD_APPLICATION_KEY / datadog marker.",
+      "supportedContexts": [
+        "same line as a DD_APPLICATION_KEY / datadog marker",
+        "DD_APPLICATION_KEY=<40-hex> in env (no final newline, single quotes, BOM)",
+        "dd_application_key key in JSON / YAML / TOML / Python assignment",
+        "Markdown label 'Legacy Datadog application key: `<40-hex>`'"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/datadogtoken/datadogtoken.go#L35",
+          "observedAt": "2026-09-24",
+          "supports": "appPat: datadog|dd keyword prefix then exactly 40 chars (context gate + 40-byte width)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml#L389-L392",
+          "observedAt": "2026-09-24",
+          "supports": "datadog-access-token: datadog keyword in the key, assignment operator, exactly 40 [a-z0-9] (context gate + width)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/v1.8.1/cmd/generate/config/rules/datadog.go#L38-L41",
+          "observedAt": "2026-09-24",
+          "supports": "datadog-application-key: semi-generic datadog keyword rule over exactly 40 [A-Za-z0-9-] (context gate + width)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "datadog",
+          "reference": "https://github.com/DataDog/datadog-agent/blob/f0012103d472748fae9f09011b4ebe124c3da98c/pkg/privateactionrunner/util/keys.go#L16",
+          "observedAt": "2026-09-24",
+          "supports": "appKeyRegex ^([a-f0-9]{40}|ddapp_[a-zA-Z0-9]{34})$: 40 lowercase hex accepted as an application key (width + lowercase-hex alphabet)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "datadog",
+          "reference": "https://github.com/DataDog/cloudformation-template/blob/db39dcd1de0019f0bc5b03420a66750c69ef3038/aws_quickstart/datadog_agentless_saas.yaml#L19",
+          "observedAt": "2026-09-24",
+          "supports": "DatadogAPPKey AllowedPattern ([0-9a-f]{40})|(ddapp_[a-zA-Z0-9]{34}) (width + lowercase hex); CHANGELOG.md#L101 at the same SHA names it 'the legacy 40-character hex format'"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "datadog",
+          "reference": "https://github.com/DataDog/terraform-module-datadog-agentless-scanner/blob/15deadd3c1a1447367636a1435620b6c4a94e91c/azure/arm/agentless-api-call.ps1#L12",
+          "observedAt": "2026-09-24",
+          "supports": "ApplicationKey ValidatePattern ^([0-9a-f]{40}|ddapp_[a-zA-Z0-9]{34})$ (width + lowercase hex); the same function is embedded in azure/arm/main.json at this SHA"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "datadog",
+          "reference": "https://github.com/DataDog/datadog-api-client-python/blob/2e5c154ca7cdf991cf69703e1a99d2f5cd9296fb/.generator/schemas/v1/openapi.yaml#L670-L674",
+          "observedAt": "2026-09-24",
+          "supports": "v1 ApplicationKey.hash minLength/maxLength 40 with a hex example; per #645 the field CreateChildOrg says to use as the key (width only)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/645",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 second-pass and broad-discovery research aggregating Datadog-owned validators, OpenAPI, peer rules and conflicts (legacy case, scanner alphabets)"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Legacy hex case: the Datadog Agent scrubber masks \\b[a-fA-F0-9]{36}([a-fA-F0-9]{4})\\b (either case; https://github.com/DataDog/datadog-agent/blob/f0012103d472748fae9f09011b4ebe124c3da98c/pkg/util/scrubber/default.go#L106-L117), while the Agent keys.go validator, CloudFormation, ARM/PowerShell and the v1 OpenAPI example are lowercase-only (#645).",
+          "status": "bounded",
+          "bound": "The contract claims 40 lowercase hex and reads the scrubber as lenient-by-design; every positive is lowercase and no fixture asserts redaction or silence on an uppercase-hex value."
+        }
+      ]
+    },
+    {
+      "family": "discord-bot-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Discord documents no grammar. Its docs have one example header, in the legacy 24/6/27 shape. The current 24/6/38 and 26/6/38 widths rest on dated empirical reports (2022-2024) and third-party regexes, never on either pinned scanner. Segment 1 width follows from base64 of an 18- or 19-digit ID, which is arithmetic, not a stated rule. Discord gives no stability guarantee, and a maintainer-issued token has not been measured here.",
+      "supportedContexts": [
+        "bare three-segment token anywhere on a line, quoted or unquoted",
+        "Authorization: Bot <token> header",
+        "env/JSON/YAML/TOML/compose/Actions assignment and client.run(\"...\") argument",
+        "startup log line, Markdown text"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/discordbottoken/discordbottoken.go#L26",
+          "observedAt": "2026-09-24",
+          "supports": "discordbottoken: \\b[A-Za-z0-9_-]{24}\\.[A-Za-z0-9_-]{6}\\.[A-Za-z0-9_-]{27}\\b: the legacy 24/6/27 branch, base64url alphabet and '.' delimiters (keyword-gated on 'discord')"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "yelp",
+          "reference": "https://github.com/Yelp/detect-secrets/blob/5e141933554a0b74e7341841f318be21e895339c/detect_secrets/plugins/discord.py#L17",
+          "observedAt": "2026-09-24",
+          "supports": "[MNO][a-zA-Z\\d_-]{23,25}\\.[a-zA-Z\\d_-]{6}\\.[a-zA-Z\\d_-]{27}: segment 1 of 24-26 chars (widened for 19-digit ids after detect-secrets#627), segment 2 of 6"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "vmfunc",
+          "reference": "https://github.com/vmfunc/sif/blob/e9d578a7450b70e33b9ebf43ac0ef6c06fde062b/internal/scan/js/secrets.go#L182",
+          "observedAt": "2026-09-24",
+          "supports": "sif JS secret scan: [MNOP] + 23 . 6 . {27,38}: the 24/6/38 current reset-bot width"
+        },
+        {
+          "class": "provider-example",
+          "owner": "discord",
+          "reference": "https://github.com/discord/discord-api-docs/blob/0eb810206eecc4562899c4c9ca2bd2d354e31e25/developers/reference.mdx#L119-L122",
+          "observedAt": "2026-09-24",
+          "supports": "'Example Bot Token Authorization Header' (rendered at docs.discord.com/developers/reference): measured 24/6/27 base64url segments; example only, no prose grammar"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "nuztalgia",
+          "reference": "https://github.com/nuztalgia/botstrap/blob/c4113bc68f70fcb3dbc81637bbefda36a3d6a11c/botstrap/internal/tokens.py#L13-L14",
+          "observedAt": "2026-09-24",
+          "supports": "bot-token helper: 'Observed tokens have had prefixes of length 24 or 26, and suffixes of length 27 or 38'; [\\w-]{24,}\\.[\\w-]{6}\\.[\\w-]{27,}"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "discord-net",
+          "reference": "https://github.com/discord-net/Discord.Net/blob/d34a50eeabb39699a2329fbdac735b7d2b069824/src/Discord.Net.Core/Utils/TokenUtils.cs#L19-L120",
+          "observedAt": "2026-09-24",
+          "supports": "Discord.Net TokenUtils: exactly 3 '.' segments, segment 1 re-padded and base64-decoded to a ulong user id, no padding in issued tokens, 58-char minimum (the contract's validate() check)"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "dkorunic",
+          "reference": "https://github.com/dkorunic/e-dnevnik-bot/blob/3809b0b5d0ae1fb4ea8a5caadfa75927b3435ec5/internal/config/validators.go#L23",
+          "observedAt": "2026-09-24",
+          "supports": "anchored config validator ^[MNO][a-zA-Z\\d_-]{23,35}\\.[a-zA-Z\\d_-]{6}\\.[a-zA-Z\\d_-]{27,38}$: segment 3 widths 27-38"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/646",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 second-pass, broad-discovery and web-search passes: dated 27-to-38 change (May 2022), 19-digit ids from 2022-07-22, 500-token and public-code length tabulations"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Segment 3 width: 27 (Discord's docs example, TruffleHog, detect-secrets, Sapphire, pre-May-2022 reports) vs 38 (every dated report since 2022-05-09).",
+          "status": "bounded",
+          "bound": "A generation change, not a disagreement: the contract admits both 27 and 38. Its only width twins use 37, a width no source reports."
+        },
+        {
+          "statement": "Segment 1 width: 24 (18-digit ids; TruffleHog, lantern) vs 26 (19-digit ids since 2022-07-22); 23 for 17-digit pre-Oct-2015 ids.",
+          "status": "bounded",
+          "bound": "The contract admits 24 and 26 and deliberately excludes the rare 23. Its first-segment twin uses 25, which no id length encodes to, and no fixture uses a 23-char segment 1."
+        },
+        {
+          "statement": "Segment 2 as {6,7} (Sapphire utilities, no stated reason) vs 6 in every measured sample.",
+          "status": "bounded",
+          "bound": "The contract freezes 6. No fixture uses a 7-char segment 2."
+        },
+        {
+          "statement": "One undated public-code sample measures 26/6/40, and one 24/6/38 sample has an X-leading segment 2; both may be hand-edited.",
+          "status": "bounded",
+          "bound": "Single unverified outliers the contract excludes. No fixture uses a 40-char segment 3."
+        },
+        {
+          "statement": "Leading character [MNO] (detect-secrets, several tools) vs 'no prefix' (GitGuardian lists the detector as 'Prefixed: True' without saying what).",
+          "status": "bounded",
+          "bound": "The contract has no leading-character rule. M/N/O follows from its validate() check that segment 1 decodes to digits, and no fixture tests a leading character alone."
+        },
+        {
+          "statement": "Opacity: a 2026 issue on Discord's docs repo (#8091) asks that tokens be treated as opaque, and a Discord.Net maintainer (2018) says Discord gives no guarantee the length stays in range.",
+          "status": "bounded",
+          "bound": "Not a competing shape. It is carried in `uncertainty`, since the frozen widths could change. No Discord statement either way."
+        }
+      ]
+    },
+    {
+      "family": "firebase-server-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Google never documented this shape, and its only published legacy server-key example is the older AIza form. Every tool regex copies one 2020 write-up (Abss), so tool agreement is not independent. A key in Firebase's own repo, public-code measurements (58 of 66 real keys have a 140-char body) and the head-to-project-number decoding back the shape empirically. Late-2016 keys have 162-183-char bodies. The legacy FCM API was shut down in June 2024, so no new key can be issued to check.",
+      "supportedContexts": [
+        "bare AAAA...:... key anywhere on a line, quoted or unquoted",
+        "Authorization: key=<value> HTTP header (raw request, curl)",
+        "env/YAML/JSON/compose/Actions assignment and source-code constant",
+        "request log line, handoff note text"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "projectdiscovery",
+          "reference": "https://github.com/projectdiscovery/nuclei-templates/blob/8cf94b93a389a47bef77b89f8c8915b2755018f0/http/exposures/tokens/firebase-fcm-server-key-disclosure.yaml#L34",
+          "observedAt": "2026-09-24",
+          "supports": "AAAA[A-Za-z0-9_-]{7}:[A-Za-z0-9_-]{140}: the exact contract grammar (head, ':' delimiter, 140 body)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "portswigger",
+          "reference": "https://github.com/PortSwigger/BChecks/blob/c78df13e3b05a38b0195b4ea3cf73bf578cb0682/other/tokens/fcm-server-key.bcheck#L9",
+          "observedAt": "2026-09-24",
+          "supports": "Burp BCheck fcm-server-key: AAAA[a-zA-Z0-9_-]{7}:[a-zA-Z0-9_-]{140} (same grammar; derived from the same 2020 write-up)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/titus/blob/86b81ba13f5bde160964df7acf3eca6e38bc165d/pkg/rule/rules/firebase.yml#L6-L13",
+          "observedAt": "2026-09-24",
+          "supports": "'Firebase Cloud Messaging Server Key': AAAA[A-Za-z0-9_-]{7}:[A-Za-z0-9_-]{140}; keeps FCM device tokens (22-char id) as a separate rule"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "firebase",
+          "reference": "https://github.com/firebase/firebase-js-sdk/blob/5ab2fc6f889be5226f44d2e50c7eb20144f69338/integration/messaging/test/utils/sendMessage.js#L19-L34",
+          "observedAt": "2026-09-24",
+          "supports": "Firebase's own FCM integration test sends a 'rotatable fcm server key' as Authorization: key=; measured locally (value not reproduced): 11-char AAAA head, ':', 140-char body; full match of the contract"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "yorcreative",
+          "reference": "https://github.com/YorCreative/Laravel-Scrubber/blob/54613147d8281ee982943c8865de6f821e22fe5d/src/RegexCollection/Firebase.php#L11",
+          "observedAt": "2026-09-24",
+          "supports": "log-scrubber pattern AAAA[A-Za-z0-9_-]{7}:[A-Za-z0-9_-]{140} (synthetic sample; same lineage as the tool rules)"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "microsoft",
+          "reference": "https://github.com/microsoft/PyRIT/blob/47c6151a1be5e78aeabe17b769d7edff07dd9b5b/pyrit/score/true_false/regex/credential_leak_scorer.py#L107",
+          "observedAt": "2026-09-24",
+          "supports": "PyRIT credential-leak scorer 'Google FCM Server Key': AAAA[a-zA-Z0-9_-]{7}:[a-zA-Z0-9_-]{140} (same lineage)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/649",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 second-pass, broad-discovery and web-search passes: generation dating, 140-body tabulation, head = base64url project number, APA91b body start"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Body length: tools say exactly 140, but Firebase's Jan 2017 blog says 'a giant 175-character string', and late-2016 keys measure 162, 167 and 183 (8 of 66 real keys).",
+          "status": "bounded",
+          "bound": "The contract deliberately freezes the dominant 2017+ generation (140). Its length twins use 139, which no source reports, and per FIELDS_207 no fixture asserts silence on 162/167/183."
+        },
+        {
+          "statement": "Google's only published legacy server-key example (auth-server snapshots 2016-2024, GCM docs) is AIza-shaped, not AAAA...:....",
+          "status": "bounded",
+          "bound": "That is the older key relabelled 'Legacy server key' in 2016, a Google API key (covered by google-api-key). This contract covers only the newer AAAA...:... key, and no firebase-server-key fixture uses an AIza value."
+        },
+        {
+          "statement": "AAAA is not a designed marker: the 11-char head is the base64url of the project number, so a project number >= 2^40 would give an AAAB... head. The largest observed is within 2.1% of that bound.",
+          "status": "bounded",
+          "bound": "The contract requires AAAA; no key can be issued since June 2024 and none above 2^40 was observed. The only non-AAAA near-miss uses a 'Qo' head, which decodes to about 2^62, far outside any project-number range, so no fixture asserts on the plausible AAAB-AAAP range."
+        },
+        {
+          "statement": "Firebase's 2017 blog screenshot shows a mocked server key with a 10-char head and no AAAA.",
+          "status": "bounded",
+          "bound": "A fabricated screenshot value; every real sample has an 11-char AAAA head. The long-head twin (12 chars) is a width no source reports."
+        },
+        {
+          "statement": "Every real key's body starts APA91b (pleno-dlp and ~20 scanners pin it); the 140-regex tools and synthetic fixtures do not.",
+          "status": "bounded",
+          "bound": "The contract does not require APA91b and no fixture asserts silence on a non-APA91b body; positives carry it."
+        },
+        {
+          "statement": "'Legacy' names different keys across eras (the AIza key in 2016-2018 consoles; the whole AAAA key after the 2023-2024 legacy-API deprecation).",
+          "status": "bounded",
+          "bound": "Terminology only; the contract is defined by shape, not by the label."
+        }
+      ]
+    },
+    {
+      "family": "heroku-api-key-legacy",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "The bare lowercase 8-4-4-4-12 UUID shape rests on one provider changelog example plus peer rules; Heroku states no grammar in prose, whether it ever issued uppercase hex is unknown, and no legacy token can be newly issued, so issuance cannot be re-observed. A UUID carries no marker of its own and is structurally identical to Heroku app/release/request ids and to current UUID-shaped secrets (OAuth client secret, refresh token), so the value is only claimed beside a heroku keyword.",
+      "supportedContexts": [
+        "same line as a case-insensitive heroku keyword",
+        "HEROKU_API_KEY=<uuid> in env, shell export, compose/YAML env",
+        "Terraform provider \"heroku\" { api_key = \"<uuid>\" } on one line",
+        "single-line .netrc: machine api.heroku.com login <email> password <uuid>",
+        "Authorization: Bearer <uuid> on a line naming api.heroku.com",
+        "git remote https://:<uuid>@git.heroku.com/<app>.git"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml#L2345-L2348",
+          "observedAt": "2026-09-24",
+          "supports": "heroku-api-key rule: heroku keyword in the key, assignment operator, then exactly 8-4-4-4-12 hex UUID (context gate + segments + hex alphabet)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/heroku/v1/heroku.go#L27",
+          "observedAt": "2026-09-24",
+          "supports": "heroku/v1 detector: heroku keyword prefix then an 8-4-4-4-12 hex UUID (context gate + segments)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/v0.24.0/crates/noseyparker/data/default/builtin/rules/heroku.yml#L4-L5",
+          "observedAt": "2026-09-24",
+          "supports": "np.heroku.1: heroku and key within 20 chars on the line, then a lowercase-hex 8-4-4-4-12 UUID (same-line context gate + lowercase segments)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "semgrep",
+          "reference": "https://github.com/semgrep/semgrep-rules/blob/a84ff9cc2453ca91d581380de4b8b3f272f6f4be/generic/secrets/security/detected-heroku-api-key.yaml",
+          "observedAt": "2026-09-24",
+          "supports": "detected-heroku-api-key: heroku then, later on the same line, an 8-4-4-4-12 hex UUID (same-line context gate + segments; accepts mixed-case hex)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "heroku",
+          "reference": "https://devcenter.heroku.com/changelog-items/2842",
+          "observedAt": "2026-09-24",
+          "supports": "pre-2024-04-01 'current token example' is a bare lowercase 8-4-4-4-12 hex UUID; existing tokens 'continue to work … until they're regenerated' (shape + still-live generation)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/232",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 broad-discovery pass aggregating the provider changelogs, peer rules and caveats (case, 40-hex example, keyword distance, UUID-shaped siblings)"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Hex case: every provider example is lowercase, but gitleaks ((?i)) and semgrep ([0-9A-Fa-f]) accept uppercase and trufflehog accepts A in the first segment; whether Heroku ever issued uppercase-hex tokens is unknown (#232).",
+          "status": "bounded",
+          "bound": "The contract freezes the lowercase shape and records hex case as unresolved; every fixture uses lowercase hex and none asserts redaction or silence on an uppercase UUID."
+        },
+        {
+          "statement": "devcenter.heroku.com/articles/authentication shows a 40-character lowercase-hex API token (undated era) in its auth:token and .netrc examples, a shape other than the UUID the changelog shows (#232).",
+          "status": "bounded",
+          "bound": "The contract claims only the 8-4-4-4-12 UUID and records the 40-hex shape as unresolved; no fixture uses or excludes a 40-hex value."
+        }
+      ]
+    },
+    {
+      "family": "mailchimp-api-key",
+      "mode": "shape",
+      "supportsBareValues": false,
+      "uncertainty": "Mailchimp states the shape only by one example whose body is 31 hex characters, against 32 in every tool and 111 of 115 public-code candidates (redact-secret#699); hex case and suffix digit count are disputed between tools (#697/#698). The only staff statement (2009) advises against regex validation because keys may change.",
+      "supportedContexts": [
+        "same-line mailchimp keyword assignment (e.g. MAILCHIMP_API_KEY=<value>), bare, double-quoted, or after a CRLF comment line",
+        "suffix -us + one or two digits"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mailchimp/mailchimp.go",
+          "observedAt": "2026-09-24",
+          "supports": "mailchimp: 32 lowercase hex + '-us' + 1-2 digits, no keyword"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "mailchimp-api-key: 32 hex + '-us' + exactly 2 digits, mailchimp keyword + assignment gate (case-insensitive)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/v0.24.0/crates/noseyparker/data/default/builtin/rules/mailchimp.yml",
+          "observedAt": "2026-09-24",
+          "supports": "np.mailchimp.1: 32 hex + '-us' + 1-3 digits within 20 chars of mailchimp/mc (case-insensitive)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "mailchimp",
+          "reference": "https://mailchimp.com/developer/marketing/docs/fundamentals/",
+          "observedAt": "2026-09-24",
+          "supports": "<key>-us<N> form: a hex body, a dash and a literal us<N> data-center suffix (single-digit us6 by example; the example body is 31 bytes)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800553901",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-23 broad-discovery pass: tools agree on 32 hex + -us + digits; 111/115 candidates have a 32-byte body; suffix 1 digit 35, 2 digits 80, 3 digits 0 (cited by #697/#698/#699)"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "The provider's only example has a 31-byte hex body; the contract requires 32 and its length twin asserts silence on a 31-byte body with a -us suffix (redact-secret#699).",
+          "status": "unresolved"
+        },
+        {
+          "statement": "gitleaks and betterleaks require exactly two suffix digits; the contract accepts one and the single-digit-datacenter positive asserts detection (redact-secret#698).",
+          "status": "unresolved"
+        },
+        {
+          "statement": "Nosey Parker accepts three suffix digits; the contract accepts at most two (redact-secret#698).",
+          "status": "bounded",
+          "bound": "The contract pattern caps the suffix at two digits and no positive, twin or control carries a three-digit suffix; 0 of 115 measured candidates had one."
+        },
+        {
+          "statement": "gitleaks, betterleaks and Nosey Parker are case-insensitive, so uppercase A-F bodies match; the contract is lowercase-only (redact-secret#697).",
+          "status": "bounded",
+          "bound": "The contract pattern is [0-9a-f] and no fixture carries an uppercase byte (the twins mutate length and the us literal only); the review text does not discuss case explicitly."
+        },
+        {
+          "statement": "The 2009 staff regex and keyhacks allow a [0-9a-z] body (g-z letters).",
+          "status": "bounded",
+          "bound": "The contract pattern is hex-only and no fixture carries a g-z body byte; the 11 of 115 measured g-z candidates looked edited."
+        },
+        {
+          "statement": "keyhacks allows any [0-9a-z]{2,5} suffix; the contract's boundary twin asserts silence on an -eu6 suffix.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "Mailchimp staff (2009) say not to regex-validate because key formats may change, and their regex made the -us suffix optional; the missing-marker control asserts silence on a suffix-less 32-hex value.",
+          "status": "unresolved"
+        }
+      ]
+    },
+    {
+      "family": "mailgun-api-key",
+      "mode": "shape",
+      "supportsBareValues": false,
+      "uncertainty": "No Mailgun page states any key grammar; key- + 32 is shown only as a placeholder for the HTTP webhook signing key, and 2018-2025 sources say the current private API key is a prefix-less 32-8-8 hex triplet, making key- possibly the older shape (redact-secret#701). The body alphabet ([a-z0-9] vs hex) and case sensitivity are unsettled and no issued key has been measured.",
+      "supportedContexts": [
+        "same-line mailgun keyword assignment (MAILGUN_API_KEY= / MAILGUN_WEBHOOK_SIGNING_KEY=), bare, double-quoted, or after a CRLF comment line",
+        "private API key and HTTP webhook signing key roles, both key- + 32"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mailgun/mailgun.go",
+          "observedAt": "2026-09-24",
+          "supports": "Key-MailGun Token: key- + 32 [a-z0-9], no keyword"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "mailgun-private-api-token: key- + 32 hex after a mailgun keyword and assignment (case-insensitive)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/v0.24.0/crates/noseyparker/data/default/builtin/rules/mailgun.yml",
+          "observedAt": "2026-09-24",
+          "supports": "np.mailgun.1: key- + 32 [a-z0-9] within 20 chars of mailgun/mg (case-insensitive)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "mailgun",
+          "reference": "https://documentation.mailgun.com/docs/mailgun/api-reference/send/mailgun/account-management/get-v5-accounts-http_signing_key",
+          "observedAt": "2026-09-24",
+          "supports": "response example shows http_signing_key as key- + 32 lowercase characters (a placeholder pattern; states no grammar)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800612791",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-23 broad-discovery pass: 31 public key- + 32 candidates (27 hex-only); records the triplet and alphabet disputes (cited by #701)"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "gitleaks is hex-only and a 2018 community report says newer keys are 32 hex; the contract accepts [a-z0-9] and both positives' bodies contain g-z letters.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "gitleaks and Nosey Parker are case-insensitive (1 of 31 measured candidates had an uppercase letter); the contract's alphabet twin asserts silence on a body with one uppercase byte.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "gitleaks has a mailgun-pub-key rule treating pubkey- + 32 hex as a secret; the family's public-id control asserts silence on a pubkey- value.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "A Mailgun-repo contributor (2019), customers (2018) and trufflehog#3870 (2025) say the current private API key is a prefix-less 32-8-8 hex triplet, which the contract treats as an unsupported legacy signing key (redact-secret#701).",
+          "status": "bounded",
+          "bound": "The triplet is outside the pattern and deliberately unfixtured (generator comment); no positive, twin or control contains a triplet. The key- positives stand on their own shape whichever role key- now serves."
+        },
+        {
+          "statement": "gitleaks and trufflehog call the 32-8-8 triplet the signing key, while the provider placeholder shows key- + 32 for http_signing_key.",
+          "status": "bounded",
+          "bound": "Only the key- signing-key shape is fixtured (as a positive backed by the provider example); the triplet signing-key shape is excluded and unfixtured."
+        },
+        {
+          "statement": "trufflehog's 72-byte 'Original MailGun Token' pattern.",
+          "status": "bounded",
+          "bound": "Outside the pattern; no fixture carries a 72-byte value; no non-tool source supports it."
+        },
+        {
+          "statement": "trufflehog matches key- + 32 with no keyword and Nosey Parker accepts 'mg' as context; the contract requires a same-line mailgun keyword.",
+          "status": "bounded",
+          "bound": "Keyword-less values are an accepted false negative outside supportedContexts; no fixture carries a keyword-less or mg-only value."
+        }
+      ]
+    },
+    {
+      "family": "okta-api-token",
+      "mode": "shape",
+      "supportsBareValues": false,
+      "uncertainty": "Okta shows the token only as an elided SSWS example beginning 00, and its only staff statement (2023) says not to assume a set structure; the 40-byte body and alphabet rest on tools and a 2019 community answer. Tools disagree on '=' in the body and GitGuardian does not treat 00 as a prefix; no issued token has been measured.",
+      "supportedContexts": [
+        "Authorization: SSWS <value> header",
+        "same-line okta keyword assignment (e.g. OKTA_API_TOKEN=<value>)",
+        "either context bare, double-quoted, or after a CRLF comment line"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "okta-access-token: 00 + 40 body bytes after an okta keyword and assignment (body class also admits '=')"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/okta/okta.go",
+          "observedAt": "2026-09-24",
+          "supports": "okta: 00 + 40 [A-Za-z0-9_-], only alongside an Okta tenant domain"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/v0.24.0/crates/noseyparker/data/default/builtin/rules/okta.yml",
+          "observedAt": "2026-09-24",
+          "supports": "np.okta.1: 00 + 40 [A-Za-z0-9_-] (last byte not '-') within 40 chars of okta/ssws"
+        },
+        {
+          "class": "provider-example",
+          "owner": "okta",
+          "reference": "https://developer.okta.com/docs/guides/create-an-api-token/main/",
+          "observedAt": "2026-09-24",
+          "supports": "SSWS authorization scheme and a token value beginning with literal 00 (elided example; no length or alphabet)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/694#issuecomment-5800302850",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-23 broad-discovery pass: every shape-stating source agrees on 00 + 40 (42 total); 47 of 52 public-code candidates are 42 bytes, none contains '='"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "gitleaks and betterleaks admit '=' in the body; the contract's alphabet twin asserts silence on a body containing one '=' byte.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "Okta staff (2023): do not assume a set structure for Okta API tokens; the contract freezes a 00 + 40 grammar and fixtures assert it.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "A 2023 customer observation gives the alphabet as [A-Za-z0-9-] without '_'; the contract admits '_' (tools, the 2019 answer and 23/52 measured candidates include it).",
+          "status": "unresolved"
+        },
+        {
+          "statement": "Nosey Parker excludes '-' as the final byte; the contract admits it.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "GitGuardian records the Okta detector as 'Prefixed: False', i.e. 00 is not treated as a prefix; the contract's prefix twin asserts silence on a 01-prefixed value.",
+          "status": "unresolved"
+        }
+      ]
+    },
+    {
+      "family": "openai-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "OpenAI documents no key grammar. Its own code (openai/codex) fixes only the prefixes, the T3BlbkFJ watermark and a 51-character minimum, and one staff forum post confirms sk-proj-. The 74/74 segment widths rest on scanner rules and revoked samples that gitleaks adopted. Earlier project-key generations (20/20, 58/58), sk-None- user keys and sk-service- keys all appear in public code, and the service-account length dispute is still open. No freshly issued key has been measured.",
+      "supportedContexts": [
+        "bare sk-... key anywhere on a line",
+        "quoted string literal",
+        "line with non-ASCII text and CRLF endings"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "openai-api-key rule (L2704-2706): sk-(proj|svcacct|admin)- + 74|58 [A-Za-z0-9_-] + T3BlbkFJ + 74|58, or legacy sk- + 20 alnum + T3BlbkFJ + 20 alnum; covers both contract branches exactly"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openai/openai.go",
+          "observedAt": "2026-09-24",
+          "supports": "openai detector (L37-41): sk-(proj|svcacct|service)- or sk-<alnum>, then the T3BlbkFJ marker ('base64 of OpenAI'); prefixes and marker only, variable length"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "secretlint",
+          "reference": "https://github.com/secretlint/secretlint/blob/v13.0.5/packages/@secretlint/secretlint-rule-openai/src/index.ts",
+          "observedAt": "2026-09-24",
+          "supports": "secretlint-rule-openai (L25): the same 74|58 / legacy 20/20 grammar as gitleaks (derived from it, so not independent of the gitleaks rule)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "openai",
+          "reference": "https://github.com/openai/codex/blob/418199f6ade4f9018b1f0b455a685387a811ad2e/codex-rs/network-proxy/src/credential_broker/providers/openai.rs#L13-L23",
+          "observedAt": "2026-09-24",
+          "supports": "OpenAI's own credential broker: prefixes sk-proj-, sk-svcacct-, sk-admin-, sk-; credential_watermark T3BlbkFJ; minimum length 51 (= legacy 3 + 20 + 8 + 20)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "openai",
+          "reference": "https://community.openai.com/t/projects-mode-sk-proj-api-keys-no-api-access-need-urgent-hel/1118492/2",
+          "observedAt": "2026-09-24",
+          "supports": "OpenAI Staff post (romainhuet, 2025-02-12) on OpenAI's forum: sk-proj- is the project-key prefix, earlier keys were sk-; prefix only"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/657",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 broad-discovery, second and web-search passes: consensus 164/167/51 shapes, symmetric segments, generation history, public-code length tabulation"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Service-account key length: gitleaks#1780's revoked samples are a fixed 74/74 (167 chars), but gitleaks#1467 (2024) says length varies with the account name, gitleaks#2240 (2026, open) claims ~51 before the marker, leaktk synthetic samples are 45/46 and 49/50, and Trivy#10794 reports an svcacct offset of 80.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "sk-proj-/sk-svcacct- with 58 + marker + 58 (132/134 chars): reported Aug 2024, accepted by gitleaks and secretlint, 18 public-code files; Trivy says a fixed 74 misses about 14% of real project keys.",
+          "status": "bounded",
+          "bound": "The contract deliberately covers only the 74/74 generation. No fixture uses a 58/58 value; the proj twin mutates to 73/74, a width no source reports."
+        },
+        {
+          "statement": "Early-2024 sk-proj- (and sk-svcacct-) keys with 20 + marker + 20 (56/59 chars), matched by TruffleHog before 2024-08-04 and by betterleaks.",
+          "status": "bounded",
+          "bound": "Outside the contract. The detector-coverage shape-2/shape-3 fixtures at 56/59 chars are tier-T3 'policy' regressions kept for history, not must-redact or must-not-flag assertions under this contract."
+        },
+        {
+          "statement": "sk-None- user keys (Jul 2024, one 74/74 public sample) and whether user keys are sk-None- or bare sk-.",
+          "status": "bounded",
+          "bound": "sk-None- is outside the contract, and no fixture uses it either way."
+        },
+        {
+          "statement": "sk-service-<name>- keys with 20/20 bodies: TruffleHog accepts the prefix, Trivy calls it a likely predecessor of sk-svcacct-.",
+          "status": "bounded",
+          "bound": "Outside the contract; no fixture uses it."
+        },
+        {
+          "statement": "Legacy bare sk- body: 20/20 alphanumeric (forum, codex minimum 51, most scanners) vs ~44/44 or 42/42 base64url (gitleaks#2240 claim, one public-code file, the HF validator's {92}).",
+          "status": "bounded",
+          "bound": "The contract freezes only the 20/20 legacy branch. No fixture uses a 42/42 or 44/44 bare sk- value; the legacy twin keeps 20/20 and mutates only the marker."
+        },
+        {
+          "statement": "One issue (aictrl-dev/hush#30) says some sk-proj- keys lack T3BlbkFJ; blogs say keys 'usually' contain it.",
+          "status": "bounded",
+          "bound": "Uncorroborated, and contradicted by OpenAI's own codex watermark. No fixture asserts on a marker-less sk-proj- value; the only marker twin is on the bare sk- branch."
+        },
+        {
+          "statement": "A 2023 forum post says legacy keys omit the digit 1; 29/39 current proj samples contain it.",
+          "status": "bounded",
+          "bound": "The contract does not constrain the digit, and no fixture asserts on its absence."
+        },
+        {
+          "statement": "sk-admin- keys (58/58, 133 chars; one 74/74 public sample) share the prefix stem and marker.",
+          "status": "bounded",
+          "bound": "A separate admin credential family, deliberately excluded; no openai-token fixture uses sk-admin-."
+        }
+      ]
+    },
+    {
+      "family": "postman-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Postman documents no PMAK- grammar (only the X-API-Key header and a postman-api-key variable); the 24-hex / '-' / 34-hex structure rests on gitleaks and Nosey Parker, while trufflehog corroborates only the prefix and 59-byte width. No issued key has been measured, and a second Postman credential (PMAT-) exists outside the contract (redact-secret#700).",
+      "supportedContexts": [
+        "bare value (the PMAK- prefix is the only marker; no keyword required)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "postman-api-token: PMAK- + 24 hex + '-' + 34 hex (hex case-insensitive)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/postman/postman.go",
+          "observedAt": "2026-09-24",
+          "supports": "postman: PMAK- prefix and 59-byte body width only ([A-Za-z0-9-]{59}, no internal structure)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/v0.24.0/crates/noseyparker/data/default/builtin/rules/postman.yml",
+          "observedAt": "2026-09-24",
+          "supports": "np.postman.1: PMAK- + 24 + '-' + 34 structure (alphanumeric segments, wider than hex)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800541433",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-23 broad-discovery pass: every shape-stating scanner agrees on PMAK- + 59 bytes; 31 of 33 public-code candidates are 24 + 34 lowercase hex (cited by #700)"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "trufflehog ([A-Za-z0-9-]{59}) and Nosey Parker (alphanumeric segments) accept non-hex bytes; the contract's alphabet twin asserts silence on a non-hex byte in the second segment.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "trufflehog imposes no internal structure, so it accepts a 59-byte body without the dash at offset 24; the contract's separator twin asserts silence on exactly that.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "GitLab's rule set is lowercase-hex only; the contract (like gitleaks) accepts uppercase hex.",
+          "status": "unresolved"
+        },
+        {
+          "statement": "A 2026-09-22 community proposal (crenox#9) claims a 34-36 character second segment.",
+          "status": "bounded",
+          "bound": "The contract fixes exactly 34; the only length twin is 33 bytes, so no fixture asserts anything about 35 or 36. The claim cites no evidence and 0 of 33 measured candidates were 35/36."
+        },
+        {
+          "statement": "Postman also issues PMAT- collection access keys (GitLab: PMAT- + 26 [A-Z0-9]); the family covers only PMAK- (redact-secret#700).",
+          "status": "bounded",
+          "bound": "PMAT- is a separate credential outside the pattern; no positive, twin or control contains a PMAT- value."
+        }
+      ]
+    },
+    {
+      "family": "sentry-org-auth-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "The format is stated in Sentry's merged RFC 0091 (its header still reads 'draft') and in Sentry server/CLI code, not on docs.sentry.io. Payload key order and a null or empty url on self-hosted installs are only provisional. The contract's eyJ anchor and {26,} payload floor are looser than every observed token. It has not been checked against a freshly issued token.",
+      "supportedContexts": [
+        "bare sntrys_eyJ...payload..._<43-char secret> token anywhere on a line",
+        "assignment/env value (SENTRY_AUTH_TOKEN=...)",
+        "CLI flag, .sentryclirc/properties, YAML, Dockerfile ENV, JS config string"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "sentry-org-token rule: sntrys_eyJpYXQiO... base64 JSON payload, ={0,2}, _ then [a-zA-Z0-9+/]{43} (stricter region_url anchor than the contract)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sentryorgtoken/sentryorgtoken.go",
+          "observedAt": "2026-09-24",
+          "supports": "sentryorgtoken detector: sntrys_eyJ prefix and marker (fixed-width body, coarser than the contract)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/sentry.go",
+          "observedAt": "2026-09-24",
+          "supports": "sentry-org-token rule: same sntrys_[base64_json]_[base64 43] structure; 42/44-char secrets as negatives"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "getsentry",
+          "reference": "https://github.com/getsentry/sentry/blob/d4aa9756a10f576272b95437231c9dd32546e514/src/sentry/utils/security/orgauthtoken_token.py",
+          "observedAt": "2026-09-24",
+          "supports": "generator: sntrys_ + padded standard base64 JSON + _ + b64encode(token_bytes(32)) with = stripped (43 chars); parser requires exactly two _"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "getsentry",
+          "reference": "https://github.com/getsentry/rfcs/blob/6bdc964983762d614dfc9127d669d15ce521be3f/text/0091-ci-upload-tokens.md",
+          "observedAt": "2026-09-24",
+          "supports": "RFC 0091: PREFIX_FACTS_SECRET, static sntrys_ prefix, FACTS = base64 JSON, parse rule of exactly two _"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "getsentry",
+          "reference": "https://github.com/getsentry/sentry-cli/blob/c880db5fc6b69378b62310b7fdbd74637bcd5fb4/src/utils/auth_token/org_auth_token.rs",
+          "observedAt": "2026-09-24",
+          "supports": "sentry-cli: three _-separated segments, secret must decode to exactly 32 bytes"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/658",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 second-pass, broad-discovery and web-search research: 7 measured tokens all match the contract; conflicts listed"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "A Glama blog post (2024-10-18) and Google's AI overview say the payload is Base64URL; CredSweeper's rule uses a URL-safe [0-9A-Za-z_-] class and secretlint#1569 admits -_.",
+          "status": "settled",
+          "bound": "Sentry's generator uses standard base64 (b64encode) for the payload and the secret and parses exactly two _, so a - never occurs; the url-safe twins follow the provider code.",
+          "settledBy": "https://github.com/getsentry/sentry/blob/d4aa9756a10f576272b95437231c9dd32546e514/src/sentry/utils/security/orgauthtoken_token.py"
+        },
+        {
+          "statement": "secretlint#1569 proposal says the payload has no padding.",
+          "status": "settled",
+          "bound": "Sentry's generator keeps the payload's = padding (only the secret is stripped), so padded positives follow the provider code.",
+          "settledBy": "https://github.com/getsentry/sentry/blob/d4aa9756a10f576272b95437231c9dd32546e514/src/sentry/utils/security/orgauthtoken_token.py"
+        },
+        {
+          "statement": "TruffleHog's sentryorgtoken detector requires a fixed 197-character body after eyJ; real tokens vary with org slug and URLs (147-191 observed).",
+          "status": "settled",
+          "bound": "The payload is base64 of a JSON object whose url and org fields vary, so its length varies; TruffleHog's fixed width is a recall choice, not a format fact, and positives of several lengths follow the provider code.",
+          "settledBy": "https://github.com/getsentry/sentry/blob/d4aa9756a10f576272b95437231c9dd32546e514/src/sentry/utils/security/orgauthtoken_token.py"
+        },
+        {
+          "statement": "Glean's setup docs say a Sentry Internal Integration token 'starts with sntrys_', while Sentry's enum gives INTEGRATION = sntryi_.",
+          "status": "bounded",
+          "bound": "It concerns family attribution, not the lexical shape. No fixture asserts anything about integration tokens."
+        },
+        {
+          "statement": "GitGuardian marks its Sentry Org Auth Token detector 'Prefixed: False'.",
+          "status": "bounded",
+          "bound": "No format claim is published. The contract requires sntrys_ and no fixture tests an unprefixed org token."
+        },
+        {
+          "statement": "Self-hosted tokens can carry url null or an empty string, so gitleaks-style stricter anchors could miss them.",
+          "status": "bounded",
+          "bound": "The contract deliberately keeps the looser eyJ anchor. Positives include a null-url token, and no fixture asserts silence on a valid null or empty-url token."
+        }
+      ]
+    },
+    {
+      "family": "sentry-user-auth-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "No page on Sentry's own domains states the format. The shape rests on Sentry server code (secrets.token_hex(32) after sntryu_), sentry-cli and several scanner rules. It has not been checked against a freshly issued token (0 maintainer observations). Unprefixed pre-2024 user tokens (bare 64 hex) are still valid and fall outside this contract.",
+      "supportedContexts": [
+        "bare sntryu_ + 64 lowercase hex token anywhere on a line",
+        "assignment/env value (SENTRY_AUTH_TOKEN=...)",
+        "CLI flag, Bearer header, YAML/INI/compose value"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "sentry-user-token rule: sntryu_ + [a-f0-9]{64} (prefix, 64 length, lowercase hex)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sentrytoken/v2/sentrytoken.go",
+          "observedAt": "2026-09-24",
+          "supports": "sentrytoken v2 detector: sntryu_ + [a-f0-9]{64}"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "samsung",
+          "reference": "https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml",
+          "observedAt": "2026-09-24",
+          "supports": "'Sentry User Auth Token' rule: sntryu_ + [0-9a-f]{64}"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/sentry.go",
+          "observedAt": "2026-09-24",
+          "supports": "sentry-user-token rule: sntryu_ + [a-f0-9]{64}; 63/65-length negatives"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "getsentry",
+          "reference": "https://github.com/getsentry/sentry/blob/b5116cbbd0b81d62592318b0f3de660c215bcdb6/src/sentry/models/apitoken.py#L106-L112",
+          "observedAt": "2026-09-24",
+          "supports": "generator returns token_type + secrets.token_hex(nbytes=32): 64 lowercase hex after the prefix; token column max_length=71 (L200)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "getsentry",
+          "reference": "https://github.com/getsentry/sentry/blob/f5d6d77049257892315c3823ebb504d189ddafb8/src/sentry/types/token.py",
+          "observedAt": "2026-09-24",
+          "supports": "AuthTokenType.USER = sntryu_ (siblings sntrys_/sntrya_/sntryi_ are other kinds); pre-prefix tokens exist"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "getsentry",
+          "reference": "https://github.com/getsentry/sentry-cli/blob/c880db5fc6b69378b62310b7fdbd74637bcd5fb4/src/utils/auth_token/user_auth_token.rs",
+          "observedAt": "2026-09-24",
+          "supports": "sentry-cli: body after sntryu_ (prefix constant in mod.rs) must hex-decode to exactly 32 bytes"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/659",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 second-pass and broad-discovery research: prefix, 64 lowercase hex, legacy unprefixed tokens, conflicts"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Sentry's unmerged RFC 0032 (getsentry/rfcs PR #32, still open) proposes a [a-zA-Z0-9]{64} body and calls legacy tokens '64 character alphanumeric'.",
+          "status": "settled",
+          "bound": "Sentry's shipped generator returns the prefix plus secrets.token_hex(32), which cannot emit a non-hex letter; the RFC never merged. The contract and the non-hex twins follow the provider code.",
+          "settledBy": "https://github.com/getsentry/sentry/blob/b5116cbbd0b81d62592318b0f3de660c215bcdb6/src/sentry/models/apitoken.py#L106-L112"
+        },
+        {
+          "statement": "sentry-cli decodes with HEXLOWER_PERMISSIVE and an early gitleaks#1629 proposal used [a-fA-F0-9], i.e. consumers accept uppercase hex.",
+          "status": "bounded",
+          "bound": "Contract requires lowercase hex (the server cannot emit uppercase) and no fixture contains an uppercase body in either direction."
+        },
+        {
+          "statement": "Pre-prefix user tokens (bare 64 lowercase hex, no sntryu_) are still valid secrets under Sentry's code.",
+          "status": "bounded",
+          "bound": "Contract covers only the prefixed form (legacy field status 'unresolved' in FIELDS_207). No fixture places a bare 64-hex value beside a sentry keyword in either direction; the only bare 64-hex control is a tarball digest line with no sentry context."
+        },
+        {
+          "statement": "GitGuardian lists its Sentry User Auth Token detectors as 'Prefixed: False' with no published pattern.",
+          "status": "bounded",
+          "bound": "Probably GitGuardian's flag for the legacy unprefixed v1 form; the unprefixed shape is out of contract scope and untested, as above."
+        }
+      ]
+    },
+    {
+      "family": "telegram-bot-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Telegram documents only example tokens, with no grammar. The delimiter and the no-'/' rule come from Telegram's Bot API server code on github.com. The secret body length is disputed: the doc examples show 34 characters, while most tools and community reports say 35. The leading AA that most scanners key on is unexplained by any source. It has not been checked against a freshly issued token.",
+      "supportedContexts": [
+        "bare <digits>:<secret> token anywhere on a line",
+        "assignment/env value (TELEGRAM_BOT_TOKEN=...)",
+        "api.telegram.org/bot<token>/ URL path",
+        "SDK builder string, YAML/compose value, BotFather reply text"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/telegrambottoken/telegrambottoken.go",
+          "observedAt": "2026-09-24",
+          "supports": "telegrambottoken detector: [0-9]{8,10}:[a-zA-Z0-9_-]{35} (':' delimiter, secret alphabet; keyword-gated)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "yelp",
+          "reference": "https://github.com/Yelp/detect-secrets/blob/5e141933554a0b74e7341841f318be21e895339c/detect_secrets/plugins/telegram_token.py",
+          "observedAt": "2026-09-24",
+          "supports": "detect-secrets TelegramBotTokenDetector: ^\\d{8,10}:[0-9A-Za-z_-]{35}$"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "telegram",
+          "reference": "https://github.com/tdlib/telegram-bot-api/blob/e3e9dd8e5b3d7ab8537cd5a10dc31d5ffa8f82d1/telegram-bot-api/ClientManager.cpp#L73-L85",
+          "observedAt": "2026-09-24",
+          "supports": "Bot API server rejects tokens without ':', with '/', over 80 chars or starting '0'; the id before ':' must be 0 < id < 2^54"
+        },
+        {
+          "class": "provider-example",
+          "owner": "telegram",
+          "reference": "https://core.telegram.org/bots/api",
+          "observedAt": "2026-09-24",
+          "supports": "'Authorizing your bot' example: numeric id, ':', 34-char [A-Za-z0-9_-] secret"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/660",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 second-pass and broad-discovery research: examples, 34 vs 35 conflict, AA lead, id range"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Secret body length: all three core.telegram.org examples have 34 characters, while TruffleHog, detect-secrets, gitleaks/betterleaks (A+34), Semgrep and community reports say exactly 35. Only Nosey Parker allows both.",
+          "status": "settled",
+          "bound": "Telegram's own documented examples carry a 34-character secret, so a tool rule requiring exactly 35 cannot be the whole shape; the contract floor of 34 admits both the documented 34 and the widely reported 35, and no fixture asserts silence on either.",
+          "settledBy": "https://core.telegram.org/bots/api"
+        },
+        {
+          "statement": "Most scanner rules require the secret to start with AA (gitleaks: A), which the contract does not require.",
+          "status": "bounded",
+          "bound": "The contract takes no position. Every fixture body starts with AA, and no fixture asserts either way on a non-AA body."
+        },
+        {
+          "statement": "Bot id digit count: 8-10 (TruffleHog, detect-secrets, SO), 5-16 (gitleaks), 1+ (Nosey Parker, Semgrep); provider code allows 1-16 with no leading 0.",
+          "status": "bounded",
+          "bound": "The contract floor is 5 digits and all fixtures use 10-digit ids. By FIELDS_207 design, no fixture asserts silence on a short or long id."
+        },
+        {
+          "statement": "One Stack Overflow answer gives the total as 43-45 while also stating a 35-char body (internally inconsistent).",
+          "status": "bounded",
+          "bound": "The contract has no total-length claim and no fixture asserts on total length."
+        }
+      ]
+    },
+    {
+      "family": "twilio-api-key-secret",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "No Twilio source states the secret's length or alphabet. The 32-character alphanumeric shape rests on TruffleHog's twilioapikey detector plus 32-character placeholder masks in Twilio's own sample repos. Only the paired SK SID has a provider-documented grammar. The value has no marker, so it is claimed only beside same-line Twilio context. It has not been checked against an issued key.",
+      "supportedContexts": [
+        "same line as the word twilio (e.g. TWILIO_API_SECRET=, twilio_api_secret:, log/prose mentioning Twilio)",
+        "same line as an API Key SID (SK + 32 hex), e.g. Client(SK..., secret), twilio profiles:create --api-key SK... --api-secret, Basic-auth -u SK...:secret"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/twilioapikey/twilioapikey.go",
+          "observedAt": "2026-09-24",
+          "supports": "twilioapikey detector: secret \\b[0-9a-zA-Z]{32}\\b paired with \\bSK[a-zA-Z0-9]{32}\\b, keyword twilio (length, alphanumeric, context gate)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitguardian",
+          "reference": "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/twilio_api_keys",
+          "observedAt": "2026-09-24",
+          "supports": "Twilio API keys detector: 'Prefixed: False' (no prefix on the secret)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "twilio",
+          "reference": "https://www.twilio.com/docs/iam/api-keys/key-resource-v1",
+          "observedAt": "2026-09-24",
+          "supports": "Key resource: SID pattern ^SK[0-9a-fA-F]{32}$, 34 chars (the context-gate marker); secret returned only at creation"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "twilio",
+          "reference": "https://github.com/twilio/twilio-oai/blob/5aa7f31977ce5812f7b7bc1f46a38555ebaa2888/spec/json/twilio_iam_v1.json",
+          "observedAt": "2026-09-24",
+          "supports": "iam.v1.new_key: sid ^SK[0-9a-fA-F]{32}$ is the basic-auth user and secret the basic-auth password (SID/secret pairing); no secret pattern"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "twilio",
+          "reference": "https://github.com/twilio/twilio-agent-connect-python/blob/55f56f755e0c42bad24f73e61b65420a33382041/getting_started/examples/.env.example",
+          "observedAt": "2026-09-24",
+          "supports": "TWILIO_API_SECRET placeholder is a 32-character mask with no prefix (weak length signal only)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/661",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 exhaustive provider pass and broad-discovery pass: 32 alnum consensus, SID alphabet conflict, coverage gaps"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Paired SID alphabet: Twilio's schema, gitleaks, betterleaks and Semgrep use SK + [0-9a-fA-F]{32}; TruffleHog uses [a-zA-Z0-9], detect-secrets [a-z0-9], and twilio-labs/mcp [A-Za-f0-9] (likely a typo).",
+          "status": "bounded",
+          "bound": "The contract freezes the provider's SK + 32 hex SID. Every fixture SID is lowercase hex, valid under all variants, and no fixture uses a non-hex SK value in either direction."
+        }
+      ]
+    },
+    {
+      "family": "twilio-auth-token",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "Twilio documents no alphabet. Its own code checks only the length (32), and one Twilio sample accepts [a-z0-9], so lowercase hex rests on scanner rules. The value has no marker, so it is claimed only beside same-line Twilio context. Secondary, regional and test tokens have no stated shape. It has not been checked against an issued token.",
+      "supportedContexts": [
+        "same line as the word twilio (e.g. TWILIO_AUTH_TOKEN=, twilio_auth_token:, log/prose mentioning Twilio)",
+        "same line as an Account SID (AC + 32 hex), e.g. Client(AC..., token) or Basic-auth -u AC...:token"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/twilio/twilio.go",
+          "observedAt": "2026-09-24",
+          "supports": "twilio detector: \\b[0-9a-f]{32}\\b paired with \\bAC[0-9a-f]{32}\\b, keywords sid/twilio (length, lowercase hex, SID context gate)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "samsung",
+          "reference": "https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml",
+          "observedAt": "2026-09-24",
+          "supports": "'Twilio Multi' rule: [0-9a-f]{32} only together with an AC/SK + 32 hex value"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitguardian",
+          "reference": "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/twilio_master_credentials",
+          "observedAt": "2026-09-24",
+          "supports": "Twilio master credentials detector: 'Prefixed: False', detected together with the Account SID"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "twilio",
+          "reference": "https://github.com/twilio/twilio-cli/blob/48957956fecbd279a2cb8249f20a432fa646484a/src/commands/profiles/create.js#L107-L119",
+          "observedAt": "2026-09-24",
+          "supports": "twilio-cli validAuthToken: 'Auth Token must be 32 characters in length' (client-side, skippable)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "twilio",
+          "reference": "https://github.com/twilio-labs/serverless-toolkit/blob/1669e746ab6e2993f2ca560aad81959c811fed88/packages/twilio-run/src/checks/check-auth-token.ts#L15-L33",
+          "observedAt": "2026-09-24",
+          "supports": "twilio-run check: authToken.length === 32, no prefix"
+        },
+        {
+          "class": "provider-example",
+          "owner": "twilio",
+          "reference": "https://www.twilio.com/docs/iam/api/authtoken",
+          "observedAt": "2026-09-24",
+          "supports": "Auth Token resource schema: companion account_sid pattern ^AC[0-9a-fA-F]{32}$ (the context-gate marker); auth_token is an untyped string"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/662",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-22 research and broad-discovery passes: 5 Twilio-owned length checks, alphabet conflict, OAI placeholders"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "twilio/twilio-oai example values for auth_token and secondary_auth_token are 33 characters (a single repeated letter placeholder), against 32 everywhere else.",
+          "status": "settled",
+          "bound": "Twilio's own CLI rejects an Auth Token that is not exactly 32 characters (as does twilio-run), so the 33-character repeated-letter OpenAPI values are placeholders; the 33-character control follows the provider code.",
+          "settledBy": "https://github.com/twilio/twilio-cli/blob/48957956fecbd279a2cb8249f20a432fa646484a/src/commands/profiles/create.js#L107-L119"
+        },
+        {
+          "statement": "Alphabet: scanners say [0-9a-f]; Twilio's twilio-voice-notification-app validates ^[a-z0-9]{32}$ and serverless-toolkit says 'letters and numbers'.",
+          "status": "bounded",
+          "bound": "The contract claims lowercase hex only (status provisional), and no fixture places a 32-character value containing g-z beside Twilio context in either direction."
+        },
+        {
+          "statement": "Account SID case: Twilio's schema is ^AC[0-9a-fA-F]{32}$, while TruffleHog's pairing marker is lowercase only.",
+          "status": "bounded",
+          "bound": "Every fixture SID is lowercase hex, which is valid under both. No fixture uses an uppercase SID."
+        },
+        {
+          "statement": "detect-secrets labels its SK + 32 pattern 'Auth token'.",
+          "status": "bounded",
+          "bound": "That pattern is the API Key SID (a different credential); no fixture of this family asserts on SK values."
+        }
+      ]
+    }
+  ]
 }

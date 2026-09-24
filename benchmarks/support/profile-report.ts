@@ -1,5 +1,6 @@
 import type { EvaluationCase } from '../engine/types.ts';
 import { contracts } from '../lib/assessment.ts';
+import { empiricalEvidence } from './empirical.ts';
 import { CELL_IDS, PROFILE_IDS, fixtureProfileReport, fixtureProfiles, measureFixtureCells, profileClaim, type CellId, type FixtureProfileReport, type FixtureProfiles } from './profiles.ts';
 
 /**
@@ -19,7 +20,7 @@ export interface FixtureProfileCoverage {
 export function buildFixtureProfileCoverage(cases: EvaluationCase[], profiles: FixtureProfiles = fixtureProfiles): FixtureProfileCoverage {
   const families = Object.keys(contracts).sort().map(family => ({
     family, tier: contracts[family].tier,
-    ...fixtureProfileReport(profileClaim(contracts[family]), measureFixtureCells(family, cases), profiles),
+    ...fixtureProfileReport(profileClaim(contracts[family], empiricalEvidence(family).empiricalMode), measureFixtureCells(family, cases), profiles),
   }));
   const cellsMetByProfile = Object.fromEntries(PROFILE_IDS.map(id => [id, families.filter(f => f.cellsMet.includes(id)).length]));
   return { schemaVersion: 1, profilesVersion: profiles.profilesVersion, familyCount: families.length, cellsMetByProfile, families };

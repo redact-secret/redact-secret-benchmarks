@@ -193,6 +193,18 @@
     {
       "id": "langfuse",
       "name": "Langfuse"
+    },
+    {
+      "id": "perplexity",
+      "name": "Perplexity"
+    },
+    {
+      "id": "fireworks-ai",
+      "name": "Fireworks AI"
+    },
+    {
+      "id": "pinecone",
+      "name": "Pinecone"
     }
   ],
   "families": [
@@ -1232,6 +1244,62 @@
         "https://github.com/langfuse/langfuse/blob/dbf5107df264bfcb0613a29237143e78ce16ca8a/packages/shared/src/server/auth/apiKeys.ts"
       ],
       "note": "No product detector at the pinned registry revision; redact-secret/redact-secret#728 (blocked by #726) is open. Arrival evidence in benchmarks/lib/beta8/210.ts (#210, research #221). Self-hosted operator-defined values and a possible sk-lf-gw- gateway shape are recorded but not claimed."
+    },
+    {
+      "id": "perplexity:api-key",
+      "provider": "perplexity",
+      "name": "API key",
+      "description": "pplx--prefixed API key; the 48-character alphanumeric body is tool-corroborated, not provider-stated.",
+      "detectors": [],
+      "sources": [
+        "https://docs.perplexity.ai/docs/admin/api-key-management"
+      ],
+      "note": "Beta.8 arrival family perplexity-api-key (#212, research #226); no product detector at the pinned registry revision."
+    },
+    {
+      "id": "fireworks-ai:api-key",
+      "provider": "fireworks-ai",
+      "name": "API key",
+      "description": "fw_-prefixed API key; 22- and 24-character bodies are observed, not documented.",
+      "detectors": [],
+      "sources": [
+        "https://docs.fireworks.ai/tools-sdks/python-client/the-tutorial"
+      ],
+      "note": "Beta.8 arrival family fireworks-ai-api-key (#212, research #227). The fpk_ Fire Pass key and any unprefixed legacy key are not covered."
+    },
+    {
+      "id": "pinecone:api-key",
+      "provider": "pinecone",
+      "name": "API key (pcsk_)",
+      "description": "Current pcsk_<label>_<secret> API key; prefix from provider code, segment widths tool-corroborated.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/pinecone-io/cli/blob/main/internal/pkg/cli/command/config/set.go"
+      ],
+      "note": "Beta.8 arrival family pinecone-api-key (#212, research #228). The Admin API docs describe an unobserved pckey_ prefix; that contradiction is unresolved."
+    },
+    {
+      "id": "pinecone:legacy-api-key",
+      "provider": "pinecone",
+      "name": "Legacy API key (bare UUID)",
+      "description": "Legacy bare-UUID API key, identical in shape to Pinecone key/project/service-account ids; recognized only beside a same-line Pinecone API-key identifier.",
+      "detectors": [],
+      "sources": [
+        "https://docs.pinecone.io/reference/api/authentication"
+      ],
+      "note": "Beta.8 context-gated arrival family pinecone-api-key-legacy (#212, research #228); the UUID shape is corroborated by unpinned tools only."
+    },
+    {
+      "id": "gitlab:runner-authentication-token",
+      "provider": "gitlab",
+      "name": "Runner authentication token",
+      "description": "glrt--prefixed runner authentication token: a 20-character legacy body, or the routable base64url payload with a base36 length holder and CRC32 checksum.",
+      "detectors": [],
+      "sources": [
+        "https://docs.gitlab.com/security/tokens/",
+        "https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/authn/token_field/generator/routable_token.rb"
+      ],
+      "note": "Beta.8 arrival family gitlab-runner-authentication-token (#212, research #230). glrtr-, instance-prefixed and unversioned routable variants are not claimed. gitlab-token contract covers glpat- only."
     }
   ]
 }

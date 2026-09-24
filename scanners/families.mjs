@@ -20,6 +20,14 @@ const gitleaks = {
   'anthropic-api-key': 'anthropic-token', 'openai-api-key': 'openai-token',
   'shopify-access-token': 'shopify-token', 'stripe-access-token': 'stripe-token',
   'generic-api-key': 'generic-token',
+  // Beta.8 #212 arrival families (benchmarks/lib/beta8/212.ts). gitleaks'
+  // gitlab-rrt (GR1348941 registration token) and slack-user-token stay
+  // unmapped: the first is another credential class, and the second already
+  // fires on detector-coverage's slack-token xoxp- fixtures, so mapping it
+  // would re-attribute existing findings.
+  'perplexity-api-key': 'perplexity-api-key',
+  'gitlab-runner-authentication-token': 'gitlab-runner-authentication-token',
+  'gitlab-runner-authentication-token-routable': 'gitlab-runner-authentication-token',
 };
 const trufflehog = {
   Github: 'github-token', Gitlab: 'gitlab-token', Npm: 'npm-token',
@@ -35,12 +43,13 @@ const trufflehog = {
   // (lsv2_(pt|sk)_<32 hex>_<10 hex>) and langfuse detector (sk-lf-<uuid>,
   // keyword- and pk-gated) report exactly the credential those families measure.
   LangSmith: 'langsmith-api-key', Langfuse: 'langfuse-secret-key',
+  // Beta.8 #212: pcsk_<5-6>_<63>, exactly the pinecone-api-key arrival contract's shape.
+  Pinecone: 'pinecone-api-key',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;
 // providers with no family in this corpus (Sentry, Airtable, Figma,
-// Notion, Doppler, Square, Azure, Discord, Telegram, New Relic,
-// Perplexity, GCP,
+// Notion, Doppler, Square, Azure, Discord, Telegram, New Relic, GCP,
 // Google, Twilio, Stripe webhook secrets) stay unmapped rather than guessed.
 // `groq_key`, `xai_key`, `openrouter_key` and `replicate_token` name the same
 // inference-key credentials as #208's arrival families (over looser widths for
@@ -73,6 +82,8 @@ const flareRedact = {
   mailgun_key: 'mailgun-api-key',
   groq_key: 'groq-api-key', xai_key: 'xai-api-key', openrouter_key: 'openrouter-api-key',
   replicate_token: 'replicate-api-token',
+  // pplx-[A-Za-z0-9]{40,60}: the Beta.8 #212 perplexity-api-key arrival family, over a wider width.
+  perplexity_key: 'perplexity-api-key',
 };
 const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };
 export function findingFamily(scanner, label) {

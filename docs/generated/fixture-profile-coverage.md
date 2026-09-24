@@ -24,10 +24,10 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 8 | 73 |
-| Stable / documented | 8 | 73 |
+| Arrival / provisional | 17 | 73 |
+| Stable / documented | 17 | 73 |
 | Stable / empirical | 6 | 73 |
-| Context-constrained empirical | 5 | 73 |
+| Context-constrained empirical | 7 | 73 |
 
 ## Per family
 
@@ -35,7 +35,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | anthropic-token | T1 | stable-documented | 24 | 6 | 8 | 7 | 5 | 5 | 6 | none |
 | atlassian-api-token | T2 | arrival-provisional | 40 | 5 | 19 | 8 | 11 | 6 | 9 | positive/context cases 5/6 |
-| aws-access-key | T1 | stable-documented | 22 | 4 | 6 | 6 | 3 | 3 | 4 | total fixtures 22/24; positive/context cases 4/6; non-twin benign controls 6/8; positive-context axes 3/4; control axes 3/4 |
+| aws-access-key | T1 | stable-documented | 26 | 6 | 8 | 6 | 5 | 5 | 6 | none |
 | azure-devops-personal-access-token | T1 | stable-documented | 24 | 1 | 8 | 9 | 5 | 5 | 7 | positive/context cases 1/6 |
 | bearer-token | T3 | arrival-provisional | 48 | 4 | 18 | 13 | 12 | 6 | 8 | positive/context cases 4/6 |
 | cloudflare-token | T1 | stable-documented | 19 | 3 | 8 | 6 | 1 | 3 | 6 | total fixtures 19/24; positive/context cases 3/6; positive-context axes 1/4; control axes 3/4 |
@@ -46,14 +46,14 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | datadog-api-key | T1 | stable-documented | 27 | 0 | 5 | 11 | 7 | 3 | 4 | positive/context cases 0/6; non-twin benign controls 5/8; control axes 3/4 |
 | datadog-application-key | T1 | stable-documented | 24 | 1 | 8 | 9 | 5 | 6 | 8 | positive/context cases 1/6 |
 | datadog-application-key-legacy | T2 | arrival-provisional | 19 | 8 | 5 | 3 | 7 | 3 | 4 | total fixtures 19/24; non-twin benign controls 5/8; twin pairs 3/5; control axes 3/4 |
-| digitalocean-token | T1 | stable-documented | 35 | 12 | 9 | 8 | 1 | 3 | 5 | positive-context axes 1/4; control axes 3/4 |
+| digitalocean-token | T1 | stable-documented | 39 | 15 | 10 | 8 | 4 | 4 | 6 | none |
 | discord-bot-token | T2 | arrival-provisional | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
-| docker-token | T1 | stable-documented | 36 | 3 | 7 | 16 | 1 | 3 | 5 | positive/context cases 3/6; non-twin benign controls 7/8; positive-context axes 1/4; control axes 3/4 |
+| docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |
 | firebase-server-key | T2 | arrival-provisional | 40 | 5 | 19 | 8 | 11 | 6 | 9 | positive/context cases 5/6 |
 | fireworks-ai-api-key | T1 | stable-documented | 24 | 3 | 11 | 5 | 7 | 6 | 8 | positive/context cases 3/6 |
 | generic-token | T3 | arrival-provisional | 128 | 35 | 75 | 9 | 12 | 4 | 5 | none |
 | github-fine-grained-pat | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 6 | 9 | positive/context cases 5/6 |
-| github-token | T1 | stable-documented | 115 | 27 | 6 | 42 | 21 | 3 | 5 | non-twin benign controls 6/8; control axes 3/4 |
+| github-token | T1 | stable-documented | 117 | 27 | 8 | 42 | 21 | 5 | 7 | none |
 | gitlab-runner-authentication-token | T2 | arrival-provisional | 24 | 1 | 11 | 6 | 5 | 6 | 10 | positive/context cases 1/6 |
 | gitlab-token | T1 | stable-documented | 21 | 3 | 6 | 7 | 2 | 3 | 5 | total fixtures 21/24; positive/context cases 3/6; non-twin benign controls 6/8; positive-context axes 2/4; control axes 3/4 |
 | google-api-key | T1 | stable-documented | 24 | 1 | 8 | 9 | 5 | 5 | 7 | positive/context cases 1/6 |
@@ -66,16 +66,16 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | jwt | T1 | stable-documented | 17 | 0 | 5 | 7 | 1 | 4 | 6 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4 |
 | langfuse-secret-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
 | langsmith-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
-| linear-token | T1 | stable-documented | 23 | 3 | 10 | 5 | 1 | 3 | 4 | total fixtures 23/24; positive/context cases 3/6; positive-context axes 1/4; control axes 3/4 |
+| linear-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 4 | 4 | 5 | none |
 | mailchimp-api-key | T2 | arrival-provisional | 18 | 0 | 6 | 6 | 1 | 4 | 6 | total fixtures 18/24; positive/context cases 0/6; non-twin benign controls 6/8; positive-context axes 1/4 |
 | mailgun-api-key | T2 | arrival-provisional | 21 | 3 | 6 | 9 | 1 | 4 | 7 | total fixtures 21/24; positive/context cases 3/6; non-twin benign controls 6/8; positive-context axes 1/4 |
-| microsoft-entra-client-secret | T1 | stable-documented | 38 | 0 | 7 | 17 | 7 | 3 | 5 | positive/context cases 0/6; non-twin benign controls 7/8; control axes 3/4 |
+| microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
 | netlify-token | T1 | stable-documented | 18 | 3 | 6 | 6 | 1 | 4 | 6 | total fixtures 18/24; positive/context cases 3/6; non-twin benign controls 6/8; positive-context axes 1/4 |
 | new-relic-license-key | T1 | stable-documented | 20 | 0 | 5 | 9 | 1 | 3 | 5 | total fixtures 20/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
 | new-relic-user-api-key | T1 | stable-documented | 27 | 0 | 5 | 11 | 7 | 3 | 4 | positive/context cases 0/6; non-twin benign controls 5/8; control axes 3/4 |
 | notion-integration-token | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 5 | 8 | positive/context cases 5/6 |
 | notion-token | T1 | stable-documented | 24 | 1 | 8 | 9 | 5 | 5 | 8 | positive/context cases 1/6 |
-| npm-token | T1 | stable-documented | 20 | 6 | 6 | 6 | 2 | 3 | 6 | total fixtures 20/24; non-twin benign controls 6/8; positive-context axes 2/4; control axes 3/4 |
+| npm-token | T1 | stable-documented | 24 | 8 | 8 | 6 | 4 | 5 | 8 | none |
 | okta-api-token | T2 | arrival-provisional | 21 | 0 | 6 | 9 | 1 | 4 | 7 | total fixtures 21/24; positive/context cases 0/6; non-twin benign controls 6/8; positive-context axes 1/4 |
 | openai-token | T2 | arrival-provisional | 28 | 9 | 7 | 6 | 1 | 3 | 5 | non-twin benign controls 7/8; positive-context axes 1/4; control axes 3/4 |
 | openrouter-api-key | T1 | stable-documented | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
@@ -88,12 +88,12 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | pulumi-access-token | T1 | stable-documented | 21 | 3 | 6 | 6 | 1 | 3 | 5 | total fixtures 21/24; positive/context cases 3/6; non-twin benign controls 6/8; positive-context axes 1/4; control axes 3/4 |
 | pypi-token | T1 | stable-documented | 20 | 0 | 8 | 9 | 1 | 6 | 9 | total fixtures 20/24; positive/context cases 0/6; positive-context axes 1/4 |
 | replicate-api-token | T1 | stable-documented | 24 | 3 | 9 | 6 | 7 | 6 | 10 | positive/context cases 3/6 |
-| sendgrid-token | T1 | stable-documented | 67 | 22 | 11 | 18 | 8 | 3 | 5 | control axes 3/4 |
+| sendgrid-token | T1 | stable-documented | 68 | 22 | 12 | 18 | 8 | 4 | 6 | none |
 | sentry-org-auth-token | T2 | arrival-provisional | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | arrival-provisional | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
 | shopify-token | T1 | stable-documented | 21 | 6 | 5 | 6 | 1 | 3 | 5 | total fixtures 21/24; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
 | slack-app-level-token | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 5 | 8 | positive/context cases 5/6 |
-| slack-token | T1 | stable-documented | 44 | 24 | 12 | 6 | 2 | 3 | 5 | positive-context axes 2/4; control axes 3/4 |
+| slack-token | T1 | stable-documented | 47 | 26 | 13 | 6 | 4 | 4 | 6 | none |
 | slack-user-token | T1 | stable-documented | 24 | 3 | 11 | 5 | 8 | 6 | 9 | positive/context cases 3/6 |
 | stripe-token | T1 | stable-documented | 33 | 18 | 5 | 6 | 1 | 3 | 5 | non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
 | stripe-webhook-signing-secret | T1 | stable-documented | 25 | 5 | 10 | 5 | 9 | 6 | 10 | positive/context cases 5/6 |

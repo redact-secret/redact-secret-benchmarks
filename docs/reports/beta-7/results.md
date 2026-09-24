@@ -45,6 +45,23 @@ longer occur in the queue; their ledger entries are left in place as history.
 provisional, 2 pending, 0 unsupported of 57 families. `eval:matrix`: 51 stable,
 21 provisional, 2 pending, 19 unsupported of 93 taxonomy families.
 
+### Beta.8 profile re-evaluation for #177
+
+Re-evaluated on 2026-09-24 in **published mode** against the same beta.7
+package, with the required pinned peers (Gitleaks 8.30.1 and TruffleHog
+3.97.4), after applying the documented and empirical fixture profiles. The
+classifier measured 0 stable (0 documented, 0 empirical), 55 provisional and
+2 pending detector families. The taxonomy matrix measured 0 stable (0
+documented, 0 empirical), 72 provisional, 2 pending and 19 unsupported
+families.
+
+This is a measurement of the stricter profile, not a product-output assertion.
+No T2 family has committed provider-issued observation metadata yet, so none
+can clear the empirical profile. Existing fixture-cell debt also remains
+visible in each result's reasons; the re-evaluation does not silently preserve
+the earlier T1-only stable labels. This is the beta.8 input that must precede
+#213's 15-family portfolio selection.
+
 ## Open
 
 `benchmarks/performance-criteria.json` `baseline.sourceCommit` is still

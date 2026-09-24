@@ -84,16 +84,25 @@ async function main() {
     // `detectors.json`, 46 as of 2026-09-21), not a taxonomy sub-family: `contracts` keys are exactly `detectors.json`'s ids.
     const families = Object.keys(contracts).sort();
     const results = families.map(family => {
-      const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger);
+      const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger, cases);
       const assessment = classifyFamilySupport(evidence);
       // Un-probeable (#33) is carried alongside the status, never folded silently
       // into a bare "not enough twins" reading: zero twin pairs reads differently
       // when the provider gives nothing a twin could mutate.
       const unprobeable = contracts[family].unprobeable ?? null;
-      return { ...assessment, taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable };
+      return {
+        ...assessment,
+        evidenceTier: evidence.positiveContractTier,
+        evidenceBasis: evidence.evidenceBasis,
+        taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable,
+      };
     });
     const distribution = results.reduce((d, r) => { d[r.status] = (d[r.status] ?? 0) + 1; return d; },
       { stable: 0, provisional: 0, pending: 0, unsupported: 0 } as Record<SupportStatus, number>);
+    const stableDistribution = {
+      documented: results.filter(result => result.status === 'stable' && result.qualificationProfile === 'documented').length,
+      empirical: results.filter(result => result.status === 'stable' && result.qualificationProfile === 'empirical').length,
+    };
     const output = {
       schemaVersion: 1, generatedAt: new Date().toISOString(), runId: report.runId,
       revision, dirty, criteriaSchemaVersion: statusCriteria.schemaVersion,
@@ -101,14 +110,14 @@ async function main() {
       // for every other field) is unchanged from before candidate support existed.
       product,
       scanners: scanners.map((s: { id: string }) => s.id), caseCount: report.caseCount, variantCount: report.variantCount,
-      familyCount: families.length, distribution, families: results,
+      familyCount: families.length, distribution, stableDistribution, families: results,
     };
     const target = path.resolve(root, typeof options.output === 'string' ? options.output : 'results-output/support-status.json');
     await mkdir(path.dirname(target), { recursive: true });
     const temporary = `${target}.${report.runId}.tmp`;
     await writeFile(temporary, JSON.stringify(output, null, 2) + '\n', { mode: 0o600, flag: 'wx' });
     await rename(temporary, target);
-    console.log(`Distribution: ${JSON.stringify(distribution)} of ${families.length} families.`);
+    console.log(`Distribution: ${JSON.stringify(distribution)} of ${families.length} families; stable profiles ${JSON.stringify(stableDistribution)}.`);
     console.log(`Report: ${path.relative(root, target)}`);
   } finally {
     if (installation) await removeCandidate(installation);

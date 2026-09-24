@@ -2185,7 +2185,7 @@
         "beta8-209--confluent-cloud-api-secret-secrets-manager-json-alphabet-twin"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "policy-decision",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2213,19 +2213,15 @@
             "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/234"
           ]
-        },
-        "promoted": {
-          "at": "2026-09-24",
-          "evidence": [
-            "https://github.com/redact-secret/redact-secret/issues/739"
-          ]
         }
       },
-      "promotion": {
-        "productIssue": "https://github.com/redact-secret/redact-secret/issues/739",
-        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
-        "productManifestRecordId": "benchmark-gap-739",
-        "canonicalFixtureIds": []
+      "disposition": {
+        "reason": "Maintainer decision 2026-09-24: generic-token flagging the public Confluent API key ID in the JSON \"apiKey\" field is accepted behaviour, not a defect. A 16-character random value under an apiKey name cannot be distinguished from a real API key (e.g. an Alpha Vantage key) without cross-line context, and the key ID is the paired companion of the secret, so redacting it leaks nothing. The finding had been promoted to redact-secret#739 on 2026-09-24; that issue is closed as not planned and no benchmark-gap-739 product manifest record is expected. Benchmark side (#213): the key-ID span [15,31) in beta8-209--confluent-cloud-api-secret-secrets-manager-json and in its alphabet twin is authored with the corpus schema's companion span role (docs/specs/measurement-v4.md), so redacting it is never required and costs no collateral; the family's standalone public-ID controls stay must-not-flag. The observation evidence below is kept at the corpus hash it was measured against.",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/739#issuecomment-5818766286",
+          "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/specs/measurement-v4.md"
+        ]
       },
       "evidence": [
         {

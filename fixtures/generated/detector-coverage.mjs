@@ -42,7 +42,7 @@ const families = [
   ["cloudflare-token", ["cfut_"], 40],
   ["digitalocean-token", ["dop_v1_", "doo_v1_", "dor_v1_"], 64, "0123456789abcdef"],
   ["linear-token", ["lin_api_", "lin_oauth_"], 40],
-  ["supabase-token", ["sb_secret_"], 40],
+  ["supabase-token", ["sb_secret_"], 31], // 22 + "_" + 8: structuralShapeValue builds it
   ["vercel-token", ["vcp_", "vci_", "vca_", "vcr_", "vck_"], 32],
   ["npm-token", ["npm_"], 36],
   ["google-api-key", ["AIza"], 35, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"],
@@ -168,6 +168,20 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     // `families` loop's single `length` column can't express that, so this
     // mirrors buildCommonFormats's already-correct per-prefix lengths.
     "docker-token": prefix => prefix + synthetic(`detector-coverage:docker-token:${prefix}`, prefix === "dckr_pat_" ? 27 : 32),
+    // #213 (research #231): supabase.com's self-hosting page documents the opaque
+    // secret key as sb_secret_ + 22-character random part + "_" + 8-character
+    // checksum. This shape was first generated as a flat 40-character
+    // alphanumeric run, authored before that grammar was documented, so it fell
+    // outside the contract and was scored as a retained legacy policy value; it
+    // is now regenerated in the documented layout. Random part: 22 base64url
+    // characters; checksum: the first 8 base64url characters of
+    // sha256("<project ref>|" + prefix + random) over a synthetic project ref,
+    // as beta8-213d does (provider code, not part of the contract pattern).
+    "supabase-token": prefix => {
+      const ref = synthetic(`detector-coverage:supabase-token:${prefix}:ref`, 20, "abcdefghijklmnopqrstuvwxyz");
+      const random = synthetic(`detector-coverage:supabase-token:${prefix}:random`, 22, SLACK_TAIL_ALPHABET);
+      return `${prefix}${random}_${createHash("sha256").update(`${ref}|${prefix}${random}`).digest("base64url").slice(0, 8)}`;
+    },
   };
   for (const [detector, prefixes, length, alphabet] of families) {
     prefixes.forEach((prefix, index) => {

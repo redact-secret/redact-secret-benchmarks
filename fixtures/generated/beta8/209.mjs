@@ -19,8 +19,8 @@ const UPPER_DIGIT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 const BEARER = "The header name and Bearer scheme are not secret, but redacting the whole Authorization header is acceptable.";
 const URI = "URI scheme, user and host are not secret, but redacting the whole connection URI is acceptable; only the password must be covered.";
 
-/** A twin carries no secret span: flatten a positive's parts (envelopes included) into literal text. */
-const flat = parts => parts.map(p => (typeof p === "string" ? p : `${p.envelope?.before ?? ""}${p.secret}${p.envelope?.after ?? ""}`));
+/** A twin carries no secret span: flatten a positive's parts (envelopes included) into literal text. A companion span is kept: it is never a secret span. */
+const flat = parts => parts.map(p => (typeof p === "string" || p.companion !== undefined ? p : `${p.envelope?.before ?? ""}${p.secret}${p.envelope?.after ?? ""}`));
 
 // --- Confluent Cloud API secret (#234): cflt + 54 body + 6-character checksum. ---
 const le = n => { const b = Buffer.alloc(4); b.writeUInt32LE(n); return b; };
@@ -191,7 +191,15 @@ export function build209({ fixture, synthetic }) {
     const env = v => [`CONFLUENT_CLOUD_API_KEY=${keyId("env")}\nCONFLUENT_CLOUD_API_SECRET=`, { secret: v }, "\n"];
     const props = v => [`bootstrap.servers=pkc-4n7dq.us-west-2.aws.confluent.cloud:9092\nsecurity.protocol=SASL_SSL\nsasl.mechanisms=PLAIN\nsasl.username=${keyId("props")}\nsasl.password=`, { secret: v }, "\n"];
     const cliJson = v => [`$ confluent api-key create --resource lkc-8w6q3p -o json\n{\n  "key": "${keyId("cli")}",\n  "secret": "`, { secret: v }, '"\n}\n'];
-    const vault = v => [`{\n  "apiKey": "${keyId("vault")}",\n  "apiSecret": "`, { secret: v }, '",\n  "serviceAccountId": "sa-7k2m9q",\n  "resourceId": "lkc-8w6q3p",\n  "environmentId": "env-3xr1v5"\n}\n'];
+    // #213 / redact-secret#739 (maintainer decision 2026-09-24; the issue is closed as not planned):
+    // the product flagging this "apiKey" value as generic-token is accepted behaviour, not a defect.
+    // A 16-character random value under an apiKey name cannot be told apart from a real API key
+    // (e.g. Alpha Vantage's) without cross-line context, and the key ID is the paired companion of
+    // the secret, so redacting it leaks nothing. The key ID is therefore a `companion` span here and
+    // in the twin built from this positive: redacting it costs no collateral, and it is never
+    // required, since the key ID stays documented as not secret.
+    const KEY_ID_COMPANION = "Public Confluent API key ID paired with the secret (documented as not secret). Redacting it is accepted, never required: a 16-character random value under an apiKey name is indistinguishable from a real API key without cross-line context (redact-secret#739, closed as not planned).";
+    const vault = v => ['{\n  "apiKey": "', { companion: keyId("vault"), note: KEY_ID_COMPANION }, '",\n  "apiSecret": "', { secret: v },'",\n  "serviceAccountId": "sa-7k2m9q",\n  "resourceId": "lkc-8w6q3p",\n  "environmentId": "env-3xr1v5"\n}\n'];
     const envSecret = secret("env"), propsSecret = secret("props"), cliSecret = secret("cli");
     c.positive(T, "env", "env-cloud-secret", env(envSecret), "env");
     c.positive(T, "sdk-config", "kafka-client-properties", props(propsSecret), "properties");

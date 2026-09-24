@@ -3,8 +3,8 @@
   "profilesVersion": 1,
   "familyCount": 73,
   "cellsMetByProfile": {
-    "arrival-provisional": 17,
-    "stable-documented": 17,
+    "arrival-provisional": 32,
+    "stable-documented": 32,
     "stable-empirical": 6,
     "context-constrained-empirical": 7
   },
@@ -162,13 +162,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 1,
+        "totalFixtures": 29,
+        "positiveCases": 6,
         "benignControls": 8,
         "twinPairs": 9,
-        "positiveContextAxes": 5,
+        "positiveContextAxes": 10,
         "controlAxes": 5,
         "confusionAxes": 7,
         "positiveContextAxisIds": [
@@ -176,6 +179,11 @@
           "#209 · azure-devops-personal-access-token · env",
           "#209 · azure-devops-personal-access-token · structured-file",
           "#209 · azure-devops-personal-access-token · url",
+          "#213c · azure-devops-personal-access-token · ci-config",
+          "#213c · azure-devops-personal-access-token · container-config",
+          "#213c · azure-devops-personal-access-token · sdk-config",
+          "#213c · azure-devops-personal-access-token · shell-export",
+          "#213c · azure-devops-personal-access-token · source-code",
           "azure-devops-personal-access-token"
         ],
         "controlAxisIds": [
@@ -195,14 +203,7 @@
           "twin:length"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 1,
-          "required": 6,
-          "shortfall": 5
-        }
-      ]
+      "debt": []
     },
     {
       "family": "bearer-token",
@@ -331,13 +332,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 25,
-        "positiveCases": 0,
+        "totalFixtures": 31,
+        "positiveCases": 6,
         "benignControls": 8,
         "twinPairs": 10,
-        "positiveContextAxes": 5,
+        "positiveContextAxes": 11,
         "controlAxes": 5,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
@@ -345,6 +349,12 @@
           "#209 · confluent-cloud-api-secret · sdk-config",
           "#209 · confluent-cloud-api-secret · structured-file",
           "#209 · confluent-cloud-api-secret · tool-output",
+          "#213c · confluent-cloud-api-secret · basic-auth",
+          "#213c · confluent-cloud-api-secret · ci-config",
+          "#213c · confluent-cloud-api-secret · cli",
+          "#213c · confluent-cloud-api-secret · container-config",
+          "#213c · confluent-cloud-api-secret · shell-export",
+          "#213c · confluent-cloud-api-secret · source-code",
           "confluent-cloud-api-secret"
         ],
         "controlAxisIds": [
@@ -366,14 +376,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 0,
-          "required": 6,
-          "shortfall": 6
-        }
-      ]
+      "debt": []
     },
     {
       "family": "confluent-cloud-api-secret-legacy",
@@ -606,13 +609,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 1,
+        "totalFixtures": 29,
+        "positiveCases": 6,
         "benignControls": 8,
         "twinPairs": 9,
-        "positiveContextAxes": 5,
+        "positiveContextAxes": 10,
         "controlAxes": 6,
         "confusionAxes": 8,
         "positiveContextAxisIds": [
@@ -620,6 +626,11 @@
           "#209 · datadog-application-key · header",
           "#209 · datadog-application-key · sdk-config",
           "#209 · datadog-application-key · source-code",
+          "#213c · datadog-application-key · ci-config",
+          "#213c · datadog-application-key · container-config",
+          "#213c · datadog-application-key · env",
+          "#213c · datadog-application-key · shell-export",
+          "#213c · datadog-application-key · structured-file",
           "datadog-application-key"
         ],
         "controlAxisIds": [
@@ -641,14 +652,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 1,
-          "required": 6,
-          "shortfall": 5
-        }
-      ]
+      "debt": []
     },
     {
       "family": "datadog-application-key-legacy",
@@ -1261,13 +1265,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 1,
+        "totalFixtures": 29,
+        "positiveCases": 6,
         "benignControls": 8,
         "twinPairs": 9,
-        "positiveContextAxes": 5,
+        "positiveContextAxes": 10,
         "controlAxes": 5,
         "confusionAxes": 7,
         "positiveContextAxisIds": [
@@ -1275,6 +1282,11 @@
           "#209 · google-api-key · source-code",
           "#209 · google-api-key · structured-file",
           "#209 · google-api-key · url",
+          "#213c · google-api-key · ci-config",
+          "#213c · google-api-key · cli",
+          "#213c · google-api-key · container-config",
+          "#213c · google-api-key · env",
+          "#213c · google-api-key · shell-export",
           "google-api-key"
         ],
         "controlAxisIds": [
@@ -1294,14 +1306,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 1,
-          "required": 6,
-          "shortfall": 5
-        }
-      ]
+      "debt": []
     },
     {
       "family": "grafana-cloud-access-policy-token",
@@ -1368,16 +1373,25 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 27,
-        "positiveCases": 0,
-        "benignControls": 5,
+        "totalFixtures": 36,
+        "positiveCases": 6,
+        "benignControls": 8,
         "twinPairs": 11,
-        "positiveContextAxes": 7,
-        "controlAxes": 3,
-        "confusionAxes": 4,
+        "positiveContextAxes": 13,
+        "controlAxes": 6,
+        "confusionAxes": 7,
         "positiveContextAxisIds": [
+          "#213c · grafana-service-account-token · ci-config",
+          "#213c · grafana-service-account-token · container-config",
+          "#213c · grafana-service-account-token · env",
+          "#213c · grafana-service-account-token · header",
+          "#213c · grafana-service-account-token · sdk-config",
+          "#213c · grafana-service-account-token · source-code",
           "Boundaries",
           "Documentation",
           "Encoding",
@@ -1387,37 +1401,24 @@
           "grafana-service-account-token"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference",
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 0,
-          "required": 6,
-          "shortfall": 6
-        },
-        {
-          "cell": "benignControls",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
-        },
-        {
-          "cell": "controlAxes",
-          "actual": 3,
-          "required": 4,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "groq-api-key",
@@ -1482,13 +1483,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 1,
+        "totalFixtures": 29,
+        "positiveCases": 6,
         "benignControls": 8,
         "twinPairs": 9,
-        "positiveContextAxes": 5,
+        "positiveContextAxes": 10,
         "controlAxes": 5,
         "confusionAxes": 8,
         "positiveContextAxisIds": [
@@ -1496,6 +1500,11 @@
           "#209 · heroku-api-key · header",
           "#209 · heroku-api-key · structured-file",
           "#209 · heroku-api-key · tool-output",
+          "#213c · heroku-api-key · ci-config",
+          "#213c · heroku-api-key · container-config",
+          "#213c · heroku-api-key · sdk-config",
+          "#213c · heroku-api-key · shell-export",
+          "#213c · heroku-api-key · source-code",
           "heroku-api-key"
         ],
         "controlAxisIds": [
@@ -1516,14 +1525,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 1,
-          "required": 6,
-          "shortfall": 5
-        }
-      ]
+      "debt": []
     },
     {
       "family": "heroku-api-key-legacy",
@@ -1658,59 +1660,47 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 17,
-        "positiveCases": 0,
-        "benignControls": 5,
+        "totalFixtures": 26,
+        "positiveCases": 6,
+        "benignControls": 8,
         "twinPairs": 7,
-        "positiveContextAxes": 1,
-        "controlAxes": 4,
-        "confusionAxes": 6,
+        "positiveContextAxes": 7,
+        "controlAxes": 6,
+        "confusionAxes": 8,
         "positiveContextAxisIds": [
+          "#213c · jwt · env",
+          "#213c · jwt · header",
+          "#213c · jwt · log",
+          "#213c · jwt · structured-file",
+          "#213c · jwt · tool-output",
+          "#213c · jwt · url",
           "jwt"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
           "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
           "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference",
           "twin:alphabet",
           "twin:boundary"
         ]
       },
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 17,
-          "required": 24,
-          "shortfall": 7
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 0,
-          "required": 6,
-          "shortfall": 6
-        },
-        {
-          "cell": "benignControls",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
-        },
-        {
-          "cell": "positiveContextAxes",
-          "actual": 1,
-          "required": 4,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "langfuse-secret-key",
@@ -2046,26 +2036,37 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 18,
-        "positiveCases": 3,
-        "benignControls": 6,
+        "totalFixtures": 24,
+        "positiveCases": 7,
+        "benignControls": 8,
         "twinPairs": 6,
-        "positiveContextAxes": 1,
-        "controlAxes": 4,
-        "confusionAxes": 6,
+        "positiveContextAxes": 5,
+        "controlAxes": 6,
+        "confusionAxes": 8,
         "positiveContextAxisIds": [
+          "#213c · netlify-token · ci-config",
+          "#213c · netlify-token · cli",
+          "#213c · netlify-token · header",
+          "#213c · netlify-token · source-code",
           "netlify-token"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
           "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
           "public-identifier",
           "reference",
@@ -2073,32 +2074,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 18,
-          "required": 24,
-          "shortfall": 6
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        },
-        {
-          "cell": "benignControls",
-          "actual": 6,
-          "required": 8,
-          "shortfall": 2
-        },
-        {
-          "cell": "positiveContextAxes",
-          "actual": 1,
-          "required": 4,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "new-relic-license-key",
@@ -2107,63 +2083,47 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 20,
-        "positiveCases": 0,
-        "benignControls": 5,
+        "totalFixtures": 29,
+        "positiveCases": 6,
+        "benignControls": 8,
         "twinPairs": 9,
-        "positiveContextAxes": 1,
-        "controlAxes": 3,
-        "confusionAxes": 5,
+        "positiveContextAxes": 7,
+        "controlAxes": 6,
+        "confusionAxes": 8,
         "positiveContextAxisIds": [
+          "#213c · new-relic-license-key · container-config",
+          "#213c · new-relic-license-key · env",
+          "#213c · new-relic-license-key · header",
+          "#213c · new-relic-license-key · sdk-config",
+          "#213c · new-relic-license-key · shell-export",
+          "#213c · new-relic-license-key · structured-file",
           "new-relic-license-key"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference",
           "twin:boundary",
           "twin:length"
         ]
       },
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 20,
-          "required": 24,
-          "shortfall": 4
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 0,
-          "required": 6,
-          "shortfall": 6
-        },
-        {
-          "cell": "benignControls",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
-        },
-        {
-          "cell": "positiveContextAxes",
-          "actual": 1,
-          "required": 4,
-          "shortfall": 3
-        },
-        {
-          "cell": "controlAxes",
-          "actual": 3,
-          "required": 4,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "new-relic-user-api-key",
@@ -2172,16 +2132,25 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 27,
-        "positiveCases": 0,
-        "benignControls": 5,
+        "totalFixtures": 36,
+        "positiveCases": 6,
+        "benignControls": 8,
         "twinPairs": 11,
-        "positiveContextAxes": 7,
-        "controlAxes": 3,
-        "confusionAxes": 4,
+        "positiveContextAxes": 13,
+        "controlAxes": 6,
+        "confusionAxes": 7,
         "positiveContextAxisIds": [
+          "#213c · new-relic-user-api-key · ci-config",
+          "#213c · new-relic-user-api-key · cli",
+          "#213c · new-relic-user-api-key · env",
+          "#213c · new-relic-user-api-key · header",
+          "#213c · new-relic-user-api-key · sdk-config",
+          "#213c · new-relic-user-api-key · source-code",
           "Boundaries",
           "Documentation",
           "Encoding",
@@ -2191,37 +2160,24 @@
           "new-relic-user-api-key"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference",
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 0,
-          "required": 6,
-          "shortfall": 6
-        },
-        {
-          "cell": "benignControls",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
-        },
-        {
-          "cell": "controlAxes",
-          "actual": 3,
-          "required": 4,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "notion-integration-token",
@@ -2285,13 +2241,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 1,
+        "totalFixtures": 29,
+        "positiveCases": 6,
         "benignControls": 8,
         "twinPairs": 9,
-        "positiveContextAxes": 5,
+        "positiveContextAxes": 10,
         "controlAxes": 5,
         "confusionAxes": 8,
         "positiveContextAxisIds": [
@@ -2299,6 +2258,11 @@
           "#209 · notion-token · env",
           "#209 · notion-token · header",
           "#209 · notion-token · source-code",
+          "#213c · notion-token · cli",
+          "#213c · notion-token · container-config",
+          "#213c · notion-token · log",
+          "#213c · notion-token · sdk-config",
+          "#213c · notion-token · shell-export",
           "notion-token"
         ],
         "controlAxisIds": [
@@ -2319,14 +2283,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 1,
-          "required": 6,
-          "shortfall": 5
-        }
-      ]
+      "debt": []
     },
     {
       "family": "npm-token",
@@ -2893,63 +2850,42 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 21,
-        "positiveCases": 3,
-        "benignControls": 6,
+        "totalFixtures": 26,
+        "positiveCases": 6,
+        "benignControls": 8,
         "twinPairs": 6,
-        "positiveContextAxes": 1,
-        "controlAxes": 3,
-        "confusionAxes": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 5,
+        "confusionAxes": 7,
         "positiveContextAxisIds": [
+          "#213c · pulumi-access-token · ci-config",
+          "#213c · pulumi-access-token · env",
+          "#213c · pulumi-access-token · header",
           "pulumi-access-token"
         ],
         "controlAxisIds": [
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference",
           "twin:alphabet",
           "twin:length"
         ]
       },
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 21,
-          "required": 24,
-          "shortfall": 3
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        },
-        {
-          "cell": "benignControls",
-          "actual": 6,
-          "required": 8,
-          "shortfall": 2
-        },
-        {
-          "cell": "positiveContextAxes",
-          "actual": 1,
-          "required": 4,
-          "shortfall": 3
-        },
-        {
-          "cell": "controlAxes",
-          "actual": 3,
-          "required": 4,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "pypi-token",
@@ -3559,63 +3495,47 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 17,
-        "positiveCases": 0,
-        "benignControls": 5,
+        "totalFixtures": 26,
+        "positiveCases": 6,
+        "benignControls": 8,
         "twinPairs": 6,
-        "positiveContextAxes": 1,
-        "controlAxes": 3,
-        "confusionAxes": 5,
+        "positiveContextAxes": 7,
+        "controlAxes": 6,
+        "confusionAxes": 8,
         "positiveContextAxisIds": [
+          "#213c · supabase-management-token · ci-config",
+          "#213c · supabase-management-token · cli",
+          "#213c · supabase-management-token · env",
+          "#213c · supabase-management-token · header",
+          "#213c · supabase-management-token · sdk-config",
+          "#213c · supabase-management-token · source-code",
           "supabase-management-token"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference",
           "twin:alphabet",
           "twin:length"
         ]
       },
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 17,
-          "required": 24,
-          "shortfall": 7
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 0,
-          "required": 6,
-          "shortfall": 6
-        },
-        {
-          "cell": "benignControls",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
-        },
-        {
-          "cell": "positiveContextAxes",
-          "actual": 1,
-          "required": 4,
-          "shortfall": 3
-        },
-        {
-          "cell": "controlAxes",
-          "actual": 3,
-          "required": 4,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "supabase-token",
@@ -3735,63 +3655,42 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 21,
-        "positiveCases": 3,
-        "benignControls": 6,
+        "totalFixtures": 26,
+        "positiveCases": 6,
+        "benignControls": 8,
         "twinPairs": 6,
-        "positiveContextAxes": 1,
-        "controlAxes": 3,
-        "confusionAxes": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 5,
+        "confusionAxes": 7,
         "positiveContextAxisIds": [
+          "#213c · terraform-cloud-token · env",
+          "#213c · terraform-cloud-token · header",
+          "#213c · terraform-cloud-token · structured-file",
           "terraform-cloud-token"
         ],
         "controlAxisIds": [
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference",
           "twin:boundary",
           "twin:length"
         ]
       },
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 21,
-          "required": 24,
-          "shortfall": 3
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        },
-        {
-          "cell": "benignControls",
-          "actual": 6,
-          "required": 8,
-          "shortfall": 2
-        },
-        {
-          "cell": "positiveContextAxes",
-          "actual": 1,
-          "required": 4,
-          "shortfall": 3
-        },
-        {
-          "cell": "controlAxes",
-          "actual": 3,
-          "required": 4,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "twilio-api-key-secret",
@@ -3922,58 +3821,45 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 22,
-        "positiveCases": 9,
-        "benignControls": 5,
+        "totalFixtures": 28,
+        "positiveCases": 12,
+        "benignControls": 8,
         "twinPairs": 6,
-        "positiveContextAxes": 1,
-        "controlAxes": 3,
-        "confusionAxes": 6,
+        "positiveContextAxes": 4,
+        "controlAxes": 6,
+        "confusionAxes": 9,
         "positiveContextAxisIds": [
+          "#213c · vault-token · cli",
+          "#213c · vault-token · env",
+          "#213c · vault-token · header",
           "vault-token"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
+          "public-identifier",
           "reference",
           "twin:boundary",
           "twin:length",
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 22,
-          "required": 24,
-          "shortfall": 2
-        },
-        {
-          "cell": "benignControls",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
-        },
-        {
-          "cell": "positiveContextAxes",
-          "actual": 1,
-          "required": 4,
-          "shortfall": 3
-        },
-        {
-          "cell": "controlAxes",
-          "actual": 3,
-          "required": 4,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "vercel-token",

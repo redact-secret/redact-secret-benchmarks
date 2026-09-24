@@ -131,6 +131,9 @@ const GROUPS: { id: string; label: string; description: string; match: (raw: str
   // #213: same-span rows where only the peer's family label is coarser, settled not-assertable under
   // docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md; kept apart from the open rows in `other`.
   { id: 'peer-coarser-classification-decided', label: 'Peer-coarser labels (decided)', description: 'Same authored span, only the peer\'s family label is coarser', match: raw => raw === 'decision=differential.peer-coarser-classification' },
+  // Beta.8 arrival re-measure: arrival-family rows labelled by the owning shared detector, settled not-assertable under
+  // docs/decisions/2026-09-24-settle-arrival-classification-by-owning-detector.md.
+  { id: 'arrival-owning-detector-decided', label: 'Arrival labels by owning detector (decided)', description: 'Same authored span, product labels the shared detector that owns the arrival family', match: raw => raw === 'decision=differential.arrival-owning-detector-classification' },
   { id: 'confirmed-defects',label: 'Confirmed defects', description: 'Product issue candidates', match: raw => raw.startsWith('confirmed-') },
 ];
 /** URL-safe id of a ledger class. Operator ids carry dots; paths here never do. */

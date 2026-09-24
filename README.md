@@ -233,6 +233,14 @@ To republish without pushing, dispatch the workflow with the environment:
 From a workstation, `scripts/publish-site.sh` in `redact-secret-sites` is the
 fallback.
 
+Staging refreshes on its own: when a `redact-secret` `main` commit passes
+artifact qualification, a workflow in that repository dispatches this one for
+staging with that commit. The workflow is kept here as a copy at
+[`docs/upstream/redact-secret--notify-benchmarks.yml`](docs/upstream/redact-secret--notify-benchmarks.yml).
+To measure a specific product commit by hand, run
+`gh workflow run publish-site.yml -f environment=staging -f product_sha=<40-hex>`.
+Production rejects `product_sha`.
+
 ## License
 
 MIT — see [LICENSE](./LICENSE). This license covers this repository's own

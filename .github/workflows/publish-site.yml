@@ -31,12 +31,24 @@ on:
         type: environment
         required: true
         default: staging
+      # redact-secret dispatches staging with this after its main passes
+      # artifact qualification (#153; the sending side is
+      # docs/upstream/redact-secret--notify-benchmarks.yml). Untrusted: the
+      # staging steps only use it to select artifacts.
+      product_sha:
+        description: redact-secret commit to measure on staging; ignored for production.
+        type: string
+        required: false
 
 permissions: {}
 
 env:
   TARGET: ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
 
+# One group per environment, never cancelling a run mid-sync. GitHub keeps at
+# most one pending run per group and replaces it with the newest, so a burst of
+# redact-secret pushes already collapses to the running publish plus the latest
+# queued one (#153).
 concurrency:
   group: publish-site-${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
   cancel-in-progress: false
@@ -52,6 +64,14 @@ jobs:
     env:
       AWS_REGION: us-east-1
     steps:
+      # Production measures the released package only; a product commit sent
+      # to it is a mistake, so fail rather than silently drop it.
+      - name: Refuse a product commit for production
+        if: env.TARGET == 'production' && inputs.product_sha != ''
+        run: |
+          echo "::error::product_sha applies to staging only; production measures the released package."
+          exit 1
+
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v5.0.0

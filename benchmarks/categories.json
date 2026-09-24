@@ -103,5 +103,12 @@
     "description": "Issue #210 arrival fixtures for langsmith:api-key and langfuse:secret-key: synthetic positives across env, header, basic-auth, SDK, container, CI, structured-file and nested observability-metadata contexts, independent public-id/placeholder/reference/prose/near-miss/encoded controls, and one-property negative twins. No product detector targets either family at the pinned revision.",
     "kind": "accuracy",
     "corpus": "fixtures/generated/beta8-210.json"
+  },
+  {
+    "id": "beta8-211",
+    "title": "Beta.8 developer credential arrival evidence (#211)",
+    "description": "Arrival fixtures for four developer credential families no registry detector targets: GitHub fine-grained PATs (github_pat_), Slack app-level tokens (xapp-), Stripe webhook signing secrets (whsec_, context-gated) and Notion integration tokens (ntn_). Prefixes are provider-documented; body grammars are community/tool evidence kept provisional. Measures and records; asserts no product support.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-211.json"
   }
 ]

@@ -63,9 +63,10 @@ test('Report: every bound and n on the page is the accounting.ts result, per evi
   assert.equal((t1.match(/class="fig"/g) ?? []).length, 3, 'three answers');
   assert.ok(t1.indexOf('Provider-documented') < t1.indexOf('Tool-corroborated'), 'T1 is the first segment');
   assert.match(t1, /href="\/report"[^>]*aria-current="true"/);
-  // #207: supabase-token's two sb_publishable_ public-prefix twins are provider-documented (T1) controls.
-  assert.equal(truth['must-not-flag/T1'].files, 8);
-  assert.match(t1, /<b>0 of 8<\/b> controls flagged <span class="st st-held"[^>]*>Few samples/, 'n = 8: the warning sits beside that number');
+  // #207: supabase-token's two sb_publishable_ public-prefix twins are provider-documented (T1) controls;
+  // #211 adds one more (stripe-webhook-signing-secret, pk_live_).
+  assert.equal(truth['must-not-flag/T1'].files, 9);
+  assert.match(t1, /<b>0 of 9<\/b> controls flagged <span class="st st-held"[^>]*>Few samples/, 'n = 9: the warning sits beside that number');
   assert.ok(!/class="(banner|notice)"/.test(t1), 'no page-level disclaimer banner');
 });
 

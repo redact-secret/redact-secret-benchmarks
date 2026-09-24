@@ -318,7 +318,7 @@
       "sources": [
         "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
       ],
-      "note": "Named explicitly in issue #502 as a family the github-token detector does not cover: its pattern only matches the ghp_/gho_/ghu_/ghs_/ghr_ underscore-plus-36-character-body shape, which github_pat_ does not fit."
+      "note": "Named explicitly in issue #502 as a family the github-token detector does not cover: its pattern only matches the ghp_/gho_/ghu_/ghs_/ghr_ underscore-plus-36-character-body shape, which github_pat_ does not fit. Measured as the Beta.8 arrival family github-fine-grained-pat (#211, research #223): only the github_pat_ prefix is provider-documented; the 22 + _ + 59 body is community/tool evidence kept provisional, with no checksum or fixed 11 lead claimed."
     },
     {
       "id": "gitlab:legacy-personal-access-token",
@@ -460,9 +460,10 @@
       "description": "Webhook endpoint signing secret, prefixed whsec_.",
       "detectors": [],
       "sources": [
+        "https://docs.stripe.com/webhooks",
         "benchmarks/lib/assessment.ts (classifyFixture variant guard: \"Variant support must not be inferred from a related family name.\")"
       ],
-      "note": "Same classifyFixture guard as the organization API key covers whsec_ values; stripe-token's pattern does not match them."
+      "note": "Same classifyFixture guard as the organization API key covers whsec_ values; stripe-token's pattern does not match them. Measured as the context-gated Beta.8 arrival family stripe-webhook-signing-secret (#211, research #224): Stripe documents the whsec_ prefix only; the body width and alphabet stay provisional (32 alphanumerics is a provider example, not a grammar; Stripe's own scrubber admits + / =)."
     },
     {
       "id": "slack:bot-token",
@@ -493,7 +494,7 @@
       "sources": [
         "https://docs.slack.dev/authentication/tokens"
       ],
-      "note": "Documented alongside xoxb- in the same provider prefix table; not matched by the bot-token-only pattern."
+      "note": "Documented alongside xoxb- in the same provider prefix table; not matched by the bot-token-only pattern. Measured as the Beta.8 arrival family slack-app-level-token (#211, research #222): only the xapp- prefix is provider-documented; section widths and alphabet are tool-only and contradictory (4-section 97-character vs Nosey Parker's 2-section 42-character) and stay unresolved."
     },
     {
       "id": "slack:workflow-webhook-token",
@@ -717,7 +718,10 @@
       "name": "Integration token",
       "description": "ntn_ prefixed integration token from Notion's 2024-09 rollout.",
       "detectors": [],
-      "note": "notion-token's contract review states this current ntn_-prefixed format has no contract here; the pinned gitleaks rule targets it instead of the legacy secret_ shape."
+      "sources": [
+        "https://developers.notion.com/page/changelog"
+      ],
+      "note": "notion-token's contract review states this current ntn_-prefixed format has no contract here; the pinned gitleaks rule targets it instead of the legacy secret_ shape. Measured as the Beta.8 arrival family notion-integration-token (#211, research #225), separate from notion:legacy-integration-token: the ntn_ prefix is provider-documented, the 11-digit + 35-character body is tool-only and provisional, and PAT/OAuth/org-bot roles that may share the prefix are not merged into it."
     },
     {
       "id": "atlassian:api-token",

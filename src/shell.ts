@@ -1,5 +1,6 @@
 import { logo, logoSprite } from './logo';
 import { escape as e } from './types';
+import { canonicalUrl } from './model.mjs';
 
 /** App chrome: one top bar, four entrances, one search. Mounted once so polling re-renders never steal focus. */
 export interface NavItem { href: string; label: string; short: string; current: (path: string) => boolean }
@@ -102,6 +103,9 @@ export function mountShell(app: HTMLElement, shellOptions: ShellOptions) {
 
 export function renderPage(content: string, label: string) {
   document.title = `${label} · Redact Secret Benchmarks`;
+  // Client-side routing: the canonical link follows every render, so it always matches the address bar.
+  const canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]') ?? document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'canonical' }));
+  canonical.href = canonicalUrl(location.pathname);
   const path = location.pathname.replace(/\/+$/, '') || '/';
   document.querySelectorAll<HTMLAnchorElement>('[data-nav]').forEach(a => {
     const item = options.nav.find(n => n.href === a.dataset.nav)!;

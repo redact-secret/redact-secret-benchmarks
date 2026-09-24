@@ -82,6 +82,11 @@ export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
 /** Paths the app owns, for intercepting link clicks. */
 export const isAppPath = pathname => parseRoute(pathname).kind !== 'missing';
 
+/** Every copy of the site, staging included, names production as canonical; CloudFront's X-Robots-Tag keeps staging out of the index. */
+export const CANONICAL_ORIGIN = 'https://benchmarks.redactsecret.dev';
+/** Routes are paths alone; a query string only selects a view of the same page, so it stays out of the canonical URL. */
+export const canonicalUrl = pathname => CANONICAL_ORIGIN + (pathname.replace(/\/+$/, '') || '/');
+
 const project = expected => expected.map(({ start, end, role, envelope }) => ({ start, end, role, ...(envelope ? { envelope: { start: envelope.start, end: envelope.end } } : {}) }));
 const FORBIDDEN = ['precision', 'recall', 'f1', 'tp', 'fp', 'fn', 'tn', 'contained', 'broader'];
 const SCORE_FIELDS = ['spanOutcomes', 'leakedBytes', 'collateralBytes', 'flagged', 'findings', 'coDetected'];

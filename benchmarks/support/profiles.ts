@@ -1,5 +1,6 @@
 import type { EvaluationCase } from '../engine/types.ts';
 import data from './fixture-profiles.json';
+import { disputedProperty } from '../lib/assessment.ts';
 
 /**
  * Fixture profiles (issue #206, part of #114 and #177). Machine-readable,
@@ -70,7 +71,8 @@ export interface FixtureCells {
 
 /** `cases` may cover any number of families; only the differential case per fixture that targets `family` counts, so no fixture is counted twice. */
 export function measureFixtureCells(family: string, cases: EvaluationCase[]): FixtureCells {
-  const own = cases.filter(c => c.method === 'differential' && c.targets.includes(family));
+  // A fixture re-scoped off a provider-undecided property (lib/assessment.ts `disputedProperty`) is T0 history: it fills no cell.
+  const own = cases.filter(c => c.method === 'differential' && c.targets.includes(family) && !disputedProperty(c.source.category, c.source.fixtureId));
   const key = (c: EvaluationCase, id: string) => `${c.source.category}--${id}`;
   const isSecret = (c: EvaluationCase) => c.seed.expected.some(r => (r.role ?? 'secret') === 'secret');
   const twins = own.filter(c => c.seed.twinOf);

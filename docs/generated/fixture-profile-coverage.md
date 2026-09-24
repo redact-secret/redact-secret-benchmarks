@@ -42,7 +42,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | confluent-cloud-api-secret | T1 | stable-documented | 31 | 6 | 8 | 10 | 11 | 5 | 9 | none |
 | confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 48 | 1 | 19 | 15 | 12 | 6 | 9 | none |
 | connection-string | T3 | arrival-provisional | 54 | 9 | 15 | 15 | 4 | 3 | 4 | control axes 3/4 |
-| databricks-personal-access-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
+| databricks-personal-access-token | T2 | stable-empirical | 40 | 12 | 15 | 9 | 14 | 6 | 9 | none |
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
 | datadog-application-key-legacy | T2 | context-constrained-empirical | 52 | 10 | 14 | 16 | 18 | 6 | 9 | none |
@@ -67,8 +67,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | langfuse-secret-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
 | langsmith-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
 | linear-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 4 | 4 | 5 | none |
-| mailchimp-api-key | T2 | stable-empirical | 40 | 10 | 14 | 8 | 13 | 6 | 9 | none |
-| mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 9 | 10 | 6 | 9 | none |
+| mailchimp-api-key | T2 | stable-empirical | 41 | 14 | 14 | 8 | 14 | 6 | 8 | none |
+| mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 8 | 11 | 6 | 9 | none |
 | microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
 | netlify-token | T1 | stable-documented | 24 | 7 | 8 | 6 | 5 | 6 | 8 | none |
 | new-relic-license-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 7 | 6 | 8 | none |
@@ -77,7 +77,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | notion-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
 | npm-token | T1 | stable-documented | 24 | 8 | 8 | 6 | 4 | 5 | 8 | none |
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
-| openai-token | T2 | stable-empirical | 44 | 13 | 15 | 8 | 7 | 6 | 10 | none |
+| openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
 | otpauth-uri | T3 | arrival-provisional | 17 | 0 | 5 | 6 | 1 | 3 | 4 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
 | perplexity-api-key | T2 | arrival-provisional | 24 | 2 | 10 | 6 | 7 | 6 | 10 | positive/context cases 2/6 |

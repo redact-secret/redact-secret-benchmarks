@@ -1,6 +1,6 @@
 import type { Summary, ReviewLedger, EvaluationCase } from '../engine/types.ts';
 import { basisForRoute, empiricalRoute, type EvidenceBasis, type FamilySupportEvidence } from './status.ts';
-import { contracts } from '../lib/assessment.ts';
+import { contracts, disputedProperty } from '../lib/assessment.ts';
 import { measureFixtureCells, profileClaim } from './profiles.ts';
 import { empiricalEvidence } from './empirical.ts';
 
@@ -48,7 +48,8 @@ function unresolvedInQueue(family: string, method: string, queue: QueuedReview[]
  * queue-only.
  */
 function fixtureProfile(family: string, cases: EvaluationCase[]) {
-  const selected = cases.filter(c => c.targets.includes(family));
+  // Fixtures re-scoped off a provider-undecided property assert nothing and count toward no floor.
+  const selected = cases.filter(c => c.targets.includes(family) && !disputedProperty(c.source.category, c.source.fixtureId));
   const base = [...new Map(selected.filter(c => c.method === 'differential').map(c => [`${c.source.category}/${c.source.fixtureId}`, c])).values()];
   const positive = base.filter(c => c.seed.expected.length > 0 && !c.seed.twinOf);
   const benign = base.filter(c => c.seed.expected.length === 0 && !c.seed.twinOf);

@@ -152,5 +152,12 @@
     "description": "Four synthetic positives on new context axes (dotenv, HTTP header, Python constant, terraform output) and eight context twins that keep each value byte-for-byte and replace only the same-line Datadog application-key marker, bringing datadog-application-key-legacy to the context-constrained-empirical cells (48 fixtures, 10 twin and 10 context-twin pairs). Values are synthetic, never provider-issued; no observation record is implied.",
     "kind": "accuracy",
     "corpus": "fixtures/generated/beta8-213e.json"
+  },
+  {
+    "id": "beta8-213f",
+    "title": "Beta.8 replacement fixtures for provider-undecided properties (#213, 213f)",
+    "description": "Synthetic positives and single-property twins on undisputed properties that replace the fixtures docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md re-scoped to unscored T0 history (Mailgun uppercase body, OpenAI service-account widths, Databricks rotation suffix, Mailchimp non-us data center), so mailgun-api-key, openai-token, databricks-personal-access-token and mailchimp-api-key keep the stable-empirical cells. Values are synthetic, never provider-issued; no observation record is implied.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-213f.json"
   }
 ]

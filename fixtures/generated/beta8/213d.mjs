@@ -178,7 +178,7 @@ function mailchimp(c, synthetic) {
   f.pos("header", "curl-bearer", "curl -sS https://us21.api.mailchimp.com/3.0/lists -H \"Authorization: Bearer ", key("header", 21), "\"\n", "sh");
   f.vtwin("client-log", "separator", key("log", 6).replace("-us", "_us"), "boundary: \"_\" instead of the documented \"-\" before the us<N> data-center suffix; body and suffix unchanged", "boundary");
   f.vtwin("curl-bearer", "alphabet", (() => { const v = key("header", 21); return `${v.slice(0, 16)}z${v.slice(17)}`; })(),
-    "alphabet: one lowercase \"z\" at offset 16, outside every source's hex body (no source admits non-hex letters); width and suffix unchanged", "alphabet");
+    "alphabet: one lowercase \"z\" at offset 16, outside the hex body of every pinned tool and both Mailchimp examples (the 2009 staff regex and keyhacks admit g-z, so this is not asserted: docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md); width and suffix unchanged", "alphabet");
 
   f.ctl("public-id", "audience-and-campaign", "MAILCHIMP_SERVER_PREFIX=us21\nMAILCHIMP_AUDIENCE_ID=4f2a91c07e\nMAILCHIMP_CAMPAIGN_ID=b03d7e1f52\n", "env");
   f.ctl("public-id", "list-webhook-url", "Webhook: https://us21.api.mailchimp.com/3.0/lists/4f2a91c07e/webhooks/7c1e04ab9d\n", "md");

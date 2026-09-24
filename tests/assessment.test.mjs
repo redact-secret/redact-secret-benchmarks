@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES, arrivalIds } from '../benchmarks/lib/assessment.ts';
+import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES, arrivalIds, disputedProperty, DISPUTED_PROPERTIES } from '../benchmarks/lib/assessment.ts';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 import { validateCorpus, score } from '../benchmarks/lib/scoring.ts';
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
@@ -143,8 +143,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #213: detector-coverage's three supabase-token shape-1 positives are regenerated in the
   // documented sb_secret_ 22 + _ + 8 layout, so they move back from policy/T3 to must-redact/T1
   // (+3 files/+3 spans here, -3 below).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 392);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 398);
+  // docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md: databricks'
+  // three rotation-suffixed positives put a provider-undecided suffix inside the secret span, so
+  // they move must-redact/T2 -> must-redact/T0 as unscored history (-3 files/-3 spans here, +3 below).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 389);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 395);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -158,7 +161,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // move from must-redact/T0 to retained legacy policy/T3; #213 regenerates them in the
   // documented layout, so they leave policy/T3 again (-3).
   assert.deepEqual(tally['policy/T3'], { files: 205, spans: 205 });
-  assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
+  assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
   // jwt-prefix-only/reference/mask, private-key-prefix-only/reference) plus
@@ -204,9 +207,31 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #112: 1 new independent negative (datadog-application-key-ordinary-prose) lands a
   // fifth benign case on a fourth axis; the new huggingface-token prefix and
   // datadog-application-key boundary twins are netted out via -twins.length.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 429);
+  // The provider-undecided-properties decision re-scopes 11 twins (mailgun uppercase ×3, openai
+  // svcacct 73/74 ×2, databricks two-digit suffix ×3, mailchimp -eu6 ×3) to must-not-flag/T0: they
+  // still net out via -twins.length but leave the T1/T2/T3 tally (-11).
+  assert.equal(tally['must-not-flag/T0'].files, 11);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 418);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
+});
+
+test('a fixture re-scoped off a provider-undecided property exists, reads T0 for its family, and its contradiction is bounded', async () => {
+  // docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md
+  const { empiricalObservations } = await import('../benchmarks/support/empirical.ts');
+  await readFile(new URL('../docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md', import.meta.url));
+  const byKey = new Map(all.flatMap(([category, corpus]) => corpus.fixtures.map(f => [`${category}--${f.id}`, f])));
+  for (const { family, ids } of Object.values(DISPUTED_PROPERTIES)) {
+    for (const key of ids) {
+      const f = byKey.get(key);
+      assert.ok(f, `${key} is authored`);
+      assert.equal(f.assessment.tier, 'T0', key);
+      assert.equal(f.assessment.contract, family, key);
+      assert.match(f.assessment.reason, /^Not asserted: disputed property/, key);
+    }
+    const record = empiricalObservations.families.find(r => r.family === family);
+    assert.equal(record.contradictions.filter(c => c.status === 'unresolved').length, 0, `${family}: a re-scoped property leaves no unresolved contradiction`);
+  }
 });
 
 test('v4 outcomes reduce to the v3 exact/containment rule when no envelope is authored', () => {
@@ -279,7 +304,8 @@ test('twins mutate exactly one property, pair with their positive and never carr
     assert.ok(!t.content.includes(value), `${t.id} must not contain the positive's secret`);
     const contract = contracts[p.assessment.contract];
     if (contract.pattern) assert.ok(!t.content.split(/\r?\n/).some(line => new RegExp(contract.pattern).test(line)), `${t.id} must not satisfy the contract`);
-    assert.equal(t.assessment.tier, t.mutationKind === 'public-prefix' && contract.tier === 'T1' ? 'T1' : 'T2', t.id);
+    // A twin re-scoped off a provider-undecided property is unscored T0 history.
+    assert.equal(t.assessment.tier, disputedProperty('common-formats', t.id) ? 'T0' : t.mutationKind === 'public-prefix' && contract.tier === 'T1' ? 'T1' : 'T2', t.id);
   }
   assert.deepEqual(twins.filter(t => t.assessment.tier === 'T1').map(t => t.id.replace(/-(plain|unicode-crlf)-twin$/, '')).filter((v, i, a) => a.indexOf(v) === i), ['stripe-token-live', 'stripe-token-test', 'private-key-ed25519']);
 });
@@ -399,7 +425,8 @@ test('cross-suite views aggregate only the newest run id and name stale suites',
 
 test('format-correct unsupported controls stay included regardless of scanner output', () => {
   // #112: docker-token moved to T1, so openai-token supplies the T2 selection.
-  const selected = common.filter(f => /openai-token|cloudflare-token|stripe-token-test/.test(f.id));
+  // Fixtures re-scoped off a provider-undecided property are pending history, not format-correct controls.
+  const selected = common.filter(f => /openai-token|cloudflare-token|stripe-token-test/.test(f.id) && !disputedProperty('common-formats', f.id));
   const result = scoreReport(selected, [], lax);
   assert.equal(result.groups['must-redact/T2'].leakedSpans, selected.filter(f => f.assessment.kind === 'must-redact' && f.assessment.tier === 'T2').length);
   assert.equal(result.groups['must-redact/T1'].leakedSpanRate.point, 1);

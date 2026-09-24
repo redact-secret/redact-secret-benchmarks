@@ -218,9 +218,11 @@ claim that any upstream product issue has been validated here.
 
 - **Production** (`benchmarks.redactsecret.dev`) shows the corpus measured
   against the latest released `@redact-secret/core`. This is the citable site.
-- **Staging** (`staging.benchmarks.redactsecret.dev`) shows the same corpus,
-  plus candidate evidence for a `redact-secret` `main` commit. It is
-  provisional; do not cite it.
+- **Staging** (`staging.benchmarks.redactsecret.dev`) shows the same corpus
+  measured against a qualified `redact-secret` `main` commit instead: the
+  Report, Coverage and suite pages read that unreleased candidate and name its
+  commit (#201). The evaluation report (`evaluation-v1.json`) still measures
+  the released package. It is provisional; do not cite it.
 
 Hosting, DNS, certificates and IAM roles live in
 [`redact-secret/redact-secret-sites`](https://github.com/redact-secret/redact-secret-sites).

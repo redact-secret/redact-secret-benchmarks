@@ -68,6 +68,17 @@ test('Report: every bound and n on the page is the accounting.ts result, per evi
   assert.ok(!/class="(banner|notice)"/.test(t1), 'no page-level disclaimer banner');
 });
 
+test('Report: a run that measured an unreleased candidate names it in the eyebrow (#201); a released run does not', async () => {
+  const { reportPage } = await load('/src/pages/report.ts');
+  const released = reportPage(data, 'T1', fixtures);
+  assert.match(released, /<p class="eyebrow">REDACT-SECRET 0\.1\.0-TEST<\/p>/);
+  assert.ok(!/candidate|unreleased/i.test(released.slice(0, released.indexOf('<h1>'))), 'a released run never carries a candidate label');
+  const candidate = { ...data, run: { ...data.run, candidate: { sourceCommit: 'fedcba9876543210fedcba9876543210fedcba98', packageName: '@redact-secret/core', declaredVersion: '0.1.0-beta.7' } } };
+  const html = reportPage(candidate, 'T1', fixtures);
+  assert.match(html, /<p class="eyebrow" data-candidate>REDACT-SECRET 0\.1\.0-TEST · CANDIDATE FEDCBA9 · UNRELEASED<\/p>/);
+  assert.equal(text(html).replace(/^.*?What the benchmark shows/, ''), text(released).replace(/^.*?What the benchmark shows/, ''), 'only the label changes; figures read the same reports');
+});
+
 test('Report: reference scanners are muted rows in run order with no rank, and an absent scanner is Not measured, not zero', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
   const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('data-rows'));

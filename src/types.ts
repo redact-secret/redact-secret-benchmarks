@@ -83,6 +83,8 @@ export interface Report {
 export interface Run {
   schemaVersion: number; runId: string; startedAt: string; finishedAt: string; categories: string[]; partial: boolean;
   scannerVersions: Record<string, string>; lockHash: string; revision: string; dirty: boolean | null;
+  /** Staging only (#201): the unreleased redact-secret build this run measured instead of the released package. */
+  candidate?: { sourceCommit: string; packageName: string; declaredVersion: string };
 }
 export interface Baseline {
   schemaVersion: number; version: string; runId: string; savedAt: string; revision: string;

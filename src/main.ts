@@ -189,16 +189,23 @@ document.addEventListener('click', event => {
   event.preventDefault(); navigate(url.pathname + url.search + url.hash);
 });
 mountShell(app, { nav: NAV, targets, navigate, banner: envBanner(SITE.env), build: buildLine(SITE) });
-/** Completes the footer from what was published: the released version run.json measured and, off production, the candidate commit. */
+/** Completes the footer from what was published: the version run.json measured (released, or on staging the candidate it names) and, off production, the candidate commit. */
 async function loadProvenance() {
   const json = (url: string) => fetch(url, { cache: 'no-cache' }).then(r => (r.ok && r.headers.get('content-type')?.includes('json') ? (r.json() as Promise<unknown>) : undefined)).catch(() => undefined);
   const run = (await json('/results/run.json')) as Run | undefined;
   let candidateCommit: string | null = null;
   let candidateVersion: string | null = null;
+  const semver = (value: unknown) => (typeof value === 'string' && /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(value) ? value : null);
+  // #201: a staging run that measured the candidate states that, and never calls its version released.
+  const measured = SITE.env !== 'production' ? run?.candidate : undefined;
+  if (measured) {
+    setBuildLine(buildLine({ ...SITE, productVersion: null, candidateCommit: commitOf(measured.sourceCommit), candidateVersion: semver(measured.declaredVersion), measuredCandidate: true }));
+    return;
+  }
   if (SITE.env !== 'production') {
     const candidate = await json('/results/candidate-evidence-v1.json');
     // Checked with the Workbench's own contract validator, loaded only when a candidate file is published.
-    if (candidate) { const { candidateProblem } = await import('./evaluation-model'); if (!candidateProblem(candidate)) { const { sourceCommit, declaredVersion } = (candidate as CandidateReport).candidate; candidateCommit = commitOf(sourceCommit); candidateVersion = typeof declaredVersion === 'string' && /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(declaredVersion) ? declaredVersion : null; } }
+    if (candidate) { const { candidateProblem } = await import('./evaluation-model'); if (!candidateProblem(candidate)) { const { sourceCommit, declaredVersion } = (candidate as CandidateReport).candidate; candidateCommit = commitOf(sourceCommit); candidateVersion = semver(declaredVersion); } }
   }
   setBuildLine(buildLine({ ...SITE, productVersion: run?.scannerVersions?.[PRODUCT] ?? null, candidateCommit, candidateVersion }));
 }

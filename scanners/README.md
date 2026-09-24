@@ -39,6 +39,13 @@ domain secret. Neither transformation reads expected ranges. Unknown layouts
 and ambiguous occurrences fail explicitly. Real-binary integration tests use
 Anthropic, AWS pairs and Shopify with Unicode/CRLF and empty adapter expectations.
 
+TruffleHog's URI detector re-serializes userinfo through Go's `url.URL`, so a
+literal `!` in a password comes back as `%21`. When a reported `Raw` carries a
+percent escape and does not occur in the file verbatim, the adapter matches each
+escape of a printable ASCII byte as either the escape or the literal byte, on the
+reported line, and keeps the source span. Zero or several candidate spans still
+fail the observation closed; no finding is dropped (#213).
+
 Output contracts: [AWS](https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/aws/access_keys/accesskey.go),
 [Shopify](https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/shopify/shopify.go).
 

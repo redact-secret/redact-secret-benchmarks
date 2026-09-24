@@ -8,7 +8,7 @@ import { validateCorpus, score } from '../benchmarks/lib/scoring.ts';
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import { spanOutcome } from '../benchmarks/lib/lattice.ts';
 import { reportProblem, summarize } from '../src/model.mjs';
-import { normalizeTrufflehogFindings } from '../scanners/index.mjs';
+import { normalizeTrufflehogFindings, locate } from '../scanners/index.mjs';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));
 const generated = buildCorpora();
@@ -417,6 +417,33 @@ test('AWS and Shopify composites map reported components without borrowing expec
   assert.deepEqual(normalizeTrufflehogFindings([{ ...shop, expected: [] }], '/tmp', shopRow), shop.expected.map(({ start, end }) => ({ path: shop.path, start, end })));
   assert.throws(() => normalizeTrufflehogFindings([shop], '/tmp', { ...shopRow, Raw: token + 'absent.myshopify.com' }));
   assert.deepEqual(score([aws], expected).rows[0].spanOutcomes, ['EXACT', 'EXACT']);
+});
+
+test('a percent-encoded TruffleHog URI result maps to its literal source span instead of failing the whole run', () => {
+  // TruffleHog 3.97.4's URI detector (17) re-serializes userinfo through Go's url.URL, so a literal "!"
+  // in the password comes back as "%21" (observed on a lexical.invalid-alphabet variant, #213). Before
+  // the fix locate() found no verbatim match and threw, turning the entire trufflehog observation into `error`.
+  const password = 'key-3ax6xnjp29jd6fds4gc373sgvjxteol!';
+  const content = `# mailgun\nMAILGUN_URL=https://api:${password}@api.mailgun.net/v3\n`;
+  const f = { id: 'uri', path: 'uri.txt', content, expected: [] };
+  const metadata = line => ({ Data: { Filesystem: { file: f.path, line } } });
+  const row = { DetectorName: 'URI', DetectorType: 17, Raw: `https://api:${password.replace('!', '%21')}@api.mailgun.net`, SourceMetadata: metadata(2) };
+  const literal = `https://api:${password}@api.mailgun.net`;
+  const start = Buffer.byteLength(content.slice(0, content.indexOf(literal)));
+  assert.throws(() => locate([f], '/tmp', f.path, row.Raw, 2), /unmappable/, 'the plain locator still cannot see an encoded raw');
+  assert.deepEqual(normalizeTrufflehogFindings([f], '/tmp', row), [{ path: f.path, start, end: start + Buffer.byteLength(literal) }]);
+  // Lower-case escapes decode the same byte; an escape the source also wrote literally still matches.
+  const star = { ...f, content: content.replace('!', '*') };
+  assert.deepEqual(normalizeTrufflehogFindings([star], '/tmp', { ...row, Raw: row.Raw.replace('%21', '%2a') }), [{ path: f.path, start, end: start + Buffer.byteLength(literal) }]);
+  const encoded = { ...f, content: content.replace('!', '%21') };
+  assert.deepEqual(normalizeTrufflehogFindings([encoded], '/tmp', row), [{ path: f.path, start, end: start + Buffer.byteLength(row.Raw) }]);
+  // Still fail closed: wrong line, a raw that decodes to nothing in the file, or two candidate spans.
+  assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, SourceMetadata: metadata(1) }), /percent-encoded/);
+  assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, Raw: row.Raw.replace('%21', '%40') }), /percent-encoded/);
+  const twice = { ...f, content: `${content.trimEnd()} ${literal}\n` };
+  assert.throws(() => normalizeTrufflehogFindings([twice], '/tmp', row), /percent-encoded/);
+  // Only escapes are widened: the rest of the raw is matched case-sensitively.
+  assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, Raw: row.Raw.replace('mailgun', 'MAILGUN') }), /percent-encoded/);
 });
 
 test('controlAxis reads the same table as classifyControl: one id per suffix, and a stale suffix fails closed (#91)', () => {

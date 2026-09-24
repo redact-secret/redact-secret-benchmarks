@@ -42,3 +42,22 @@ test("a decoded Gitleaks row that only repeats a plain row's exact location is d
   // The PEM path keeps its own reconstruction.
   assert.deepEqual(withoutDecodedDuplicates([{ ...plain, RuleID: "private-key" }, { ...decoded, RuleID: "private-key" }]).length, 2);
 });
+
+test("a decoded non-PEM Gitleaks finding maps to its base64 run plus the original bytes the match extends over", () => {
+  const plaintext = "decoded-synthetic-0123456789";
+  const encoded = Buffer.from(plaintext).toString("base64url");
+  const tail = ".AbCdEf.Zz0123456789";
+  const content = `bot starting\nlogin token ${encoded}${tail} ok\n`;
+  const fixture = { path: "cases/decoded.txt", content };
+  const start = Buffer.byteLength(`bot starting\nlogin token `);
+  const row = { RuleID: "generic-api-key", File: "/tmp/bench/cases/decoded.txt", StartLine: 2, Secret: "synthetic-0123456789" + tail, Tags: ["decoded:base64", "decode-depth:1"] };
+  // Gitleaks matched decoded text + original tail: the span is the encoded run plus the tail.
+  assert.deepEqual(normalizeGitleaks([fixture], "/tmp/bench", row), { path: "cases/decoded.txt", start, end: start + encoded.length + tail.length });
+  // A match wholly inside the decoded text maps to the encoded run.
+  assert.deepEqual(normalizeGitleaks([fixture], "/tmp/bench", { ...row, Secret: "synthetic-0123" }), { path: "cases/decoded.txt", start, end: start + encoded.length });
+  // Fails closed: wrong line, a Secret that does not overlap decoded text, two identical runs, deeper decoding.
+  assert.throws(() => normalizeGitleaks([fixture], "/tmp/bench", { ...row, StartLine: 1 }));
+  assert.throws(() => normalizeGitleaks([fixture], "/tmp/bench", { ...row, Secret: "login token" }));
+  assert.throws(() => normalizeGitleaks([{ ...fixture, content: `x\n${encoded} ${encoded}\n` }], "/tmp/bench", { ...row, Secret: "synthetic-0123" }));
+  assert.throws(() => normalizeGitleaks([fixture], "/tmp/bench", { ...row, Tags: ["decoded:base64", "decode-depth:2"] }));
+});

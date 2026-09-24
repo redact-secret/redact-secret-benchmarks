@@ -8,6 +8,12 @@ decided_at: 2026-09-24
 
 # Qualify T2 families empirically without changing their provenance
 
+> Amended 2026-09-24 by
+> [Qualify T2 families as empirically stable through independent corroboration](2026-09-24-qualify-empirical-stable-by-corroboration.md):
+> provider-issued observations are now an optional route. Independent
+> corroboration (3 references, 3 owners, 2 non-summary classes) qualifies a T2
+> family without them. Every other gate below is unchanged.
+
 ## Context
 
 [Issue #177](https://github.com/redact-secret/redact-secret-benchmarks/issues/177)

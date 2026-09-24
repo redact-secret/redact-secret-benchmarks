@@ -5,13 +5,18 @@ import * as i209 from './209.ts';
 import * as i210 from './210.ts';
 import * as i211 from './211.ts';
 import * as i212 from './212.ts';
+import * as i213c from './213c.ts';
+import * as i213b from './213b.ts';
+import * as i213d from './213d.ts';
+import * as i213e from './213e.ts';
+import * as i213f from './213f.ts';
 
 /**
- * Beta.8 evidence modules, one per consumer issue (#207–#212). Each owns its
+ * Beta.8 evidence modules, one per consumer issue (#207–#212) or #213 corpus key (213b, 213c, 213d, 213e, 213f). Each owns its
  * arrival families, their contracts and its profile declarations, so parallel
  * issue work never edits a shared table. See docs/specs/beta8-evidence.md.
  */
-export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212];
+export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c, i213b, i213d, i213e, i213f];
 export const arrivalFamilies: ArrivalFamily[] = BETA8_MODULES.flatMap(m => m.arrivalFamilies);
 export const arrivalIds = new Set(arrivalFamilies.map(f => f.id));
 export const arrivalContracts: Record<string, FormatContract> = {};
@@ -20,8 +25,20 @@ for (const m of BETA8_MODULES)
     if (Object.hasOwn(arrivalContracts, id)) throw new Error(`Arrival contract declared twice: ${id}`);
     arrivalContracts[id] = contract;
   }
+/**
+ * Contracts a module authored for families that have since graduated to registry detectors
+ * (`registryContracts`, optional per module). Keys are benchmarks/detectors.json ids;
+ * benchmarks/lib/assessment.ts merges them into the registry contracts, so the contract is
+ * never duplicated when a product detector lands for an arrival family.
+ */
+export const graduatedContracts: Record<string, FormatContract> = {};
+for (const m of BETA8_MODULES)
+  for (const [id, contract] of Object.entries((m as { registryContracts?: Record<string, FormatContract> }).registryContracts ?? {})) {
+    if (Object.hasOwn(graduatedContracts, id) || Object.hasOwn(arrivalContracts, id)) throw new Error(`Graduated contract declared twice: ${id}`);
+    graduatedContracts[id] = contract;
+  }
 /** target → { issue, profile }. A target is declared by exactly one issue. */
-export const beta8Profiles: Record<string, { issue: number; profile: FixtureProfile }> = {};
+export const beta8Profiles: Record<string, { issue: number | string; profile: FixtureProfile }> = {};
 for (const m of BETA8_MODULES)
   for (const [target, profile] of Object.entries(m.profiles)) {
     if (Object.hasOwn(beta8Profiles, target)) throw new Error(`Beta.8 profile declared by two issues: ${target}`);
@@ -43,6 +60,8 @@ export function validateBeta8(registryIds: Iterable<string>, taxonomyIds: Iterab
       if (!f.reason?.trim()) problems.push(`${f.id}: no reason recorded for targeting no registry detector`);
       if (!Object.hasOwn(m.contracts, f.id)) problems.push(`${f.id}: arrival family without a contract in #${m.issue}'s module`);
     }
+  for (const id of Object.keys(graduatedContracts))
+    if (!registry.has(id)) problems.push(`${id}: graduated contract for an id that is not a registry detector`);
   for (const m of BETA8_MODULES) {
     for (const id of Object.keys(m.contracts))
       if (!m.arrivalFamilies.some(f => f.id === id)) problems.push(`${id}: contract in #${m.issue}'s module for an undeclared arrival family`);

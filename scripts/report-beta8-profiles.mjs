@@ -10,7 +10,7 @@
 import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { controlAxis, isContextGated } from '../benchmarks/lib/assessment.ts';
+import { controlAxis, disputedProperty, isContextGated } from '../benchmarks/lib/assessment.ts';
 import { beta8Profiles } from '../benchmarks/lib/beta8/index.ts';
 import { countProfile } from '../benchmarks/lib/beta8/profiles.ts';
 
@@ -22,7 +22,8 @@ export async function beta8ProfileCounts(issue) {
   const generated = buildCorpora(), all = [];
   for (const category of categories) {
     const corpus = generated[category.id] ?? await read(category.corpus);
-    for (const f of corpus.fixtures)
+    // A fixture re-scoped off a provider-undecided property asserts nothing and fills no cell.
+    for (const f of corpus.fixtures.filter(f => !disputedProperty(category.id, f.id)))
       all.push({ category: category.id, fixture: f, controlAxis: controlAxis(category.id, f),
         targets: [...(assignments[`${category.id}--${f.id}`] ?? f.detectors ?? []), ...(f.arrivalTargets ?? [])] });
   }

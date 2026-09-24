@@ -1,5 +1,6 @@
 import type { EvaluationCase } from '../engine/types.ts';
 import data from './fixture-profiles.json';
+import { disputedProperty } from '../lib/assessment.ts';
 
 /**
  * Fixture profiles (issue #206, part of #114 and #177). Machine-readable,
@@ -70,7 +71,8 @@ export interface FixtureCells {
 
 /** `cases` may cover any number of families; only the differential case per fixture that targets `family` counts, so no fixture is counted twice. */
 export function measureFixtureCells(family: string, cases: EvaluationCase[]): FixtureCells {
-  const own = cases.filter(c => c.method === 'differential' && c.targets.includes(family));
+  // A fixture re-scoped off a provider-undecided property (lib/assessment.ts `disputedProperty`) is T0 history: it fills no cell.
+  const own = cases.filter(c => c.method === 'differential' && c.targets.includes(family) && !disputedProperty(c.source.category, c.source.fixtureId));
   const key = (c: EvaluationCase, id: string) => `${c.source.category}--${id}`;
   const isSecret = (c: EvaluationCase) => c.seed.expected.some(r => (r.role ?? 'secret') === 'secret');
   const twins = own.filter(c => c.seed.twinOf);
@@ -109,11 +111,18 @@ export function assessProfile(cells: FixtureCells, id: ProfileId, profiles: Fixt
   return { profile: id, cellsMet: !debt.length, debt };
 }
 
-/** What a family's contract asks to be measured against; `explicit` is a claim in the contract, otherwise the implicit one every T1 provider-documented family makes. */
+/**
+ * What a family's contract asks to be measured against; `explicit` is a claim in
+ * the contract. Otherwise the claim is implicit: every T1 provider-documented
+ * family claims `stable-documented`, and a T2 family with an empirical record
+ * claims the empirical profile its mode names (#177 as amended 2026-09-24), so
+ * the 40/48-fixture cells bind whichever route qualifies it.
+ */
 export interface ProfileClaim { profile: ProfileId | null; explicit: boolean }
-export function profileClaim(contract: { tier: string; providerSource?: unknown; fixtureProfile?: ProfileId } | undefined): ProfileClaim {
+export function profileClaim(contract: { tier: string; providerSource?: unknown; fixtureProfile?: ProfileId } | undefined, empiricalMode: 'shape' | 'context-constrained' | null = null): ProfileClaim {
   if (contract?.fixtureProfile) return { profile: contract.fixtureProfile, explicit: true };
   if (contract?.tier === 'T1' && contract.providerSource) return { profile: 'stable-documented', explicit: false };
+  if (contract?.tier === 'T2' && empiricalMode) return { profile: empiricalMode === 'context-constrained' ? 'context-constrained-empirical' : 'stable-empirical', explicit: false };
   return { profile: null, explicit: false };
 }
 

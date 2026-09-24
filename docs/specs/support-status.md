@@ -27,13 +27,31 @@ pure function: same evidence in, same status and reasons out, every time.
 | `unsupported` | No detector exists for the family, and a reason was recorded for why. Never assigned without one — a detectorless family with no reason reports `pending` instead, per fail-closed convention (`benchmarks/lib/assessment.ts`: "Unknown fixtures fail closed into T0"). |
 
 Tier alone never grants `stable`. T1 must clear the documented fixture and
-behavioral gates. T2 must additionally clear the safe-observation,
-corroboration, uncertainty, supported-context, and empirical fixture gates.
-T3 is ineligible for empirical qualification regardless of fixture volume.
+behavioral gates. T2 must clear one evidence route and every other empirical
+gate ([decision](../decisions/2026-09-24-qualify-empirical-stable-by-corroboration.md),
+amending #177):
+
+- **Corroborated route** (required unless observed): at least 3 verified,
+  pinned or dated references from 3 distinct owners in 2 classes other than
+  the summary class `independent-research`.
+- **Observed route** (#205, optional): 5 provider-issued observations across 2
+  subjects and 2 issuance dates, plus 2 corroboration classes.
+- **Both routes:** no unresolved contradiction (a `bounded` or provider-`settled`
+  one is recorded and does not block), explicit uncertainty and supported
+  contexts, the empirical fixture floors, the implicitly claimed #206 profile
+  (`stable-empirical`, or `context-constrained-empirical` for opaque values),
+  and zero behavioral failures.
+
+`empiricalRoute()` in `status.ts` reports which route the records meet and why
+each is short. T3 and T0 are ineligible for empirical qualification regardless
+of fixture volume or corroboration.
 
 Evidence tier, evidence basis, and qualification profile are separate output
-fields. In particular, empirical stable is represented as tier `T2`, basis
-`empirically-observed`, profile `empirical` and is never rewritten as T1.
+fields. Empirical stable is represented as tier `T2` and profile `empirical`.
+The basis is derived from the records: `independently-corroborated` on the
+corroborated route, and `empirically-observed` only once the observation bar
+is met. It is never rewritten as T1, and a basis the records cannot carry
+blocks classification.
 
 ## Shape
 
@@ -118,9 +136,10 @@ claims `stable-documented`. `classifyFamilySupport` refuses `stable` to a family
 that misses a claimed profile and names each short cell (`fixtureProfile <id>:
 <n> <cell> < <floor>`). An explicit claim, and any profile whose `enforcement`
 is `enforced`, is binding; an unmeasured family fails closed. The two empirical
-profiles require T2 evidence, so a T2 family can never be relabelled T1 to fit,
-and they stay unreachable for `stable` until the observation and corroboration
-gates of #177 and #205 are enforced.
+profiles require T2 evidence, so a T2 family can never be relabelled T1 to fit.
+A T2 family with an empirical record implicitly claims the profile its `mode`
+names, and since the #177 amendment of 2026-09-24 the classifier enforces
+those profiles' corroboration, observation and contradiction gates.
 
 **Measured before any status changed.** The arrival and documented profiles
 ship as `reported`: the debt is published per family in the support matrix, the

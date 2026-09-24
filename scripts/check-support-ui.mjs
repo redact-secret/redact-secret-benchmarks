@@ -35,7 +35,7 @@ function probeMatrix(status, vocabulary) {
     evidenceBasis: 'provider-documented', qualificationProfile: status === 'stable' ? 'documented' : null,
     corroboratingScanners: [], twinCoverage: { pairs: 0, failures: 0, unprobeable: null },
     unresolvedCriticalItems: { metamorphic: 0, mutation: 0, differential: 0 },
-    empiricalEvidence: { observations: 0, subjects: 0, issuanceDates: 0, corroborationClasses: [], contradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true },
+    empiricalEvidence: { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 0, corroborationOwners: 0, corroborationClasses: [], contradictions: 0, boundedContradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true },
     fixtureProfile: { positiveCases: 6, positiveAxes: 4, benignCases: 8, controlAxes: 4, twinPairs: 5, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 4 },
     detectors: ['probe-detector'], reason: status === 'stable' ? null : `probe: ${status}`,
   }));

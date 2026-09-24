@@ -58,8 +58,9 @@ test('every family twinned for #36 cites dated documentation for the property it
 
 test('a context twin keeps the value byte-for-byte, changes only its surroundings and is policy-tier', () => {
   const context = twins.filter(t => t.mutationKind === 'context');
-  // #207: the context-gated families (no bare-value claim) gained context twins in beta8-207.
-  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['bearer-token', 'confluent-cloud-api-secret-legacy', 'connection-string', 'generic-token', 'heroku-api-key-legacy', 'twilio-api-key-secret', 'twilio-auth-token']);
+  // #207: the context-gated families (no bare-value claim) gained context twins in beta8-207;
+  // #213 (213d) added two for the context-gated legacy Datadog application key, and 213e eight more.
+  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['bearer-token', 'confluent-cloud-api-secret-legacy', 'connection-string', 'datadog-application-key-legacy', 'generic-token', 'heroku-api-key-legacy', 'twilio-api-key-secret', 'twilio-auth-token']);
   for (const t of context) {
     const positive = fixtures.find(f => f.category === t.category && f.id === t.twinOf);
     const value = bytesOf(positive, positive.expected[0]);
@@ -185,6 +186,15 @@ const T1_DIMENSIONS = {
   'huggingface-token': ['length', 'prefix'],
   'microsoft-entra-client-secret': ['length', 'boundary'],
   'new-relic-license-key': ['length', 'boundary'],
+  // Beta.8 #208 families, registry detectors since redact-secret#727 (graduated from arrival
+  // families): Replicate states the r8_ prefix and 40-character total, OpenRouter the sk-or-v1-
+  // prefix and 64-lowercase-hex body; their beta8-208 twins mutate those plus a non-word body
+  // byte (alphabet) and the prefix delimiter (boundary).
+  'replicate-api-token': ['length', 'alphabet', 'prefix', 'boundary'],
+  'openrouter-api-key': ['length', 'alphabet', 'prefix', 'boundary'],
+  // Beta.8 #212 (registry detector since redact-secret#730): Fireworks documents only the fw_
+  // prefix; its beta8-212 twins mutate that prefix and its underscore delimiter.
+  'fireworks-ai-api-key': ['boundary', 'prefix'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -207,5 +217,5 @@ test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
   assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts['not-measured'], 56);
+  assert.equal(probe.counts['not-measured'], 66);
 });

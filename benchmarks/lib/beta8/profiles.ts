@@ -22,7 +22,7 @@ export const POSITIVE_AXES = [
 
 export interface ProfileFixture { category: string; fixture: Fixture; targets: string[]; controlAxis: string | null }
 export interface ProfileCount {
-  target: string; issue: number; profile: FixtureProfile; total: number; positives: number; controls: number;
+  target: string; issue: number | string; profile: FixtureProfile; total: number; positives: number; controls: number;
   twinPairs: number; contextTwinPairs: number; positiveAxes: string[]; controlAxes: string[]; unlabeledPositives: number;
   debt: string[];
 }
@@ -30,7 +30,7 @@ export interface ProfileCount {
 const isSecret = (f: Fixture) => f.expected.some(r => (r.role ?? 'secret') === 'secret');
 
 /** Count every fixture (any category) whose targets include `target`, against its declared profile's floors. */
-export function countProfile(target: string, issue: number, profile: FixtureProfile, all: ProfileFixture[], contextGated: boolean): ProfileCount {
+export function countProfile(target: string, issue: number | string, profile: FixtureProfile, all: ProfileFixture[], contextGated: boolean): ProfileCount {
   const mine = all.filter(x => x.targets.includes(target));
   const positives = mine.filter(x => isSecret(x.fixture) && !x.fixture.twinOf);
   const twins = mine.filter(x => x.fixture.twinOf);

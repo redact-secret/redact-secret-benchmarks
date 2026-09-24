@@ -1,6 +1,6 @@
 import { actionEmptyState, escapeHtml as e, statusMark, type StatusKind } from '../components';
 import { tiers } from '../../benchmarks/lib/assessment.ts';
-import { statusCriteria } from '../../benchmarks/support/status.ts';
+import { EVIDENCE_BASIS_LABEL, statusCriteria } from '../../benchmarks/support/status.ts';
 import type { SupportMatrixEntry } from '../../benchmarks/support/matrix.ts';
 import type { SupportStatus } from '../../benchmarks/support/status.ts';
 import { fixtureProfiles, type CellId } from '../../benchmarks/support/profiles.ts';
@@ -67,8 +67,9 @@ function floors(): string {
     ['Documented benign / axes', `${n(s.documented.minimumBenignCases.value)} / ${n(s.documented.minimumControlAxes.value)}`, s.documented.minimumBenignCases.rationale],
     ['Documented twin pairs', `at least ${n(s.documented.minimumTwinPairs.value)}`, s.documented.minimumTwinPairs.rationale],
     ['Empirical provenance', 'T2; remains T2', s.empirical.rationale],
-    ['Provider-issued observations', `at least ${n(s.empirical.minimumObservations.value)} across ${n(s.empirical.minimumSubjects.value)} subjects and ${n(s.empirical.minimumIssuanceDates.value)} dates`, s.empirical.minimumObservations.rationale],
-    ['Corroboration from separate source classes', `at least ${n(s.empirical.minimumCorroborationClasses.value)}`, s.empirical.minimumCorroborationClasses.rationale],
+    ['External format corroboration (required unless observed)', `at least ${n(s.empirical.corroborated.minimumReferences.value)} references from ${n(s.empirical.corroborated.minimumOwners.value)} owners in ${n(s.empirical.corroborated.minimumClasses.value)} classes`, s.empirical.corroborated.rationale],
+    ['Provider-issued observations (optional)', `at least ${n(s.empirical.minimumObservations.value)} across ${n(s.empirical.minimumSubjects.value)} subjects and ${n(s.empirical.minimumIssuanceDates.value)} dates, with ${n(s.empirical.minimumCorroborationClasses.value)} corroboration classes`, s.empirical.minimumObservations.rationale],
+    ['Unresolved contradictions', `at most ${n(s.empirical.unresolvedContradictions.value)}`, s.empirical.unresolvedContradictions.rationale],
     ['Empirical positives / axes', `${n(s.empirical.minimumPositiveCases.value)} / ${n(s.empirical.minimumPositiveAxes.value)}`, s.empirical.minimumPositiveCases.rationale],
     ['Empirical benign / axes', `${n(s.empirical.minimumBenignCases.value)} / ${n(s.empirical.minimumControlAxes.value)}`, s.empirical.minimumBenignCases.rationale],
     ['Empirical twin pairs', `at least ${n(s.empirical.minimumTwinPairs.value)}`, s.empirical.minimumTwinPairs.rationale],
@@ -139,7 +140,7 @@ function evidence(entry: SupportMatrixEntry): string {
   const lines = [
     `<b>Detectors</b> ${entry.detectors.map(id => `<a href="/coverage/${e(id)}">${e(id)}</a>`).join(' · ')}`,
     `<b>Format evidence</b> ${entry.evidenceTier ? `${e(entry.evidenceTier)} · ${e(tierTitle(entry.evidenceTier))}` : 'none recorded'}`,
-    `<b>Evidence basis</b> ${e(entry.evidenceBasis)}`,
+    `<b>Evidence basis</b> ${e(EVIDENCE_BASIS_LABEL[entry.evidenceBasis])} <span class="mono muted">${e(entry.evidenceBasis)}</span>`,
     `<b>Qualification profile</b> ${entry.qualificationProfile ? e(entry.qualificationProfile) : 'not qualified'}`,
     `<b>Provider source</b> ${source ? `<a href="${e(source.url)}" rel="noreferrer">${e(source.formatVersion)}</a> <span class="muted">observed ${e(source.observedAt)} · ${e(source.covers)}</span>` : 'none recorded'}`,
     `<b>Corroborating scanners</b> ${entry.corroboratingScanners.length ? entry.corroboratingScanners.map(e).join(' · ') : 'none recorded'}`,
@@ -147,7 +148,8 @@ function evidence(entry: SupportMatrixEntry): string {
     fixtureProfileLine(entry),
     `<b>Unresolved critical items</b> ${items ? `metamorphic ${n(items.metamorphic)} · mutation ${n(items.mutation)} · differential ${n(items.differential)}` : 'none recorded'}`,
     `<b>Fixture profile</b> ${fixture ? `${n(fixture.positiveCases)} positives / ${n(fixture.positiveAxes)} axes · ${n(fixture.benignCases)} benign / ${n(fixture.controlAxes)} axes · ${n(fixture.twinPairs)} twin pairs · ${n(fixture.totalFixtures)} fixtures` : 'none recorded'}`,
-    `<b>Empirical observations</b> ${empirical ? `${n(empirical.observations)} observations · ${n(empirical.subjects)} subjects · ${n(empirical.issuanceDates)} issuance dates · ${n(empirical.corroborationClasses.length)} corroboration classes · ${n(empirical.contradictions)} contradictions` : 'none recorded'}`,
+    `<b>External format corroboration</b> ${empirical ? `${n(empirical.corroborationReferences)} references · ${n(empirical.corroborationOwners)} owners · ${empirical.corroborationClasses.length ? empirical.corroborationClasses.map(e).join(', ') : 'no classes'} · ${n(empirical.contradictions)} unresolved / ${n(empirical.boundedContradictions)} bounded contradictions` : 'none recorded'}`,
+    `<b>Provider-issued observations</b> ${empirical ? `${n(empirical.observations)} observations · ${n(empirical.subjects)} subjects · ${n(empirical.issuanceDates)} issuance dates` : 'none recorded'}`,
     `<b>Uncertainty and context limits</b> ${empirical?.uncertainty ? `${e(empirical.uncertainty)} · contexts: ${empirical.supportedContexts.map(e).join(', ')}` : 'none recorded'}`,
   ];
   return `<details data-key="support:${e(entry.family)}"><summary><small>Evidence</small></summary><ul class="small">${lines.map(line => `<li>${line}</li>`).join('')}</ul></details>`;

@@ -32,7 +32,7 @@ test('registries reject malformed, duplicate and unknown extensions', () => {
 test('all existing corpora bridge deterministically into five methods and all detector targets', () => {
   assert.deepEqual([...new Set(cases.map(c => c.method))].sort(), ['benign', 'differential', 'metamorphic', 'mutation', 'twin']);
   // Registry targets and the pre-Beta.8 twin count; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
-  assert.equal(new Set(cases.flatMap(c => c.targets).filter(t => !arrivalIds.has(t))).size, 57);
+  assert.equal(new Set(cases.flatMap(c => c.targets).filter(t => !arrivalIds.has(t))).size, 67);
   assert.equal(cases.filter(c => c.method === 'twin' && !c.source.category.startsWith('beta8-')).length, 398);
   const before = hash(cases);
   const first = cases.map(c => generateCase(c, methods, operators).variants);

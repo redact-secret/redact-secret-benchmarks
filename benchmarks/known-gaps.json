@@ -292,7 +292,7 @@
         "common-formats--sendgrid-token-segmented-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.4",
@@ -324,6 +324,14 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/404"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f837644f00c1bc7afba23b4677de157cd088ec4f",
+            "https://github.com/redact-secret/redact-secret/pull/411",
+            "https://github.com/redact-secret/redact-secret/releases/tag/v0.1.0-beta.5"
+          ]
         }
       },
       "promotion": {
@@ -352,7 +360,11 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f837644f00c1bc7afba23b4677de157cd088ec4f",
+        "version": "0.1.0-beta.5"
+      }
     },
     {
       "id": "product-405",
@@ -1163,7 +1175,7 @@
         "sendgrid-regressions--url-safe-generic-key"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.5",
@@ -1196,6 +1208,14 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
             "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+            "https://github.com/redact-secret/redact-secret/pull/437",
+            "https://github.com/redact-secret/redact-secret/releases/tag/v0.1.0-beta.5"
           ]
         }
       },
@@ -1247,7 +1267,11 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+        "version": "0.1.0-beta.5"
+      }
     },
     {
       "id": "product-428-reference-syntax",
@@ -1263,7 +1287,7 @@
         "reference-syntax--unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.5",
@@ -1296,6 +1320,14 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
             "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+            "https://github.com/redact-secret/redact-secret/pull/437",
+            "https://github.com/redact-secret/redact-secret/releases/tag/v0.1.0-beta.5"
           ]
         }
       },
@@ -1423,7 +1455,11 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+        "version": "0.1.0-beta.5"
+      }
     },
     {
       "id": "product-671",
@@ -2052,7 +2088,7 @@
         "beta8-209--confluent-cloud-api-secret-cli-api-key-create-json-checksum-prefix-included-twin"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2085,6 +2121,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/738"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/b8515bc7dbb223a4ad778e840b40ad7e17732837",
+            "https://github.com/redact-secret/redact-secret/pull/750"
           ]
         }
       },
@@ -2137,7 +2180,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "b8515bc7dbb223a4ad778e840b40ad7e17732837"
+      }
     },
     {
       "id": "product-739",
@@ -2149,7 +2195,7 @@
         "beta8-209--confluent-cloud-api-secret-secrets-manager-json-alphabet-twin"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "policy-decision",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2177,19 +2223,15 @@
             "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/234"
           ]
-        },
-        "promoted": {
-          "at": "2026-09-24",
-          "evidence": [
-            "https://github.com/redact-secret/redact-secret/issues/739"
-          ]
         }
       },
-      "promotion": {
-        "productIssue": "https://github.com/redact-secret/redact-secret/issues/739",
-        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
-        "productManifestRecordId": "benchmark-gap-739",
-        "canonicalFixtureIds": []
+      "disposition": {
+        "reason": "Maintainer decision 2026-09-24: generic-token flagging the public Confluent API key ID in the JSON \"apiKey\" field is accepted behaviour, not a defect. A 16-character random value under an apiKey name cannot be distinguished from a real API key (e.g. an Alpha Vantage key) without cross-line context, and the key ID is the paired companion of the secret, so redacting it leaks nothing. The finding had been promoted to redact-secret#739 on 2026-09-24; that issue is closed as not planned and no benchmark-gap-739 product manifest record is expected. Benchmark side (#213): the key-ID span [15,31) in beta8-209--confluent-cloud-api-secret-secrets-manager-json and in its alphabet twin is authored with the corpus schema's companion span role (docs/specs/measurement-v4.md), so redacting it is never required and costs no collateral; the family's standalone public-ID controls stay must-not-flag. The observation evidence below is kept at the corpus hash it was measured against.",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/739#issuecomment-5818766286",
+          "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/specs/measurement-v4.md"
+        ]
       },
       "evidence": [
         {
@@ -2244,7 +2286,7 @@
         "beta8-209--heroku-api-key-authorizations-create-g1"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2282,6 +2324,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/740"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f0c713c9f0baa373688dba67f58cd9d9ceaa4a55",
+            "https://github.com/redact-secret/redact-secret/pull/751"
+          ]
         }
       },
       "promotion": {
@@ -2313,18 +2362,21 @@
           ],
           "actual": []
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f0c713c9f0baa373688dba67f58cd9d9ceaa4a55"
+      }
     },
     {
-      "id": "product-520",
-      "title": "google-api-key: Firebase web-config apiKey is suppressed by design (redact-secret#520 B3a). Awaiting maintainer decision: product gap vs documented scope exclusion (redact-secret#520 B3a). Not promoted; no benchmark exclusion added.",
-      "url": "https://github.com/redact-secret/redact-secret/issues/520",
-      "number": 520,
+      "id": "product-749",
+      "title": "google-api-key: an AIza key inside a Firebase web config is not reported, because the #520 B3a client-config exemption drops it. The maintainer reversed B3a in #749; this record supersedes the undecided product-520 observation.",
+      "url": "https://github.com/redact-secret/redact-secret/issues/749",
+      "number": 749,
       "fixtures": [
         "beta8-209--google-api-key-firebase-web-config"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2335,7 +2387,9 @@
         "method": "authored-independent-of-scanner-output",
         "evidence": [
           "https://docs.cloud.google.com/docs/authentication/api-keys",
-          "https://github.com/redact-secret/redact-secret/issues/642"
+          "https://github.com/redact-secret/redact-secret/issues/642",
+          "https://firebase.google.com/docs/projects/api-keys",
+          "https://github.com/redact-secret/redact-secret/issues/749"
         ]
       },
       "history": {
@@ -2343,14 +2397,43 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-209-first-run.md",
-            "https://github.com/redact-secret/redact-secret-benchmarks/issues/209#issuecomment-5814998824"
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/209#issuecomment-5814998824",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-209-remeasure.md"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://docs.cloud.google.com/docs/authentication/api-keys",
+            "https://github.com/redact-secret/redact-secret/issues/642",
+            "https://firebase.google.com/docs/projects/api-keys",
+            "https://github.com/redact-secret/redact-secret/issues/749"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/749"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f7245262bd4ec9754abdcddedbdd411e4ca6b113",
+            "https://github.com/redact-secret/redact-secret/pull/753"
           ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/749",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-749",
+        "canonicalFixtureIds": []
       },
       "evidence": [
         {
           "fixture": "beta8-209--google-api-key-firebase-web-config",
-          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "corpusHash": "35457096ead3ba8ecf719abd121532c8d77ac33ca113a8df8c73cb006211dc42",
           "expected": [
             {
               "start": 36,
@@ -2359,7 +2442,10 @@
           ],
           "actual": []
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f7245262bd4ec9754abdcddedbdd411e4ca6b113"
+      }
     },
     {
       "id": "product-741",
@@ -2379,7 +2465,7 @@
         "beta8-207--atlassian-api-token-ticket-paste"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2414,6 +2500,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/741"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/a4d7c595ce3a478192dc0bc95dfe7efbce06f646",
+            "https://github.com/redact-secret/redact-secret/pull/752"
           ]
         }
       },
@@ -2614,7 +2707,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "a4d7c595ce3a478192dc0bc95dfe7efbce06f646"
+      }
     },
     {
       "id": "product-742",
@@ -2627,7 +2723,7 @@
         "beta8-207--supabase-token-dash-delimiter-twin"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2660,6 +2756,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/742"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/a4d7c595ce3a478192dc0bc95dfe7efbce06f646",
+            "https://github.com/redact-secret/redact-secret/pull/752"
           ]
         }
       },
@@ -2712,7 +2815,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "a4d7c595ce3a478192dc0bc95dfe7efbce06f646"
+      }
     },
     {
       "id": "product-743-multi-line",
@@ -2724,7 +2830,7 @@
         "beta8-207--heroku-api-key-legacy-auth-token-output"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2758,6 +2864,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/743"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f0c713c9f0baa373688dba67f58cd9d9ceaa4a55",
+            "https://github.com/redact-secret/redact-secret/pull/751"
+          ]
         }
       },
       "promotion": {
@@ -2789,7 +2902,10 @@
           ],
           "actual": []
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f0c713c9f0baa373688dba67f58cd9d9ceaa4a55"
+      }
     },
     {
       "id": "product-743-url-path",
@@ -2800,7 +2916,7 @@
         "beta8-207--heroku-api-key-legacy-app-url-path-public-id"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2836,6 +2952,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/743"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f0c713c9f0baa373688dba67f58cd9d9ceaa4a55",
+            "https://github.com/redact-secret/redact-secret/pull/751"
+          ]
         }
       },
       "promotion": {
@@ -2859,7 +2982,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f0c713c9f0baa373688dba67f58cd9d9ceaa4a55"
+      }
     },
     {
       "id": "product-744",
@@ -2871,7 +2997,7 @@
         "beta8-207--confluent-cloud-api-secret-legacy-image-digest-encoded-value"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2906,6 +3032,13 @@
           "at": "2026-09-24",
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/744"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/95166f152a1f4e656f5e227655ac570c9b0cdd8e",
+            "https://github.com/redact-secret/redact-secret/pull/755"
           ]
         }
       },
@@ -2944,7 +3077,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "95166f152a1f4e656f5e227655ac570c9b0cdd8e"
+      }
     },
     {
       "id": "product-745",
@@ -2955,7 +3091,7 @@
         "beta8-207--bearer-token-your-access-token-placeholder"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2991,6 +3127,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/745"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/95166f152a1f4e656f5e227655ac570c9b0cdd8e",
+            "https://github.com/redact-secret/redact-secret/pull/755"
+          ]
         }
       },
       "promotion": {
@@ -3014,7 +3157,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "95166f152a1f4e656f5e227655ac570c9b0cdd8e"
+      }
     },
     {
       "id": "product-746",
@@ -3025,7 +3171,7 @@
         "beta8-207--twilio-api-key-secret-wrong-companion-near-miss"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3061,6 +3207,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/746"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/95166f152a1f4e656f5e227655ac570c9b0cdd8e",
+            "https://github.com/redact-secret/redact-secret/pull/755"
+          ]
         }
       },
       "promotion": {
@@ -3084,7 +3237,10 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "95166f152a1f4e656f5e227655ac570c9b0cdd8e"
+      }
     },
     {
       "id": "product-747",
@@ -3095,7 +3251,7 @@
         "beta8-207--atlassian-api-token-account-id-public-id"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3131,6 +3287,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/747"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/a4d7c595ce3a478192dc0bc95dfe7efbce06f646",
+            "https://github.com/redact-secret/redact-secret/pull/752"
+          ]
         }
       },
       "promotion": {
@@ -3154,7 +3317,219 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "a4d7c595ce3a478192dc0bc95dfe7efbce06f646"
+      }
+    },
+    {
+      "id": "product-754",
+      "title": "new-relic-license-key misses current-generation FFFFNRAL license keys when no New Relic keyword is on the same line (license_key:, X-License-Key:, licenseKey:)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/754",
+      "number": 754,
+      "fixtures": [
+        "beta8-213c--new-relic-license-key-newrelic-yml",
+        "beta8-213c--new-relic-license-key-newrelic-js-config",
+        "beta8-213c--new-relic-license-key-log-api-license-header",
+        "beta8-213c--new-relic-license-key-helm-bundle-values"
+      ],
+      "kind": "false-negative",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://docs.newrelic.com/docs/opentelemetry/integrations/ibm-mq/host/",
+          "https://docs.newrelic.com/docs/ebpf/k8s-installation/",
+          "https://docs.newrelic.com/docs/ebpf/linux-installation/",
+          "https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-213-portfolio.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/213"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://docs.newrelic.com/docs/opentelemetry/integrations/ibm-mq/host/",
+            "https://docs.newrelic.com/docs/ebpf/k8s-installation/",
+            "https://docs.newrelic.com/docs/ebpf/linux-installation/",
+            "https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/754"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/c8b6caf8259de00331376286faed5f65708f7fa6",
+            "https://github.com/redact-secret/redact-secret/pull/757"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/754",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-754",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-213c--new-relic-license-key-newrelic-yml",
+          "corpusHash": "d39630d42d62950f5c3ae2fb64d8ed767c6e737272f87536034cb0a234f0e638",
+          "expected": [
+            {
+              "start": 42,
+              "end": 82
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-213c--new-relic-license-key-newrelic-js-config",
+          "corpusHash": "d39630d42d62950f5c3ae2fb64d8ed767c6e737272f87536034cb0a234f0e638",
+          "expected": [
+            {
+              "start": 79,
+              "end": 119
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-213c--new-relic-license-key-log-api-license-header",
+          "corpusHash": "d39630d42d62950f5c3ae2fb64d8ed767c6e737272f87536034cb0a234f0e638",
+          "expected": [
+            {
+              "start": 95,
+              "end": 135
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-213c--new-relic-license-key-helm-bundle-values",
+          "corpusHash": "d39630d42d62950f5c3ae2fb64d8ed767c6e737272f87536034cb0a234f0e638",
+          "expected": [
+            {
+              "start": 43,
+              "end": 83
+            }
+          ],
+          "actual": []
+        }
+      ],
+      "fix": {
+        "commit": "c8b6caf8259de00331376286faed5f65708f7fa6"
+      }
+    },
+    {
+      "id": "product-756",
+      "title": "generic-token flags YOUR_API_KEY-style documentation placeholders assigned to a credential-like name (apiKey: \"YOUR_API_KEY\", Api-Key: YOUR_API_KEY)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/756",
+      "number": 756,
+      "fixtures": [
+        "beta8-213d--mailchimp-api-key-docs-template-placeholder",
+        "beta8-212--pinecone-api-key-header-placeholder-placeholder"
+      ],
+      "kind": "false-positive",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/benchmarks/lib/assessment.ts",
+          "https://github.com/redact-secret/redact-secret/issues/745"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-212-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-213-portfolio.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/213"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/benchmarks/lib/assessment.ts",
+            "https://github.com/redact-secret/redact-secret/issues/745"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/756"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/99d83c4c4d8070da754fcf021f1be43cdebd7afc",
+            "https://github.com/redact-secret/redact-secret/pull/758"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/756",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-756",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-213d--mailchimp-api-key-docs-template-placeholder",
+          "corpusHash": "165039a8f594a04ab9a0903d8dc3834c01629545bcb830543d7aec8f7b63a2cc",
+          "expected": [],
+          "actual": [
+            {
+              "start": 31,
+              "end": 43,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-header-placeholder-placeholder",
+          "corpusHash": "371679459dbe1d99725cf8be1a4e864db1f95274acabfbd529994172b1b842a8",
+          "expected": [],
+          "actual": [
+            {
+              "start": 50,
+              "end": 62,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ],
+      "fix": {
+        "commit": "99d83c4c4d8070da754fcf021f1be43cdebd7afc"
+      }
     }
   ]
 }

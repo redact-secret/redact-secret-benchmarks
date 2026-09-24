@@ -31,8 +31,11 @@ export interface SupportStatusFamilyResult {
     observationCount: number;
     observationSubjects: number;
     observationIssuanceDates: number;
+    corroborationReferences: number;
+    corroborationOwners: number;
     corroborationClasses: string[];
-    observationContradictions: number;
+    unresolvedContradictions: number;
+    boundedContradictions: number;
     uncertainty: string | null;
     supportedContexts: string[];
     empiricalMode: 'shape' | 'context-constrained' | null;
@@ -79,7 +82,7 @@ export interface SupportMatrixEntry {
   corroboratingScanners: string[];
   twinCoverage: { pairs: number; failures: number; unprobeable: { reason: string; observedAt: string } | null } | null;
   unresolvedCriticalItems: { metamorphic: number; mutation: number; differential: number } | null;
-  empiricalEvidence: { observations: number; subjects: number; issuanceDates: number; corroborationClasses: string[]; contradictions: number; uncertainty: string | null; supportedContexts: string[]; mode: 'shape' | 'context-constrained' | null; supportsBareValues: boolean } | null;
+  empiricalEvidence: { observations: number; subjects: number; issuanceDates: number; corroborationReferences: number; corroborationOwners: number; corroborationClasses: string[]; contradictions: number; boundedContradictions: number; uncertainty: string | null; supportedContexts: string[]; mode: 'shape' | 'context-constrained' | null; supportsBareValues: boolean } | null;
   fixtureProfile: { positiveCases: number; positiveAxes: number; benignCases: number; controlAxes: number; twinPairs: number; totalFixtures: number; contextTwinPairs: number; confusionAxes: number } | null;
   /** Registered detector(s) whose evidence decided this entry; empty when no detector exists. */
   detectors: string[];
@@ -124,8 +127,9 @@ function detectedEntry(family: Family, result: SupportStatusFamilyResult): Suppo
     },
     empiricalEvidence: {
       observations: result.evidence.observationCount, subjects: result.evidence.observationSubjects,
-      issuanceDates: result.evidence.observationIssuanceDates, corroborationClasses: result.evidence.corroborationClasses,
-      contradictions: result.evidence.observationContradictions, uncertainty: result.evidence.uncertainty,
+      issuanceDates: result.evidence.observationIssuanceDates, corroborationReferences: result.evidence.corroborationReferences,
+      corroborationOwners: result.evidence.corroborationOwners, corroborationClasses: result.evidence.corroborationClasses,
+      contradictions: result.evidence.unresolvedContradictions, boundedContradictions: result.evidence.boundedContradictions, uncertainty: result.evidence.uncertainty,
       supportedContexts: result.evidence.supportedContexts, mode: result.evidence.empiricalMode,
       supportsBareValues: result.evidence.supportsBareValues,
     },

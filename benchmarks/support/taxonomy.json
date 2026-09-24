@@ -1167,48 +1167,56 @@
       "provider": "replicate",
       "name": "API token",
       "description": "r8_ prefixed API token; the provider documents a 40-character total (a 37-character body) and does not state the body alphabet.",
-      "detectors": [],
+      "detectors": [
+        "replicate-api-token"
+      ],
       "sources": [
         "https://replicate.com/docs/topics/security/api-tokens",
         "https://replicate.com/changelog/2024-04-03-bearer-tokens"
       ],
-      "note": "Beta.8 arrival family (#208, research #217): no product detector at the pinned registry revision; measured as the arrival target replicate-api-token (benchmarks/lib/beta8/208.ts). The body alphabet is peer-contested (TruffleHog admits - and _; flare-redact alphanumeric only) and stays provisional. The cog/r8.im login token's relation to this token is undocumented and not claimed. Product counterpart redact-secret/redact-secret#727."
+      "note": "Registry detector replicate-api-token since redact-secret#727 (registry pinned at dad7868); graduated from a Beta.8 arrival family (#208, research #217), contract in benchmarks/lib/beta8/208.ts. The body alphabet is peer-contested (TruffleHog admits - and _; flare-redact alphanumeric only) and stays provisional. The cog/r8.im login token's relation to this token is undocumented and not claimed."
     },
     {
       "id": "groq:api-key",
       "provider": "groq",
       "name": "API key",
       "description": "gsk_ prefixed API key; the 52-character alphanumeric body is tool-corroborated, not provider-stated.",
-      "detectors": [],
+      "detectors": [
+        "groq-api-key"
+      ],
       "sources": [
         "https://console.groq.com/docs/production-readiness/security-onboarding",
         "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/groq/groq.go"
       ],
-      "note": "Beta.8 arrival family (#208, research #218): no product detector at the pinned registry revision; measured as the arrival target groq-api-key at T2. The observed WGdyb3FY body segment is a four-sample maintainer observation recorded as unresolved, not a grammar requirement; the community 48-character body proposal is unsupported. Not Grok/xAI. Product counterpart redact-secret/redact-secret#727."
+      "note": "Registry detector groq-api-key since redact-secret#727 (registry pinned at dad7868); graduated from a Beta.8 arrival family (#208, research #218), contract in benchmarks/lib/beta8/208.ts. The observed WGdyb3FY body segment is a four-sample maintainer observation recorded as unresolved, not a grammar requirement; the community 48-character body proposal is unsupported. Not Grok/xAI."
     },
     {
       "id": "xai:api-key",
       "provider": "xai",
       "name": "API key",
       "description": "xai- prefixed API key; the 80-character body is documented only by the provider's example and corroborated by tools.",
-      "detectors": [],
+      "detectors": [
+        "xai-api-key"
+      ],
       "sources": [
         "https://docs.x.ai/developers/rest-api-reference/management/auth",
         "https://docs.x.ai/developers/quickstart"
       ],
-      "note": "Beta.8 arrival family (#208, research #216): no product detector at the pinned registry revision; measured as the arrival target xai-api-key at T2. Management keys (tool-reported xai-token- prefix, XAI_MANAGEMENT_KEY) are a separate credential and not members of this family; no taxonomy family is added for them until the provider documents a format. Product counterpart redact-secret/redact-secret#727."
+      "note": "Registry detector xai-api-key since redact-secret#727 (registry pinned at dad7868); graduated from a Beta.8 arrival family (#208, research #216), contract in benchmarks/lib/beta8/208.ts. Management keys (tool-reported xai-token- prefix, XAI_MANAGEMENT_KEY) are a separate credential and not members of this family; no taxonomy family is added for them until the provider documents a format."
     },
     {
       "id": "openrouter:api-key",
       "provider": "openrouter",
       "name": "Inference API key",
       "description": "sk-or-v1- followed by 64 lowercase hexadecimal characters (73 characters), per OpenRouter's secret-format documentation.",
-      "detectors": [],
+      "detectors": [
+        "openrouter-api-key"
+      ],
       "sources": [
         "https://openrouter.ai/docs/guides/features/guardrails/secret-formats",
         "https://openrouter.ai/docs/api/api-reference/api-keys/create-keys"
       ],
-      "note": "Beta.8 arrival family (#208, research #220): no product detector at the pinned registry revision; measured as the arrival target openrouter-api-key. Management keys (sk-or-mgmt-) are openrouter:management-api-key, not members of this family. The public key hash has the same 64-hex body shape without the prefix. Product counterpart redact-secret/redact-secret#727."
+      "note": "Registry detector openrouter-api-key since redact-secret#727 (registry pinned at dad7868); graduated from a Beta.8 arrival family (#208, research #220), contract in benchmarks/lib/beta8/208.ts. Management keys (sk-or-mgmt-) are openrouter:management-api-key, not members of this family. The public key hash has the same 64-hex body shape without the prefix."
     },
     {
       "id": "openrouter:management-api-key",
@@ -1227,56 +1235,66 @@
       "provider": "langsmith",
       "name": "API key (personal access token or service key)",
       "description": "LangSmith API key in its two documented roles, personal access token (lsv2_pt_) and workspace/org service key (lsv2_sk_); the 32+10 lowercase-hex segment grammar is tool-corroborated.",
-      "detectors": [],
+      "detectors": [
+        "langsmith-api-key"
+      ],
       "sources": [
         "https://docs.langchain.com/langsmith/create-account-api-key"
       ],
-      "note": "No product detector at the pinned registry revision; redact-secret/redact-secret#728 (blocked by #726) is open. Arrival evidence in benchmarks/lib/beta8/210.ts (#210, research #219). Legacy ls__ keys, license keys, SCIM tokens, OAuth tokens and deployment keys are separate credentials this family does not claim."
+      "note": "Registry detector langsmith-api-key since redact-secret#728 (registry pinned at dad7868); graduated from a Beta.8 arrival family (#210, research #219), contract in benchmarks/lib/beta8/210.ts. Legacy ls__ keys, license keys, SCIM tokens, OAuth tokens and deployment keys are separate credentials this family does not claim."
     },
     {
       "id": "langfuse:secret-key",
       "provider": "langfuse",
       "name": "Secret API key",
       "description": "Langfuse project/organization secret key as the issuer mints it: sk-lf- plus a lowercase UUIDv4 (42 characters). Paired with the public pk-lf- key.",
-      "detectors": [],
+      "detectors": [
+        "langfuse-secret-key"
+      ],
       "sources": [
         "https://langfuse.com/docs/observability/sdk/overview",
         "https://github.com/langfuse/langfuse/blob/dbf5107df264bfcb0613a29237143e78ce16ca8a/packages/shared/src/server/auth/apiKeys.ts"
       ],
-      "note": "No product detector at the pinned registry revision; redact-secret/redact-secret#728 (blocked by #726) is open. Arrival evidence in benchmarks/lib/beta8/210.ts (#210, research #221). Self-hosted operator-defined values and a possible sk-lf-gw- gateway shape are recorded but not claimed."
+      "note": "Registry detector langfuse-secret-key since redact-secret#728 (registry pinned at dad7868); graduated from a Beta.8 arrival family (#210, research #221), contract in benchmarks/lib/beta8/210.ts. Self-hosted operator-defined values and a possible sk-lf-gw- gateway shape are recorded but not claimed."
     },
     {
       "id": "perplexity:api-key",
       "provider": "perplexity",
       "name": "API key",
       "description": "pplx--prefixed API key; the 48-character alphanumeric body is tool-corroborated, not provider-stated.",
-      "detectors": [],
+      "detectors": [
+        "perplexity-api-key"
+      ],
       "sources": [
         "https://docs.perplexity.ai/docs/admin/api-key-management"
       ],
-      "note": "Beta.8 arrival family perplexity-api-key (#212, research #226); no product detector at the pinned registry revision."
+      "note": "Registry detector perplexity-api-key since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #226), contract in benchmarks/lib/beta8/212.ts."
     },
     {
       "id": "fireworks-ai:api-key",
       "provider": "fireworks-ai",
       "name": "API key",
       "description": "fw_-prefixed API key; 22- and 24-character bodies are observed, not documented.",
-      "detectors": [],
+      "detectors": [
+        "fireworks-ai-api-key"
+      ],
       "sources": [
         "https://docs.fireworks.ai/tools-sdks/python-client/the-tutorial"
       ],
-      "note": "Beta.8 arrival family fireworks-ai-api-key (#212, research #227). The fpk_ Fire Pass key and any unprefixed legacy key are not covered."
+      "note": "Registry detector fireworks-ai-api-key since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #227), contract in benchmarks/lib/beta8/212.ts. The fpk_ Fire Pass key and any unprefixed legacy key are not covered."
     },
     {
       "id": "pinecone:api-key",
       "provider": "pinecone",
       "name": "API key (pcsk_)",
       "description": "Current pcsk_<label>_<secret> API key; prefix from provider code, segment widths tool-corroborated.",
-      "detectors": [],
+      "detectors": [
+        "pinecone-api-key"
+      ],
       "sources": [
         "https://github.com/pinecone-io/cli/blob/main/internal/pkg/cli/command/config/set.go"
       ],
-      "note": "Beta.8 arrival family pinecone-api-key (#212, research #228). The Admin API docs describe an unobserved pckey_ prefix; that contradiction is unresolved."
+      "note": "Registry detector pinecone-api-key since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #228), contract in benchmarks/lib/beta8/212.ts. The Admin API docs describe an unobserved pckey_ prefix; that contradiction is unresolved."
     },
     {
       "id": "pinecone:legacy-api-key",
@@ -1294,12 +1312,14 @@
       "provider": "gitlab",
       "name": "Runner authentication token",
       "description": "glrt--prefixed runner authentication token: a 20-character legacy body, or the routable base64url payload with a base36 length holder and CRC32 checksum.",
-      "detectors": [],
+      "detectors": [
+        "gitlab-runner-authentication-token"
+      ],
       "sources": [
         "https://docs.gitlab.com/security/tokens/",
         "https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/authn/token_field/generator/routable_token.rb"
       ],
-      "note": "Beta.8 arrival family gitlab-runner-authentication-token (#212, research #230). glrtr-, instance-prefixed and unversioned routable variants are not claimed. gitlab-token contract covers glpat- only."
+      "note": "Registry detector gitlab-runner-authentication-token since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #230), contract in benchmarks/lib/beta8/212.ts. glrtr-, instance-prefixed and unversioned routable variants are not claimed. gitlab-token contract covers glpat- only."
     }
   ]
 }

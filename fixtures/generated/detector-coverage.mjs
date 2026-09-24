@@ -1,6 +1,7 @@
 // Authored against the beta.3 format contracts, never scanner output.
 // Prefix variants are structural examples, not issued/valid credentials.
 import { createHash } from "node:crypto";
+import { crc32 } from "node:zlib";
 
 // docs/decisions/2026-09-21-author-pypi-macaroon-positives-synthetically.md's
 // verified construction: a well-formed libmacaroons v2 body (VERSION,
@@ -41,7 +42,7 @@ const families = [
   ["cloudflare-token", ["cfut_"], 40],
   ["digitalocean-token", ["dop_v1_", "doo_v1_", "dor_v1_"], 64, "0123456789abcdef"],
   ["linear-token", ["lin_api_", "lin_oauth_"], 40],
-  ["supabase-token", ["sb_secret_"], 40],
+  ["supabase-token", ["sb_secret_"], 31], // 22 + "_" + 8: structuralShapeValue builds it
   ["vercel-token", ["vcp_", "vci_", "vca_", "vcr_", "vck_"], 32],
   ["npm-token", ["npm_"], 36],
   ["google-api-key", ["AIza"], 35, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-"],
@@ -156,7 +157,14 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
       if (prefix === "xoxb-") return prefix + digits("section-1", 12) + "-" + digits("section-2", 12) + "-" + synthetic(`${seed}:secret`, 24);
       if (prefix === "xoxp-") return prefix + digits("section-1", 12) + "-" + digits("section-2", 12) + "-" + digits("section-3", 12) + "-" + synthetic(`${seed}:secret`, 32);
       if (["xoxe-", "xoxe.xoxb-", "xoxe.xoxp-"].includes(prefix)) return prefix + digits("version", 1) + "-" + synthetic(`${seed}:tail`, 20, SLACK_TAIL_ALPHABET);
-      return null; // xapp-/xwfp-: unchanged flat interim shape, exact 20 bytes (redact-secret#551)
+      // redact-secret#729 (registry pin f2082ab) froze xapp-'s section anatomy,
+      // xapp-<digits>-<alnum>-<digits>-<alnum> with no width rule, and retired
+      // beta.4's flat interim guard. The flat 20-byte legacy value (no sections)
+      // stopped matching; this keeps the retained policy expectation's 20-byte
+      // tail (which the published beta.7 guard still requires) in that
+      // sectioned layout: 1 digit, 9 alphanumerics, 3 digits, 4 alphanumerics.
+      if (prefix === "xapp-") return prefix + digits("section-1", 1) + "-" + synthetic(`${seed}:section-2`, 9) + "-" + digits("section-3", 3) + "-" + synthetic(`${seed}:section-4`, 4);
+      return null; // xwfp-: unchanged flat interim shape, exact 20 bytes (redact-secret#551)
     },
     "cloudflare-token": prefix => prefix + synthetic(`detector-coverage:cloudflare-token:${prefix}`, 40) + synthetic(`detector-coverage:cloudflare-token:${prefix}:checksum`, 8, HEX_ALPHABET),
     // #104/#107: a flat "pypi-" + random run is not a serialized macaroon (the
@@ -167,6 +175,20 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     // `families` loop's single `length` column can't express that, so this
     // mirrors buildCommonFormats's already-correct per-prefix lengths.
     "docker-token": prefix => prefix + synthetic(`detector-coverage:docker-token:${prefix}`, prefix === "dckr_pat_" ? 27 : 32),
+    // #213 (research #231): supabase.com's self-hosting page documents the opaque
+    // secret key as sb_secret_ + 22-character random part + "_" + 8-character
+    // checksum. This shape was first generated as a flat 40-character
+    // alphanumeric run, authored before that grammar was documented, so it fell
+    // outside the contract and was scored as a retained legacy policy value; it
+    // is now regenerated in the documented layout. Random part: 22 base64url
+    // characters; checksum: the first 8 base64url characters of
+    // sha256("<project ref>|" + prefix + random) over a synthetic project ref,
+    // as beta8-213d does (provider code, not part of the contract pattern).
+    "supabase-token": prefix => {
+      const ref = synthetic(`detector-coverage:supabase-token:${prefix}:ref`, 20, "abcdefghijklmnopqrstuvwxyz");
+      const random = synthetic(`detector-coverage:supabase-token:${prefix}:random`, 22, SLACK_TAIL_ALPHABET);
+      return `${prefix}${random}_${createHash("sha256").update(`${ref}|${prefix}${random}`).digest("base64url").slice(0, 8)}`;
+    },
   };
   for (const [detector, prefixes, length, alphabet] of families) {
     prefixes.forEach((prefix, index) => {
@@ -569,14 +591,21 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // redact-secret#309 (product PR #667): docs.confluent.io states "API secrets
   // created after July 30, 2025 have a cflt prefix followed by 60 characters
   // consisting of A-Z, a-z, 0-9, + or /", the last 6 a base64 CRC32 of the
-  // prior 54 (not recomputed here: the checksum shares the body's alphabet, the
-  // same shape-only precedent cloudflare-token's tail already sets), and that
+  // prior 54 (#209/#234: the page's own snippet fixes it as CRC32 over the 54
+  // body characters after cflt, little-endian, standard Base64, first 6; it was
+  // once left unrecomputed here, which made these positives fail the
+  // contract's `validate`, so it is now computed over the body's unchanged
+  // first 54 characters), and that
   // earlier secrets "may not include cflt" — a bare 64-byte run both pinned
   // tools report only beside a `confluent` keyword (gitleaks confluent-secret-key;
   // trufflehog confluent), the context-gated policy shape below. The API key ID
   // ("not considered secret information", example ABCD1234567890AB) is the
   // public-id control.
-  const confluentSecretBody = synthetic("coverage:confluent:secret:body", 60, BASE64_BODY);
+  const confluentSecretBody = (body54 => {
+    const le = Buffer.alloc(4);
+    le.writeUInt32LE(crc32(Buffer.from(body54, "ascii")));
+    return body54 + le.toString("base64").slice(0, 6);
+  })(synthetic("coverage:confluent:secret:body", 60, BASE64_BODY).slice(0, 54));
   const confluentSecret = `cflt${confluentSecretBody}`;
   positive("confluent-cloud-api-secret", "prefixed-shape", [{ secret: confluentSecret }]);
   addTwin("confluent-cloud-api-secret", "prefixed-shape", [confluentSecret.slice(0, -1)], "length: 63 characters vs the provider-documented 64 (docs.confluent.io: \"a cflt prefix followed by 60 characters\")", "length");
@@ -752,6 +781,96 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("okta-api-token", "reference", ["Authorization: SSWS ${OKTA_API_TOKEN}\n"]);
   add("okta-api-token", "label-prose", ["Documentation mentions an Okta API token (SSWS authorization scheme) without embedding the token value."]);
   add("okta-api-token", "public-id", ["OKTA_ORG_URL=https://dev-123456.okta.com\nOKTA_CLIENT_ID=0oa1abcdefghijklmn0h7\n"]);
+
+  // Beta.8 #208/#210 families, registry detectors since the dad7868 re-pin
+  // (redact-secret#727 PR #759: replicate/groq/xai/openrouter; #728 PR #760:
+  // langsmith/langfuse). Their full evidence (contracts, twins, profile
+  // debt) lives in the beta8-208/beta8-210 corpora and
+  // benchmarks/lib/beta8/{208,210}.ts; these are the registry-wide
+  // detector-coverage minimum (bare/quoted/unicode-crlf positives plus
+  // independent controls) every registered detector carries. Bodies stay
+  // alphanumeric (or hex) so no fixture leans on a provisional '-'/'_' byte.
+  const AI_ALNUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const AI_HEX = "0123456789abcdef";
+  const replicateToken = `r8_${synthetic("coverage:replicate:api-token:body", 37, AI_ALNUM)}`;
+  positive("replicate-api-token", "token-shape", [{ secret: replicateToken }]);
+  add("replicate-api-token", "prefix-only", ["r8_"]);
+  add("replicate-api-token", "short-body", [replicateToken.slice(0, 13)]);
+  add("replicate-api-token", "mask", [`r8_${"*".repeat(37)}`]);
+  add("replicate-api-token", "reference", ["REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}\n"]);
+  add("replicate-api-token", "label-prose", ["Documentation mentions a Replicate API token (r8_ prefix) without embedding the token value."]);
+  const groqKey = `gsk_${synthetic("coverage:groq:api-key:body", 52, AI_ALNUM)}`;
+  positive("groq-api-key", "key-shape", [{ secret: groqKey }]);
+  add("groq-api-key", "prefix-only", ["gsk_"]);
+  add("groq-api-key", "short-body", [groqKey.slice(0, 20)]);
+  add("groq-api-key", "mask", [`gsk_${"*".repeat(52)}`]);
+  add("groq-api-key", "reference", ["GROQ_API_KEY=${GROQ_API_KEY}\n"]);
+  add("groq-api-key", "label-prose", ["Documentation mentions a Groq API key (gsk_ prefix) without embedding the key value."]);
+  const xaiKey = `xai-${synthetic("coverage:xai:api-key:body", 80, AI_ALNUM)}`;
+  positive("xai-api-key", "key-shape", [{ secret: xaiKey }]);
+  add("xai-api-key", "prefix-only", ["xai-"]);
+  add("xai-api-key", "short-body", [xaiKey.slice(0, 24)]);
+  add("xai-api-key", "mask", [`xai-${"*".repeat(80)}`]);
+  add("xai-api-key", "reference", ["XAI_API_KEY=${XAI_API_KEY}\n"]);
+  add("xai-api-key", "label-prose", ["Documentation mentions an xAI API key (xai- prefix) without embedding the key value."]);
+  const openrouterKey = `sk-or-v1-${synthetic("coverage:openrouter:api-key:body", 64, AI_HEX)}`;
+  positive("openrouter-api-key", "key-shape", [{ secret: openrouterKey }]);
+  add("openrouter-api-key", "prefix-only", ["sk-or-v1-"]);
+  add("openrouter-api-key", "short-body", [openrouterKey.slice(0, 29)]);
+  add("openrouter-api-key", "mask", [`sk-or-v1-${"*".repeat(64)}`]);
+  add("openrouter-api-key", "reference", ["OPENROUTER_API_KEY=${OPENROUTER_API_KEY}\n"]);
+  add("openrouter-api-key", "label-prose", ["Documentation mentions an OpenRouter API key (sk-or-v1- prefix) without embedding the key value."]);
+  const langsmithKey = `lsv2_pt_${synthetic("coverage:langsmith:api-key:head", 32, AI_HEX)}_${synthetic("coverage:langsmith:api-key:tail", 10, AI_HEX)}`;
+  positive("langsmith-api-key", "pat-shape", [{ secret: langsmithKey }]);
+  add("langsmith-api-key", "prefix-only", ["lsv2_pt_"]);
+  add("langsmith-api-key", "short-body", [langsmithKey.slice(0, 24)]);
+  add("langsmith-api-key", "mask", [`lsv2_pt_${"*".repeat(32)}_${"*".repeat(10)}`]);
+  add("langsmith-api-key", "reference", ["LANGSMITH_API_KEY=${LANGSMITH_API_KEY}\n"]);
+  add("langsmith-api-key", "label-prose", ["Documentation mentions a LangSmith API key (lsv2_pt_ or lsv2_sk_ prefix) without embedding the key value."]);
+  const langfuseHex = synthetic("coverage:langfuse:secret-key:body", 32, AI_HEX);
+  const langfuseUuid = `${langfuseHex.slice(0, 8)}-${langfuseHex.slice(8, 12)}-4${langfuseHex.slice(13, 16)}-a${langfuseHex.slice(17, 20)}-${langfuseHex.slice(20, 32)}`;
+  const langfuseKey = `sk-lf-${langfuseUuid}`;
+  positive("langfuse-secret-key", "key-shape", [{ secret: langfuseKey }]);
+  add("langfuse-secret-key", "prefix-only", ["sk-lf-"]);
+  add("langfuse-secret-key", "short-body", [langfuseKey.slice(0, 20)]);
+  add("langfuse-secret-key", "mask", [`sk-lf-${"*".repeat(8)}-${"*".repeat(4)}-${"*".repeat(4)}-${"*".repeat(4)}-${"*".repeat(12)}`]);
+  add("langfuse-secret-key", "reference", ["LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY}\n"]);
+  const langfusePublicHex = synthetic("coverage:langfuse:public-key:body", 32, AI_HEX);
+  add("langfuse-secret-key", "public-id", [`LANGFUSE_PUBLIC_KEY=pk-lf-${langfusePublicHex.slice(0, 8)}-${langfusePublicHex.slice(8, 12)}-4${langfusePublicHex.slice(13, 16)}-b${langfusePublicHex.slice(17, 20)}-${langfusePublicHex.slice(20, 32)}\n`]);
+
+  // Beta.8 #212 families, registry detectors since the f2082ab re-pin
+  // (redact-secret#730, PR #763). Full evidence lives in the beta8-212 corpus
+  // and benchmarks/lib/beta8/212.ts; these are the registry-wide minimum.
+  const perplexityKey = `pplx-${synthetic("coverage:perplexity:api-key:body", 48, AI_ALNUM)}`;
+  positive("perplexity-api-key", "key-shape", [{ secret: perplexityKey }]);
+  add("perplexity-api-key", "prefix-only", ["pplx-"]);
+  add("perplexity-api-key", "short-body", [perplexityKey.slice(0, 21)]);
+  add("perplexity-api-key", "mask", [`pplx-${"*".repeat(48)}`]);
+  add("perplexity-api-key", "reference", ["PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}\n"]);
+  add("perplexity-api-key", "label-prose", ["Documentation mentions a Perplexity API key (pplx- prefix) without embedding the key value."]);
+  // Base58-consistent like the beta8-212 positives (#227: observed bodies avoided 0/O/I/l).
+  const fireworksKey = `fw_${synthetic("coverage:fireworks-ai:api-key:body", 24, "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")}`;
+  positive("fireworks-ai-api-key", "key-shape", [{ secret: fireworksKey }]);
+  add("fireworks-ai-api-key", "prefix-only", ["fw_"]);
+  add("fireworks-ai-api-key", "short-body", [fireworksKey.slice(0, 13)]);
+  add("fireworks-ai-api-key", "mask", [`fw_${"*".repeat(24)}`]);
+  add("fireworks-ai-api-key", "reference", ["FIREWORKS_API_KEY=${FIREWORKS_API_KEY}\n"]);
+  add("fireworks-ai-api-key", "label-prose", ["Documentation mentions a Fireworks AI API key (fw_ prefix) without embedding the key value."]);
+  const pineconeKey = `pcsk_${synthetic("coverage:pinecone:api-key:label", 6, AI_ALNUM)}_${synthetic("coverage:pinecone:api-key:secret", 63, AI_ALNUM)}`;
+  positive("pinecone-api-key", "key-shape", [{ secret: pineconeKey }]);
+  add("pinecone-api-key", "prefix-only", ["pcsk_"]);
+  add("pinecone-api-key", "short-body", [pineconeKey.slice(0, 24)]);
+  add("pinecone-api-key", "mask", [`pcsk_${"*".repeat(6)}_${"*".repeat(63)}`]);
+  add("pinecone-api-key", "reference", ["PINECONE_API_KEY=${PINECONE_API_KEY}\n"]);
+  add("pinecone-api-key", "label-prose", ["Documentation mentions a Pinecone API key (pcsk_ prefix) without embedding the key value."]);
+  // Devise.friendly_token body (#230 row 7: l, I, O and 0 never occur).
+  const runnerToken = `glrt-${synthetic("coverage:gitlab:runner-authentication-token:body", 20, "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789")}`;
+  positive("gitlab-runner-authentication-token", "token-shape", [{ secret: runnerToken }]);
+  add("gitlab-runner-authentication-token", "prefix-only", ["glrt-"]);
+  add("gitlab-runner-authentication-token", "short-body", [runnerToken.slice(0, 15)]);
+  add("gitlab-runner-authentication-token", "mask", [`glrt-${"*".repeat(20)}`]);
+  add("gitlab-runner-authentication-token", "reference", ["CI_RUNNER_TOKEN=${CI_RUNNER_TOKEN}\n"]);
+  add("gitlab-runner-authentication-token", "label-prose", ["Documentation mentions a GitLab runner authentication token (glrt- prefix) without embedding the token value."]);
 
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains

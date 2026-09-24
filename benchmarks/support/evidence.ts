@@ -1,6 +1,6 @@
 import type { Summary, ReviewLedger, EvaluationCase } from '../engine/types.ts';
-import type { FamilySupportEvidence } from './status.ts';
-import { contracts } from '../lib/assessment.ts';
+import { basisForRoute, empiricalRoute, type EvidenceBasis, type FamilySupportEvidence } from './status.ts';
+import { contracts, disputedProperty } from '../lib/assessment.ts';
 import { measureFixtureCells, profileClaim } from './profiles.ts';
 import { empiricalEvidence } from './empirical.ts';
 
@@ -48,7 +48,8 @@ function unresolvedInQueue(family: string, method: string, queue: QueuedReview[]
  * queue-only.
  */
 function fixtureProfile(family: string, cases: EvaluationCase[]) {
-  const selected = cases.filter(c => c.targets.includes(family));
+  // Fixtures re-scoped off a provider-undecided property assert nothing and count toward no floor.
+  const selected = cases.filter(c => c.targets.includes(family) && !disputedProperty(c.source.category, c.source.fixtureId));
   const base = [...new Map(selected.filter(c => c.method === 'differential').map(c => [`${c.source.category}/${c.source.fixtureId}`, c])).values()];
   const positive = base.filter(c => c.seed.expected.length > 0 && !c.seed.twinOf);
   const benign = base.filter(c => c.seed.expected.length === 0 && !c.seed.twinOf);
@@ -62,7 +63,11 @@ function fixtureProfile(family: string, cases: EvaluationCase[]) {
     positiveAxes: new Set(positive.map(c => `${c.source.category}/${c.seed.group}`)).size,
     benignCases: benign.length,
     totalFixtures: base.length,
-    contextTwinPairs: twins.filter(c => c.source.category === 'context-edges').length,
+    // A context-twin pair keeps the value byte-for-byte and changes only its assignment context: the
+    // authored `mutationKind: 'context'` (lib/assessment.ts classifyControl; fixture-profiles.json's
+    // cellNote), in whichever corpus it is authored. The `context-edges` category is not that: it holds
+    // no context-kind twin at all, only length/prefix value twins.
+    contextTwinPairs: twins.filter(c => c.twin?.mutationKind === 'context').length,
     confusionAxes: confusion.size,
   };
 }
@@ -77,8 +82,10 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
   const benignAxisIds = axesByDetector[family] ?? [];
   const profile = fixtureProfile(family, cases ?? []);
   const empirical = empiricalEvidence(family);
-  const evidenceBasis = contract?.tier === 'T1' ? 'provider-documented' : contract?.tier === 'T3' ? 'project-policy' :
-    contract?.tier === 'T2' && empirical.evidenceBasis === 'none' ? 'independently-corroborated' : empirical.evidenceBasis;
+  // T2 provenance is corroborated by default; it reads empirically-observed only once the #205
+  // observation bar is met (#177 as amended 2026-09-24). Tier never changes either way.
+  const evidenceBasis: EvidenceBasis = contract?.tier === 'T1' ? 'provider-documented' : contract?.tier === 'T3' ? 'project-policy' :
+    contract?.tier === 'T2' ? basisForRoute(empiricalRoute(empirical)) : 'none';
   return {
     family,
     detectors: contract ? [family] : [],
@@ -104,6 +111,9 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
     mutationUnresolvedCritical: mutation.fail + unresolvedInQueue(family, 'mutation', reviewQueue, ledger),
     differentialUnresolvedContractDisagreements: unresolvedInQueue(family, 'differential', reviewQueue, ledger),
     // No corpus supplied means unmeasured: `profileFailures` fails closed on that for any binding claim.
-    ...(cases ? { fixtureProfile: { claim: profileClaim(contract), cells: measureFixtureCells(family, cases), supportedContext: contract?.supportedContext } } : {}),
+    ...(cases ? { fixtureProfile: {
+      claim: profileClaim(contract, empirical.empiricalMode), cells: measureFixtureCells(family, cases),
+      supportedContext: contract?.supportedContext ?? (empirical.supportedContexts.length ? empirical.supportedContexts : undefined),
+    } } : {}),
   };
 }

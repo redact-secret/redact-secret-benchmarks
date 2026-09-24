@@ -12,6 +12,12 @@ It adds no support status and no product behavior.
 | --- | --- | --- | --- |
 | #N | `benchmarks/lib/beta8/N.ts` | `fixtures/generated/beta8/N.mjs` | `beta8-N` |
 
+An issue whose work runs in parallel slices uses a corpus key instead of the
+bare number, for example #213's `213d` (`benchmarks/lib/beta8/213d.ts`,
+`fixtures/generated/beta8/213d.mjs`, category `beta8-213d`). The module's
+`issue` is then that key. One key per slice keeps each slice's source hash, and
+so its ledger rows, independent of the others.
+
 Each issue owns its two files. `benchmarks/lib/beta8/index.ts` and
 `fixtures/generated/beta8/index.mjs` merge them. Because every issue gets its
 own corpus, editing one issue's fixtures changes only that corpus's source
@@ -43,6 +49,35 @@ A fixture targets one of two kinds of family:
   product detector.
 
 An arrival id never equals a registry id.
+
+### Graduating an arrival family
+
+When the product registry gains a detector for an arrival family, re-pinning
+`benchmarks/detectors.json` makes the arrival id a registry id, and
+`validateBeta8` then rejects it as an arrival family. Graduate it without
+copying the contract:
+
+- Remove it from the module's `arrivalFamilies` and move its contract from
+  `contracts` to the module's `registryContracts`. `benchmarks/lib/assessment.ts`
+  merges every module's `registryContracts` into the registry contracts, so
+  the evidence stays with the issue that authored it.
+- Map its taxonomy family to the detector id. The module's fixtures then carry
+  `detectors: [id]` instead of `arrivalTargets` (`beta8Corpus` routes on
+  `arrivalIds`), so `fixture-detectors.json` assigns them the detector.
+- Give it the registry-wide `detector-coverage` minimum like any registered
+  detector, and a `benchmarks/support/empirical-observations.json` record if
+  its contract is T2.
+
+The #208 (Replicate, Groq, xAI, OpenRouter) and #210 (LangSmith, Langfuse)
+families graduated this way at the product pin dad7868 (redact-secret#727,
+#728), and four #212 families (Perplexity, Fireworks AI, Pinecone `pcsk_`,
+GitLab runner authentication token) at f2082ab (redact-secret#730).
+
+A family the product only types inside a shared detector stays an arrival
+family, because its id is not a registry id: `slack-user-token` and
+`slack-app-level-token` (inside `slack-token`), `stripe-webhook-signing-secret`
+(inside `stripe-token`), `github-fine-grained-pat`, `notion-integration-token`
+and the context-gated `pinecone-api-key-legacy`.
 
 Twins are scoped to their declared family. When a product finding on an
 arrival family's twin is attributed to a *different* known family (for

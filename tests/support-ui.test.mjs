@@ -212,6 +212,12 @@ test('the page says which redact-secret the statuses were measured against', () 
   const published = mixed();
   assert.equal(supportMatrixProblem(published), null);
   assert.match(text(supportPage(published, null)), /Measured the published redact-secret package/);
+  // Production publishes a published-mode matrix (#213) that names the release it measured.
+  const released = mixed();
+  released.sourceReport.publishedPackage = { packageName: '@redact-secret/core', version: '0.1.0-beta.7' };
+  assert.equal(supportMatrixProblem(released), null);
+  assert.match(text(supportPage(released, null)), /Measured the released package @redact-secret\/core 0\.1\.0-beta\.7/);
+  assert.doesNotMatch(text(supportPage(released, null)), /candidate/i);
   const candidate = mixed();
   candidate.sourceReport.product = { sourceCommit: 'a'.repeat(40), packageName: '@redact-secret/core', declaredVersion: '0.1.0-beta.7', artifacts: [{ role: 'package', sha256: 'b'.repeat(64) }] };
   assert.equal(supportMatrixProblem(candidate), null);

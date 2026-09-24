@@ -102,7 +102,7 @@ async function renderWorkbench(current: ReturnType<typeof route>, token: number,
   let candidate: CandidateReport | undefined, candidateIssue: string | undefined;
   if (candidateText) { try { const parsed = JSON.parse(candidateText); candidateIssue = candidateProblem(parsed) ?? undefined; if (!candidateIssue) candidate = parsed; } catch { candidateIssue = 'Candidate evidence is unreadable'; } }
   const classes = reviewClasses(ledger as unknown as ReviewLedgerFile);
-  const changes = { data, baseline, candidate, candidateProblem: candidateIssue, fixtures };
+  const changes = { data, baseline, candidate, candidateProblem: candidateIssue, site: SITE.env, fixtures };
   const home = () => workbenchPage({ data, evaluation, evaluationProblem: problem, classes, changes });
   const labels: Record<string, string> = { overview: 'Workbench', review: 'Review queue', changes: 'Changes', qualification: 'Qualification', method: current.id };
   const body = current.view === 'review' ? reviewPage(classes, current.id, evaluation)

@@ -31,6 +31,8 @@ export interface SupportMatrixFile {
     schemaVersion: 1; generatedAt: string; runId: string; revision: string; dirty: boolean | null; criteriaSchemaVersion: 1;
     /** The redact-secret candidate build measured; absent means the published package. */
     product?: { sourceCommit: string; packageName: string; declaredVersion: string; artifacts: { role: string; sha256: string }[] };
+    /** Published mode: the released package the run loaded (absent in matrices generated before #213). */
+    publishedPackage?: { packageName: string; version: string };
   };
   providerCount: number;
   familyCount: number;

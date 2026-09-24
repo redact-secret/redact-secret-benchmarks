@@ -4,9 +4,15 @@ import { outcomeCode } from '../../model.mjs';
 import type { Baseline } from '../../types';
 import { currentReports, PRODUCT, type BenchData } from '../data';
 import { changeRow } from './shared';
+import type { SiteEnv } from '../../provenance';
 
 export type Corpus = 'fixed-corpus' | 'expanded-corpus';
-export interface ChangesInput { data: BenchData; baseline?: Baseline; candidate?: CandidateReport; candidateProblem?: string; fixtures: { slug: string; category: string; id: string; assessment: { kind: string; tier: string } }[] }
+/**
+ * `site` is the build's environment (#155). Production measures only the released
+ * lockfile package and never a product commit (publish-site.yml), so it has no
+ * candidate evidence by design and says what it measures instead of asking for some.
+ */
+export interface ChangesInput { data: BenchData; baseline?: Baseline; candidate?: CandidateReport; candidateProblem?: string; site?: SiteEnv; fixtures: { slug: string; category: string; id: string; assessment: { kind: string; tier: string } }[] }
 export const CANDIDATE_COMMAND = 'npm run eval:candidate -- --output-dir "$PWD/public/results" --candidate-package <core.tgz> --candidate-node-package <node.tgz> --candidate-wasm-package <wasm.tgz> --candidate-source-commit <40-hex> --product-state clean';
 
 /** The saved baseline against the current run, for the product scanner. A fixture added since the baseline has no "before". */
@@ -31,6 +37,12 @@ export function changeView(input: ChangesInput): ChangeView | null {
 }
 export const rowsFor = (view: ChangeView, corpus: Corpus): ChangeRow[] => changeRows(view.pairs.filter(p => p.section === corpus));
 
+/** Production's statement of what it measured, in place of the local/staging prompt for candidate evidence. */
+export function releasedNote({ data }: ChangesInput): string {
+  const version = data.run && !data.run.candidate ? data.run.scannerVersions?.[PRODUCT] : undefined;
+  return `<section class="section" aria-label="What this site measures"><h2 class="h2-compact">Released package only</h2><p class="small">This site measures the released <code>@redact-secret/core</code>${version ? ` <b>${e(version)}</b>` : ''} from the benchmark lockfile and never an unreleased product commit, so the rows above compare the saved baseline with that release. Unreleased <code>redact-secret</code> <code>main</code> candidates are measured on staging and are not published here.</p></section>`;
+}
+
 export function changesPage(input: ChangesInput, corpus: Corpus): string {
   const crumb = evidenceCrumb([{ label: 'Workbench', href: '/workbench' }, { label: 'Changes' }]);
   const view = changeView(input);
@@ -39,7 +51,7 @@ export function changesPage(input: ChangesInput, corpus: Corpus): string {
     : { title: 'No saved baseline', body: 'Changes are read against a released comparison point in <code>baselines/</code>. Save one after a complete run.', command: 'npm run baseline -- --save <version>' })}`;
   const rows = rowsFor(view, corpus), changed = rows.filter(r => r.status !== 'held');
   const seg = `<div class="seg" role="group" aria-label="Corpus section">${([['fixed-corpus', 'Fixed corpus'], ['expanded-corpus', 'Expanded corpus']] as const).map(([id, label]) => `<a href="/workbench/changes${id === 'fixed-corpus' ? '' : '?corpus=expanded'}"${id === corpus ? ' aria-current="true"' : ''}>${label}</a>`).join('')}</div>`;
-  const note = view.usingCandidate ? '' : actionEmptyState({ title: 'No candidate evidence published', body: `${input.candidateProblem ? `${e(input.candidateProblem)}. ` : ''}This page shows the saved baseline against the current run. To read a release candidate here, write its evidence next to the run reports.`, command: CANDIDATE_COMMAND });
+  const note = view.usingCandidate ? '' : input.site === 'production' ? releasedNote(input) : actionEmptyState({ title: 'No candidate evidence published', body: `${input.candidateProblem ? `${e(input.candidateProblem)}. ` : ''}This page shows the saved baseline against the current run. To read a release candidate here, write its evidence next to the run reports.`, command: CANDIDATE_COMMAND });
   return `${crumb}<div class="page-head"><div><h1>${e(view.title)}</h1><div class="meta"><span>${e(view.source)}</span></div></div>${seg}</div>
     <p class="small">${corpus === 'fixed-corpus' ? 'Rows that have a saved baseline outcome.' : 'Rows added since the baseline. With nothing to compare against, they are listed, not scored as changes.'} Only what changed is listed, each with its reason; unchanged rows fold into one Held line per kind.</p>
     <section class="section" aria-label="Changes"><h2 class="h2-compact">${changed.length ? `${changed.length} change${changed.length === 1 ? '' : 's'} to read` : 'Nothing changed'}</h2>${rows.length ? rows.map(r => changeRow(r, true)).join('') : '<p class="small">No rows in this corpus section.</p>'}</section>${note}`;

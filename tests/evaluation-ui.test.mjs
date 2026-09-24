@@ -113,3 +113,23 @@ test('rendered Workbench method, review and holdout views retain the evidence bo
     assert.ok(evaluationProblem(raw));
   } finally { await server.close(); }
 });
+
+test('production Changes states the released package it measures instead of asking for candidate evidence (#213)', async () => {
+  const { createServer } = await import('vite');
+  const server = await createServer({configFile:false,server:{middlewareMode:true,hmr:false},appType:'custom'});
+  try {
+    const { changesPage } = await server.ssrLoadModule('/src/pages/workbench/changes.ts');
+    const baseline = { version: '0.1.0-beta.7', rows: {} };
+    const data = { loaded: [], hashes: {}, run: { scannerVersions: { 'redact-secret': '0.1.0-beta.7' } } };
+    const input = site => ({ data, baseline, site, fixtures: [] });
+    // With no current rows the page still answers, and only off production does it ask for candidate evidence.
+    const withRows = site => changesPage({ ...input(site), fixtures: [{ slug: 'common-formats--x', category: 'common-formats', id: 'x', assessment: { kind: 'must-redact', tier: 'T1' } }],
+      data: { ...data, loaded: [{ category: { id: 'common-formats' }, report: { category: 'common-formats', runId: 'r', scanners: [{ id: 'redact-secret', status: 'complete', rows: [{ id: 'x', expected: [], actual: [] }] }] } }] } }, 'fixed-corpus');
+    for (const site of ['production', 'staging', 'local']) assert.ok(!changesPage(input(site), 'fixed-corpus').includes('undefined'), site);
+    const production = withRows('production');
+    assert.ok(production.includes('0.1.0-beta.7 → this run'), 'the saved baseline is read against the run');
+    assert.ok(!production.includes('No candidate evidence published'));
+    assert.ok(production.includes('Released package only') && production.includes('<b>0.1.0-beta.7</b>'));
+    assert.ok(withRows('staging').includes('No candidate evidence published'));
+  } finally { await server.close(); }
+});

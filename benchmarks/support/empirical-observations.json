@@ -541,6 +541,55 @@
       ]
     },
     {
+      "family": "gitlab-runner-authentication-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "GitLab documents only the glrt- prefix; the 20-character friendly-token body and the routable <base64url>.<version>.<length><CRC32> grammar come from GitLab's own server code (gitlab.com, provider code) and gitleaks. glrtr- (registration-created), instance-prefixed and unversioned routable forms are unverified and outside the claim. No provider-issued token has been captured through #205 intake.",
+      "supportedContexts": [
+        "bare value (glrt- plus a 20-character friendly-token body or the routable grammar)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "gitlab-runner-authentication-token: glrt- + 20 of [0-9a-zA-Z_-]; gitlab-runner-authentication-token-routable: the routable form"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "gitlab",
+          "reference": "https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/authn/token_field/generator/routable_token.rb",
+          "observedAt": "2026-09-24",
+          "supports": "the routable token generator: base64url payload, 2-char base36 version and length, 7-char base36 CRC32"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "gitlab",
+          "reference": "https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules",
+          "observedAt": "2026-09-24",
+          "supports": "GitLab's own secret-detection rules for glrt- runner authentication tokens, legacy and routable"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/230",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 research pass: glrt- prefix documented; legacy and routable bodies from provider code"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "glrtr- tokens (created through a registration token) are documented, but their current shape is unverified.",
+          "status": "bounded",
+          "bound": "The contract pattern is glrt- only; no glrtr- value is fixtured or asserted silent."
+        }
+      ]
+    },
+    {
       "family": "groq-api-key",
       "mode": "shape",
       "supportsBareValues": true,
@@ -1151,6 +1200,104 @@
           "statement": "sk-admin- keys (58/58, 133 chars; one 74/74 public sample) share the prefix stem and marker.",
           "status": "bounded",
           "bound": "A separate admin credential family, deliberately excluded; no openai-token fixture uses sk-admin-."
+        }
+      ]
+    },
+    {
+      "family": "perplexity-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Perplexity documents the pplx- prefix; the exact 48-character alphanumeric body is tool-corroborated (gitleaks, osv-scalibr), and flare-redact admits 40-60. Analytics-key and MCP OAuth token shapes are undocumented and outside the claim. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "bare value (the pplx- prefix plus the exact 48-character body)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-24",
+          "supports": "perplexity-api-key: pplx- + exactly 48 of [a-zA-Z0-9]"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "flare-collection",
+          "reference": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1312",
+          "observedAt": "2026-09-24",
+          "supports": "perplexity_key: pplx- + 40-60 of [A-Za-z0-9] (a looser width that admits 48)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "perplexity",
+          "reference": "https://docs.perplexity.ai/docs/admin/api-key-management",
+          "observedAt": "2026-09-24",
+          "supports": "the pplx- prefix of an issued API key; no length or alphabet"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/226",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 research pass: provider prefix, tool-corroborated 48-character alphanumeric body"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "flare-redact accepts a 40-60 character body; gitleaks and osv-scalibr fix 48.",
+          "status": "bounded",
+          "bound": "The contract freezes 48; the 47/49-character twins record the peer difference and no positive uses another width."
+        }
+      ]
+    },
+    {
+      "family": "pinecone-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "The pcsk_<label>_<secret> layout is provider code (Pinecone CLI and SDK tests); the 5-6 character label and exact 63-character secret are tool-corroborated. Pinecone's Admin API docs describe an unobserved pckey_ prefix that contradicts every pcsk_ observation, and the legacy bare-UUID key is a separate context-gated family. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "bare value (pcsk_ plus a 5-6 character label and a 63-character secret)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/pinecone/pinecone.go",
+          "observedAt": "2026-09-24",
+          "supports": "pinecone: pcsk_ + 5-6 alphanumeric label + _ + exactly 63 alphanumerics"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "pinecone-io",
+          "reference": "https://github.com/pinecone-io/cli/blob/v1.0.1/internal/pkg/cli/command/config/set.go",
+          "observedAt": "2026-09-24",
+          "supports": "the Pinecone CLI config help shows an API key as pcsk_... (prefix only)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "pinecone",
+          "reference": "https://docs.pinecone.io/reference/api/2026-04/admin/create_api_key",
+          "observedAt": "2026-09-24",
+          "supports": "Admin API create-key response carries the key value (its prose names a pckey_ format; see contradictions)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/228",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 research pass: every observation and tool agrees on pcsk_<5-6>_<63>"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "The Admin API docs state new keys have the format pckey_<public-label>_<unique-key>; no observed key carries pckey_.",
+          "status": "bounded",
+          "bound": "Neither positive nor negative: no fixture carries pckey_ and the contract claims pcsk_ only."
         }
       ]
     },

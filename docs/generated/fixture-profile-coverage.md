@@ -24,8 +24,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 57 | 73 |
-| Stable / documented | 57 | 73 |
+| Arrival / provisional | 59 | 73 |
+| Stable / documented | 59 | 73 |
 | Stable / empirical | 15 | 73 |
 | Context-constrained empirical | 8 | 73 |
 
@@ -50,11 +50,11 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | discord-bot-token | T2 | stable-empirical | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
 | docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |
 | firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
-| fireworks-ai-api-key | T1 | stable-documented | 24 | 3 | 11 | 5 | 7 | 6 | 8 | positive/context cases 3/6 |
+| fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
 | generic-token | T3 | arrival-provisional | 128 | 35 | 75 | 9 | 12 | 4 | 5 | none |
 | github-fine-grained-pat | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 6 | 9 | positive/context cases 5/6 |
 | github-token | T1 | stable-documented | 117 | 27 | 8 | 42 | 21 | 5 | 7 | none |
-| gitlab-runner-authentication-token | T2 | arrival-provisional | 24 | 1 | 11 | 6 | 5 | 6 | 10 | positive/context cases 1/6 |
+| gitlab-runner-authentication-token | T2 | stable-empirical | 32 | 4 | 16 | 6 | 6 | 6 | 10 | total fixtures 32/40; positive/context cases 4/10; twin pairs 6/8 |
 | gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
 | google-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
 | grafana-cloud-access-policy-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
@@ -80,8 +80,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
 | otpauth-uri | T3 | arrival-provisional | 17 | 0 | 5 | 6 | 1 | 3 | 4 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
-| perplexity-api-key | T2 | arrival-provisional | 24 | 2 | 10 | 6 | 7 | 6 | 10 | positive/context cases 2/6 |
-| pinecone-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 8 | positive/context cases 3/6 |
+| perplexity-api-key | T2 | stable-empirical | 32 | 5 | 15 | 6 | 8 | 6 | 10 | total fixtures 32/40; positive/context cases 5/10; twin pairs 6/8 |
+| pinecone-api-key | T2 | stable-empirical | 32 | 6 | 16 | 5 | 9 | 6 | 8 | total fixtures 32/40; positive/context cases 6/10; twin pairs 5/8 |
 | pinecone-api-key-legacy | T3 | arrival-provisional | 48 | 0 | 24 | 12 | 9 | 6 | 7 | positive/context cases 0/6 |
 | postman-api-key | T2 | stable-empirical | 40 | 11 | 17 | 9 | 12 | 6 | 9 | none |
 | private-key | T1 | stable-documented | 36 | 18 | 8 | 5 | 4 | 6 | 8 | none |

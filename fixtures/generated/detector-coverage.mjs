@@ -157,7 +157,14 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
       if (prefix === "xoxb-") return prefix + digits("section-1", 12) + "-" + digits("section-2", 12) + "-" + synthetic(`${seed}:secret`, 24);
       if (prefix === "xoxp-") return prefix + digits("section-1", 12) + "-" + digits("section-2", 12) + "-" + digits("section-3", 12) + "-" + synthetic(`${seed}:secret`, 32);
       if (["xoxe-", "xoxe.xoxb-", "xoxe.xoxp-"].includes(prefix)) return prefix + digits("version", 1) + "-" + synthetic(`${seed}:tail`, 20, SLACK_TAIL_ALPHABET);
-      return null; // xapp-/xwfp-: unchanged flat interim shape, exact 20 bytes (redact-secret#551)
+      // redact-secret#729 (registry pin f2082ab) froze xapp-'s section anatomy,
+      // xapp-<digits>-<alnum>-<digits>-<alnum> with no width rule, and retired
+      // beta.4's flat interim guard. The flat 20-byte legacy value (no sections)
+      // stopped matching; this keeps the retained policy expectation's 20-byte
+      // tail (which the published beta.7 guard still requires) in that
+      // sectioned layout: 1 digit, 9 alphanumerics, 3 digits, 4 alphanumerics.
+      if (prefix === "xapp-") return prefix + digits("section-1", 1) + "-" + synthetic(`${seed}:section-2`, 9) + "-" + digits("section-3", 3) + "-" + synthetic(`${seed}:section-4`, 4);
+      return null; // xwfp-: unchanged flat interim shape, exact 20 bytes (redact-secret#551)
     },
     "cloudflare-token": prefix => prefix + synthetic(`detector-coverage:cloudflare-token:${prefix}`, 40) + synthetic(`detector-coverage:cloudflare-token:${prefix}:checksum`, 8, HEX_ALPHABET),
     // #104/#107: a flat "pypi-" + random run is not a serialized macaroon (the
@@ -830,6 +837,40 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("langfuse-secret-key", "reference", ["LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY}\n"]);
   const langfusePublicHex = synthetic("coverage:langfuse:public-key:body", 32, AI_HEX);
   add("langfuse-secret-key", "public-id", [`LANGFUSE_PUBLIC_KEY=pk-lf-${langfusePublicHex.slice(0, 8)}-${langfusePublicHex.slice(8, 12)}-4${langfusePublicHex.slice(13, 16)}-b${langfusePublicHex.slice(17, 20)}-${langfusePublicHex.slice(20, 32)}\n`]);
+
+  // Beta.8 #212 families, registry detectors since the f2082ab re-pin
+  // (redact-secret#730, PR #763). Full evidence lives in the beta8-212 corpus
+  // and benchmarks/lib/beta8/212.ts; these are the registry-wide minimum.
+  const perplexityKey = `pplx-${synthetic("coverage:perplexity:api-key:body", 48, AI_ALNUM)}`;
+  positive("perplexity-api-key", "key-shape", [{ secret: perplexityKey }]);
+  add("perplexity-api-key", "prefix-only", ["pplx-"]);
+  add("perplexity-api-key", "short-body", [perplexityKey.slice(0, 21)]);
+  add("perplexity-api-key", "mask", [`pplx-${"*".repeat(48)}`]);
+  add("perplexity-api-key", "reference", ["PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}\n"]);
+  add("perplexity-api-key", "label-prose", ["Documentation mentions a Perplexity API key (pplx- prefix) without embedding the key value."]);
+  // Base58-consistent like the beta8-212 positives (#227: observed bodies avoided 0/O/I/l).
+  const fireworksKey = `fw_${synthetic("coverage:fireworks-ai:api-key:body", 24, "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")}`;
+  positive("fireworks-ai-api-key", "key-shape", [{ secret: fireworksKey }]);
+  add("fireworks-ai-api-key", "prefix-only", ["fw_"]);
+  add("fireworks-ai-api-key", "short-body", [fireworksKey.slice(0, 13)]);
+  add("fireworks-ai-api-key", "mask", [`fw_${"*".repeat(24)}`]);
+  add("fireworks-ai-api-key", "reference", ["FIREWORKS_API_KEY=${FIREWORKS_API_KEY}\n"]);
+  add("fireworks-ai-api-key", "label-prose", ["Documentation mentions a Fireworks AI API key (fw_ prefix) without embedding the key value."]);
+  const pineconeKey = `pcsk_${synthetic("coverage:pinecone:api-key:label", 6, AI_ALNUM)}_${synthetic("coverage:pinecone:api-key:secret", 63, AI_ALNUM)}`;
+  positive("pinecone-api-key", "key-shape", [{ secret: pineconeKey }]);
+  add("pinecone-api-key", "prefix-only", ["pcsk_"]);
+  add("pinecone-api-key", "short-body", [pineconeKey.slice(0, 24)]);
+  add("pinecone-api-key", "mask", [`pcsk_${"*".repeat(6)}_${"*".repeat(63)}`]);
+  add("pinecone-api-key", "reference", ["PINECONE_API_KEY=${PINECONE_API_KEY}\n"]);
+  add("pinecone-api-key", "label-prose", ["Documentation mentions a Pinecone API key (pcsk_ prefix) without embedding the key value."]);
+  // Devise.friendly_token body (#230 row 7: l, I, O and 0 never occur).
+  const runnerToken = `glrt-${synthetic("coverage:gitlab:runner-authentication-token:body", 20, "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789")}`;
+  positive("gitlab-runner-authentication-token", "token-shape", [{ secret: runnerToken }]);
+  add("gitlab-runner-authentication-token", "prefix-only", ["glrt-"]);
+  add("gitlab-runner-authentication-token", "short-body", [runnerToken.slice(0, 15)]);
+  add("gitlab-runner-authentication-token", "mask", [`glrt-${"*".repeat(20)}`]);
+  add("gitlab-runner-authentication-token", "reference", ["CI_RUNNER_TOKEN=${CI_RUNNER_TOKEN}\n"]);
+  add("gitlab-runner-authentication-token", "label-prose", ["Documentation mentions a GitLab runner authentication token (glrt- prefix) without embedding the token value."]);
 
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains

@@ -192,6 +192,9 @@ const T1_DIMENSIONS = {
   // byte (alphabet) and the prefix delimiter (boundary).
   'replicate-api-token': ['length', 'alphabet', 'prefix', 'boundary'],
   'openrouter-api-key': ['length', 'alphabet', 'prefix', 'boundary'],
+  // Beta.8 #212 (registry detector since redact-secret#730): Fireworks documents only the fw_
+  // prefix; its beta8-212 twins mutate that prefix and its underscore delimiter.
+  'fireworks-ai-api-key': ['boundary', 'prefix'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -214,5 +217,5 @@ test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
   assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts['not-measured'], 62);
+  assert.equal(probe.counts['not-measured'], 66);
 });

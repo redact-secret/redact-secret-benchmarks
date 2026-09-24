@@ -70,7 +70,14 @@ copying the contract:
 
 The #208 (Replicate, Groq, xAI, OpenRouter) and #210 (LangSmith, Langfuse)
 families graduated this way at the product pin dad7868 (redact-secret#727,
-#728).
+#728), and four #212 families (Perplexity, Fireworks AI, Pinecone `pcsk_`,
+GitLab runner authentication token) at f2082ab (redact-secret#730).
+
+A family the product only types inside a shared detector stays an arrival
+family, because its id is not a registry id: `slack-user-token` and
+`slack-app-level-token` (inside `slack-token`), `stripe-webhook-signing-secret`
+(inside `stripe-token`), `github-fine-grained-pat`, `notion-integration-token`
+and the context-gated `pinecone-api-key-legacy`.
 
 Twins are scoped to their declared family. When a product finding on an
 arrival family's twin is attributed to a *different* known family (for

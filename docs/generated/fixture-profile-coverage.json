@@ -3,8 +3,8 @@
   "profilesVersion": 1,
   "familyCount": 73,
   "cellsMetByProfile": {
-    "arrival-provisional": 57,
-    "stable-documented": 57,
+    "arrival-provisional": 59,
+    "stable-documented": 59,
     "stable-empirical": 15,
     "context-constrained-empirical": 8
   },
@@ -898,13 +898,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
-        "benignControls": 11,
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 16,
         "twinPairs": 5,
-        "positiveContextAxes": 7,
+        "positiveContextAxes": 8,
         "controlAxes": 6,
         "confusionAxes": 8,
         "positiveContextAxisIds": [
@@ -914,7 +917,8 @@
           "#212 · fireworks-ai-api-key · sdk-config",
           "#212 · fireworks-ai-api-key · shell-export",
           "#212 · fireworks-ai-api-key · source-code",
-          "#212 · fireworks-ai-api-key · structured-file"
+          "#212 · fireworks-ai-api-key · structured-file",
+          "fireworks-ai-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -935,14 +939,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "generic-token",
@@ -1116,16 +1113,16 @@
       "family": "gitlab-runner-authentication-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 1,
-        "benignControls": 11,
+        "totalFixtures": 32,
+        "positiveCases": 4,
+        "benignControls": 16,
         "twinPairs": 6,
-        "positiveContextAxes": 5,
+        "positiveContextAxes": 6,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -1133,7 +1130,8 @@
           "#212 · gitlab-runner-authentication-token · container-config",
           "#212 · gitlab-runner-authentication-token · env",
           "#212 · gitlab-runner-authentication-token · structured-file",
-          "#212 · gitlab-runner-authentication-token · tool-output"
+          "#212 · gitlab-runner-authentication-token · tool-output",
+          "gitlab-runner-authentication-token"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -1158,10 +1156,22 @@
       },
       "debt": [
         {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
           "cell": "positiveCases",
-          "actual": 1,
-          "required": 6,
-          "shortfall": 5
+          "actual": 4,
+          "required": 10,
+          "shortfall": 6
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
         }
       ]
     },
@@ -2517,16 +2527,16 @@
       "family": "perplexity-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 2,
-        "benignControls": 10,
+        "totalFixtures": 32,
+        "positiveCases": 5,
+        "benignControls": 15,
         "twinPairs": 6,
-        "positiveContextAxes": 7,
+        "positiveContextAxes": 8,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -2536,7 +2546,8 @@
           "#212 · perplexity-api-key · sdk-config",
           "#212 · perplexity-api-key · shell-export",
           "#212 · perplexity-api-key · structured-file",
-          "#212 · perplexity-api-key · tool-output"
+          "#212 · perplexity-api-key · tool-output",
+          "perplexity-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -2561,10 +2572,22 @@
       },
       "debt": [
         {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
           "cell": "positiveCases",
-          "actual": 2,
-          "required": 6,
-          "shortfall": 4
+          "actual": 5,
+          "required": 10,
+          "shortfall": 5
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
         }
       ]
     },
@@ -2572,16 +2595,19 @@
       "family": "pinecone-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
-        "benignControls": 11,
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 16,
         "twinPairs": 5,
-        "positiveContextAxes": 8,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 8,
         "positiveContextAxisIds": [
@@ -2592,7 +2618,8 @@
           "#212 · pinecone-api-key · sdk-config",
           "#212 · pinecone-api-key · shell-export",
           "#212 · pinecone-api-key · source-code",
-          "#212 · pinecone-api-key · structured-file"
+          "#212 · pinecone-api-key · structured-file",
+          "pinecone-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -2615,9 +2642,21 @@
       },
       "debt": [
         {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
           "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 5,
+          "required": 8,
           "shortfall": 3
         }
       ]

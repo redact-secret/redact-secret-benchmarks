@@ -147,9 +147,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // three rotation-suffixed positives put a provider-undecided suffix inside the secret span, so
   // they move must-redact/T2 -> must-redact/T0 as unscored history (-3 files/-3 spans here, +3 below).
   // Beta.8 #208/#210 graduation (registry pin dad7868): six new registry detectors each carry one
-  // detector-coverage shape positive in three contexts (+18 files/+18 spans).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 407);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 413);
+  // detector-coverage shape positive in three contexts (+18 files/+18 spans); the #212 graduation
+  // (registry pin f2082ab) adds four more families the same way (+12/+12).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 419);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 425);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -214,8 +215,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // still net out via -twins.length but leave the T1/T2/T3 tally (-11).
   assert.equal(tally['must-not-flag/T0'].files, 11);
   // Beta.8 #208/#210 graduation: 30 new independent detector-coverage controls (prefix-only,
-  // short-body, mask, reference and label-prose or public-id for each of six new registry detectors).
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 448);
+  // short-body, mask, reference and label-prose or public-id for each of six new registry detectors);
+  // the #212 graduation adds 20 more for four further registry detectors.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 468);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

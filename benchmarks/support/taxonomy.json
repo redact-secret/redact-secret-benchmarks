@@ -1262,33 +1262,39 @@
       "provider": "perplexity",
       "name": "API key",
       "description": "pplx--prefixed API key; the 48-character alphanumeric body is tool-corroborated, not provider-stated.",
-      "detectors": [],
+      "detectors": [
+        "perplexity-api-key"
+      ],
       "sources": [
         "https://docs.perplexity.ai/docs/admin/api-key-management"
       ],
-      "note": "Beta.8 arrival family perplexity-api-key (#212, research #226); no product detector at the pinned registry revision."
+      "note": "Registry detector perplexity-api-key since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #226), contract in benchmarks/lib/beta8/212.ts."
     },
     {
       "id": "fireworks-ai:api-key",
       "provider": "fireworks-ai",
       "name": "API key",
       "description": "fw_-prefixed API key; 22- and 24-character bodies are observed, not documented.",
-      "detectors": [],
+      "detectors": [
+        "fireworks-ai-api-key"
+      ],
       "sources": [
         "https://docs.fireworks.ai/tools-sdks/python-client/the-tutorial"
       ],
-      "note": "Beta.8 arrival family fireworks-ai-api-key (#212, research #227). The fpk_ Fire Pass key and any unprefixed legacy key are not covered."
+      "note": "Registry detector fireworks-ai-api-key since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #227), contract in benchmarks/lib/beta8/212.ts. The fpk_ Fire Pass key and any unprefixed legacy key are not covered."
     },
     {
       "id": "pinecone:api-key",
       "provider": "pinecone",
       "name": "API key (pcsk_)",
       "description": "Current pcsk_<label>_<secret> API key; prefix from provider code, segment widths tool-corroborated.",
-      "detectors": [],
+      "detectors": [
+        "pinecone-api-key"
+      ],
       "sources": [
         "https://github.com/pinecone-io/cli/blob/main/internal/pkg/cli/command/config/set.go"
       ],
-      "note": "Beta.8 arrival family pinecone-api-key (#212, research #228). The Admin API docs describe an unobserved pckey_ prefix; that contradiction is unresolved."
+      "note": "Registry detector pinecone-api-key since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #228), contract in benchmarks/lib/beta8/212.ts. The Admin API docs describe an unobserved pckey_ prefix; that contradiction is unresolved."
     },
     {
       "id": "pinecone:legacy-api-key",
@@ -1306,12 +1312,14 @@
       "provider": "gitlab",
       "name": "Runner authentication token",
       "description": "glrt--prefixed runner authentication token: a 20-character legacy body, or the routable base64url payload with a base36 length holder and CRC32 checksum.",
-      "detectors": [],
+      "detectors": [
+        "gitlab-runner-authentication-token"
+      ],
       "sources": [
         "https://docs.gitlab.com/security/tokens/",
         "https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/authn/token_field/generator/routable_token.rb"
       ],
-      "note": "Beta.8 arrival family gitlab-runner-authentication-token (#212, research #230). glrtr-, instance-prefixed and unversioned routable variants are not claimed. gitlab-token contract covers glpat- only."
+      "note": "Registry detector gitlab-runner-authentication-token since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #230), contract in benchmarks/lib/beta8/212.ts. glrtr-, instance-prefixed and unversioned routable variants are not claimed. gitlab-token contract covers glpat- only."
     }
   ]
 }

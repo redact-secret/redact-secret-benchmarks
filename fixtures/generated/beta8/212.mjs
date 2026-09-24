@@ -1,6 +1,9 @@
 import { createHash } from "node:crypto";
 import { beta8Corpus } from "./helpers.mjs";
-import { base36Crc, gitlabRoutableValid, contracts } from "../../../benchmarks/lib/beta8/212.ts";
+import { base36Crc, gitlabRoutableValid, contracts as arrivalContracts, registryContracts } from "../../../benchmarks/lib/beta8/212.ts";
+
+// Four of these families graduated to registry detectors (redact-secret#730); their contracts moved to `registryContracts`.
+const contracts = { ...arrivalContracts, ...registryContracts };
 
 // Issue #212 corpus (category `beta8-212`). See docs/specs/beta8-evidence.md.
 // Five second-wave families (research #226-#230), six arrival targets: the

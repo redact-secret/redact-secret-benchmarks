@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "reviewedAt": "2026-09-22",
   "redactSecretVersion": "0.1.0-beta.7",
-  "redactSecretRevision": "dad7868764afdb1afe95fb7169484e14f7cf17ce",
-  "method": "Explicit provider-family mapping against the 63 registered beta.7 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+  "redactSecretRevision": "f2082ab6fe1d0fc8cc703e371e9203bc4ff68f6b",
+  "method": "Explicit provider-family mapping against the 67 registered beta.7 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
   "sources": {
     "gitleaks": {
       "version": "8.30.1",
@@ -473,8 +473,8 @@
       "id": "perplexity_key",
       "sourceUrl": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1312",
       "activation": "default-detector",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "perplexity-api-key",
+      "status": "related-family"
     },
     {
       "tool": "flare-redact",
@@ -1433,7 +1433,7 @@
       "id": "gitlab-runner-authentication-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2254",
       "activation": "default-rule",
-      "relatedDetector": "gitlab-token",
+      "relatedDetector": "gitlab-runner-authentication-token",
       "status": "related-family"
     },
     {
@@ -1441,7 +1441,7 @@
       "id": "gitlab-runner-authentication-token-routable",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2261",
       "activation": "default-rule",
-      "relatedDetector": "gitlab-token",
+      "relatedDetector": "gitlab-runner-authentication-token",
       "status": "related-family"
     },
     {
@@ -1913,8 +1913,8 @@
       "id": "perplexity-api-key",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2718",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "perplexity-api-key",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -7669,8 +7669,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1506",
       "activation": "feature-gated",
       "featureFlag": "PineconeDetectorEnabled",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "pinecone-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",

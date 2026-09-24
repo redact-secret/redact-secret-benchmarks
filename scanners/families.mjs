@@ -20,7 +20,8 @@ const gitleaks = {
   'anthropic-api-key': 'anthropic-token', 'openai-api-key': 'openai-token',
   'shopify-access-token': 'shopify-token', 'stripe-access-token': 'stripe-token',
   'generic-api-key': 'generic-token',
-  // Beta.8 #212 arrival families (benchmarks/lib/beta8/212.ts). gitleaks'
+  // Beta.8 #212 families (benchmarks/lib/beta8/212.ts; perplexity and the runner token are
+  // registry detectors since redact-secret#730). gitleaks'
   // gitlab-rrt (GR1348941 registration token) and slack-user-token stay
   // unmapped: the first is another credential class, and the second already
   // fires on detector-coverage's slack-token xoxp- fixtures, so mapping it
@@ -44,7 +45,7 @@ const trufflehog = {
   // (lsv2_(pt|sk)_<32 hex>_<10 hex>) and langfuse detector (sk-lf-<uuid>,
   // keyword- and pk-gated) report exactly the credential those families measure.
   LangSmith: 'langsmith-api-key', Langfuse: 'langfuse-secret-key',
-  // Beta.8 #212: pcsk_<5-6>_<63>, exactly the pinecone-api-key arrival contract's shape.
+  // Beta.8 #212: pcsk_<5-6>_<63>, exactly the pinecone-api-key contract's shape (registry detector since redact-secret#730).
   Pinecone: 'pinecone-api-key',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
@@ -83,7 +84,7 @@ const flareRedact = {
   mailgun_key: 'mailgun-api-key',
   groq_key: 'groq-api-key', xai_key: 'xai-api-key', openrouter_key: 'openrouter-api-key',
   replicate_token: 'replicate-api-token',
-  // pplx-[A-Za-z0-9]{40,60}: the Beta.8 #212 perplexity-api-key arrival family, over a wider width.
+  // pplx-[A-Za-z0-9]{40,60}: the Beta.8 #212 perplexity-api-key family (registry detector since redact-secret#730), over a wider width.
   perplexity_key: 'perplexity-api-key',
 };
 const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };

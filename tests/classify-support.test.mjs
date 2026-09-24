@@ -7,7 +7,7 @@ import { promisify } from 'node:util';
 import Ajv from 'ajv';
 import { familyEvidence } from '../benchmarks/support/evidence.ts';
 import { classifyFamilySupport } from '../benchmarks/support/status.ts';
-import { contracts } from '../benchmarks/lib/assessment.ts';
+import { contracts, registryContractIds } from '../benchmarks/lib/assessment.ts';
 import { fixtureProfileReport, measureFixtureCells } from '../benchmarks/support/profiles.ts';
 
 const exec = promisify(execFile);
@@ -139,7 +139,9 @@ test('a real classify-support report, if present from a prior eval:classify run,
   let report;
   try { report = await read('results-output/support-status.json'); } catch { return; }
   assert.ok(validate(report), JSON.stringify(validate.errors));
-  assert.equal(report.familyCount, Object.keys(contracts).length);
+  // eval:classify covers registry families only; Beta.8 arrival contracts have no product detector.
+  assert.equal(report.familyCount, registryContractIds.length);
+  assert.deepEqual(report.families.map(f => f.family).sort(), [...registryContractIds].sort());
   assert.equal(new Set(report.families.map(f => f.family)).size, report.familyCount);
   const total = Object.values(report.distribution).reduce((a, b) => a + b, 0);
   assert.equal(total, report.familyCount);

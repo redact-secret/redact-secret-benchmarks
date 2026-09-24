@@ -30,6 +30,8 @@ export interface Provenance {
   productVersion?: string | null;
   /** redact-secret commit measured by the candidate evidence, when a valid report is published. */
   candidateCommit?: string | null;
+  /** Version that commit declares (the release in development, e.g. 0.1.0-beta.7). */
+  candidateVersion?: string | null;
 }
 
 const commitLink = (repository: string, commit: string) =>
@@ -54,6 +56,9 @@ export function buildLine(p: Provenance): string {
   ];
   if (p.productVersion) parts.push(`measured released redact-secret <b>${e(p.productVersion)}</b>`);
   // Candidate evidence is a staging concern; production states only the released version it measured.
-  if (p.env !== 'production' && p.candidateCommit) parts.push(`candidate evidence for redact-secret ${commitLink(PRODUCT_REPOSITORY, p.candidateCommit)}`);
+  if (p.env !== 'production' && p.candidateCommit) {
+    const version = p.candidateVersion ? ` <b>${e(p.candidateVersion)}</b> in development,` : '';
+    parts.push(`candidate evidence for redact-secret${version} main ${commitLink(PRODUCT_REPOSITORY, p.candidateCommit)}`);
+  }
   return parts.join(' · ');
 }

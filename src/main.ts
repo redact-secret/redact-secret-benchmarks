@@ -194,12 +194,13 @@ async function loadProvenance() {
   const json = (url: string) => fetch(url, { cache: 'no-cache' }).then(r => (r.ok && r.headers.get('content-type')?.includes('json') ? (r.json() as Promise<unknown>) : undefined)).catch(() => undefined);
   const run = (await json('/results/run.json')) as Run | undefined;
   let candidateCommit: string | null = null;
+  let candidateVersion: string | null = null;
   if (SITE.env !== 'production') {
     const candidate = await json('/results/candidate-evidence-v1.json');
     // Checked with the Workbench's own contract validator, loaded only when a candidate file is published.
-    if (candidate) { const { candidateProblem } = await import('./evaluation-model'); if (!candidateProblem(candidate)) candidateCommit = commitOf((candidate as CandidateReport).candidate.sourceCommit); }
+    if (candidate) { const { candidateProblem } = await import('./evaluation-model'); if (!candidateProblem(candidate)) { const { sourceCommit, declaredVersion } = (candidate as CandidateReport).candidate; candidateCommit = commitOf(sourceCommit); candidateVersion = typeof declaredVersion === 'string' && /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(declaredVersion) ? declaredVersion : null; } }
   }
-  setBuildLine(buildLine({ ...SITE, productVersion: run?.scannerVersions?.[PRODUCT] ?? null, candidateCommit }));
+  setBuildLine(buildLine({ ...SITE, productVersion: run?.scannerVersions?.[PRODUCT] ?? null, candidateCommit, candidateVersion }));
 }
 void loadProvenance();
 window.addEventListener('popstate', () => { lastPayload = ''; void refresh(true); });

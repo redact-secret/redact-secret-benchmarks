@@ -20,10 +20,11 @@ and `pr-review` Claude Code skills instead of a repo-local copy; the local
 ## Branches
 
 `develop` is the default and integration branch: open feature and workbench PRs
-against it. A push to `develop` publishes `staging.benchmarks.redactsecret.dev`;
-a push to `main` publishes `benchmarks.redactsecret.dev`. Promote `develop` to
-`main` only when the measurement is ready to be public, and keep `main` always
-publishable.
+against it. A push to `develop` publishes its latest commit to
+`staging.benchmarks.redactsecret.dev`. Production (`benchmarks.redactsecret.dev`)
+publishes only the latest benchmarks GitHub Release, whose `vX.Y.Z` tag must be
+on `main`; a push to `main` publishes nothing. To ship: promote `develop` to
+`main`, then publish a release from `main`.
 
 ## Peer scanner version
 

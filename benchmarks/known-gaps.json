@@ -341,7 +341,9 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/404",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-404",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "sendgrid-token-regression-crlf-and-unicode-prefix"
+        ]
       },
       "evidence": [
         {
@@ -1004,7 +1006,9 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/552",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-552",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "regression-generic-token-markdown-inline-code-boundary"
+        ]
       },
       "fix": {
         "commit": "11dba979d98a5c91420bf82a66e86eb6a9d5c559"
@@ -1521,7 +1525,22 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/671",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-671",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "datadog-application-key-positive-bare",
+          "datadog-application-key-positive-dotenv",
+          "datadog-application-key-positive-json",
+          "datadog-application-key-positive-yaml",
+          "datadog-application-key-positive-header-marker",
+          "datadog-application-key-positive-crlf-unicode-prefix",
+          "datadog-application-key-positive-repeated-value",
+          "datadog-application-key-positive-doc-style-placeholder",
+          "datadog-application-key-boundary-one-short",
+          "datadog-application-key-boundary-one-long",
+          "datadog-application-key-negative-wrong-prefix-case",
+          "datadog-application-key-negative-embedded-identifier",
+          "datadog-application-key-negative-underscore-in-body",
+          "datadog-application-key-adversarial-long-suffix"
+        ]
       },
       "fix": {
         "commit": "2ca56a29ea19f93ec111370a5d4a8115cb8ddf33"
@@ -1721,7 +1740,11 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/670",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-670",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "discord-bot-token-positive-current-new-bot-bare",
+          "discord-bot-token-positive-current-reset-bot-bare",
+          "discord-bot-token-negative-19-digit-id-legacy-shape"
+        ]
       },
       "fix": {
         "commit": "c053505335844d763491a85eb57826cbb7aeee8a"

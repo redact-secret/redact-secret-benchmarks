@@ -36,3 +36,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Enforce fixture profiles by claim and publish per-family coverage debt](2026-09-24-enforce-fixture-profiles-and-publish-coverage-debt.md)
 - [Decouple pin freshness from pin consistency](2026-09-23-decouple-pin-freshness-from-pin-consistency.md)
 - [Qualify T2 families empirically without changing their provenance](2026-09-24-qualify-t2-empirically.md)
+- [Amend #207's added scope to 348 family-fixture assignments (proposed)](2026-09-24-amend-207-scope-to-348-assignments.md)

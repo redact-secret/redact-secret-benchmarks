@@ -165,7 +165,7 @@ test("generated corpora are deterministic, valid, and match the checked-in files
   assert.deepEqual(
     // beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles, not pinned here.
     Object.entries(corpora).filter(([id]) => !id.startsWith("beta8-")).map(([, c]) => c.fixtures.length),
-    [42, 173, 24, 49, 26, 92, 875, 150],
+    [42, 173, 24, 49, 26, 92, 923, 150],
   );
   for (const [id, corpus] of Object.entries(corpora)) {
     assert.equal(corpus.schemaVersion, 2);

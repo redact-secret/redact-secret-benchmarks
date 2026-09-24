@@ -60,6 +60,9 @@ TRUFFLEHOG_FAMILIES = {
     "netlify/v2": "netlify-token",
     "heroku/v2": "heroku-api-key", "heroku/v1": "heroku-api-key-legacy",
     "mailchimp": "mailchimp-api-key", "mailgun": "mailgun-api-key", "okta": "okta-api-token",
+    # Beta.8 #208/#210 families, registry detectors since redact-secret#727/#728.
+    "replicate": "replicate-api-token", "groq": "groq-api-key", "xai": "xai-api-key",
+    "openrouter": "openrouter-api-key", "langsmith": "langsmith-api-key", "langfuse": "langfuse-secret-key",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",
@@ -77,6 +80,8 @@ FLARE_REDACT_FAMILIES = {
     "linear_key": "linear-token", "supabase_key": "supabase-token", "bearer_token": "bearer-token",
     "url_credentials": "connection-string", "databricks_token": "databricks-personal-access-token",
     "postman_key": "postman-api-key", "netlify_token": "netlify-token", "mailgun_key": "mailgun-api-key",
+    "groq_key": "groq-api-key", "xai_key": "xai-api-key", "openrouter_key": "openrouter-api-key",
+    "replicate_token": "replicate-api-token",
 }
 
 

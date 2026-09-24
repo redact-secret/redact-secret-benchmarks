@@ -186,6 +186,12 @@ const T1_DIMENSIONS = {
   'huggingface-token': ['length', 'prefix'],
   'microsoft-entra-client-secret': ['length', 'boundary'],
   'new-relic-license-key': ['length', 'boundary'],
+  // Beta.8 #208 families, registry detectors since redact-secret#727 (graduated from arrival
+  // families): Replicate states the r8_ prefix and 40-character total, OpenRouter the sk-or-v1-
+  // prefix and 64-lowercase-hex body; their beta8-208 twins mutate those plus a non-word body
+  // byte (alphabet) and the prefix delimiter (boundary).
+  'replicate-api-token': ['length', 'alphabet', 'prefix', 'boundary'],
+  'openrouter-api-key': ['length', 'alphabet', 'prefix', 'boundary'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -208,5 +214,5 @@ test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
   assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts['not-measured'], 56);
+  assert.equal(probe.counts['not-measured'], 62);
 });

@@ -3,8 +3,8 @@
   "profilesVersion": 1,
   "familyCount": 73,
   "cellsMetByProfile": {
-    "arrival-provisional": 51,
-    "stable-documented": 51,
+    "arrival-provisional": 57,
+    "stable-documented": 57,
     "stable-empirical": 15,
     "context-constrained-empirical": 8
   },
@@ -1372,16 +1372,19 @@
       "family": "groq-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
-        "benignControls": 9,
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 14,
         "twinPairs": 6,
-        "positiveContextAxes": 8,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -1392,7 +1395,8 @@
           "#208 · groq-api-key · shell-export",
           "#208 · groq-api-key · source-code",
           "#208 · groq-api-key · structured-file",
-          "#208 · groq-api-key · tool-output"
+          "#208 · groq-api-key · tool-output",
+          "groq-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -1417,10 +1421,22 @@
       },
       "debt": [
         {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
           "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
         }
       ]
     },
@@ -1627,16 +1643,19 @@
       "family": "langfuse-secret-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
-        "benignControls": 11,
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 16,
         "twinPairs": 5,
-        "positiveContextAxes": 8,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -1647,7 +1666,8 @@
           "#210 · langfuse-secret-key · log",
           "#210 · langfuse-secret-key · sdk-config",
           "#210 · langfuse-secret-key · source-code",
-          "#210 · langfuse-secret-key · structured-file"
+          "#210 · langfuse-secret-key · structured-file",
+          "langfuse-secret-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -1672,9 +1692,21 @@
       },
       "debt": [
         {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
           "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 5,
+          "required": 8,
           "shortfall": 3
         }
       ]
@@ -1683,16 +1715,19 @@
       "family": "langsmith-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
-        "benignControls": 11,
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 16,
         "twinPairs": 5,
-        "positiveContextAxes": 8,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -1703,7 +1738,8 @@
           "#210 · langsmith-api-key · log",
           "#210 · langsmith-api-key · sdk-config",
           "#210 · langsmith-api-key · shell-export",
-          "#210 · langsmith-api-key · structured-file"
+          "#210 · langsmith-api-key · structured-file",
+          "langsmith-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -1728,9 +1764,21 @@
       },
       "debt": [
         {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
           "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 5,
+          "required": 8,
           "shortfall": 3
         }
       ]
@@ -2355,13 +2403,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
-        "benignControls": 9,
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 14,
         "twinPairs": 6,
-        "positiveContextAxes": 8,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -2372,7 +2423,8 @@
           "#208 · openrouter-api-key · sdk-config",
           "#208 · openrouter-api-key · shell-export",
           "#208 · openrouter-api-key · structured-file",
-          "#208 · openrouter-api-key · tool-output"
+          "#208 · openrouter-api-key · tool-output",
+          "openrouter-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -2395,14 +2447,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "otpauth-uri",
@@ -2834,13 +2879,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
-        "benignControls": 9,
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 14,
         "twinPairs": 6,
-        "positiveContextAxes": 7,
+        "positiveContextAxes": 8,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -2850,7 +2898,8 @@
           "#208 · replicate-api-token · prose",
           "#208 · replicate-api-token · sdk-config",
           "#208 · replicate-api-token · structured-file",
-          "#208 · replicate-api-token · tool-output"
+          "#208 · replicate-api-token · tool-output",
+          "replicate-api-token"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -2873,14 +2922,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "sendgrid-token",
@@ -3785,16 +3827,19 @@
       "family": "xai-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
-        "benignControls": 9,
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 14,
         "twinPairs": 6,
-        "positiveContextAxes": 8,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -3805,7 +3850,8 @@
           "#208 · xai-api-key · sdk-config",
           "#208 · xai-api-key · shell-export",
           "#208 · xai-api-key · structured-file",
-          "#208 · xai-api-key · tool-output"
+          "#208 · xai-api-key · tool-output",
+          "xai-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -3830,10 +3876,22 @@
       },
       "debt": [
         {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
           "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
         }
       ]
     }

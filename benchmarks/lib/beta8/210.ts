@@ -3,9 +3,11 @@ import { field, th } from '../contract-sources.ts';
 
 // Issue #210. Owned by that issue only; see docs/specs/beta8-evidence.md.
 // Research: #219 (langsmith:api-key) and #221 (langfuse:secret-key), both
-// Broad-discovery passes observed 2026-09-24. Product counterpart
-// redact-secret/redact-secret#728 (blocked by #726); the pinned product
-// registry (2b98027) has no detector for either family.
+// Broad-discovery passes observed 2026-09-24. First measured as arrival
+// families; graduated to registry detector families when the product registry
+// gained langsmith-api-key and langfuse-secret-key (redact-secret#728, PR #760;
+// registry pinned at dad7868). The contracts stay owned here and are merged
+// into the registry contracts by benchmarks/lib/assessment.ts.
 export const issue = 210;
 
 const AT = '2026-09-24';
@@ -41,14 +43,17 @@ const LF_BETTERLEAKS = 'https://github.com/betterleaks/betterleaks/blob/main/con
 const LF_MASKGO = 'https://github.com/koki-develop/mask-go/pull/179';
 const LF_RESEARCH = 'https://github.com/redact-secret/redact-secret-benchmarks/issues/221';
 
-/** Families measured here that no registry detector targets. Their ids are case targets, never detector ids. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'langsmith-api-key', taxonomy: 'langsmith:api-key', issue, reason: 'No LangSmith detector exists in the product registry at the pinned sourceRevision (2b98027); redact-secret/redact-secret#728 (blocked by #726) is the open implementation issue.' },
-  { id: 'langfuse-secret-key', taxonomy: 'langfuse:secret-key', issue, reason: 'No Langfuse detector exists in the product registry at the pinned sourceRevision (2b98027); redact-secret/redact-secret#728 (blocked by #726) is the open implementation issue.' },
-];
+/** Families measured here that no registry detector targets. Both graduated to registry detectors. */
+export const arrivalFamilies: ArrivalFamily[] = [];
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = {};
 
-/** Contracts for `arrivalFamilies` ids only. A registry detector's contract stays in benchmarks/lib/assessment.ts. */
-export const contracts: Record<string, FormatContract> = {
+/**
+ * Contracts for this issue's families that graduated to registry detectors (each key is a
+ * benchmarks/detectors.json id). Authored under #210 as arrival contracts; merged into the
+ * registry contracts by benchmarks/lib/assessment.ts, never duplicated there.
+ */
+export const registryContracts: Record<string, FormatContract> = {
   'langsmith-api-key': {
     tier: 'T2',
     pattern: '^lsv2_(?:pt|sk)_[0-9a-f]{32}_[0-9a-f]{10}$',
@@ -58,7 +63,7 @@ export const contracts: Record<string, FormatContract> = {
       { tool: 'poltergeist', label: 'langsmith.yaml', url: LS_POLTERGEIST },
     ],
     references: [LS_DOCS, LS_OPENAPI, LS_SDK_ANON, LS_RESEARCH],
-    review: 'Arrival contract (#210, research #219 observed 2026-09-24). LangSmith\'s own documentation establishes two API-key roles — Personal Access Tokens and workspace/org service keys — their issuance under Settings → API Keys, one-time display and the LANGSMITH_API_KEY / X-API-Key contexts, but states no prefix, length or alphabet. The docs render only masked lsv2_pt_…/lsv2_sk_… forms. The segment grammar lsv2_(pt|sk)_<32 lowercase hex>_<10 lowercase hex> is tool-corroborated: trufflehog 3.97.4\'s langsmith detector matches exactly that (lowercase only), while Titus/Kingfisher and Poltergeist match the same widths case-insensitively. The provider\'s own SDK redactor (provider code) is looser — [A-Za-z0-9]{32,} plus any number of _ tails — and is a redaction heuristic, not a format spec. Uppercase hex is therefore neither claimed nor twinned. The legacy ls__ form, LangSmith license keys, SCIM bearer tokens, OAuth access/refresh tokens, the internal X-Service-Key JWT and the uncorroborated deployment keys (sk-*/dep-srv-*) are separate credentials this contract does not claim; none is used as a benign control. gitleaks 8.30.1 has no LangSmith rule, so a gitleaks miss is the expected peer result.',
+    review: 'Graduated arrival contract (#210, registry detector since redact-secret#728; research #219 observed 2026-09-24). LangSmith\'s own documentation establishes two API-key roles — Personal Access Tokens and workspace/org service keys — their issuance under Settings → API Keys, one-time display and the LANGSMITH_API_KEY / X-API-Key contexts, but states no prefix, length or alphabet. The docs render only masked lsv2_pt_…/lsv2_sk_… forms. The segment grammar lsv2_(pt|sk)_<32 lowercase hex>_<10 lowercase hex> is tool-corroborated: trufflehog 3.97.4\'s langsmith detector matches exactly that (lowercase only), while Titus/Kingfisher and Poltergeist match the same widths case-insensitively. The provider\'s own SDK redactor (provider code) is looser — [A-Za-z0-9]{32,} plus any number of _ tails — and is a redaction heuristic, not a format spec. Uppercase hex is therefore neither claimed nor twinned. The legacy ls__ form, LangSmith license keys, SCIM bearer tokens, OAuth access/refresh tokens, the internal X-Service-Key JWT and the uncorroborated deployment keys (sk-*/dep-srv-*) are separate credentials this contract does not claim; none is used as a benign control. gitleaks 8.30.1 has no LangSmith rule, so a gitleaks miss is the expected peer result.',
     fields: [
       field({ field: 'roles', claim: 'Two API-key roles: Personal Access Token (inherits the creating user\'s permissions) and service key (workspace- or org-scoped). Shown once at creation.', basis: 'provider-documentation', status: 'frozen', sources: [{ url: LS_DOCS, observedAt: AT }] }),
       field({ field: 'contexts', claim: 'LANGSMITH_API_KEY env (legacy LANGCHAIN_API_KEY), X-API-Key header, OTEL_EXPORTER_OTLP_HEADERS x-api-key=<key>; LANGSMITH_WORKSPACE_ID and LANGSMITH_ENDPOINT are non-secret neighbours.', basis: 'provider-documentation', status: 'frozen', sources: [{ url: LS_DOCS, observedAt: AT }, { url: LS_OTEL, observedAt: AT }] }),
@@ -79,7 +84,7 @@ export const contracts: Record<string, FormatContract> = {
       { tool: 'betterleaks', label: 'langfuse-secret-key.1', url: LF_BETTERLEAKS },
     ],
     references: [LF_KEYS, LF_SDK, LF_PUBLIC_API, LF_RESEARCH],
-    review: 'Arrival contract (#210, research #221 observed 2026-09-24). Covers only issuer-minted keys: Langfuse\'s own key generator (provider code, unchanged from 2023-06 to 2026-09) builds sk-lf-${randomUUID()}, i.e. sk-lf- plus a lowercase RFC 4122 version-4 UUID (42 characters; version nibble 4, variant nibble 8/9/a/b), and uses the same generator for project, organization and AI-gateway keys. Langfuse documentation shows the sk-lf-/pk-lf- prefixes and the contexts (LANGFUSE_SECRET_KEY, SDK constructors, Basic auth public-key:secret-key, OTLP Authorization=Basic) but states no body grammar, so the tier stays T2: the body is provider code corroborated by trufflehog 3.97.4 (which also requires a langfuse keyword and the paired pk) and betterleaks. The public key pk-lf-<uuid> is documented as safe for browser code and is this family\'s public-prefix twin and public-id control. Self-hosted operator-defined keys (headless init accepts any string; the admin API enforces only the sk-lf- prefix) are simply outside the minted-shape claim: none is fixtured, and none is asserted silent. The sk-lf-gw- form appears only in a PR description, Storybook stories and a unit-test fixture; it is recorded, neither claimed nor asserted silent. A base64 Basic-auth blob carries the secret only in encoded form; this contract makes no claim on it and it is not fixtured as a control. gitleaks 8.30.1 has no Langfuse rule.',
+    review: 'Graduated arrival contract (#210, registry detector since redact-secret#728; research #221 observed 2026-09-24). Covers only issuer-minted keys: Langfuse\'s own key generator (provider code, unchanged from 2023-06 to 2026-09) builds sk-lf-${randomUUID()}, i.e. sk-lf- plus a lowercase RFC 4122 version-4 UUID (42 characters; version nibble 4, variant nibble 8/9/a/b), and uses the same generator for project, organization and AI-gateway keys. Langfuse documentation shows the sk-lf-/pk-lf- prefixes and the contexts (LANGFUSE_SECRET_KEY, SDK constructors, Basic auth public-key:secret-key, OTLP Authorization=Basic) but states no body grammar, so the tier stays T2: the body is provider code corroborated by trufflehog 3.97.4 (which also requires a langfuse keyword and the paired pk) and betterleaks. The public key pk-lf-<uuid> is documented as safe for browser code and is this family\'s public-prefix twin and public-id control. Self-hosted operator-defined keys (headless init accepts any string; the admin API enforces only the sk-lf- prefix) are simply outside the minted-shape claim: none is fixtured, and none is asserted silent. The sk-lf-gw- form appears only in a PR description, Storybook stories and a unit-test fixture; it is recorded, neither claimed nor asserted silent. A base64 Basic-auth blob carries the secret only in encoded form; this contract makes no claim on it and it is not fixtured as a control. gitleaks 8.30.1 has no Langfuse rule.',
     fields: [
       field({ field: 'prefix', claim: 'Secret keys start sk-lf-; the public sibling starts pk-lf-.', basis: 'provider-documentation', status: 'frozen', sources: [{ url: LF_SDK, observedAt: AT }, { url: LF_PUBLIC_API, observedAt: AT }, { url: LF_RBAC, observedAt: AT }] }),
       field({ field: 'public-sibling', claim: 'pk-lf- is the public key; browser SDKs need only it, and Langfuse says never to expose the secret key in frontend code.', basis: 'provider-documentation', status: 'frozen', sources: [{ url: LF_WEB_SDK, observedAt: AT }] }),

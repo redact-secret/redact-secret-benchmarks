@@ -25,6 +25,18 @@ for (const m of BETA8_MODULES)
     if (Object.hasOwn(arrivalContracts, id)) throw new Error(`Arrival contract declared twice: ${id}`);
     arrivalContracts[id] = contract;
   }
+/**
+ * Contracts a module authored for families that have since graduated to registry detectors
+ * (`registryContracts`, optional per module). Keys are benchmarks/detectors.json ids;
+ * benchmarks/lib/assessment.ts merges them into the registry contracts, so the contract is
+ * never duplicated when a product detector lands for an arrival family.
+ */
+export const graduatedContracts: Record<string, FormatContract> = {};
+for (const m of BETA8_MODULES)
+  for (const [id, contract] of Object.entries((m as { registryContracts?: Record<string, FormatContract> }).registryContracts ?? {})) {
+    if (Object.hasOwn(graduatedContracts, id) || Object.hasOwn(arrivalContracts, id)) throw new Error(`Graduated contract declared twice: ${id}`);
+    graduatedContracts[id] = contract;
+  }
 /** target → { issue, profile }. A target is declared by exactly one issue. */
 export const beta8Profiles: Record<string, { issue: number | string; profile: FixtureProfile }> = {};
 for (const m of BETA8_MODULES)
@@ -48,6 +60,8 @@ export function validateBeta8(registryIds: Iterable<string>, taxonomyIds: Iterab
       if (!f.reason?.trim()) problems.push(`${f.id}: no reason recorded for targeting no registry detector`);
       if (!Object.hasOwn(m.contracts, f.id)) problems.push(`${f.id}: arrival family without a contract in #${m.issue}'s module`);
     }
+  for (const id of Object.keys(graduatedContracts))
+    if (!registry.has(id)) problems.push(`${id}: graduated contract for an id that is not a registry detector`);
   for (const m of BETA8_MODULES) {
     for (const id of Object.keys(m.contracts))
       if (!m.arrivalFamilies.some(f => f.id === id)) problems.push(`${id}: contract in #${m.issue}'s module for an undeclared arrival family`);

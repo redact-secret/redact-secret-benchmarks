@@ -775,6 +775,62 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("okta-api-token", "label-prose", ["Documentation mentions an Okta API token (SSWS authorization scheme) without embedding the token value."]);
   add("okta-api-token", "public-id", ["OKTA_ORG_URL=https://dev-123456.okta.com\nOKTA_CLIENT_ID=0oa1abcdefghijklmn0h7\n"]);
 
+  // Beta.8 #208/#210 families, registry detectors since the dad7868 re-pin
+  // (redact-secret#727 PR #759: replicate/groq/xai/openrouter; #728 PR #760:
+  // langsmith/langfuse). Their full evidence (contracts, twins, profile
+  // debt) lives in the beta8-208/beta8-210 corpora and
+  // benchmarks/lib/beta8/{208,210}.ts; these are the registry-wide
+  // detector-coverage minimum (bare/quoted/unicode-crlf positives plus
+  // independent controls) every registered detector carries. Bodies stay
+  // alphanumeric (or hex) so no fixture leans on a provisional '-'/'_' byte.
+  const AI_ALNUM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const AI_HEX = "0123456789abcdef";
+  const replicateToken = `r8_${synthetic("coverage:replicate:api-token:body", 37, AI_ALNUM)}`;
+  positive("replicate-api-token", "token-shape", [{ secret: replicateToken }]);
+  add("replicate-api-token", "prefix-only", ["r8_"]);
+  add("replicate-api-token", "short-body", [replicateToken.slice(0, 13)]);
+  add("replicate-api-token", "mask", [`r8_${"*".repeat(37)}`]);
+  add("replicate-api-token", "reference", ["REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}\n"]);
+  add("replicate-api-token", "label-prose", ["Documentation mentions a Replicate API token (r8_ prefix) without embedding the token value."]);
+  const groqKey = `gsk_${synthetic("coverage:groq:api-key:body", 52, AI_ALNUM)}`;
+  positive("groq-api-key", "key-shape", [{ secret: groqKey }]);
+  add("groq-api-key", "prefix-only", ["gsk_"]);
+  add("groq-api-key", "short-body", [groqKey.slice(0, 20)]);
+  add("groq-api-key", "mask", [`gsk_${"*".repeat(52)}`]);
+  add("groq-api-key", "reference", ["GROQ_API_KEY=${GROQ_API_KEY}\n"]);
+  add("groq-api-key", "label-prose", ["Documentation mentions a Groq API key (gsk_ prefix) without embedding the key value."]);
+  const xaiKey = `xai-${synthetic("coverage:xai:api-key:body", 80, AI_ALNUM)}`;
+  positive("xai-api-key", "key-shape", [{ secret: xaiKey }]);
+  add("xai-api-key", "prefix-only", ["xai-"]);
+  add("xai-api-key", "short-body", [xaiKey.slice(0, 24)]);
+  add("xai-api-key", "mask", [`xai-${"*".repeat(80)}`]);
+  add("xai-api-key", "reference", ["XAI_API_KEY=${XAI_API_KEY}\n"]);
+  add("xai-api-key", "label-prose", ["Documentation mentions an xAI API key (xai- prefix) without embedding the key value."]);
+  const openrouterKey = `sk-or-v1-${synthetic("coverage:openrouter:api-key:body", 64, AI_HEX)}`;
+  positive("openrouter-api-key", "key-shape", [{ secret: openrouterKey }]);
+  add("openrouter-api-key", "prefix-only", ["sk-or-v1-"]);
+  add("openrouter-api-key", "short-body", [openrouterKey.slice(0, 29)]);
+  add("openrouter-api-key", "mask", [`sk-or-v1-${"*".repeat(64)}`]);
+  add("openrouter-api-key", "reference", ["OPENROUTER_API_KEY=${OPENROUTER_API_KEY}\n"]);
+  add("openrouter-api-key", "label-prose", ["Documentation mentions an OpenRouter API key (sk-or-v1- prefix) without embedding the key value."]);
+  const langsmithKey = `lsv2_pt_${synthetic("coverage:langsmith:api-key:head", 32, AI_HEX)}_${synthetic("coverage:langsmith:api-key:tail", 10, AI_HEX)}`;
+  positive("langsmith-api-key", "pat-shape", [{ secret: langsmithKey }]);
+  add("langsmith-api-key", "prefix-only", ["lsv2_pt_"]);
+  add("langsmith-api-key", "short-body", [langsmithKey.slice(0, 24)]);
+  add("langsmith-api-key", "mask", [`lsv2_pt_${"*".repeat(32)}_${"*".repeat(10)}`]);
+  add("langsmith-api-key", "reference", ["LANGSMITH_API_KEY=${LANGSMITH_API_KEY}\n"]);
+  add("langsmith-api-key", "label-prose", ["Documentation mentions a LangSmith API key (lsv2_pt_ or lsv2_sk_ prefix) without embedding the key value."]);
+  const langfuseHex = synthetic("coverage:langfuse:secret-key:body", 32, AI_HEX);
+  const langfuseUuid = `${langfuseHex.slice(0, 8)}-${langfuseHex.slice(8, 12)}-4${langfuseHex.slice(13, 16)}-a${langfuseHex.slice(17, 20)}-${langfuseHex.slice(20, 32)}`;
+  const langfuseKey = `sk-lf-${langfuseUuid}`;
+  positive("langfuse-secret-key", "key-shape", [{ secret: langfuseKey }]);
+  add("langfuse-secret-key", "prefix-only", ["sk-lf-"]);
+  add("langfuse-secret-key", "short-body", [langfuseKey.slice(0, 20)]);
+  add("langfuse-secret-key", "mask", [`sk-lf-${"*".repeat(8)}-${"*".repeat(4)}-${"*".repeat(4)}-${"*".repeat(4)}-${"*".repeat(12)}`]);
+  add("langfuse-secret-key", "reference", ["LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY}\n"]);
+  const langfusePublicHex = synthetic("coverage:langfuse:public-key:body", 32, AI_HEX);
+  add("langfuse-secret-key", "public-id", [`LANGFUSE_PUBLIC_KEY=pk-lf-${langfusePublicHex.slice(0, 8)}-${langfusePublicHex.slice(8, 12)}-4${langfusePublicHex.slice(13, 16)}-b${langfusePublicHex.slice(17, 20)}-${langfusePublicHex.slice(20, 32)}\n`]);
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

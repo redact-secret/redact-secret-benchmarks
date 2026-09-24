@@ -128,9 +128,9 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   assert.ok(measured.includes(`${probe.counts.discriminated} discriminated · ${probe.counts['not-discriminated']} not discriminated · ${probe.counts['un-probeable']} un-probeable`), 'three separate lines');
   // #207 lifted seven un-probeable records (supabase, discord, telegram, both Sentry and both Twilio families); vercel-token remains.
   assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts.discriminated + probe.counts['not-discriminated'], 56, 'the test product reports every secret exactly and nothing else');
+  assert.equal(probe.counts.discriminated + probe.counts['not-discriminated'], 62, 'the test product reports every secret exactly and nothing else');
   for (const entry of probe.entries.filter(x => x.status === 'un-probeable')) assert.ok(measured.replaceAll('&quot;', '"').replaceAll('&#39;', "'").includes(entry.reason), entry.id);
-  assert.ok(text(coveragePage(fixtures, 'all')).includes('56 not measured'), 'without a run nothing is claimed');
+  assert.ok(text(coveragePage(fixtures, 'all')).includes('62 not measured'), 'without a run nothing is claimed');
   assert.ok(!coveragePage(fixtures, 'thin', data).includes('id="twin-probe"'));
   assert.ok(text(detectorPage(data, fixtures, 'vercel-token')).includes('Un-probeable'));
   assert.ok(detectorPage(data, fixtures, 'bearer-token').includes('Twin source'));

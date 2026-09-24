@@ -24,8 +24,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 51 | 73 |
-| Stable / documented | 51 | 73 |
+| Arrival / provisional | 57 | 73 |
+| Stable / documented | 57 | 73 |
 | Stable / empirical | 15 | 73 |
 | Context-constrained empirical | 8 | 73 |
 
@@ -59,13 +59,13 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | google-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
 | grafana-cloud-access-policy-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | grafana-service-account-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
-| groq-api-key | T2 | arrival-provisional | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
+| groq-api-key | T2 | stable-empirical | 32 | 6 | 14 | 6 | 9 | 6 | 10 | total fixtures 32/40; positive/context cases 6/10; twin pairs 6/8 |
 | heroku-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
 | heroku-api-key-legacy | T2 | context-constrained-empirical | 49 | 3 | 20 | 13 | 13 | 6 | 8 | none |
 | huggingface-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 4 | 6 | none |
 | jwt | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 6 | 8 | none |
-| langfuse-secret-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
-| langsmith-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
+| langfuse-secret-key | T2 | stable-empirical | 32 | 6 | 16 | 5 | 9 | 6 | 10 | total fixtures 32/40; positive/context cases 6/10; twin pairs 5/8 |
+| langsmith-api-key | T2 | stable-empirical | 32 | 6 | 16 | 5 | 9 | 6 | 10 | total fixtures 32/40; positive/context cases 6/10; twin pairs 5/8 |
 | linear-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 4 | 4 | 5 | none |
 | mailchimp-api-key | T2 | stable-empirical | 41 | 14 | 14 | 8 | 14 | 6 | 8 | none |
 | mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 8 | 11 | 6 | 9 | none |
@@ -78,7 +78,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | npm-token | T1 | stable-documented | 24 | 8 | 8 | 6 | 4 | 5 | 8 | none |
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
-| openrouter-api-key | T1 | stable-documented | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
+| openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
 | otpauth-uri | T3 | arrival-provisional | 17 | 0 | 5 | 6 | 1 | 3 | 4 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
 | perplexity-api-key | T2 | arrival-provisional | 24 | 2 | 10 | 6 | 7 | 6 | 10 | positive/context cases 2/6 |
 | pinecone-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 8 | positive/context cases 3/6 |
@@ -87,7 +87,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | private-key | T1 | stable-documented | 36 | 18 | 8 | 5 | 4 | 6 | 8 | none |
 | pulumi-access-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
 | pypi-token | T1 | stable-documented | 26 | 6 | 8 | 9 | 7 | 6 | 9 | none |
-| replicate-api-token | T1 | stable-documented | 24 | 3 | 9 | 6 | 7 | 6 | 10 | positive/context cases 3/6 |
+| replicate-api-token | T1 | stable-documented | 32 | 6 | 14 | 6 | 8 | 6 | 10 | none |
 | sendgrid-token | T1 | stable-documented | 68 | 22 | 12 | 18 | 8 | 4 | 6 | none |
 | sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
@@ -105,4 +105,4 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | twilio-auth-token | T2 | context-constrained-empirical | 49 | 12 | 17 | 10 | 18 | 6 | 7 | none |
 | vault-token | T1 | stable-documented | 28 | 12 | 8 | 6 | 4 | 6 | 9 | none |
 | vercel-token | T0 | arrival-provisional | 20 | 15 | 5 | 0 | 1 | 3 | 3 | total fixtures 20/24; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
-| xai-api-key | T2 | arrival-provisional | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
+| xai-api-key | T2 | stable-empirical | 32 | 6 | 14 | 6 | 9 | 6 | 10 | total fixtures 32/40; positive/context cases 6/10; twin pairs 6/8 |

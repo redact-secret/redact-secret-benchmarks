@@ -541,6 +541,60 @@
       ]
     },
     {
+      "family": "groq-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Groq pages show the gsk_ prefix only in placeholders and state no length or alphabet; the 52-character alphanumeric body rests on tool rules and a four-sample maintainer observation (#218), not on a provider grammar. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "bare value (the gsk_ prefix plus the exact 52-character body is the only marker)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/groq/groq.go",
+          "observedAt": "2026-09-24",
+          "supports": "groq: gsk_ + exactly 52 of [a-zA-Z0-9], \\b-bounded"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "flare-collection",
+          "reference": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1272",
+          "observedAt": "2026-09-24",
+          "supports": "groq_key: gsk_ + 40-60 of [A-Za-z0-9] (a looser width that admits 52)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "groq",
+          "reference": "https://console.groq.com/docs/production-readiness/security-onboarding",
+          "observedAt": "2026-09-24",
+          "supports": "the gsk_ prefix, by placeholder only (gsk_your_secret_key_here); no length or alphabet"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/218",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 research pass: tools agree on 52 mixed-case alphanumerics after gsk_; a four-key maintainer observation agrees"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "A gitleaks pull request (#2181) proposes a 48-character body.",
+          "status": "bounded",
+          "bound": "Contradicted by every tool rule and the #218 observation; the contract freezes 52 and no fixture uses a 48-character body or asserts silence on one."
+        },
+        {
+          "statement": "Four observed keys share a fixed WGdyb3FY segment at body offsets 20-27; no source states it.",
+          "status": "bounded",
+          "bound": "Not part of the contract pattern: positives do not carry it and no fixture asserts silence on its absence."
+        }
+      ]
+    },
+    {
       "family": "heroku-api-key-legacy",
       "mode": "context-constrained",
       "supportsBareValues": false,
@@ -608,6 +662,109 @@
           "statement": "devcenter.heroku.com/articles/authentication shows a 40-character lowercase-hex API token (undated era) in its auth:token and .netrc examples, a shape other than the UUID the changelog shows (#232).",
           "status": "bounded",
           "bound": "The contract claims only the 8-4-4-4-12 UUID and records the 40-hex shape as unresolved; no fixture uses or excludes a 40-hex value."
+        }
+      ]
+    },
+    {
+      "family": "langfuse-secret-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Langfuse documents the sk-lf-/pk-lf- prefixes, roles and contexts; the lowercase UUIDv4 body is provider code (its key generator, unchanged 2023-06 to 2026-09), not documentation. Self-hosted operator-defined values and a possible sk-lf-gw- gateway shape are outside the claim. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "bare value (sk-lf- plus a lowercase UUIDv4)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "provider-owned-code",
+          "owner": "langfuse",
+          "reference": "https://github.com/langfuse/langfuse/blob/dbf5107df264bfcb0613a29237143e78ce16ca8a/packages/shared/src/server/auth/apiKeys.ts",
+          "observedAt": "2026-09-24",
+          "supports": "the key generator builds sk-lf-${randomUUID()}: sk-lf- + a lowercase RFC 4122 v4 UUID (42 characters)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "langfuse",
+          "reference": "https://github.com/langfuse/langfuse/blob/763147beed6e/src/features/publicApi/lib/apiKeys.ts",
+          "observedAt": "2026-09-24",
+          "supports": "the earliest (2023-06) generator mints the same sk-lf-<uuid> shape"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/detectors/langfuse/langfuse.go",
+          "observedAt": "2026-09-24",
+          "supports": "langfuse: sk-lf- + 8-4-4-4-12 lowercase hex (keyword- and pk-lf-gated; v4 nibbles unchecked)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "langfuse",
+          "reference": "https://langfuse.com/docs/observability/sdk/overview",
+          "observedAt": "2026-09-24",
+          "supports": "sk-lf- secret / pk-lf- public prefixes and the LANGFUSE_SECRET_KEY context"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/221",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 research pass: provider code, docs and peers agree on sk-lf-<uuid>"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Self-hosted deployments accept operator-defined secret values of any shape (headless initialization, admin API).",
+          "status": "bounded",
+          "bound": "Outside the minted-shape claim: no such value is fixtured and none is asserted silent."
+        }
+      ]
+    },
+    {
+      "family": "langsmith-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "LangSmith documents the two key roles (personal access token, service key), their contexts and one-time display, but no prefix, length or alphabet; docs render only masked lsv2_pt_/lsv2_sk_ forms. The lsv2_(pt|sk)_ + 32 hex + _ + 10 hex layout is tool-corroborated, and the provider SDK redactor accepts a wider first segment; widths and the lowercase alphabet stay provisional. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "bare value (the lsv2_pt_/lsv2_sk_ prefix plus the 32_10 hex layout)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/detectors/langsmith/langsmith.go",
+          "observedAt": "2026-09-24",
+          "supports": "langsmith: lsv2_(pt|sk)_ + 32 lowercase hex + _ + 10 lowercase hex"
+        },
+        {
+          "class": "provider-example",
+          "owner": "langchain",
+          "reference": "https://docs.langchain.com/langsmith/create-account-api-key",
+          "observedAt": "2026-09-24",
+          "supports": "the two API-key roles, Settings -> API Keys issuance, one-time display and the LANGSMITH_API_KEY / X-API-Key contexts (no grammar)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/219",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 research pass: every tool agrees on lsv2_(pt|sk)_<32 hex>_<10 hex>; the provider redactor is wider"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "The provider SDK redactor accepts a first segment of 32 or more characters and any number of tails, and its own test fixture uses a 36-character first segment.",
+          "status": "bounded",
+          "bound": "The contract freezes 32_10 as tool-corroborated and provisional; no fixture asserts silence on a longer first segment."
+        },
+        {
+          "statement": "Titus and Poltergeist match case-insensitively; TruffleHog is lowercase-only.",
+          "status": "bounded",
+          "bound": "Positives are lowercase hex and no uppercase twin is authored, so uppercase acceptance is neither claimed nor asserted silent."
         }
       ]
     },
@@ -1490,6 +1647,55 @@
           "statement": "detect-secrets labels its SK + 32 pattern 'Auth token'.",
           "status": "bounded",
           "bound": "That pattern is the API Key SID (a different credential); no fixture of this family asserts on SK values."
+        }
+      ]
+    },
+    {
+      "family": "xai-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "xAI documents the xai- prefix but states no length or alphabet in prose; the 80-character body rests on the provider's one example value in its API-key response schema, a third-party masked key and tool rules. The body alphabet is provisional (TruffleHog admits _, betterleaks _ and -), so positives use alphanumerics only and no fixture asserts silence on _ or -. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "bare value (the xai- prefix plus the exact 80-character body)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/xai/xai.go",
+          "observedAt": "2026-09-24",
+          "supports": "xai: xai- + exactly 80 of [0-9a-zA-Z_], \\b-bounded"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "flare-collection",
+          "reference": "https://github.com/flare-collection/flare-redact/blob/c652ea7946028b70527069d7c282752b8a0ccee3/spec/detectors.json#L1292",
+          "observedAt": "2026-09-24",
+          "supports": "xai_key: xai- + 40-120 of [A-Za-z0-9] (a looser width that admits 80)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "xai",
+          "reference": "https://docs.x.ai/developers/rest-api-reference/management/auth",
+          "observedAt": "2026-09-24",
+          "supports": "one example API key value in the API-key response schema: xai- + an 80-character alphanumeric body"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret-benchmarks/issues/216",
+          "observedAt": "2026-09-24",
+          "supports": "2026-09-24 research pass: prefix provider-documented, 80-character body by example and tool rules; management keys are a separate credential"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Tools disagree on an 81st word character: TruffleHog's \\b rejects, osv-scalibr truncates to 80, Kingfisher anchors exactly.",
+          "status": "bounded",
+          "bound": "No fixture places a word character after the 80th body byte, so the benchmark asserts neither behavior."
         }
       ]
     }

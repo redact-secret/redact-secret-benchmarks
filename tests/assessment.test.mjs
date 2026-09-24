@@ -146,8 +146,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md: databricks'
   // three rotation-suffixed positives put a provider-undecided suffix inside the secret span, so
   // they move must-redact/T2 -> must-redact/T0 as unscored history (-3 files/-3 spans here, +3 below).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 389);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 395);
+  // Beta.8 #208/#210 graduation (registry pin dad7868): six new registry detectors each carry one
+  // detector-coverage shape positive in three contexts (+18 files/+18 spans).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 407);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 413);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -211,7 +213,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // svcacct 73/74 ×2, databricks two-digit suffix ×3, mailchimp -eu6 ×3) to must-not-flag/T0: they
   // still net out via -twins.length but leave the T1/T2/T3 tally (-11).
   assert.equal(tally['must-not-flag/T0'].files, 11);
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 418);
+  // Beta.8 #208/#210 graduation: 30 new independent detector-coverage controls (prefix-only,
+  // short-body, mask, reference and label-prose or public-id for each of six new registry detectors).
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 448);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

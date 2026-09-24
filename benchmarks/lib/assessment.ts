@@ -17,7 +17,7 @@ export const tiers = {
 };
 
 import { observedAt, th, gl, unprobeable, provider } from './contract-sources.ts';
-import { arrivalContracts, arrivalIds } from './beta8/index.ts';
+import { arrivalContracts, arrivalIds, graduatedContracts } from './beta8/index.ts';
 
 /**
  * Confluent Cloud API-secret checksum (#209, research #234). docs.confluent.io's
@@ -237,7 +237,7 @@ const FIELDS_207: Record<string, NonNullable<FormatContract['fields']>> = {
     { field: 'segment 3', claim: '27 characters before about May 2022, 38 since; older tokens keep 27 until reset', basis: 'community', status: 'frozen', sources: [at207(R207.discord, '2026-09-22')] },
   ],
 };
-const registryContracts: Record<string, FormatContract> = {
+const inlineRegistryContracts: Record<string, FormatContract> = {
   'aws-access-key': { tier: 'T1', pattern: '^AKIA[A-Z2-7]{16}$', providerSource: provider('https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes', 'IAM unique-ID prefix table', 'AKIA/ASIA/ABIA/ACCA prefixes, and AIDA as the IAM-user unique-ID prefix rather than an access key (re-checked 2026-09-20, #36); 16-character base32 body and 40-character secret are tool-corroborated'), corroboration: [th('aws/access_keys/accesskey'), gl], companion: 'A separate 40-character secret access key is required. ASIA additionally needs a session token and is not covered by this contract.' },
   'github-token': { tier: 'T1', pattern: '^(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36}$', providerSource: provider('https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats', '2021-04 prefix scheme', 'ghp_/gho_/ghu_/ghs_/ghr_ prefixes and underscore separator; 36-character body is tool-corroborated (checksum in the last six characters per github.blog/2021-04-05)'), corroboration: [th('github/v2/github'), gl], review: 'Re-checked 2026-09-20 (#46): docs.github.com also documents github_pat_ (fine-grained token) as a real, different prefix outside this contract\'s ghp_/gho_/ghu_/ghs_/ghr_ set, backing a prefix twin. github.blog/security/application-security/behind-githubs-new-authentication-token-formats confirms the parenthetical checksum claim (CRC32, Base62-encoded, last six characters) but the checksum is not part of this contract\'s lexical pattern, so a checksum-only mutation still satisfies it and cannot be constructed as a twin here.' },
   'gitlab-token': { tier: 'T1', pattern: '^glpat-[A-Za-z0-9_-]{20}$', providerSource: provider('https://docs.gitlab.com/security/tokens/', 'token prefix table', 'glpat- prefix; 20-character legacy body is tool-corroborated, routable tokens are not covered'), corroboration: [th('gitlab/v2/gitlab_v2'), gl], review: 'Re-checked 2026-09-20 (#46): the same prefix table documents glpat- as shared by four token kinds (none the positive this contract covers) and lists gldt-, glrt-/glrtr-, glcbt- and others as the gl- stem\'s other members; the prefix twin instead breaks the gl- stem itself (xlpat- vs glpat-), since a mutation matching one of those other real prefixes (gldt-) was empirically not discriminated by the redact-secret scanner.' },
@@ -362,6 +362,13 @@ const registryContracts: Record<string, FormatContract> = {
   'generic-token': { tier: 'T3', references: [], review: 'An arbitrary literal in a sensitive field is a masking-policy case, not a provider-format ground truth.', twinSource: provider('https://github.com/redact-secret/redact-secret-benchmarks/blob/main/docs/decisions/2026-09-20-extend-twins-to-assignment-context.md', 'context-twin decision (#36)', 'no provider exists for an arbitrary literal. The recorded decision is that the twin keeps the value and mutates exactly one property of the assignment context; silence is project policy, never a format claim', '2026-09-20') },
 };
 
+for (const id of Object.keys(graduatedContracts)) if (Object.hasOwn(inlineRegistryContracts, id)) throw new Error(`Graduated contract shadows a registry contract: ${id}`);
+/**
+ * Registry detector contracts: the ones authored here plus Beta.8 arrival contracts that
+ * graduated when the product registry gained their detector (benchmarks/lib/beta8/*
+ * `registryContracts`). Keys are exactly detectors.json's ids.
+ */
+const registryContracts: Record<string, FormatContract> = { ...inlineRegistryContracts, ...graduatedContracts };
 for (const id of Object.keys(arrivalContracts)) if (Object.hasOwn(registryContracts, id)) throw new Error(`Arrival contract shadows a registry contract: ${id}`);
 /**
  * Every contract a fixture can cite: the registry's (keys are exactly

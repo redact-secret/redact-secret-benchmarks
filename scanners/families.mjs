@@ -34,12 +34,13 @@ const trufflehog = {
   SendGrid: 'sendgrid-token', Slack: 'slack-token', AWS: 'aws-access-key',
   PrivateKey: 'private-key', JWT: 'jwt', Anthropic: 'anthropic-token',
   OpenAI: 'openai-token', Shopify: 'shopify-token', Stripe: 'stripe-token',
-  // Beta.8 arrival families (#208, benchmarks/lib/beta8/208.ts): each detector
+  // Beta.8 #208 families (benchmarks/lib/beta8/208.ts; registry detectors since
+  // redact-secret#727, graduated from arrival families): each detector
   // matches exactly that provider's inference key (`\b`-bounded prefix + fixed
   // body); OpenRouter is `sk-or-v1-` only, never the `sk-or-mgmt-` management key.
   Replicate: 'replicate-api-token', Groq: 'groq-api-key', XAI: 'xai-api-key',
   OpenRouter: 'openrouter-api-key',
-  // Beta.8 arrival families (#210): trufflehog 3.97.4's langsmith detector
+  // Beta.8 #210 families (registry detectors since redact-secret#728): trufflehog 3.97.4's langsmith detector
   // (lsv2_(pt|sk)_<32 hex>_<10 hex>) and langfuse detector (sk-lf-<uuid>,
   // keyword- and pk-gated) report exactly the credential those families measure.
   LangSmith: 'langsmith-api-key', Langfuse: 'langfuse-secret-key',
@@ -52,8 +53,8 @@ const trufflehog = {
 // Notion, Doppler, Square, Azure, Discord, Telegram, New Relic, GCP,
 // Google, Twilio, Stripe webhook secrets) stay unmapped rather than guessed.
 // `groq_key`, `xai_key`, `openrouter_key` and `replicate_token` name the same
-// inference-key credentials as #208's arrival families (over looser widths for
-// Groq, xAI and Replicate), so they map to those arrival ids.
+// inference-key credentials as #208's families (over looser widths for
+// Groq, xAI and Replicate), so they map to those family ids.
 // `databricks_token` (dapi + 32 hex, optional rotation digit) is the same
 // credential the post-beta.6 `databricks-personal-access-token` family
 // scores (redact-secret#308); `postman_key` (PMAK- + 24 hex + "-" + 34 hex)

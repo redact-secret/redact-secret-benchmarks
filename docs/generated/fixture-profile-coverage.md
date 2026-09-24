@@ -24,8 +24,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 8 | 73 |
-| Stable / documented | 8 | 73 |
+| Arrival / provisional | 17 | 73 |
+| Stable / documented | 17 | 73 |
 | Stable / empirical | 6 | 73 |
 | Context-constrained empirical | 5 | 73 |
 
@@ -38,12 +38,12 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | aws-access-key | T1 | stable-documented | 22 | 4 | 6 | 6 | 3 | 3 | 4 | total fixtures 22/24; positive/context cases 4/6; non-twin benign controls 6/8; positive-context axes 3/4; control axes 3/4 |
 | azure-devops-personal-access-token | T1 | stable-documented | 24 | 1 | 8 | 9 | 5 | 5 | 7 | positive/context cases 1/6 |
 | bearer-token | T3 | arrival-provisional | 48 | 4 | 18 | 13 | 12 | 6 | 8 | positive/context cases 4/6 |
-| cloudflare-token | T1 | stable-documented | 19 | 3 | 8 | 6 | 1 | 3 | 6 | total fixtures 19/24; positive/context cases 3/6; positive-context axes 1/4; control axes 3/4 |
+| cloudflare-token | T1 | stable-documented | 24 | 6 | 10 | 6 | 4 | 5 | 8 | none |
 | confluent-cloud-api-secret | T1 | stable-documented | 25 | 0 | 8 | 10 | 5 | 5 | 9 | positive/context cases 0/6 |
 | confluent-cloud-api-secret-legacy | T2 | arrival-provisional | 48 | 1 | 19 | 15 | 12 | 6 | 9 | positive/context cases 1/6 |
 | connection-string | T3 | arrival-provisional | 54 | 9 | 15 | 15 | 4 | 3 | 4 | control axes 3/4 |
 | databricks-personal-access-token | T2 | arrival-provisional | 21 | 0 | 6 | 9 | 1 | 4 | 7 | total fixtures 21/24; positive/context cases 0/6; non-twin benign controls 6/8; positive-context axes 1/4 |
-| datadog-api-key | T1 | stable-documented | 27 | 0 | 5 | 11 | 7 | 3 | 4 | positive/context cases 0/6; non-twin benign controls 5/8; control axes 3/4 |
+| datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 24 | 1 | 8 | 9 | 5 | 6 | 8 | positive/context cases 1/6 |
 | datadog-application-key-legacy | T2 | arrival-provisional | 19 | 8 | 5 | 3 | 7 | 3 | 4 | total fixtures 19/24; non-twin benign controls 5/8; twin pairs 3/5; control axes 3/4 |
 | digitalocean-token | T1 | stable-documented | 35 | 12 | 9 | 8 | 1 | 3 | 5 | positive-context axes 1/4; control axes 3/4 |
@@ -55,14 +55,14 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | github-fine-grained-pat | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 6 | 9 | positive/context cases 5/6 |
 | github-token | T1 | stable-documented | 115 | 27 | 6 | 42 | 21 | 3 | 5 | non-twin benign controls 6/8; control axes 3/4 |
 | gitlab-runner-authentication-token | T2 | arrival-provisional | 24 | 1 | 11 | 6 | 5 | 6 | 10 | positive/context cases 1/6 |
-| gitlab-token | T1 | stable-documented | 21 | 3 | 6 | 7 | 2 | 3 | 5 | total fixtures 21/24; positive/context cases 3/6; non-twin benign controls 6/8; positive-context axes 2/4; control axes 3/4 |
+| gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
 | google-api-key | T1 | stable-documented | 24 | 1 | 8 | 9 | 5 | 5 | 7 | positive/context cases 1/6 |
-| grafana-cloud-access-policy-token | T1 | stable-documented | 27 | 0 | 5 | 11 | 7 | 3 | 4 | positive/context cases 0/6; non-twin benign controls 5/8; control axes 3/4 |
+| grafana-cloud-access-policy-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | grafana-service-account-token | T1 | stable-documented | 27 | 0 | 5 | 11 | 7 | 3 | 4 | positive/context cases 0/6; non-twin benign controls 5/8; control axes 3/4 |
 | groq-api-key | T2 | arrival-provisional | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
 | heroku-api-key | T1 | stable-documented | 24 | 1 | 8 | 9 | 5 | 5 | 8 | positive/context cases 1/6 |
 | heroku-api-key-legacy | T2 | arrival-provisional | 49 | 3 | 20 | 13 | 13 | 6 | 8 | positive/context cases 3/6 |
-| huggingface-token | T1 | stable-documented | 19 | 0 | 7 | 7 | 1 | 3 | 5 | total fixtures 19/24; positive/context cases 0/6; non-twin benign controls 7/8; positive-context axes 1/4; control axes 3/4 |
+| huggingface-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 4 | 6 | none |
 | jwt | T1 | stable-documented | 17 | 0 | 5 | 7 | 1 | 4 | 6 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4 |
 | langfuse-secret-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
 | langsmith-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
@@ -84,18 +84,18 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | pinecone-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 8 | positive/context cases 3/6 |
 | pinecone-api-key-legacy | T3 | arrival-provisional | 48 | 0 | 24 | 12 | 9 | 6 | 7 | positive/context cases 0/6 |
 | postman-api-key | T2 | arrival-provisional | 18 | 0 | 6 | 9 | 1 | 4 | 7 | total fixtures 18/24; positive/context cases 0/6; non-twin benign controls 6/8; positive-context axes 1/4 |
-| private-key | T1 | stable-documented | 30 | 15 | 5 | 5 | 1 | 3 | 5 | non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
+| private-key | T1 | stable-documented | 36 | 18 | 8 | 5 | 4 | 6 | 8 | none |
 | pulumi-access-token | T1 | stable-documented | 21 | 3 | 6 | 6 | 1 | 3 | 5 | total fixtures 21/24; positive/context cases 3/6; non-twin benign controls 6/8; positive-context axes 1/4; control axes 3/4 |
-| pypi-token | T1 | stable-documented | 20 | 0 | 8 | 9 | 1 | 6 | 9 | total fixtures 20/24; positive/context cases 0/6; positive-context axes 1/4 |
+| pypi-token | T1 | stable-documented | 26 | 6 | 8 | 9 | 7 | 6 | 9 | none |
 | replicate-api-token | T1 | stable-documented | 24 | 3 | 9 | 6 | 7 | 6 | 10 | positive/context cases 3/6 |
 | sendgrid-token | T1 | stable-documented | 67 | 22 | 11 | 18 | 8 | 3 | 5 | control axes 3/4 |
 | sentry-org-auth-token | T2 | arrival-provisional | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | arrival-provisional | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
-| shopify-token | T1 | stable-documented | 21 | 6 | 5 | 6 | 1 | 3 | 5 | total fixtures 21/24; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
+| shopify-token | T1 | stable-documented | 27 | 9 | 8 | 6 | 4 | 6 | 8 | none |
 | slack-app-level-token | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 5 | 8 | positive/context cases 5/6 |
 | slack-token | T1 | stable-documented | 44 | 24 | 12 | 6 | 2 | 3 | 5 | positive-context axes 2/4; control axes 3/4 |
 | slack-user-token | T1 | stable-documented | 24 | 3 | 11 | 5 | 8 | 6 | 9 | positive/context cases 3/6 |
-| stripe-token | T1 | stable-documented | 33 | 18 | 5 | 6 | 1 | 3 | 5 | non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
+| stripe-token | T1 | stable-documented | 39 | 21 | 8 | 6 | 4 | 6 | 8 | none |
 | stripe-webhook-signing-secret | T1 | stable-documented | 25 | 5 | 10 | 5 | 9 | 6 | 10 | positive/context cases 5/6 |
 | supabase-management-token | T1 | stable-documented | 17 | 0 | 5 | 6 | 1 | 3 | 5 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
 | supabase-token | T1 | stable-documented | 29 | 5 | 14 | 5 | 8 | 6 | 9 | positive/context cases 5/6 |

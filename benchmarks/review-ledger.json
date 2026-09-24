@@ -97665,6 +97665,710 @@
       "status": "open",
       "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
       "note": "Confirmed defect, not a tool-comparison artifact: redact-secret flags [101,165) on this checksum-invalid twin (checksum: the CRC32 computed over cflt plus the body (58 characters) instead of the documented 54 body characters; prefix, length and alphabet unchanged), against this corpus's must-not-flag expectation — the twin method's authored.twin assertion also fails. The provider publishes the checksum algorithm (docs.confluent.io API-key overview and its secret-detection snippet; research #234), and the product detector (confluent.rs) checks only the cflt prefix and 64-byte length. trufflehog reports nothing; neither pinned peer validates the checksum either. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Promoted 2026-09-24 through promote-finding: benchmarks/known-gaps.json product-738 (redact-secret#738); the row stays open until a fixed candidate is re-measured. Class: confirmed-twin-false-positive/confluent-cloud-api-secret. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
+    },
+    "09ae311c366eaad842f9857409a195ff800f3ef53570f1161b839fd824299524": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "9f640f90d71ef2c4a8a253043ac047f52fc1155c0715cbe8c1a995483dc2752e": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "39814362fd42f9098c4531f3ab3bb9d0d0136359c23368c4c2426e9a99bfb933": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "65fea5c4537655ea7fa88e2af312285f5c91cc226b6e42b7bec5faf81c3e2c28": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.replace-last` replaces the last character of the contracted secret value with a different character, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.replace-last."
+    },
+    "7843d450d39db0dcb298bd3a8c63c95e6d9ae4c2b82416b3ad02d354608e1cde": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "f0a27967ed4c20b55eaf36a591e33063fb41aea7a4ae01cdcb5668ba14a2199b": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "71a89dbdf9f77c78c73fc6830bac0dc8c4ac532f5c8e9a2c6d9d6059637335c9": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "d500a76dd73b2db57e324f3d3871d7f280415c7c74d2838ac52453f9f117c78c": {
+      "status": "open",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Byte ranges agree between redact-secret and gitleaks ([166,219), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: cloudflare-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+    },
+    "77e08a6bfdb5a2782009ee2320653863805740def26b3046e4bc9ea071f1456b": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "6afc60c3533771e242fbfb9f29654512f4b8c5cb2332c7e1f4bea51e993993ae": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "f5aaa3ddceb25cc9614e29e62d02c3745c8e597a5d9a10269074e3f3f3924ed5": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.replace-last` replaces the last character of the contracted secret value with a different character, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.replace-last."
+    },
+    "ae8cb80c530c1e31e23970acadcf69128efc1e1cf7537372007a9c0e85a89f9e": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "5fb5b8d9a8e8eb8882782e5a9ad71cb4cf81212dae43cdddac2f1a944bdc25c9": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "cae729349b1469ae3e5376ccd754335c0df067784d7d9598ec55c50bb180a75a": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "ec1fb441f1ac5eda150ab4de3f58e7bf0fbc10b5377444ec8580f2ba574d3668": {
+      "status": "open",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Byte ranges agree between redact-secret and gitleaks ([39,92), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: cloudflare-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+    },
+    "45a1ddb1c2b0d50db5cb2882e4fe07ce9e57da2a6feed31d70f173d498f9579f": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "67825814ae5c79a996bf8191f84bc9bd3921b96796e4a97af75ee4d40e8c7ba2": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "f9c21e8fd23e000fdecef3e62d0ad411deee5d6e85dfa577c5a5e2c14512a49b": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.replace-last` replaces the last character of the contracted secret value with a different character, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.replace-last."
+    },
+    "31f6491f060a7196e04453f3aba28e799962a95f713cafa2d16a95906ca8ddcc": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "b2ec05c5bea07029644ee76bc2547b34ec9ab2b276b6c31e71147bf4056d5efa": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "13a6a9aced8eb6d13e22a75a447e4c498d635ed662c5dddf2c6022734ad77430": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "46a55bfe26cc4b13790b613666fc93cd8bba987acb42041898b9165cf9d8bd39": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "283d2ad3da940e9c4e617b593137a5113c8491bc1efd0b7c8f0cb5965ef0c807": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "de0e5159c3a6f7202850f52bcbaa5fff1c268664ca4accd7f65ecee8439573ff": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "f3d9a7ebe687975e87e61753b2b52c9167c60bc092241b1c5b41cd941007a0ea": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "317024581a3bb6bcbc6fab24048c47704e33a0787b6e8eaf90e91899927e8426": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "9711481b4758afef63d8838628197c18fb9594592b9fa6239cd2387880e20c5a": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "5503791d74016e6f46e98b5d393bdbbaf9381b93366b6d38c12dde256f296268": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "989ccb5f4a83f0af9a769080872c6e8c6df587b285d3bdda6ca0406d9cf2386f": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "fdf035657c411a68466868da18b13abfc75627b64bdaefb9214be4dd7f0b20fc": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "1a5dfde54e1c843fc82e8a77cbe1215717283f1464c057419bbc60c2782234d2": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "9f97f007baed4f8e12bb81b95dd98139f1639b32ea275b6f6066c66aef4be73d": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "4147107e15d9dd594f099ae6d14eb53812b6b31d8c23d17ae4114624cb1c12ef": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "76153d8a375d8018b7eb4c9cbfa7c2623d2f81046f9a36aa583a3b8762881a5a": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "e05d6261ab5ef29ecc9d76653c1049dd8a97423232085b51a5b124c16041c04a": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "cc60865a8d805255ad461e98deb3cde0e4d31e6eed88f22862b2899133117aef": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "1e225556eb824d84675c76d409c77b2480e95c7b5853b12d9312dfc56793b536": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "1c99253c12d087258d682e5356798a7c17b02743d6aa576e3f883832af45f52e": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "e0ae0e200b601e876a87904ee1db51200fd1f08ae7bbdff1a050921d6f723eda": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "44d06f988fb0b4405f5e1b86f8aeee3a4e829830b0d3011587c50ebe839f52b0": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "e45e414669016f2ac5ebca6bffca2e88ef182b862806b1cec7a7838b3cb546ce": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "98e5f475aa8317744617b606204b351bc4b69ac5b5bae8a09c74fea9d01c2144": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "937d2b2198acd09a96f02aff64974f11e38481662b1f137144dfd631af960c01": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "708b4f970c4fa79a6bd5f1c14bd4b721dfa6a85ee6df601b1024d9e30f130456": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "676202456dbc0484f00e6cc9a9f1c9a33701ec3d3ca294df1cff821bff5e0803": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "4fcdb882b86495878dea078b16704732443bb6f742e6ca5cf1a8ffee02998122": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "f7640745fcf6d0f37397639f8151b8d77af784de12afb658ab11b7b981806279": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "efcb3face13ff8498ea6fbe804160d070504418e7d33b2f2ef312b2798180368": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "cf0cabc123de0b1119fedfd34d5b12d6e4bd4d0d255f3ea7a32c53d879533f38": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "61721d46629e4de5620b942748a98cc15ab1d140f4811e3f9a84dca273c75abf": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "193dcb44fc3635bb895a51c0d49037d6400a94438c48226e4b638c04b2e74ada": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "ddc7518bf30bc8f1eb1ca1be265d767a1c8aaf0209a0c370870146bb8e41de70": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "ff7b4859b876603e847402cd4f8f3cf9145bc99556ebd54ddccea03e625cd674": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "13133d42095ffdac257b3bcb8bdffd1c6bb42a39296ddf714f9c1ce6790aeb6c": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "9c796d7ce8a79d06e74f02ef2378d0496d0ad7a438768464e7d846958a1b5dcc": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "2d901d9b5359737a3d9ea6a355a8f1ab7178f44813e5a63137a770aff94d48d7": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "d20329bf412a4a87a690bf117484198c25988883d0e89365eda378603714004a": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "e03fb6b4ecfe0ae9787777bd9994b9d4ce15ffb6df2f4cc575dcb28f94a31b01": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
+    "898cfaa5656db2097384338cf6652ed849bf447470612a44e5e3e6a6caf58e4f": {
+      "status": "open",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Byte ranges agree between redact-secret and gitleaks ([9,46), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: huggingface-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+    },
+    "c5a4434e0dc654d856619a6946b3d418233445c87e42a86b4c895b83ba1c1697": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "3e0d1bcca53e9b0a4dff80691e0af794b016e2f3b063a3883e07ded986ce5ca1": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "6ef0a3416ce2453e04c67e2f42a52774413fbd7d7843b0c17f1c8c1eeabbff3b": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "01aa9fdd05a2022ceb52ae3408866f1c1dd6f0628aeab6228dd47a894c4c660a": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "99ad68a89dce1d033a211377ccc8e72e823b0394286a86f411c4129c1e3bf0cd": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "876a6506ec8b178e1c7a2a3b7074565c0db8b5b16db585aed99ce011220439c5": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "1cc986a300143203889075d7c4ef1acee16ad6fd98da3de9241d0b7433e31129": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "ca84849010b4700b69e0903920e5508f34f935d30c436a76b09ace29056c0581": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "71185ea883b4e142534762ff890284ed1423649399b6bcea5445b5c96639cdde": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "a8d7802117eddfc33dde6bd997f4ddbf8702a7a0d349a9feffd496b8a4563662": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "504b1ef3e8daee1fba82aade3c384086f4e7f94ca6ce67ce235ef810e56495ba": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "07ce81a5617f13ff70fa2043a68913168aa3e141b032d7b03ee3096794807d9e": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "fcaf0958a83266268cdd84d910c52af0bcb73c43e93df69c0fa49a208fd95b85": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "d9e0a588ef1d1afec62f4eb5d5540a70d85809f3b4f869b96a28a67b8f86fd33": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "c4a0600bd96d1ab4a205080facf2bc5dae94d7fdb27aac51f2d2cbf6c863272b": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "3ad9dd129924b5fe4bf2eea2f542b2b017002a3f105fbc8e53db74d38b003481": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "f7b7ba303769a696b0238b09b71471e2a21d95ecd9a198796a49a57f96cdd028": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "01a97a297154aeed3f67504e1cd8800059321882d14ed8ad1ad68b1315cdd51a": {
+      "status": "open",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Byte ranges agree between redact-secret and gitleaks ([96,133), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: huggingface-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+    },
+    "28619938e948619a93a0b88dd1ca32ee35469c126efd4b9ff1fa96afc4bd6a67": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "5039d4b5ef4831ab6fa7af2fd01600b9faebf31bcca097bf3a840d9e1ae9baf1": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "de59fdcdec356841b18a79c85d7b2050881feae40c36974e97b8d1fed3a90955": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "d3da781e585980d2286c98ea0c5f12e8c2039c3803fd5b2f59cfbc6af00ecef4": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "17a19b91e425386c1b6f5b50a04ad69850bedec8cc5976aa943f59cc11f0fa78": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "125186a219b86a246837e65b282ceba91a5a892e525d333fb379a2b05b807903": {
+      "status": "open",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Byte ranges agree between redact-secret and gitleaks ([24,61), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: huggingface-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+    },
+    "87122f98623179ca1b457778f0735a81ed0b3d18bbebd25c898959bdd76f52a3": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "11221bff44a14507c0df89773ee27792f74f5babd1f0edb035a6c2b533211bb8": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "3a01c7576b0790cf796b477cc983ab6f08f71b9993c0f8a888c130c0d82c0402": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "ad14e4006325b916a73fad60f0b9e724505d289784877d5c39421bf2a070d2f6": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "8db2717970986b2c9e09ef8119b5b571afc363416cc312223047943830886fbc": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "05bcca358ab0776a72e64a0f0927839ac74b89b5fe98e036d79631de00f21fdc": {
+      "status": "open",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Byte ranges agree between redact-secret and gitleaks ([73,110), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: huggingface-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+    },
+    "ae04066db339efd31427b3fc8f9302828b3624b3e57e8ced23880b4cd7f8e4cf": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "332b6f464be8ae69bd57fc16baa5d9623b71a6afa73872792b467d244271e3dd": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "db3caf73dd8c1c67cd8890d83bfbdaa7c550716b8bce83e615200f958d637e8b": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "9013e4f2b3cca937232b39cb8714b23540f42e3c48195be22e0554ec86c2b61a": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "ddacd852024fd92939d1ee1ba99e53c0d6a122bfd300cdd22943972ba5703d04": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "308fb46a360b1a238061bdd15c4ca88ca72fd833d3967e8e3dcf6aeb2aed7f9e": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "33b3a8efdee882439d1ed5312722becdef34e9f4f56d9a213405453d6b7465bf": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "e70fbb435650f21a02c1f2fc147af1d4692369e44477c3db22fff026bf9dc77c": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "876dbd824cd89b7e4fb3c0e614be2a83eebd43d3721128d70233001a2be630b8": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "89d182ee79dca05f68aec13096bcd36ee61c87fa7929724a780c3ba869d0c53a": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "1e85285385ebfc6b4e61b30efa7ace6a2b30557db66eaf89d2fd455a11a538fe": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "8066493b77cf1330ec9826b3ebedc119a694e1ffa72499c98e0e31bfed78518c": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "df5bb6c45bdabfa268e08f44dc3bc0f3f7ef8d7035c1c2926fcfdbba478a0d54": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "972bc2efdcdfa85300c558a309a1167fc0c7059773cd8503b6e4a92c165e2797": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "2f5ae105aab75d9bb2074b01110d33f5b3d553cd0bafa8ecf9ada2e57e186de8": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "54be69462ab3644b8eb82324a2df5730e57f93644367bdb0c19412e660546b8d": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "0b4c42c2e5a44142aee305fa0f1ba9e269cf7cb152d5a036293f9fa2655cf530": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "1dc455749cf8cfdf7159d2f12cd49f0336bbcfb417844ab789d06f7811cb690c": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "866caaa3d73b95daf8cdc079136ca81825baf44ff7b23cb38e91387d5c248362": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "d75769acffa50b32d671ea5dbe9ed732a421fce50aeae2b7506f487cb27f9443": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "e4558b34c530075f3e44cbc626eb76870bd650f871a0effe660d2c2af8097f80": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "f0efebe45e7e8a910efdccb639317e86fb07fb82a4c5cbda7645374daf75d648": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "35fc37deb8a9fea2558a83ebd0bc6311e2224cabe6935673cc94d794bcb372bd": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
+    "2e581e0db5f7b7796d5b1558943609964b1a371efad082fe2a13cba681855aee": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "7ca83a620d6707705de3ccdd54210b96c0d50172c927ae3864de263fd403230f": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
+    },
+    "357f3c9c69fd626340641caed981fde299586c1d6b91739b345b4b80d6144ce0": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "1cad683c6f7adde3a2638cc3808579037374ff1039599b712e3a602cf6b25655": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "91302ac366317af64e65135dc0af653d90e482f8a8bdd61cb47abf027fa11ebd": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "53047782b93a6b399f1c5ec8c6426fd17063ab9ea9322893528adb596d9ebbca": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "625abd73aef029d6f697b883e4eed273a81fb841b976abd14fadef1451bf61fa": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "1d1ec344ea516b2b1cd85a76da499b87b0ed66bad9b1268a9be670161fbb1ba2": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "7e92ac11662f613289ddde66eca5bfd973808aeabff6c9edfc845915c217052c": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "fc17530b7cfc2423bcdf800f3a6c1c48221ce28f8d55cbc79f8ecf2d7c6d847e": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "37ed7399d8cf78c008bb2a2871b140d039811b32931e2e7ddc050874e801515c": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "2c17a4125c75754890e14f0e6df3a55e6a92e38f64cdb116d01d27cd6bb070ce": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "a5d8a4d739a14d9209495b03ccea6d4d713b20068bc98efd011a83660789530b": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "e40f71716fe94f56019328d345706f6d38674cca32fc00028f7a1adb266ec2b6": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "953260df58c166d95800770e37e5c3950c9f1878f8ac70eea66047b6b7666123": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "8b9ed4acc755e45c165e16a3fe18b1e2c8126e0966ab7bb03e761d9e24da4144": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "2312c6c2b8e27e0242f439e0a62015a22b6f6f0e3b8b1ec13f77dbba3c5696f5": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "3774a60002e3f65211831c02b61d50f72e8d6f6c075acc07b645a49eaf891d64": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "d19e20abb88aec265b9a4ca766837ae0ab3c6aee91be4ee91252dce0fb338ed1": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "5e365db30ea579268bdce42dc0a672c93860bb259a0c7be8dd99c431e5da0c3f": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "bf43892cf61648a311fe171675dfe3daa5a0cf5729823b76d1adf9c1ef915613": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
+    },
+    "5c7eab2b6fd7f2ee2c97d24062040da85ba9eea3157aa68fa5066f7613e28779": {
+      "status": "resolved",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "resolvedRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "9fe8a42d1baa6827e4409209814e828f68b72e3e9e930725413dbbf58702151e": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "8ef18d144bbb24cd374500a8cbc02856f6a33eb60b62588b37257df8620b9b23": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "fea447ca24581af0adbeacb7f9986470309cfede02169ba7c11780bc92f8be49": {
+      "status": "not-assertable",
+      "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter."
     }
   }
 }

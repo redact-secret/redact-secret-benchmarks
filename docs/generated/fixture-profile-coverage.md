@@ -67,7 +67,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | langfuse-secret-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
 | langsmith-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
 | linear-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 4 | 4 | 5 | none |
-| mailchimp-api-key | T2 | stable-empirical | 41 | 13 | 14 | 8 | 14 | 6 | 9 | none |
+| mailchimp-api-key | T2 | stable-empirical | 41 | 14 | 14 | 8 | 14 | 6 | 8 | none |
 | mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 8 | 11 | 6 | 9 | none |
 | microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
 | netlify-token | T1 | stable-documented | 24 | 7 | 8 | 6 | 5 | 6 | 8 | none |

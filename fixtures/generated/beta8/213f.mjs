@@ -15,12 +15,12 @@ import { beta8Corpus } from "./helpers.mjs";
 //   openai-token                      42 fixtures, 6 twin pairs   -> +1 positive, 2 twins
 //   databricks-personal-access-token  33 fixtures, 6 twin pairs,
 //                                     9 untwinned positives       -> +4 positives, 3 twins
-//   mailchimp-api-key                 37 fixtures, 5 twin pairs   -> +1 positive, 3 twins
+//   mailchimp-api-key                 36 fixtures, 4 twin pairs   -> +1 positive, 4 twins
 //
 // Every twin mutates one property every source agrees on (a body width all tools and
 // the provider's own examples or code fix, a literal prefix or delimiter every source
 // shows, a byte outside every source's alphabet). None touches a disputed property:
-// no uppercase, no suffix beyond us<N>, no -<digit> rotation suffix, no service-account
+// no uppercase, no g-z Mailchimp body byte, no suffix beyond us<N>, no -<digit> rotation suffix, no service-account
 // width. Each positive sits on a context axis its family had no positive on (or, for
 // Databricks, on the ci-config axis its suffixed 213d positive vacated).
 //
@@ -107,6 +107,8 @@ function mailchimp(c, synthetic) {
     "length: 33-byte hex body (one extra at offset 16) vs the 32 of Mailchimp's own plugin example and every tool; suffix unchanged", "length");
   f.vtwin("v1-apikey-query", "short", `${body.slice(0, 30)}-us6`,
     "length: 30-byte hex body vs the 32 of Mailchimp's own plugin example and every tool (no source reports 30); suffix unchanged", "length");
+  f.vtwin("v1-apikey-query", "sha1-width", `${body}${f.s("sha1-extra", 8, LOWER_HEX)}-us6`,
+    "length: 40-byte hex body (a SHA-1 width: 8 extra hex bytes appended) vs the 32 of Mailchimp's own plugin example and every tool (no source reports 40); suffix unchanged", "length");
   f.vtwin("v1-apikey-query", "no-separator", `${body}us6`,
     "boundary: no \"-\" between the body and us6, where Mailchimp's fundamentals page says the data center is appended as key-dc; body and suffix unchanged", "boundary");
 }

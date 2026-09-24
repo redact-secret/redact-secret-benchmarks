@@ -82,6 +82,7 @@ is right or wrong about the property.
 | `openai-token` | The `sk-svcacct-` service-account widths. gitleaks#1780's revoked samples are 74/74, gitleaks#1467 says the width varies with the account name, gitleaks#2240 claims about 51, leaktk samples are 45/46 and 49/50, and Trivy#10794 reports an offset of 80. | openai/codex's credential broker (prefixes, the `T3BlbkFJ` watermark, a 51-character minimum, variable body), the OpenAI staff forum post (prefix only) and redact-secret#657's passes. `419ad16`: "no provider source fixes svcacct length". `d8ba0d3`: OpenAI code treats bodies as variable length. | `common-formats` `openai-token-svcacct-{plain,unicode-crlf}-twin` (2 twins, 73/74) | 1 positive (legacy `compose-env`, container-config axis); a 19/20 length twin (50 characters, below codex's own 51-character minimum) and a `.` alphabet twin |
 | `databricks-personal-access-token` | The `-<digits>` rotation suffix: whether it exists (plenoai, CredSweeper and secrets-patterns-db have none), how many digits it has (gitleaks and trufflehog allow one, Nosey Parker `-[0-9]+`), and whether it belongs in the secret span. | Databricks' PAT page and legacy tokens CLI docs (a 32-character digits-only example, no suffix), the Databricks Labs pylint plugin v0.5.0 (`dapi[0-9a-f]{32}`, no suffix), Microsoft Purview, and redact-secret#582's pass (19 of 62 candidates carried a one-digit suffix, and no source explains it). `d8ba0d3`: no provider-owned source. | `detector-coverage` `databricks-personal-access-token-rotated-shape-{bare,quoted,unicode-crlf}` (3 positives whose span includes `-2`) and their `-twin`s (3 two-digit-suffix twins); `beta8-213d` `databricks-personal-access-token-actions-env` (positive whose span includes `-2`) | 4 unsuffixed positives (ci-config, basic-auth, log, container-config axes); 33-hex length, `z` alphabet and `dapx` prefix twins |
 | `mailchimp-api-key` | Whether a data-center literal other than `us<N>` is ever issued. keyhacks admits any `[0-9a-z]{2,5}` suffix; the contract's twin asserted silence on `-eu6`. | Mailchimp's fundamentals page (shows only `us6`, "key-dc"), the mailchimp/wordpress 2.1.0 example (`-us19`), and redact-secret#582's pass (all 115 candidates are `-us`). `d8ba0d3`: no provider-owned source for `-eu6`. | `detector-coverage` `mailchimp-api-key-single-digit-datacenter-{bare,quoted,unicode-crlf}-twin` (3 twins) | 1 positive (`v1-apikey-query`, url axis); 33-byte and 30-byte length twins and a missing-`-` boundary twin |
+| `mailchimp-api-key` (added in a follow-up the same day) | Whether the key body may carry g–z letters. The 2009 staff regex and keyhacks admit `[0-9a-z]`; every pinned tool and both Mailchimp examples are hex. The contradiction was already `bounded`, but its bound said no fixture carries a g–z body byte, which was false. | The same records: Mailchimp's fundamentals page and the mailchimp/wordpress 2.1.0 example (both hex, neither states an alphabet), the 2009 staff statement (advises against regex validation), and redact-secret#582's pass (11 of 115 candidates carried g–z letters and looked edited). No Mailchimp-owned source decides it. | `beta8-213d` `mailchimp-api-key-alphabet-twin` (1 twin, a `z` at offset 16) | a 40-byte (SHA-1 width) length twin on the same `v1-apikey-query` positive |
 
 The Databricks contract `pattern` narrows from `^dapi[0-9a-f]{32}(?:-[0-9])?$`
 to `^dapi[0-9a-f]{32}$`. The suffix was claimed only on tool agreement, and
@@ -119,13 +120,13 @@ keying. The re-keyed ids are carried mechanically (status and note), matched on
 every field except `id` and `evidence.input.fixtureHash`, as in `f5f1c73` and
 `7efe9ed`. Genuinely new rows are triaged with the existing templates.
 
-`beta8-213f` has 17 fixtures. After re-scoping, the families' #206 cells read
+`beta8-213f` has 18 fixtures, including the g–z follow-up's replacement twin. After re-scoping, the families' #206 cells read
 (total / untwinned positives / controls / twin pairs / positive axes):
 
 - `mailgun-api-key`: 40 / 12 / 16 / 8 / 11
 - `openai-token`: 45 / 15 / 15 / 8 / 8
 - `databricks-personal-access-token`: 40 / 12 / 15 / 9 / 14
-- `mailchimp-api-key`: 41 / 13 / 14 / 8 / 14
+- `mailchimp-api-key`: 41 / 14 / 14 / 8 / 14 (after the g–z follow-up, which took one alphabet twin out and put one length twin in; its anchor positive now counts as untwinned)
 
 Every cell meets `stable-empirical`. No 213f twin fails, and every 213f
 positive is exact, on both the published package and the candidate.

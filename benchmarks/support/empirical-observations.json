@@ -615,7 +615,7 @@
       "family": "mailchimp-api-key",
       "mode": "shape",
       "supportsBareValues": false,
-      "uncertainty": "Mailchimp states the shape only by examples: its fundamentals page shows a 31-hex-character body with -us6, and its own WordPress plugin shows 32 hex with -us19, matching every tool and 111 of 115 public-code candidates (redact-secret#699); the contract follows the 32-byte example. The fundamentals page says the data center is always appended as key-dc. Hex case and the data-center alphabet (only us<N> is ever shown) are not stated by the provider. The only staff statement (2009) advises against regex validation because keys may change. Non-us data-center literals are outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no scored fixture asserts them either way, so the product's handling of them is unmeasured.",
+      "uncertainty": "Mailchimp states the shape only by examples: its fundamentals page shows a 31-hex-character body with -us6, and its own WordPress plugin shows 32 hex with -us19, matching every tool and 111 of 115 public-code candidates (redact-secret#699); the contract follows the 32-byte example. The fundamentals page says the data center is always appended as key-dc. Hex case and the data-center alphabet (only us<N> is ever shown) are not stated by the provider. The only staff statement (2009) advises against regex validation because keys may change. Non-us data-center literals and g-z body letters are outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no scored fixture asserts them either way, so the product's handling of them is unmeasured.",
       "supportedContexts": [
         "same-line mailchimp keyword assignment (e.g. MAILCHIMP_API_KEY=<value>), bare, double-quoted, or after a CRLF comment line",
         "suffix -us + one or two digits (no other data-center literal is claimed)"
@@ -691,7 +691,7 @@
         {
           "statement": "The 2009 staff regex and keyhacks allow a [0-9a-z] body (g-z letters).",
           "status": "bounded",
-          "bound": "The contract pattern is hex-only and no fixture carries a g-z body byte; the 11 of 115 measured g-z candidates looked edited."
+          "bound": "Outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no Mailchimp-owned source states the body alphabet (both provider examples are hex, which is all the contract claims), so the benchmark asserts neither detection nor silence on a g-z body byte. The beta8-213d alphabet twin (a \"z\" at offset 16) asserted silence on one; it stays as unscored T0 history and beta8-213f replaces its twin pair with a 40-byte length twin. The product's behaviour on g-z bodies is unmeasured for this family. The 11 of 115 measured g-z candidates looked edited."
         },
         {
           "statement": "keyhacks allows any [0-9a-z]{2,5} suffix; the contract's boundary twin asserts silence on an -eu6 suffix.",

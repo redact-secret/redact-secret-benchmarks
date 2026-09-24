@@ -209,6 +209,13 @@ and `scanAndRedact` over all registered fixtures, verifying pipeline
 agreement and default placeholder substitution — an npm consumer check, not a
 claim that any upstream product issue has been validated here.
 
+## Branches
+
+| Branch | Publishes | Role |
+| --- | --- | --- |
+| `develop` (default) | `staging.benchmarks.redactsecret.dev` | integration branch; open PRs here |
+| `main` | `benchmarks.redactsecret.dev` | always publishable; updated by promoting `develop` |
+
 ## License
 
 MIT — see [LICENSE](./LICENSE). This license covers this repository's own

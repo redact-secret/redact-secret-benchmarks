@@ -42,7 +42,15 @@ A fixture targets one of two kinds of family:
   `eval:classify` skips arrival ids because a support status describes a
   product detector.
 
-An arrival id never equals a registry id. `validateBeta8` and
+An arrival id never equals a registry id.
+
+Twins are scoped to their declared family. When a product finding on an
+arrival family's twin is attributed to a *different* known family (for
+example `github-token` on a `github-fine-grained-pat` twin), the twin records
+`coDetected` rather than a false alarm. For an arrival family that the product
+already catches through a shared detector (#211, parts of #212), twin
+discrimination is therefore an upper bound: read it together with the
+co-detection count and the open ledger rows, never on its own. `validateBeta8` and
 `tests/beta8.test.mjs` enforce this.
 
 ## Per-field provenance

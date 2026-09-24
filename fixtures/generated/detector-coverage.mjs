@@ -1,6 +1,7 @@
 // Authored against the beta.3 format contracts, never scanner output.
 // Prefix variants are structural examples, not issued/valid credentials.
 import { createHash } from "node:crypto";
+import { crc32 } from "node:zlib";
 
 // docs/decisions/2026-09-21-author-pypi-macaroon-positives-synthetically.md's
 // verified construction: a well-formed libmacaroons v2 body (VERSION,
@@ -569,14 +570,21 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   // redact-secret#309 (product PR #667): docs.confluent.io states "API secrets
   // created after July 30, 2025 have a cflt prefix followed by 60 characters
   // consisting of A-Z, a-z, 0-9, + or /", the last 6 a base64 CRC32 of the
-  // prior 54 (not recomputed here: the checksum shares the body's alphabet, the
-  // same shape-only precedent cloudflare-token's tail already sets), and that
+  // prior 54 (#209/#234: the page's own snippet fixes it as CRC32 over the 54
+  // body characters after cflt, little-endian, standard Base64, first 6; it was
+  // once left unrecomputed here, which made these positives fail the
+  // contract's `validate`, so it is now computed over the body's unchanged
+  // first 54 characters), and that
   // earlier secrets "may not include cflt" — a bare 64-byte run both pinned
   // tools report only beside a `confluent` keyword (gitleaks confluent-secret-key;
   // trufflehog confluent), the context-gated policy shape below. The API key ID
   // ("not considered secret information", example ABCD1234567890AB) is the
   // public-id control.
-  const confluentSecretBody = synthetic("coverage:confluent:secret:body", 60, BASE64_BODY);
+  const confluentSecretBody = (body54 => {
+    const le = Buffer.alloc(4);
+    le.writeUInt32LE(crc32(Buffer.from(body54, "ascii")));
+    return body54 + le.toString("base64").slice(0, 6);
+  })(synthetic("coverage:confluent:secret:body", 60, BASE64_BODY).slice(0, 54));
   const confluentSecret = `cflt${confluentSecretBody}`;
   positive("confluent-cloud-api-secret", "prefixed-shape", [{ secret: confluentSecret }]);
   addTwin("confluent-cloud-api-secret", "prefixed-shape", [confluentSecret.slice(0, -1)], "length: 63 characters vs the provider-documented 64 (docs.confluent.io: \"a cflt prefix followed by 60 characters\")", "length");

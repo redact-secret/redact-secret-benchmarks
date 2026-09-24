@@ -209,12 +209,29 @@ and `scanAndRedact` over all registered fixtures, verifying pipeline
 agreement and default placeholder substitution — an npm consumer check, not a
 claim that any upstream product issue has been validated here.
 
-## Branches
+## Deployment
 
 | Branch | Publishes | Role |
 | --- | --- | --- |
 | `develop` (default) | `staging.benchmarks.redactsecret.dev` | integration branch; open PRs here |
 | `main` | `benchmarks.redactsecret.dev` | always publishable; updated by promoting `develop` |
+
+- **Production** (`benchmarks.redactsecret.dev`) shows the corpus measured
+  against the latest released `@redact-secret/core`. This is the citable site.
+- **Staging** (`staging.benchmarks.redactsecret.dev`) shows the same corpus,
+  plus candidate evidence for a `redact-secret` `main` commit. It is
+  provisional; do not cite it.
+
+Hosting, DNS, certificates and IAM roles live in
+[`redact-secret/redact-secret-sites`](https://github.com/redact-secret/redact-secret-sites).
+This repository only builds the site and uploads it, from
+[`.github/workflows/publish-site.yml`](.github/workflows/publish-site.yml),
+using GitHub OIDC and the `staging` and `production` environments.
+
+To republish without pushing, dispatch the workflow with the environment:
+`gh workflow run publish-site.yml -f environment=staging` (or `production`).
+From a workstation, `scripts/publish-site.sh` in `redact-secret-sites` is the
+fallback.
 
 ## License
 

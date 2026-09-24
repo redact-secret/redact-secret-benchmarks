@@ -1,6 +1,6 @@
 ---
 decision_id: decision-amend-207-scope-to-348-assignments
-status: proposed
+status: accepted
 scope: benchmarks
 title: Amend #207's added scope to 348 family-fixture assignments
 decided_at: 2026-09-24
@@ -8,9 +8,8 @@ decided_at: 2026-09-24
 
 # Amend #207's added scope to 348 family-fixture assignments
 
-Status: **proposed. Awaiting maintainer review.** Nothing in this record is in
-force until a maintainer accepts it. It changes no fixture, expectation or
-contract.
+Status: **accepted** (maintainer approval, 2026-09-24). It changes no fixture,
+expectation or contract.
 
 ## Context
 
@@ -75,7 +74,7 @@ The 36 assignments above 312 come from four sources:
 Items 1–3 follow from the issue's own rules and the corpus as it stood. Only
 item 4 is a choice.
 
-## Proposed decision
+## Decision
 
 - Accept 348 as #207's added scope. Record the reason as items 1–3 above
   (+29, all structural) plus 11 fixtures authored above the floor minimum.
@@ -93,8 +92,8 @@ item 4 is a choice.
 
 ## Consequences
 
-- #207's second acceptance criterion is met by this record once a maintainer
-  accepts it. Until then it stays open.
+- #207's second acceptance criterion is met by this record, accepted by the
+  maintainer on 2026-09-24.
 - The first-run report's estimate ("the minimum that meets every floor is
   about 337; this corpus adds 11 beyond it") is confirmed by count: exactly
   337 and 11.

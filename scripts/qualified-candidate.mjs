@@ -25,7 +25,7 @@
  */
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
-import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { appendFile, chmod, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
@@ -174,6 +174,17 @@ async function resolve({ repository }) {
   await output({ sha, 'run-id': selected.id, 'run-url': selected.html_url });
 }
 
+/**
+ * `unzip` restores the modes stored in an artifact zip (the addon is stored 0755), but the
+ * qualification lane got its inputs through `actions/download-artifact`, which writes every
+ * file 0644. `npm pack` records the executable bit, so the repacked addon tarball only matches
+ * the qualified digest once the modes match what the lane packed.
+ */
+async function normalizeModes(dir) {
+  for (const entry of await readdir(dir, { withFileTypes: true, recursive: true }))
+    if (entry.isFile()) await chmod(path.join(entry.parentPath, entry.name), 0o644);
+}
+
 async function fetchArtifacts({ repository, sha, 'run-id': runId, dir }) {
   const listing = await ghJson(`repos/${repository}/actions/runs/${runId}/artifacts?per_page=100`);
   if (listing.total_count > (listing.artifacts ?? []).length) throw new Error(`run ${runId} has more artifacts than one page lists`);
@@ -185,6 +196,7 @@ async function fetchArtifacts({ repository, sha, 'run-id': runId, dir }) {
     const file = path.join(dir, `${name}.zip`);
     await writeFile(file, zip);
     await run('unzip', ['-q', '-o', file, '-d', path.join(dir, name)]);
+    await normalizeModes(path.join(dir, name));
   }
   const inventory = JSON.parse(await readFile(path.join(dir, 'artifact-inventory', 'artifact-inventory.json'), 'utf8'));
   const qualified = qualifiedCandidate(inventory, { sha, runId });

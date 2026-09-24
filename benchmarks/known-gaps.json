@@ -292,7 +292,7 @@
         "common-formats--sendgrid-token-segmented-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.4",
@@ -324,6 +324,14 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/404"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/f837644f00c1bc7afba23b4677de157cd088ec4f",
+            "https://github.com/redact-secret/redact-secret/pull/411",
+            "https://github.com/redact-secret/redact-secret/releases/tag/v0.1.0-beta.5"
+          ]
         }
       },
       "promotion": {
@@ -352,7 +360,11 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "f837644f00c1bc7afba23b4677de157cd088ec4f",
+        "version": "0.1.0-beta.5"
+      }
     },
     {
       "id": "product-405",
@@ -1163,7 +1175,7 @@
         "sendgrid-regressions--url-safe-generic-key"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.5",
@@ -1196,6 +1208,14 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
             "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+            "https://github.com/redact-secret/redact-secret/pull/437",
+            "https://github.com/redact-secret/redact-secret/releases/tag/v0.1.0-beta.5"
           ]
         }
       },
@@ -1247,7 +1267,11 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+        "version": "0.1.0-beta.5"
+      }
     },
     {
       "id": "product-428-reference-syntax",

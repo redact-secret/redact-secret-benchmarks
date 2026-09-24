@@ -2040,6 +2040,326 @@
           ]
         }
       ]
+    },
+    {
+      "id": "product-738",
+      "title": "confluent-cloud-api-secret does not validate the documented CRC32 checksum, so checksum-invalid cflt values are flagged",
+      "url": "https://github.com/redact-secret/redact-secret/issues/738",
+      "number": 738,
+      "fixtures": [
+        "beta8-209--confluent-cloud-api-secret-env-cloud-secret-checksum-twin",
+        "beta8-209--confluent-cloud-api-secret-kafka-client-properties-checksum-byte-order-twin",
+        "beta8-209--confluent-cloud-api-secret-cli-api-key-create-json-checksum-prefix-included-twin"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/234"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-209-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/209#issuecomment-5814998824"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/234"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/738"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/738",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-738",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-209--confluent-cloud-api-secret-env-cloud-secret-checksum-twin",
+          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "expected": [],
+          "actual": [
+            {
+              "start": 68,
+              "end": 132,
+              "type": "confluent-cloud-api-secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-209--confluent-cloud-api-secret-kafka-client-properties-checksum-byte-order-twin",
+          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "expected": [],
+          "actual": [
+            {
+              "start": 157,
+              "end": 221,
+              "type": "confluent-cloud-api-secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-209--confluent-cloud-api-secret-cli-api-key-create-json-checksum-prefix-included-twin",
+          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "expected": [],
+          "actual": [
+            {
+              "start": 101,
+              "end": 165,
+              "type": "confluent-cloud-api-secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-739",
+      "title": "generic-token flags the public Confluent Cloud API key ID in an \"apiKey\" field",
+      "url": "https://github.com/redact-secret/redact-secret/issues/739",
+      "number": 739,
+      "fixtures": [
+        "beta8-209--confluent-cloud-api-secret-secrets-manager-json",
+        "beta8-209--confluent-cloud-api-secret-secrets-manager-json-alphabet-twin"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/234"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-209-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/209#issuecomment-5814998824"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/234"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/739"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/739",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-739",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-209--confluent-cloud-api-secret-secrets-manager-json",
+          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "expected": [
+            {
+              "start": 50,
+              "end": 114
+            }
+          ],
+          "actual": [
+            {
+              "start": 15,
+              "end": 31,
+              "type": "generic-token",
+              "confidence": "high",
+              "action": "redact"
+            },
+            {
+              "start": 50,
+              "end": 114,
+              "type": "confluent-cloud-api-secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-209--confluent-cloud-api-secret-secrets-manager-json-alphabet-twin",
+          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "expected": [],
+          "actual": [
+            {
+              "start": 15,
+              "end": 31,
+              "type": "generic-token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-740",
+      "title": "heroku-api-key misses the documented 41-character HRKU-<uuid> OAuth token generation",
+      "url": "https://github.com/redact-secret/redact-secret/issues/740",
+      "number": 740,
+      "fixtures": [
+        "beta8-209--heroku-api-key-env-g1",
+        "beta8-209--heroku-api-key-authorizations-create-g1"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://devcenter.heroku.com/changelog-items/3175",
+          "https://devcenter.heroku.com/changelog-items/2842",
+          "https://devcenter.heroku.com/articles/oauth",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/235"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-209-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/209#issuecomment-5814998824"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://devcenter.heroku.com/changelog-items/3175",
+            "https://devcenter.heroku.com/changelog-items/2842",
+            "https://devcenter.heroku.com/articles/oauth",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/235"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/740"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/740",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-740",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-209--heroku-api-key-env-g1",
+          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "expected": [
+            {
+              "start": 15,
+              "end": 56
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-209--heroku-api-key-authorizations-create-g1",
+          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "expected": [
+            {
+              "start": 209,
+              "end": 250
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-520",
+      "title": "google-api-key: Firebase web-config apiKey is suppressed by design (redact-secret#520 B3a). Awaiting maintainer decision: product gap vs documented scope exclusion (redact-secret#520 B3a). Not promoted; no benchmark exclusion added.",
+      "url": "https://github.com/redact-secret/redact-secret/issues/520",
+      "number": 520,
+      "fixtures": [
+        "beta8-209--google-api-key-firebase-web-config"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://docs.cloud.google.com/docs/authentication/api-keys",
+          "https://github.com/redact-secret/redact-secret/issues/642"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-209-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/209#issuecomment-5814998824"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-209--google-api-key-firebase-web-config",
+          "corpusHash": "ff3b4ff7b6be6065eb20c4e1421bc0978d473bc336819b149a1f52321a3c210d",
+          "expected": [
+            {
+              "start": 36,
+              "end": 75
+            }
+          ],
+          "actual": []
+        }
+      ]
     }
   ]
 }

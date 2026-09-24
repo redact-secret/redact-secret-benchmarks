@@ -135,8 +135,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #112 / redact-secret#708: docker-token's dckr_oat_ branch accepts the exact 27-byte
   // body Docker's Hub API example shows; one new must-redact/T1 positive × 3 contexts
   // (+3 files/+3 spans), 3 twins × 3 contexts (netted out below).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 389);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 395);
+  // #209: confluent-cloud-api-secret's contract now validates the provider-published CRC32
+  // checksum; detector-coverage's three prefixed-shape positives (flat random bodies) fail it
+  // and move must-redact/T1 -> policy/T3 as retained regressions (-3 files/-3 spans here, +3 below).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 386);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 392);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -148,7 +151,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #207 (research #231): supabase-token is re-reviewed onto the documented sb_secret_
   // 22 + _ + 8 grammar, so its three shape-1 positives (40 alphanumeric, no inner _)
   // move from must-redact/T0 to retained legacy policy/T3.
-  assert.deepEqual(tally['policy/T3'], { files: 208, spans: 208 });
+  // #209: +3 — the checksum-invalid confluent-cloud-api-secret prefixed-shape positives above.
+  assert.deepEqual(tally['policy/T3'], { files: 211, spans: 211 });
   assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -218,10 +222,11 @@ test('v4 outcomes reduce to the v3 exact/containment rule when no envelope is au
 });
 
 test('envelopes are authored where v3 needed prose: URIs, OTP, Bearer, quoted generics', () => {
+  // Pre-Beta.8 count; beta8-<issue> corpora (#207–#212) are checked by the loop below but not counted.
   const enveloped = all.flatMap(([category, c]) => c.fixtures.filter(f => f.expected.some(r => r.envelope)).map(f => ({ category, f })));
+  assert.equal(enveloped.filter(({ category }) => !category.startsWith('beta8-')).length, 58);
   // #66: 3 new quoted-assignment envelopes (generic-token's markdown-inline-
   // code boundary, one per field).
-  assert.equal(enveloped.length, 58);
   for (const { f } of enveloped) for (const r of f.expected) {
     const bytes = Buffer.from(f.content);
     const whole = bytes.subarray(r.envelope.start, r.envelope.end).toString();

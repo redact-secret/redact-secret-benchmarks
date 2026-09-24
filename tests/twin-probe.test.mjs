@@ -143,7 +143,8 @@ const T1_DIMENSIONS = {
   'grafana-service-account-token': ['prefix'],
   'linear-token': ['length'],
   'new-relic-user-api-key': ['prefix'],
-  'notion-token': ['length', 'prefix'],
+  // #209: a boundary twin replaces the documented secret_ underscore with a dash.
+  'notion-token': ['length', 'prefix', 'boundary'],
   'npm-token': ['length', 'prefix', 'boundary'],
   'sendgrid-token': ['boundary', 'length'],
   'private-key': ['prefix', 'public-prefix'],
@@ -157,9 +158,14 @@ const T1_DIMENSIONS = {
   'supabase-token': ['public-prefix', 'length', 'boundary'],
   // Post-beta.6 families (redact-secret#309, #311, #312): prefix and total length are
   // provider-documented; body alphabets stay tool-corroborated, so no alphabet twin.
-  'confluent-cloud-api-secret': ['length', 'prefix'],
+  // #209 (research #234): confluent's alphabet and checksum are provider-documented too
+  // (the checksum algorithm by the provider's own published snippet), so it adds
+  // checksum twins (contract `validate`) and a URL-safe-alphabet twin.
+  'confluent-cloud-api-secret': ['length', 'prefix', 'checksum', 'alphabet'],
   'netlify-token': ['length', 'prefix'],
-  'heroku-api-key': ['length', 'prefix'],
+  // #209 (research #235): the HRKU- prefix's dash is provider-documented; a boundary twin
+  // replaces it on the 41-character HRKU-<uuid> generation.
+  'heroku-api-key': ['length', 'prefix', 'boundary'],
   // #162: only the ddapp_ prefix is provider-documented; body length and alphabet stay
   // tool/code-corroborated only (see the contract's review note), so no length/alphabet
   // twin is authored here. #112: a boundary twin drops the "_" of that same documented

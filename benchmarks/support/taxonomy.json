@@ -973,14 +973,14 @@
       "id": "confluent:cloud-api-secret",
       "provider": "confluent",
       "name": "Cloud API secret (cflt-prefixed)",
-      "description": "API secret created after 2025-07-30: literal cflt prefix, then 60 base64-body bytes, the last 6 a CRC32 checksum.",
+      "description": "API secret created after 2025-07-30: literal cflt prefix, then 54 base64-alphabet body bytes and a 6-byte checksum (standard Base64 of the little-endian CRC32 of those 54 bytes), 64 in total.",
       "detectors": [
         "confluent-cloud-api-secret"
       ],
       "sources": [
         "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html"
       ],
-      "note": "redact-secret#309 (product PR #667) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The API key ID (\"not considered secret information\") is never a positive."
+      "note": "redact-secret#309 (product PR #667) landed on the product main after 0.1.0-beta.6 and checks the prefix and length only. #209 (research #234): the provider publishes the checksum algorithm, so the contract validates it. The API key ID (\"not considered secret information\") is never a positive."
     },
     {
       "id": "confluent:cloud-api-secret-legacy",
@@ -1036,15 +1036,16 @@
       "id": "heroku:oauth-access-token",
       "provider": "heroku",
       "name": "OAuth access token (HRKU-prefixed)",
-      "description": "65-character OAuth access token: literal HRKU-AA marker, then 58 bytes of [A-Za-z0-9_-].",
+      "description": "HRKU- prefixed OAuth access token in its two documented prefixed generations: 41 characters (HRKU- plus a UUID, granted 2024-04-01 to 2025-04-22) and 65 characters (HRKU- plus 60 of [A-Za-z0-9_-], granted from 2025-04-23, observed to begin AA).",
       "detectors": [
         "heroku-api-key"
       ],
       "sources": [
         "https://devcenter.heroku.com/articles/oauth",
-        "https://devcenter.heroku.com/changelog-items/2842"
+        "https://devcenter.heroku.com/changelog-items/2842",
+        "https://devcenter.heroku.com/changelog-items/3175"
       ],
-      "note": "redact-secret#312 (product PR #675) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The changelog's 41-byte HRKU-prefixed UUID example is an undocumented-width variant outside the contract."
+      "note": "redact-secret#312 (product PR #675) landed on the product main after 0.1.0-beta.6 and froze the 65-character HRKU-AA grammar only. #209 (research #235): changelog-items/3175 documents the 41-character HRKU-<uuid> generation as the previous length, so it is in this family's contract, not an undocumented-width variant; the AA start of the 65-character form is example- and tool-observed, not provider-stated. The pre-2024 bare-UUID generation is heroku:legacy-api-key."
     },
     {
       "id": "heroku:legacy-api-key",

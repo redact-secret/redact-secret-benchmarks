@@ -34,8 +34,11 @@ export interface LexicalSeparabilityViolation {
 const IDENTIFIER_CONTINUATION = '[A-Za-z0-9_-]';
 const unanchored = (pattern: string) =>
   new RegExp(`(?<!${IDENTIFIER_CONTINUATION})(?:${pattern.replace(/^\^/, '').replace(/\$$/, '')})(?!${IDENTIFIER_CONTINUATION})`);
+// #209: a contract's structural `validate` (e.g. confluent-cloud-api-secret's provider-documented CRC32) is part of
+// the contract, so an isolated pattern match that `validate` rejects — a checksum-invalid twin — is not a collision.
 const collides = (f: Fixture, contract: FormatContract | undefined) =>
-  Boolean(contract?.pattern) && !contract!.structural && unanchored(contract!.pattern!).test(f.content);
+  Boolean(contract?.pattern) && !contract!.structural &&
+  [...f.content.matchAll(new RegExp(unanchored(contract!.pattern!).source, 'g'))].some(m => contract!.validate?.(m[0]) ?? true);
 
 /** The scored `must-redact` families a `must-not-flag` fixture can actually conflict with. */
 function scoredFamilies(fixtures: Fixture[]): Set<string> {

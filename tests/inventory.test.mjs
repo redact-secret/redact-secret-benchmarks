@@ -101,11 +101,11 @@ assert flare_rows['github_token']['sourceUrl'].startswith('https://example.inval
 });
 
 test('known gap issues cover all recorded failures and link to authored fixtures', async () => {
-  assert.deepEqual(knownGaps.issues.map(i => i.number), [292,293,294,404,405,406,407,408,551,552,553,428,428,671,672,670,707,708,714]);
+  assert.deepEqual(knownGaps.issues.map(i => i.number), [292,293,294,404,405,406,407,408,551,552,553,428,428,671,672,670,707,708,714,738,739,740,520,741,742,743,743,744,745,746,747]);
   const assignments = await read('benchmarks/fixture-detectors.json');
   const slugs = knownGaps.issues.flatMap(i => i.fixtures);
-  assert.equal(slugs.length, 64);
-  assert.equal(new Set(slugs).size, 64);
+  assert.equal(slugs.length, 93);
+  assert.equal(new Set(slugs).size, 93);
   for (const issue of knownGaps.issues) {
     assert.equal(issue.url, `https://github.com/redact-secret/redact-secret/issues/${issue.number}`);
     for (const slug of issue.fixtures) assert.ok(Object.hasOwn(assignments,slug));

@@ -17,6 +17,14 @@ Issue-to-implementation and PR-review work uses the user-global `resolve-gh-issu
 and `pr-review` Claude Code skills instead of a repo-local copy; the local
 `resolve-issue`/`review-pr` skills were removed in favor of those.
 
+## Branches
+
+`develop` is the default and integration branch: open feature and workbench PRs
+against it. A push to `develop` publishes `staging.benchmarks.redactsecret.dev`;
+a push to `main` publishes `benchmarks.redactsecret.dev`. Promote `develop` to
+`main` only when the measurement is ready to be public, and keep `main` always
+publishable.
+
 ## Peer scanner version
 
 Before `eval:classify`, `eval:matrix` or `benchmark:candidate`, check that

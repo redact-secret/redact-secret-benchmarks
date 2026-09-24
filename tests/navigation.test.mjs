@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildCatalog, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments, rowSignal } from '../src/model.mjs';
+import { buildCatalog, canonicalUrl, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments, rowSignal } from '../src/model.mjs';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 const read = async path => JSON.parse(await readFile(new URL('../'+path,import.meta.url),'utf8'));
 const categories = await read('benchmarks/categories.json');
@@ -65,6 +65,11 @@ test('the public-only allowlist drops Workbench and nothing else', () => {
   assert.equal(open('/coverage/github-token'), 'coverage');
   assert.equal(open('/benchmark/accuracy'), 'redirect');
   assert.equal(open('/how-to-read'), 'how-to-read');
+});
+test('the canonical URL names the production host and the route path on every copy of the site', () => {
+  assert.equal(canonicalUrl('/report'), 'https://benchmarks.redactsecret.dev/report');
+  assert.equal(canonicalUrl('/fixture/accuracy--github-pat/'), 'https://benchmarks.redactsecret.dev/fixture/accuracy--github-pat');
+  assert.equal(canonicalUrl('/'), 'https://benchmarks.redactsecret.dev/');
 });
 test('UTF-8 highlighting round-trips every input including BOM, Unicode, CRLF and multiple secrets', () => {
   for (const f of fixtures) {

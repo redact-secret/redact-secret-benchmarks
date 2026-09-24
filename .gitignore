@@ -16,3 +16,6 @@ public/results/.*.json
 # Holdout inputs, state, private plans and execution scratch are never tracked.
 /holdout/generated/
 .peer-bin/
+
+# The redact-secret checkout the staging publish packs its candidate from (#152).
+/.redact-secret-product/

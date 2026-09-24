@@ -1,0 +1,265 @@
+# Publishes the benchmarks site. This file is the upstream copy and is
+# authoritative; `redact-secret/redact-secret-sites` holds a mirror at
+# `docs/upstream/redact-secret-benchmarks--publish-site.yml` so the deployment
+# design stays reviewable in one place. Keep the two in sync when either
+# changes (#151).
+#
+# It builds the site (which means running the scanners, so it must happen in
+# this repository) and publishes it straight to the matching S3 bucket in the
+# redact-secret account, using the OIDC role that `infra/bootstrap` creates and
+# that each site stack grants bucket access to.
+#
+# Branches map to environments:
+#
+#   develop -> staging.benchmarks.redactsecret.dev
+#   main    -> benchmarks.redactsecret.dev
+#
+# Both measure the corpus against the released `@redact-secret/core` in the
+# lockfile. Staging also measures a `redact-secret` `main` commit with
+# `eval:candidate`, from the artifacts that commit's own `artifact-qualification`
+# run qualified, and ships it as candidate evidence (#152); production does not.
+#
+# Per-environment configuration lives in the repository's GitHub environments,
+# so this file carries no account ID and no bucket name:
+#
+#   staging      PUBLISHER_ROLE_ARN, SITE_STACK=redactsecret-site-benchmarks-staging
+#   production   PUBLISHER_ROLE_ARN, SITE_STACK=redactsecret-site-benchmarks-prod
+name: Publish benchmarks site
+
+on:
+  push:
+    branches: [develop, main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Republish a site without pushing.
+        type: environment
+        required: true
+        default: staging
+      # redact-secret dispatches staging with this after its main passes
+      # artifact qualification (#153; the sending side is
+      # docs/upstream/redact-secret--notify-benchmarks.yml). Untrusted: the
+      # staging steps only use it to select artifacts.
+      product_sha:
+        description: redact-secret commit to measure on staging; ignored for production.
+        type: string
+        required: false
+
+permissions: {}
+
+env:
+  TARGET: ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
+
+# One group per environment, never cancelling a run mid-sync. GitHub keeps at
+# most one pending run per group and replaces it with the newest, so a burst of
+# redact-secret pushes already collapses to the running publish plus the latest
+# queued one (#153).
+concurrency:
+  group: publish-site-${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish to ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AWS_REGION: us-east-1
+    steps:
+      # Production measures the released package only; a product commit sent
+      # to it is a mistake, so fail rather than silently drop it.
+      - name: Refuse a product commit for production
+        if: env.TARGET == 'production' && inputs.product_sha != ''
+        run: |
+          echo "::error::product_sha applies to staging only; production measures the released package."
+          exit 1
+
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v5.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Staging only (#152): stage a redact-secret `main` commit for eval:candidate
+      # before anything slow runs, so a commit with no qualified artifacts fails
+      # here. Production skips all of it and measures the released lockfile package.
+      #
+      # The token is scoped to redact-secret and to reading its Actions runs and
+      # artifacts and its contents (to pack at the measured commit).
+      - name: Mint a read-only token for redact-secret
+        id: product-token
+        if: env.TARGET == 'staging'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ vars.BENCHMARKS_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: redact-secret
+          permission-actions: read
+          permission-contents: read
+
+      # PRODUCT_SHA (a dispatch input, #153) is untrusted: it must be 40 hex or the
+      # run fails, and that commit must have a successful artifact-qualification run
+      # on `main`. Empty (a push here) means the newest `main` commit that passed
+      # qualification, so a push does not fail while the product's HEAD is still
+      # qualifying. With no qualified candidate, staging is not published (the step
+      # summary says why).
+      - name: Resolve the redact-secret main commit and its qualification run
+        id: product
+        if: env.TARGET == 'staging'
+        env:
+          GH_TOKEN: ${{ steps.product-token.outputs.token }}
+          PRODUCT_SHA: ${{ inputs.product_sha }}
+        run: node scripts/qualified-candidate.mjs resolve --repository redact-secret/redact-secret
+
+      # Downloads the run's artifact-inventory and the linux-x64 addon and both wasm
+      # builds, checking each zip against its upload digest, the inventory against
+      # this commit and run, and each binary against the inventory.
+      - name: Download and verify the qualified runtime artifacts
+        if: env.TARGET == 'staging'
+        env:
+          GH_TOKEN: ${{ steps.product-token.outputs.token }}
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          QUALIFICATION_RUN: ${{ steps.product.outputs.run-id }}
+        run: >-
+          node scripts/qualified-candidate.mjs fetch --repository redact-secret/redact-secret
+          --sha "$PRODUCT_COMMIT" --run-id "$QUALIFICATION_RUN" --dir "$RUNNER_TEMP/qualified"
+
+      - name: Check out redact-secret at the measured commit
+        if: env.TARGET == 'staging'
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          repository: redact-secret/redact-secret
+          ref: ${{ steps.product.outputs.sha }}
+          token: ${{ steps.product-token.outputs.token }}
+          path: .redact-secret-product
+          persist-credentials: false
+
+      # The qualification run uploads binaries, not tarballs, so they are packed the
+      # way its clean-install lane packs them (nothing is compiled but the JS
+      # wrapper), then required to be byte-identical to the tarballs it qualified.
+      - name: Pack the qualified artifacts with the product's own pack script
+        if: env.TARGET == 'staging'
+        working-directory: .redact-secret-product
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run js:build
+          node scripts/pack-npm-candidate.mjs \
+            --addon-dir "$RUNNER_TEMP/qualified/node-addon-x86_64-unknown-linux-gnu" \
+            --wasm-dir "$RUNNER_TEMP/qualified/wasm-web" \
+            --wasm-common-dir "$RUNNER_TEMP/qualified/wasm-web-common" \
+            --out-dir "$RUNNER_TEMP/candidate"
+          # --product-state clean below asserts the tree is the commit, unmodified.
+          test -z "$(git status --porcelain)"
+
+      - name: Verify the packed tarballs are the qualified bytes
+        id: candidate
+        if: env.TARGET == 'staging'
+        run: node scripts/qualified-candidate.mjs verify --dir "$RUNNER_TEMP/qualified" --packed "$RUNNER_TEMP/candidate"
+
+      # Same provisioning as validate.yml: the published numbers must come from
+      # the binaries CI verifies, never from an unchecked download.
+      - name: Provision checksum-pinned Gitleaks and TruffleHog (versions from qualification/suite-v1.json, digests from scanners/peer-checksums.json)
+        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
+
+      - name: Verify the resolved peers are the pinned ones
+        run: |
+          set -euo pipefail
+          [ "$(command -v gitleaks)" = "$RUNNER_TEMP/scanner-bin/gitleaks" ]
+          [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
+
+      # --strict: a scanner that is unavailable fails the run instead of being
+      # published as an "unavailable" row.
+      - name: Measure the corpus
+        run: npm run bench -- --strict
+
+      - name: Produce the evaluation report the site reads
+        run: |
+          npm run eval
+          npm run eval:publish
+
+      # Writes public/results/candidate-evidence-v1.json (reportType "candidate",
+      # supportClaims false) beside, never into, evaluation-v1.json; the page shows
+      # it only as candidate evidence for the named commit. --expected-artifact-sha256
+      # is the core tarball digest the product's qualification recorded, so
+      # eval:candidate itself refuses any other core package. An incomplete
+      # measurement exits non-zero and staging is not published.
+      - name: Measure the redact-secret main commit as candidate evidence
+        if: env.TARGET == 'staging'
+        env:
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
+          NODE_PACKAGE: ${{ steps.candidate.outputs.node }}
+          WASM_PACKAGE: ${{ steps.candidate.outputs.wasm }}
+          CORE_SHA256: ${{ steps.candidate.outputs.core-sha256 }}
+        run: >-
+          npm run eval:candidate --
+          --candidate-package "$CORE_PACKAGE"
+          --candidate-node-package "$NODE_PACKAGE"
+          --candidate-wasm-package "$WASM_PACKAGE"
+          --candidate-source-commit "$PRODUCT_COMMIT"
+          --product-state clean
+          --expected-artifact-sha256 "$CORE_SHA256"
+          --output-dir "$GITHUB_WORKSPACE/public/results"
+
+      # The page marks which environment served it and which commit built it
+      # (#155); an unset VITE_SITE_ENV builds as "local", never production.
+      - name: Build the site
+        env:
+          VITE_SITE_ENV: ${{ env.TARGET }}
+          VITE_BUILD_COMMIT: ${{ github.sha }}
+        run: npm run build
+
+      - uses: aws-actions/configure-aws-credentials@f503a1870408dcf2c35d5c2b8a68e69211042c7d # v5.0.0
+        with:
+          role-to-assume: ${{ vars.PUBLISHER_ROLE_ARN }}
+          aws-region: us-east-1
+          role-session-name: publish-benchmarks-${{ github.run_id }}
+
+      # Same three passes as scripts/publish-site.sh in redact-secret-sites:
+      # fingerprinted assets first and kept forever, then everything else with
+      # revalidation and stale files removed, then assets pruned once the new
+      # HTML is live.
+      - name: Publish
+        env:
+          SITE_STACK: ${{ vars.SITE_STACK }}
+        run: |
+          set -euo pipefail
+          outputs=$(aws cloudformation describe-stacks --stack-name "$SITE_STACK" \
+            --query 'Stacks[0].Outputs[?OutputKey==`BucketName`||OutputKey==`DistributionId`].[OutputKey,OutputValue]' \
+            --output text)
+          bucket=$(awk '$1=="BucketName"{print $2}' <<<"$outputs")
+          distribution=$(awk '$1=="DistributionId"{print $2}' <<<"$outputs")
+          test -n "$bucket" -a -n "$distribution"
+
+          aws s3 sync dist/assets "s3://$bucket/assets" --only-show-errors \
+            --cache-control 'public, max-age=31536000, immutable'
+          aws s3 sync dist "s3://$bucket" --only-show-errors --delete \
+            --exclude 'assets/*' --cache-control 'no-cache'
+          aws s3 sync dist/assets "s3://$bucket/assets" --only-show-errors --delete \
+            --cache-control 'public, max-age=31536000, immutable'
+
+          aws cloudfront create-invalidation --distribution-id "$distribution" --paths '/*' \
+            --query 'Invalidation.Id' --output text
+
+      - name: Record what was published
+        env:
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          QUALIFICATION_RUN_URL: ${{ steps.product.outputs.run-url }}
+        run: |
+          {
+            echo "### Published to $TARGET"
+            echo
+            echo "- benchmarks commit: \`${{ github.sha }}\`"
+            echo "- run id: $(jq -r .runId public/results/run.json)"
+            if [ "$TARGET" = staging ]; then
+              echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

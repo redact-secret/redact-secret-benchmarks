@@ -6,13 +6,14 @@ import * as i210 from './210.ts';
 import * as i211 from './211.ts';
 import * as i212 from './212.ts';
 import * as i213c from './213c.ts';
+import * as i213b from './213b.ts';
 
 /**
  * Beta.8 evidence modules, one per consumer issue (#207–#212). Each owns its
  * arrival families, their contracts and its profile declarations, so parallel
  * issue work never edits a shared table. See docs/specs/beta8-evidence.md.
  */
-export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c];
+export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c, i213b];
 export const arrivalFamilies: ArrivalFamily[] = BETA8_MODULES.flatMap(m => m.arrivalFamilies);
 export const arrivalIds = new Set(arrivalFamilies.map(f => f.id));
 export const arrivalContracts: Record<string, FormatContract> = {};

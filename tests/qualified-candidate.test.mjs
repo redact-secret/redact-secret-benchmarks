@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
-import { ARTIFACTS, pickArtifacts, productShaInput, qualifiedCandidate, selectQualificationRun, sha256, verifyPacked } from '../scripts/qualified-candidate.mjs';
+import { ARTIFACTS, pickArtifacts, productShaInput, latestQualificationRun, qualifiedCandidate, selectQualificationRun, sha256, verifyPacked } from '../scripts/qualified-candidate.mjs';
 
 const SHA = 'de9080eb6e9e78fd5d60301ea477fdb32cbe91cb';
 const REPO = 'redact-secret/redact-secret';
 const hex = seed => sha256(Buffer.from(seed));
 
-test('PRODUCT_SHA is untrusted: empty resolves main, anything but 40 lower-case hex fails', () => {
+test('PRODUCT_SHA is untrusted: empty means the newest qualified main commit, anything but 40 lower-case hex fails', () => {
   assert.equal(productShaInput(''), null);
   assert.equal(productShaInput(undefined), null);
   assert.equal(productShaInput(SHA), SHA);
@@ -23,6 +23,14 @@ test('only a successful main qualification run of exactly that commit is selecte
   for (const reject of [{ conclusion: 'failure' }, { status: 'in_progress', conclusion: null }, { head_branch: 'rc/0.2' }, { event: 'pull_request' },
     { head_sha: 'f'.repeat(40) }, { head_repository: { full_name: 'someone/fork' } }, { path: '.github/workflows/ci.yml' }])
     assert.equal(selectQualificationRun([runOf(reject)], { sha: SHA, repository: REPO }), null, JSON.stringify(reject));
+});
+
+test('without a requested commit, the newest successful main qualification run of any commit is selected', () => {
+  const other = 'a'.repeat(40);
+  assert.equal(latestQualificationRun([runOf({ id: 10 }), runOf({ id: 14, head_sha: other }), runOf({ id: 15, conclusion: 'failure' }),
+    runOf({ id: 16, status: 'in_progress', conclusion: null })], { repository: REPO }).head_sha, other);
+  for (const reject of [{ head_branch: 'rc/0.2' }, { event: 'pull_request' }, { head_repository: { full_name: 'someone/fork' } }, { head_sha: 'main' }])
+    assert.equal(latestQualificationRun([runOf(reject)], { repository: REPO }), null, JSON.stringify(reject));
 });
 
 test('each required artifact must exist once, unexpired, with an upload digest', () => {

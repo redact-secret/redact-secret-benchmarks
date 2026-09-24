@@ -7,8 +7,8 @@
  * that records, per clean-install lane, the SHA-256 of every binary and of the three
  * tarballs its `scripts/pack-npm-candidate.mjs` packed from them. So the chain is:
  *
- *   resolve  the commit (an untrusted 40-hex input, or `main` HEAD) and its successful
- *            `main` qualification run;
+ *   resolve  the commit (an untrusted 40-hex input, or else the newest `main` commit
+ *            that passed qualification) and its successful `main` qualification run;
  *   fetch    that run's inventory and binaries, each zip checked against the digest
  *            GitHub recorded at upload, the inventory checked to be about this commit and
  *            this run, and each binary checked against the inventory;
@@ -48,7 +48,7 @@ export const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
 /**
  * The product commit to measure. PRODUCT_SHA is untrusted (a dispatch input or payload):
- * empty means "resolve main HEAD"; anything else must be exactly 40 lower-case hex.
+ * empty means "the newest qualified `main` commit"; anything else must be exactly 40 lower-case hex.
  */
 export function productShaInput(value) {
   if (value === undefined || value === '') return null;
@@ -56,11 +56,22 @@ export function productShaInput(value) {
   return value;
 }
 
+const qualifiedOnMain = (r, repository) => r.head_branch === 'main' && ['push', 'workflow_dispatch'].includes(r.event)
+  && r.status === 'completed' && r.conclusion === 'success' && r.head_repository?.full_name === repository && r.path === `.github/workflows/${WORKFLOW}`;
+const newest = runs => runs.sort((a, b) => b.id - a.id || b.run_attempt - a.run_attempt)[0] ?? null;
+
 /** The newest successful, complete qualification run of `sha` pushed to (or dispatched on) this repository's `main`. */
 export function selectQualificationRun(runs, { sha, repository }) {
-  const eligible = runs.filter(r => r.head_sha === sha && r.head_branch === 'main' && ['push', 'workflow_dispatch'].includes(r.event)
-    && r.status === 'completed' && r.conclusion === 'success' && r.head_repository?.full_name === repository && r.path === `.github/workflows/${WORKFLOW}`);
-  return eligible.sort((a, b) => b.id - a.id || b.run_attempt - a.run_attempt)[0] ?? null;
+  return newest(runs.filter(r => r.head_sha === sha && qualifiedOnMain(r, repository)));
+}
+
+/**
+ * The newest successful `main` qualification run of any commit. Without a requested commit,
+ * staging measures this rather than `main` HEAD, so a push here does not fail while the
+ * product's HEAD is still qualifying or has failed qualification.
+ */
+export function latestQualificationRun(runs, { repository }) {
+  return newest(runs.filter(r => /^[0-9a-f]{40}$/.test(r.head_sha ?? '') && qualifiedOnMain(r, repository)));
 }
 
 /** Exactly one unexpired artifact per required name, each with the digest GitHub recorded at upload. */
@@ -139,8 +150,19 @@ function args(argv, required) {
 
 async function resolve({ repository }) {
   const requested = productShaInput(process.env.PRODUCT_SHA);
-  const sha = requested ?? productShaInput((await ghJson(`repos/${repository}/commits/main`)).sha);
-  const source = requested ? 'requested' : `${repository} main HEAD`;
+  if (!requested) {
+    const runs = (await ghJson(`repos/${repository}/actions/workflows/${WORKFLOW}/runs?branch=main&status=success&per_page=100`)).workflow_runs ?? [];
+    const selected = latestQualificationRun(runs, { repository });
+    if (!selected) {
+      await summary(`### Staging not published\n\nNo \`${repository}\` \`main\` commit has a successful \`${WORKFLOW}\` run among the latest ${runs.length}, so there is no qualified candidate to measure. Staging is not published without candidate evidence.`);
+      throw new Error(`no successful ${WORKFLOW} run on main in the latest ${runs.length} runs`);
+    }
+    console.log(`Measuring the newest qualified ${repository} main commit ${selected.head_sha}, qualified by run ${selected.id} (${selected.html_url}).`);
+    await output({ sha: selected.head_sha, 'run-id': selected.id, 'run-url': selected.html_url });
+    return;
+  }
+  const sha = requested;
+  const source = 'requested';
   const runs = (await ghJson(`repos/${repository}/actions/workflows/${WORKFLOW}/runs?head_sha=${sha}&per_page=100`)).workflow_runs ?? [];
   const selected = selectQualificationRun(runs, { sha, repository });
   if (!selected) {

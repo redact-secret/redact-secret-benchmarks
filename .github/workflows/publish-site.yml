@@ -105,9 +105,11 @@ jobs:
           permission-contents: read
 
       # PRODUCT_SHA (a dispatch input, #153) is untrusted: it must be 40 hex or the
-      # run fails; empty means redact-secret `main` HEAD. Either way the commit must
-      # have a successful artifact-qualification run on `main`, or staging is not
-      # published (the step summary says why).
+      # run fails, and that commit must have a successful artifact-qualification run
+      # on `main`. Empty (a push here) means the newest `main` commit that passed
+      # qualification, so a push does not fail while the product's HEAD is still
+      # qualifying. With no qualified candidate, staging is not published (the step
+      # summary says why).
       - name: Resolve the redact-secret main commit and its qualification run
         id: product
         if: env.TARGET == 'staging'

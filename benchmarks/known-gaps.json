@@ -3623,6 +3623,296 @@
       "fix": {
         "commit": "99d83c4c4d8070da754fcf021f1be43cdebd7afc"
       }
+    },
+    {
+      "id": "product-727",
+      "title": "generic-token flags an xAI key-metadata ACL scope string (\"api-key:endpoint:chat\") in a public-id control",
+      "url": "https://github.com/redact-secret/redact-secret/issues/727",
+      "number": 727,
+      "fixtures": [
+        "beta8-208--xai-api-key-key-metadata-public-id"
+      ],
+      "kind": "false-positive",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "4f9266580536c8e37f60be0b415e57fa284e04cd"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/lib/beta8/208.ts",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/216"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/208"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-208--xai-api-key-key-metadata-public-id",
+          "corpusHash": "4a5f0c22d8720a1484668bf039609422a20dcf8184132ee206bf16cbdb7d42c9",
+          "expected": [],
+          "actual": [
+            {
+              "start": 128,
+              "end": 141,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-264",
+      "title": "generic-token flags a partially masked console value (gsk_ + 48 asterisks + 4 visible characters) after a \"Secret:\" label",
+      "url": "https://github.com/redact-secret/redact-secret/issues/264",
+      "number": 264,
+      "fixtures": [
+        "beta8-208--groq-api-key-masked-console-placeholder"
+      ],
+      "kind": "false-positive",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "4f9266580536c8e37f60be0b415e57fa284e04cd"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/lib/beta8/208.ts",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/218"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/208"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-208--groq-api-key-masked-console-placeholder",
+          "corpusHash": "4a5f0c22d8720a1484668bf039609422a20dcf8184132ee206bf16cbdb7d42c9",
+          "expected": [],
+          "actual": [
+            {
+              "start": 32,
+              "end": 88,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-730",
+      "title": "generic-token redacts a {keychain:...} secret-store reference assigned to \"apiKey\"",
+      "url": "https://github.com/redact-secret/redact-secret/issues/730",
+      "number": 730,
+      "fixtures": [
+        "beta8-212--fireworks-ai-api-key-keychain-reference-reference"
+      ],
+      "kind": "false-positive",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "4f9266580536c8e37f60be0b415e57fa284e04cd"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/lib/beta8/212.ts",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/227"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/212"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-212--fireworks-ai-api-key-keychain-reference-reference",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [],
+          "actual": [
+            {
+              "start": 15,
+              "end": 43,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-702",
+      "title": "Legacy bare-UUID Pinecone API key missed under provider-named identifiers (PINECONE_API_KEY=, pinecone_api_key:, api_key=) while the same UUID under apiKey/Api-Key is redacted",
+      "url": "https://github.com/redact-secret/redact-secret/issues/702",
+      "number": 702,
+      "fixtures": [
+        "beta8-212--pinecone-api-key-legacy-dotenv",
+        "beta8-212--pinecone-api-key-legacy-export",
+        "beta8-212--pinecone-api-key-legacy-legacy-init",
+        "beta8-212--pinecone-api-key-legacy-yaml-config",
+        "beta8-212--pinecone-api-key-legacy-actions-env",
+        "beta8-212--pinecone-api-key-legacy-compose-env",
+        "beta8-212--pinecone-api-key-legacy-langchain",
+        "beta8-212--pinecone-api-key-legacy-terraform-output",
+        "beta8-212--pinecone-api-key-legacy-shell-key"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "4f9266580536c8e37f60be0b415e57fa284e04cd"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/lib/beta8/212.ts",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/228",
+          "https://docs.pinecone.io/reference/api/authentication"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/212"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-dotenv",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 17,
+              "end": 53
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-export",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 25,
+              "end": 61
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-legacy-init",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 40,
+              "end": 76
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-yaml-config",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 33,
+              "end": 69
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-actions-env",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 49,
+              "end": 85
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-compose-env",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 65,
+              "end": 101
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-langchain",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 71,
+              "end": 107
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-terraform-output",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 39,
+              "end": 75
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-212--pinecone-api-key-legacy-shell-key",
+          "corpusHash": "6e78193c66d0fa665f8a64e390616de0f9424c3b043b4126061fc8298eaf5e0e",
+          "expected": [
+            {
+              "start": 20,
+              "end": 56
+            }
+          ],
+          "actual": []
+        }
+      ]
     }
   ]
 }

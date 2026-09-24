@@ -131,7 +131,12 @@ export function supportPage(matrix: SupportMatrixFile | null, problem: string | 
       })}`;
   }
   const source = matrix.sourceReport;
+  // Which redact-secret the statuses were measured against; a stable count means nothing without it.
+  const measured = source.product
+    ? `<span>Measured <b>candidate</b> redact-secret <b>${e(source.product.declaredVersion)}</b> at <a class="mono" href="https://github.com/redact-secret/redact-secret/commit/${e(source.product.sourceCommit)}" rel="noreferrer">${e(source.product.sourceCommit.slice(0, 7))}</a></span>`
+    : '<span>Measured the <b>published</b> redact-secret package</span>';
   const meta = `<span><b>${n(matrix.familyCount)}</b> families across <b>${n(matrix.providerCount)}</b> providers</span>
+    ${measured}
     <span>Evidence run <b>${e(source.runId.slice(0, 8))}</b> · ${e(source.generatedAt.slice(0, 10))}</span>
     <span>Revision <code>${e(source.revision.slice(0, 12))}</code></span>
     ${source.dirty === null ? `<span>${statusMark('not-measured', 'Working tree not recorded')}</span>` : source.dirty ? `<span>${statusMark('review', 'Uncommitted changes in the run')}</span>` : ''}`;

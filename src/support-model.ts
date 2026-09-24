@@ -17,7 +17,11 @@ const validMatrix = ajv.compile(schema);
 export interface SupportMatrixFile {
   schemaVersion: 1;
   taxonomySchemaVersion: 1;
-  sourceReport: { schemaVersion: 1; generatedAt: string; runId: string; revision: string; dirty: boolean | null; criteriaSchemaVersion: 1 };
+  sourceReport: {
+    schemaVersion: 1; generatedAt: string; runId: string; revision: string; dirty: boolean | null; criteriaSchemaVersion: 1;
+    /** The redact-secret candidate build measured; absent means the published package. */
+    product?: { sourceCommit: string; packageName: string; declaredVersion: string; artifacts: { role: string; sha256: string }[] };
+  };
   providerCount: number;
   familyCount: number;
   distribution: Record<SupportStatus, number>;

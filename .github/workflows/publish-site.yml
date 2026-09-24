@@ -14,6 +14,11 @@
 #   develop -> staging.benchmarks.redactsecret.dev
 #   main    -> benchmarks.redactsecret.dev
 #
+# Both measure the corpus against the released `@redact-secret/core` in the
+# lockfile. Staging also measures a `redact-secret` `main` commit with
+# `eval:candidate`, from the artifacts that commit's own `artifact-qualification`
+# run qualified, and ships it as candidate evidence (#152); production does not.
+#
 # Per-environment configuration lives in the repository's GitHub environments,
 # so this file carries no account ID and no bucket name:
 #
@@ -81,6 +86,82 @@ jobs:
 
       - run: npm ci
 
+      # Staging only (#152): stage a redact-secret `main` commit for eval:candidate
+      # before anything slow runs, so a commit with no qualified artifacts fails
+      # here. Production skips all of it and measures the released lockfile package.
+      #
+      # The token is scoped to redact-secret and to reading its Actions runs and
+      # artifacts and its contents (to pack at the measured commit).
+      - name: Mint a read-only token for redact-secret
+        id: product-token
+        if: env.TARGET == 'staging'
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ vars.BENCHMARKS_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: redact-secret
+          permission-actions: read
+          permission-contents: read
+
+      # PRODUCT_SHA (a dispatch input, #153) is untrusted: it must be 40 hex or the
+      # run fails; empty means redact-secret `main` HEAD. Either way the commit must
+      # have a successful artifact-qualification run on `main`, or staging is not
+      # published (the step summary says why).
+      - name: Resolve the redact-secret main commit and its qualification run
+        id: product
+        if: env.TARGET == 'staging'
+        env:
+          GH_TOKEN: ${{ steps.product-token.outputs.token }}
+          PRODUCT_SHA: ${{ inputs.product_sha }}
+        run: node scripts/qualified-candidate.mjs resolve --repository redact-secret/redact-secret
+
+      # Downloads the run's artifact-inventory and the linux-x64 addon and both wasm
+      # builds, checking each zip against its upload digest, the inventory against
+      # this commit and run, and each binary against the inventory.
+      - name: Download and verify the qualified runtime artifacts
+        if: env.TARGET == 'staging'
+        env:
+          GH_TOKEN: ${{ steps.product-token.outputs.token }}
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          QUALIFICATION_RUN: ${{ steps.product.outputs.run-id }}
+        run: >-
+          node scripts/qualified-candidate.mjs fetch --repository redact-secret/redact-secret
+          --sha "$PRODUCT_COMMIT" --run-id "$QUALIFICATION_RUN" --dir "$RUNNER_TEMP/qualified"
+
+      - name: Check out redact-secret at the measured commit
+        if: env.TARGET == 'staging'
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          repository: redact-secret/redact-secret
+          ref: ${{ steps.product.outputs.sha }}
+          token: ${{ steps.product-token.outputs.token }}
+          path: .redact-secret-product
+          persist-credentials: false
+
+      # The qualification run uploads binaries, not tarballs, so they are packed the
+      # way its clean-install lane packs them (nothing is compiled but the JS
+      # wrapper), then required to be byte-identical to the tarballs it qualified.
+      - name: Pack the qualified artifacts with the product's own pack script
+        if: env.TARGET == 'staging'
+        working-directory: .redact-secret-product
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run js:build
+          node scripts/pack-npm-candidate.mjs \
+            --addon-dir "$RUNNER_TEMP/qualified/node-addon-x86_64-unknown-linux-gnu" \
+            --wasm-dir "$RUNNER_TEMP/qualified/wasm-web" \
+            --wasm-common-dir "$RUNNER_TEMP/qualified/wasm-web-common" \
+            --out-dir "$RUNNER_TEMP/candidate"
+          # --product-state clean below asserts the tree is the commit, unmodified.
+          test -z "$(git status --porcelain)"
+
+      - name: Verify the packed tarballs are the qualified bytes
+        id: candidate
+        if: env.TARGET == 'staging'
+        run: node scripts/qualified-candidate.mjs verify --dir "$RUNNER_TEMP/qualified" --packed "$RUNNER_TEMP/candidate"
+
       # Same provisioning as validate.yml: the published numbers must come from
       # the binaries CI verifies, never from an unchecked download.
       - name: Provision checksum-pinned Gitleaks and TruffleHog (versions from qualification/suite-v1.json, digests from scanners/peer-checksums.json)
@@ -101,6 +182,30 @@ jobs:
         run: |
           npm run eval
           npm run eval:publish
+
+      # Writes public/results/candidate-evidence-v1.json (reportType "candidate",
+      # supportClaims false) beside, never into, evaluation-v1.json; the page shows
+      # it only as candidate evidence for the named commit. --expected-artifact-sha256
+      # is the core tarball digest the product's qualification recorded, so
+      # eval:candidate itself refuses any other core package. An incomplete
+      # measurement exits non-zero and staging is not published.
+      - name: Measure the redact-secret main commit as candidate evidence
+        if: env.TARGET == 'staging'
+        env:
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
+          NODE_PACKAGE: ${{ steps.candidate.outputs.node }}
+          WASM_PACKAGE: ${{ steps.candidate.outputs.wasm }}
+          CORE_SHA256: ${{ steps.candidate.outputs.core-sha256 }}
+        run: >-
+          npm run eval:candidate --
+          --candidate-package "$CORE_PACKAGE"
+          --candidate-node-package "$NODE_PACKAGE"
+          --candidate-wasm-package "$WASM_PACKAGE"
+          --candidate-source-commit "$PRODUCT_COMMIT"
+          --product-state clean
+          --expected-artifact-sha256 "$CORE_SHA256"
+          --output-dir "$GITHUB_WORKSPACE/public/results"
 
       # The page marks which environment served it and which commit built it
       # (#155); an unset VITE_SITE_ENV builds as "local", never production.
@@ -143,10 +248,16 @@ jobs:
             --query 'Invalidation.Id' --output text
 
       - name: Record what was published
+        env:
+          PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
+          QUALIFICATION_RUN_URL: ${{ steps.product.outputs.run-url }}
         run: |
           {
             echo "### Published to $TARGET"
             echo
             echo "- benchmarks commit: \`${{ github.sha }}\`"
             echo "- run id: $(jq -r .runId public/results/run.json)"
+            if [ "$TARGET" = staging ]; then
+              echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"
+            fi
           } >> "$GITHUB_STEP_SUMMARY"

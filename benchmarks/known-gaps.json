@@ -2040,6 +2040,801 @@
           ]
         }
       ]
+    },
+    {
+      "id": "product-741",
+      "title": "atlassian-api-token leaves the '=' + 8-hex suffix of 192-character tokens unredacted (partial redaction)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/741",
+      "number": 741,
+      "fixtures": [
+        "beta8-207--atlassian-api-token-env",
+        "beta8-207--atlassian-api-token-curl-basic",
+        "beta8-207--atlassian-api-token-python-client-yaml",
+        "beta8-207--atlassian-api-token-jira-client",
+        "beta8-207--atlassian-api-token-pipelines-variable",
+        "beta8-207--atlassian-api-token-settings-json",
+        "beta8-207--atlassian-api-token-acli-login",
+        "beta8-207--atlassian-api-token-compose-env",
+        "beta8-207--atlassian-api-token-debug-log",
+        "beta8-207--atlassian-api-token-ticket-paste"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/643#issuecomment-5785417879",
+          "https://github.com/redact-secret/redact-secret/issues/643#issuecomment-5786038856",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-207-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/pull/238"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/643#issuecomment-5785417879",
+            "https://github.com/redact-secret/redact-secret/issues/643#issuecomment-5786038856",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/741"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/741",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-207-atlassian-crc32-tail",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-207--atlassian-api-token-env",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 15,
+              "end": 207
+            }
+          ],
+          "actual": [
+            {
+              "start": 15,
+              "end": 198,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-curl-basic",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 32,
+              "end": 224
+            }
+          ],
+          "actual": [
+            {
+              "start": 32,
+              "end": 215,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-python-client-yaml",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 109,
+              "end": 301
+            }
+          ],
+          "actual": [
+            {
+              "start": 109,
+              "end": 292,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-jira-client",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 102,
+              "end": 294
+            }
+          ],
+          "actual": [
+            {
+              "start": 102,
+              "end": 285,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-pipelines-variable",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 89,
+              "end": 281
+            }
+          ],
+          "actual": [
+            {
+              "start": 89,
+              "end": 272,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-settings-json",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 62,
+              "end": 254
+            }
+          ],
+          "actual": [
+            {
+              "start": 62,
+              "end": 245,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-acli-login",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 5,
+              "end": 197
+            }
+          ],
+          "actual": [
+            {
+              "start": 5,
+              "end": 188,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-compose-env",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 60,
+              "end": 252
+            }
+          ],
+          "actual": [
+            {
+              "start": 60,
+              "end": 243,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-debug-log",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 79,
+              "end": 271
+            }
+          ],
+          "actual": [
+            {
+              "start": 79,
+              "end": 262,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--atlassian-api-token-ticket-paste",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 54,
+              "end": 246
+            }
+          ],
+          "actual": [
+            {
+              "start": 54,
+              "end": 237,
+              "type": "atlassian_api_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-742",
+      "title": "supabase-token accepts sb_secret_ values outside the documented 22 + '_' + 8 layout (twin false positives)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/742",
+      "number": 742,
+      "fixtures": [
+        "beta8-207--supabase-token-short-random-twin",
+        "beta8-207--supabase-token-long-checksum-twin",
+        "beta8-207--supabase-token-dash-delimiter-twin"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/231"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-207-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/pull/238"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/231"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/742"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/742",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-207-supabase-layout-twins",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-207--supabase-token-short-random-twin",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 135,
+              "end": 175,
+              "type": "supabase_secret_key",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--supabase-token-long-checksum-twin",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 83,
+              "end": 125,
+              "type": "supabase_secret_key",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--supabase-token-dash-delimiter-twin",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 16,
+              "end": 57,
+              "type": "supabase_secret_key",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-743-multi-line",
+      "title": "heroku-api-key-legacy misses the legacy UUID in multi-line .netrc and 'heroku auth:token' output",
+      "url": "https://github.com/redact-secret/redact-secret/issues/743",
+      "number": 743,
+      "fixtures": [
+        "beta8-207--heroku-api-key-legacy-netrc-multi-line",
+        "beta8-207--heroku-api-key-legacy-auth-token-output"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/232",
+          "https://devcenter.heroku.com/changelog-items/2842"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-207-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/pull/238"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/232",
+            "https://devcenter.heroku.com/changelog-items/2842"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/743"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/743",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-207-heroku-legacy-multi-line",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-207--heroku-api-key-legacy-netrc-multi-line",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 66,
+              "end": 102
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-207--heroku-api-key-legacy-auth-token-output",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [
+            {
+              "start": 20,
+              "end": 56
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-743-url-path",
+      "title": "heroku-api-key-legacy flags a Heroku app UUID in a Platform API URL path",
+      "url": "https://github.com/redact-secret/redact-secret/issues/743",
+      "number": 743,
+      "fixtures": [
+        "beta8-207--heroku-api-key-legacy-app-url-path-public-id"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/312",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/232",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-207-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/pull/238"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/312",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/232",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/743"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/743",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-207-heroku-legacy-url-path",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-207--heroku-api-key-legacy-app-url-path-public-id",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 32,
+              "end": 68,
+              "type": "heroku_api_key_legacy",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-744",
+      "title": "twilio-auth-token and confluent-cloud-api-secret-legacy flag labelled hex digests (md5=, @sha256:) on a provider line",
+      "url": "https://github.com/redact-secret/redact-secret/issues/744",
+      "number": 744,
+      "fixtures": [
+        "beta8-207--twilio-auth-token-package-md5-encoded-value",
+        "beta8-207--confluent-cloud-api-secret-legacy-image-digest-encoded-value"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/662",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/233"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-207-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/pull/238"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+            "https://github.com/redact-secret/redact-secret/issues/662",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/233"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/744"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/744",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-207-labelled-digest-controls",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-207--twilio-auth-token-package-md5-encoded-value",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 24,
+              "end": 56,
+              "type": "twilio_auth_token",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-207--confluent-cloud-api-secret-legacy-image-digest-encoded-value",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 37,
+              "end": 101,
+              "type": "confluent_cloud_api_secret_legacy",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-745",
+      "title": "bearer-token redacts upper-snake placeholders of 16+ characters (YOUR_ACCESS_TOKEN, YOUR_OAUTH_TOKEN)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/745",
+      "number": 745,
+      "fixtures": [
+        "beta8-207--bearer-token-your-access-token-placeholder"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/468",
+          "https://www.rfc-editor.org/rfc/rfc6750#section-2.1",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-207-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/pull/238"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/468",
+            "https://www.rfc-editor.org/rfc/rfc6750#section-2.1",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/745"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/745",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-207-bearer-long-placeholder",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-207--bearer-token-your-access-token-placeholder",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 31,
+              "end": 48,
+              "type": "bearer_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-746",
+      "title": "generic-token warns on Twilio SK/AC SIDs (public identifiers) after a 'credentials:' label",
+      "url": "https://github.com/redact-secret/redact-secret/issues/746",
+      "number": 746,
+      "fixtures": [
+        "beta8-207--twilio-api-key-secret-wrong-companion-near-miss"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://www.twilio.com/docs/iam/api-keys",
+          "https://github.com/redact-secret/redact-secret/issues/661",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-207-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/pull/238"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://www.twilio.com/docs/iam/api-keys",
+            "https://github.com/redact-secret/redact-secret/issues/661",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/746"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/746",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-207-generic-twilio-sid",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-207--twilio-api-key-secret-wrong-companion-near-miss",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 20,
+              "end": 54,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-747",
+      "title": "telegram-bot-token reports an Atlassian account id (<digits>:<uuid>) as a bot token",
+      "url": "https://github.com/redact-secret/redact-secret/issues/747",
+      "number": 747,
+      "fixtures": [
+        "beta8-207--atlassian-api-token-account-id-public-id"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+        "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/660",
+          "https://github.com/redact-secret/redact-secret/issues/643",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-207-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/pull/238"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/660",
+            "https://github.com/redact-secret/redact-secret/issues/643",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/747"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/747",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-207-telegram-atlassian-account-id",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-207--atlassian-api-token-account-id-public-id",
+          "corpusHash": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131",
+          "expected": [],
+          "actual": [
+            {
+              "start": 15,
+              "end": 58,
+              "type": "telegram_bot_token",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

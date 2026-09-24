@@ -6,6 +6,7 @@ import { createRegistry } from '../benchmarks/engine/registry.ts';
 import { createMethods } from '../benchmarks/methods/index.ts';
 import { createOperators } from '../benchmarks/operators/index.ts';
 import { loadCases } from '../benchmarks/engine/cases.ts';
+import { arrivalIds } from '../benchmarks/lib/beta8/index.ts';
 import { generateCase, hash, bytes, secrets, validateCase } from '../benchmarks/engine/model.ts';
 import { mapFixture } from '../benchmarks/operators/context.ts';
 import { absolute, observe, relation } from '../benchmarks/engine/assertions.ts';
@@ -30,8 +31,9 @@ test('registries reject malformed, duplicate and unknown extensions', () => {
 
 test('all existing corpora bridge deterministically into five methods and all detector targets', () => {
   assert.deepEqual([...new Set(cases.map(c => c.method))].sort(), ['benign', 'differential', 'metamorphic', 'mutation', 'twin']);
-  assert.equal(new Set(cases.flatMap(c => c.targets)).size, 57);
-  assert.equal(cases.filter(c => c.method === 'twin').length, 398);
+  // Registry targets and the pre-Beta.8 twin count; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
+  assert.equal(new Set(cases.flatMap(c => c.targets).filter(t => !arrivalIds.has(t))).size, 57);
+  assert.equal(cases.filter(c => c.method === 'twin' && !c.source.category.startsWith('beta8-')).length, 398);
   const before = hash(cases);
   const first = cases.map(c => generateCase(c, methods, operators).variants);
   const second = cases.map(c => generateCase(c, methods, operators).variants);

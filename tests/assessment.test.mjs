@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES } from '../benchmarks/lib/assessment.ts';
+import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES, arrivalIds } from '../benchmarks/lib/assessment.ts';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 import { validateCorpus, score } from '../benchmarks/lib/scoring.ts';
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
@@ -25,7 +25,8 @@ const lax = { ...suite.accounting, minDenominator: 1, measurableShareFloor: 0, t
 test('contracts are provider-first: T1 needs a dated provider source, T2 needs corroboration', async () => {
   validateContracts();
   const registry = await read('benchmarks/detectors.json');
-  assert.deepEqual(Object.keys(contracts).sort(), registry.detectors.map(d => d.id).sort());
+  // Beta.8 arrival families (#207–#212) carry contracts without a registry detector; everything else is the registry.
+  assert.deepEqual(Object.keys(contracts).filter(id => !arrivalIds.has(id)).sort(), registry.detectors.map(d => d.id).sort());
   for (const [family, c] of Object.entries(contracts)) {
     if (c.tier === 'T1') assert.match(c.providerSource.observedAt, /^\d{4}-\d{2}-\d{2}$/, family);
     if (c.tier === 'T2') assert.ok(c.review && c.corroboration.length, family);
@@ -42,10 +43,13 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   for (const [category, corpus] of all) for (const f of corpus.fixtures) {
     validateAssessment(f);
     assert.deepEqual(f.assessment, classifyFixture(category, f), f.id);
+    // The tallies below are the pre-Beta.8 corpus; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
     const key = `${f.assessment.kind}/${f.assessment.tier}`;
-    tally[key] ??= { files: 0, spans: 0 };
-    tally[key].files++;
-    tally[key].spans += f.expected.filter(r => r.role === 'secret').length;
+    if (!category.startsWith('beta8-')) {
+      tally[key] ??= { files: 0, spans: 0 };
+      tally[key].files++;
+      tally[key].spans += f.expected.filter(r => r.role === 'secret').length;
+    }
     if (f.assessment.kind === 'must-not-flag') assert.equal(f.expected.length, 0, f.id);
     if (f.assessment.kind === 'policy') assert.equal(f.assessment.tier, 'T3', f.id);
     if (f.assessment.kind === 'must-redact' && f.assessment.tier !== 'T0') assert.equal(contracts[f.assessment.contract].tier, f.assessment.tier, f.id);
@@ -143,7 +147,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#312: 3 more — heroku-api-key-legacy's keyword-gated bare UUID.
   assert.deepEqual(tally['policy/T3'], { files: 205, spans: 205 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
-  const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
+  const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
   // jwt-prefix-only/reference/mask, private-key-prefix-only/reference) plus
   // 6 new twins (which net out of this count via -twins.length).

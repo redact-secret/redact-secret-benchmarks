@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { contracts, classifyFixture, validateAssessment, validateContracts, MUTATION_KINDS } from '../benchmarks/lib/assessment.ts';
+import { contracts, classifyFixture, validateAssessment, validateContracts, MUTATION_KINDS, arrivalIds } from '../benchmarks/lib/assessment.ts';
 import { validateCorpus } from '../benchmarks/lib/scoring.ts';
 import { twinProbe } from '../benchmarks/lib/twin-probe.ts';
 
@@ -11,7 +11,8 @@ const registry = await read('benchmarks/detectors.json');
 const generated = buildCorpora();
 const handwritten = { accuracy: await read('fixtures/accuracy/corpus.json'), 'token-contexts': await read('fixtures/token-contexts/corpus.json') };
 const fixtures = Object.entries({ ...generated, ...handwritten }).flatMap(([category, c]) => c.fixtures.map(f => ({ ...f, category })));
-const twins = fixtures.filter(f => f.twinOf);
+// Registry-detector twins; arrival-family twins (#207–#212) carry no detector and are checked in tests/beta8.test.mjs.
+const twins = fixtures.filter(f => f.twinOf && f.detectors?.length);
 const bytesOf = (f, r) => Buffer.from(f.content).subarray(r.start, r.end).toString();
 
 // The 22 families issue #36 found with no twin anywhere in the corpus.
@@ -170,7 +171,7 @@ const T1_DIMENSIONS = {
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
-  const t1 = Object.entries(contracts).filter(([, c]) => c.tier === 'T1').map(([id]) => id);
+  const t1 = Object.entries(contracts).filter(([id, c]) => c.tier === 'T1' && !arrivalIds.has(id)).map(([id]) => id);
   assert.deepEqual(t1.sort(), Object.keys(T1_DIMENSIONS).sort(), 'T1_DIMENSIONS must cover exactly the T1 contracts');
   for (const [family, expected] of Object.entries(T1_DIMENSIONS)) {
     const kinds = [...new Set(twins.filter(t => t.detectors[0] === family).map(t => t.mutationKind))];

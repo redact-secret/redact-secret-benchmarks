@@ -1,4 +1,4 @@
-import type { Fixture, Range, Kind, Tier, Assessment, FormatContract } from '../types.ts';
+import type { Fixture, Range, Kind, Tier, Assessment, FormatContract, EvidenceBasis, FieldStatus } from '../types.ts';
 // Classification is authored from input construction and provider evidence,
 // never scanner outcomes. Unknown fixtures fail closed into T0 (pending).
 // Protocol: docs/specs/measurement-v4.md §2.1, §2.6, §6.
@@ -16,11 +16,8 @@ export const tiers = {
   T0: { title: 'Pending', description: 'No adequate evidence yet. Observations are inspectable but unscored.' },
 };
 
-const observedAt = '2026-09-17';
-const th = (path: string, label?: string) => ({ tool: 'trufflehog 3.97.4', label: label ?? path, url: `https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/${path}.go` });
-const gl = { tool: 'gitleaks 8.30.1', label: 'gitleaks.toml', url: 'https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml' };
-const unprobeable = (reason: string, at = '2026-09-20') => ({ reason, observedAt: at });
-const provider = (url: string, formatVersion: string, covers: string, observedAtOverride = observedAt) => ({ url, observedAt: observedAtOverride, formatVersion, covers });
+import { observedAt, th, gl, unprobeable, provider } from './contract-sources.ts';
+import { arrivalContracts, arrivalIds } from './beta8/index.ts';
 
 /**
  * Format contracts. `tier` is the evidence tier a format-correct positive
@@ -28,7 +25,7 @@ const provider = (url: string, formatVersion: string, covers: string, observedAt
  * `covers` records what the provider document actually establishes so a
  * contract cannot quietly claim more than its evidence.
  */
-export const contracts: Record<string, FormatContract> = {
+const registryContracts: Record<string, FormatContract> = {
   'aws-access-key': { tier: 'T1', pattern: '^AKIA[A-Z2-7]{16}$', providerSource: provider('https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes', 'IAM unique-ID prefix table', 'AKIA/ASIA/ABIA/ACCA prefixes, and AIDA as the IAM-user unique-ID prefix rather than an access key (re-checked 2026-09-20, #36); 16-character base32 body and 40-character secret are tool-corroborated'), corroboration: [th('aws/access_keys/accesskey'), gl], companion: 'A separate 40-character secret access key is required. ASIA additionally needs a session token and is not covered by this contract.' },
   'github-token': { tier: 'T1', pattern: '^(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36}$', providerSource: provider('https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats', '2021-04 prefix scheme', 'ghp_/gho_/ghu_/ghs_/ghr_ prefixes and underscore separator; 36-character body is tool-corroborated (checksum in the last six characters per github.blog/2021-04-05)'), corroboration: [th('github/v2/github'), gl], review: 'Re-checked 2026-09-20 (#46): docs.github.com also documents github_pat_ (fine-grained token) as a real, different prefix outside this contract\'s ghp_/gho_/ghu_/ghs_/ghr_ set, backing a prefix twin. github.blog/security/application-security/behind-githubs-new-authentication-token-formats confirms the parenthetical checksum claim (CRC32, Base62-encoded, last six characters) but the checksum is not part of this contract\'s lexical pattern, so a checksum-only mutation still satisfies it and cannot be constructed as a twin here.' },
   'gitlab-token': { tier: 'T1', pattern: '^glpat-[A-Za-z0-9_-]{20}$', providerSource: provider('https://docs.gitlab.com/security/tokens/', 'token prefix table', 'glpat- prefix; 20-character legacy body is tool-corroborated, routable tokens are not covered'), corroboration: [th('gitlab/v2/gitlab_v2'), gl], review: 'Re-checked 2026-09-20 (#46): the same prefix table documents glpat- as shared by four token kinds (none the positive this contract covers) and lists gldt-, glrt-/glrtr-, glcbt- and others as the gl- stem\'s other members; the prefix twin instead breaks the gl- stem itself (xlpat- vs glpat-), since a mutation matching one of those other real prefixes (gldt-) was empirically not discriminated by the redact-secret scanner.' },
@@ -152,6 +149,17 @@ export const contracts: Record<string, FormatContract> = {
   'generic-token': { tier: 'T3', references: [], review: 'An arbitrary literal in a sensitive field is a masking-policy case, not a provider-format ground truth.', twinSource: provider('https://github.com/redact-secret/redact-secret-benchmarks/blob/main/docs/decisions/2026-09-20-extend-twins-to-assignment-context.md', 'context-twin decision (#36)', 'no provider exists for an arbitrary literal. The recorded decision is that the twin keeps the value and mutates exactly one property of the assignment context; silence is project policy, never a format claim', '2026-09-20') },
 };
 
+for (const id of Object.keys(arrivalContracts)) if (Object.hasOwn(registryContracts, id)) throw new Error(`Arrival contract shadows a registry contract: ${id}`);
+/**
+ * Every contract a fixture can cite: the registry's (keys are exactly
+ * detectors.json's ids) plus the Beta.8 arrival families' (#207–#212,
+ * benchmarks/lib/beta8/), which no product detector targets yet.
+ */
+export const contracts: Record<string, FormatContract> = { ...registryContracts, ...arrivalContracts };
+/** Registry detector ids only: the unit a product support status is classified on. */
+export const registryContractIds: readonly string[] = Object.keys(registryContracts);
+export { arrivalIds };
+
 export const evidence = (family?: string) => {
   const c = contracts[family ?? ''];
   if (!c) return [];
@@ -215,6 +223,24 @@ const idIn = (...ids: string[]) => (f: Fixture) => ids.includes(f.id);
 const groupIn = (...groups: string[]) => (f: Fixture) => groups.includes(f.group);
 const always = () => true;
 const detectorFamily = (f: Fixture) => f.detectors?.[0];
+/** The contract a fixture is authored against: its registry detector, else its Beta.8 arrival target. */
+const targetFamily = (f: Fixture) => f.detectors?.[0] ?? f.arrivalTargets?.[0];
+const isBeta8 = (category: string) => category.startsWith('beta8-');
+/**
+ * Beta.8 corpora (#207–#212) name each control's axis by id suffix, one row
+ * per `AXES` value, so a control counts toward exactly one reviewed axis.
+ * Near misses and wrong companions are T2 (one structural property differs);
+ * placeholders, references and prose are project policy.
+ */
+const BETA8_CONTROL_RULES: ControlRule[] = [
+  { test: idSuffix('near-miss'), tier: 'T2', reason: NEAR_MISS, axis: 'near-miss', family: targetFamily },
+  { test: idSuffix('public-id'), tier: 'T2', reason: PUBLIC_ID, axis: 'public-identifier', family: targetFamily },
+  { test: idSuffix('encoded-value'), tier: 'T2', reason: PUBLIC_OR_ENCODED, axis: 'encoded-value', family: targetFamily },
+  { test: idSuffix('reference'), tier: 'T3', reason: PLACEHOLDER, axis: 'reference', family: targetFamily },
+  { test: idSuffix('placeholder'), tier: 'T3', reason: PLACEHOLDER, axis: 'placeholder', family: targetFamily },
+  { test: idSuffix('prose'), tier: 'T3', reason: PLACEHOLDER, axis: 'ordinary-prose', family: targetFamily },
+];
+const controlRules = (category: string) => CONTROL_RULES[category] ?? (isBeta8(category) ? BETA8_CONTROL_RULES : []);
 
 /**
  * Single source for classifyControl's must-not-flag tier/reason AND
@@ -282,23 +308,23 @@ const CONTROL_RULES: Record<string, ControlRule[]> = {
 /** Pure sibling of classifyControl's must-not-flag branch: same table, axis instead of tier/reason. Null means no reviewed rule (fail closed in loadCases). */
 export function controlAxis(category: string, f: Fixture): Axis | RealWorldAxis | null {
   if (f.twinOf) return null;
-  for (const rule of CONTROL_RULES[category] ?? []) if (rule.test(f)) return rule.axis;
+  for (const rule of controlRules(category)) if (rule.test(f)) return rule.axis;
   return null;
 }
 
 function classifyControl(category: string, f: Fixture): Assessment {
   if (f.twinOf) {
-    const family = f.detectors?.[0];
+    const family = targetFamily(f);
     if (!contracts[family ?? '']) throw new Error(`Unknown twin contract: ${f.id}`);
     if (!f.mutation || !f.mutationKind) throw new Error(`Twin without mutation: ${f.id}`);
     if (f.mutationKind === 'context') {
-      if (contracts[family ?? ''].tier !== 'T3') throw new Error(`Context twin on a contracted value grammar: ${f.id}`);
+      if (contracts[family ?? ''].tier !== 'T3' && !isContextGated(family)) throw new Error(`Context twin on a contracted value grammar: ${f.id}`);
       return control('T3', `Negative twin of ${f.twinOf}: ${f.mutation}. The value is unchanged and exactly one property of the assignment context differs; expected silence is project policy, as the positive's expectation is.`, family);
     }
     const documented = f.mutationKind === 'public-prefix' && contracts[family ?? ''].tier === 'T1';
     return control(documented ? 'T1' : 'T2', `Negative twin of ${f.twinOf}: ${f.mutation}. ${documented ? 'The provider documents this namespace as public, so silence is provider-evidenced.' : 'Exactly one structural property differs from the positive; silence follows from construction.'}`, family);
   }
-  for (const rule of CONTROL_RULES[category] ?? []) {
+  for (const rule of controlRules(category)) {
     if (rule.test(f)) return control(rule.tier, rule.reason, rule.family?.(f));
   }
   return pending('No reviewed control rule for this input. Excluded from comparative scores until reviewed.', undefined, 'must-not-flag');
@@ -306,6 +332,7 @@ function classifyControl(category: string, f: Fixture): Assessment {
 
 /** Values with no grammar of their own, recognized only beside a same-line identifier or keyword. */
 const CONTEXT_GATED = ['twilio-auth-token', 'twilio-api-key-secret', 'datadog-api-key', 'datadog-application-key-legacy', 'confluent-cloud-api-secret-legacy', 'heroku-api-key-legacy'];
+export const isContextGated = (family?: string) => Boolean(family) && (CONTEXT_GATED.includes(family!) || Boolean(contracts[family!]?.contextGated));
 
 export function classifyFixture(category: string, f: Fixture): Assessment {
   if (!f.expected.some(r => (r.role ?? 'secret') === 'secret')) return classifyControl(category, f);
@@ -320,13 +347,14 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
     if ([254, 257, 263, 264, 280].includes(f.issue!)) return policy('Mutated documentation, placeholder, template, mask or reference. Expected masking follows a redact-secret issue decision, not a universal secret definition.');
     return policy('Issue-specific literal/password range; expectations are the project’s masking policy.');
   }
-  if (category === 'detector-coverage') {
-    const family = f.detectors![0];
+  if (category === 'detector-coverage' || isBeta8(category)) {
+    const family = targetFamily(f)!;
+    if (!contracts[family ?? '']) throw new Error(`Unknown contract: ${f.id}`);
     const value = bytesOf(f, f.expected[0]);
     // #162/#671: datadog-application-key now carries only the ddapp_-prefixed shape, which
     // has its own identifying grammar and is scored on the contract's T1 tier below; the
     // grammar-less legacy sibling is datadog-application-key-legacy, in CONTEXT_GATED.
-    if (['bearer-token', 'connection-string', 'otpauth-uri', 'generic-token', ...CONTEXT_GATED, 'azure-devops-personal-access-token'].includes(family))
+    if (['bearer-token', 'connection-string', 'otpauth-uri', 'generic-token', 'azure-devops-personal-access-token'].includes(family) || isContextGated(family))
       return policy(contracts[family ?? ''].review!, family);
     if (family === 'aws-access-key') return policy('Standalone access-key ID without secret key/session token. Some legacy ASIA values also use digits outside the base32 alphabet.', family);
     if (family === 'shopify-token') return policy('Token shape is plausible, but the shop domain the contract requires is absent.', family);
@@ -341,6 +369,9 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
       return pending('Re-checked 2026-09-22 (#127, following #45): Stripe\'s key-types page names sk_org_ organization keys and the webhooks page documents whsec_ as the signing-secret prefix, but neither page nor the pinned trufflehog (`[rs]k_live_[a-zA-Z0-9]{20,247}`, live-only) or gitleaks (`(?:sk|rk)_(?:test|live|prod)_[a-zA-Z0-9]{10,99}`, no org alternative) stripe rules establish a body length or alphabet for either prefix. redact-secret#513 is closed (PR #533): the product adopted both prefixes on that same provider prefix documentation alone, recording its own 20-byte alnum-run floor as a support-policy choice, not independent evidence. This corpus\'s bar is unmet on that same evidence, not on an open product issue: pending until a pinned scanner registers a rule or Stripe documents a body length or alphabet for either prefix.', family);
     if (family === 'slack-token' && value.startsWith('xwfp-'))
       return pending('Re-checked 2026-09-22 (#127, following #45): the Slack tokens page documents the xwfp- prefix for workflow tokens but states no section widths or alphabet for it, the same gap already recorded for xoxb-; the pinned trufflehog slack detector covers only xoxb-/xoxp-/xoxa-/xoxr-, and gitleaks\'s slack-webhook-url rule matches only the full hooks.slack.com/workflows/... URL, not a bare token. redact-secret#512 is closed (PR #532): the product completed xoxp-/xoxe-/xoxe.xoxb-/xoxe.xoxp- on tool-corroborated section grammar but explicitly left xapp- and xwfp- as an unpromoted interim guard, since xwfp- has no tool source at all and clears neither this project\'s two-source nor provider-plus-tool bar. This corpus\'s bar is unmet on that same evidence, not on an open product issue: pending until a pinned scanner registers a rule or Slack documents xwfp-\'s section widths or alphabet.', family);
+    // Beta.8 corpora carry no legacy expectations: a value off its contract is unscored until reviewed.
+    if (isBeta8(category) && !f.expected.filter(r => (r.role ?? 'secret') === 'secret').every(r => matches(family, bytesOf(f, r))))
+      return pending('Value does not satisfy its family contract pattern. Excluded from comparative scores until the input or the contract is reviewed.', family);
     if (!matches(family, value)) return policy('Legacy prefix-plus-random-body does not meet the reviewed length, alphabet or internal structure. Historical positive expectation retained only as a regression.', family);
     return decide('must-redact', contracts[family ?? ''].tier, 'Synthetic value matches the pinned lexical format contract. Provider issuance, payload/checksum validity and liveness are not claimed.', family);
   }
@@ -356,6 +387,8 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
   return pending('No reviewed classification rule. Excluded from comparative scores until input and expectation have been reviewed.');
 }
 
+const EVIDENCE_BASES: EvidenceBasis[] = ['provider-documentation', 'provider-example', 'provider-code', 'maintainer-observation', 'community', 'tool', 'research-hypothesis'];
+const FIELD_STATUSES: FieldStatus[] = ['frozen', 'provisional', 'unresolved'];
 export function validateContracts() {
   for (const [family, c] of Object.entries(contracts)) {
     if (!TIERS.includes(c.tier)) throw new Error(`Invalid contract tier: ${family}`);
@@ -365,6 +398,11 @@ export function validateContracts() {
     if (c.twinSource && !(c.twinSource.url && c.twinSource.observedAt && c.twinSource.formatVersion && c.twinSource.covers)) throw new Error(`Incomplete twin source: ${family}`);
     if (c.unprobeable && !(c.unprobeable.reason?.trim() && /^\d{4}-\d{2}-\d{2}$/.test(c.unprobeable.observedAt))) throw new Error(`Un-probeable without reason or date: ${family}`);
     if (c.unprobeable && c.twinSource) throw new Error(`Un-probeable contract with a twin source: ${family}`);
+    for (const claim of c.fields ?? []) {
+      if (!claim.field?.trim() || !claim.claim?.trim() || !EVIDENCE_BASES.includes(claim.basis) || !FIELD_STATUSES.includes(claim.status)) throw new Error(`Invalid field claim on ${family}: ${claim.field}`);
+      if (!claim.sources?.length || claim.sources.some(src => !src.url?.startsWith('https://') || !/^\d{4}-\d{2}-\d{2}$/.test(src.observedAt))) throw new Error(`Field claim without a dated https source on ${family}: ${claim.field}`);
+    }
+    if (c.contextGated && c.pattern === undefined && !c.review) throw new Error(`Context-gated contract without a review: ${family}`);
   }
 }
 

@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "lifecycleAuthority": "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/docs/decisions/2026-09-18-govern-benchmark-promotion.md",
-  "measuredVersion": "0.1.0-beta.5",
+  "measuredVersion": "0.1.0-beta.6",
   "milestone": "v0.1.0-beta.6",
   "milestoneUrl": "https://github.com/redact-secret/redact-secret/milestone/9",
-  "reviewedAt": "2026-09-21",
+  "reviewedAt": "2026-09-24",
   "issues": [
     {
       "id": "product-292",
@@ -371,7 +371,7 @@
         "detector-coverage--openai-token-shape-3-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.4",
@@ -391,7 +391,35 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/405"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+            "https://github.com/redact-secret/redact-secret/issues/405"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/405"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/409"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/405",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-405",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "e762020b345d5ee2d85662f2a735b40dc392bdb9"
       },
       "evidence": [
         {
@@ -506,7 +534,7 @@
         "detector-coverage--slack-token-shape-1-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.4",
@@ -526,7 +554,35 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/406"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+            "https://github.com/redact-secret/redact-secret/issues/406"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/406"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/410"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/406",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-406",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "c4326c779ebe2f4f9720cbf0b5fdb12f99e6f2c3"
       },
       "evidence": [
         {
@@ -575,7 +631,7 @@
         "detector-coverage--docker-token-shape-1-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.4",
@@ -595,7 +651,35 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/407"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+            "https://github.com/redact-secret/redact-secret/issues/407"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/407"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/413"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/407",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-407",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "8e7c5032cb7c3477833ee806bcab61c03036230a"
       },
       "evidence": [
         {
@@ -644,7 +728,7 @@
         "detector-coverage--cloudflare-token-shape-1-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.4",
@@ -664,7 +748,35 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/408"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md",
+            "https://github.com/redact-secret/redact-secret/issues/408"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/408"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-18",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/412"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/408",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-408",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "a8dc90c65fcfde9009b07855d2c5820893962a95"
       },
       "evidence": [
         {
@@ -1422,7 +1534,7 @@
         "detector-coverage--new-relic-license-key-current-format-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.6",
@@ -1443,7 +1555,36 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/672"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/656#issuecomment-5784943534",
+            "https://github.com/redact-secret/redact-secret/issues/656#issuecomment-5785640607",
+            "https://github.com/redact-secret/redact-secret/issues/656#issuecomment-5786035362"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/672"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/682"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/672",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-672",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "0c3228926a01d44945a82a41d291fd98fd1a8b99"
       },
       "evidence": [
         {
@@ -1820,6 +1961,72 @@
             }
           ],
           "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-714",
+      "title": "heroku-api-key-legacy flags the HEROKU_APP_ID public-id control",
+      "url": "https://github.com/redact-secret/redact-secret/issues/714",
+      "number": 714,
+      "fixtures": [
+        "detector-coverage--heroku-api-key-legacy-public-id"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.7",
+        "lockHash": "391edc5b11bd6134af83f2e3df861cfa7e0bbb600732e19b78578e4258a781a8",
+        "sourceCommit": "522915bb0b42eca2f3055207f2c4efe94a55801e"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/312",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/main/fixtures/README.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/584#issuecomment-5806661943"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/312"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/714"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/714",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-714",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "detector-coverage--heroku-api-key-legacy-public-id",
+          "corpusHash": "45ff102e8437d6218cd9f67423a744addd984d45338e3586e75b6fa359d0ca5d",
+          "expected": [],
+          "actual": [
+            {
+              "start": 14,
+              "end": 50,
+              "type": "heroku_api_key_legacy",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
         }
       ]
     }

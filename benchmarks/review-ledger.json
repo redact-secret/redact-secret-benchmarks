@@ -821,7 +821,7 @@
     "01aa0cc210301d196d9e009462b3957612a3b8554258ad4feb69ee4a5961771e": {
       "status": "open",
       "firstSeenRun": "e9ce94f0-ca4a-489f-a5c5-1c6b1cb52f75",
-      "note": "Product false alarm on an independent benign control (#208): redact-secret reports a generic-token span at [128,141) (\"endpoint:chat\") that this corpus's must-not-flag expectation (expected: none, T2 public-id) does not assert; gitleaks reports nothing. The benign-method assertion fails for redact-secret on this fixture. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Needs a person / a promote-finding pass to decide whether this is generic-token over-detection. Class: benign-false-alarm-unconfirmed/generic-token."
+      "note": "Product false alarm on an independent benign control (#208): redact-secret reports a generic-token span at [128,141) on beta8-208--xai-api-key-key-metadata-public-id, an ACL scope string (\"api-key:endpoint:chat\") inside the key-metadata JSON, which this corpus's must-not-flag expectation does not assert; gitleaks reports nothing. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. Recorded as benchmarks/known-gaps.json product-727 (observed, linked to redact-secret#727); stays open until that record is promoted and fixed, or closed by a policy decision. Class: benign-false-alarm-unconfirmed/generic-token."
     },
     "01aa9fdd05a2022ceb52ae3408866f1c1dd6f0628aeab6228dd47a894c4c660a": {
       "status": "not-assertable",
@@ -19694,7 +19694,7 @@
     "28b3ffb9b52c987ac0b89bdcfa6d233c8f0cd3576827fd62aff00cf4896d68c1": {
       "status": "open",
       "firstSeenRun": "010bf94a-761d-481d-91f3-404c1f93f79b",
-      "note": "Product false alarm on an independent benign control (#208): redact-secret reports a generic-token span at [32,88) (\"gsk_****…Tn4q\") that this corpus's must-not-flag expectation (expected: none, T3 console-placeholder) does not assert; gitleaks reports nothing. The benign-method assertion fails for redact-secret on this fixture. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Needs a person / a promote-finding pass to decide whether this is generic-token over-detection. Class: benign-false-alarm-unconfirmed/generic-token."
+      "note": "Product false alarm on an independent benign control (#208): redact-secret reports a generic-token span at [32,88) on beta8-208--groq-api-key-masked-console-placeholder, a partially masked console value (gsk_ + 48 asterisks + 4 visible characters) after a \"Secret:\" label, which this corpus's must-not-flag expectation does not assert; gitleaks reports nothing. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. Recorded as benchmarks/known-gaps.json product-264 (observed, linked to redact-secret#264); stays open until that record is promoted and fixed, or closed by a policy decision. Class: benign-false-alarm-unconfirmed/generic-token."
     },
     "28b4f2a66d0a2a1666453ad8860b4f602cf054e6f022ea055f25ccc9c8b06b0e": {
       "status": "resolved",
@@ -30039,7 +30039,7 @@
     "3deb63066e3b27782ed647fe16746b4fa74e3e611f1ffc6df441c2adeb451ec2": {
       "status": "open",
       "firstSeenRun": "e9ce94f0-ca4a-489f-a5c5-1c6b1cb52f75",
-      "note": "Product false alarm on an independent benign control (#208): redact-secret reports a generic-token span at [128,141) (\"endpoint:chat\") that this corpus's must-not-flag expectation (expected: none, T2 public-id) does not assert; trufflehog reports nothing. The benign-method assertion fails for redact-secret on this fixture. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Needs a person / a promote-finding pass to decide whether this is generic-token over-detection. Class: benign-false-alarm-unconfirmed/generic-token."
+      "note": "Product false alarm on an independent benign control (#208): redact-secret reports a generic-token span at [128,141) on beta8-208--xai-api-key-key-metadata-public-id, an ACL scope string (\"api-key:endpoint:chat\") inside the key-metadata JSON, which this corpus's must-not-flag expectation does not assert; trufflehog reports nothing. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. Recorded as benchmarks/known-gaps.json product-727 (observed, linked to redact-secret#727); stays open until that record is promoted and fixed, or closed by a policy decision. Class: benign-false-alarm-unconfirmed/generic-token."
     },
     "3defc7b5cbaaeb5ed60a18d0806dcbe06423ca3732fd1197fdb6f7ebfb0a1c39": {
       "status": "resolved",
@@ -31886,7 +31886,7 @@
     "41b02fccca1979c453188c33592acd513ae33a5c93758fbd733a2958cf72ce28": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [17,53) (gitleaks reported [17,53)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-dotenv, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [17,53), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "41b43a4a2f365a93eb402d6bb04ea3952e1eb30048a7b52983b575cad771e856": {
       "status": "resolved",
@@ -38766,7 +38766,7 @@
     "4fb90bca527eae1b275a5100282ce085749ab08a442ad4429e3d0fdef19e69ad": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [65,101) (gitleaks reported [65,101)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-compose-env, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [65,101), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "4fbd7095e59731b8e3eef9a119a454bbbbd9ac6b8724bd6fbe091d672b3504e0": {
       "status": "resolved",
@@ -38883,9 +38883,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
     },
     "4ff1d959fcd41820202aaca3bdbe7d081f3a4f4ea731193016a4caf34feff17b": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
-      "note": "Byte ranges agree between redact-secret and gitleaks, and both equal this corpus's authored span; the disagreement is purely over family classification of one span (redact-secret: stripe-token, gitleaks: generic-token from its generic-api-key rule, since gitleaks 8.30.1 registers no whsec_ rule). This fixture targets the arrival family stripe-webhook-signing-secret, which is a case target and never a detector id (docs/specs/beta8-evidence.md), and its authored expectation records byte ranges and role only, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [19,57), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-python-construct-event. redact-secret labels it stripe-token, the shared detector that the arrival family's recorded reason (benchmarks/lib/beta8/211.ts) names as the product owner of whsec_; the product finding type is stripe_webhook_signing_secret on candidate 4f92665 and stripe_credential on the published 0.1.0-beta.7, same span. gitleaks labels it generic-token (its catch-all generic-api-key rule; gitleaks 8.30.1 has no whsec_ rule). Not a disagreement about what must be redacted. Settled per docs/decisions/2026-09-24-settle-arrival-classification-by-owning-detector.md. Class: decision=differential.arrival-owning-detector-classification."
     },
     "4ff378dd6113fbd750d2c49e04b45bdde4782a9a9215835b54da835429a11c08": {
       "status": "open",
@@ -39982,9 +39982,9 @@
       "note": "Resolved as authored-expectation-correct for this twin's scope: the twin (the documented upper-case HRKU- prefix lower-cased (hrku-); body unchanged) is scoped to heroku-api-key, and redact-secret attributes its finding [112,177) to bearer-token — the project's masking policy for any Authorization: Bearer value (T3 policy, never a provider-format claim) — not to heroku-api-key. The twin method scores this as coDetected, not as a twin failure; gitleaks reports nothing. Class: redact-secret-only/gitleaks/independent-policy-family-on-scoped-twin."
     },
     "520218affa9e809fb945f3915c409ec62aa17d8c7c2d34ae325ba891f662d916": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
-      "note": "Byte ranges agree between redact-secret and gitleaks, and both equal this corpus's authored span; the disagreement is purely over family classification of one span (redact-secret: stripe-token, gitleaks: generic-token from its generic-api-key rule, since gitleaks 8.30.1 registers no whsec_ rule). This fixture targets the arrival family stripe-webhook-signing-secret, which is a case target and never a detector id (docs/specs/beta8-evidence.md), and its authored expectation records byte ranges and role only, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [63,133), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-compose-webhook-secret. redact-secret labels it stripe-token, the shared detector that the arrival family's recorded reason (benchmarks/lib/beta8/211.ts) names as the product owner of whsec_; the product finding type is stripe_webhook_signing_secret on candidate 4f92665 and stripe_credential on the published 0.1.0-beta.7, same span. gitleaks labels it generic-token (its catch-all generic-api-key rule; gitleaks 8.30.1 has no whsec_ rule). Not a disagreement about what must be redacted. Settled per docs/decisions/2026-09-24-settle-arrival-classification-by-owning-detector.md. Class: decision=differential.arrival-owning-detector-classification."
     },
     "52047c423ed982791bedcfe9d77aaa6df83a16dbe9efebf873717f3ebff0fa9a": {
       "status": "resolved",
@@ -45811,7 +45811,7 @@
     "5e14f271783e72376af5a311d371975ba1269adf052a24dc301ef61067d3e3f3": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [49,85) (gitleaks reported [49,85)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-actions-env, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [49,85), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "5e164b278143b6f78b2cd96c71768e237039d19f31b35bf92ce457e15a7bad13": {
       "status": "resolved",
@@ -56318,7 +56318,7 @@
     "73fdca11c99c3272cb79d525e4689a364b8ae50e8fe8a23d60f75978a0c726cd": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [71,107) (gitleaks reported [71,107)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-langchain, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [71,107), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "740652b4753f9105188cee4091b1b6512ce2e949b8319e8c8458940cbfb5d0a8": {
       "status": "resolved",
@@ -60155,7 +60155,7 @@
     "7bc2eb26f2f912c5209c19fcb3e3b545b993c30ceb5c1f175efde8a716743ed6": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [40,76) (gitleaks reported [40,76)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-legacy-init, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [40,76), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "7bc3c3da9a5093012c573421a865bfedcd8f8163f79d01f1efe09f008222687e": {
       "status": "resolved",
@@ -63282,7 +63282,7 @@
     "8299e1b9a4eb51c368a8f8acf0593f02292c793c173e2f5fa4126f5e87d33914": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [39,75) (gitleaks reported [39,75)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-terraform-output, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [39,75), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "829b6b2b4335fccb4375ae6d92b081a2e63bdf099b49180c1c60ee46bd50de7d": {
       "status": "resolved",
@@ -67547,7 +67547,7 @@
     "8bb0e699fef02a3618f969d3faae3b8f9d2887f8e28a2b96c29cc70d600789dd": {
       "status": "open",
       "firstSeenRun": "60be3849-acc8-4502-b7db-6a4e747ea6ce",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports a generic-token span at [15,43) on this independent reference-reference control, which this corpus's must-not-flag expectation for \"fireworks-ai-api-key\" (#212) does not assert (expected: none); trufflehog (unmapped) reports nothing. A candidate product false alarm on a placeholder/reference; not resolved here per the boundary rule. Needs a person / a promote-finding pass. Class: differential-false-alarm-unconfirmed/fireworks-ai-api-key."
+      "note": "Product false alarm on an independent benign control (#212): redact-secret reports a generic-token span at [15,43) on beta8-212--fireworks-ai-api-key-keychain-reference-reference, a {keychain:...} secret-store reference assigned to \"apiKey\", which this corpus's must-not-flag expectation does not assert; trufflehog reports nothing. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. Recorded as benchmarks/known-gaps.json product-730 (observed, linked to redact-secret#730); stays open until that record is promoted and fixed, or closed by a policy decision. Class: benign-false-alarm-unconfirmed/generic-token."
     },
     "8bb18863427bef37411b3f616dd21ff134ea6e443415b05e18e3780f09a9e748": {
       "status": "resolved",
@@ -72959,7 +72959,7 @@
     "96d70cb094f45df193c0ecd8fee2b107a1b3ddaff2a89ea17d35d38d3d41acf1": {
       "status": "open",
       "firstSeenRun": "010bf94a-761d-481d-91f3-404c1f93f79b",
-      "note": "Product false alarm on an independent benign control (#208): redact-secret reports a generic-token span at [32,88) (\"gsk_****…Tn4q\") that this corpus's must-not-flag expectation (expected: none, T3 console-placeholder) does not assert; trufflehog reports nothing. The benign-method assertion fails for redact-secret on this fixture. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Needs a person / a promote-finding pass to decide whether this is generic-token over-detection. Class: benign-false-alarm-unconfirmed/generic-token."
+      "note": "Product false alarm on an independent benign control (#208): redact-secret reports a generic-token span at [32,88) on beta8-208--groq-api-key-masked-console-placeholder, a partially masked console value (gsk_ + 48 asterisks + 4 visible characters) after a \"Secret:\" label, which this corpus's must-not-flag expectation does not assert; trufflehog reports nothing. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. Recorded as benchmarks/known-gaps.json product-264 (observed, linked to redact-secret#264); stays open until that record is promoted and fixed, or closed by a policy decision. Class: benign-false-alarm-unconfirmed/generic-token."
     },
     "96d96214ccdf72eaa3751ca9dae4e6854dfc1945b474a39a9736e89049a4857e": {
       "status": "not-assertable",
@@ -83720,7 +83720,7 @@
     "acffc885bac0af0b619b57c56dadc6e1712e765ec78cee15acdbb31a85ea4603": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [20,56) (gitleaks reported [20,56)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-shell-key, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [20,56), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "ad01e9c2dcb606255b47f88b6a30b2846a24190ce7aa36fd95679b7ed1714cbb": {
       "status": "not-assertable",
@@ -91069,7 +91069,7 @@
     "bc63e26b8f876481cc82cea4955bd31a932c9f6d9d17d23a4f3a160f350473bb": {
       "status": "open",
       "firstSeenRun": "60be3849-acc8-4502-b7db-6a4e747ea6ce",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports a generic-token span at [15,43) on this independent reference-reference control, which this corpus's must-not-flag expectation for \"fireworks-ai-api-key\" (#212) does not assert (expected: none); gitleaks (unmapped) reports nothing. A candidate product false alarm on a placeholder/reference; not resolved here per the boundary rule. Needs a person / a promote-finding pass. Class: differential-false-alarm-unconfirmed/fireworks-ai-api-key."
+      "note": "Product false alarm on an independent benign control (#212): redact-secret reports a generic-token span at [15,43) on beta8-212--fireworks-ai-api-key-keychain-reference-reference, a {keychain:...} secret-store reference assigned to \"apiKey\", which this corpus's must-not-flag expectation does not assert; gitleaks reports nothing. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. Recorded as benchmarks/known-gaps.json product-730 (observed, linked to redact-secret#730); stays open until that record is promoted and fixed, or closed by a policy decision. Class: benign-false-alarm-unconfirmed/generic-token."
     },
     "bc647537ed01ca33c0d1b5eb60ec5de07a8fbfc9de2de7bfc90c0f7ad6be34dd": {
       "status": "resolved",
@@ -101458,9 +101458,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "d234036d2368f030977a1548e3bc3a0f4ee3d0dcfc3a7b8b8367a36d6a6963d6": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
-      "note": "Byte ranges agree between redact-secret and gitleaks, and both equal this corpus's authored span; the disagreement is purely over family classification of one span (redact-secret: stripe-token, gitleaks: generic-token from its generic-api-key rule, since gitleaks 8.30.1 registers no whsec_ rule). This fixture targets the arrival family stripe-webhook-signing-secret, which is a case target and never a detector id (docs/specs/beta8-evidence.md), and its authored expectation records byte ranges and role only, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [52,90), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-actions-env. redact-secret labels it stripe-token, the shared detector that the arrival family's recorded reason (benchmarks/lib/beta8/211.ts) names as the product owner of whsec_; the product finding type is stripe_webhook_signing_secret on candidate 4f92665 and stripe_credential on the published 0.1.0-beta.7, same span. gitleaks labels it generic-token (its catch-all generic-api-key rule; gitleaks 8.30.1 has no whsec_ rule). Not a disagreement about what must be redacted. Settled per docs/decisions/2026-09-24-settle-arrival-classification-by-owning-detector.md. Class: decision=differential.arrival-owning-detector-classification."
     },
     "d234389610afc79e198354e2bd27e01016c62390217570e245d180bc7395fce2": {
       "status": "not-assertable",
@@ -115781,9 +115781,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "f030ca04c0c7aaf0b3caa6c5ea6f3d5937ab26a71292ec303b0b28ddff5701f4": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
-      "note": "Byte ranges agree between redact-secret and gitleaks, and both equal this corpus's authored span; the disagreement is purely over family classification of one span (redact-secret: stripe-token, gitleaks: generic-token from its generic-api-key rule, since gitleaks 8.30.1 registers no whsec_ rule). This fixture targets the arrival family stripe-webhook-signing-secret, which is a case target and never a detector id (docs/specs/beta8-evidence.md), and its authored expectation records byte ranges and role only, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [61,99), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-dotenv-webhook-secret. redact-secret labels it stripe-token, the shared detector that the arrival family's recorded reason (benchmarks/lib/beta8/211.ts) names as the product owner of whsec_; the product finding type is stripe_webhook_signing_secret on candidate 4f92665 and stripe_credential on the published 0.1.0-beta.7, same span. gitleaks labels it generic-token (its catch-all generic-api-key rule; gitleaks 8.30.1 has no whsec_ rule). Not a disagreement about what must be redacted. Settled per docs/decisions/2026-09-24-settle-arrival-classification-by-owning-detector.md. Class: decision=differential.arrival-owning-detector-classification."
     },
     "f03a1e08f88e880ba68bb02e99097696b7cb0c9acf477298a4a42e19cb39e3fe": {
       "status": "resolved",
@@ -117482,7 +117482,7 @@
     "f3b0123ec6604cb34ba1400d82c64af16df5aa8404f144f526ff5b8c64e3dec7": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [25,61) (gitleaks reported [25,61)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-export, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [25,61), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "f3b5186ced1a99c9d7232b894734bdd41f1ff4e2a268e52ce586bc25d9f6be8c": {
       "status": "open",
@@ -120159,7 +120159,7 @@
     "f942d320c82580d30ff6e704b53d18513d9c8384e0218b6589ebb480153d8960": {
       "status": "open",
       "firstSeenRun": "b8da3a81-6c2f-4332-b8cb-f1dc7780d753",
-      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks (generic-token) covers this corpus's authored expected secret span [33,69) (gitleaks reported [33,69)) — a candidate detector coverage gap for the Beta.8 arrival family \"pinecone-api-key-legacy\" (#212), which has no product detector at the pinned registry revision. Expected, legitimate failing result for an arrival family; not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Counterpart: redact-secret/redact-secret#730. Class: differential-coverage-gap/pinecone-api-key-legacy."
+      "note": "redact-secret reports no finding on beta8-212--pinecone-api-key-legacy-yaml-config, a policy-scored (T3, context-gated) legacy bare-UUID Pinecone key beside a provider-named identifier; gitleaks (generic-api-key, mapped generic-token) reports [33,69), the authored expected span. Reproduced on candidate 4f92665 (product main) and on the published 0.1.0-beta.7. The product pinecone-api-key detector leaves the bare UUID unclaimed on purpose (redact-secret#730), but its generic-token already redacts the same UUID under apiKey / Api-Key names, so the miss is specific to provider-named identifiers. Recorded as benchmarks/known-gaps.json product-702 (observed, linked to redact-secret#702); stays open until that record is promoted and fixed, or closed by a policy decision. Class: differential-coverage-gap/pinecone-api-key-legacy."
     },
     "f945fa7717ed3c3a58804575f2bfef6c8d7e5e8827ed60bd4f8b34e6029d377f": {
       "status": "resolved",
@@ -121215,9 +121215,9 @@
       "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks matches this corpus's authored expected secret span exactly ([49,85)) — a candidate detector coverage gap for \"mailgun-api-key\", not a peer artifact. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). The pinned published package (@redact-secret/core 0.1.0-beta.6, built at 079095e) predates this family's detector: redact-secret/redact-secret#314 (PR #680, commit 64889e0) landed it on the product main after that tag, so the row stays open until a release carrying the detector is pinned here. Needs a person / a promote-finding pass to confirm. Class: differential-coverage-gap/mailgun-api-key."
     },
     "fb7f5adafda0eae602e9b940606c54e466a64a11f4addaf7326c09226f95d4dd": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
-      "note": "Byte ranges agree between redact-secret and gitleaks, and both equal this corpus's authored span; the disagreement is purely over family classification of one span (redact-secret: stripe-token, gitleaks: generic-token from its generic-api-key rule, since gitleaks 8.30.1 registers no whsec_ rule). This fixture targets the arrival family stripe-webhook-signing-secret, which is a case target and never a detector id (docs/specs/beta8-evidence.md), and its authored expectation records byte ranges and role only, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [29,67), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-export-webhook-secret. redact-secret labels it stripe-token, the shared detector that the arrival family's recorded reason (benchmarks/lib/beta8/211.ts) names as the product owner of whsec_; the product finding type is stripe_webhook_signing_secret on candidate 4f92665 and stripe_credential on the published 0.1.0-beta.7, same span. gitleaks labels it generic-token (its catch-all generic-api-key rule; gitleaks 8.30.1 has no whsec_ rule). Not a disagreement about what must be redacted. Settled per docs/decisions/2026-09-24-settle-arrival-classification-by-owning-detector.md. Class: decision=differential.arrival-owning-detector-classification."
     },
     "fb87476e57e3f6a65835ad7d2541a5d266c484810bf21a6a1cfb75673987e8d9": {
       "status": "open",

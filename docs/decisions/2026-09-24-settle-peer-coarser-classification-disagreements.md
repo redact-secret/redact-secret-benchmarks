@@ -9,6 +9,8 @@ decided_at: 2026-09-24
 # Settle classification disagreements where only the peer's label is coarser
 
 Status: **accepted** (maintainer direction, 2026-09-24, #213).
+Amended by: [`2026-09-24-settle-arrival-classification-by-owning-detector.md`](2026-09-24-settle-arrival-classification-by-owning-detector.md),
+which settles the five stripe-webhook rows kept open below.
 
 ## Context
 

@@ -62,8 +62,20 @@ visible in each result's reasons; the re-evaluation does not silently preserve
 the earlier T1-only stable labels. This is the beta.8 input that must precede
 #213's 15-family portfolio selection.
 
-## Open
+## Production reading after corpus growth
 
-`benchmarks/performance-criteria.json` `baseline.sourceCommit` is still
-`fdca511d`, so `pins:check` and `tests/pin-drift.test.mjs` fail on the #150
-coupling until the performance evaluation is re-run at `2b98027`.
+The #200 targets were written against the 306 (T1) / 89 (T2) corpus, and the
+0 / 306 and 0 / 89 readings above are the #200 result. Production has since
+grown by the Beta.8 fixtures, and `summary.json` on
+benchmarks.redactsecret.dev (run `2026-09-24T20:54:50.707Z-e555f0`, published
+`0.1.0-beta.7`, `main` 26a82f3) reads:
+
+| Target | #200 corpus (306 / 89) | Production now |
+| --- | --- | --- |
+| T1 leaked spans | 0 / 306 (1.2% bound) | 35 / 500 (9.6% bound) |
+| T2 leaked spans | 0 / 89 (4.1% bound) | 68 / 316 (26.4% bound) |
+| Twin probe | 398 / 398 discriminated | T1 297 / 317; T2 126 / 153, rate `insufficient-coverage` |
+
+The added leaks come from Beta.8 fixtures for families beta.7 does not detect.
+They are not a beta.7 regression, and the #200 targets are not restated for the
+larger corpus: the growth is tracked under the Beta.8 issues, not #200.

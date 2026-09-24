@@ -106,7 +106,53 @@
             }
           },
           "detectors": { "type": "array", "items": { "type": "string" } },
-          "reason": { "type": ["string", "null"] }
+          "reason": { "type": ["string", "null"] },
+          "fixtureProfile": { "oneOf": [{ "$ref": "#/definitions/fixtureProfile" }, { "type": "null" }] }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "fixtureProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profilesVersion", "claimed", "explicit", "target", "cellsMet", "cells", "debt"],
+      "properties": {
+        "profilesVersion": { "type": "integer", "minimum": 1 },
+        "claimed": { "enum": ["arrival-provisional", "stable-documented", "stable-empirical", "context-constrained-empirical", null] },
+        "explicit": { "type": "boolean" },
+        "target": { "enum": ["arrival-provisional", "stable-documented", "stable-empirical", "context-constrained-empirical"] },
+        "cellsMet": { "type": "array", "items": { "enum": ["arrival-provisional", "stable-documented", "stable-empirical", "context-constrained-empirical"] } },
+        "cells": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["totalFixtures", "positiveCases", "benignControls", "twinPairs", "positiveContextAxes", "controlAxes", "confusionAxes", "positiveContextAxisIds", "controlAxisIds", "confusionAxisIds"],
+          "properties": {
+            "totalFixtures": { "type": "integer", "minimum": 0 },
+            "positiveCases": { "type": "integer", "minimum": 0 },
+            "benignControls": { "type": "integer", "minimum": 0 },
+            "twinPairs": { "type": "integer", "minimum": 0 },
+            "positiveContextAxes": { "type": "integer", "minimum": 0 },
+            "controlAxes": { "type": "integer", "minimum": 0 },
+            "confusionAxes": { "type": "integer", "minimum": 0 },
+            "positiveContextAxisIds": { "type": "array", "items": { "type": "string" } },
+            "controlAxisIds": { "type": "array", "items": { "type": "string" } },
+            "confusionAxisIds": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "debt": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["cell", "actual", "required", "shortfall"],
+            "properties": {
+              "cell": { "enum": ["totalFixtures", "positiveCases", "benignControls", "twinPairs", "positiveContextAxes", "controlAxes", "confusionAxes"] },
+              "actual": { "type": "integer", "minimum": 0 },
+              "required": { "type": "integer", "minimum": 1 },
+              "shortfall": { "type": "integer", "minimum": 1 }
+            }
+          }
         }
       }
     }

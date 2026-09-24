@@ -2,6 +2,7 @@ import type { Tier } from '../types.ts';
 import type { SupportStatus } from './status.ts';
 import { taxonomy, type Family } from './taxonomy.ts';
 import { contracts } from '../lib/assessment.ts';
+import type { FixtureProfileReport } from './profiles.ts';
 
 /**
  * Support matrix (issue #509, A8). Projects A3's per-detector evidence
@@ -25,6 +26,7 @@ export interface SupportStatusFamilyResult {
     mutationUnresolvedCritical: number;
     differentialUnresolvedContractDisagreements: number;
   };
+  fixtureProfile: FixtureProfileReport;
   unprobeable: { reason: string; observedAt: string } | null;
 }
 
@@ -60,6 +62,8 @@ export interface SupportMatrixEntry {
   detectors: string[];
   /** Required (non-null) whenever `status` is `pending` or `unsupported`. */
   reason: string | null;
+  /** Fixture cells, axis counts and remaining debt against the family's target profile (#206). Null when no detector exists. Absent in artifacts generated before profiles existed. */
+  fixtureProfile?: FixtureProfileReport | null;
 }
 
 export interface SupportMatrix {
@@ -74,7 +78,7 @@ function undetectedEntry(family: Family): SupportMatrixEntry {
   return {
     provider: family.provider, family: family.id, familyName: family.name, status: 'unsupported',
     evidenceTier: null, providerSource: null, corroboratingScanners: [], twinCoverage: null,
-    unresolvedCriticalItems: null, detectors: [], reason,
+    unresolvedCriticalItems: null, detectors: [], reason, fixtureProfile: null,
   };
 }
 
@@ -95,6 +99,7 @@ function detectedEntry(family: Family, result: SupportStatusFamilyResult): Suppo
     },
     detectors: [result.family],
     reason: result.reasons.length ? result.reasons.join(' | ') : null,
+    fixtureProfile: result.fixtureProfile,
   };
 }
 

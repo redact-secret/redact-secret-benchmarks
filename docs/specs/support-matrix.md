@@ -65,6 +65,11 @@ family has no detector — there is no contract or evidence to carry. `reason`
 is `null` only when `status` is `stable`; every `pending` or `unsupported`
 entry carries one, enforced by `buildSupportMatrix` itself.
 
+`fixtureProfile` (#206, `docs/specs/support-status.md`) carries the family's
+measured fixture cells, axis counts, the profiles whose cells are met, and the
+remaining debt against its target profile; `null` when no detector exists, and
+absent from artifacts generated before profiles existed.
+
 ## Failing loudly
 
 `buildSupportMatrix` throws, rather than defaulting an unclassifiable entry to

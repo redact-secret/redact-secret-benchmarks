@@ -1,5 +1,6 @@
 import type { Tier } from '../types.ts';
 import data from './status-criteria.json';
+import { fixtureProfiles, profileFailures, type FixtureProfileEvidence, type FixtureProfiles } from './profiles.ts';
 
 /**
  * Family support status (issue #503, part of epic #500). A machine-readable
@@ -83,6 +84,8 @@ export interface FamilySupportEvidence {
   metamorphicCriticalFailures: number;
   mutationUnresolvedCritical: number;
   differentialUnresolvedContractDisagreements: number;
+  /** Corpus-measured evidence cells and the profile this family claims (issue #206). Absent means unmeasured, which fails closed for any binding claim. */
+  fixtureProfile?: FixtureProfileEvidence;
   /** Only meaningful when `detectors` is empty; required to ever report `unsupported`. */
   unsupportedReason?: string;
 }
@@ -123,7 +126,7 @@ function stableFailures(evidence: FamilySupportEvidence, criteria: StatusCriteri
  * `provisional`). `unsupported` is refused without `unsupportedReason`; a
  * detectorless family without one reports `pending`, not `unsupported`.
  */
-export function classifyFamilySupport(evidence: FamilySupportEvidence, criteria: StatusCriteria = statusCriteria): SupportAssessment {
+export function classifyFamilySupport(evidence: FamilySupportEvidence, criteria: StatusCriteria = statusCriteria, profiles: FixtureProfiles = fixtureProfiles): SupportAssessment {
   const { family } = evidence;
   if (!evidence.detectors.length) {
     if (evidence.unsupportedReason) return { family, status: 'unsupported', reasons: [evidence.unsupportedReason] };
@@ -131,7 +134,7 @@ export function classifyFamilySupport(evidence: FamilySupportEvidence, criteria:
   }
   if (evidence.positiveContractTier === null || evidence.positiveContractTier === criteria.pending.tier)
     return { family, status: 'pending', reasons: [`positiveContractTier ${evidence.positiveContractTier ?? 'none'} — ${criteria.pending.rationale}`] };
-  const reasons = stableFailures(evidence, criteria);
+  const reasons = [...stableFailures(evidence, criteria), ...profileFailures(evidence, profiles)];
   if (!reasons.length) return { family, status: 'stable', reasons: [] };
   return { family, status: 'provisional', reasons };
 }

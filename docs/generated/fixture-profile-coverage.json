@@ -1,0 +1,3492 @@
+{
+  "schemaVersion": 1,
+  "profilesVersion": 1,
+  "familyCount": 57,
+  "cellsMetByProfile": {
+    "arrival-provisional": 1,
+    "stable-documented": 1,
+    "stable-empirical": 0,
+    "context-constrained-empirical": 0
+  },
+  "families": [
+    {
+      "family": "anthropic-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 16,
+        "positiveCases": 3,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "anthropic-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 16,
+          "required": 24,
+          "shortfall": 8
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "atlassian-api-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 11,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 3,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "atlassian-api-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 11,
+          "required": 24,
+          "shortfall": 13
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 3,
+          "required": 5,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "aws-access-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 22,
+        "positiveCases": 4,
+        "benignControls": 6,
+        "twinPairs": 6,
+        "positiveContextAxes": 3,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "#254 · AWS documentation literals",
+          "Token formats",
+          "aws-access-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 22,
+          "required": 24,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 4,
+          "required": 6,
+          "shortfall": 2
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "azure-devops-personal-access-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 14,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "azure-devops-personal-access-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 14,
+          "required": 24,
+          "shortfall": 10
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "bearer-token",
+      "tier": "T3",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 15,
+        "positiveCases": 4,
+        "benignControls": 5,
+        "twinPairs": 3,
+        "positiveContextAxes": 3,
+        "controlAxes": 4,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "Authorization",
+          "Context",
+          "bearer-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference",
+          "twin:alphabet"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 15,
+          "required": 24,
+          "shortfall": 9
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 4,
+          "required": 6,
+          "shortfall": 2
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 3,
+          "required": 5,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "cloudflare-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 19,
+        "positiveCases": 3,
+        "benignControls": 8,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 6,
+        "positiveContextAxisIds": [
+          "cloudflare-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:alphabet",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 19,
+          "required": 24,
+          "shortfall": 5
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "confluent-cloud-api-secret",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 15,
+        "positiveCases": 0,
+        "benignControls": 6,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 6,
+        "positiveContextAxisIds": [
+          "confluent-cloud-api-secret"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 15,
+          "required": 24,
+          "shortfall": 9
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "confluent-cloud-api-secret-legacy",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 11,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 3,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "confluent-cloud-api-secret-legacy"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 11,
+          "required": 24,
+          "shortfall": 13
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 3,
+          "required": 5,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "connection-string",
+      "tier": "T3",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 54,
+        "positiveCases": 9,
+        "benignControls": 15,
+        "twinPairs": 15,
+        "positiveContextAxes": 4,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "#255 · Tutorial URL passwords",
+          "#256 · Connection placeholders",
+          "#257 · Placeholder vocabulary",
+          "connection-string"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:context"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "databricks-personal-access-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 21,
+        "positiveCases": 0,
+        "benignControls": 6,
+        "twinPairs": 9,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 7,
+        "positiveContextAxisIds": [
+          "databricks-personal-access-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 21,
+          "required": 24,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "datadog-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 27,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 11,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "datadog-api-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "datadog-application-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 14,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 6,
+        "positiveContextAxisIds": [
+          "datadog-application-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 14,
+          "required": 24,
+          "shortfall": 10
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "datadog-application-key-legacy",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 19,
+        "positiveCases": 8,
+        "benignControls": 5,
+        "twinPairs": 3,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "datadog-application-key-legacy"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 19,
+          "required": 24,
+          "shortfall": 5
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 3,
+          "required": 5,
+          "shortfall": 2
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "digitalocean-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 35,
+        "positiveCases": 12,
+        "benignControls": 9,
+        "twinPairs": 8,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "digitalocean-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "discord-bot-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 24,
+        "positiveCases": 17,
+        "benignControls": 7,
+        "twinPairs": 0,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "discord-bot-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "benignControls",
+          "actual": 7,
+          "required": 8,
+          "shortfall": 1
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "docker-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 36,
+        "positiveCases": 3,
+        "benignControls": 7,
+        "twinPairs": 16,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "docker-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 7,
+          "required": 8,
+          "shortfall": 1
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "firebase-server-key",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 11,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 3,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "firebase-server-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 11,
+          "required": 24,
+          "shortfall": 13
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 3,
+          "required": 5,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "generic-token",
+      "tier": "T3",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 128,
+        "positiveCases": 35,
+        "benignControls": 75,
+        "twinPairs": 9,
+        "positiveContextAxes": 12,
+        "controlAxes": 4,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "#254 · AWS documentation literals",
+          "#257 · Placeholder vocabulary",
+          "#262 · Line boundaries",
+          "#263 · Fully delimited templates",
+          "#264 · Masked values",
+          "#265 · Nested YAML recall",
+          "#266 · Flow collections",
+          "#278 · Code reference exclusions",
+          "#280 · Secret-manager grammars",
+          "Generic fallback",
+          "Literal-secret positive controls",
+          "generic-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference",
+          "twin:context"
+        ]
+      },
+      "debt": []
+    },
+    {
+      "family": "github-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 115,
+        "positiveCases": 27,
+        "benignControls": 6,
+        "twinPairs": 42,
+        "positiveContextAxes": 21,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "CRLF",
+          "Context",
+          "Documentation",
+          "Encoding",
+          "Environment",
+          "GitHub gho",
+          "GitHub ghp",
+          "GitHub ghr",
+          "GitHub ghs",
+          "GitHub ghu",
+          "JSON",
+          "Line endings",
+          "Long input",
+          "Multiple spans",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "Token formats",
+          "Unicode",
+          "github-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "gitlab-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 21,
+        "positiveCases": 3,
+        "benignControls": 6,
+        "twinPairs": 7,
+        "positiveContextAxes": 2,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "GitLab PAT",
+          "gitlab-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 21,
+          "required": 24,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 2,
+          "required": 4,
+          "shortfall": 2
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "google-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 14,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "google-api-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 14,
+          "required": 24,
+          "shortfall": 10
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "grafana-cloud-access-policy-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 27,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 11,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "grafana-cloud-access-policy-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "grafana-service-account-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 27,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 11,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "grafana-service-account-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "heroku-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 14,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "heroku-api-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 14,
+          "required": 24,
+          "shortfall": 10
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "heroku-api-key-legacy",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 12,
+        "positiveCases": 0,
+        "benignControls": 6,
+        "twinPairs": 3,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "heroku-api-key-legacy"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 12,
+          "required": 24,
+          "shortfall": 12
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 3,
+          "required": 5,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "huggingface-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 19,
+        "positiveCases": 0,
+        "benignControls": 7,
+        "twinPairs": 7,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "huggingface-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 19,
+          "required": 24,
+          "shortfall": 5
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 7,
+          "required": 8,
+          "shortfall": 1
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "jwt",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 17,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 7,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 6,
+        "positiveContextAxisIds": [
+          "jwt"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 17,
+          "required": 24,
+          "shortfall": 7
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "linear-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 23,
+        "positiveCases": 3,
+        "benignControls": 10,
+        "twinPairs": 5,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "linear-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 23,
+          "required": 24,
+          "shortfall": 1
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "mailchimp-api-key",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 18,
+        "positiveCases": 0,
+        "benignControls": 6,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 6,
+        "positiveContextAxisIds": [
+          "mailchimp-api-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 18,
+          "required": 24,
+          "shortfall": 6
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "mailgun-api-key",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 21,
+        "positiveCases": 3,
+        "benignControls": 6,
+        "twinPairs": 9,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 7,
+        "positiveContextAxisIds": [
+          "mailgun-api-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 21,
+          "required": 24,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "microsoft-entra-client-secret",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 38,
+        "positiveCases": 0,
+        "benignControls": 7,
+        "twinPairs": 17,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "microsoft-entra-client-secret"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 7,
+          "required": 8,
+          "shortfall": 1
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "netlify-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 18,
+        "positiveCases": 3,
+        "benignControls": 6,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 6,
+        "positiveContextAxisIds": [
+          "netlify-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 18,
+          "required": 24,
+          "shortfall": 6
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "new-relic-license-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 20,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 9,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "new-relic-license-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 20,
+          "required": 24,
+          "shortfall": 4
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "new-relic-user-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 27,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 11,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "new-relic-user-api-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "notion-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 14,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "notion-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 14,
+          "required": 24,
+          "shortfall": 10
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "npm-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 20,
+        "positiveCases": 6,
+        "benignControls": 6,
+        "twinPairs": 6,
+        "positiveContextAxes": 2,
+        "controlAxes": 3,
+        "confusionAxes": 6,
+        "positiveContextAxisIds": [
+          "npm token",
+          "npm-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 20,
+          "required": 24,
+          "shortfall": 4
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 2,
+          "required": 4,
+          "shortfall": 2
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "okta-api-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 21,
+        "positiveCases": 0,
+        "benignControls": 6,
+        "twinPairs": 9,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 7,
+        "positiveContextAxisIds": [
+          "okta-api-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 21,
+          "required": 24,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "openai-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 28,
+        "positiveCases": 9,
+        "benignControls": 7,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "openai-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "benignControls",
+          "actual": 7,
+          "required": 8,
+          "shortfall": 1
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "otpauth-uri",
+      "tier": "T3",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 17,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 4,
+        "positiveContextAxisIds": [
+          "otpauth-uri"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:alphabet"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 17,
+          "required": 24,
+          "shortfall": 7
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "postman-api-key",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 18,
+        "positiveCases": 0,
+        "benignControls": 6,
+        "twinPairs": 9,
+        "positiveContextAxes": 1,
+        "controlAxes": 4,
+        "confusionAxes": 7,
+        "positiveContextAxisIds": [
+          "postman-api-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 18,
+          "required": 24,
+          "shortfall": 6
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "private-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 30,
+        "positiveCases": 15,
+        "benignControls": 5,
+        "twinPairs": 5,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "private-key"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:prefix",
+          "twin:public-prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "pulumi-access-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 21,
+        "positiveCases": 3,
+        "benignControls": 6,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "pulumi-access-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:alphabet",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 21,
+          "required": 24,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "pypi-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 20,
+        "positiveCases": 0,
+        "benignControls": 8,
+        "twinPairs": 9,
+        "positiveContextAxes": 1,
+        "controlAxes": 6,
+        "confusionAxes": 9,
+        "positiveContextAxisIds": [
+          "pypi-token"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 20,
+          "required": 24,
+          "shortfall": 4
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        }
+      ]
+    },
+    {
+      "family": "sendgrid-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 67,
+        "positiveCases": 22,
+        "benignControls": 11,
+        "twinPairs": 18,
+        "positiveContextAxes": 8,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "Authorization",
+          "Documentation",
+          "Encoding",
+          "Generic fallback",
+          "Provider detection",
+          "SendGrid key",
+          "Structured text",
+          "sendgrid-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "sentry-org-auth-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 16,
+        "positiveCases": 11,
+        "benignControls": 5,
+        "twinPairs": 0,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "sentry-org-auth-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 16,
+          "required": 24,
+          "shortfall": 8
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "sentry-user-auth-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 16,
+        "positiveCases": 11,
+        "benignControls": 5,
+        "twinPairs": 0,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "sentry-user-auth-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 16,
+          "required": 24,
+          "shortfall": 8
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "shopify-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 21,
+        "positiveCases": 6,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "shopify-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 21,
+          "required": 24,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "slack-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 44,
+        "positiveCases": 24,
+        "benignControls": 12,
+        "twinPairs": 6,
+        "positiveContextAxes": 2,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "Slack bot",
+          "slack-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveContextAxes",
+          "actual": 2,
+          "required": 4,
+          "shortfall": 2
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "stripe-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 33,
+        "positiveCases": 18,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "stripe-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:public-prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "supabase-management-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 17,
+        "positiveCases": 0,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "supabase-management-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:alphabet",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 17,
+          "required": 24,
+          "shortfall": 7
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "supabase-token",
+      "tier": "T0",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 8,
+        "positiveCases": 3,
+        "benignControls": 5,
+        "twinPairs": 0,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "supabase-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 8,
+          "required": 24,
+          "shortfall": 16
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "telegram-bot-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 16,
+        "positiveCases": 11,
+        "benignControls": 5,
+        "twinPairs": 0,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "telegram-bot-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 16,
+          "required": 24,
+          "shortfall": 8
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "terraform-cloud-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 21,
+        "positiveCases": 3,
+        "benignControls": 6,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 5,
+        "positiveContextAxisIds": [
+          "terraform-cloud-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 21,
+          "required": 24,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
+        },
+        {
+          "cell": "benignControls",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "twilio-api-key-secret",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 16,
+        "positiveCases": 11,
+        "benignControls": 5,
+        "twinPairs": 0,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "twilio-api-key-secret"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 16,
+          "required": 24,
+          "shortfall": 8
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "twilio-auth-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 16,
+        "positiveCases": 11,
+        "benignControls": 5,
+        "twinPairs": 0,
+        "positiveContextAxes": 7,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "Boundaries",
+          "Documentation",
+          "Encoding",
+          "Quoting",
+          "Source code",
+          "Structured text",
+          "twilio-auth-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 16,
+          "required": 24,
+          "shortfall": 8
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "vault-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 22,
+        "positiveCases": 9,
+        "benignControls": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 6,
+        "positiveContextAxisIds": [
+          "vault-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 22,
+          "required": 24,
+          "shortfall": 2
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "vercel-token",
+      "tier": "T0",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 20,
+        "positiveCases": 15,
+        "benignControls": 5,
+        "twinPairs": 0,
+        "positiveContextAxes": 1,
+        "controlAxes": 3,
+        "confusionAxes": 3,
+        "positiveContextAxisIds": [
+          "vercel-token"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "placeholder",
+          "reference"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 20,
+          "required": 24,
+          "shortfall": 4
+        },
+        {
+          "cell": "benignControls",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 0,
+          "required": 5,
+          "shortfall": 5
+        },
+        {
+          "cell": "positiveContextAxes",
+          "actual": 1,
+          "required": 4,
+          "shortfall": 3
+        },
+        {
+          "cell": "controlAxes",
+          "actual": 3,
+          "required": 4,
+          "shortfall": 1
+        }
+      ]
+    }
+  ]
+}

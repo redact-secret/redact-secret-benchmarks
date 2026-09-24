@@ -25,6 +25,8 @@ jobs:
         run: npm run support:check:ui
       - name: No detector family arrives without its required evidence (#52)
         run: npm run arrival:check
+      - name: Fixture profile coverage report and spec table match the corpus (#206)
+        run: npm run profiles:check
       - name: Every ADR has valid frontmatter and is indexed exactly once (#135)
         run: npm run decisions:validate
       - name: Performance criteria are derived from the committed release-build evidence, and its schema pin has not drifted (#136)

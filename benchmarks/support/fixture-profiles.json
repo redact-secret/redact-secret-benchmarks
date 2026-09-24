@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "profilesVersion": 1,
+  "unit": "Counts are distinct fixtures targeted at one registered detector family. A twin pair is an authored positive plus its negative twin (2 fixtures); a positive/context case is a secret-bearing fixture with no twin; an non-twin benign control is a non-secret, non-twin fixture. Total fixtures = positive cases + benign controls + 2 x twin pairs + any unclassified remainder, and no cell may be met by surplus in another.",
+  "axes": {
+    "positiveContext": "Distinct authored context groups (the fixture `group`) among the family's secret-bearing fixtures, twin-paired positives included.",
+    "control": "Distinct reviewed benign taxonomy axes among non-twin benign controls. The unscored `pending` axis never counts.",
+    "confusion": "Distinct benign taxonomy axes plus distinct twin mutation kinds: every way the corpus confuses the value with a non-secret."
+  },
+  "profiles": {
+    "arrival-provisional": {
+      "title": "Arrival / provisional",
+      "qualification": null,
+      "enforcement": "reported",
+      "enforcementRationale": "Measured 2026-09-24 before any status changed: most registered families miss at least one arrival cell, so gating provisional on it would demote families with a working detector. The debt is published per family; #207 and #209 raise it, and this flips to enforced once they land.",
+      "cells": { "totalFixtures": 24, "positiveCases": 6, "benignControls": 8, "twinPairs": 5, "positiveContextAxes": 4, "controlAxes": 4 },
+      "rationale": "The smallest structure in which no evidence cell is empty: total count alone cannot hide a family with twins but no non-twin benign control, or the reverse."
+    },
+    "stable-documented": {
+      "title": "Stable / documented",
+      "qualification": "documented",
+      "enforcement": "reported",
+      "enforcementRationale": "Measured 2026-09-24 before any status changed: most families that read stable under status-criteria.json miss arrival cells (see docs/generated/fixture-profile-coverage.md). Enforcing now would demote them with no detector regression, which the beta.8 epic (#114) forbids. A family that explicitly claims this profile in its contract is enforced regardless.",
+      "extends": "arrival-provisional",
+      "requiresEvidenceTier": "T1",
+      "requiresProviderSource": true,
+      "cells": { "totalFixtures": 24, "positiveCases": 6, "benignControls": 8, "twinPairs": 5, "positiveContextAxes": 4, "controlAxes": 4 },
+      "rationale": "The arrival structure plus every existing stable gate in status-criteria.json and a T1 provider-documented contract."
+    },
+    "stable-empirical": {
+      "title": "Stable / empirical",
+      "qualification": "empirical",
+      "enforcement": "enforced",
+      "enforcementRationale": "Nothing is claimed yet. Any family that claims it is checked against every cell.",
+      "requiresEvidenceTier": "T2",
+      "requiresProviderSource": false,
+      "cells": { "totalFixtures": 40, "positiveCases": 10, "benignControls": 14, "twinPairs": 8, "positiveContextAxes": 6, "controlAxes": 5 },
+      "gates": {
+        "enforced": false,
+        "pending": ["observation records (#205)", "corroboration classes (#177)"],
+        "rationale": "The observation and corroboration gates belong to #177 and #205. Until the classifier enforces them a claim of this profile can never reach stable, so it fails closed."
+      },
+      "rationale": "For providers that publish no token grammar: T2 evidence stays T2, and the fixture structure is larger than the documented profile because the contract is inferred rather than read."
+    },
+    "context-constrained-empirical": {
+      "title": "Context-constrained empirical",
+      "qualification": "empirical",
+      "enforcement": "enforced",
+      "enforcementRationale": "Nothing is claimed yet. Any family that claims it is checked against every cell.",
+      "requiresEvidenceTier": "T2",
+      "requiresProviderSource": false,
+      "bareValueSupport": false,
+      "requiresSupportedContext": true,
+      "cells": { "totalFixtures": 48, "positiveCases": 1, "benignControls": 1, "twinPairs": 10, "confusionAxes": 6 },
+      "cellNotes": { "positiveCases": "Structural non-emptiness only; the issue sets no positive count for this profile.", "benignControls": "Structural non-emptiness only; the issue sets no control count for this profile.", "twinPairs": "Context-twin pairs: the same value with and without the supported context." },
+      "gates": {
+        "enforced": false,
+        "pending": ["observation records (#205)", "corroboration classes (#177)"],
+        "rationale": "The observation and corroboration gates belong to #177 and #205. Until the classifier enforces them a claim of this profile can never reach stable, so it fails closed."
+      },
+      "rationale": "For opaque values whose shape is not independently discriminative: the family makes no bare-value support claim, and the contract names the context it does support."
+    }
+  }
+}

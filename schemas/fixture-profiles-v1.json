@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:redact-secret-benchmarks:fixture-profiles:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "profilesVersion", "unit", "axes", "profiles"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "profilesVersion": { "type": "integer", "minimum": 1 },
+    "unit": { "type": "string", "minLength": 1 },
+    "axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["positiveContext", "control", "confusion"],
+      "properties": {
+        "positiveContext": { "type": "string", "minLength": 1 },
+        "control": { "type": "string", "minLength": 1 },
+        "confusion": { "type": "string", "minLength": 1 }
+      }
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["arrival-provisional", "stable-documented", "stable-empirical", "context-constrained-empirical"],
+      "properties": {
+        "arrival-provisional": { "$ref": "#/definitions/profile" },
+        "stable-documented": { "$ref": "#/definitions/profile" },
+        "stable-empirical": { "$ref": "#/definitions/profile" },
+        "context-constrained-empirical": { "$ref": "#/definitions/profile" }
+      }
+    }
+  },
+  "definitions": {
+    "count": { "type": "integer", "minimum": 1 },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enforced", "pending", "rationale"],
+      "properties": {
+        "enforced": { "type": "boolean" },
+        "pending": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "qualification", "enforcement", "enforcementRationale", "cells", "rationale"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "qualification": { "enum": [null, "documented", "empirical"] },
+        "enforcement": { "enum": ["reported", "enforced"] },
+        "enforcementRationale": { "type": "string", "minLength": 1 },
+        "extends": { "type": "string" },
+        "requiresEvidenceTier": { "enum": ["T1", "T2"] },
+        "requiresProviderSource": { "type": "boolean" },
+        "bareValueSupport": { "const": false },
+        "requiresSupportedContext": { "const": true },
+        "cells": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["totalFixtures", "positiveCases", "benignControls", "twinPairs"],
+          "properties": {
+            "totalFixtures": { "$ref": "#/definitions/count" },
+            "positiveCases": { "$ref": "#/definitions/count" },
+            "benignControls": { "$ref": "#/definitions/count" },
+            "twinPairs": { "$ref": "#/definitions/count" },
+            "positiveContextAxes": { "$ref": "#/definitions/count" },
+            "controlAxes": { "$ref": "#/definitions/count" },
+            "confusionAxes": { "$ref": "#/definitions/count" }
+          }
+        },
+        "cellNotes": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } },
+        "gates": { "$ref": "#/definitions/gates" },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

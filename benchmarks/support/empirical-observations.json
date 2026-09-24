@@ -708,7 +708,7 @@
       "family": "mailgun-api-key",
       "mode": "shape",
       "supportsBareValues": false,
-      "uncertainty": "No Mailgun page states any key grammar; key- + 32 is shown only as a placeholder for the HTTP webhook signing key, and 2018-2025 sources say the current private API key is a prefix-less 32-8-8 hex triplet, making key- possibly the older shape (redact-secret#701). Mailgun's own PHP SDK test uses a key- signing key with g-z letters, so the body is [a-z0-9], not hex-only; case sensitivity is unsettled, Mailgun's own Python SDK scrubs pubkey- values that the family treats as public, and no issued key has been measured.",
+      "uncertainty": "No Mailgun page states any key grammar; key- + 32 is shown only as a placeholder for the HTTP webhook signing key, and 2018-2025 sources say the current private API key is a prefix-less 32-8-8 hex triplet, making key- possibly the older shape (redact-secret#701). Mailgun's own PHP SDK test uses a key- signing key with g-z letters, so the body is [a-z0-9], not hex-only; case sensitivity is unsettled, Mailgun documents pubkey- as a front-end public key (its Python SDK still scrubs it from logs as a conservative choice), and no issued key has been measured.",
       "supportedContexts": [
         "same-line mailgun keyword assignment (MAILGUN_API_KEY= / MAILGUN_WEBHOOK_SIGNING_KEY=), bare, double-quoted, or after a CRLF comment line",
         "private API key and HTTP webhook signing key roles, both key- + 32"
@@ -751,6 +751,20 @@
           "supports": "Mailgun's own PHP SDK test (v4.5.2) verifies a real webhook signature with a key- + 32 [a-z0-9] signing key whose body contains g-z letters (the key- webhook signing key role)"
         },
         {
+          "class": "provider-example",
+          "owner": "mailgun",
+          "reference": "https://help.mailgun.com/hc/en-us/articles/360010523074-Email-Validations",
+          "observedAt": "2026-09-24",
+          "supports": "Mailgun Help Center 'Email Validations' (read in a browser; plain fetches get 403): 'The public endpoint is meant to be used within front-end applications' and 'To protect the public API Key it has an initial monthly limit that can be adjusted'. The pubkey- public validation key is designed for front-end exposure, which backs the family's pubkey- public-id control. It states no key- grammar."
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "mailgun",
+          "reference": "https://github.com/mailgun/validator-demo/blob/2c0f9731d26c35ea9fd257979342fc77c5fd38e9/index.html#L61-L63",
+          "observedAt": "2026-09-24",
+          "supports": "Mailgun's own jQuery email-validator demo (mailgun/validator-demo @2c0f973) passes the account's public API key to a browser-side plugin in page source ('replace this with your Mailgun public API key'), so pubkey- is shipped to every page visitor by design. It backs the pubkey- public-id control, not the key- shape."
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800612791",
@@ -771,7 +785,9 @@
         },
         {
           "statement": "gitleaks has a mailgun-pub-key rule treating pubkey- + 32 hex as a secret, and Mailgun's own mailgun-python log filter (v1.9.1, https://github.com/mailgun/mailgun-python/blob/v1.9.1/mailgun/filters.py#L9-L12) scrubs pubkey- values alongside key-; the family's public-id controls assert silence on a pubkey- value.",
-          "status": "unresolved"
+          "status": "settled",
+          "bound": "Mailgun's Help Center says the public validation endpoint 'is meant to be used within front-end applications' and that the public API key is protected by a monthly usage limit, and Mailgun's own validator demo embeds it in browser page source. The provider documents pubkey- as public by design. mailgun-python's filter, whose docstring itself calls pubkey- a 'public key pattern', is a conservative redaction choice (its (key-|pubkey-)[\\w\\-]+ pattern scrubs any key- run), and gitleaks's mailgun-pub-key rule is a tool rule. So the public-id controls follow the provider.",
+          "settledBy": "https://help.mailgun.com/hc/en-us/articles/360010523074-Email-Validations"
         },
         {
           "statement": "A Mailgun-repo contributor (2019), customers (2018) and trufflehog#3870 (2025) say the current private API key is a prefix-less 32-8-8 hex triplet, which the contract treats as an unsupported legacy signing key (redact-secret#701).",
@@ -981,7 +997,7 @@
       "family": "postman-api-key",
       "mode": "shape",
       "supportsBareValues": true,
-      "uncertainty": "Postman's docs state no PMAK- grammar (only the X-API-Key header and a postman-api-key variable). Its own Insights Agent redaction config fixes PMAK- + 24 lowercase hex + '-' + 34 lowercase hex, matching gitleaks and Nosey Parker, while trufflehog corroborates only the prefix and 59-byte width. The same Postman config also redacts a bare PMAK- + 24 hex value, which the family treats as a non-credential near miss (unresolved). The benchmark claims only lowercase-hex keys. No issued key has been measured, and a second Postman credential (PMAT-) exists outside the contract (redact-secret#700).",
+      "uncertainty": "Postman's docs state no PMAK- grammar (only the X-API-Key header and a postman-api-key variable). Its own Insights Agent redaction config fixes PMAK- + 24 lowercase hex + '-' + 34 lowercase hex, matching gitleaks and Nosey Parker, while trufflehog corroborates only the prefix and 59-byte width. The same Postman config also redacts a bare PMAK- + 24 hex value (L32). That pattern matches the id part of every full key, so the family reads it as a prefix-level scrub and keeps the 24-hex fragment as a non-credential near miss (settled by L72, a judgement). The benchmark claims only lowercase-hex keys. No issued key has been measured, and a second Postman credential (PMAT-) exists outside the contract (redact-secret#700).",
       "supportedContexts": [
         "bare value (the PMAK- prefix is the only marker; no keyword required)",
         "double-quoted assignment value",
@@ -1056,7 +1072,9 @@
         },
         {
           "statement": "Postman's own Insights Agent config (v0.40.1 data_masks/redaction_config.yaml L32) also redacts a bare PMAK- + 24 lowercase hex value, with no second segment, as sensitive; the 213d short-key near-miss control asserts silence on exactly that shape in a POSTMAN_API_KEY assignment.",
-          "status": "unresolved"
+          "status": "settled",
+          "bound": "The same provider-owned file defines the full key at L72 as PMAK- + 24 lowercase hex + '-' + 34 lowercase hex. L32 is \\bPMAK-[a-f0-9]{24}\\b, which also matches the id part inside every full key because '-' is a word boundary. A log scrubber redacting a key's prefix is a conservative redaction-breadth choice, not a statement that the 24-hex id part authenticates on its own, so the short-key control follows the L72 credential shape (maintainer judgement, 2026-09-24; no Postman source says the 24-hex fragment alone authenticates).",
+          "settledBy": "https://github.com/postmanlabs/postman-insights-agent/blob/v0.40.1/data_masks/redaction_config.yaml#L72"
         }
       ]
     },

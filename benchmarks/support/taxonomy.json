@@ -583,9 +583,10 @@
         "supabase-token"
       ],
       "sources": [
-        "https://supabase.com/docs/guides/api/api-keys"
+        "https://supabase.com/docs/guides/api/api-keys",
+        "https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys"
       ],
-      "note": "supabase-token's contract is T0/pending: the provider documents the sb_secret_ prefix but not the body shape, so this family has no stable positive contract yet even though a detector targets it."
+      "note": "supabase-token's contract is T1 since #207 (research #231): Supabase's self-hosting page documents sb_secret_ + 22-character random part + _ + 8-character checksum and says hosted keys use the same format; the base64url alphabet and the sha256 checksum are provider code only. The older 40-alphanumeric detector-coverage positives predate that grammar and are retained as policy regressions."
     },
     {
       "id": "supabase:personal-access-token",
@@ -1054,9 +1055,10 @@
         "heroku-api-key-legacy"
       ],
       "sources": [
-        "https://devcenter.heroku.com/changelog-items/2842"
+        "https://devcenter.heroku.com/changelog-items/2842",
+        "https://devcenter.heroku.com/changelog-items/3175"
       ],
-      "note": "redact-secret#312 (product PR #675). Scored as policy (no value grammar), like twilio:auth-token; an app id on a heroku-named line is the recorded false-positive tradeoff."
+      "note": "redact-secret#312 (product PR #675). Scored as policy (no value grammar), like twilio:auth-token. The later HRKU-<uuid> (41 characters) and HRKU-AA (65) generations are provider-documented and belong to heroku:oauth-access-token (#209, #232). An app id on a heroku-named line is a public-id control; both keyword-gated peers flag it, and the product has excluded identifier-shaped keys since redact-secret#714."
     },
     {
       "id": "mailchimp:marketing-api-key",

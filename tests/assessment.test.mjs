@@ -145,8 +145,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#309: 3 more — confluent-cloud-api-secret-legacy's keyword-gated bare
   // 64-byte value across three contexts, policy as for twilio/datadog.
   // redact-secret#312: 3 more — heroku-api-key-legacy's keyword-gated bare UUID.
-  assert.deepEqual(tally['policy/T3'], { files: 205, spans: 205 });
-  assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
+  // #207 (research #231): supabase-token is re-reviewed onto the documented sb_secret_
+  // 22 + _ + 8 grammar, so its three shape-1 positives (40 alphanumeric, no inner _)
+  // move from must-redact/T0 to retained legacy policy/T3.
+  assert.deepEqual(tally['policy/T3'], { files: 208, spans: 208 });
+  assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
   // jwt-prefix-only/reference/mask, private-key-prefix-only/reference) plus
@@ -281,7 +284,10 @@ test('malformed fixtures, missing companions and pending variants cannot pass as
   assert.equal(get('pypi-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('docker-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('docker-token-shape-1-bare').assessment.tier, 'T1');
-  for (const id of ['supabase-token-shape-1-bare', 'vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
+  for (const id of ['vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
+  // #207: supabase-token's T1 contract is the documented sb_secret_ 22 + _ + 8 grammar; the legacy
+  // 40-alphanumeric shape-1 value falls outside it and is retained only as a policy regression.
+  assert.deepEqual([get('supabase-token-shape-1-bare').assessment.kind, get('supabase-token-shape-1-bare').assessment.tier], ['policy', 'T3']);
   assert.equal(get('digitalocean-token-shape-1-bare').assessment.tier, 'T1');
   assert.equal(get('linear-token-shape-1-bare').assessment.tier, 'T1');
   const anthropic = structuredClone(common.find(f => f.id === 'anthropic-token-api03-plain'));

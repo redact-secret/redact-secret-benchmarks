@@ -75,5 +75,12 @@
     "description": "Real-world-shaped synthetic config, logs, lockfiles, source and docs, authored locally rather than ingested — this measures a global false-alarm rate, not any family's evidence, and moves no family's support status. A flag here is discovery evidence; never relabel the fixture, add a detector exception, or edit it to make it quiet.",
     "kind": "accuracy",
     "corpus": "fixtures/real-world-shapes/corpus.json"
+  },
+  {
+    "id": "beta8-207",
+    "title": "Beta.8 low-coverage hardening (#207)",
+    "description": "Positives, context twins, value twins and benign controls that raise twelve low-coverage registry families (supabase, atlassian, firebase, sentry org and user, telegram, discord, twilio auth token and API key secret, heroku legacy, confluent legacy, bearer) to their Beta.8 profile. Values are synthetic or recomputed from a published checksum over a synthetic body; the profile report is advisory and moves no support status.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-207.json"
   }
 ]

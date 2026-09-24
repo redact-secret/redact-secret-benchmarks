@@ -6,7 +6,11 @@ const families = ['github-token', 'gitlab-token', 'npm-token', 'sendgrid-token',
   'openai-token', 'shopify-token', 'stripe-token', 'generic-token', 'vault-token',
   'pypi-token', 'huggingface-token', 'docker-token', 'cloudflare-token',
   'digitalocean-token', 'linear-token', 'supabase-token', 'vercel-token',
-  'bearer-token', 'connection-string', 'otpauth-uri'];
+  'bearer-token', 'connection-string', 'otpauth-uri',
+  // #207: the two Confluent detector ids, so a twin scoped to the legacy family can tell
+  // the product reporting a current cflt secret as its own sibling family (co-detection)
+  // from a legacy-family finding; unmapped, every such finding fails the twin closed.
+  'confluent-cloud-api-secret', 'confluent-cloud-api-secret-legacy'];
 const gitleaks = {
   'github-pat': 'github-token', 'github-oauth': 'github-token',
   'github-app-token': 'github-token', 'github-refresh-token': 'github-token',

@@ -23,21 +23,27 @@ const TWINNED = ['aws-access-key', 'generic-token', 'connection-string', 'otpaut
 // #36 un-probeable families a 2026-09-22 re-check found a provider-domain source for
 // (docs/decisions/2026-09-22-lift-five-families-out-of-un-probeable.md).
 const LIFTED = ['datadog-api-key', 'new-relic-user-api-key', 'grafana-service-account-token', 'grafana-cloud-access-policy-token', 'microsoft-entra-client-secret'];
-const UNPROBEABLE = ['vercel-token', 'supabase-token', 'discord-bot-token', 'telegram-bot-token', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
+// #207 (Beta.8 low-coverage hardening) lifted seven records on 2026-09-24: supabase-token onto its
+// now-documented sb_secret_ grammar (#231, providerSource); discord/telegram/both Sentry families onto
+// value twins whose mutated property each contract's `twinSource` cites (provider code, community and
+// tool evidence, so they stay T2); both Twilio families onto context twins (#207 requires them for
+// opaque, context-gated values). vercel-token's positive is still T0, so it stays un-probeable.
+const LIFTED_207 = ['supabase-token', 'discord-bot-token', 'telegram-bot-token', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
+const UNPROBEABLE = ['vercel-token'];
 
 test('every detector family either has a twin or is recorded un-probeable, never both and never neither', () => {
-  assert.equal(TWINNED.length + LIFTED.length + UNPROBEABLE.length, 22);
+  assert.equal(TWINNED.length + LIFTED.length + LIFTED_207.length + UNPROBEABLE.length, 22);
   for (const { id } of registry.detectors) {
     const twinned = twins.some(t => t.detectors?.[0] === id), record = contracts[id].unprobeable;
     assert.notEqual(twinned, Boolean(record), id);
     if (record) { assert.ok(record.reason.trim().length > 40, `${id} states why`); assert.match(record.observedAt, /^\d{4}-\d{2}-\d{2}$/, id); }
   }
   assert.deepEqual(registry.detectors.map(d => d.id).filter(id => contracts[id].unprobeable).sort(), [...UNPROBEABLE].sort());
-  for (const id of [...TWINNED, ...LIFTED]) assert.ok(twins.some(t => t.detectors[0] === id), id);
+  for (const id of [...TWINNED, ...LIFTED, ...LIFTED_207]) assert.ok(twins.some(t => t.detectors[0] === id), id);
 });
 
 test('every family twinned for #36 cites dated documentation for the property its twin mutates', () => {
-  for (const id of [...TWINNED, ...LIFTED]) {
+  for (const id of [...TWINNED, ...LIFTED, ...LIFTED_207]) {
     const source = contracts[id].providerSource ?? contracts[id].twinSource;
     assert.ok(source?.url && source.covers && source.formatVersion, id);
     assert.match(source.observedAt, /^\d{4}-\d{2}-\d{2}$/, id);
@@ -52,7 +58,8 @@ test('every family twinned for #36 cites dated documentation for the property it
 
 test('a context twin keeps the value byte-for-byte, changes only its surroundings and is policy-tier', () => {
   const context = twins.filter(t => t.mutationKind === 'context');
-  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['connection-string', 'generic-token']);
+  // #207: the context-gated families (no bare-value claim) gained context twins in beta8-207.
+  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['bearer-token', 'confluent-cloud-api-secret-legacy', 'connection-string', 'generic-token', 'heroku-api-key-legacy', 'twilio-api-key-secret', 'twilio-auth-token']);
   for (const t of context) {
     const positive = fixtures.find(f => f.category === t.category && f.id === t.twinOf);
     const value = bytesOf(positive, positive.expected[0]);
@@ -144,6 +151,10 @@ const T1_DIMENSIONS = {
   'terraform-cloud-token': ['length', 'boundary'],
   'pulumi-access-token': ['length', 'alphabet'],
   'supabase-management-token': ['length', 'alphabet'],
+  // #207 (research #231): Supabase documents the sb_secret_/sb_publishable_ prefixes (the latter
+  // public) and the 22 + _ + 8 layout; twins mutate the public prefix, a segment width and the
+  // positional _ delimiter. The base64url alphabet and the checksum are provider code only.
+  'supabase-token': ['public-prefix', 'length', 'boundary'],
   // Post-beta.6 families (redact-secret#309, #311, #312): prefix and total length are
   // provider-documented; body alphabets stay tool-corroborated, so no alphabet twin.
   'confluent-cloud-api-secret': ['length', 'prefix'],
@@ -189,6 +200,6 @@ test('every T1 ("stable"-track) family has a twin for each structural dimension 
 test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
-  assert.equal(probe.counts['un-probeable'], 8);
-  assert.equal(probe.counts['not-measured'], 49);
+  assert.equal(probe.counts['un-probeable'], 1);
+  assert.equal(probe.counts['not-measured'], 56);
 });

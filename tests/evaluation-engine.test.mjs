@@ -107,7 +107,8 @@ test('twin integrity rejects missing relation, unchanged input and mismatched fa
 test('a context twin keeps the value and edits one place outside it; anything else fails integrity', () => {
   const op = operators.get('authored.twin');
   const context = cases.filter(c => c.method === 'twin' && c.twin.mutationKind === 'context');
-  assert.equal(context.length, 24);
+  // Pre-Beta.8 corpora hold 24; beta8-<issue> corpora (#207–#212) add their own and must pass the same integrity check.
+  assert.equal(context.filter(c => !c.source.category.startsWith('beta8-')).length, 24);
   for (const c of context) assert.equal(op.generate(c).integrity.property, 'context', c.id);
   const c = structuredClone(context.find(c => c.id.includes('connection-string-postgres-bare')));
   const value = Buffer.from(c.seed.content).subarray(c.seed.expected[0].start, c.seed.expected[0].end).toString();

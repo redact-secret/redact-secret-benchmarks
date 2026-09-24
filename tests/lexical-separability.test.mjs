@@ -28,6 +28,12 @@ test('a twin mutated outside the pattern is separable', () => {
   assert.equal(violations.length, 0);
 });
 
+test('a pattern match the contract\'s validate rejects (e.g. a failed checksum) is separable; one it accepts still collides', () => {
+  const checksummed = { 'test-family': { ...testContracts['test-family'], validate: v => v.endsWith('4') } };
+  assert.equal(checkLexicalSeparability([positive(), negative('value="tf_abcd1235"\n')], checksummed).length, 0);
+  assert.equal(checkLexicalSeparability([positive(), negative('value="tf_abcd1235" value="tf_abcd1234"\n')], checksummed).length, 1);
+});
+
 test('a policy-kind positive never conflicts with a same-contract negative', () => {
   const p = positive({ assessment: { kind: 'policy', tier: 'T3', reason: 'r', sources: [], contract: 'test-family' } });
   const violations = checkLexicalSeparability([p, negative('value="tf_abcd1234"\n')], testContracts);

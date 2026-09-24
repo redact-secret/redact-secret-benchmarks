@@ -1,6 +1,6 @@
 import type { Tier } from '../types.ts';
 import data from './status-criteria.json';
-import { fixtureProfiles, profileFailures, type FixtureProfileEvidence, type FixtureProfiles } from './profiles.ts';
+import { fixtureProfiles, profileFailures as fixtureProfileFailures, type FixtureProfileEvidence, type FixtureProfiles } from './profiles.ts';
 
 /**
  * Family support status (issue #503, part of epic #500). A machine-readable
@@ -20,14 +20,26 @@ import { fixtureProfiles, profileFailures, type FixtureProfileEvidence, type Fix
  * necessary for `stable`; it is never sufficient on its own.
  */
 export type SupportStatus = 'stable' | 'provisional' | 'pending' | 'unsupported';
+export type EvidenceBasis = 'provider-documented' | 'independently-corroborated' | 'empirically-observed' | 'project-policy' | 'none';
+export type QualificationProfile = 'documented' | 'empirical';
 
 interface Threshold { value: number; rationale: string }
 
 export interface StatusCriteria {
   schemaVersion: 1;
   stable: {
-    positiveContract: { requireProviderSource: true; rationale: string };
-    minimumTwinPairs: Threshold;
+    documented: {
+      tier: 'T1'; requireProviderSource: true; rationale: string;
+      minimumPositiveCases: Threshold; minimumPositiveAxes: Threshold; minimumBenignCases: Threshold;
+      minimumControlAxes: Threshold; minimumTwinPairs: Threshold;
+    };
+    empirical: {
+      tier: 'T2'; rationale: string;
+      minimumObservations: Threshold; minimumSubjects: Threshold; minimumIssuanceDates: Threshold;
+      minimumCorroborationClasses: Threshold; minimumPositiveCases: Threshold; minimumPositiveAxes: Threshold;
+      minimumBenignCases: Threshold; minimumControlAxes: Threshold; minimumTwinPairs: Threshold;
+      contextConstrained: { minimumContextTwinPairs: Threshold; minimumConfusionAxes: Threshold; minimumFixtures: Threshold };
+    };
     twinFailures: Threshold;
     benign: { minimumCases: Threshold; minimumAxes: Threshold; falseAlarms: Threshold };
     metamorphic: { criticalFailures: Threshold };
@@ -47,8 +59,13 @@ export function validateStatusCriteria(value: unknown): StatusCriteria {
     (t as Threshold).value >= 0 && typeof (t as Threshold).rationale === 'string' && (t as Threshold).rationale.length > 0;
   if (!c || c.schemaVersion !== 1) throw new Error('Invalid support-status criteria: schemaVersion');
   const s = c.stable;
-  if (!s || s.positiveContract?.requireProviderSource !== true || !s.positiveContract.rationale ||
-      !threshold(s.minimumTwinPairs) || !threshold(s.twinFailures) ||
+  const thresholds = (value: Record<string, unknown>, keys: string[]) => keys.every(key => threshold(value?.[key]));
+  if (!s || s.documented?.tier !== 'T1' || s.documented.requireProviderSource !== true || !s.documented.rationale ||
+      !thresholds(s.documented as unknown as Record<string, unknown>, ['minimumPositiveCases', 'minimumPositiveAxes', 'minimumBenignCases', 'minimumControlAxes', 'minimumTwinPairs']) ||
+      s.empirical?.tier !== 'T2' || !s.empirical.rationale ||
+      !thresholds(s.empirical as unknown as Record<string, unknown>, ['minimumObservations', 'minimumSubjects', 'minimumIssuanceDates', 'minimumCorroborationClasses', 'minimumPositiveCases', 'minimumPositiveAxes', 'minimumBenignCases', 'minimumControlAxes', 'minimumTwinPairs']) ||
+      !thresholds(s.empirical.contextConstrained as unknown as Record<string, unknown>, ['minimumContextTwinPairs', 'minimumConfusionAxes', 'minimumFixtures']) ||
+      !threshold(s.twinFailures) ||
       !threshold(s.benign?.minimumCases) || !threshold(s.benign?.minimumAxes) || !threshold(s.benign?.falseAlarms) ||
       !threshold(s.metamorphic?.criticalFailures) || !threshold(s.mutation?.unresolvedCritical) ||
       !threshold(s.differential?.unresolvedContractDisagreements))
@@ -73,6 +90,23 @@ export interface FamilySupportEvidence {
   positiveContractTier: Tier | null;
   /** True only when the contract is T1 and grounded in a documented provider source (`contracts[id].providerSource`). */
   hasProviderSource: boolean;
+  /** Provenance category, deliberately separate from tier and qualification. */
+  evidenceBasis: EvidenceBasis;
+  observationCount: number;
+  observationSubjects: number;
+  observationIssuanceDates: number;
+  corroborationClasses: string[];
+  observationContradictions: number;
+  uncertainty: string | null;
+  supportedContexts: string[];
+  empiricalMode: 'shape' | 'context-constrained' | null;
+  supportsBareValues: boolean;
+  positiveCases: number;
+  positiveAxes: number;
+  controlAxes: number;
+  totalFixtures: number;
+  contextTwinPairs: number;
+  confusionAxes: number;
   twinPairs: number;
   twinFailures: number;
   benignCases: number;
@@ -95,19 +129,18 @@ export interface SupportAssessment {
   status: SupportStatus;
   /** Which criterion produced this status. Empty only when `status` is `stable`. */
   reasons: string[];
+  /** Null unless stable; T2 never changes tier when it clears the empirical profile. */
+  qualificationProfile: QualificationProfile | null;
 }
 
 const fails = (point: number, limit: number, comparison: '<' | '>') => (comparison === '<' ? point < limit : point > limit);
 
 /** Every stable criterion the evidence misses, each naming the criterion, the numbers, and its rationale. */
-function stableFailures(evidence: FamilySupportEvidence, criteria: StatusCriteria): string[] {
+function behavioralFailures(evidence: FamilySupportEvidence, criteria: StatusCriteria): string[] {
   const s = criteria.stable, reasons: string[] = [];
   const check = (id: string, point: number, limit: number, comparison: '<' | '>', rationale: string) => {
     if (fails(point, limit, comparison)) reasons.push(`${id}: ${point} ${comparison} ${limit} — ${rationale}`);
   };
-  if (s.positiveContract.requireProviderSource && !evidence.hasProviderSource)
-    reasons.push(`positiveContract: no T1 provider-documented contract — ${s.positiveContract.rationale}`);
-  check('minimumTwinPairs', evidence.twinPairs, s.minimumTwinPairs.value, '<', s.minimumTwinPairs.rationale);
   check('twinFailures', evidence.twinFailures, s.twinFailures.value, '>', s.twinFailures.rationale);
   check('benign.minimumCases', evidence.benignCases, s.benign.minimumCases.value, '<', s.benign.minimumCases.rationale);
   if (fails(evidence.benignAxes, s.benign.minimumAxes.value, '<'))
@@ -120,6 +153,47 @@ function stableFailures(evidence: FamilySupportEvidence, criteria: StatusCriteri
   return reasons;
 }
 
+function qualificationFailures(evidence: FamilySupportEvidence, criteria: StatusCriteria): { profile: QualificationProfile | null; reasons: string[] } {
+  const check = (reasons: string[], id: string, point: number, threshold: Threshold) => {
+    if (point < threshold.value) reasons.push(`${id}: ${point} < ${threshold.value} — ${threshold.rationale}`);
+  };
+  if (evidence.positiveContractTier === 'T1') {
+    const p = criteria.stable.documented, reasons: string[] = [];
+    if (p.requireProviderSource && !evidence.hasProviderSource) reasons.push(`documented.providerSource: missing — ${p.rationale}`);
+    check(reasons, 'documented.minimumPositiveCases', evidence.positiveCases, p.minimumPositiveCases);
+    check(reasons, 'documented.minimumPositiveAxes', evidence.positiveAxes, p.minimumPositiveAxes);
+    check(reasons, 'documented.minimumBenignCases', evidence.benignCases, p.minimumBenignCases);
+    check(reasons, 'documented.minimumControlAxes', evidence.controlAxes, p.minimumControlAxes);
+    check(reasons, 'documented.minimumTwinPairs', evidence.twinPairs, p.minimumTwinPairs);
+    return { profile: 'documented', reasons };
+  }
+  if (evidence.positiveContractTier === 'T2') {
+    const p = criteria.stable.empirical, reasons: string[] = [];
+    if (evidence.evidenceBasis !== 'empirically-observed') reasons.push(`empirical.evidenceBasis: ${evidence.evidenceBasis} — ${p.rationale}`);
+    check(reasons, 'empirical.minimumObservations', evidence.observationCount, p.minimumObservations);
+    check(reasons, 'empirical.minimumSubjects', evidence.observationSubjects, p.minimumSubjects);
+    check(reasons, 'empirical.minimumIssuanceDates', evidence.observationIssuanceDates, p.minimumIssuanceDates);
+    check(reasons, 'empirical.minimumCorroborationClasses', evidence.corroborationClasses.length, p.minimumCorroborationClasses);
+    if (evidence.observationContradictions) reasons.push(`empirical.contradictions: ${evidence.observationContradictions} unresolved — contradictory observations block qualification`);
+    if (!evidence.uncertainty?.trim()) reasons.push('empirical.uncertainty: missing — explicit uncertainty is required');
+    if (!evidence.supportedContexts.length) reasons.push('empirical.supportedContexts: none — supported-context limits are required');
+    check(reasons, 'empirical.minimumPositiveCases', evidence.positiveCases, p.minimumPositiveCases);
+    check(reasons, 'empirical.minimumPositiveAxes', evidence.positiveAxes, p.minimumPositiveAxes);
+    check(reasons, 'empirical.minimumBenignCases', evidence.benignCases, p.minimumBenignCases);
+    check(reasons, 'empirical.minimumControlAxes', evidence.controlAxes, p.minimumControlAxes);
+    check(reasons, 'empirical.minimumTwinPairs', evidence.twinPairs, p.minimumTwinPairs);
+    if (evidence.empiricalMode === 'context-constrained') {
+      const c = p.contextConstrained;
+      if (evidence.supportsBareValues) reasons.push('empirical.contextConstrained.supportsBareValues: true — opaque values cannot claim bare-value support');
+      check(reasons, 'empirical.contextConstrained.minimumContextTwinPairs', evidence.contextTwinPairs, c.minimumContextTwinPairs);
+      check(reasons, 'empirical.contextConstrained.minimumConfusionAxes', evidence.confusionAxes, c.minimumConfusionAxes);
+      check(reasons, 'empirical.contextConstrained.minimumFixtures', evidence.totalFixtures, c.minimumFixtures);
+    } else if (evidence.empiricalMode !== 'shape') reasons.push('empirical.mode: missing — choose shape or context-constrained qualification');
+    return { profile: 'empirical', reasons };
+  }
+  return { profile: null, reasons: [`qualificationProfile: tier ${evidence.positiveContractTier} is not eligible for documented or empirical stable`] };
+}
+
 /**
  * Decide one family's support status from evidence alone (never tier alone:
  * a T1 contract with no twins still fails `minimumTwinPairs` and lands on
@@ -129,12 +203,13 @@ function stableFailures(evidence: FamilySupportEvidence, criteria: StatusCriteri
 export function classifyFamilySupport(evidence: FamilySupportEvidence, criteria: StatusCriteria = statusCriteria, profiles: FixtureProfiles = fixtureProfiles): SupportAssessment {
   const { family } = evidence;
   if (!evidence.detectors.length) {
-    if (evidence.unsupportedReason) return { family, status: 'unsupported', reasons: [evidence.unsupportedReason] };
-    return { family, status: 'pending', reasons: [`no detector and no recorded reason — ${criteria.unsupported.rationale}`] };
+    if (evidence.unsupportedReason) return { family, status: 'unsupported', reasons: [evidence.unsupportedReason], qualificationProfile: null };
+    return { family, status: 'pending', reasons: [`no detector and no recorded reason — ${criteria.unsupported.rationale}`], qualificationProfile: null };
   }
   if (evidence.positiveContractTier === null || evidence.positiveContractTier === criteria.pending.tier)
-    return { family, status: 'pending', reasons: [`positiveContractTier ${evidence.positiveContractTier ?? 'none'} — ${criteria.pending.rationale}`] };
-  const reasons = [...stableFailures(evidence, criteria), ...profileFailures(evidence, profiles)];
-  if (!reasons.length) return { family, status: 'stable', reasons: [] };
-  return { family, status: 'provisional', reasons };
+    return { family, status: 'pending', reasons: [`positiveContractTier ${evidence.positiveContractTier ?? 'none'} — ${criteria.pending.rationale}`], qualificationProfile: null };
+  const qualification = qualificationFailures(evidence, criteria);
+  const reasons = [...qualification.reasons, ...behavioralFailures(evidence, criteria), ...fixtureProfileFailures(evidence, profiles)];
+  if (!reasons.length && qualification.profile) return { family, status: 'stable', reasons: [], qualificationProfile: qualification.profile };
+  return { family, status: 'provisional', reasons, qualificationProfile: null };
 }

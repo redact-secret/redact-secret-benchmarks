@@ -152,8 +152,9 @@ test('a synthetic report shaped like eval:classify output satisfies the schema',
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
     criteriaSchemaVersion: 1, fixtureProfilesVersion: 1, product: null, scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
-    familyCount: 1, distribution: { stable: 0, provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
-    families: [{ ...assessment, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
+    familyCount: 1, distribution: { stable: Number(assessment.status === 'stable'), provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
+    stableDistribution: { documented: Number(assessment.qualificationProfile === 'documented'), empirical: Number(assessment.qualificationProfile === 'empirical') },
+    families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
   };
   assert.ok(validate(synthetic), JSON.stringify(validate.errors));
 });
@@ -168,8 +169,9 @@ test('a synthetic report shaped like a candidate eval:classify run satisfies the
     product: { sourceCommit: 'a'.repeat(40), packageName: '@redact-secret/core', declaredVersion: '9.9.9-candidate.1',
       artifacts: ['package', 'node', 'wasm'].map(role => ({ role, sha256: 'b'.repeat(64) })) },
     scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
-    familyCount: 1, distribution: { stable: 0, provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
-    families: [{ ...assessment, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
+    familyCount: 1, distribution: { stable: Number(assessment.status === 'stable'), provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
+    stableDistribution: { documented: Number(assessment.qualificationProfile === 'documented'), empirical: Number(assessment.qualificationProfile === 'empirical') },
+    families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
   };
   assert.ok(validate(synthetic), JSON.stringify(validate.errors));
 });

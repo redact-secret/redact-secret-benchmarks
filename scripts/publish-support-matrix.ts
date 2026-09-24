@@ -31,6 +31,6 @@ await mkdir(path.dirname(target), { recursive: true });
 const temporary = `${target}.tmp`;
 await writeFile(temporary, JSON.stringify(matrix) + '\n');
 await rename(temporary, target);
-const { familyCount, distribution } = matrix as { familyCount: number; distribution: Record<string, number> };
-console.log(`Published ${familyCount} families: ${JSON.stringify(distribution)}`);
+const { familyCount, distribution, stableDistribution } = matrix as { familyCount: number; distribution: Record<string, number>; stableDistribution: { documented: number; empirical: number } };
+console.log(`Published ${familyCount} families: ${JSON.stringify(distribution)}; stable profiles ${JSON.stringify(stableDistribution)}`);
 console.log(`Report: ${path.relative(root, target)}`);

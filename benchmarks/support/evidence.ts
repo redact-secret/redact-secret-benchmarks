@@ -1,8 +1,8 @@
-import type { Summary, ReviewLedger } from '../engine/types.ts';
+import type { Summary, ReviewLedger, EvaluationCase } from '../engine/types.ts';
 import type { FamilySupportEvidence } from './status.ts';
-import type { EvaluationCase } from '../engine/types.ts';
 import { contracts } from '../lib/assessment.ts';
 import { measureFixtureCells, profileClaim } from './profiles.ts';
+import { empiricalEvidence } from './empirical.ts';
 
 /**
  * Real `FamilySupportEvidence` per family (issue #504, A3). Aggregates
@@ -47,6 +47,26 @@ function unresolvedInQueue(family: string, method: string, queue: QueuedReview[]
  * returns no scanner assertions, only a review queue), so its evidence is
  * queue-only.
  */
+function fixtureProfile(family: string, cases: EvaluationCase[]) {
+  const selected = cases.filter(c => c.targets.includes(family));
+  const base = [...new Map(selected.filter(c => c.method === 'differential').map(c => [`${c.source.category}/${c.source.fixtureId}`, c])).values()];
+  const positive = base.filter(c => c.seed.expected.length > 0 && !c.seed.twinOf);
+  const benign = base.filter(c => c.seed.expected.length === 0 && !c.seed.twinOf);
+  const twins = [...new Map(selected.filter(c => c.method === 'twin').map(c => [`${c.source.category}/${c.source.fixtureId}`, c])).values()];
+  const confusion = new Set([
+    ...selected.filter(c => c.method === 'benign' && c.taxonomy).map(c => c.taxonomy!),
+    ...twins.map(c => c.twin?.mutationKind).filter((value): value is string => Boolean(value)),
+  ]);
+  return {
+    positiveCases: positive.length,
+    positiveAxes: new Set(positive.map(c => `${c.source.category}/${c.seed.group}`)).size,
+    benignCases: benign.length,
+    totalFixtures: base.length,
+    contextTwinPairs: twins.filter(c => c.source.category === 'context-edges').length,
+    confusionAxes: confusion.size,
+  };
+}
+
 export function familyEvidence(family: string, byDetector: Record<string, Summary>, axesByDetector: Record<string, string[]>, reviewQueue: QueuedReview[], ledger: ReviewLedger, cases?: EvaluationCase[]): FamilySupportEvidence {
   const summary = byDetector[family] ?? {};
   const contract = contracts[family];
@@ -55,14 +75,26 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
   const metamorphic = totalWhere(summary, 'metamorphic');
   const mutation = totalWhere(summary, 'mutation');
   const benignAxisIds = axesByDetector[family] ?? [];
+  const profile = fixtureProfile(family, cases ?? []);
+  const empirical = empiricalEvidence(family);
+  const evidenceBasis = contract?.tier === 'T1' ? 'provider-documented' : contract?.tier === 'T3' ? 'project-policy' :
+    contract?.tier === 'T2' && empirical.evidenceBasis === 'none' ? 'independently-corroborated' : empirical.evidenceBasis;
   return {
     family,
     detectors: contract ? [family] : [],
     positiveContractTier: contract?.tier ?? null,
     hasProviderSource: contract?.tier === 'T1' && Boolean(contract.providerSource),
+    ...empirical,
+    evidenceBasis,
+    positiveCases: profile.positiveCases,
+    positiveAxes: profile.positiveAxes,
+    controlAxes: benignAxisIds.length,
+    totalFixtures: profile.totalFixtures,
+    contextTwinPairs: profile.contextTwinPairs,
+    confusionAxes: profile.confusionAxes,
     twinPairs: twin.pass + twin.fail,
     twinFailures: twin.fail,
-    benignCases: benign.pass + benign.fail,
+    benignCases: cases?.length ? profile.benignCases : benign.pass + benign.fail,
     benignFalseAlarms: benign.fail,
     benignAxes: benignAxisIds.length,
     benignAxisIds,

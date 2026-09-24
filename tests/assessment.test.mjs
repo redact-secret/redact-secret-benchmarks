@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES } from '../benchmarks/lib/assessment.ts';
+import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES, arrivalIds } from '../benchmarks/lib/assessment.ts';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 import { validateCorpus, score } from '../benchmarks/lib/scoring.ts';
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
@@ -25,7 +25,8 @@ const lax = { ...suite.accounting, minDenominator: 1, measurableShareFloor: 0, t
 test('contracts are provider-first: T1 needs a dated provider source, T2 needs corroboration', async () => {
   validateContracts();
   const registry = await read('benchmarks/detectors.json');
-  assert.deepEqual(Object.keys(contracts).sort(), registry.detectors.map(d => d.id).sort());
+  // Beta.8 arrival families (#207–#212) carry contracts without a registry detector; everything else is the registry.
+  assert.deepEqual(Object.keys(contracts).filter(id => !arrivalIds.has(id)).sort(), registry.detectors.map(d => d.id).sort());
   for (const [family, c] of Object.entries(contracts)) {
     if (c.tier === 'T1') assert.match(c.providerSource.observedAt, /^\d{4}-\d{2}-\d{2}$/, family);
     if (c.tier === 'T2') assert.ok(c.review && c.corroboration.length, family);
@@ -42,10 +43,13 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   for (const [category, corpus] of all) for (const f of corpus.fixtures) {
     validateAssessment(f);
     assert.deepEqual(f.assessment, classifyFixture(category, f), f.id);
+    // The tallies below are the pre-Beta.8 corpus; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
     const key = `${f.assessment.kind}/${f.assessment.tier}`;
-    tally[key] ??= { files: 0, spans: 0 };
-    tally[key].files++;
-    tally[key].spans += f.expected.filter(r => r.role === 'secret').length;
+    if (!category.startsWith('beta8-')) {
+      tally[key] ??= { files: 0, spans: 0 };
+      tally[key].files++;
+      tally[key].spans += f.expected.filter(r => r.role === 'secret').length;
+    }
     if (f.assessment.kind === 'must-not-flag') assert.equal(f.expected.length, 0, f.id);
     if (f.assessment.kind === 'policy') assert.equal(f.assessment.tier, 'T3', f.id);
     if (f.assessment.kind === 'must-redact' && f.assessment.tier !== 'T0') assert.equal(contracts[f.assessment.contract].tier, f.assessment.tier, f.id);
@@ -131,8 +135,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #112 / redact-secret#708: docker-token's dckr_oat_ branch accepts the exact 27-byte
   // body Docker's Hub API example shows; one new must-redact/T1 positive × 3 contexts
   // (+3 files/+3 spans), 3 twins × 3 contexts (netted out below).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 389);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 395);
+  // #209: confluent-cloud-api-secret's contract now validates the provider-published CRC32
+  // checksum; detector-coverage's three prefixed-shape positives (flat random bodies) fail it
+  // and move must-redact/T1 -> policy/T3 as retained regressions (-3 files/-3 spans here, +3 below).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 386);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 392);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -141,9 +148,13 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#309: 3 more — confluent-cloud-api-secret-legacy's keyword-gated bare
   // 64-byte value across three contexts, policy as for twilio/datadog.
   // redact-secret#312: 3 more — heroku-api-key-legacy's keyword-gated bare UUID.
-  assert.deepEqual(tally['policy/T3'], { files: 205, spans: 205 });
-  assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
-  const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
+  // #207 (research #231): supabase-token is re-reviewed onto the documented sb_secret_
+  // 22 + _ + 8 grammar, so its three shape-1 positives (40 alphanumeric, no inner _)
+  // move from must-redact/T0 to retained legacy policy/T3.
+  // #209: +3 — the checksum-invalid confluent-cloud-api-secret prefixed-shape positives above.
+  assert.deepEqual(tally['policy/T3'], { files: 211, spans: 211 });
+  assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
+  const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
   // jwt-prefix-only/reference/mask, private-key-prefix-only/reference) plus
   // 6 new twins (which net out of this count via -twins.length).
@@ -211,10 +222,11 @@ test('v4 outcomes reduce to the v3 exact/containment rule when no envelope is au
 });
 
 test('envelopes are authored where v3 needed prose: URIs, OTP, Bearer, quoted generics', () => {
+  // Pre-Beta.8 count; beta8-<issue> corpora (#207–#212) are checked by the loop below but not counted.
   const enveloped = all.flatMap(([category, c]) => c.fixtures.filter(f => f.expected.some(r => r.envelope)).map(f => ({ category, f })));
+  assert.equal(enveloped.filter(({ category }) => !category.startsWith('beta8-')).length, 58);
   // #66: 3 new quoted-assignment envelopes (generic-token's markdown-inline-
   // code boundary, one per field).
-  assert.equal(enveloped.length, 58);
   for (const { f } of enveloped) for (const r of f.expected) {
     const bytes = Buffer.from(f.content);
     const whole = bytes.subarray(r.envelope.start, r.envelope.end).toString();
@@ -277,7 +289,10 @@ test('malformed fixtures, missing companions and pending variants cannot pass as
   assert.equal(get('pypi-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('docker-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('docker-token-shape-1-bare').assessment.tier, 'T1');
-  for (const id of ['supabase-token-shape-1-bare', 'vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
+  for (const id of ['vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
+  // #207: supabase-token's T1 contract is the documented sb_secret_ 22 + _ + 8 grammar; the legacy
+  // 40-alphanumeric shape-1 value falls outside it and is retained only as a policy regression.
+  assert.deepEqual([get('supabase-token-shape-1-bare').assessment.kind, get('supabase-token-shape-1-bare').assessment.tier], ['policy', 'T3']);
   assert.equal(get('digitalocean-token-shape-1-bare').assessment.tier, 'T1');
   assert.equal(get('linear-token-shape-1-bare').assessment.tier, 'T1');
   const anthropic = structuredClone(common.find(f => f.id === 'anthropic-token-api03-plain'));

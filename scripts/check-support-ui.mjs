@@ -32,15 +32,19 @@ function probeMatrix(status, vocabulary) {
   const families = taxonomy.families.map(family => ({
     provider: family.provider, family: family.id, familyName: family.name, status,
     evidenceTier: 'T1', providerSource: { url: 'https://example.invalid/format', observedAt: '2026-09-20', formatVersion: 'probe', covers: 'probe' },
+    evidenceBasis: 'provider-documented', qualificationProfile: status === 'stable' ? 'documented' : null,
     corroboratingScanners: [], twinCoverage: { pairs: 0, failures: 0, unprobeable: null },
     unresolvedCriticalItems: { metamorphic: 0, mutation: 0, differential: 0 },
+    empiricalEvidence: { observations: 0, subjects: 0, issuanceDates: 0, corroborationClasses: [], contradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true },
+    fixtureProfile: { positiveCases: 6, positiveAxes: 4, benignCases: 8, controlAxes: 4, twinPairs: 5, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 4 },
     detectors: ['probe-detector'], reason: status === 'stable' ? null : `probe: ${status}`,
   }));
   const distribution = Object.fromEntries(vocabulary.map(key => [key, key === status ? families.length : 0]));
+  const stableDistribution = { documented: status === 'stable' ? families.length : 0, empirical: 0 };
   return {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
     sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'probe-run', revision: '0'.repeat(40), dirty: false, criteriaSchemaVersion: 1 },
-    providerCount: taxonomy.providers.length, familyCount: families.length, distribution, families,
+    providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };
 }
 

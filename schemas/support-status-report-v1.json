@@ -3,7 +3,7 @@
   "$id": "urn:redact-secret-benchmarks:support-status-report:1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "fixtureProfilesVersion", "product", "scanners", "caseCount", "variantCount", "familyCount", "distribution", "families"],
+  "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "fixtureProfilesVersion", "product", "scanners", "caseCount", "variantCount", "familyCount", "distribution", "stableDistribution", "families"],
   "properties": {
     "schemaVersion": { "const": 1 },
     "generatedAt": { "type": "string" },
@@ -52,27 +52,50 @@
         "unsupported": { "type": "integer", "minimum": 0 }
       }
     },
+    "stableDistribution": {
+      "type": "object", "additionalProperties": false, "required": ["documented", "empirical"],
+      "properties": { "documented": { "type": "integer", "minimum": 0 }, "empirical": { "type": "integer", "minimum": 0 } }
+    },
     "families": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["family", "status", "reasons", "taxonomyFamilies", "evidence", "unprobeable", "fixtureProfile"],
+        "required": ["family", "status", "reasons", "qualificationProfile", "evidenceTier", "evidenceBasis", "taxonomyFamilies", "evidence", "unprobeable", "fixtureProfile"],
         "properties": {
           "family": { "type": "string" },
           "status": { "enum": ["stable", "provisional", "pending", "unsupported"] },
+          "qualificationProfile": { "enum": ["documented", "empirical", null] },
+          "evidenceTier": { "enum": ["T0", "T1", "T2", "T3", null] },
+          "evidenceBasis": { "enum": ["provider-documented", "independently-corroborated", "empirically-observed", "project-policy", "none"] },
           "reasons": { "type": "array", "items": { "type": "string" } },
           "taxonomyFamilies": { "type": "array", "items": { "type": "string" } },
           "evidence": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["family", "detectors", "positiveContractTier", "hasProviderSource", "twinPairs", "twinFailures",
+            "required": ["family", "detectors", "positiveContractTier", "hasProviderSource", "evidenceBasis", "observationCount", "observationSubjects", "observationIssuanceDates", "corroborationClasses", "observationContradictions", "uncertainty", "supportedContexts", "empiricalMode", "supportsBareValues", "positiveCases", "positiveAxes", "controlAxes", "totalFixtures", "contextTwinPairs", "confusionAxes", "twinPairs", "twinFailures",
               "benignCases", "benignAxes", "benignAxisIds", "benignFalseAlarms", "metamorphicCriticalFailures", "mutationUnresolvedCritical", "differentialUnresolvedContractDisagreements"],
             "properties": {
               "family": { "type": "string" },
               "detectors": { "type": "array", "items": { "type": "string" } },
               "positiveContractTier": { "enum": ["T0", "T1", "T2", "T3", null] },
               "hasProviderSource": { "type": "boolean" },
+              "evidenceBasis": { "enum": ["provider-documented", "independently-corroborated", "empirically-observed", "project-policy", "none"] },
+              "observationCount": { "type": "integer", "minimum": 0 },
+              "observationSubjects": { "type": "integer", "minimum": 0 },
+              "observationIssuanceDates": { "type": "integer", "minimum": 0 },
+              "corroborationClasses": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+              "observationContradictions": { "type": "integer", "minimum": 0 },
+              "uncertainty": { "type": ["string", "null"] },
+              "supportedContexts": { "type": "array", "items": { "type": "string" } },
+              "empiricalMode": { "enum": ["shape", "context-constrained", null] },
+              "supportsBareValues": { "type": "boolean" },
+              "positiveCases": { "type": "integer", "minimum": 0 },
+              "positiveAxes": { "type": "integer", "minimum": 0 },
+              "controlAxes": { "type": "integer", "minimum": 0 },
+              "totalFixtures": { "type": "integer", "minimum": 0 },
+              "contextTwinPairs": { "type": "integer", "minimum": 0 },
+              "confusionAxes": { "type": "integer", "minimum": 0 },
               "twinPairs": { "type": "integer", "minimum": 0 },
               "twinFailures": { "type": "integer", "minimum": 0 },
               "benignCases": { "type": "integer", "minimum": 0 },

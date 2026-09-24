@@ -71,6 +71,7 @@ benchmarks/review-ledger.json Reviewed state of queued disagreements; written by
 benchmarks/lib/scoring.ts     Corpus schema 2 validation (roles, envelopes, twins) and row scoring
 benchmarks/lib/twin-probe.ts  Per-family twin probe: discriminated, not discriminated, un-probeable
 benchmarks/lib/assessment.ts  Kinds, tiers, provider-first contracts and classification
+benchmarks/lib/beta8/          Beta.8 per-issue contracts, arrival families and profiles (#207–#212; docs/specs/beta8-evidence.md)
 benchmarks/lib/reporting.ts   Per (kind × tier) groups; no mixed overall score
 benchmarks/lib/adversarial-intake.ts External adversarial intake: lifecycle, synthetic-only, frozen expectations and first run, qualification
 benchmarks/lib/evidence-classes.ts Public adversarial / protected holdout / maintainer regression queries and independence wording

@@ -26,7 +26,10 @@ const cellsAt = id => {
 };
 const evidence = (over = {}) => ({
   family: 'example-token', detectors: ['example-token'], positiveContractTier: 'T1', hasProviderSource: true,
-  twinPairs: 5, twinFailures: 0, benignCases: 5, benignAxes: 3, benignAxisIds: ['near-miss', 'placeholder', 'reference'], benignFalseAlarms: 0,
+  evidenceBasis: 'provider-documented', observationCount: 0, observationSubjects: 0, observationIssuanceDates: 0, corroborationClasses: [],
+  observationContradictions: 0, uncertainty: null, supportedContexts: [], empiricalMode: null, supportsBareValues: false,
+  positiveCases: 6, positiveAxes: 4, controlAxes: 4, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 0,
+  twinPairs: 5, twinFailures: 0, benignCases: 8, benignAxes: 3, benignAxisIds: ['near-miss', 'placeholder', 'reference'], benignFalseAlarms: 0,
   metamorphicCriticalFailures: 0, mutationUnresolvedCritical: 0, differentialUnresolvedContractDisagreements: 0, ...over,
 });
 const withProfile = (claim, cells, extra = {}) => ({ fixtureProfile: { claim, cells, ...extra } });
@@ -129,7 +132,7 @@ test('empirical profiles: T2 can meet every cell and still never reads stable, a
   const meets = withProfile({ profile: 'stable-empirical', explicit: true }, cellsAt('stable-empirical'));
   const result = classifyFamilySupport({ ...t2, ...meets });
   assert.equal(result.status, 'provisional');
-  assert.ok(result.reasons.some(r => /positiveContract: no T1 provider-documented contract/.test(r)));
+  assert.ok(result.reasons.some(r => /empirical.minimumObservations/.test(r)));
   assert.ok(result.reasons.some(r => /observation records \(#205\) and corroboration classes \(#177\) are not enforced yet/.test(r)));
   assert.ok(!result.reasons.some(r => /requires T2 evidence/.test(r)), 'T2 satisfies the empirical tier requirement');
   const t1 = classifyFamilySupport({ ...evidence(), ...meets });

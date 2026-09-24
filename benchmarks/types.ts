@@ -12,6 +12,11 @@ export interface Fixture {
   id: string; path: string; content: string; expected: ExpectedRange[];
   group: string; assessment: Assessment; detectors?: string[];
   twinOf?: string; mutation?: string; mutationKind?: string; formatReason?: string; issue?: number;
+  /** Beta.8 (#207–#212): targets that are not product detectors (`benchmarks/lib/beta8/`), kept out of
+   * `detectors` so the registry-keyed catalog and coverage pages never read them as product families. */
+  arrivalTargets?: string[];
+  /** Beta.8: the positive-context axis a positive or twin exercises (`POSITIVE_AXES` in benchmarks/lib/beta8/profiles.ts). */
+  contextAxis?: string;
 }
 export interface Corpus { fixtures: Fixture[]; schemaVersion?: number; reviewStatus?: string; scope?: string; references?: unknown; milestoneReview?: unknown }
 /** `action` (#95, docs/decisions/2026-09-21-add-untargeted-benign-corpus.md Decision 3): the product
@@ -76,5 +81,30 @@ export interface FormatContract {
   unprobeable?: { reason: string; observedAt: string };
   /** A structural constraint `pattern` alone can't express (#128). `lexical.mutate()` consults this, when present, in addition to `pattern`: a value the regex matches but this rejects is still contract-invalid. */
   validate?: (value: string) => boolean;
+  /** No bare-value grammar: a value is recognised only beside a same-line identifier or keyword, so positives
+   * score as policy and twins may mutate the assignment context (the registry's `CONTEXT_GATED` list, per contract). */
+  contextGated?: boolean;
+  /** Per-field provenance (#207–#212): each structural claim with the evidence behind it, so a prefix the provider
+   * documents and a body width only a peer rule corroborates are never flattened into one tier. */
+  fields?: FieldClaim[];
 }
+/** Where a single field claim comes from. Never relabel one basis as another: a provider's code is not its documentation. */
+export type EvidenceBasis =
+  | 'provider-documentation' | 'provider-example' | 'provider-code'
+  | 'maintainer-observation' | 'community' | 'tool' | 'research-hypothesis';
+/** `frozen`: the contract depends on it; `provisional`: used for fixtures but may change on new evidence; `unresolved`: recorded, not relied on. */
+export type FieldStatus = 'frozen' | 'provisional' | 'unresolved';
+export interface FieldClaim {
+  field: string; claim: string; basis: EvidenceBasis; status: FieldStatus;
+  sources: { url: string; observedAt: string; note?: string }[];
+  note?: string;
+}
+/** A credential family measured ahead of (or without) a product detector. Its id is a case target, never a detector id. */
+export interface ArrivalFamily {
+  id: string; taxonomy: string; issue: number;
+  /** Why no registry detector is targeted: none exists at the pinned product revision, or the taxonomy maps none to this family. */
+  reason: string;
+}
+/** Beta.8 fixture profiles (#206 draft; #206 owns enforcement). */
+export type FixtureProfile = 'arrival-24' | 'documented-24' | 'empirical-40' | 'context-48';
 export interface Category { id: string; kind: string; corpus: string }

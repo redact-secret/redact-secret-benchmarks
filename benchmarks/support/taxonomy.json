@@ -169,6 +169,42 @@
     {
       "id": "okta",
       "name": "Okta"
+    },
+    {
+      "id": "replicate",
+      "name": "Replicate"
+    },
+    {
+      "id": "groq",
+      "name": "Groq"
+    },
+    {
+      "id": "xai",
+      "name": "xAI"
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter"
+    },
+    {
+      "id": "langsmith",
+      "name": "LangSmith (LangChain)"
+    },
+    {
+      "id": "langfuse",
+      "name": "Langfuse"
+    },
+    {
+      "id": "perplexity",
+      "name": "Perplexity"
+    },
+    {
+      "id": "fireworks-ai",
+      "name": "Fireworks AI"
+    },
+    {
+      "id": "pinecone",
+      "name": "Pinecone"
     }
   ],
   "families": [
@@ -294,7 +330,7 @@
       "sources": [
         "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
       ],
-      "note": "Named explicitly in issue #502 as a family the github-token detector does not cover: its pattern only matches the ghp_/gho_/ghu_/ghs_/ghr_ underscore-plus-36-character-body shape, which github_pat_ does not fit."
+      "note": "Named explicitly in issue #502 as a family the github-token detector does not cover: its pattern only matches the ghp_/gho_/ghu_/ghs_/ghr_ underscore-plus-36-character-body shape, which github_pat_ does not fit. Measured as the Beta.8 arrival family github-fine-grained-pat (#211, research #223): only the github_pat_ prefix is provider-documented; the 22 + _ + 59 body is community/tool evidence kept provisional, with no checksum or fixed 11 lead claimed."
     },
     {
       "id": "gitlab:legacy-personal-access-token",
@@ -436,9 +472,10 @@
       "description": "Webhook endpoint signing secret, prefixed whsec_.",
       "detectors": [],
       "sources": [
+        "https://docs.stripe.com/webhooks",
         "benchmarks/lib/assessment.ts (classifyFixture variant guard: \"Variant support must not be inferred from a related family name.\")"
       ],
-      "note": "Same classifyFixture guard as the organization API key covers whsec_ values; stripe-token's pattern does not match them."
+      "note": "Same classifyFixture guard as the organization API key covers whsec_ values; stripe-token's pattern does not match them. Measured as the context-gated Beta.8 arrival family stripe-webhook-signing-secret (#211, research #224): Stripe documents the whsec_ prefix only; the body width and alphabet stay provisional (32 alphanumerics is a provider example, not a grammar; Stripe's own scrubber admits + / =)."
     },
     {
       "id": "slack:bot-token",
@@ -469,7 +506,7 @@
       "sources": [
         "https://docs.slack.dev/authentication/tokens"
       ],
-      "note": "Documented alongside xoxb- in the same provider prefix table; not matched by the bot-token-only pattern."
+      "note": "Documented alongside xoxb- in the same provider prefix table; not matched by the bot-token-only pattern. Measured as the Beta.8 arrival family slack-app-level-token (#211, research #222): only the xapp- prefix is provider-documented; section widths and alphabet are tool-only and contradictory (4-section 97-character vs Nosey Parker's 2-section 42-character) and stay unresolved."
     },
     {
       "id": "slack:workflow-webhook-token",
@@ -583,9 +620,10 @@
         "supabase-token"
       ],
       "sources": [
-        "https://supabase.com/docs/guides/api/api-keys"
+        "https://supabase.com/docs/guides/api/api-keys",
+        "https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys"
       ],
-      "note": "supabase-token's contract is T0/pending: the provider documents the sb_secret_ prefix but not the body shape, so this family has no stable positive contract yet even though a detector targets it."
+      "note": "supabase-token's contract is T1 since #207 (research #231): Supabase's self-hosting page documents sb_secret_ + 22-character random part + _ + 8-character checksum and says hosted keys use the same format; the base64url alphabet and the sha256 checksum are provider code only. The older 40-alphanumeric detector-coverage positives predate that grammar and are retained as policy regressions."
     },
     {
       "id": "supabase:personal-access-token",
@@ -692,7 +730,10 @@
       "name": "Integration token",
       "description": "ntn_ prefixed integration token from Notion's 2024-09 rollout.",
       "detectors": [],
-      "note": "notion-token's contract review states this current ntn_-prefixed format has no contract here; the pinned gitleaks rule targets it instead of the legacy secret_ shape."
+      "sources": [
+        "https://developers.notion.com/page/changelog"
+      ],
+      "note": "notion-token's contract review states this current ntn_-prefixed format has no contract here; the pinned gitleaks rule targets it instead of the legacy secret_ shape. Measured as the Beta.8 arrival family notion-integration-token (#211, research #225), separate from notion:legacy-integration-token: the ntn_ prefix is provider-documented, the 11-digit + 35-character body is tool-only and provisional, and PAT/OAuth/org-bot roles that may share the prefix are not merged into it."
     },
     {
       "id": "atlassian:api-token",
@@ -972,14 +1013,14 @@
       "id": "confluent:cloud-api-secret",
       "provider": "confluent",
       "name": "Cloud API secret (cflt-prefixed)",
-      "description": "API secret created after 2025-07-30: literal cflt prefix, then 60 base64-body bytes, the last 6 a CRC32 checksum.",
+      "description": "API secret created after 2025-07-30: literal cflt prefix, then 54 base64-alphabet body bytes and a 6-byte checksum (standard Base64 of the little-endian CRC32 of those 54 bytes), 64 in total.",
       "detectors": [
         "confluent-cloud-api-secret"
       ],
       "sources": [
         "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html"
       ],
-      "note": "redact-secret#309 (product PR #667) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The API key ID (\"not considered secret information\") is never a positive."
+      "note": "redact-secret#309 (product PR #667) landed on the product main after 0.1.0-beta.6 and checks the prefix and length only. #209 (research #234): the provider publishes the checksum algorithm, so the contract validates it. The API key ID (\"not considered secret information\") is never a positive."
     },
     {
       "id": "confluent:cloud-api-secret-legacy",
@@ -1035,15 +1076,16 @@
       "id": "heroku:oauth-access-token",
       "provider": "heroku",
       "name": "OAuth access token (HRKU-prefixed)",
-      "description": "65-character OAuth access token: literal HRKU-AA marker, then 58 bytes of [A-Za-z0-9_-].",
+      "description": "HRKU- prefixed OAuth access token in its two documented prefixed generations: 41 characters (HRKU- plus a UUID, granted 2024-04-01 to 2025-04-22) and 65 characters (HRKU- plus 60 of [A-Za-z0-9_-], granted from 2025-04-23, observed to begin AA).",
       "detectors": [
         "heroku-api-key"
       ],
       "sources": [
         "https://devcenter.heroku.com/articles/oauth",
-        "https://devcenter.heroku.com/changelog-items/2842"
+        "https://devcenter.heroku.com/changelog-items/2842",
+        "https://devcenter.heroku.com/changelog-items/3175"
       ],
-      "note": "redact-secret#312 (product PR #675) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The changelog's 41-byte HRKU-prefixed UUID example is an undocumented-width variant outside the contract."
+      "note": "redact-secret#312 (product PR #675) landed on the product main after 0.1.0-beta.6 and froze the 65-character HRKU-AA grammar only. #209 (research #235): changelog-items/3175 documents the 41-character HRKU-<uuid> generation as the previous length, so it is in this family's contract, not an undocumented-width variant; the AA start of the 65-character form is example- and tool-observed, not provider-stated. The pre-2024 bare-UUID generation is heroku:legacy-api-key."
     },
     {
       "id": "heroku:legacy-api-key",
@@ -1054,9 +1096,10 @@
         "heroku-api-key-legacy"
       ],
       "sources": [
-        "https://devcenter.heroku.com/changelog-items/2842"
+        "https://devcenter.heroku.com/changelog-items/2842",
+        "https://devcenter.heroku.com/changelog-items/3175"
       ],
-      "note": "redact-secret#312 (product PR #675). Scored as policy (no value grammar), like twilio:auth-token; an app id on a heroku-named line is the recorded false-positive tradeoff."
+      "note": "redact-secret#312 (product PR #675). Scored as policy (no value grammar), like twilio:auth-token. The later HRKU-<uuid> (41 characters) and HRKU-AA (65) generations are provider-documented and belong to heroku:oauth-access-token (#209, #232). An app id on a heroku-named line is a public-id control; both keyword-gated peers flag it, and the product has excluded identifier-shaped keys since redact-secret#714."
     },
     {
       "id": "mailchimp:marketing-api-key",
@@ -1118,6 +1161,145 @@
         "https://developer.okta.com/docs/guides/create-an-api-token/main/"
       ],
       "note": "redact-secret#315 (product PR #681) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. OAuth access/ID tokens are JWTs and belong to the jwt family, not this one."
+    },
+    {
+      "id": "replicate:api-token",
+      "provider": "replicate",
+      "name": "API token",
+      "description": "r8_ prefixed API token; the provider documents a 40-character total (a 37-character body) and does not state the body alphabet.",
+      "detectors": [],
+      "sources": [
+        "https://replicate.com/docs/topics/security/api-tokens",
+        "https://replicate.com/changelog/2024-04-03-bearer-tokens"
+      ],
+      "note": "Beta.8 arrival family (#208, research #217): no product detector at the pinned registry revision; measured as the arrival target replicate-api-token (benchmarks/lib/beta8/208.ts). The body alphabet is peer-contested (TruffleHog admits - and _; flare-redact alphanumeric only) and stays provisional. The cog/r8.im login token's relation to this token is undocumented and not claimed. Product counterpart redact-secret/redact-secret#727."
+    },
+    {
+      "id": "groq:api-key",
+      "provider": "groq",
+      "name": "API key",
+      "description": "gsk_ prefixed API key; the 52-character alphanumeric body is tool-corroborated, not provider-stated.",
+      "detectors": [],
+      "sources": [
+        "https://console.groq.com/docs/production-readiness/security-onboarding",
+        "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/groq/groq.go"
+      ],
+      "note": "Beta.8 arrival family (#208, research #218): no product detector at the pinned registry revision; measured as the arrival target groq-api-key at T2. The observed WGdyb3FY body segment is a four-sample maintainer observation recorded as unresolved, not a grammar requirement; the community 48-character body proposal is unsupported. Not Grok/xAI. Product counterpart redact-secret/redact-secret#727."
+    },
+    {
+      "id": "xai:api-key",
+      "provider": "xai",
+      "name": "API key",
+      "description": "xai- prefixed API key; the 80-character body is documented only by the provider's example and corroborated by tools.",
+      "detectors": [],
+      "sources": [
+        "https://docs.x.ai/developers/rest-api-reference/management/auth",
+        "https://docs.x.ai/developers/quickstart"
+      ],
+      "note": "Beta.8 arrival family (#208, research #216): no product detector at the pinned registry revision; measured as the arrival target xai-api-key at T2. Management keys (tool-reported xai-token- prefix, XAI_MANAGEMENT_KEY) are a separate credential and not members of this family; no taxonomy family is added for them until the provider documents a format. Product counterpart redact-secret/redact-secret#727."
+    },
+    {
+      "id": "openrouter:api-key",
+      "provider": "openrouter",
+      "name": "Inference API key",
+      "description": "sk-or-v1- followed by 64 lowercase hexadecimal characters (73 characters), per OpenRouter's secret-format documentation.",
+      "detectors": [],
+      "sources": [
+        "https://openrouter.ai/docs/guides/features/guardrails/secret-formats",
+        "https://openrouter.ai/docs/api/api-reference/api-keys/create-keys"
+      ],
+      "note": "Beta.8 arrival family (#208, research #220): no product detector at the pinned registry revision; measured as the arrival target openrouter-api-key. Management keys (sk-or-mgmt-) are openrouter:management-api-key, not members of this family. The public key hash has the same 64-hex body shape without the prefix. Product counterpart redact-secret/redact-secret#727."
+    },
+    {
+      "id": "openrouter:management-api-key",
+      "provider": "openrouter",
+      "name": "Management API key",
+      "description": "sk-or-mgmt- prefixed management (formerly provisioning) key for the /api/v1/keys routes; cannot call completion endpoints. Body length and alphabet are undocumented.",
+      "detectors": [],
+      "sources": [
+        "https://openrouter.ai/docs/guides/overview/auth/management-api-keys",
+        "https://github.com/OpenRouterTeam/terraform-provider-openrouter"
+      ],
+      "note": "Unsupported and unclaimed (#208, research #220): a real secret, but no body grammar is published and no product detector, contract or fixture targets it. It is never used as a benign control of openrouter:api-key."
+    },
+    {
+      "id": "langsmith:api-key",
+      "provider": "langsmith",
+      "name": "API key (personal access token or service key)",
+      "description": "LangSmith API key in its two documented roles, personal access token (lsv2_pt_) and workspace/org service key (lsv2_sk_); the 32+10 lowercase-hex segment grammar is tool-corroborated.",
+      "detectors": [],
+      "sources": [
+        "https://docs.langchain.com/langsmith/create-account-api-key"
+      ],
+      "note": "No product detector at the pinned registry revision; redact-secret/redact-secret#728 (blocked by #726) is open. Arrival evidence in benchmarks/lib/beta8/210.ts (#210, research #219). Legacy ls__ keys, license keys, SCIM tokens, OAuth tokens and deployment keys are separate credentials this family does not claim."
+    },
+    {
+      "id": "langfuse:secret-key",
+      "provider": "langfuse",
+      "name": "Secret API key",
+      "description": "Langfuse project/organization secret key as the issuer mints it: sk-lf- plus a lowercase UUIDv4 (42 characters). Paired with the public pk-lf- key.",
+      "detectors": [],
+      "sources": [
+        "https://langfuse.com/docs/observability/sdk/overview",
+        "https://github.com/langfuse/langfuse/blob/dbf5107df264bfcb0613a29237143e78ce16ca8a/packages/shared/src/server/auth/apiKeys.ts"
+      ],
+      "note": "No product detector at the pinned registry revision; redact-secret/redact-secret#728 (blocked by #726) is open. Arrival evidence in benchmarks/lib/beta8/210.ts (#210, research #221). Self-hosted operator-defined values and a possible sk-lf-gw- gateway shape are recorded but not claimed."
+    },
+    {
+      "id": "perplexity:api-key",
+      "provider": "perplexity",
+      "name": "API key",
+      "description": "pplx--prefixed API key; the 48-character alphanumeric body is tool-corroborated, not provider-stated.",
+      "detectors": [],
+      "sources": [
+        "https://docs.perplexity.ai/docs/admin/api-key-management"
+      ],
+      "note": "Beta.8 arrival family perplexity-api-key (#212, research #226); no product detector at the pinned registry revision."
+    },
+    {
+      "id": "fireworks-ai:api-key",
+      "provider": "fireworks-ai",
+      "name": "API key",
+      "description": "fw_-prefixed API key; 22- and 24-character bodies are observed, not documented.",
+      "detectors": [],
+      "sources": [
+        "https://docs.fireworks.ai/tools-sdks/python-client/the-tutorial"
+      ],
+      "note": "Beta.8 arrival family fireworks-ai-api-key (#212, research #227). The fpk_ Fire Pass key and any unprefixed legacy key are not covered."
+    },
+    {
+      "id": "pinecone:api-key",
+      "provider": "pinecone",
+      "name": "API key (pcsk_)",
+      "description": "Current pcsk_<label>_<secret> API key; prefix from provider code, segment widths tool-corroborated.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/pinecone-io/cli/blob/main/internal/pkg/cli/command/config/set.go"
+      ],
+      "note": "Beta.8 arrival family pinecone-api-key (#212, research #228). The Admin API docs describe an unobserved pckey_ prefix; that contradiction is unresolved."
+    },
+    {
+      "id": "pinecone:legacy-api-key",
+      "provider": "pinecone",
+      "name": "Legacy API key (bare UUID)",
+      "description": "Legacy bare-UUID API key, identical in shape to Pinecone key/project/service-account ids; recognized only beside a same-line Pinecone API-key identifier.",
+      "detectors": [],
+      "sources": [
+        "https://docs.pinecone.io/reference/api/authentication"
+      ],
+      "note": "Beta.8 context-gated arrival family pinecone-api-key-legacy (#212, research #228); the UUID shape is corroborated by unpinned tools only."
+    },
+    {
+      "id": "gitlab:runner-authentication-token",
+      "provider": "gitlab",
+      "name": "Runner authentication token",
+      "description": "glrt--prefixed runner authentication token: a 20-character legacy body, or the routable base64url payload with a base36 length holder and CRC32 checksum.",
+      "detectors": [],
+      "sources": [
+        "https://docs.gitlab.com/security/tokens/",
+        "https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/authn/token_field/generator/routable_token.rb"
+      ],
+      "note": "Beta.8 arrival family gitlab-runner-authentication-token (#212, research #230). glrtr-, instance-prefixed and unversioned routable variants are not claimed. gitlab-token contract covers glpat- only."
     }
   ]
 }

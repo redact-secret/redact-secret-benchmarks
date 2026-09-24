@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { contracts, classifyFixture, validateAssessment, validateContracts, MUTATION_KINDS } from '../benchmarks/lib/assessment.ts';
+import { contracts, classifyFixture, validateAssessment, validateContracts, MUTATION_KINDS, arrivalIds } from '../benchmarks/lib/assessment.ts';
 import { validateCorpus } from '../benchmarks/lib/scoring.ts';
 import { twinProbe } from '../benchmarks/lib/twin-probe.ts';
 
@@ -11,7 +11,8 @@ const registry = await read('benchmarks/detectors.json');
 const generated = buildCorpora();
 const handwritten = { accuracy: await read('fixtures/accuracy/corpus.json'), 'token-contexts': await read('fixtures/token-contexts/corpus.json') };
 const fixtures = Object.entries({ ...generated, ...handwritten }).flatMap(([category, c]) => c.fixtures.map(f => ({ ...f, category })));
-const twins = fixtures.filter(f => f.twinOf);
+// Registry-detector twins; arrival-family twins (#207–#212) carry no detector and are checked in tests/beta8.test.mjs.
+const twins = fixtures.filter(f => f.twinOf && f.detectors?.length);
 const bytesOf = (f, r) => Buffer.from(f.content).subarray(r.start, r.end).toString();
 
 // The 22 families issue #36 found with no twin anywhere in the corpus.
@@ -22,21 +23,27 @@ const TWINNED = ['aws-access-key', 'generic-token', 'connection-string', 'otpaut
 // #36 un-probeable families a 2026-09-22 re-check found a provider-domain source for
 // (docs/decisions/2026-09-22-lift-five-families-out-of-un-probeable.md).
 const LIFTED = ['datadog-api-key', 'new-relic-user-api-key', 'grafana-service-account-token', 'grafana-cloud-access-policy-token', 'microsoft-entra-client-secret'];
-const UNPROBEABLE = ['vercel-token', 'supabase-token', 'discord-bot-token', 'telegram-bot-token', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
+// #207 (Beta.8 low-coverage hardening) lifted seven records on 2026-09-24: supabase-token onto its
+// now-documented sb_secret_ grammar (#231, providerSource); discord/telegram/both Sentry families onto
+// value twins whose mutated property each contract's `twinSource` cites (provider code, community and
+// tool evidence, so they stay T2); both Twilio families onto context twins (#207 requires them for
+// opaque, context-gated values). vercel-token's positive is still T0, so it stays un-probeable.
+const LIFTED_207 = ['supabase-token', 'discord-bot-token', 'telegram-bot-token', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
+const UNPROBEABLE = ['vercel-token'];
 
 test('every detector family either has a twin or is recorded un-probeable, never both and never neither', () => {
-  assert.equal(TWINNED.length + LIFTED.length + UNPROBEABLE.length, 22);
+  assert.equal(TWINNED.length + LIFTED.length + LIFTED_207.length + UNPROBEABLE.length, 22);
   for (const { id } of registry.detectors) {
     const twinned = twins.some(t => t.detectors?.[0] === id), record = contracts[id].unprobeable;
     assert.notEqual(twinned, Boolean(record), id);
     if (record) { assert.ok(record.reason.trim().length > 40, `${id} states why`); assert.match(record.observedAt, /^\d{4}-\d{2}-\d{2}$/, id); }
   }
   assert.deepEqual(registry.detectors.map(d => d.id).filter(id => contracts[id].unprobeable).sort(), [...UNPROBEABLE].sort());
-  for (const id of [...TWINNED, ...LIFTED]) assert.ok(twins.some(t => t.detectors[0] === id), id);
+  for (const id of [...TWINNED, ...LIFTED, ...LIFTED_207]) assert.ok(twins.some(t => t.detectors[0] === id), id);
 });
 
 test('every family twinned for #36 cites dated documentation for the property its twin mutates', () => {
-  for (const id of [...TWINNED, ...LIFTED]) {
+  for (const id of [...TWINNED, ...LIFTED, ...LIFTED_207]) {
     const source = contracts[id].providerSource ?? contracts[id].twinSource;
     assert.ok(source?.url && source.covers && source.formatVersion, id);
     assert.match(source.observedAt, /^\d{4}-\d{2}-\d{2}$/, id);
@@ -51,7 +58,8 @@ test('every family twinned for #36 cites dated documentation for the property it
 
 test('a context twin keeps the value byte-for-byte, changes only its surroundings and is policy-tier', () => {
   const context = twins.filter(t => t.mutationKind === 'context');
-  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['connection-string', 'generic-token']);
+  // #207: the context-gated families (no bare-value claim) gained context twins in beta8-207.
+  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['bearer-token', 'confluent-cloud-api-secret-legacy', 'connection-string', 'generic-token', 'heroku-api-key-legacy', 'twilio-api-key-secret', 'twilio-auth-token']);
   for (const t of context) {
     const positive = fixtures.find(f => f.category === t.category && f.id === t.twinOf);
     const value = bytesOf(positive, positive.expected[0]);
@@ -135,7 +143,8 @@ const T1_DIMENSIONS = {
   'grafana-service-account-token': ['prefix'],
   'linear-token': ['length'],
   'new-relic-user-api-key': ['prefix'],
-  'notion-token': ['length', 'prefix'],
+  // #209: a boundary twin replaces the documented secret_ underscore with a dash.
+  'notion-token': ['length', 'prefix', 'boundary'],
   'npm-token': ['length', 'prefix', 'boundary'],
   'sendgrid-token': ['boundary', 'length'],
   'private-key': ['prefix', 'public-prefix'],
@@ -143,11 +152,20 @@ const T1_DIMENSIONS = {
   'terraform-cloud-token': ['length', 'boundary'],
   'pulumi-access-token': ['length', 'alphabet'],
   'supabase-management-token': ['length', 'alphabet'],
+  // #207 (research #231): Supabase documents the sb_secret_/sb_publishable_ prefixes (the latter
+  // public) and the 22 + _ + 8 layout; twins mutate the public prefix, a segment width and the
+  // positional _ delimiter. The base64url alphabet and the checksum are provider code only.
+  'supabase-token': ['public-prefix', 'length', 'boundary'],
   // Post-beta.6 families (redact-secret#309, #311, #312): prefix and total length are
   // provider-documented; body alphabets stay tool-corroborated, so no alphabet twin.
-  'confluent-cloud-api-secret': ['length', 'prefix'],
+  // #209 (research #234): confluent's alphabet and checksum are provider-documented too
+  // (the checksum algorithm by the provider's own published snippet), so it adds
+  // checksum twins (contract `validate`) and a URL-safe-alphabet twin.
+  'confluent-cloud-api-secret': ['length', 'prefix', 'checksum', 'alphabet'],
   'netlify-token': ['length', 'prefix'],
-  'heroku-api-key': ['length', 'prefix'],
+  // #209 (research #235): the HRKU- prefix's dash is provider-documented; a boundary twin
+  // replaces it on the 41-character HRKU-<uuid> generation.
+  'heroku-api-key': ['length', 'prefix', 'boundary'],
   // #162: only the ddapp_ prefix is provider-documented; body length and alphabet stay
   // tool/code-corroborated only (see the contract's review note), so no length/alphabet
   // twin is authored here. #112: a boundary twin drops the "_" of that same documented
@@ -170,7 +188,7 @@ const T1_DIMENSIONS = {
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
-  const t1 = Object.entries(contracts).filter(([, c]) => c.tier === 'T1').map(([id]) => id);
+  const t1 = Object.entries(contracts).filter(([id, c]) => c.tier === 'T1' && !arrivalIds.has(id)).map(([id]) => id);
   assert.deepEqual(t1.sort(), Object.keys(T1_DIMENSIONS).sort(), 'T1_DIMENSIONS must cover exactly the T1 contracts');
   for (const [family, expected] of Object.entries(T1_DIMENSIONS)) {
     const kinds = [...new Set(twins.filter(t => t.detectors[0] === family).map(t => t.mutationKind))];
@@ -188,6 +206,6 @@ test('every T1 ("stable"-track) family has a twin for each structural dimension 
 test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
-  assert.equal(probe.counts['un-probeable'], 8);
-  assert.equal(probe.counts['not-measured'], 49);
+  assert.equal(probe.counts['un-probeable'], 1);
+  assert.equal(probe.counts['not-measured'], 56);
 });

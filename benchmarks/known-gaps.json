@@ -1626,7 +1626,7 @@
         "detector-coverage--microsoft-entra-client-secret-leading-dash-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -1661,13 +1661,27 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/707"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/709"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/707",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-707",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "microsoft-entra-client-secret-leading-dash-bare",
+          "microsoft-entra-client-secret-leading-dash-assignment",
+          "microsoft-entra-client-secret-leading-dash-crlf-unicode",
+          "microsoft-entra-client-secret-leading-dash-joined-identifier"
+        ]
+      },
+      "fix": {
+        "commit": "dc855b6222928252a661945828f88a3022e768fd"
       },
       "evidence": [
         {
@@ -1716,7 +1730,7 @@
         "detector-coverage--docker-token-oat-27-unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -1750,13 +1764,28 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/708"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-23",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/709"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/708",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-708",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "docker-boundary-pat-length-under-oat-prefix",
+          "docker-oat-27-byte-body-dotenv",
+          "docker-oat-27-byte-body-crlf-unicode",
+          "docker-oat-26-byte-body-rejected",
+          "docker-oat-28-byte-body-rejected"
+        ]
+      },
+      "fix": {
+        "commit": "dc855b6222928252a661945828f88a3022e768fd"
       },
       "evidence": [
         {

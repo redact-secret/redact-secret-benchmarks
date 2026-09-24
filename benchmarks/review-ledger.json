@@ -89351,6 +89351,78 @@
       "status": "open",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while trufflehog matches this corpus's authored expected secret span exactly ([30,70)) — a candidate detector coverage gap for \"new-relic-license-key\", not a peer artifact. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Needs a person / a promote-finding pass to confirm. Class: differential-coverage-gap/new-relic-license-key."
+    },
+    "7c5646967bf49b78d7c299652aae38ab948001b5f05eef63f6a3d75a8a0af32a": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. gitleaks reports no finding for the cflt-prefixed secret here: its confluent-secret-key rule is keyword-gated and matches only a lowercase [a-z0-9]{64} body, which this secret, carrying uppercase, \"+\" or \"/\" bytes the provider alphabet allows, cannot satisfy (confluent-cloud-api-secret contract). Probed at the pinned version: the same value written as CONFLUENT_API_SECRET=<secret> is reported only by generic-api-key, never by a confluent rule, so the difference is rule scope and alphabet, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "60a99d066410a507e2b52a1da87909cc01b3f37071637be210fa39e77f2af9cd": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. trufflehog reports no finding for the cflt-prefixed secret here: its confluent detector is keyword-gated and does not register the cflt prefix itself, so a prefixed secret with no confluent keyword is an expected peer false negative (confluent-cloud-api-secret contract). Probed at the pinned version: a CONFLUENT_API_SECRET=<secret> assignment on its own did not change that. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "3d5127a7062ea5965c6e559d1c9be4e10b94401ffbd251e852c110352a7dfea2": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. gitleaks reports no finding for the cflt-prefixed secret here: its confluent-secret-key rule is keyword-gated and matches only a lowercase [a-z0-9]{64} body, which this secret, carrying uppercase, \"+\" or \"/\" bytes the provider alphabet allows, cannot satisfy (confluent-cloud-api-secret contract). Probed at the pinned version: the same value written as CONFLUENT_API_SECRET=<secret> is reported only by generic-api-key, never by a confluent rule, so the difference is rule scope and alphabet, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "79afed643d5714ef7b518e9a2b8dc1e0bfce48546e51aa712cd56dc6e0d8d516": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. trufflehog reports no finding for the cflt-prefixed secret here: its confluent detector is keyword-gated and does not register the cflt prefix itself, so a prefixed secret with no confluent keyword is an expected peer false negative (confluent-cloud-api-secret contract). Probed at the pinned version: a CONFLUENT_API_SECRET=<secret> assignment on its own did not change that. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "70410d3501039459998895e2c9f14320185d71800feba255401ba94df80f6727": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. gitleaks reports no finding for the cflt-prefixed secret here: its confluent-secret-key rule is keyword-gated and matches only a lowercase [a-z0-9]{64} body, which this secret, carrying uppercase, \"+\" or \"/\" bytes the provider alphabet allows, cannot satisfy (confluent-cloud-api-secret contract). Probed at the pinned version: the same value written as CONFLUENT_API_SECRET=<secret> is reported only by generic-api-key, never by a confluent rule, so the difference is rule scope and alphabet, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "c0fc208020d1a91de600da50fe690eabd70e36580dd7a80cf55af3ab0100b7b1": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. trufflehog reports no finding for the cflt-prefixed secret here: its confluent detector is keyword-gated and does not register the cflt prefix itself, so a prefixed secret with no confluent keyword is an expected peer false negative (confluent-cloud-api-secret contract). Probed at the pinned version: a CONFLUENT_API_SECRET=<secret> assignment on its own did not change that. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "6b39bcb2cb2198870e1f2b5776e5c780cc86ba3d87113a020210ace9a91b6f85": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. gitleaks reports no finding for the nfp_ token here: its netlify-access-token rule fixes no nfp_ prefix and only reports a 40–46-byte body after a netlify keyword and an assignment, and this fixture carries neither (netlify-token contract). Probed at the pinned version: the same value written as NETLIFY_AUTH_TOKEN=<token> is reported (netlify-access-token), so the difference is keyword and assignment context, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "1111a28f7fa8cd900f82f507bc1369d87cefd331d0500e9ae9fa462bdaa44921": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. trufflehog reports no finding for the nfp_ token here: its netlify/v2 detector pins the same nfp_ plus 36-byte shape but only reports it after a netlify keyword, and this fixture carries none (netlify-token contract). Probed at the pinned version: the same value written as NETLIFY_AUTH_TOKEN=<token> is reported (Netlify), so the difference is keyword context, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "e16bee9df18da04536fbfbc588dcb0311f24813d54d5f66dd326aefdc3e4ee72": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. gitleaks reports no finding for the nfp_ token here: its netlify-access-token rule fixes no nfp_ prefix and only reports a 40–46-byte body after a netlify keyword and an assignment, and this fixture carries neither (netlify-token contract). Probed at the pinned version: the same value written as NETLIFY_AUTH_TOKEN=<token> is reported (netlify-access-token), so the difference is keyword and assignment context, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "41418be7f66a24937a1a5730d1297af492ea4f489455a3b2b9b7f240bf43affe": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. trufflehog reports no finding for the nfp_ token here: its netlify/v2 detector pins the same nfp_ plus 36-byte shape but only reports it after a netlify keyword, and this fixture carries none (netlify-token contract). Probed at the pinned version: the same value written as NETLIFY_AUTH_TOKEN=<token> is reported (Netlify), so the difference is keyword context, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "19dd523ed15541e7e53ac1062d76dba9f7137d08a2d535c8ab7c48f7ca5e029c": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. gitleaks reports no finding for the nfp_ token here: its netlify-access-token rule fixes no nfp_ prefix and only reports a 40–46-byte body after a netlify keyword and an assignment, and this fixture carries neither (netlify-token contract). Probed at the pinned version: the same value written as NETLIFY_AUTH_TOKEN=<token> is reported (netlify-access-token), so the difference is keyword and assignment context, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "f770c0e8177feed01c7cc025ff1755218488d1a038bba64961fc11fc298d4539": {
+      "status": "resolved",
+      "firstSeenRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "resolvedRun": "715d2d8e-0862-4ba8-9ef2-18b90091030c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. trufflehog reports no finding for the nfp_ token here: its netlify/v2 detector pins the same nfp_ plus 36-byte shape but only reports it after a netlify keyword, and this fixture carries none (netlify-token contract). Probed at the pinned version: the same value written as NETLIFY_AUTH_TOKEN=<token> is reported (Netlify), so the difference is keyword context, not the token grammar. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/trufflehog/range-matches-corpus."
     }
   }
 }

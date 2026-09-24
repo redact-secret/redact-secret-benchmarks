@@ -96,17 +96,32 @@ file's own `derivation` field):
 The current criteria were derived from
 [`evidence/603/summary.json`](../../evidence/603/summary.json), this
 repository's own real
-[`performance-evaluation.yml` run](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35994341768)
+[`performance-evaluation.yml` run 36052694026](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36052694026)
 against the commit `benchmarks/pin-manifest.json` pinned at measurement time
-(`2b98027bbf38d63f07b75129fe2864ef32ed4732`, published `0.1.0-beta.7`) — release builds, five repetitions, matching the
-current pin (`npm run pins:check` fails otherwise; see #150). This run's own
-evaluation, recorded in
-[`evidence/603/acceptance.md`](../../evidence/603/acceptance.md), reports
-`ACCEPTED` with all 46 checks passing against the criteria that were
-committed *before* this run — derived from the `41fc366` run 35868842776 — which makes that verdict genuine, not self-referential. The recalibration this run
-then produced is not itself re-checked against the same run for a second
-"ACCEPTED": any threshold derived with a margin necessarily accepts the run
-it came from, so that would demonstrate nothing.
+(`f2082ab6fe1d0fc8cc703e371e9203bc4ff68f6b`, product `main` after #761/#763) — release builds, five repetitions, matching the
+current pin (`npm run pins:check` fails otherwise; see #150). Its evaluation,
+recorded in [`evidence/603/acceptance.md`](../../evidence/603/acceptance.md),
+passed all 46 timing, throughput, memory and accuracy-count checks against the
+criteria committed *before* the run (derived from the `2b98027` run
+35994341768), but reads `REJECTED` on one suite-identity check:
+`suite:accuracy-corpus-identity-mismatch`. Product
+[#762](https://github.com/redact-secret/redact-secret/pull/762) (`be7b870`,
+the only commit touching `assessment/fixtures/accuracy-corpus.json` since
+`2b98027`) intentionally re-pinned the corpus's Supabase value to the
+documented `sb_secret_` layout, so the corpus hash moved from `438df062…` to
+`ca96dddd…` while the version stayed `3`. The accuracy counts did not move:
+every surface still reports 21 true positives, 1 false positive, 5 false
+negatives and 0 policy mismatches, as in the `2b98027` run. Because the
+corpus change is intentional and the identity check was the only failure, the
+maintainer accepted it as grounds to re-derive. A timing or memory failure
+would not have been. The earlier run at the intermediate pin `bc96046`
+([36044771153](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36044771153))
+was rejected on the same identity check plus a browser-wasm
+`scale-logs-medium-fixed4096` initialization p95 of 74 ms against a 35 ms limit.
+Criteria were not derived from it, and the `f2082ab` run did not repeat the
+timing failure. The recalibration is not re-checked against its own run for a
+second verdict: any threshold derived with a margin necessarily accepts the
+run it came from.
 
 ## Environment profile
 

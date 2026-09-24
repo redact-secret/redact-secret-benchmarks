@@ -1973,7 +1973,7 @@
         "detector-coverage--heroku-api-key-legacy-public-id"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -2005,13 +2005,24 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/714"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/715"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/714",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-714",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "heroku-api-key-legacy-negative-heroku-app-id"
+        ]
+      },
+      "fix": {
+        "commit": "6a2dca04b9f88b82f1b88a7acfeeb93a82510c21"
       },
       "evidence": [
         {

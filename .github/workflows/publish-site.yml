@@ -1,0 +1,127 @@
+# Publishes the benchmarks site. This file is the upstream copy and is
+# authoritative; `redact-secret/redact-secret-sites` holds a mirror at
+# `docs/upstream/redact-secret-benchmarks--publish-site.yml` so the deployment
+# design stays reviewable in one place. Keep the two in sync when either
+# changes (#151).
+#
+# It builds the site (which means running the scanners, so it must happen in
+# this repository) and publishes it straight to the matching S3 bucket in the
+# redact-secret account, using the OIDC role that `infra/bootstrap` creates and
+# that each site stack grants bucket access to.
+#
+# Branches map to environments:
+#
+#   develop -> staging.benchmarks.redactsecret.dev
+#   main    -> benchmarks.redactsecret.dev
+#
+# Per-environment configuration lives in the repository's GitHub environments,
+# so this file carries no account ID and no bucket name:
+#
+#   staging      PUBLISHER_ROLE_ARN, SITE_STACK=redactsecret-site-benchmarks-staging
+#   production   PUBLISHER_ROLE_ARN, SITE_STACK=redactsecret-site-benchmarks-prod
+name: Publish benchmarks site
+
+on:
+  push:
+    branches: [develop, main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Republish a site without pushing.
+        type: environment
+        required: true
+        default: staging
+
+permissions: {}
+
+env:
+  TARGET: ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
+
+concurrency:
+  group: publish-site-${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish to ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AWS_REGION: us-east-1
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v5.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Same provisioning as validate.yml: the published numbers must come from
+      # the binaries CI verifies, never from an unchecked download.
+      - name: Provision checksum-pinned Gitleaks and TruffleHog (versions from qualification/suite-v1.json, digests from scanners/peer-checksums.json)
+        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
+
+      - name: Verify the resolved peers are the pinned ones
+        run: |
+          set -euo pipefail
+          [ "$(command -v gitleaks)" = "$RUNNER_TEMP/scanner-bin/gitleaks" ]
+          [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
+
+      # --strict: a scanner that is unavailable fails the run instead of being
+      # published as an "unavailable" row.
+      - name: Measure the corpus
+        run: npm run bench -- --strict
+
+      - name: Produce the evaluation report the site reads
+        run: |
+          npm run eval
+          npm run eval:publish
+
+      - name: Build the site
+        run: npm run build
+
+      - uses: aws-actions/configure-aws-credentials@f503a1870408dcf2c35d5c2b8a68e69211042c7d # v5.0.0
+        with:
+          role-to-assume: ${{ vars.PUBLISHER_ROLE_ARN }}
+          aws-region: us-east-1
+          role-session-name: publish-benchmarks-${{ github.run_id }}
+
+      # Same three passes as scripts/publish-site.sh in redact-secret-sites:
+      # fingerprinted assets first and kept forever, then everything else with
+      # revalidation and stale files removed, then assets pruned once the new
+      # HTML is live.
+      - name: Publish
+        env:
+          SITE_STACK: ${{ vars.SITE_STACK }}
+        run: |
+          set -euo pipefail
+          outputs=$(aws cloudformation describe-stacks --stack-name "$SITE_STACK" \
+            --query 'Stacks[0].Outputs[?OutputKey==`BucketName`||OutputKey==`DistributionId`].[OutputKey,OutputValue]' \
+            --output text)
+          bucket=$(awk '$1=="BucketName"{print $2}' <<<"$outputs")
+          distribution=$(awk '$1=="DistributionId"{print $2}' <<<"$outputs")
+          test -n "$bucket" -a -n "$distribution"
+
+          aws s3 sync dist/assets "s3://$bucket/assets" --only-show-errors \
+            --cache-control 'public, max-age=31536000, immutable'
+          aws s3 sync dist "s3://$bucket" --only-show-errors --delete \
+            --exclude 'assets/*' --cache-control 'no-cache'
+          aws s3 sync dist/assets "s3://$bucket/assets" --only-show-errors --delete \
+            --cache-control 'public, max-age=31536000, immutable'
+
+          aws cloudfront create-invalidation --distribution-id "$distribution" --paths '/*' \
+            --query 'Invalidation.Id' --output text
+
+      - name: Record what was published
+        run: |
+          {
+            echo "### Published to $TARGET"
+            echo
+            echo "- benchmarks commit: \`${{ github.sha }}\`"
+            echo "- run id: $(jq -r .runId public/results/run.json)"
+          } >> "$GITHUB_STEP_SUMMARY"

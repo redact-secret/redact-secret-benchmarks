@@ -22,11 +22,41 @@ provider permits it. Synthetic fixtures must be separately authored from the
 reviewed structural contract; never modify, encode, hash, truncate, or
 otherwise derive one from an observed value.
 
+Capture one observation locally with the interactive-only workflow:
+
+```console
+npm run observations:capture -- \
+  --provider=example --family=example-token \
+  --issued-at=2026-09-23 --issuance-route=dashboard \
+  --subject-kind=project --subject-id=subject-project-a \
+  --prefix=ex_ --checksum-behavior=unknown \
+  --revoked-after-observation=true
+```
+
+The command accepts the credential only at a hidden terminal prompt. It rejects
+credential arguments and piped input, so the raw value does not enter shell
+history or CI. Standard output contains one schema-valid observation with only
+the approved metadata; `--debug` emits fixed lifecycle messages to standard
+error. Review the JSON before adding it to the matching family in
+`empirical-observations.json`. Use a pseudonym such as `subject-project-a`, not
+an account, organization, user, or project identifier. If revocation is not
+available, record `false` and document that limitation in the family uncertainty.
+
+The declared prefix must be known independently and shorter than the entire
+credential. This prevents capture from treating an arbitrary credential slice
+as safe. The command computes total and segment lengths, observed character
+classes, and separators; checksum behavior remains an explicit maintainer
+observation. Capture output is evidence metadata, not a fixture source.
+
 Qualification fails closed. Missing metadata, fewer than five observations,
 fewer than two subjects or issuance dates, fewer than two corroboration
 classes, any contradiction, missing uncertainty or context limits, an
 incomplete fixture profile, or any critical twin, benign, mutation,
 metamorphic, or differential failure keeps the family provisional.
+Contradictions stay committed and visible in the family record; while that
+array is non-empty, the observed grammar cannot freeze as empirically stable.
+Resolve the discrepancy in the evidence rather than deleting the dissenting
+observation.
 
 The 40-fixture profile has 10 positive/context fixtures, 14 non-twin benign
 controls, and eight twin pairs, spanning six positive-context axes and five

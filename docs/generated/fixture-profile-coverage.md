@@ -27,7 +27,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | Arrival / provisional | 51 | 73 |
 | Stable / documented | 51 | 73 |
 | Stable / empirical | 15 | 73 |
-| Context-constrained empirical | 7 | 73 |
+| Context-constrained empirical | 8 | 73 |
 
 ## Per family
 
@@ -45,7 +45,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | databricks-personal-access-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
-| datadog-application-key-legacy | T2 | context-constrained-empirical | 40 | 10 | 14 | 8 | 14 | 6 | 9 | total fixtures 40/48; twin pairs 8/10 |
+| datadog-application-key-legacy | T2 | context-constrained-empirical | 52 | 10 | 14 | 16 | 18 | 6 | 9 | none |
 | digitalocean-token | T1 | stable-documented | 39 | 15 | 10 | 8 | 4 | 4 | 6 | none |
 | discord-bot-token | T2 | stable-empirical | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
 | docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |

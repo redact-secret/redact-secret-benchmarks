@@ -6,7 +6,7 @@
     "arrival-provisional": 51,
     "stable-documented": 51,
     "stable-empirical": 15,
-    "context-constrained-empirical": 7
+    "context-constrained-empirical": 8
   },
   "families": [
     {
@@ -633,14 +633,15 @@
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
-        "stable-empirical"
+        "stable-empirical",
+        "context-constrained-empirical"
       ],
       "cells": {
-        "totalFixtures": 40,
+        "totalFixtures": 52,
         "positiveCases": 10,
         "benignControls": 14,
-        "twinPairs": 8,
-        "positiveContextAxes": 14,
+        "twinPairs": 16,
+        "positiveContextAxes": 18,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
@@ -651,6 +652,10 @@
           "#213d · datadog-application-key-legacy · sdk-config",
           "#213d · datadog-application-key-legacy · shell-export",
           "#213d · datadog-application-key-legacy · structured-file",
+          "#213e · datadog-application-key-legacy · env",
+          "#213e · datadog-application-key-legacy · header",
+          "#213e · datadog-application-key-legacy · source-code",
+          "#213e · datadog-application-key-legacy · tool-output",
           "Boundaries",
           "Documentation",
           "Encoding",
@@ -679,20 +684,7 @@
           "twin:length"
         ]
       },
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 40,
-          "required": 48,
-          "shortfall": 8
-        },
-        {
-          "cell": "twinPairs",
-          "actual": 8,
-          "required": 10,
-          "shortfall": 2
-        }
-      ]
+      "debt": []
     },
     {
       "family": "digitalocean-token",

@@ -59,7 +59,7 @@ test('every family twinned for #36 cites dated documentation for the property it
 test('a context twin keeps the value byte-for-byte, changes only its surroundings and is policy-tier', () => {
   const context = twins.filter(t => t.mutationKind === 'context');
   // #207: the context-gated families (no bare-value claim) gained context twins in beta8-207;
-  // #213 (213d) added two for the context-gated legacy Datadog application key.
+  // #213 (213d) added two for the context-gated legacy Datadog application key, and 213e eight more.
   assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['bearer-token', 'confluent-cloud-api-secret-legacy', 'connection-string', 'datadog-application-key-legacy', 'generic-token', 'heroku-api-key-legacy', 'twilio-api-key-secret', 'twilio-auth-token']);
   for (const t of context) {
     const positive = fixtures.find(f => f.category === t.category && f.id === t.twinOf);

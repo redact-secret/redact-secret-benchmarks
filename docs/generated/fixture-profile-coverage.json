@@ -57,9 +57,9 @@
       "family": "atlassian-api-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -369,9 +369,9 @@
       "family": "confluent-cloud-api-secret-legacy",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "context-constrained-empirical"
       ],
@@ -417,14 +417,7 @@
           "twin:prefix"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 1,
-          "required": 6,
-          "shortfall": 5
-        }
-      ]
+      "debt": []
     },
     {
       "family": "connection-string",
@@ -473,9 +466,9 @@
       "family": "databricks-personal-access-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -634,9 +627,9 @@
       "family": "datadog-application-key-legacy",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -686,7 +679,20 @@
           "twin:length"
         ]
       },
-      "debt": []
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 40,
+          "required": 48,
+          "shortfall": 8
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 8,
+          "required": 10,
+          "shortfall": 2
+        }
+      ]
     },
     {
       "family": "digitalocean-token",
@@ -734,9 +740,9 @@
       "family": "discord-bot-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -834,9 +840,9 @@
       "family": "firebase-server-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -1478,9 +1484,9 @@
       "family": "heroku-api-key-legacy",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "context-constrained-empirical"
       ],
@@ -1526,14 +1532,7 @@
           "twin:length"
         ]
       },
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "huggingface-token",
@@ -1786,9 +1785,9 @@
       "family": "mailchimp-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -1843,9 +1842,9 @@
       "family": "mailgun-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -2249,9 +2248,9 @@
       "family": "okta-api-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -2304,9 +2303,9 @@
       "family": "openai-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -2639,9 +2638,9 @@
       "family": "postman-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -2937,9 +2936,9 @@
       "family": "sentry-org-auth-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -2996,9 +2995,9 @@
       "family": "sentry-user-auth-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -3457,9 +3456,9 @@
       "family": "telegram-bot-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -3557,9 +3556,9 @@
       "family": "twilio-api-key-secret",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",
@@ -3618,9 +3617,9 @@
       "family": "twilio-auth-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented",

@@ -26,8 +26,8 @@ const cellsAt = id => {
 };
 const evidence = (over = {}) => ({
   family: 'example-token', detectors: ['example-token'], positiveContractTier: 'T1', hasProviderSource: true,
-  evidenceBasis: 'provider-documented', observationCount: 0, observationSubjects: 0, observationIssuanceDates: 0, corroborationClasses: [],
-  observationContradictions: 0, uncertainty: null, supportedContexts: [], empiricalMode: null, supportsBareValues: false,
+  evidenceBasis: 'provider-documented', observationCount: 0, observationSubjects: 0, observationIssuanceDates: 0, corroborationReferences: 0, corroborationOwners: 0, corroborationClasses: [],
+  unresolvedContradictions: 0, boundedContradictions: 0, uncertainty: null, supportedContexts: [], empiricalMode: null, supportsBareValues: false,
   positiveCases: 6, positiveAxes: 4, controlAxes: 4, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 0,
   twinPairs: 5, twinFailures: 0, benignCases: 8, benignAxes: 3, benignAxisIds: ['near-miss', 'placeholder', 'reference'], benignFalseAlarms: 0,
   metamorphicCriticalFailures: 0, mutationUnresolvedCritical: 0, differentialUnresolvedContractDisagreements: 0, ...over,
@@ -127,13 +127,15 @@ test('classification: a profile whose enforcement is enforced gates every family
   assert.match(unmeasured.reasons.join('\n'), /not measured/);
 });
 
-test('empirical profiles: T2 can meet every cell and still never reads stable, and never masquerades as T1', () => {
+test('empirical profiles: T2 meeting every cell stays provisional without corroboration, qualifies with it, and never masquerades as T1', () => {
   const t2 = evidence({ positiveContractTier: 'T2', hasProviderSource: false, twinPairs: 8, benignCases: 14 });
   const meets = withProfile({ profile: 'stable-empirical', explicit: true }, cellsAt('stable-empirical'));
   const result = classifyFamilySupport({ ...t2, ...meets });
   assert.equal(result.status, 'provisional');
-  assert.ok(result.reasons.some(r => /empirical.minimumObservations/.test(r)));
-  assert.ok(result.reasons.some(r => /observation records \(#205\) and corroboration classes \(#177\) are not enforced yet/.test(r)));
+  assert.ok(result.reasons.some(r => /empirical.corroborated.minimumReferences: 0 < 3/.test(r)), 'no corroboration, no qualifying route');
+  assert.ok(!result.reasons.some(r => /not enforced yet/.test(r)), 'the #177/#205 gates are enforced by the classifier now');
+  const corroborated = { corroborationReferences: 3, corroborationOwners: 3, corroborationClasses: ['peer-scanner-rule', 'provider-example'], evidenceBasis: 'independently-corroborated', uncertainty: 'Corroborated only.', supportedContexts: ['assignment'], empiricalMode: 'shape', positiveCases: 10, positiveAxes: 6, controlAxes: 5, benignAxes: 5, totalFixtures: 40 };
+  assert.equal(classifyFamilySupport({ ...t2, ...corroborated, ...meets }).status, 'stable', 'the claimed profile, corroboration and zero failures qualify it');
   assert.ok(!result.reasons.some(r => /requires T2 evidence/.test(r)), 'T2 satisfies the empirical tier requirement');
   const t1 = classifyFamilySupport({ ...evidence(), ...meets });
   assert.match(t1.reasons.join('\n'), /requires T2 evidence, the contract is T1; evidence tier is provenance and is never relabelled/);
@@ -149,16 +151,20 @@ test('context-constrained profile: no supported context is a failure and the val
   assert.match(bare.reasons.join('\n'), /no supported context/);
   const named = classifyFamilySupport({ ...t2, ...withProfile({ profile: 'context-constrained-empirical', explicit: true }, cells, { supportedContext: ['env-assignment'] }) });
   assert.doesNotMatch(named.reasons.join('\n'), /no supported context/);
-  assert.match(named.reasons.join('\n'), /not enforced yet/, 'still gated on #177/#205');
+  assert.match(named.reasons.join('\n'), /empirical.corroborated.minimumReferences/, 'still gated on #177 corroboration');
+  assert.doesNotMatch(named.reasons.join('\n'), /not enforced yet/);
   const thin = classifyFamilySupport({ ...t2, ...withProfile({ profile: 'context-constrained-empirical', explicit: true }, { ...cells, twinPairs: 4, confusionAxes: 2 }, { supportedContext: ['x'] }) });
   assert.match(thin.reasons.join('\n'), /4 twin pairs < 10 \(6 short\)/);
   assert.match(thin.reasons.join('\n'), /2 confusion axes < 6/);
 });
 
-test('profileClaim: explicit wins, T1 provider-documented is implicit, everything else claims nothing', () => {
+test('profileClaim: explicit wins, T1 provider-documented and T2 with an empirical record are implicit, everything else claims nothing', () => {
   assert.deepEqual(profileClaim({ tier: 'T2', fixtureProfile: 'stable-empirical' }), { profile: 'stable-empirical', explicit: true });
   assert.deepEqual(profileClaim({ tier: 'T1', providerSource: {} }), { profile: 'stable-documented', explicit: false });
   assert.deepEqual(profileClaim({ tier: 'T2' }), { profile: null, explicit: false });
+  assert.deepEqual(profileClaim({ tier: 'T2' }, 'shape'), { profile: 'stable-empirical', explicit: false }, 'an empirical record binds the 40-fixture profile');
+  assert.deepEqual(profileClaim({ tier: 'T2' }, 'context-constrained'), { profile: 'context-constrained-empirical', explicit: false });
+  assert.deepEqual(profileClaim({ tier: 'T3' }, 'shape'), { profile: null, explicit: false }, 'a T3 family never claims an empirical profile');
   assert.deepEqual(fixtureProfileReport({ profile: null, explicit: false }, cellsAt('arrival-provisional')).cellsMet, ['arrival-provisional', 'stable-documented']);
 });
 

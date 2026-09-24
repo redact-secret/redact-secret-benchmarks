@@ -34,22 +34,22 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | Family | Tier | Target | Total fixtures | Positive/context cases | Non-twin benign controls | Twin pairs | Positive-context axes | Control axes | Confusion axes | Remaining debt |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | anthropic-token | T1 | stable-documented | 24 | 6 | 8 | 7 | 5 | 5 | 6 | none |
-| atlassian-api-token | T2 | arrival-provisional | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
+| atlassian-api-token | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | aws-access-key | T1 | stable-documented | 26 | 6 | 8 | 6 | 5 | 5 | 6 | none |
 | azure-devops-personal-access-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
 | bearer-token | T3 | arrival-provisional | 48 | 4 | 18 | 13 | 12 | 6 | 8 | positive/context cases 4/6 |
 | cloudflare-token | T1 | stable-documented | 24 | 6 | 10 | 6 | 4 | 5 | 8 | none |
 | confluent-cloud-api-secret | T1 | stable-documented | 31 | 6 | 8 | 10 | 11 | 5 | 9 | none |
-| confluent-cloud-api-secret-legacy | T2 | arrival-provisional | 48 | 1 | 19 | 15 | 12 | 6 | 9 | positive/context cases 1/6 |
+| confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 48 | 1 | 19 | 15 | 12 | 6 | 9 | none |
 | connection-string | T3 | arrival-provisional | 54 | 9 | 15 | 15 | 4 | 3 | 4 | control axes 3/4 |
-| databricks-personal-access-token | T2 | arrival-provisional | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
+| databricks-personal-access-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
-| datadog-application-key-legacy | T2 | arrival-provisional | 40 | 10 | 14 | 8 | 14 | 6 | 9 | none |
+| datadog-application-key-legacy | T2 | context-constrained-empirical | 40 | 10 | 14 | 8 | 14 | 6 | 9 | total fixtures 40/48; twin pairs 8/10 |
 | digitalocean-token | T1 | stable-documented | 39 | 15 | 10 | 8 | 4 | 4 | 6 | none |
-| discord-bot-token | T2 | arrival-provisional | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
+| discord-bot-token | T2 | stable-empirical | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
 | docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |
-| firebase-server-key | T2 | arrival-provisional | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
+| firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 24 | 3 | 11 | 5 | 7 | 6 | 8 | positive/context cases 3/6 |
 | generic-token | T3 | arrival-provisional | 128 | 35 | 75 | 9 | 12 | 4 | 5 | none |
 | github-fine-grained-pat | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 6 | 9 | positive/context cases 5/6 |
@@ -61,14 +61,14 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | grafana-service-account-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | groq-api-key | T2 | arrival-provisional | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
 | heroku-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
-| heroku-api-key-legacy | T2 | arrival-provisional | 49 | 3 | 20 | 13 | 13 | 6 | 8 | positive/context cases 3/6 |
+| heroku-api-key-legacy | T2 | context-constrained-empirical | 49 | 3 | 20 | 13 | 13 | 6 | 8 | none |
 | huggingface-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 4 | 6 | none |
 | jwt | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 6 | 8 | none |
 | langfuse-secret-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
 | langsmith-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 10 | positive/context cases 3/6 |
 | linear-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 4 | 4 | 5 | none |
-| mailchimp-api-key | T2 | arrival-provisional | 40 | 10 | 14 | 8 | 13 | 6 | 9 | none |
-| mailgun-api-key | T2 | arrival-provisional | 40 | 12 | 16 | 9 | 10 | 6 | 9 | none |
+| mailchimp-api-key | T2 | stable-empirical | 40 | 10 | 14 | 8 | 13 | 6 | 9 | none |
+| mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 9 | 10 | 6 | 9 | none |
 | microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
 | netlify-token | T1 | stable-documented | 24 | 7 | 8 | 6 | 5 | 6 | 8 | none |
 | new-relic-license-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 7 | 6 | 8 | none |
@@ -76,21 +76,21 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | notion-integration-token | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 5 | 8 | positive/context cases 5/6 |
 | notion-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
 | npm-token | T1 | stable-documented | 24 | 8 | 8 | 6 | 4 | 5 | 8 | none |
-| okta-api-token | T2 | arrival-provisional | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
-| openai-token | T2 | arrival-provisional | 44 | 13 | 15 | 8 | 7 | 6 | 10 | none |
+| okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
+| openai-token | T2 | stable-empirical | 44 | 13 | 15 | 8 | 7 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
 | otpauth-uri | T3 | arrival-provisional | 17 | 0 | 5 | 6 | 1 | 3 | 4 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
 | perplexity-api-key | T2 | arrival-provisional | 24 | 2 | 10 | 6 | 7 | 6 | 10 | positive/context cases 2/6 |
 | pinecone-api-key | T2 | arrival-provisional | 24 | 3 | 11 | 5 | 8 | 6 | 8 | positive/context cases 3/6 |
 | pinecone-api-key-legacy | T3 | arrival-provisional | 48 | 0 | 24 | 12 | 9 | 6 | 7 | positive/context cases 0/6 |
-| postman-api-key | T2 | arrival-provisional | 40 | 11 | 17 | 9 | 12 | 6 | 9 | none |
+| postman-api-key | T2 | stable-empirical | 40 | 11 | 17 | 9 | 12 | 6 | 9 | none |
 | private-key | T1 | stable-documented | 36 | 18 | 8 | 5 | 4 | 6 | 8 | none |
 | pulumi-access-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
 | pypi-token | T1 | stable-documented | 26 | 6 | 8 | 9 | 7 | 6 | 9 | none |
 | replicate-api-token | T1 | stable-documented | 24 | 3 | 9 | 6 | 7 | 6 | 10 | positive/context cases 3/6 |
 | sendgrid-token | T1 | stable-documented | 68 | 22 | 12 | 18 | 8 | 4 | 6 | none |
-| sentry-org-auth-token | T2 | arrival-provisional | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
-| sentry-user-auth-token | T2 | arrival-provisional | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
+| sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
+| sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
 | shopify-token | T1 | stable-documented | 27 | 9 | 8 | 6 | 4 | 6 | 8 | none |
 | slack-app-level-token | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 5 | 8 | positive/context cases 5/6 |
 | slack-token | T1 | stable-documented | 47 | 26 | 13 | 6 | 4 | 4 | 6 | none |
@@ -99,10 +99,10 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | stripe-webhook-signing-secret | T1 | stable-documented | 25 | 5 | 10 | 5 | 9 | 6 | 10 | positive/context cases 5/6 |
 | supabase-management-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 7 | 6 | 8 | none |
 | supabase-token | T1 | stable-documented | 30 | 6 | 14 | 5 | 9 | 6 | 9 | none |
-| telegram-bot-token | T2 | arrival-provisional | 41 | 12 | 15 | 8 | 14 | 5 | 8 | none |
+| telegram-bot-token | T2 | stable-empirical | 41 | 12 | 15 | 8 | 14 | 5 | 8 | none |
 | terraform-cloud-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
-| twilio-api-key-secret | T2 | arrival-provisional | 49 | 13 | 16 | 10 | 18 | 6 | 7 | none |
-| twilio-auth-token | T2 | arrival-provisional | 49 | 12 | 17 | 10 | 18 | 6 | 7 | none |
+| twilio-api-key-secret | T2 | context-constrained-empirical | 49 | 13 | 16 | 10 | 18 | 6 | 7 | none |
+| twilio-auth-token | T2 | context-constrained-empirical | 49 | 12 | 17 | 10 | 18 | 6 | 7 | none |
 | vault-token | T1 | stable-documented | 28 | 12 | 8 | 6 | 4 | 6 | 9 | none |
 | vercel-token | T0 | arrival-provisional | 20 | 15 | 5 | 0 | 1 | 3 | 3 | total fixtures 20/24; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | xai-api-key | T2 | arrival-provisional | 24 | 3 | 9 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |

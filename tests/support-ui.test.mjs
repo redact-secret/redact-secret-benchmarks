@@ -25,7 +25,7 @@ function matrixOf(statusFor) {
       corroboratingScanners: hasDetector ? ['gitleaks 8.30.1'] : [],
       twinCoverage: hasDetector ? { pairs: 3, failures: 1, unprobeable: null } : null,
       unresolvedCriticalItems: hasDetector ? { metamorphic: 0, mutation: 2, differential: 0 } : null,
-      empiricalEvidence: hasDetector ? { observations: 0, subjects: 0, issuanceDates: 0, corroborationClasses: [], contradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true } : null,
+      empiricalEvidence: hasDetector ? { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 0, corroborationOwners: 0, corroborationClasses: [], contradictions: 0, boundedContradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true } : null,
       fixtureProfile: hasDetector ? { positiveCases: 6, positiveAxes: 4, benignCases: 8, controlAxes: 4, twinPairs: 5, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 4 } : null,
       detectors: hasDetector ? [family.detectors[0]] : [],
       reason: status === 'stable' ? null : `${status} because the evidence says so`,
@@ -118,7 +118,7 @@ test('empirical stable is labeled explicitly, retains T2, and is counted separat
   entry.evidenceBasis = 'empirically-observed';
   entry.qualificationProfile = 'empirical';
   entry.providerSource = null;
-  entry.empiricalEvidence = { observations: 5, subjects: 2, issuanceDates: 2, corroborationClasses: ['peer-scanner', 'independent-implementation'], contradictions: 0, uncertainty: 'Observed formats may change.', supportedContexts: ['assignment'], mode: 'shape', supportsBareValues: true };
+  entry.empiricalEvidence = { observations: 5, subjects: 2, issuanceDates: 2, corroborationReferences: 2, corroborationOwners: 2, corroborationClasses: ['independent-implementation', 'peer-scanner-rule'], contradictions: 0, boundedContradictions: 0, uncertainty: 'Observed formats may change.', supportedContexts: ['assignment'], mode: 'shape', supportsBareValues: true };
   matrix.distribution.provisional--;
   matrix.distribution.stable++;
   matrix.stableDistribution.empirical = 1;
@@ -127,6 +127,33 @@ test('empirical stable is labeled explicitly, retains T2, and is counted separat
   assert.ok(plain.includes('Stable · Empirically qualified'));
   assert.ok(plain.includes('T2 · Tool-corroborated'));
   assert.ok(plain.includes('Stable: 0 documented · 1 empirical'));
+  assert.ok(plain.includes('Provider-issued observations empirically-observed'));
+});
+
+test('corroborated empirical stable shows its basis, and a basis its records cannot carry is refused', () => {
+  const matrix = mixed();
+  const entry = matrix.families.find(family => family.detectors.length);
+  Object.assign(entry, { status: 'stable', reason: null, evidenceTier: 'T2', evidenceBasis: 'independently-corroborated', qualificationProfile: 'empirical', providerSource: null });
+  entry.empiricalEvidence = { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 4, corroborationOwners: 3, corroborationClasses: ['peer-scanner-rule', 'provider-owned-code'], contradictions: 0, boundedContradictions: 1, uncertainty: 'Corroborated, never provider-issued.', supportedContexts: ['assignment'], mode: 'shape', supportsBareValues: true };
+  matrix.distribution.provisional--;
+  matrix.distribution.stable++;
+  matrix.stableDistribution.empirical = 1;
+  assert.equal(supportMatrixProblem(matrix), null);
+  const plain = text(supportPage(matrix, null));
+  assert.ok(plain.includes('Stable · Empirically qualified'));
+  assert.ok(plain.includes('T2 · Tool-corroborated'), 'the tier stays T2');
+  assert.ok(plain.includes('Corroborated by external sources (no provider-issued observation required) independently-corroborated'));
+  assert.ok(plain.includes('4 references · 3 owners · peer-scanner-rule, provider-owned-code · 0 unresolved / 1 bounded contradictions'));
+  assert.ok(plain.includes('0 observations · 0 subjects · 0 issuance dates'));
+  const thin = structuredClone(matrix);
+  thin.families.find(family => family.family === entry.family).empiricalEvidence.corroborationOwners = 2;
+  assert.match(supportMatrixProblem(thin), /masquerades as empirically qualified/);
+  const observedLabel = structuredClone(matrix);
+  observedLabel.families.find(family => family.family === entry.family).evidenceBasis = 'empirically-observed';
+  assert.match(supportMatrixProblem(observedLabel), /masquerades as empirically qualified/, 'no observations cannot read as observed');
+  const t1 = structuredClone(matrix);
+  t1.families.find(family => family.family === entry.family).evidenceTier = 'T1';
+  assert.match(supportMatrixProblem(t1), /masquerades as empirically qualified/);
 });
 
 test('an un-probeable family reads as un-probeable, not as zero twins', () => {

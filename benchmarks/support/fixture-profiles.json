@@ -36,9 +36,9 @@
       "requiresProviderSource": false,
       "cells": { "totalFixtures": 40, "positiveCases": 10, "benignControls": 14, "twinPairs": 8, "positiveContextAxes": 6, "controlAxes": 5 },
       "gates": {
-        "enforced": false,
-        "pending": ["observation records (#205)", "corroboration classes (#177)"],
-        "rationale": "The observation and corroboration gates belong to #177 and #205. Until the classifier enforces them a claim of this profile can never reach stable, so it fails closed."
+        "enforced": true,
+        "pending": ["independent corroboration, or observation records (#177, #205)", "contradiction, uncertainty and supported-context records (#177)"],
+        "rationale": "classifyFamilySupport enforces these gates for every T2 family since the #177 amendment of 2026-09-24 (docs/decisions/2026-09-24-qualify-empirical-stable-by-corroboration.md): a claim of this profile reaches stable only when its cells, one qualifying evidence route, and every contradiction, uncertainty, context and behavioral gate clear."
       },
       "rationale": "For providers that publish no token grammar: T2 evidence stays T2, and the fixture structure is larger than the documented profile because the contract is inferred rather than read."
     },
@@ -54,9 +54,9 @@
       "cells": { "totalFixtures": 48, "positiveCases": 1, "benignControls": 1, "twinPairs": 10, "confusionAxes": 6 },
       "cellNotes": { "positiveCases": "Structural non-emptiness only; the issue sets no positive count for this profile.", "benignControls": "Structural non-emptiness only; the issue sets no control count for this profile.", "twinPairs": "Context-twin pairs: the same value with and without the supported context." },
       "gates": {
-        "enforced": false,
-        "pending": ["observation records (#205)", "corroboration classes (#177)"],
-        "rationale": "The observation and corroboration gates belong to #177 and #205. Until the classifier enforces them a claim of this profile can never reach stable, so it fails closed."
+        "enforced": true,
+        "pending": ["independent corroboration, or observation records (#177, #205)", "contradiction, uncertainty and supported-context records (#177)"],
+        "rationale": "classifyFamilySupport enforces these gates for every T2 family since the #177 amendment of 2026-09-24 (docs/decisions/2026-09-24-qualify-empirical-stable-by-corroboration.md): a claim of this profile reaches stable only when its cells, one qualifying evidence route, and every contradiction, uncertainty, context and behavioral gate clear."
       },
       "rationale": "For opaque values whose shape is not independently discriminative: the family makes no bare-value support claim, and the contract names the context it does support."
     }

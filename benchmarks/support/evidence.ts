@@ -1,5 +1,5 @@
 import type { Summary, ReviewLedger, EvaluationCase } from '../engine/types.ts';
-import type { FamilySupportEvidence } from './status.ts';
+import { basisForRoute, empiricalRoute, type EvidenceBasis, type FamilySupportEvidence } from './status.ts';
 import { contracts } from '../lib/assessment.ts';
 import { measureFixtureCells, profileClaim } from './profiles.ts';
 import { empiricalEvidence } from './empirical.ts';
@@ -81,8 +81,10 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
   const benignAxisIds = axesByDetector[family] ?? [];
   const profile = fixtureProfile(family, cases ?? []);
   const empirical = empiricalEvidence(family);
-  const evidenceBasis = contract?.tier === 'T1' ? 'provider-documented' : contract?.tier === 'T3' ? 'project-policy' :
-    contract?.tier === 'T2' && empirical.evidenceBasis === 'none' ? 'independently-corroborated' : empirical.evidenceBasis;
+  // T2 provenance is corroborated by default; it reads empirically-observed only once the #205
+  // observation bar is met (#177 as amended 2026-09-24). Tier never changes either way.
+  const evidenceBasis: EvidenceBasis = contract?.tier === 'T1' ? 'provider-documented' : contract?.tier === 'T3' ? 'project-policy' :
+    contract?.tier === 'T2' ? basisForRoute(empiricalRoute(empirical)) : 'none';
   return {
     family,
     detectors: contract ? [family] : [],
@@ -108,6 +110,9 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
     mutationUnresolvedCritical: mutation.fail + unresolvedInQueue(family, 'mutation', reviewQueue, ledger),
     differentialUnresolvedContractDisagreements: unresolvedInQueue(family, 'differential', reviewQueue, ledger),
     // No corpus supplied means unmeasured: `profileFailures` fails closed on that for any binding claim.
-    ...(cases ? { fixtureProfile: { claim: profileClaim(contract), cells: measureFixtureCells(family, cases), supportedContext: contract?.supportedContext } } : {}),
+    ...(cases ? { fixtureProfile: {
+      claim: profileClaim(contract, empirical.empiricalMode), cells: measureFixtureCells(family, cases),
+      supportedContext: contract?.supportedContext ?? (empirical.supportedContexts.length ? empirical.supportedContexts : undefined),
+    } } : {}),
   };
 }

@@ -219,6 +219,20 @@
           "supports": "32-character body with dapi as a keyword (length only; admits A-F)"
         },
         {
+          "class": "provider-example",
+          "owner": "databricks",
+          "reference": "https://docs.databricks.com/aws/en/archive/dev-tools/cli/tokens-cli",
+          "observedAt": "2026-09-24",
+          "supports": "Databricks' own (legacy) tokens CLI docs show a created token_value of dapi + 32 characters (a digits-only placeholder: length only)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "databricks",
+          "reference": "https://github.com/databrickslabs/pylint-plugin/blob/v0.5.0/src/databricks/labs/pylint/dbutils.py#L109-L110",
+          "observedAt": "2026-09-24",
+          "supports": "Databricks Labs pylint plugin (v0.5.0, provided AS-IS, not formally supported by Databricks) documents the PAT it flags as dapi[0-9a-f]{32}; its check itself tests only the dapi prefix"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800564692",
@@ -242,7 +256,9 @@
         },
         {
           "statement": "Purview's own format example is 30 characters and contains letters past f, disagreeing with its stated 32-character hex pattern and with the contract's lowercase-hex body (the alphabet twin asserts silence on a non-hex byte).",
-          "status": "unresolved"
+          "status": "settled",
+          "bound": "Databricks' own docs example has a 32-character body and Databricks' own Labs code documents dapi[0-9a-f]{32}, so Purview's 30-character non-hex example does not describe the provider shape; the contract follows Databricks (a judgement on a comment in an AS-IS Labs project).",
+          "settledBy": "https://github.com/databrickslabs/pylint-plugin/blob/v0.5.0/src/databricks/labs/pylint/dbutils.py#L109-L110"
         }
       ]
     },
@@ -598,7 +614,7 @@
       "family": "mailchimp-api-key",
       "mode": "shape",
       "supportsBareValues": false,
-      "uncertainty": "Mailchimp states the shape only by one example whose body is 31 hex characters, against 32 in every tool and 111 of 115 public-code candidates (redact-secret#699); hex case and suffix digit count are disputed between tools (#697/#698). The only staff statement (2009) advises against regex validation because keys may change.",
+      "uncertainty": "Mailchimp states the shape only by examples: its fundamentals page shows a 31-hex-character body with -us6, and its own WordPress plugin shows 32 hex with -us19, matching every tool and 111 of 115 public-code candidates (redact-secret#699); the contract follows the 32-byte example. The fundamentals page says the data center is always appended as key-dc. Hex case and the data-center alphabet (only us<N> is ever shown) are not stated by the provider. The only staff statement (2009) advises against regex validation because keys may change.",
       "supportedContexts": [
         "same-line mailchimp keyword assignment (e.g. MAILCHIMP_API_KEY=<value>), bare, double-quoted, or after a CRLF comment line",
         "suffix -us + one or two digits"
@@ -634,6 +650,13 @@
           "supports": "<key>-us<N> form: a hex body, a dash and a literal us<N> data-center suffix (single-digit us6 by example; the example body is 31 bytes)"
         },
         {
+          "class": "provider-example",
+          "owner": "mailchimp",
+          "reference": "https://github.com/mailchimp/wordpress/blob/2.1.0/.env.test.sample#L10",
+          "observedAt": "2026-09-24",
+          "supports": "Mailchimp's own WordPress plugin (mailchimp/wordpress 2.1.0) gives an example API key of 32 lowercase hex + '-us' + two digits"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800553901",
@@ -643,12 +666,16 @@
       ],
       "contradictions": [
         {
-          "statement": "The provider's only example has a 31-byte hex body; the contract requires 32 and its length twin asserts silence on a 31-byte body with a -us suffix (redact-secret#699).",
-          "status": "unresolved"
+          "statement": "The provider's fundamentals example has a 31-byte hex body; the contract requires 32 and its length twin asserts silence on a 31-byte body with a -us suffix (redact-secret#699).",
+          "status": "settled",
+          "bound": "Mailchimp's own plugin example has a 32-byte hex body; the 31-byte docs example is the 0-f sequence cut one byte short, so the contract follows the 32-byte provider example (a judgement: the two provider examples disagree).",
+          "settledBy": "https://github.com/mailchimp/wordpress/blob/2.1.0/.env.test.sample#L10"
         },
         {
           "statement": "gitleaks and betterleaks require exactly two suffix digits; the contract accepts one and the single-digit-datacenter positive asserts detection (redact-secret#698).",
-          "status": "unresolved"
+          "status": "settled",
+          "bound": "Mailchimp's fundamentals page gives us6 as an account data center and the key suffix, so a single suffix digit is a provider shape, as the single-digit positive asserts.",
+          "settledBy": "https://mailchimp.com/developer/marketing/docs/fundamentals/"
         },
         {
           "statement": "Nosey Parker accepts three suffix digits; the contract accepts at most two (redact-secret#698).",
@@ -671,7 +698,9 @@
         },
         {
           "statement": "Mailchimp staff (2009) say not to regex-validate because key formats may change, and their regex made the -us suffix optional; the missing-marker control asserts silence on a suffix-less 32-hex value.",
-          "status": "unresolved"
+          "status": "settled",
+          "bound": "Mailchimp's current fundamentals page says the data center is appended to the API key in the form key-dc, superseding the 2009 optional-suffix regex, so the missing-marker control follows the provider.",
+          "settledBy": "https://mailchimp.com/developer/marketing/docs/fundamentals/"
         }
       ]
     },
@@ -679,7 +708,7 @@
       "family": "mailgun-api-key",
       "mode": "shape",
       "supportsBareValues": false,
-      "uncertainty": "No Mailgun page states any key grammar; key- + 32 is shown only as a placeholder for the HTTP webhook signing key, and 2018-2025 sources say the current private API key is a prefix-less 32-8-8 hex triplet, making key- possibly the older shape (redact-secret#701). The body alphabet ([a-z0-9] vs hex) and case sensitivity are unsettled and no issued key has been measured.",
+      "uncertainty": "No Mailgun page states any key grammar; key- + 32 is shown only as a placeholder for the HTTP webhook signing key, and 2018-2025 sources say the current private API key is a prefix-less 32-8-8 hex triplet, making key- possibly the older shape (redact-secret#701). Mailgun's own PHP SDK test uses a key- signing key with g-z letters, so the body is [a-z0-9], not hex-only; case sensitivity is unsettled, Mailgun's own Python SDK scrubs pubkey- values that the family treats as public, and no issued key has been measured.",
       "supportedContexts": [
         "same-line mailgun keyword assignment (MAILGUN_API_KEY= / MAILGUN_WEBHOOK_SIGNING_KEY=), bare, double-quoted, or after a CRLF comment line",
         "private API key and HTTP webhook signing key roles, both key- + 32"
@@ -715,6 +744,13 @@
           "supports": "response example shows http_signing_key as key- + 32 lowercase characters (a placeholder pattern; states no grammar)"
         },
         {
+          "class": "provider-owned-code",
+          "owner": "mailgun",
+          "reference": "https://github.com/mailgun/mailgun-php/blob/v4.5.2/tests/Api/WebhookTest.php#L27-L36",
+          "observedAt": "2026-09-24",
+          "supports": "Mailgun's own PHP SDK test (v4.5.2) verifies a real webhook signature with a key- + 32 [a-z0-9] signing key whose body contains g-z letters (the key- webhook signing key role)"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800612791",
@@ -725,14 +761,16 @@
       "contradictions": [
         {
           "statement": "gitleaks is hex-only and a 2018 community report says newer keys are 32 hex; the contract accepts [a-z0-9] and both positives' bodies contain g-z letters.",
-          "status": "unresolved"
+          "status": "settled",
+          "bound": "Mailgun's own SDK test signs with a key- + 32 signing key containing g-z letters, so key- bodies are not hex-only; the contract's [a-z0-9] body follows it.",
+          "settledBy": "https://github.com/mailgun/mailgun-php/blob/v4.5.2/tests/Api/WebhookTest.php#L27-L36"
         },
         {
           "statement": "gitleaks and Nosey Parker are case-insensitive (1 of 31 measured candidates had an uppercase letter); the contract's alphabet twin asserts silence on a body with one uppercase byte.",
           "status": "unresolved"
         },
         {
-          "statement": "gitleaks has a mailgun-pub-key rule treating pubkey- + 32 hex as a secret; the family's public-id control asserts silence on a pubkey- value.",
+          "statement": "gitleaks has a mailgun-pub-key rule treating pubkey- + 32 hex as a secret, and Mailgun's own mailgun-python log filter (v1.9.1, https://github.com/mailgun/mailgun-python/blob/v1.9.1/mailgun/filters.py#L9-L12) scrubs pubkey- values alongside key-; the family's public-id controls assert silence on a pubkey- value.",
           "status": "unresolved"
         },
         {
@@ -765,7 +803,8 @@
       "supportedContexts": [
         "Authorization: SSWS <value> header",
         "same-line okta keyword assignment (e.g. OKTA_API_TOKEN=<value>)",
-        "either context bare, double-quoted, or after a CRLF comment line"
+        "either context bare, double-quoted, or after a CRLF comment line",
+        "token values that do not end in '-' (a trailing '-' is outside the benchmark claim)"
       ],
       "observations": [],
       "corroboration": [
@@ -798,6 +837,13 @@
           "supports": "SSWS authorization scheme and a token value beginning with literal 00 (elided example; no length or alphabet)"
         },
         {
+          "class": "provider-example",
+          "owner": "okta",
+          "reference": "https://github.com/okta/okta-developer-docs/blob/ae696b9f70cd1bca21f640f4ad3bbdff461279ff/packages/%40okta/vuepress-site/docs/guides/oie-upgrade-api-sdk-to-oie-sdk/main/index.md#L112",
+          "observedAt": "2026-09-24",
+          "supports": "Okta's own developer docs (oie-upgrade-api-sdk-to-oie-sdk guide) show an unelided Authorization: SSWS value of 00 + 40 [A-Za-z0-9] (42 characters, no '_', '-' or '=')"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/694#issuecomment-5800302850",
@@ -820,7 +866,8 @@
         },
         {
           "statement": "Nosey Parker excludes '-' as the final byte; the contract admits it.",
-          "status": "unresolved"
+          "status": "bounded",
+          "bound": "The benchmark makes no claim about a final '-': no positive, twin or control ends in '-', so a trailing '-' is outside supportedContexts and neither asserted nor refuted."
         },
         {
           "statement": "GitGuardian records the Okta detector as 'Prefixed: False', i.e. 00 is not treated as a prefix; the contract's prefix twin asserts silence on a 01-prefixed value.",
@@ -934,11 +981,12 @@
       "family": "postman-api-key",
       "mode": "shape",
       "supportsBareValues": true,
-      "uncertainty": "Postman documents no PMAK- grammar (only the X-API-Key header and a postman-api-key variable); the 24-hex / '-' / 34-hex structure rests on gitleaks and Nosey Parker, while trufflehog corroborates only the prefix and 59-byte width. No issued key has been measured, and a second Postman credential (PMAT-) exists outside the contract (redact-secret#700).",
+      "uncertainty": "Postman's docs state no PMAK- grammar (only the X-API-Key header and a postman-api-key variable). Its own Insights Agent redaction config fixes PMAK- + 24 lowercase hex + '-' + 34 lowercase hex, matching gitleaks and Nosey Parker, while trufflehog corroborates only the prefix and 59-byte width. The same Postman config also redacts a bare PMAK- + 24 hex value, which the family treats as a non-credential near miss (unresolved). The benchmark claims only lowercase-hex keys. No issued key has been measured, and a second Postman credential (PMAT-) exists outside the contract (redact-secret#700).",
       "supportedContexts": [
         "bare value (the PMAK- prefix is the only marker; no keyword required)",
         "double-quoted assignment value",
-        "value on the line after an unrelated comment line (CRLF)"
+        "value on the line after an unrelated comment line (CRLF)",
+        "lowercase-hex segments only (uppercase hex is outside the benchmark claim)"
       ],
       "observations": [],
       "corroboration": [
@@ -964,6 +1012,13 @@
           "supports": "np.postman.1: PMAK- + 24 + '-' + 34 structure (alphanumeric segments, wider than hex)"
         },
         {
+          "class": "provider-owned-code",
+          "owner": "postman",
+          "reference": "https://github.com/postmanlabs/postman-insights-agent/blob/v0.40.1/data_masks/redaction_config.yaml#L72",
+          "observedAt": "2026-09-24",
+          "supports": "Postman's own Insights Agent redaction config (postmanlabs, Apache-2.0, v0.40.1 L72): PMAK- + 24 lowercase hex + '-' + 34 lowercase hex, case-sensitive; bot-synced from Postman's redaction rules (L32 separately redacts a bare PMAK- + 24 hex, see contradictions)"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800541433",
@@ -974,15 +1029,20 @@
       "contradictions": [
         {
           "statement": "trufflehog ([A-Za-z0-9-]{59}) and Nosey Parker (alphanumeric segments) accept non-hex bytes; the contract's alphabet twin asserts silence on a non-hex byte in the second segment.",
-          "status": "unresolved"
+          "status": "settled",
+          "bound": "Postman's own redaction rule fixes both segments to [a-f0-9], so a non-hex byte is outside the provider's shape, as the alphabet twin asserts.",
+          "settledBy": "https://github.com/postmanlabs/postman-insights-agent/blob/v0.40.1/data_masks/redaction_config.yaml#L72"
         },
         {
           "statement": "trufflehog imposes no internal structure, so it accepts a 59-byte body without the dash at offset 24; the contract's separator twin asserts silence on exactly that.",
-          "status": "unresolved"
+          "status": "settled",
+          "bound": "Postman's own redaction rule requires the '-' between the 24- and 34-byte hex segments, as the separator twin asserts.",
+          "settledBy": "https://github.com/postmanlabs/postman-insights-agent/blob/v0.40.1/data_masks/redaction_config.yaml#L72"
         },
         {
           "statement": "GitLab's rule set is lowercase-hex only; the contract (like gitleaks) accepts uppercase hex.",
-          "status": "unresolved"
+          "status": "bounded",
+          "bound": "Postman's own rule (insights-agent v0.40.1 L72) is lowercase-only; the benchmark claims only lowercase keys: every positive is lowercase and no positive, twin or control carries an uppercase byte, so the product pattern's uppercase acceptance is neither asserted nor refuted."
         },
         {
           "statement": "A 2026-09-22 community proposal (crenox#9) claims a 34-36 character second segment.",
@@ -993,6 +1053,10 @@
           "statement": "Postman also issues PMAT- collection access keys (GitLab: PMAT- + 26 [A-Z0-9]); the family covers only PMAK- (redact-secret#700).",
           "status": "bounded",
           "bound": "PMAT- is a separate credential outside the pattern; no positive, twin or control contains a PMAT- value."
+        },
+        {
+          "statement": "Postman's own Insights Agent config (v0.40.1 data_masks/redaction_config.yaml L32) also redacts a bare PMAK- + 24 lowercase hex value, with no second segment, as sensitive; the 213d short-key near-miss control asserts silence on exactly that shape in a POSTMAN_API_KEY assignment.",
+          "status": "unresolved"
         }
       ]
     },

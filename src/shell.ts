@@ -5,7 +5,7 @@ import { canonicalUrl } from './model.mjs';
 /** App chrome: one top bar, four entrances, one search. Mounted once so polling re-renders never steal focus. */
 export interface NavItem { href: string; label: string; short: string; current: (path: string) => boolean }
 export interface SearchTarget { href: string; label: string; hint: string }
-interface ShellOptions { nav: NavItem[]; targets: () => SearchTarget[]; navigate: (path: string) => void }
+interface ShellOptions { nav: NavItem[]; targets: () => SearchTarget[]; navigate: (path: string) => void; banner?: string; build?: string }
 
 const THEME_KEY = 'redact-secret-benchmarks:theme';
 const SEARCH_LIMIT = 12;
@@ -84,7 +84,7 @@ function bindSearch(input: HTMLInputElement, list: HTMLElement) {
 export function mountShell(app: HTMLElement, shellOptions: ShellOptions) {
   options = shellOptions;
   const links = (short: boolean) => options.nav.map(item => `<a href="${e(item.href)}" data-nav="${e(item.href)}">${e(short ? item.short : item.label)}</a>`).join('');
-  app.innerHTML = `<a class="skip" href="#main">Skip to content</a>${logoSprite()}
+  app.innerHTML = `<a class="skip" href="#main">Skip to content</a>${logoSprite()}${options.banner ?? ''}
     <header class="top"><div class="top-in">
       <a class="brand" href="${e(options.nav[0].href)}" aria-label="Redact Secret benchmarks, ${e(options.nav[0].label)}">${logo()}</a>
       <nav class="nav" aria-label="Primary">${links(false)}</nav>
@@ -94,11 +94,17 @@ export function mountShell(app: HTMLElement, shellOptions: ShellOptions) {
       </div>
     </div></header>
     <main class="content" id="main" tabindex="-1"></main>
-    <footer class="foot"><div class="foot-in"><p class="small">Project-maintained measurements on shared synthetic inputs. This site records results; it makes no product claims.</p><p class="small"><a href="https://github.com/redact-secret/redact-secret-benchmarks">Repository</a> · refreshes every 5 s</p></div></footer>
+    <footer class="foot"><div class="foot-in"><p class="small">Project-maintained measurements on shared synthetic inputs. This site records results; it makes no product claims.</p><p class="small"><a href="https://github.com/redact-secret/redact-secret-benchmarks">Repository</a> · refreshes every 5 s</p><p class="small" id="site-build">${options.build ?? ''}</p></div></footer>
     <nav class="tabs" aria-label="Primary, compact">${links(true)}</nav>`;
   main = app.querySelector<HTMLElement>('#main')!;
   bindTheme(app.querySelector<HTMLButtonElement>('#theme-toggle')!);
   bindSearch(app.querySelector<HTMLInputElement>('#global-search')!, app.querySelector<HTMLElement>('#global-search-list')!);
+}
+
+/** Replaces the footer's build statement once the published results that complete it have loaded. */
+export function setBuildLine(html: string) {
+  const line = document.querySelector<HTMLElement>('#site-build');
+  if (line) line.innerHTML = html;
 }
 
 export function renderPage(content: string, label: string) {

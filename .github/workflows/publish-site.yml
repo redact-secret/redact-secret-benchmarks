@@ -82,7 +82,12 @@ jobs:
           npm run eval
           npm run eval:publish
 
+      # The page marks which environment served it and which commit built it
+      # (#155); an unset VITE_SITE_ENV builds as "local", never production.
       - name: Build the site
+        env:
+          VITE_SITE_ENV: ${{ env.TARGET }}
+          VITE_BUILD_COMMIT: ${{ github.sha }}
         run: npm run build
 
       - uses: aws-actions/configure-aws-credentials@f503a1870408dcf2c35d5c2b8a68e69211042c7d # v5.0.0

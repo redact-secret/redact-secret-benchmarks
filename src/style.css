@@ -104,8 +104,13 @@ h3, .h3 { font: var(--text-h3); margin: 0; }
 .content:focus { outline: none; }
 .foot { border-top: var(--hairline) solid var(--line); }
 .foot-in { max-width: var(--page-max); margin: 0 auto; padding: var(--space-8) var(--space-6); display: flex; gap: var(--space-6); align-items: center; flex-wrap: wrap; justify-content: space-between; }
+/* Staging and local builds only (#155): production renders no banner at all. */
+.env-banner { background: var(--status-warning-fill); color: var(--ink); border-bottom: var(--hairline) solid var(--status-warning); }
+.env-banner-in { max-width: var(--page-max); margin: 0 auto; padding: var(--space-2) var(--space-6); font: var(--text-small); }
+.env-banner b { color: var(--status-warning); }
 .tabs { display: none; }
 @media (max-width: 720px) {
+  .env-banner-in { padding: var(--space-2) var(--space-4); }
   .top-in { gap: var(--space-3); padding: 0 var(--space-4); }
   .nav { display: none; }
   .btn .wide, .seg .wide { display: none; }

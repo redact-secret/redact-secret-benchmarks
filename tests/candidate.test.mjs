@@ -2,11 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
-import { access, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { access, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { validateEvidence } from '../benchmarks/engine/evidence.ts';
+import { newestBaselineName } from '../benchmarks/lib/baselines.ts';
 import { candidateConfiguration, installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
 
 const exec = promisify(execFile);
@@ -186,9 +187,23 @@ test('candidate CLI scores a fixture whose path collides with another category a
   } finally { await rm(artifacts.root, { recursive: true, force: true }); }
 });
 
-test('published scanner and qualification pins remain unchanged', async () => {
+test('published scanner and qualification pins follow the lockfile release', async () => {
   const scanner = await readFile(path.join(repositoryRoot, 'scanners/index.mjs'), 'utf8');
   const suite = JSON.parse(await readFile(path.join(repositoryRoot, 'qualification/suite-v1.json'), 'utf8'));
+  const lock = JSON.parse(await readFile(path.join(repositoryRoot, 'package-lock.json'), 'utf8'));
   assert.match(scanner, /import\("@redact-secret\/core"\)/);
-  assert.equal(suite.scanners['redact-secret'], '0.1.0-beta.4');
+  // eval:qualify refuses a product version other than the suite's, so a stale pin
+  // leaves the site with no qualification evidence (#213).
+  assert.equal(suite.scanners['redact-secret'], lock.packages['node_modules/@redact-secret/core'].version);
+});
+
+test('candidate evidence and the Workbench compare against the newest saved release baseline', async () => {
+  assert.equal(newestBaselineName(['0.1.0-beta.9.json', '0.1.0-beta.10.json', '0.1.0-beta.4.json', 'README.md']), '0.1.0-beta.10.json');
+  assert.equal(newestBaselineName([]), undefined);
+  const lock = JSON.parse(await readFile(path.join(repositoryRoot, 'package-lock.json'), 'utf8'));
+  const released = lock.packages['node_modules/@redact-secret/core'].version;
+  // A lockfile bump saves its baseline in the same change (npm run bench -- --strict; npm run baseline -- --save <version>).
+  assert.equal(newestBaselineName(await readdir(path.join(repositoryRoot, 'baselines'))), `${released}.json`);
+  const source = await readFile(path.join(repositoryRoot, 'benchmarks/candidate.ts'), 'utf8');
+  assert.doesNotMatch(source, /baselines\/[0-9]/, 'candidate.ts must not hard-code a baseline version');
 });

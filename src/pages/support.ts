@@ -182,7 +182,9 @@ export function supportPage(matrix: SupportMatrixFile | null, problem: string | 
   // Which redact-secret the statuses were measured against; a stable count means nothing without it.
   const measured = source.product
     ? `<span>Measured <b>candidate</b> redact-secret <b>${e(source.product.declaredVersion)}</b> at <a class="mono" href="https://github.com/redact-secret/redact-secret/commit/${e(source.product.sourceCommit)}" rel="noreferrer">${e(source.product.sourceCommit.slice(0, 7))}</a></span>`
-    : '<span>Measured the <b>published</b> redact-secret package</span>';
+    : source.publishedPackage
+      ? `<span>Measured the <b>released</b> package <b>${e(source.publishedPackage.packageName)} ${e(source.publishedPackage.version)}</b></span>`
+      : '<span>Measured the <b>published</b> redact-secret package</span>';
   const meta = `<span><b>${n(matrix.familyCount)}</b> families across <b>${n(matrix.providerCount)}</b> providers</span>
     <span>Stable: <b>${n(matrix.stableDistribution.documented)}</b> documented · <b>${n(matrix.stableDistribution.empirical)}</b> empirical</span>
     ${measured}

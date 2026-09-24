@@ -49,12 +49,25 @@ test('a staging run that measured the candidate says so and never calls its vers
 
 test('staging measures the corpus against the qualified candidate; production against the released package (#201)', async () => {
   const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
-  const step = workflow.slice(workflow.indexOf('- name: Measure the corpus'), workflow.indexOf('- name: Produce the evaluation report the site reads'));
+  const step = workflow.slice(workflow.indexOf('- name: Measure the corpus'), workflow.indexOf('- name: Produce the evaluation and qualification reports the site reads'));
   const staging = step.slice(step.indexOf('if [ "$TARGET" = staging ]'), step.indexOf('else'));
   for (const flag of ['--candidate-package="$CORE_PACKAGE"', '--candidate-node-package="$NODE_PACKAGE"', '--candidate-wasm-package="$WASM_PACKAGE"', '--candidate-source-commit="$PRODUCT_COMMIT"']) assert.ok(staging.includes(flag), flag);
   assert.match(step.slice(step.indexOf('else')), /else\n\s+npm run bench -- --strict\n\s+fi/, 'production runs bench with no candidate flag');
-  const evaluation = workflow.slice(workflow.indexOf('- name: Produce the evaluation report the site reads'));
-  assert.match(evaluation, /^- name: Produce the evaluation report the site reads\n\s+run: \|\n\s+npm run eval\n\s+npm run eval:publish\n/, 'evaluation-v1.json keeps measuring the released package');
+  const evaluation = workflow.slice(workflow.indexOf('- name: Produce the evaluation and qualification reports the site reads'), workflow.indexOf('- name: Measure the redact-secret main commit as candidate evidence'));
+  assert.ok(!evaluation.includes('if:'), 'both environments publish evaluation and qualification evidence (#213)');
+  assert.match(evaluation, /\n\s+npm run eval\n/, 'evaluation-v1.json keeps measuring the released package');
+  assert.match(evaluation, /\n\s+if ! npm run eval:qualify; then\n/, 'eval:qualify runs with the suite pins, no candidate flag');
+  assert.match(evaluation, /npm run eval:publish -- --qualification="\$qualification"\n/, 'the qualification run is published with the evaluation report');
+  assert.ok(!evaluation.includes('--candidate'), 'evaluation and qualification take no candidate flag');
+});
+
+test('both environments publish a support matrix: staging the candidate, production the released package (#213)', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
+  const step = workflow.slice(workflow.indexOf('- name: Classify support'), workflow.indexOf('- name: Build the site'));
+  assert.ok(!/\n\s+if: /.test(step), 'the step runs for every environment');
+  const staging = step.slice(step.indexOf('if [ "$TARGET" = staging ]'), step.indexOf('else'));
+  for (const flag of ['--candidate-package="$CORE_PACKAGE"', '--candidate-source-commit="$PRODUCT_COMMIT"']) assert.ok(staging.includes(flag), flag);
+  assert.match(step.slice(step.indexOf('else')), /else\n\s+npm run eval:classify\n\s+fi\n\s+npm run eval:matrix\n\s+npm run eval:publish:matrix\n/, 'production classifies the released package in published mode');
 });
 
 test('the publish workflow hands the environment and commit to the site build', async () => {

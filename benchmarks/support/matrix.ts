@@ -61,6 +61,8 @@ export interface SupportStatusReport {
   criteriaSchemaVersion: 1;
   /** Set only on a candidate run (eval:classify --candidate-*): the redact-secret build measured instead of the published package. */
   product?: SupportProduct | null;
+  /** Published mode: the released package the run loaded (#213). */
+  publishedPackage?: { packageName: string; version: string };
   families: SupportStatusFamilyResult[];
 }
 

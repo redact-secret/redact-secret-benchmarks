@@ -35,6 +35,8 @@ async function main() {
       // Which redact-secret was measured: absent for the published package,
       // so a published-mode matrix stays byte-identical to before.
       ...(statusReport.product ? { product: statusReport.product } : {}),
+      // The released package a published-mode run measured, when the report records it.
+      ...(statusReport.publishedPackage ? { publishedPackage: statusReport.publishedPackage } : {}),
     },
     providerCount: taxonomy.providers.length,
     familyCount: families.length,

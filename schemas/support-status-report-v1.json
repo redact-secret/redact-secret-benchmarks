@@ -12,6 +12,16 @@
     "dirty": { "type": ["boolean", "null"] },
     "criteriaSchemaVersion": { "const": 1 },
     "fixtureProfilesVersion": { "type": "integer", "minimum": 1 },
+    "publishedPackage": {
+      "description": "Published mode only: the released package the pinned redact-secret entry loaded. Absent on a candidate run, which carries product instead.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packageName", "version"],
+      "properties": {
+        "packageName": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" }
+      }
+    },
     "product": {
       "type": ["object", "null"],
       "description": "Null when this run measured the pinned published package, the default. Populated when a candidate build substituted the redact-secret entry, naming the exact build the report describes so it can never be mistaken for one about a different build.",

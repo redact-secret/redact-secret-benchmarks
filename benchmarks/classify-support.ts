@@ -72,6 +72,10 @@ async function main() {
     const scanners = available
       .map((s: Scanner) => (s.id === 'redact-secret' && productScanner ? productScanner : s))
       .filter((s: { id: string }) => Object.hasOwn(suite.scanners, s.id));
+    // Published mode names the released package it measured, so a published matrix
+    // is labelled with the version it describes (#213), not only "the published package".
+    const publishedPackage = product ? null
+      : { packageName: '@redact-secret/core', version: await scanners.find((s: Scanner) => s.id === 'redact-secret')!.version(root) };
     const operators = createOperators(), methods = createMethods();
     const cases = (await loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
     let revision = 'unknown', dirty: boolean | null = null;
@@ -113,6 +117,7 @@ async function main() {
       // Null except on a candidate run: default behaviour (and its output shape
       // for every other field) is unchanged from before candidate support existed.
       product,
+      ...(publishedPackage ? { publishedPackage } : {}),
       scanners: scanners.map((s: { id: string }) => s.id), caseCount: report.caseCount, variantCount: report.variantCount,
       familyCount: families.length, distribution, stableDistribution, families: results,
     };

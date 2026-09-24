@@ -18,6 +18,16 @@
         "revision": { "type": "string" },
         "dirty": { "type": ["boolean", "null"] },
         "criteriaSchemaVersion": { "const": 1 },
+        "publishedPackage": {
+          "description": "Published mode only: the released package the pinned redact-secret entry loaded. Absent on a candidate run, which carries product instead.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["packageName", "version"],
+          "properties": {
+            "packageName": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$" }
+          }
+        },
         "product": {
           "description": "Present only when the evidence run measured a redact-secret candidate build (eval:classify with --candidate-*) instead of the published package; absent means the published package.",
           "type": "object",

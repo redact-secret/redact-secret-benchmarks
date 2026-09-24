@@ -2,6 +2,7 @@ import categories from '../benchmarks/categories.json';
 import registry from '../benchmarks/detectors.json';
 import assignments from '../benchmarks/fixture-detectors.json';
 import { buildCatalog } from './model.mjs';
+import { compareBaselineNames } from '../benchmarks/lib/baselines.ts';
 import type { Baseline, Kind, Span, Tier } from './types';
 
 export interface Fixture {
@@ -16,8 +17,8 @@ export const rawCorpora = Object.fromEntries(categories.map(c => [c.id, files[`.
 export const corpora = Object.fromEntries(categories.map(c => [c.id, JSON.parse(rawCorpora[c.id])]));
 export const fixtures = buildCatalog(categories, corpora, assignments, registry.detectors) as Fixture[];
 const baselineFiles = import.meta.glob('../baselines/*.json', { import: 'default', eager: true }) as Record<string, Baseline>;
-/** Newest released comparison point, by semver-ish string order of the file name. */
-export const baselines: Baseline[] = Object.entries(baselineFiles).sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true })).map(([, b]) => b);
+/** Newest released comparison point, by the file-name order candidate evidence also uses (benchmarks/lib/baselines.ts). */
+export const baselines: Baseline[] = Object.entries(baselineFiles).sort(([a], [b]) => compareBaselineNames(a, b)).map(([, b]) => b);
 export const baseline: Baseline | undefined = baselines.at(-1);
 export { categories, registry };
 export async function corpusHashes(): Promise<Record<string, string>> {

@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES } from '../benchmarks/lib/assessment.ts';
+import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES, arrivalIds, disputedProperty, DISPUTED_PROPERTIES } from '../benchmarks/lib/assessment.ts';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 import { validateCorpus, score } from '../benchmarks/lib/scoring.ts';
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import { spanOutcome } from '../benchmarks/lib/lattice.ts';
 import { reportProblem, summarize } from '../src/model.mjs';
-import { normalizeTrufflehogFindings } from '../scanners/index.mjs';
+import { normalizeTrufflehogFindings, locate } from '../scanners/index.mjs';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));
 const generated = buildCorpora();
@@ -25,7 +25,8 @@ const lax = { ...suite.accounting, minDenominator: 1, measurableShareFloor: 0, t
 test('contracts are provider-first: T1 needs a dated provider source, T2 needs corroboration', async () => {
   validateContracts();
   const registry = await read('benchmarks/detectors.json');
-  assert.deepEqual(Object.keys(contracts).sort(), registry.detectors.map(d => d.id).sort());
+  // Beta.8 arrival families (#207–#212) carry contracts without a registry detector; everything else is the registry.
+  assert.deepEqual(Object.keys(contracts).filter(id => !arrivalIds.has(id)).sort(), registry.detectors.map(d => d.id).sort());
   for (const [family, c] of Object.entries(contracts)) {
     if (c.tier === 'T1') assert.match(c.providerSource.observedAt, /^\d{4}-\d{2}-\d{2}$/, family);
     if (c.tier === 'T2') assert.ok(c.review && c.corroboration.length, family);
@@ -42,11 +43,16 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   for (const [category, corpus] of all) for (const f of corpus.fixtures) {
     validateAssessment(f);
     assert.deepEqual(f.assessment, classifyFixture(category, f), f.id);
+    // The tallies below are the pre-Beta.8 corpus; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
     const key = `${f.assessment.kind}/${f.assessment.tier}`;
-    tally[key] ??= { files: 0, spans: 0 };
-    tally[key].files++;
-    tally[key].spans += f.expected.filter(r => r.role === 'secret').length;
-    if (f.assessment.kind === 'must-not-flag') assert.equal(f.expected.length, 0, f.id);
+    if (!category.startsWith('beta8-')) {
+      tally[key] ??= { files: 0, spans: 0 };
+      tally[key].files++;
+      tally[key].spans += f.expected.filter(r => r.role === 'secret').length;
+    }
+    // A control carries no secret span; #213 lets a twin keep its positive's `companion` span
+    // (beta8-209's Confluent key ID, redact-secret#739), which never makes it must-redact.
+    if (f.assessment.kind === 'must-not-flag') assert.equal(f.expected.filter(r => r.role !== 'companion').length, 0, f.id);
     if (f.assessment.kind === 'policy') assert.equal(f.assessment.tier, 'T3', f.id);
     if (f.assessment.kind === 'must-redact' && f.assessment.tier !== 'T0') assert.equal(contracts[f.assessment.contract].tier, f.assessment.tier, f.id);
   }
@@ -131,8 +137,20 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #112 / redact-secret#708: docker-token's dckr_oat_ branch accepts the exact 27-byte
   // body Docker's Hub API example shows; one new must-redact/T1 positive × 3 contexts
   // (+3 files/+3 spans), 3 twins × 3 contexts (netted out below).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 389);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 395);
+  // #209: confluent-cloud-api-secret's contract now validates the provider-published CRC32
+  // checksum; detector-coverage's three prefixed-shape positives were regenerated with a valid
+  // checksum (#209/#213), so they stay must-redact/T1 (net 0 here and below).
+  // #213: detector-coverage's three supabase-token shape-1 positives are regenerated in the
+  // documented sb_secret_ 22 + _ + 8 layout, so they move back from policy/T3 to must-redact/T1
+  // (+3 files/+3 spans here, -3 below).
+  // docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md: databricks'
+  // three rotation-suffixed positives put a provider-undecided suffix inside the secret span, so
+  // they move must-redact/T2 -> must-redact/T0 as unscored history (-3 files/-3 spans here, +3 below).
+  // Beta.8 #208/#210 graduation (registry pin dad7868): six new registry detectors each carry one
+  // detector-coverage shape positive in three contexts (+18 files/+18 spans); the #212 graduation
+  // (registry pin f2082ab) adds four more families the same way (+12/+12).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 419);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 425);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -141,9 +159,13 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#309: 3 more — confluent-cloud-api-secret-legacy's keyword-gated bare
   // 64-byte value across three contexts, policy as for twilio/datadog.
   // redact-secret#312: 3 more — heroku-api-key-legacy's keyword-gated bare UUID.
+  // #207 (research #231): supabase-token is re-reviewed onto the documented sb_secret_
+  // 22 + _ + 8 grammar, so its three shape-1 positives (40 alphanumeric, no inner _)
+  // move from must-redact/T0 to retained legacy policy/T3; #213 regenerates them in the
+  // documented layout, so they leave policy/T3 again (-3).
   assert.deepEqual(tally['policy/T3'], { files: 205, spans: 205 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
-  const twins = all.flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
+  const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
   // jwt-prefix-only/reference/mask, private-key-prefix-only/reference) plus
   // 6 new twins (which net out of this count via -twins.length).
@@ -188,9 +210,34 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #112: 1 new independent negative (datadog-application-key-ordinary-prose) lands a
   // fifth benign case on a fourth axis; the new huggingface-token prefix and
   // datadog-application-key boundary twins are netted out via -twins.length.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 429);
+  // The provider-undecided-properties decision re-scopes 11 twins (mailgun uppercase ×3, openai
+  // svcacct 73/74 ×2, databricks two-digit suffix ×3, mailchimp -eu6 ×3) to must-not-flag/T0: they
+  // still net out via -twins.length but leave the T1/T2/T3 tally (-11).
+  assert.equal(tally['must-not-flag/T0'].files, 11);
+  // Beta.8 #208/#210 graduation: 30 new independent detector-coverage controls (prefix-only,
+  // short-body, mask, reference and label-prose or public-id for each of six new registry detectors);
+  // the #212 graduation adds 20 more for four further registry detectors.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 468);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
+});
+
+test('a fixture re-scoped off a provider-undecided property exists, reads T0 for its family, and its contradiction is bounded', async () => {
+  // docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md
+  const { empiricalObservations } = await import('../benchmarks/support/empirical.ts');
+  await readFile(new URL('../docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md', import.meta.url));
+  const byKey = new Map(all.flatMap(([category, corpus]) => corpus.fixtures.map(f => [`${category}--${f.id}`, f])));
+  for (const { family, ids } of Object.values(DISPUTED_PROPERTIES)) {
+    for (const key of ids) {
+      const f = byKey.get(key);
+      assert.ok(f, `${key} is authored`);
+      assert.equal(f.assessment.tier, 'T0', key);
+      assert.equal(f.assessment.contract, family, key);
+      assert.match(f.assessment.reason, /^Not asserted: disputed property/, key);
+    }
+    const record = empiricalObservations.families.find(r => r.family === family);
+    assert.equal(record.contradictions.filter(c => c.status === 'unresolved').length, 0, `${family}: a re-scoped property leaves no unresolved contradiction`);
+  }
 });
 
 test('v4 outcomes reduce to the v3 exact/containment rule when no envelope is authored', () => {
@@ -211,10 +258,11 @@ test('v4 outcomes reduce to the v3 exact/containment rule when no envelope is au
 });
 
 test('envelopes are authored where v3 needed prose: URIs, OTP, Bearer, quoted generics', () => {
+  // Pre-Beta.8 count; beta8-<issue> corpora (#207–#212) are checked by the loop below but not counted.
   const enveloped = all.flatMap(([category, c]) => c.fixtures.filter(f => f.expected.some(r => r.envelope)).map(f => ({ category, f })));
+  assert.equal(enveloped.filter(({ category }) => !category.startsWith('beta8-')).length, 58);
   // #66: 3 new quoted-assignment envelopes (generic-token's markdown-inline-
   // code boundary, one per field).
-  assert.equal(enveloped.length, 58);
   for (const { f } of enveloped) for (const r of f.expected) {
     const bytes = Buffer.from(f.content);
     const whole = bytes.subarray(r.envelope.start, r.envelope.end).toString();
@@ -262,7 +310,8 @@ test('twins mutate exactly one property, pair with their positive and never carr
     assert.ok(!t.content.includes(value), `${t.id} must not contain the positive's secret`);
     const contract = contracts[p.assessment.contract];
     if (contract.pattern) assert.ok(!t.content.split(/\r?\n/).some(line => new RegExp(contract.pattern).test(line)), `${t.id} must not satisfy the contract`);
-    assert.equal(t.assessment.tier, t.mutationKind === 'public-prefix' && contract.tier === 'T1' ? 'T1' : 'T2', t.id);
+    // A twin re-scoped off a provider-undecided property is unscored T0 history.
+    assert.equal(t.assessment.tier, disputedProperty('common-formats', t.id) ? 'T0' : t.mutationKind === 'public-prefix' && contract.tier === 'T1' ? 'T1' : 'T2', t.id);
   }
   assert.deepEqual(twins.filter(t => t.assessment.tier === 'T1').map(t => t.id.replace(/-(plain|unicode-crlf)-twin$/, '')).filter((v, i, a) => a.indexOf(v) === i), ['stripe-token-live', 'stripe-token-test', 'private-key-ed25519']);
 });
@@ -277,7 +326,10 @@ test('malformed fixtures, missing companions and pending variants cannot pass as
   assert.equal(get('pypi-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('docker-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('docker-token-shape-1-bare').assessment.tier, 'T1');
-  for (const id of ['supabase-token-shape-1-bare', 'vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
+  for (const id of ['vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
+  // #207: supabase-token's T1 contract is the documented sb_secret_ 22 + _ + 8 grammar; #213
+  // regenerated the shape-1 value (once a flat 40-alphanumeric run) in that layout.
+  assert.deepEqual([get('supabase-token-shape-1-bare').assessment.kind, get('supabase-token-shape-1-bare').assessment.tier], ['must-redact', 'T1']);
   assert.equal(get('digitalocean-token-shape-1-bare').assessment.tier, 'T1');
   assert.equal(get('linear-token-shape-1-bare').assessment.tier, 'T1');
   const anthropic = structuredClone(common.find(f => f.id === 'anthropic-token-api03-plain'));
@@ -379,7 +431,8 @@ test('cross-suite views aggregate only the newest run id and name stale suites',
 
 test('format-correct unsupported controls stay included regardless of scanner output', () => {
   // #112: docker-token moved to T1, so openai-token supplies the T2 selection.
-  const selected = common.filter(f => /openai-token|cloudflare-token|stripe-token-test/.test(f.id));
+  // Fixtures re-scoped off a provider-undecided property are pending history, not format-correct controls.
+  const selected = common.filter(f => /openai-token|cloudflare-token|stripe-token-test/.test(f.id) && !disputedProperty('common-formats', f.id));
   const result = scoreReport(selected, [], lax);
   assert.equal(result.groups['must-redact/T2'].leakedSpans, selected.filter(f => f.assessment.kind === 'must-redact' && f.assessment.tier === 'T2').length);
   assert.equal(result.groups['must-redact/T1'].leakedSpanRate.point, 1);
@@ -402,6 +455,33 @@ test('AWS and Shopify composites map reported components without borrowing expec
   assert.deepEqual(normalizeTrufflehogFindings([{ ...shop, expected: [] }], '/tmp', shopRow), shop.expected.map(({ start, end }) => ({ path: shop.path, start, end })));
   assert.throws(() => normalizeTrufflehogFindings([shop], '/tmp', { ...shopRow, Raw: token + 'absent.myshopify.com' }));
   assert.deepEqual(score([aws], expected).rows[0].spanOutcomes, ['EXACT', 'EXACT']);
+});
+
+test('a percent-encoded TruffleHog URI result maps to its literal source span instead of failing the whole run', () => {
+  // TruffleHog 3.97.4's URI detector (17) re-serializes userinfo through Go's url.URL, so a literal "!"
+  // in the password comes back as "%21" (observed on a lexical.invalid-alphabet variant, #213). Before
+  // the fix locate() found no verbatim match and threw, turning the entire trufflehog observation into `error`.
+  const password = 'key-3ax6xnjp29jd6fds4gc373sgvjxteol!';
+  const content = `# mailgun\nMAILGUN_URL=https://api:${password}@api.mailgun.net/v3\n`;
+  const f = { id: 'uri', path: 'uri.txt', content, expected: [] };
+  const metadata = line => ({ Data: { Filesystem: { file: f.path, line } } });
+  const row = { DetectorName: 'URI', DetectorType: 17, Raw: `https://api:${password.replace('!', '%21')}@api.mailgun.net`, SourceMetadata: metadata(2) };
+  const literal = `https://api:${password}@api.mailgun.net`;
+  const start = Buffer.byteLength(content.slice(0, content.indexOf(literal)));
+  assert.throws(() => locate([f], '/tmp', f.path, row.Raw, 2), /unmappable/, 'the plain locator still cannot see an encoded raw');
+  assert.deepEqual(normalizeTrufflehogFindings([f], '/tmp', row), [{ path: f.path, start, end: start + Buffer.byteLength(literal) }]);
+  // Lower-case escapes decode the same byte; an escape the source also wrote literally still matches.
+  const star = { ...f, content: content.replace('!', '*') };
+  assert.deepEqual(normalizeTrufflehogFindings([star], '/tmp', { ...row, Raw: row.Raw.replace('%21', '%2a') }), [{ path: f.path, start, end: start + Buffer.byteLength(literal) }]);
+  const encoded = { ...f, content: content.replace('!', '%21') };
+  assert.deepEqual(normalizeTrufflehogFindings([encoded], '/tmp', row), [{ path: f.path, start, end: start + Buffer.byteLength(row.Raw) }]);
+  // Still fail closed: wrong line, a raw that decodes to nothing in the file, or two candidate spans.
+  assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, SourceMetadata: metadata(1) }), /percent-encoded/);
+  assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, Raw: row.Raw.replace('%21', '%40') }), /percent-encoded/);
+  const twice = { ...f, content: `${content.trimEnd()} ${literal}\n` };
+  assert.throws(() => normalizeTrufflehogFindings([twice], '/tmp', row), /percent-encoded/);
+  // Only escapes are widened: the rest of the raw is matched case-sensitively.
+  assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, Raw: row.Raw.replace('mailgun', 'MAILGUN') }), /percent-encoded/);
 });
 
 test('controlAxis reads the same table as classifyControl: one id per suffix, and a stale suffix fails closed (#91)', () => {

@@ -1,0 +1,5149 @@
+{
+  "schemaVersion": 1,
+  "issue": "redact-secret/redact-secret-benchmarks#213",
+  "report": "docs/reports/2026-09-24-beta8-213-portfolio.md",
+  "note": "Measurement record, not a product claim. exposureJudgement is a stated judgement, not a measurement. estimatedAdditionalFixtures is a computed floor, not a promise: new fixtures run a first measurement whose failures are kept.",
+  "measurement": {
+    "mode": "published",
+    "product": {
+      "package": "@redact-secret/core",
+      "version": "0.1.0-beta.7",
+      "sourceCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732",
+      "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
+      "integrity": {
+        "core": "sha512-3qjqKpmj8APbD+5sYJp7vtZQFBz1ctlPSHsWuZryC40vThEpkfj5MnagxxpIzMC5v+vCase0FK0H7zDxiA17yQ==",
+        "wasm": "sha512-dgTi+xGTc2kvwBpTmZkiGZFitwGxr0sQv656+Yqh5sZZ0qR/QtqqfFEc91rESjf5ojmxjWfArVqKN891hhyurQ==",
+        "node-darwin-arm64": "sha512-q5r31KQNZIjLjKDTshFCUsp8QF5KoSuw/ATqXcYqDVVv9QJeooan/P9Awal6I8sM2zDdAiP8eYOwb8I70eYKHg=="
+      }
+    },
+    "peers": {
+      "gitleaks": "8.30.1",
+      "trufflehog": "3.97.4"
+    },
+    "runs": [
+      {
+        "role": "legacy beta.7 publication (pre-#239 criteria)",
+        "benchmarkCommit": "021b074366ec2a35ad9814a5457715471e99c00d",
+        "runId": "42eb75b2-6116-430b-9725-3cfada3c25a1",
+        "distribution": {
+          "stable": 34,
+          "provisional": 21,
+          "pending": 2,
+          "unsupported": 0
+        }
+      },
+      {
+        "role": "frozen beta.7 baseline under Beta.8 criteria (#239 merge)",
+        "benchmarkCommit": "d5438c5e55b286c7fbe59da441431d2c9b27e810",
+        "runId": "dfb3d9de-a9c7-423e-b02d-00d54faca2b1",
+        "distribution": {
+          "stable": 0,
+          "provisional": 55,
+          "pending": 2,
+          "unsupported": 0
+        }
+      },
+      {
+        "role": "portfolio measurement (current)",
+        "benchmarkCommit": "102f7e4e6a6328107d54180b31796f36274b1069",
+        "runId": "44039078-2c49-4d40-9b0c-0a9b0677cabd",
+        "cases": 7037,
+        "variants": 17953,
+        "criteriaSchemaVersion": 1,
+        "fixtureProfilesVersion": 1,
+        "distribution": {
+          "stable": 4,
+          "provisional": 52,
+          "pending": 1,
+          "unsupported": 0
+        },
+        "reviewQueue": {
+          "runId": "60e40a01-cc9f-4144-93f8-48beddc7d494",
+          "ids": 4161,
+          "withoutLedgerRow": 0
+        }
+      }
+    ]
+  },
+  "baseline": {
+    "definition": "Frozen beta.7 baseline = the published 0.1.0-beta.7 package measured under the Beta.8 status criteria at d5438c5 (0 of 57 stable). A family newly reaches stable when a clean published or candidate eval:classify reads it stable and it is not in alreadyStable.",
+    "alreadyStable": [
+      "anthropic-token",
+      "azure-devops-personal-access-token",
+      "datadog-application-key",
+      "notion-token"
+    ],
+    "alreadyStableNote": "Stable since #238 (#209 fixtures). Excluded from the 15 and held as the no-regression set. Whether they also count toward the 15 is a maintainer decision (see report).",
+    "ineligibleT3": [
+      "bearer-token",
+      "connection-string",
+      "generic-token",
+      "otpauth-uri"
+    ]
+  },
+  "portfolio": {
+    "efficiency": [
+      "sendgrid-token",
+      "microsoft-entra-client-secret",
+      "github-token",
+      "slack-token",
+      "aws-access-key",
+      "digitalocean-token",
+      "docker-token",
+      "linear-token",
+      "npm-token",
+      "cloudflare-token"
+    ],
+    "marketValue": [
+      "gitlab-token",
+      "private-key",
+      "shopify-token",
+      "stripe-token",
+      "huggingface-token"
+    ],
+    "alternates": {
+      "efficiency": [
+        "pypi-token",
+        "datadog-api-key",
+        "grafana-cloud-access-policy-token",
+        "grafana-service-account-token",
+        "new-relic-user-api-key",
+        "heroku-api-key"
+      ],
+      "marketValue": [
+        "jwt",
+        "openai-token",
+        "google-api-key",
+        "supabase-token"
+      ]
+    }
+  },
+  "families": [
+    {
+      "family": "atlassian-api-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 5,
+            "required": 6
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 5,
+            "required": 10
+          }
+        ]
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 8,
+        "twinFailures": 5,
+        "benignCases": 19,
+        "benignFalseAlarms": 1,
+        "benignAxes": 6,
+        "metamorphicCritical": 77,
+        "mutationUnresolved": 56,
+        "differentialUnresolved": 22,
+        "positiveCases": 13,
+        "positiveAxes": 11,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 22,
+      "knownGaps": [
+        {
+          "id": "product-741",
+          "status": "promoted",
+          "issue": 741,
+          "kind": "false-negative"
+        },
+        {
+          "id": "product-747",
+          "status": "promoted",
+          "issue": 747,
+          "kind": "false-positive"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 5
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "H",
+        "credentialImpact": "M",
+        "score": 12
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        },
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#741"
+        },
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#747"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "aws-access-key",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 22,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 4,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 3,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 22,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 4,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 3,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 6,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 10,
+        "positiveAxes": 4,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 2,
+        "includingIntended206Profile": 4
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 13
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumBenignCases 6/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 5
+      }
+    },
+    {
+      "family": "cloudflare-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 19,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 19,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveCases",
+          "actual": 5,
+          "required": 6
+        },
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 8,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 5,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 5
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 11
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveCases 5/6; documented.minimumPositiveAxes 2/4; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 10
+      }
+    },
+    {
+      "family": "confluent-cloud-api-secret",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          }
+        ]
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 10,
+        "twinFailures": 4,
+        "benignCases": 8,
+        "benignFalseAlarms": 0,
+        "benignAxes": 5,
+        "metamorphicCritical": 7,
+        "mutationUnresolved": 8,
+        "differentialUnresolved": 10,
+        "positiveCases": 7,
+        "positiveAxes": 5,
+        "controlAxes": 5,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 10,
+      "knownGaps": [
+        {
+          "id": "product-738",
+          "status": "promoted",
+          "issue": 738,
+          "kind": "false-positive"
+        },
+        {
+          "id": "product-739",
+          "status": "promoted",
+          "issue": 739,
+          "kind": "false-positive"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 6
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#738"
+        },
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#739"
+        },
+        {
+          "kind": "human-decision-pending",
+          "detail": "retained detector-coverage prefixed-shape policy rows vs the checksum contract"
+        },
+        {
+          "kind": "human-decision-pending",
+          "detail": "classification-granularity policy (3 rows)"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "confluent-cloud-api-secret-legacy",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 1,
+            "required": 6
+          }
+        ],
+        "intendedProfile": "context-constrained-empirical",
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 15,
+        "twinFailures": 0,
+        "benignCases": 19,
+        "benignFalseAlarms": 1,
+        "benignAxes": 6,
+        "metamorphicCritical": 7,
+        "mutationUnresolved": 1,
+        "differentialUnresolved": 7,
+        "positiveCases": 14,
+        "positiveAxes": 12,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 7,
+      "knownGaps": [
+        {
+          "id": "product-744",
+          "status": "promoted",
+          "issue": 744,
+          "kind": "false-positive"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing; no new legacy credential can be issued"
+        },
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#744"
+        },
+        {
+          "kind": "human-decision-pending",
+          "detail": "classification-granularity policy (5 rows)"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "databricks-personal-access-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 40
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 10
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 14
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 6
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 4,
+            "required": 5
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "empirical.minimumPositiveCases",
+          "actual": 6,
+          "required": 10
+        },
+        {
+          "gate": "empirical.minimumPositiveAxes",
+          "actual": 1,
+          "required": 6
+        },
+        {
+          "gate": "empirical.minimumBenignCases",
+          "actual": 6,
+          "required": 14
+        },
+        {
+          "gate": "empirical.minimumControlAxes",
+          "actual": 4,
+          "required": 5
+        }
+      ],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 9,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 4,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 6,
+        "positiveAxes": 1,
+        "controlAxes": 4,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 13,
+        "includingIntended206Profile": 19
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 11
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "empirical.minimumPositiveCases 6/10; empirical.minimumPositiveAxes 1/6; empirical.minimumBenignCases 6/14; empirical.minimumControlAxes 4/5"
+        },
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "datadog-api-key",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 11,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 11,
+        "positiveAxes": 7,
+        "controlAxes": 3,
+        "contextTwinPairs": 8,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 9
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "L",
+        "score": 9
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency-alternate",
+        "rank": 2
+      }
+    },
+    {
+      "family": "datadog-application-key-legacy",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 19,
+            "required": 24
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "twinPairs",
+            "actual": 3,
+            "required": 5
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 19,
+            "required": 40
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 8,
+            "required": 10
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 14
+          },
+          {
+            "cell": "twinPairs",
+            "actual": 3,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 5
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "empirical.minimumBenignCases",
+          "actual": 5,
+          "required": 14
+        },
+        {
+          "gate": "empirical.minimumControlAxes",
+          "actual": 3,
+          "required": 5
+        },
+        {
+          "gate": "empirical.minimumTwinPairs",
+          "actual": 3,
+          "required": 8
+        }
+      ],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 3,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 11,
+        "positiveAxes": 7,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 19,
+        "includingIntended206Profile": 21
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 8
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "empirical.minimumBenignCases 5/14; empirical.minimumControlAxes 3/5; empirical.minimumTwinPairs 3/8"
+        },
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "digitalocean-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 8,
+        "twinFailures": 0,
+        "benignCases": 9,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 18,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 4
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 9
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 2/4; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 6
+      }
+    },
+    {
+      "family": "discord-bot-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 8,
+        "twinFailures": 0,
+        "benignCases": 15,
+        "benignFalseAlarms": 0,
+        "benignAxes": 6,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 24,
+        "positiveAxes": 14,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "docker-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 7,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 7,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 7,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 16,
+        "twinFailures": 0,
+        "benignCases": 7,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 13,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 4
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 7
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 2/4; documented.minimumBenignCases 7/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 7
+      }
+    },
+    {
+      "family": "firebase-server-key",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 5,
+            "required": 6
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 5,
+            "required": 10
+          }
+        ]
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 8,
+        "twinFailures": 0,
+        "benignCases": 19,
+        "benignFalseAlarms": 0,
+        "benignAxes": 6,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 13,
+        "positiveAxes": 11,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 5
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "github-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 6,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 42,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 67,
+        "positiveAxes": 22,
+        "controlAxes": 3,
+        "contextTwinPairs": 17,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 2,
+        "includingIntended206Profile": 2
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "H",
+        "credentialImpact": "H",
+        "score": 13
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumBenignCases 6/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 3
+      }
+    },
+    {
+      "family": "gitlab-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 2,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 2,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 3,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 6,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 7,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 8,
+        "positiveAxes": 3,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 5
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "H",
+        "credentialImpact": "H",
+        "score": 13
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 3/4; documented.minimumBenignCases 6/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value",
+        "rank": 1
+      }
+    },
+    {
+      "family": "google-api-key",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 1,
+            "required": 6
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 1,
+            "required": 6
+          }
+        ]
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 9,
+        "twinFailures": 0,
+        "benignCases": 8,
+        "benignFalseAlarms": 0,
+        "benignAxes": 5,
+        "metamorphicCritical": 7,
+        "mutationUnresolved": 3,
+        "differentialUnresolved": 1,
+        "positiveCases": 7,
+        "positiveAxes": 5,
+        "controlAxes": 5,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 1,
+      "knownGaps": [
+        {
+          "id": "product-520",
+          "status": "observed",
+          "issue": 520,
+          "kind": "false-negative"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 5
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "H",
+        "credentialImpact": "M",
+        "score": 14
+      },
+      "blockers": [
+        {
+          "kind": "human-decision-pending",
+          "detail": "redact-secret#520 B3a: Firebase web-config apiKey, product gap or documented scope exclusion (product-520 at observed)"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value-alternate",
+        "rank": 3
+      }
+    },
+    {
+      "family": "grafana-cloud-access-policy-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 11,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 11,
+        "positiveAxes": 7,
+        "controlAxes": 3,
+        "contextTwinPairs": 8,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 9
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 8
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency-alternate",
+        "rank": 3
+      }
+    },
+    {
+      "family": "grafana-service-account-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 11,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 11,
+        "positiveAxes": 7,
+        "controlAxes": 3,
+        "contextTwinPairs": 8,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 9
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 8
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency-alternate",
+        "rank": 4
+      }
+    },
+    {
+      "family": "heroku-api-key",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 1,
+            "required": 6
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 1,
+            "required": 6
+          }
+        ]
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 9,
+        "twinFailures": 2,
+        "benignCases": 8,
+        "benignFalseAlarms": 0,
+        "benignAxes": 5,
+        "metamorphicCritical": 14,
+        "mutationUnresolved": 4,
+        "differentialUnresolved": 2,
+        "positiveCases": 7,
+        "positiveAxes": 5,
+        "controlAxes": 5,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 2,
+      "knownGaps": [
+        {
+          "id": "product-740",
+          "status": "promoted",
+          "issue": 740,
+          "kind": "false-negative"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 5
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 9
+      },
+      "blockers": [
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#740"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency-alternate",
+        "rank": 6
+      }
+    },
+    {
+      "family": "heroku-api-key-legacy",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          }
+        ],
+        "intendedProfile": "context-constrained-empirical",
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 13,
+        "twinFailures": 0,
+        "benignCases": 20,
+        "benignFalseAlarms": 1,
+        "benignAxes": 6,
+        "metamorphicCritical": 21,
+        "mutationUnresolved": 3,
+        "differentialUnresolved": 2,
+        "positiveCases": 16,
+        "positiveAxes": 13,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 2,
+      "knownGaps": [
+        {
+          "id": "product-743-multi-line",
+          "status": "promoted",
+          "issue": 743,
+          "kind": "false-negative"
+        },
+        {
+          "id": "product-743-url-path",
+          "status": "promoted",
+          "issue": 743,
+          "kind": "false-positive"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 9
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing; no new legacy credential can be issued"
+        },
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#743"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "huggingface-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 19,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 7,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 19,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 7,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveCases",
+          "actual": 5,
+          "required": 6
+        },
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 7,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 7,
+        "twinFailures": 0,
+        "benignCases": 7,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 5,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 7
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "H",
+        "credentialImpact": "M",
+        "score": 12
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveCases 5/6; documented.minimumPositiveAxes 2/4; documented.minimumBenignCases 7/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value",
+        "rank": 5
+      }
+    },
+    {
+      "family": "jwt",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 17,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 17,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveCases",
+          "actual": 5,
+          "required": 6
+        },
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 7,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 4,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 5,
+        "positiveAxes": 2,
+        "controlAxes": 4,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 5,
+        "includingIntended206Profile": 9
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "M",
+        "credentialImpact": "M",
+        "score": 12
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveCases 5/6; documented.minimumPositiveAxes 2/4; documented.minimumBenignCases 5/8"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value-alternate",
+        "rank": 1
+      }
+    },
+    {
+      "family": "linear-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 23,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 23,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 5,
+        "twinFailures": 0,
+        "benignCases": 10,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 8,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 4
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "H",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 2/4; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 8
+      }
+    },
+    {
+      "family": "mailchimp-api-key",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 18,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 18,
+            "required": 40
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 10
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 14
+          },
+          {
+            "cell": "twinPairs",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 6
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 4,
+            "required": 5
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "empirical.minimumPositiveCases",
+          "actual": 6,
+          "required": 10
+        },
+        {
+          "gate": "empirical.minimumPositiveAxes",
+          "actual": 1,
+          "required": 6
+        },
+        {
+          "gate": "empirical.minimumBenignCases",
+          "actual": 6,
+          "required": 14
+        },
+        {
+          "gate": "empirical.minimumControlAxes",
+          "actual": 4,
+          "required": 5
+        },
+        {
+          "gate": "empirical.minimumTwinPairs",
+          "actual": 6,
+          "required": 8
+        }
+      ],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 4,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 6,
+        "positiveAxes": 1,
+        "controlAxes": 4,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 17,
+        "includingIntended206Profile": 22
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "empirical.minimumPositiveCases 6/10; empirical.minimumPositiveAxes 1/6; empirical.minimumBenignCases 6/14; empirical.minimumControlAxes 4/5; empirical.minimumTwinPairs 6/8"
+        },
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "mailgun-api-key",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 40
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 10
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 14
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 6
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 4,
+            "required": 5
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "empirical.minimumPositiveCases",
+          "actual": 6,
+          "required": 10
+        },
+        {
+          "gate": "empirical.minimumPositiveAxes",
+          "actual": 1,
+          "required": 6
+        },
+        {
+          "gate": "empirical.minimumBenignCases",
+          "actual": 6,
+          "required": 14
+        },
+        {
+          "gate": "empirical.minimumControlAxes",
+          "actual": 4,
+          "required": 5
+        }
+      ],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 9,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 4,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 6,
+        "positiveAxes": 1,
+        "controlAxes": 4,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 13,
+        "includingIntended206Profile": 19
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "empirical.minimumPositiveCases 6/10; empirical.minimumPositiveAxes 1/6; empirical.minimumBenignCases 6/14; empirical.minimumControlAxes 4/5"
+        },
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "microsoft-entra-client-secret",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 7,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 7,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 7,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 17,
+        "twinFailures": 0,
+        "benignCases": 7,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 14,
+        "positiveAxes": 7,
+        "controlAxes": 3,
+        "contextTwinPairs": 8,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 1,
+        "includingIntended206Profile": 7
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 13
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumBenignCases 7/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 2
+      }
+    },
+    {
+      "family": "netlify-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 18,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 18,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 1,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 6,
+          "required": 8
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 4,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 6,
+        "positiveAxes": 1,
+        "controlAxes": 4,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 5,
+        "includingIntended206Profile": 6
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 6
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 1/4; documented.minimumBenignCases 6/8"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "new-relic-license-key",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 20,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 20,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 1,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 9,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 6,
+        "positiveAxes": 1,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 6,
+        "includingIntended206Profile": 9
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "L",
+        "score": 9
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 1/4; documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "new-relic-user-api-key",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 11,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 11,
+        "positiveAxes": 7,
+        "controlAxes": 3,
+        "contextTwinPairs": 8,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 9
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 8
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency-alternate",
+        "rank": 5
+      }
+    },
+    {
+      "family": "npm-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 20,
+            "required": 24
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 2,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 20,
+            "required": 24
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 2,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 3,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 6,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 8,
+        "positiveAxes": 3,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 4
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 7
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 3/4; documented.minimumBenignCases 6/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 9
+      }
+    },
+    {
+      "family": "okta-api-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 40
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 10
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 14
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 6
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 4,
+            "required": 5
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "empirical.minimumPositiveCases",
+          "actual": 6,
+          "required": 10
+        },
+        {
+          "gate": "empirical.minimumPositiveAxes",
+          "actual": 1,
+          "required": 6
+        },
+        {
+          "gate": "empirical.minimumBenignCases",
+          "actual": 6,
+          "required": 14
+        },
+        {
+          "gate": "empirical.minimumControlAxes",
+          "actual": 4,
+          "required": 5
+        }
+      ],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 9,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 4,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 6,
+        "positiveAxes": 1,
+        "controlAxes": 4,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 13,
+        "includingIntended206Profile": 19
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 9
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "empirical.minimumPositiveCases 6/10; empirical.minimumPositiveAxes 1/6; empirical.minimumBenignCases 6/14; empirical.minimumControlAxes 4/5"
+        },
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "openai-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "benignControls",
+            "actual": 7,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 28,
+            "required": 40
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 9,
+            "required": 10
+          },
+          {
+            "cell": "benignControls",
+            "actual": 7,
+            "required": 14
+          },
+          {
+            "cell": "twinPairs",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 6
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 5
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "empirical.minimumPositiveAxes",
+          "actual": 2,
+          "required": 6
+        },
+        {
+          "gate": "empirical.minimumBenignCases",
+          "actual": 7,
+          "required": 14
+        },
+        {
+          "gate": "empirical.minimumControlAxes",
+          "actual": 3,
+          "required": 5
+        },
+        {
+          "gate": "empirical.minimumTwinPairs",
+          "actual": 6,
+          "required": 8
+        }
+      ],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 7,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 15,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 15,
+        "includingIntended206Profile": 16
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "H",
+        "credentialImpact": "M",
+        "score": 14
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "empirical.minimumPositiveAxes 2/6; empirical.minimumBenignCases 7/14; empirical.minimumControlAxes 3/5; empirical.minimumTwinPairs 6/8"
+        },
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value-alternate",
+        "rank": 2
+      }
+    },
+    {
+      "family": "postman-api-key",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 18,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 18,
+            "required": 40
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 10
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 14
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 6
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 4,
+            "required": 5
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "empirical.minimumPositiveCases",
+          "actual": 3,
+          "required": 10
+        },
+        {
+          "gate": "empirical.minimumPositiveAxes",
+          "actual": 1,
+          "required": 6
+        },
+        {
+          "gate": "empirical.minimumBenignCases",
+          "actual": 6,
+          "required": 14
+        },
+        {
+          "gate": "empirical.minimumControlAxes",
+          "actual": 4,
+          "required": 5
+        }
+      ],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 9,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 4,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 3,
+        "positiveAxes": 1,
+        "controlAxes": 4,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 15,
+        "includingIntended206Profile": 22
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "M",
+        "credentialImpact": "M",
+        "score": 8
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "empirical.minimumPositiveCases 3/10; empirical.minimumPositiveAxes 1/6; empirical.minimumBenignCases 6/14; empirical.minimumControlAxes 4/5"
+        },
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "private-key",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 5,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 20,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 5,
+        "includingIntended206Profile": 6
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 13
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 2/4; documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value",
+        "rank": 2
+      }
+    },
+    {
+      "family": "pulumi-access-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 1,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 6,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 9,
+        "positiveAxes": 1,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 5,
+        "includingIntended206Profile": 5
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 7
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 1/4; documented.minimumBenignCases 6/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "pypi-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 20,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 20,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveCases",
+          "actual": 3,
+          "required": 6
+        },
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 1,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 9,
+        "twinFailures": 0,
+        "benignCases": 8,
+        "benignFalseAlarms": 0,
+        "benignAxes": 6,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 3,
+        "positiveAxes": 1,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 3,
+        "includingIntended206Profile": 6
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 7
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveCases 3/6; documented.minimumPositiveAxes 1/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency-alternate",
+        "rank": 1
+      }
+    },
+    {
+      "family": "sendgrid-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 18,
+        "twinFailures": 0,
+        "benignCases": 11,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 38,
+        "positiveAxes": 9,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [
+        {
+          "id": "product-404",
+          "status": "promoted",
+          "issue": 404,
+          "kind": "false-negative"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 1,
+        "includingIntended206Profile": 1
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "M",
+        "credentialImpact": "M",
+        "score": 12
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 1
+      }
+    },
+    {
+      "family": "sentry-org-auth-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 8,
+        "twinFailures": 0,
+        "benignCases": 14,
+        "benignFalseAlarms": 0,
+        "benignAxes": 6,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 18,
+        "positiveAxes": 14,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "M",
+        "credentialImpact": "M",
+        "score": 8
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "sentry-user-auth-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 8,
+        "twinFailures": 0,
+        "benignCases": 14,
+        "benignFalseAlarms": 0,
+        "benignAxes": 6,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 18,
+        "positiveAxes": 14,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "H",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "shopify-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 10,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 5,
+        "includingIntended206Profile": 6
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 13
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 2/4; documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value",
+        "rank": 3
+      }
+    },
+    {
+      "family": "slack-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveContextAxes",
+            "actual": 2,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveContextAxes",
+            "actual": 2,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 3,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 12,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 26,
+        "positiveAxes": 3,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 2,
+        "includingIntended206Profile": 3
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "H",
+        "credentialImpact": "M",
+        "score": 14
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 3/4; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "efficiency",
+        "rank": 4
+      }
+    },
+    {
+      "family": "stripe-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 22,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 5,
+        "includingIntended206Profile": 6
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 13
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 2/4; documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value",
+        "rank": 4
+      }
+    },
+    {
+      "family": "supabase-management-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 17,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 17,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 0,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 1,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 6,
+        "positiveAxes": 1,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 6,
+        "includingIntended206Profile": 9
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 11
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 1/4; documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "supabase-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "pending",
+        "frozenBaselineBeta8Criteria": "pending",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "positiveCases",
+            "actual": 5,
+            "required": 6
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "positiveCases",
+            "actual": 5,
+            "required": 6
+          }
+        ]
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 5,
+        "twinFailures": 3,
+        "benignCases": 14,
+        "benignFalseAlarms": 0,
+        "benignAxes": 6,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 6,
+        "differentialUnresolved": 8,
+        "positiveCases": 10,
+        "positiveAxes": 8,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 8,
+      "knownGaps": [
+        {
+          "id": "product-742",
+          "status": "promoted",
+          "issue": 742,
+          "kind": "false-positive"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 1
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "M",
+        "credentialImpact": "H",
+        "score": 13
+      },
+      "blockers": [
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#742"
+        },
+        {
+          "kind": "human-decision-pending",
+          "detail": "classification-granularity policy (3 rows)"
+        }
+      ],
+      "portfolio": {
+        "list": "market-value-alternate",
+        "rank": 4
+      }
+    },
+    {
+      "family": "telegram-bot-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [],
+        "intendedProfile": "stable-empirical",
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 8,
+        "twinFailures": 0,
+        "benignCases": 15,
+        "benignFalseAlarms": 0,
+        "benignAxes": 5,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 18,
+        "positiveAxes": 14,
+        "controlAxes": 5,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "terraform-cloud-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 21,
+            "required": 24
+          },
+          {
+            "cell": "positiveCases",
+            "actual": 3,
+            "required": 6
+          },
+          {
+            "cell": "benignControls",
+            "actual": 6,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 1,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 6,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 6,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 9,
+        "positiveAxes": 1,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 5,
+        "includingIntended206Profile": 5
+      },
+      "exposureJudgement": {
+        "runtime": "L",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 7
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 1/4; documented.minimumBenignCases 6/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "twilio-api-key-secret",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [],
+        "intendedProfile": "context-constrained-empirical",
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 10,
+        "twinFailures": 0,
+        "benignCases": 16,
+        "benignFalseAlarms": 1,
+        "benignAxes": 6,
+        "metamorphicCritical": 7,
+        "mutationUnresolved": 1,
+        "differentialUnresolved": 1,
+        "positiveCases": 23,
+        "positiveAxes": 18,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 1,
+      "knownGaps": [
+        {
+          "id": "product-746",
+          "status": "promoted",
+          "issue": 746,
+          "kind": "false-positive"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "M",
+        "score": 10
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        },
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#746"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "twilio-auth-token",
+      "tier": "T2",
+      "evidenceBasis": "independently-corroborated",
+      "route": "empirical",
+      "status": {
+        "legacyBeta7Criteria": "provisional",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [],
+        "intendedProfile": "context-constrained-empirical",
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [
+        "empirical.evidenceBasis",
+        "empirical.minimumObservations",
+        "empirical.minimumSubjects",
+        "empirical.minimumIssuanceDates",
+        "empirical.minimumCorroborationClasses",
+        "empirical.uncertainty",
+        "empirical.supportedContexts",
+        "empirical.mode"
+      ],
+      "behaviourGates": {
+        "twinPairs": 10,
+        "twinFailures": 0,
+        "benignCases": 17,
+        "benignFalseAlarms": 1,
+        "benignAxes": 6,
+        "metamorphicCritical": 7,
+        "mutationUnresolved": 1,
+        "differentialUnresolved": 2,
+        "positiveCases": 22,
+        "positiveAxes": 18,
+        "controlAxes": 6,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 2,
+      "knownGaps": [
+        {
+          "id": "product-744",
+          "status": "promoted",
+          "issue": 744,
+          "kind": "false-positive"
+        }
+      ],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 11
+      },
+      "blockers": [
+        {
+          "kind": "human-only-observation",
+          "detail": "#205 records: 0/5 observations, 0/2 subjects, 0/2 dates, 0/2 corroboration classes; mode, uncertainty, supported contexts missing"
+        },
+        {
+          "kind": "product-fix",
+          "issue": "redact-secret/redact-secret#744"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "vault-token",
+      "tier": "T1",
+      "evidenceBasis": "provider-documented",
+      "route": "documented",
+      "status": {
+        "legacyBeta7Criteria": "stable",
+        "frozenBaselineBeta8Criteria": "provisional",
+        "current": "provisional"
+      },
+      "fixtureProfileDebt206": {
+        "target": "stable-documented",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 22,
+            "required": 24
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": "stable-documented",
+        "debtAtIntended": [
+          {
+            "cell": "totalFixtures",
+            "actual": 22,
+            "required": 24
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ]
+      },
+      "bindingFloorReasons": [
+        {
+          "gate": "documented.minimumPositiveAxes",
+          "actual": 2,
+          "required": 4
+        },
+        {
+          "gate": "documented.minimumBenignCases",
+          "actual": 5,
+          "required": 8
+        },
+        {
+          "gate": "documented.minimumControlAxes",
+          "actual": 3,
+          "required": 4
+        }
+      ],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 6,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 11,
+        "positiveAxes": 2,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 5,
+        "includingIntended206Profile": 6
+      },
+      "exposureJudgement": {
+        "runtime": "H",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 11
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "documented.minimumPositiveAxes 2/4; documented.minimumBenignCases 5/8; documented.minimumControlAxes 3/4"
+        }
+      ],
+      "portfolio": null
+    },
+    {
+      "family": "vercel-token",
+      "tier": "T0",
+      "evidenceBasis": "none",
+      "route": "none",
+      "status": {
+        "legacyBeta7Criteria": "pending",
+        "frozenBaselineBeta8Criteria": "pending",
+        "current": "pending"
+      },
+      "fixtureProfileDebt206": {
+        "target": "arrival-provisional",
+        "explicitClaim": false,
+        "debtAtTarget": [
+          {
+            "cell": "totalFixtures",
+            "actual": 20,
+            "required": 24
+          },
+          {
+            "cell": "benignControls",
+            "actual": 5,
+            "required": 8
+          },
+          {
+            "cell": "twinPairs",
+            "actual": 0,
+            "required": 5
+          },
+          {
+            "cell": "positiveContextAxes",
+            "actual": 1,
+            "required": 4
+          },
+          {
+            "cell": "controlAxes",
+            "actual": 3,
+            "required": 4
+          }
+        ],
+        "intendedProfile": null,
+        "debtAtIntended": []
+      },
+      "bindingFloorReasons": [],
+      "observationDebt": [],
+      "behaviourGates": {
+        "twinPairs": 0,
+        "twinFailures": 0,
+        "benignCases": 5,
+        "benignFalseAlarms": 0,
+        "benignAxes": 3,
+        "metamorphicCritical": 0,
+        "mutationUnresolved": 0,
+        "differentialUnresolved": 0,
+        "positiveCases": 15,
+        "positiveAxes": 1,
+        "controlAxes": 3,
+        "contextTwinPairs": 0,
+        "observations": 0
+      },
+      "openLedgerRows": 0,
+      "knownGaps": [],
+      "estimatedAdditionalFixtures": {
+        "bindingFloorsOnly": 0,
+        "includingIntended206Profile": 0
+      },
+      "exposureJudgement": {
+        "runtime": "M",
+        "aiContext": "L",
+        "credentialImpact": "H",
+        "score": 9
+      },
+      "blockers": [
+        {
+          "kind": "benchmark-authoring-debt",
+          "detail": "no reviewed positive (T0); needs a reviewed contract before any stable gate applies"
+        }
+      ],
+      "portfolio": null
+    }
+  ]
+}

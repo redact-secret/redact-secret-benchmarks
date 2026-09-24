@@ -4,6 +4,7 @@ import { buildDetectorCoverage, documentedTwins } from "./detector-coverage.mjs"
 import { buildClosedMilestone } from "./closed-milestone.mjs";
 import { buildCommonFormats } from "./common-formats.mjs";
 import { buildContextFamilies } from "./context-families.mjs";
+import { buildBeta8 } from "./beta8/index.mjs";
 import { classifyFixture } from "../../benchmarks/lib/assessment.ts";
 
 // Public, deterministic benchmark seed. These values were never provider-issued.
@@ -20,7 +21,7 @@ export function synthetic(label, length, chars = alphabet) {
   return value.slice(0, length);
 }
 
-// Parts: literal strings, `{ secret }` spans, or `{ secret, envelope: { before, after, reason } }`
+// Parts: literal strings, `{ secret }` spans, `{ companion, note }` companion spans, or `{ secret, envelope: { before, after, reason } }`
 // where `before`/`after` are emitted around the secret and the authored
 // envelope covers all three. Envelopes are written from construction, never
 // widened in response to scanner output (docs/specs/measurement-v4.md §2.2).
@@ -29,7 +30,15 @@ export function fixture(id, group, parts, extension = "txt") {
   const expected = [];
   for (const part of parts) {
     if (typeof part === "string") content += part;
-    else {
+    else if (part.companion !== undefined) {
+      // A `{ companion, note }` part (measurement-v4 span role `companion`): bytes that are
+      // not the secret but may be redacted with it at no collateral cost, e.g. the public
+      // identifier paired with the secret. Never a must-cover span.
+      if (typeof part.note !== "string" || !part.note.trim()) throw new Error(`${id}: companion span without a note`);
+      const start = Buffer.byteLength(content);
+      content += part.companion;
+      expected.push({ start, end: Buffer.byteLength(content), role: "companion", note: part.note });
+    } else {
       const envelope = part.envelope;
       const outer = Buffer.byteLength(content);
       if (envelope) content += envelope.before;
@@ -271,6 +280,7 @@ export function buildCorpora() {
     ...buildClosedMilestone({ fixture, synthetic, wrap, quoted, uri }),
     ...buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, ENVELOPES }),
     ...buildCommonFormats({ fixture, synthetic, wrap }),
+    ...buildBeta8({ fixture, synthetic, wrap }),
   };
   for (const [category, corpus] of Object.entries(corpora))
     for (const f of corpus.fixtures) f.assessment = classifyFixture(category, f);

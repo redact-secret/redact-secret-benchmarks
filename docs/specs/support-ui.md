@@ -52,6 +52,16 @@ carry no evidence. A page only renders a matrix that answers `null`.
   twin coverage — un-probeable families say so rather than reading as zero
   twins — and the unresolved critical metamorphic, mutation and differential
   items.
+- **Qualification provenance**, kept separate: evidence tier, evidence basis,
+  and qualification profile. Empirical stable rows read
+  `Stable · Empirically qualified`, retain T2, name the evidence basis (external
+  corroboration or provider-issued observations) beside its machine value, and
+  show corroboration (references, owners, classes), observation coverage,
+  unresolved and bounded contradictions, uncertainty, context limits, and every
+  fixture-profile cell. The matrix refuses an empirical row whose basis its own
+  records cannot carry.
+- **Split stable totals**: documented and empirical stable family counts are
+  recounted from rows and shown separately.
 - **Provenance**: the family and provider counts, and the `sourceReport` run
   id, date, revision and dirty flag carried through from `support-status.json`.
 

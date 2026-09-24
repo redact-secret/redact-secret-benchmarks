@@ -7,7 +7,8 @@ import { promisify } from 'node:util';
 import Ajv from 'ajv';
 import { familyEvidence } from '../benchmarks/support/evidence.ts';
 import { classifyFamilySupport } from '../benchmarks/support/status.ts';
-import { contracts } from '../benchmarks/lib/assessment.ts';
+import { contracts, registryContractIds } from '../benchmarks/lib/assessment.ts';
+import { fixtureProfileReport, measureFixtureCells } from '../benchmarks/support/profiles.ts';
 
 const exec = promisify(execFile);
 const repositoryRoot = path.resolve(new URL('..', import.meta.url).pathname);
@@ -55,6 +56,28 @@ test('familyEvidence reports benignAxes/benignAxisIds from axesByDetector, keyed
   const missing = familyEvidence('never-registered', {}, axesByDetector, [], emptyLedger);
   assert.equal(missing.benignAxes, 0);
   assert.deepEqual(missing.benignAxisIds, []);
+});
+
+test('familyEvidence counts context-twin pairs by the authored context mutation, in any corpus, never by the context-edges category', () => {
+  const twin = (category, id, mutationKind) => ({
+    method: 'twin', targets: ['example-token'], source: { category, fixtureId: id },
+    seed: { id: `${id}-positive`, expected: [{ start: 0, end: 1 }], group: 'g' }, twin: { id, twinOf: `${id}-positive`, mutationKind },
+  });
+  const cases = [
+    twin('beta8-207', 'env-context-twin', 'context'),
+    twin('detector-coverage', 'keyword-context-twin', 'context'),
+    twin('beta8-212', 'legacy-context-twin', 'context'),
+    // The same twin fixture seen twice (it is one pair).
+    twin('beta8-207', 'env-context-twin', 'context'),
+    // A value twin in context-edges is not a context-twin pair.
+    twin('context-edges', 'length-twin', 'length'),
+    twin('context-edges', 'prefix-twin', 'prefix'),
+    twin('beta8-207', 'other-family-context-twin', 'context'),
+  ];
+  cases[6].targets = ['other-token'];
+  const evidence = familyEvidence('example-token', {}, {}, [], emptyLedger, cases);
+  assert.equal(evidence.contextTwinPairs, 3);
+  assert.equal(evidence.confusionAxes, 3, 'length, prefix and context twin kinds are three confusion axes');
 });
 
 test('familyEvidence counts a hard mutation failure as unresolved even with no queue entry', () => {
@@ -138,7 +161,9 @@ test('a real classify-support report, if present from a prior eval:classify run,
   let report;
   try { report = await read('results-output/support-status.json'); } catch { return; }
   assert.ok(validate(report), JSON.stringify(validate.errors));
-  assert.equal(report.familyCount, Object.keys(contracts).length);
+  // eval:classify covers registry families only; Beta.8 arrival contracts have no product detector.
+  assert.equal(report.familyCount, registryContractIds.length);
+  assert.deepEqual(report.families.map(f => f.family).sort(), [...registryContractIds].sort());
   assert.equal(new Set(report.families.map(f => f.family)).size, report.familyCount);
   const total = Object.values(report.distribution).reduce((a, b) => a + b, 0);
   assert.equal(total, report.familyCount);
@@ -150,9 +175,10 @@ test('a synthetic report shaped like eval:classify output satisfies the schema',
   const assessment = classifyFamilySupport(evidence);
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
-    criteriaSchemaVersion: 1, product: null, scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
-    familyCount: 1, distribution: { stable: 0, provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
-    families: [{ ...assessment, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null }],
+    criteriaSchemaVersion: 1, fixtureProfilesVersion: 1, product: null, scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
+    familyCount: 1, distribution: { stable: Number(assessment.status === 'stable'), provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
+    stableDistribution: { documented: Number(assessment.qualificationProfile === 'documented'), empirical: Number(assessment.qualificationProfile === 'empirical') },
+    families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
   };
   assert.ok(validate(synthetic), JSON.stringify(validate.errors));
 });
@@ -163,12 +189,13 @@ test('a synthetic report shaped like a candidate eval:classify run satisfies the
   const assessment = classifyFamilySupport(evidence);
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
-    criteriaSchemaVersion: 1,
+    criteriaSchemaVersion: 1, fixtureProfilesVersion: 1,
     product: { sourceCommit: 'a'.repeat(40), packageName: '@redact-secret/core', declaredVersion: '9.9.9-candidate.1',
       artifacts: ['package', 'node', 'wasm'].map(role => ({ role, sha256: 'b'.repeat(64) })) },
     scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
-    familyCount: 1, distribution: { stable: 0, provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
-    families: [{ ...assessment, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null }],
+    familyCount: 1, distribution: { stable: Number(assessment.status === 'stable'), provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
+    stableDistribution: { documented: Number(assessment.qualificationProfile === 'documented'), empirical: Number(assessment.qualificationProfile === 'empirical') },
+    families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
   };
   assert.ok(validate(synthetic), JSON.stringify(validate.errors));
 });

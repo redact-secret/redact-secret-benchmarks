@@ -1,7 +1,8 @@
 import type { Tier } from '../types.ts';
-import type { SupportStatus } from './status.ts';
+import type { EvidenceBasis, QualificationProfile, SupportStatus } from './status.ts';
 import { taxonomy, type Family } from './taxonomy.ts';
 import { contracts } from '../lib/assessment.ts';
+import type { FixtureProfileReport } from './profiles.ts';
 
 /**
  * Support matrix (issue #509, A8). Projects A3's per-detector evidence
@@ -16,6 +17,9 @@ import { contracts } from '../lib/assessment.ts';
 export interface SupportStatusFamilyResult {
   family: string;
   status: SupportStatus;
+  evidenceTier: Tier | null;
+  evidenceBasis: EvidenceBasis;
+  qualificationProfile: QualificationProfile | null;
   reasons: string[];
   taxonomyFamilies: string[];
   evidence: {
@@ -24,7 +28,27 @@ export interface SupportStatusFamilyResult {
     metamorphicCriticalFailures: number;
     mutationUnresolvedCritical: number;
     differentialUnresolvedContractDisagreements: number;
+    observationCount: number;
+    observationSubjects: number;
+    observationIssuanceDates: number;
+    corroborationReferences: number;
+    corroborationOwners: number;
+    corroborationClasses: string[];
+    unresolvedContradictions: number;
+    boundedContradictions: number;
+    uncertainty: string | null;
+    supportedContexts: string[];
+    empiricalMode: 'shape' | 'context-constrained' | null;
+    supportsBareValues: boolean;
+    positiveCases: number;
+    positiveAxes: number;
+    benignCases: number;
+    controlAxes: number;
+    totalFixtures: number;
+    contextTwinPairs: number;
+    confusionAxes: number;
   };
+  fixtureProfile: FixtureProfileReport;
   unprobeable: { reason: string; observedAt: string } | null;
 }
 
@@ -51,19 +75,26 @@ export interface SupportMatrixEntry {
   status: SupportStatus;
   /** Null only when no detector exists for the family — there is no contract to carry a tier. */
   evidenceTier: Tier | null;
+  evidenceBasis: EvidenceBasis;
+  qualificationProfile: QualificationProfile | null;
   /** T1 only; never present on a lower tier (enforced upstream by `validateContracts`). */
   providerSource: ProviderSource | null;
   corroboratingScanners: string[];
   twinCoverage: { pairs: number; failures: number; unprobeable: { reason: string; observedAt: string } | null } | null;
   unresolvedCriticalItems: { metamorphic: number; mutation: number; differential: number } | null;
+  empiricalEvidence: { observations: number; subjects: number; issuanceDates: number; corroborationReferences: number; corroborationOwners: number; corroborationClasses: string[]; contradictions: number; boundedContradictions: number; uncertainty: string | null; supportedContexts: string[]; mode: 'shape' | 'context-constrained' | null; supportsBareValues: boolean } | null;
+  fixtureProfile: { positiveCases: number; positiveAxes: number; benignCases: number; controlAxes: number; twinPairs: number; totalFixtures: number; contextTwinPairs: number; confusionAxes: number } | null;
   /** Registered detector(s) whose evidence decided this entry; empty when no detector exists. */
   detectors: string[];
   /** Required (non-null) whenever `status` is `pending` or `unsupported`. */
   reason: string | null;
+  /** Fixture cells, axis counts and remaining debt against the family's target profile (#206). Null when no detector exists. Absent in artifacts generated before profiles existed. */
+  profileCoverage?: FixtureProfileReport | null;
 }
 
 export interface SupportMatrix {
   distribution: Record<SupportStatus, number>;
+  stableDistribution: Record<QualificationProfile, number>;
   families: SupportMatrixEntry[];
 }
 
@@ -73,8 +104,8 @@ function undetectedEntry(family: Family): SupportMatrixEntry {
   if (!reason) throw new Error(`Taxonomy family ${family.id} has no detector and no note or sources — refusing to default it to a friendly status.`);
   return {
     provider: family.provider, family: family.id, familyName: family.name, status: 'unsupported',
-    evidenceTier: null, providerSource: null, corroboratingScanners: [], twinCoverage: null,
-    unresolvedCriticalItems: null, detectors: [], reason,
+    evidenceTier: null, evidenceBasis: 'none', qualificationProfile: null, providerSource: null, corroboratingScanners: [], twinCoverage: null,
+    unresolvedCriticalItems: null, empiricalEvidence: null, fixtureProfile: null, profileCoverage: null, detectors: [], reason,
   };
 }
 
@@ -85,7 +116,8 @@ function detectedEntry(family: Family, result: SupportStatusFamilyResult): Suppo
     throw new Error(`${family.id}: status "${result.status}" carries no reason.`);
   return {
     provider: family.provider, family: family.id, familyName: family.name, status: result.status,
-    evidenceTier: contract.tier, providerSource: contract.providerSource ?? null,
+    evidenceTier: result.evidenceTier, evidenceBasis: result.evidenceBasis, qualificationProfile: result.qualificationProfile,
+    providerSource: contract.providerSource ?? null,
     corroboratingScanners: [...new Set((contract.corroboration ?? []).map(c => c.tool))].sort(),
     twinCoverage: { pairs: result.evidence.twinPairs, failures: result.evidence.twinFailures, unprobeable: contract.unprobeable ?? null },
     unresolvedCriticalItems: {
@@ -93,8 +125,23 @@ function detectedEntry(family: Family, result: SupportStatusFamilyResult): Suppo
       mutation: result.evidence.mutationUnresolvedCritical,
       differential: result.evidence.differentialUnresolvedContractDisagreements,
     },
+    empiricalEvidence: {
+      observations: result.evidence.observationCount, subjects: result.evidence.observationSubjects,
+      issuanceDates: result.evidence.observationIssuanceDates, corroborationReferences: result.evidence.corroborationReferences,
+      corroborationOwners: result.evidence.corroborationOwners, corroborationClasses: result.evidence.corroborationClasses,
+      contradictions: result.evidence.unresolvedContradictions, boundedContradictions: result.evidence.boundedContradictions, uncertainty: result.evidence.uncertainty,
+      supportedContexts: result.evidence.supportedContexts, mode: result.evidence.empiricalMode,
+      supportsBareValues: result.evidence.supportsBareValues,
+    },
+    fixtureProfile: {
+      positiveCases: result.evidence.positiveCases, positiveAxes: result.evidence.positiveAxes,
+      benignCases: result.evidence.benignCases, controlAxes: result.evidence.controlAxes,
+      twinPairs: result.evidence.twinPairs, totalFixtures: result.evidence.totalFixtures,
+      contextTwinPairs: result.evidence.contextTwinPairs, confusionAxes: result.evidence.confusionAxes,
+    },
     detectors: [result.family],
     reason: result.reasons.length ? result.reasons.join(' | ') : null,
+    profileCoverage: result.fixtureProfile,
   };
 }
 
@@ -124,5 +171,9 @@ export function buildSupportMatrix(statusReport: SupportStatusReport): SupportMa
   }).sort((a, b) => a.family.localeCompare(b.family));
   const distribution = families.reduce((d, f) => { d[f.status] = (d[f.status] ?? 0) + 1; return d; },
     { stable: 0, provisional: 0, pending: 0, unsupported: 0 } as Record<SupportStatus, number>);
-  return { distribution, families };
+  const stableDistribution = {
+    documented: families.filter(family => family.status === 'stable' && family.qualificationProfile === 'documented').length,
+    empirical: families.filter(family => family.status === 'stable' && family.qualificationProfile === 'empirical').length,
+  };
+  return { distribution, stableDistribution, families };
 }

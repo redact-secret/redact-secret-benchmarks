@@ -54,7 +54,8 @@ export async function loadCases(operators: Registry<Operator>): Promise<Evaluati
     const sourceHash = hash(corpus);
     for (const f of corpus.fixtures) {
       const base: CaseSeed = {
-        targets: targets[`${category.id}--${f.id}`] ?? f.detectors ?? [],
+        // Beta.8 arrival targets (#207–#212) are case targets, never registry detectors.
+        targets: [...(targets[`${category.id}--${f.id}`] ?? f.detectors ?? []), ...(f.arrivalTargets ?? [])],
         visibility: visibilityByCategory.get(category.id)!,
         source: { category: category.id, fixtureId: f.id, path: category.corpus },
         seed: f, operators: [],

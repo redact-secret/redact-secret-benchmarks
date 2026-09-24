@@ -9,18 +9,68 @@
     "stable": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["positiveContract", "minimumTwinPairs", "twinFailures", "benign", "metamorphic", "mutation", "differential"],
+      "required": ["documented", "empirical", "twinFailures", "benign", "metamorphic", "mutation", "differential"],
       "properties": {
-        "positiveContract": {
+        "documented": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["requireProviderSource", "rationale"],
+          "required": ["tier", "requireProviderSource", "minimumPositiveCases", "minimumPositiveAxes", "minimumBenignCases", "minimumControlAxes", "minimumTwinPairs", "rationale"],
           "properties": {
+            "tier": { "const": "T1" },
             "requireProviderSource": { "const": true },
+            "minimumPositiveCases": { "$ref": "#/definitions/threshold" },
+            "minimumPositiveAxes": { "$ref": "#/definitions/threshold" },
+            "minimumBenignCases": { "$ref": "#/definitions/threshold" },
+            "minimumControlAxes": { "$ref": "#/definitions/threshold" },
+            "minimumTwinPairs": { "$ref": "#/definitions/threshold" },
             "rationale": { "type": "string", "minLength": 1 }
           }
         },
-        "minimumTwinPairs": { "$ref": "#/definitions/threshold" },
+        "empirical": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tier", "minimumObservations", "minimumSubjects", "minimumIssuanceDates", "minimumCorroborationClasses", "corroborated", "unresolvedContradictions", "minimumPositiveCases", "minimumPositiveAxes", "minimumBenignCases", "minimumControlAxes", "minimumTwinPairs", "contextConstrained", "rationale"],
+          "properties": {
+            "tier": { "const": "T2" },
+            "minimumObservations": { "$ref": "#/definitions/threshold" },
+            "minimumSubjects": { "$ref": "#/definitions/threshold" },
+            "minimumIssuanceDates": { "$ref": "#/definitions/threshold" },
+            "minimumCorroborationClasses": { "$ref": "#/definitions/threshold" },
+            "corroborated": {
+              "type": "object", "additionalProperties": false,
+              "required": ["minimumReferences", "minimumOwners", "minimumClasses", "summaryClasses", "rationale"],
+              "properties": {
+                "minimumReferences": { "$ref": "#/definitions/threshold" },
+                "minimumOwners": { "$ref": "#/definitions/threshold" },
+                "minimumClasses": { "$ref": "#/definitions/threshold" },
+                "summaryClasses": {
+                  "type": "object", "additionalProperties": false, "required": ["classes", "rationale"],
+                  "properties": {
+                    "classes": { "type": "array", "uniqueItems": true, "items": { "enum": ["peer-scanner-rule", "provider-owned-code", "provider-example", "independent-implementation", "independent-research"] } },
+                    "rationale": { "type": "string", "minLength": 1 }
+                  }
+                },
+                "rationale": { "type": "string", "minLength": 1 }
+              }
+            },
+            "unresolvedContradictions": { "$ref": "#/definitions/threshold" },
+            "minimumPositiveCases": { "$ref": "#/definitions/threshold" },
+            "minimumPositiveAxes": { "$ref": "#/definitions/threshold" },
+            "minimumBenignCases": { "$ref": "#/definitions/threshold" },
+            "minimumControlAxes": { "$ref": "#/definitions/threshold" },
+            "minimumTwinPairs": { "$ref": "#/definitions/threshold" },
+            "contextConstrained": {
+              "type": "object", "additionalProperties": false,
+              "required": ["minimumContextTwinPairs", "minimumConfusionAxes", "minimumFixtures"],
+              "properties": {
+                "minimumContextTwinPairs": { "$ref": "#/definitions/threshold" },
+                "minimumConfusionAxes": { "$ref": "#/definitions/threshold" },
+                "minimumFixtures": { "$ref": "#/definitions/threshold" }
+              }
+            },
+            "rationale": { "type": "string", "minLength": 1 }
+          }
+        },
         "twinFailures": { "$ref": "#/definitions/threshold" },
         "benign": {
           "type": "object",

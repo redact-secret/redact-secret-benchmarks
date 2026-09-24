@@ -12,10 +12,11 @@ import { createOperators } from './operators/index.ts';
 import { loadCases } from './engine/cases.ts';
 import type { ReviewLedger, Scanner } from './engine/types.ts';
 import { runEvaluation } from './engine/runner.ts';
-import { contracts } from './lib/assessment.ts';
+import { contracts, registryContractIds } from './lib/assessment.ts';
 import { classifyFamilySupport, statusCriteria, type SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
 import { familyEvidence } from './support/evidence.ts';
+import { fixtureProfileReport, fixtureProfiles } from './support/profiles.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const CANDIDATE_KEYS = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit'] as const;
@@ -81,34 +82,46 @@ async function main() {
     console.log(`Running every registered family's evidence through the profile: ${cases.length} cases with ${scanners.map((s: { id: string }) => s.id).join(', ')}…`);
     const report = await runEvaluation({ cases, methods, operators, scanners, ledger, onProgress: console.log });
     // The unit is a registered detector (issue #504's "42" at filing time; the count follows
-    // `detectors.json`, 46 as of 2026-09-21), not a taxonomy sub-family: `contracts` keys are exactly `detectors.json`'s ids.
-    const families = Object.keys(contracts).sort();
+    // `detectors.json`, 46 as of 2026-09-21), not a taxonomy sub-family. Beta.8 arrival families
+    // (#207–#212) have contracts but no product detector, so they carry no support status here.
+    const families = [...registryContractIds].sort();
     const results = families.map(family => {
-      const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger);
+      const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger, cases);
       const assessment = classifyFamilySupport(evidence);
       // Un-probeable (#33) is carried alongside the status, never folded silently
       // into a bare "not enough twins" reading: zero twin pairs reads differently
       // when the provider gives nothing a twin could mutate.
       const unprobeable = contracts[family].unprobeable ?? null;
-      return { ...assessment, taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable };
+      const { fixtureProfile: measured, ...scored } = evidence;
+      return {
+        ...assessment,
+        evidenceTier: evidence.positiveContractTier,
+        evidenceBasis: evidence.evidenceBasis,
+        taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence: scored, unprobeable,
+        fixtureProfile: fixtureProfileReport(measured!.claim, measured!.cells),
+      };
     });
     const distribution = results.reduce((d, r) => { d[r.status] = (d[r.status] ?? 0) + 1; return d; },
       { stable: 0, provisional: 0, pending: 0, unsupported: 0 } as Record<SupportStatus, number>);
+    const stableDistribution = {
+      documented: results.filter(result => result.status === 'stable' && result.qualificationProfile === 'documented').length,
+      empirical: results.filter(result => result.status === 'stable' && result.qualificationProfile === 'empirical').length,
+    };
     const output = {
       schemaVersion: 1, generatedAt: new Date().toISOString(), runId: report.runId,
-      revision, dirty, criteriaSchemaVersion: statusCriteria.schemaVersion,
+      revision, dirty, criteriaSchemaVersion: statusCriteria.schemaVersion, fixtureProfilesVersion: fixtureProfiles.profilesVersion,
       // Null except on a candidate run: default behaviour (and its output shape
       // for every other field) is unchanged from before candidate support existed.
       product,
       scanners: scanners.map((s: { id: string }) => s.id), caseCount: report.caseCount, variantCount: report.variantCount,
-      familyCount: families.length, distribution, families: results,
+      familyCount: families.length, distribution, stableDistribution, families: results,
     };
     const target = path.resolve(root, typeof options.output === 'string' ? options.output : 'results-output/support-status.json');
     await mkdir(path.dirname(target), { recursive: true });
     const temporary = `${target}.${report.runId}.tmp`;
     await writeFile(temporary, JSON.stringify(output, null, 2) + '\n', { mode: 0o600, flag: 'wx' });
     await rename(temporary, target);
-    console.log(`Distribution: ${JSON.stringify(distribution)} of ${families.length} families.`);
+    console.log(`Distribution: ${JSON.stringify(distribution)} of ${families.length} families; stable profiles ${JSON.stringify(stableDistribution)}.`);
     console.log(`Report: ${path.relative(root, target)}`);
   } finally {
     if (installation) await removeCandidate(installation);

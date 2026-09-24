@@ -14,7 +14,9 @@ const isRate = (value: unknown): value is FigureRate => Boolean(value) && typeof
 export const isRedact = (group: Group | undefined): group is RedactGroup => Boolean(group && 'spans' in group);
 export const isControl = (group: Group | undefined): group is ControlGroup => Boolean(group && 'flaggedFiles' in group);
 export const NOT_MEASURED: FigureWithheld = { withheld: 'not-measured', n: 0 };
-export const confidence = (floors: Floors) => (floors.intervalZ === 1.96 ? '95% pessimistic bound' : `Pessimistic bound at z = ${floors.intervalZ ?? '—'}`);
+/** A Wilson bound describes this corpus as the sample it is (#206); it is not a population error probability, and the copy says so. */
+export const CORPUS_RELATIVE = 'Relative to this corpus, not a population error probability.';
+export const confidence = (floors: Floors) => `${floors.intervalZ === 1.96 ? '95% pessimistic bound' : `Pessimistic bound at z = ${floors.intervalZ ?? '—'}`}, corpus-relative`;
 
 function withheld(published: Published | 'insufficient-coverage', n: number, kind: string, group: RedactGroup | undefined, floors: Floors): FigureWithheld {
   if (published === 'insufficient-coverage') {

@@ -50,6 +50,9 @@
     "eval:matrix:drift": "node --import tsx benchmarks/support-matrix-drift.ts",
     "support:check:ui": "node --import tsx scripts/check-support-ui.mjs",
     "arrival:check": "node --import tsx scripts/check-evidence-arrival.mjs",
+    "profiles:generate": "node --import tsx scripts/generate-fixture-profile-coverage.mjs",
+    "profiles:check": "node --import tsx scripts/generate-fixture-profile-coverage.mjs --check",
+    "beta8:profiles": "node --import tsx scripts/report-beta8-profiles.mjs",
     "decisions:validate": "node scripts/validate-decisions.mjs",
     "ledger:decisions:check": "node scripts/check-ledger-decisions.mjs",
     "queue:check": "node --import tsx scripts/check-review-queue-coverage.mjs",
@@ -64,6 +67,7 @@
     "performance:evaluate": "node --import tsx benchmarks/evaluate-performance.ts",
     "adversarial:check": "node --import tsx scripts/check-adversarial-intake.mjs",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",
+    "observations:capture": "node --import tsx scripts/capture-empirical-observation.ts",
     "peers:provision": "node scripts/provision-peers.mjs"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",

@@ -41,6 +41,7 @@ becomes `unsupported`, with its reason built from the taxonomy entry's own
   "providerCount": 34,
   "familyCount": 79,
   "distribution": { "stable": 0, "provisional": 0, "pending": 0, "unsupported": 0 },
+  "stableDistribution": { "documented": 0, "empirical": 0 },
   "families": [
     {
       "provider": "github",
@@ -48,6 +49,8 @@ becomes `unsupported`, with its reason built from the taxonomy entry's own
       "familyName": "Classic personal access token",
       "status": "provisional",
       "evidenceTier": "T1",
+      "evidenceBasis": "provider-documented",
+      "qualificationProfile": null,
       "providerSource": { "url": "...", "observedAt": "...", "formatVersion": "...", "covers": "..." },
       "corroboratingScanners": ["gitleaks 8.30.1", "trufflehog 3.97.4"],
       "twinCoverage": { "pairs": 0, "failures": 0, "unprobeable": null },
@@ -59,11 +62,19 @@ becomes `unsupported`, with its reason built from the taxonomy entry's own
 }
 ```
 
-`evidenceTier`, `providerSource`, `corroboratingScanners`, `twinCoverage` and
-`unresolvedCriticalItems` are all `null` (and `detectors: []`) exactly when the
+`evidenceTier`, `evidenceBasis`, `qualificationProfile`, `providerSource`,
+`corroboratingScanners`, `twinCoverage`, `empiricalEvidence`, `fixtureProfile`
+and `unresolvedCriticalItems` preserve provenance, qualification, uncertainty,
+coverage cells and failures separately. Evidence objects are `null` (and
+`detectors: []`) exactly when the
 family has no detector — there is no contract or evidence to carry. `reason`
 is `null` only when `status` is `stable`; every `pending` or `unsupported`
 entry carries one, enforced by `buildSupportMatrix` itself.
+
+`fixtureProfile` (#206, `docs/specs/support-status.md`) carries the family's
+measured fixture cells, axis counts, the profiles whose cells are met, and the
+remaining debt against its target profile; `null` when no detector exists, and
+absent from artifacts generated before profiles existed.
 
 ## Failing loudly
 

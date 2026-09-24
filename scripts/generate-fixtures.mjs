@@ -5,11 +5,14 @@ import { classifyFixture, validateAssessment, validateContracts, contracts } fro
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import { checkLexicalSeparability, validateLexicalExemptions } from '../benchmarks/lib/lexical-separability.ts';
 import { createHash } from 'node:crypto';
+import { validateBeta8 } from '../benchmarks/lib/beta8/index.ts';
 
 const check = process.argv.includes("--check");
 const ensure = process.argv.includes('--ensure');
 if (process.argv.slice(2).some(arg => !['--check', '--ensure'].includes(arg)) || (check && ensure)) throw new Error('Usage: generate-fixtures.mjs [--check | --ensure]');
 validateContracts();
+const beta8Problems = validateBeta8(JSON.parse(await readFile(new URL('../benchmarks/detectors.json', import.meta.url), 'utf8')).detectors.map(d => d.id), JSON.parse(await readFile(new URL('../benchmarks/support/taxonomy.json', import.meta.url), 'utf8')).families.map(f => f.id));
+if (beta8Problems.length) throw new Error(`Beta.8 module problems:\n${beta8Problems.map(p => `  - ${p}`).join('\n')}`);
 const generated = buildCorpora();
 const manifest = {};
 for (const [id, corpus] of Object.entries(generated)) {
@@ -66,7 +69,13 @@ const current = await readFile(assignmentFile, 'utf8');
 const assignments = JSON.parse(current);
 for (const [category, corpus] of Object.entries(generated))
   for (const f of corpus.fixtures)
-    if (f.detectors) assignments[`${category}--${f.id}`] = f.detectors;
+    // Beta.8 arrival fixtures carry no registry detector: assigned [] like any untargeted case.
+    if (f.detectors || f.arrivalTargets) assignments[`${category}--${f.id}`] = f.detectors ?? [];
+// A beta8-<issue> fixture that no longer exists leaves no stale assignment behind (#207–#212).
+for (const slug of Object.keys(assignments)) {
+  const [category, id] = slug.split('--');
+  if (category.startsWith('beta8-') && !generated[category]?.fixtures.some(f => f.id === id)) delete assignments[slug];
+}
 const serialized = JSON.stringify(assignments, null, 2) + '\n';
 if ((check || ensure) && current !== serialized) throw new Error('Detector assignment drift');
 if (!check && !ensure && current !== serialized) await writeFile(assignmentFile, serialized);

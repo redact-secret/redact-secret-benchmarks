@@ -39,6 +39,13 @@ domain secret. Neither transformation reads expected ranges. Unknown layouts
 and ambiguous occurrences fail explicitly. Real-binary integration tests use
 Anthropic, AWS pairs and Shopify with Unicode/CRLF and empty adapter expectations.
 
+TruffleHog's URI detector re-serializes userinfo through Go's `url.URL`, so a
+literal `!` in a password comes back as `%21`. When a reported `Raw` carries a
+percent escape and does not occur in the file verbatim, the adapter matches each
+escape of a printable ASCII byte as either the escape or the literal byte, on the
+reported line, and keeps the source span. Zero or several candidate spans still
+fail the observation closed; no finding is dropped (#213).
+
 Output contracts: [AWS](https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/aws/access_keys/accesskey.go),
 [Shopify](https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/shopify/shopify.go).
 
@@ -158,9 +165,10 @@ is never set to `true`, and the adapter reads only `fixtures[].path`, never
 Label mapping in `families.mjs` covers only ids whose matched format is
 genuinely the same credential type as an existing family; providers with no
 family in this corpus (Sentry, Airtable, Postman, Figma, Notion, Doppler,
-Square, Azure, Discord, Telegram, New Relic, Groq, xAI, Perplexity,
-OpenRouter, Replicate, Databricks, GCP, Mailgun, Netlify, Google, Twilio,
-Stripe webhook secrets) stay unmapped. `aws_secret_key` shares the
+Square, Azure, Discord, Telegram, New Relic, Databricks, GCP, Mailgun,
+Netlify, Google, Twilio, Stripe webhook secrets) stay unmapped. Groq, xAI,
+OpenRouter, Replicate and Perplexity ids map to the Beta.8 arrival families
+measured in `beta8-208`/`beta8-212` (#208, #212; `docs/specs/beta8-evidence.md`). `aws_secret_key` shares the
 `aws-access-key` family with `aws_access_key`, matching how the TruffleHog
 adapter already families both halves of an AWS pair under one label.
 

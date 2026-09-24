@@ -19,19 +19,24 @@ function matrixOf(statusFor) {
     return {
       provider: family.provider, family: family.id, familyName: family.name, status,
       evidenceTier: hasDetector ? 'T1' : null,
+      evidenceBasis: hasDetector ? 'provider-documented' : 'none',
+      qualificationProfile: hasDetector && status === 'stable' ? 'documented' : null,
       providerSource: hasDetector ? { url: 'https://docs.example.invalid/tokens', observedAt: '2026-09-17', formatVersion: '2026-09', covers: 'prefix and body' } : null,
       corroboratingScanners: hasDetector ? ['gitleaks 8.30.1'] : [],
       twinCoverage: hasDetector ? { pairs: 3, failures: 1, unprobeable: null } : null,
       unresolvedCriticalItems: hasDetector ? { metamorphic: 0, mutation: 2, differential: 0 } : null,
+      empiricalEvidence: hasDetector ? { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 0, corroborationOwners: 0, corroborationClasses: [], contradictions: 0, boundedContradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true } : null,
+      fixtureProfile: hasDetector ? { positiveCases: 6, positiveAxes: 4, benignCases: 8, controlAxes: 4, twinPairs: 5, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 4 } : null,
       detectors: hasDetector ? [family.detectors[0]] : [],
       reason: status === 'stable' ? null : `${status} because the evidence says so`,
     };
   });
   const distribution = Object.fromEntries(SUPPORT_STATUSES.map(status => [status, families.filter(f => f.status === status).length]));
+  const stableDistribution = { documented: families.filter(f => f.status === 'stable').length, empirical: 0 };
   return {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
     sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T09:00:00.000Z', runId: 'abcdef1234', revision: 'f'.repeat(40), dirty: false, criteriaSchemaVersion: 1 },
-    providerCount: taxonomy.providers.length, familyCount: families.length, distribution, families,
+    providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };
 }
 /** The default view: detector-bearing families provisional, detectorless families unsupported. */
@@ -69,7 +74,7 @@ test('every status is legible without the qualification profile, and provisional
   }
   assert.ok(SUPPORT_STATUS_COPY.provisional.meaning.includes('incomplete') && SUPPORT_STATUS_COPY.provisional.meaning.includes('almost stable'),
     'provisional says evidence-incomplete, and says what it is not');
-  assert.ok(plain.includes(statusCriteria.stable.minimumTwinPairs.rationale) && plain.includes(`at least ${statusCriteria.stable.minimumTwinPairs.value}`),
+  assert.ok(plain.includes(statusCriteria.stable.documented.minimumTwinPairs.rationale) && plain.includes(`at least ${statusCriteria.stable.documented.minimumTwinPairs.value}`),
     'the stable floors are shown with the profile\'s own numbers and reasons');
   assert.ok(!/almost stable\b(?!”)/i.test(plain.replace(/not “almost stable”/gi, '')), 'nothing on the page calls provisional almost stable');
 });
@@ -102,6 +107,53 @@ test('the evidence behind a status stays inspectable: tier, provider source and 
   assert.ok(plain.includes('3 pairs · 1 failure'), 'twin coverage is shown with its failures');
   assert.ok(plain.includes('metamorphic 0 · mutation 2 · differential 0'), 'unresolved critical items are shown');
   assert.ok(plain.includes(entry.reason), 'and the reason the status was decided');
+});
+
+test('empirical stable is labeled explicitly, retains T2, and is counted separately', () => {
+  const matrix = mixed();
+  const entry = matrix.families.find(family => family.detectors.length);
+  entry.status = 'stable';
+  entry.reason = null;
+  entry.evidenceTier = 'T2';
+  entry.evidenceBasis = 'empirically-observed';
+  entry.qualificationProfile = 'empirical';
+  entry.providerSource = null;
+  entry.empiricalEvidence = { observations: 5, subjects: 2, issuanceDates: 2, corroborationReferences: 2, corroborationOwners: 2, corroborationClasses: ['independent-implementation', 'peer-scanner-rule'], contradictions: 0, boundedContradictions: 0, uncertainty: 'Observed formats may change.', supportedContexts: ['assignment'], mode: 'shape', supportsBareValues: true };
+  matrix.distribution.provisional--;
+  matrix.distribution.stable++;
+  matrix.stableDistribution.empirical = 1;
+  assert.equal(supportMatrixProblem(matrix), null);
+  const plain = text(supportPage(matrix, null));
+  assert.ok(plain.includes('Stable · Empirically qualified'));
+  assert.ok(plain.includes('T2 · Tool-corroborated'));
+  assert.ok(plain.includes('Stable: 0 documented · 1 empirical'));
+  assert.ok(plain.includes('Provider-issued observations empirically-observed'));
+});
+
+test('corroborated empirical stable shows its basis, and a basis its records cannot carry is refused', () => {
+  const matrix = mixed();
+  const entry = matrix.families.find(family => family.detectors.length);
+  Object.assign(entry, { status: 'stable', reason: null, evidenceTier: 'T2', evidenceBasis: 'independently-corroborated', qualificationProfile: 'empirical', providerSource: null });
+  entry.empiricalEvidence = { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 4, corroborationOwners: 3, corroborationClasses: ['peer-scanner-rule', 'provider-owned-code'], contradictions: 0, boundedContradictions: 1, uncertainty: 'Corroborated, never provider-issued.', supportedContexts: ['assignment'], mode: 'shape', supportsBareValues: true };
+  matrix.distribution.provisional--;
+  matrix.distribution.stable++;
+  matrix.stableDistribution.empirical = 1;
+  assert.equal(supportMatrixProblem(matrix), null);
+  const plain = text(supportPage(matrix, null));
+  assert.ok(plain.includes('Stable · Empirically qualified'));
+  assert.ok(plain.includes('T2 · Tool-corroborated'), 'the tier stays T2');
+  assert.ok(plain.includes('Corroborated by external sources (no provider-issued observation required) independently-corroborated'));
+  assert.ok(plain.includes('4 references · 3 owners · peer-scanner-rule, provider-owned-code · 0 unresolved / 1 bounded contradictions'));
+  assert.ok(plain.includes('0 observations · 0 subjects · 0 issuance dates'));
+  const thin = structuredClone(matrix);
+  thin.families.find(family => family.family === entry.family).empiricalEvidence.corroborationOwners = 2;
+  assert.match(supportMatrixProblem(thin), /masquerades as empirically qualified/);
+  const observedLabel = structuredClone(matrix);
+  observedLabel.families.find(family => family.family === entry.family).evidenceBasis = 'empirically-observed';
+  assert.match(supportMatrixProblem(observedLabel), /masquerades as empirically qualified/, 'no observations cannot read as observed');
+  const t1 = structuredClone(matrix);
+  t1.families.find(family => family.family === entry.family).evidenceTier = 'T1';
+  assert.match(supportMatrixProblem(t1), /masquerades as empirically qualified/);
 });
 
 test('an un-probeable family reads as un-probeable, not as zero twins', () => {

@@ -1287,7 +1287,7 @@
         "reference-syntax--unicode-crlf"
       ],
       "kind": "false-negative",
-      "status": "promoted",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.5",
@@ -1320,6 +1320,14 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
             "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+            "https://github.com/redact-secret/redact-secret/pull/437",
+            "https://github.com/redact-secret/redact-secret/releases/tag/v0.1.0-beta.5"
           ]
         }
       },
@@ -1447,7 +1455,11 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "18d49cdf771c1a1b9c7c5ed175622bd02526034e",
+        "version": "0.1.0-beta.5"
+      }
     },
     {
       "id": "product-671",

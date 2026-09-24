@@ -3633,7 +3633,7 @@
         "beta8-208--xai-api-key-key-metadata-public-id"
       ],
       "kind": "false-positive",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3654,7 +3654,41 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure.md",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/208"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/lib/beta8/208.ts",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/216"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/727",
+            "https://github.com/redact-secret/redact-secret/pull/766"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/2420e8064f47e5764ac0daf19507609af15f08d7",
+            "https://github.com/redact-secret/redact-secret/pull/766",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure-2420e80.md"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/727",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-727",
+        "canonicalFixtureIds": [
+          "generic-token-negative-colon-namespaced-acl-scope",
+          "generic-token-positive-colon-scope-shaped-value-after-a-space"
+        ]
+      },
+      "fix": {
+        "commit": "2420e8064f47e5764ac0daf19507609af15f08d7"
       },
       "evidence": [
         {
@@ -3682,7 +3716,7 @@
         "beta8-208--groq-api-key-masked-console-placeholder"
       ],
       "kind": "false-positive",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3703,7 +3737,41 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure.md",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/208"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/lib/beta8/208.ts",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/218"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/264",
+            "https://github.com/redact-secret/redact-secret/pull/766"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/2420e8064f47e5764ac0daf19507609af15f08d7",
+            "https://github.com/redact-secret/redact-secret/pull/766",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure-2420e80.md"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/264",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-264",
+        "canonicalFixtureIds": [
+          "generic-token-negative-partially-masked-console-display",
+          "generic-token-positive-mask-with-one-visible-side"
+        ]
+      },
+      "fix": {
+        "commit": "2420e8064f47e5764ac0daf19507609af15f08d7"
       },
       "evidence": [
         {
@@ -3731,7 +3799,7 @@
         "beta8-212--fireworks-ai-api-key-keychain-reference-reference"
       ],
       "kind": "false-positive",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3752,7 +3820,41 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure.md",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/212"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/lib/beta8/212.ts",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/227"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/730",
+            "https://github.com/redact-secret/redact-secret/pull/766"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/2420e8064f47e5764ac0daf19507609af15f08d7",
+            "https://github.com/redact-secret/redact-secret/pull/766",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure-2420e80.md"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/730",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-730",
+        "canonicalFixtureIds": [
+          "generic-token-negative-keychain-secret-store-reference",
+          "generic-token-positive-keychain-reference-embedded-in-a-value"
+        ]
+      },
+      "fix": {
+        "commit": "2420e8064f47e5764ac0daf19507609af15f08d7"
       },
       "evidence": [
         {
@@ -3788,7 +3890,7 @@
         "beta8-212--pinecone-api-key-legacy-shell-key"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.7",
@@ -3810,7 +3912,49 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure.md",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/212"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/benchmarks/lib/beta8/212.ts",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/228",
+            "https://docs.pinecone.io/reference/api/authentication"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/702",
+            "https://github.com/redact-secret/redact-secret/pull/766"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-24",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/commit/2420e8064f47e5764ac0daf19507609af15f08d7",
+            "https://github.com/redact-secret/redact-secret/pull/766",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/docs/reports/2026-09-24-beta8-arrival-candidate-remeasure-2420e80.md"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/702",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-702",
+        "canonicalFixtureIds": [
+          "pinecone-api-key-positive-legacy-uuid-dotenv",
+          "pinecone-api-key-positive-legacy-uuid-legacy-init",
+          "pinecone-api-key-positive-legacy-uuid-yaml",
+          "pinecone-api-key-positive-legacy-uuid-shell-key",
+          "pinecone-api-key-overlap-legacy-uuid-api-key-property",
+          "pinecone-api-key-negative-legacy-uuid-project-id-name",
+          "pinecone-api-key-negative-legacy-uuid-init-project-id",
+          "pinecone-api-key-negative-legacy-uuid-zero-uuid-placeholder",
+          "pinecone-api-key-negative-legacy-uuid-bare-uuid-prose"
+        ]
+      },
+      "fix": {
+        "commit": "2420e8064f47e5764ac0daf19507609af15f08d7"
       },
       "evidence": [
         {

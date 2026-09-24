@@ -56,7 +56,11 @@ test('the ledger snippet is a paste-ready fragment and keeps the class on the no
 
 import { changeRows, qualificationGates, candidateProblem } from '../src/evaluation-model.ts';
 const suite = JSON.parse(await readFile(new URL('../qualification/suite-v1.json', import.meta.url), 'utf8'));
-const evidence = JSON.parse(await readFile(new URL('../docs/specs/qualification/engine-v1.json', import.meta.url), 'utf8'));
+const qualified = JSON.parse(await readFile(new URL('../docs/specs/qualification/engine-v1.json', import.meta.url), 'utf8'));
+// The checked-in run is execution-qualified (#213); the floors are read here against the same run with unreviewed queue entries.
+const evidence = structuredClone(qualified);
+evidence.status = 'incomplete';
+evidence.accounting = { ...evidence.accounting, reasons: ['unreviewed-queue'], review: { ...evidence.accounting.review, unknown: 7 } };
 const pair = (slug, kind, tier, before, after, section = 'fixed-corpus') => ({ slug, kind, tier, section, before, after });
 
 test('changes list only what moved, with the reason; counts are tallies of outcome codes', () => {
@@ -98,8 +102,9 @@ test('floors show met or not plus the actual value, and absent evidence is Not m
   assert.equal(get('min-denominator').value, '3 / 3 ≥ 5');
   assert.deepEqual([get('measurable-share').status, get('measurable-share').value], ['met', '0.740 ≥ 0.7'], 'the group with the least margin is the one shown');
   assert.deepEqual([get('twin-coverage').status, get('twin-coverage').value], ['met', '0.534 ≥ 0.5']);
-  // The checked-in evidence says why it is incomplete; the page repeats that, it does not decide it.
+  // The evidence says why it is incomplete; the page repeats that, it does not decide it.
   assert.deepEqual(evidence.accounting.reasons, ['unreviewed-queue']);
+  assert.equal(qualificationGates(suite.accounting, qualified, null).find(g => g.id === 'ledger').status, 'watch', 'the checked-in run has a ledger row for every entry');
   assert.equal(get('ledger').status, 'not-met');
   assert.match(get('ledger').detail, new RegExp(`${evidence.accounting.review.unknown} queue entries have no ledger row`));
   assert.equal(get('resolved-rate').status, 'met');

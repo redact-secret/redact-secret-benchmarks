@@ -17,7 +17,10 @@
 # Both measure the corpus against the released `@redact-secret/core` in the
 # lockfile. Staging also measures a `redact-secret` `main` commit with
 # `eval:candidate`, from the artifacts that commit's own `artifact-qualification`
-# run qualified, and ships it as candidate evidence (#152); production does not.
+# run qualified, and ships it as candidate evidence (#152); production does not,
+# and its Workbench Changes page says it reads the release instead (#213).
+# Both publish a qualification run and a support matrix: staging's matrix
+# classifies the candidate, production's the released package.
 #
 # Per-environment configuration lives in the repository's GitHub environments,
 # so this file carries no account ID and no bucket name:
@@ -198,10 +201,26 @@ jobs:
             npm run bench -- --strict
           fi
 
-      - name: Produce the evaluation report the site reads
+      # Both environments (#213): the Workbench Qualification checklist reads its
+      # three engine floors (scanners complete, resolved rate, ledger rows for every
+      # entry) from a qualification run published inside evaluation-v1.json.
+      # eval:qualify loads the lockfile package the suite pins
+      # (qualification/suite-v1.json) with the pinned peers provisioned above, on
+      # staging too, and the page names that version. Its public-control holdout is
+      # generated fresh in this checkout, so its one-run budget is this run's.
+      # An incomplete qualification is still evidence and is published with its
+      # reasons; a run that wrote no report (tool drift, a crash) fails the publish.
+      - name: Produce the evaluation and qualification reports the site reads
         run: |
+          set -euo pipefail
           npm run eval
-          npm run eval:publish
+          qualification=results-output/qualification/engine-v1.json
+          rm -f "$qualification"
+          if ! npm run eval:qualify; then
+            test -s "$qualification" || { echo "::error::eval:qualify wrote no qualification report"; exit 1; }
+            echo "::warning::qualification is $(jq -r .status "$qualification"): $(jq -r '.accounting.reasons | join(", ")' "$qualification")"
+          fi
+          npm run eval:publish -- --qualification="$qualification"
 
       # Writes public/results/candidate-evidence-v1.json (reportType "candidate",
       # supportClaims false) beside, never into, evaluation-v1.json; the page shows
@@ -227,11 +246,12 @@ jobs:
           --expected-artifact-sha256 "$CORE_SHA256"
           --output-dir "$GITHUB_WORKSPACE/public/results"
 
-      # Staging only: classify every family's support against the same
-      # candidate build and publish the matrix the Support page reads. The
-      # matrix records the candidate it measured, and the page says so.
-      - name: Classify support against the redact-secret main commit
-        if: env.TARGET == 'staging'
+      # Classify every family's support and publish the matrix the Support page
+      # reads. Staging classifies the same candidate build and the matrix records
+      # that candidate; production classifies the released lockfile package
+      # (published mode, #213) and the matrix records that release. The page
+      # labels each by what it recorded.
+      - name: Classify support
         env:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           CORE_PACKAGE: ${{ steps.candidate.outputs.core }}
@@ -239,11 +259,15 @@ jobs:
           WASM_PACKAGE: ${{ steps.candidate.outputs.wasm }}
         run: |
           set -euo pipefail
-          npm run eval:classify -- \
-            --candidate-package="$CORE_PACKAGE" \
-            --candidate-node-package="$NODE_PACKAGE" \
-            --candidate-wasm-package="$WASM_PACKAGE" \
-            --candidate-source-commit="$PRODUCT_COMMIT"
+          if [ "$TARGET" = staging ]; then
+            npm run eval:classify -- \
+              --candidate-package="$CORE_PACKAGE" \
+              --candidate-node-package="$NODE_PACKAGE" \
+              --candidate-wasm-package="$WASM_PACKAGE" \
+              --candidate-source-commit="$PRODUCT_COMMIT"
+          else
+            npm run eval:classify
+          fi
           npm run eval:matrix
           npm run eval:publish:matrix
 
@@ -298,6 +322,8 @@ jobs:
             echo "- benchmarks commit: \`${{ github.sha }}\`"
             echo "- run id: $(jq -r .runId public/results/run.json)"
             echo "- redact-secret measured: $(jq -r '.scannerVersions["redact-secret"] + (if .candidate then " (candidate " + .candidate.sourceCommit[0:7] + ", unreleased)" else " (released)" end)' public/results/run.json)"
+            echo "- qualification: $(jq -r '.qualification.status + " with redact-secret " + (.qualification.holdout.scanners[] | select(.id == "redact-secret") | .version)' public/results/evaluation-v1.json)"
+            echo "- support matrix: $(jq -r '.distribution.stable|tostring' public/results/support-matrix-v1.json) stable, $(jq -r 'if .sourceReport.product then "candidate " + .sourceReport.product.sourceCommit[0:7] else "released " + (.sourceReport.publishedPackage.version // "package") end' public/results/support-matrix-v1.json)"
             if [ "$TARGET" = staging ]; then
               echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"
             fi

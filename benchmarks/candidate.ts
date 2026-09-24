@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { mkdir, mkdtemp, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { arch, platform, tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,6 +14,7 @@ import { hash } from './engine/model.ts';
 import { validateEvidence } from './engine/evidence.ts';
 import type { Category, Fixture, Finding, ScoredRow, AccountingConfig } from './types.ts';
 import { validateAccounting } from './lib/accounting.ts';
+import { newestBaselineName } from './lib/baselines.ts';
 import suite from '../qualification/suite-v1.json';
 
 const accounting = validateAccounting(suite.accounting as AccountingConfig);
@@ -90,7 +91,10 @@ async function main() {
     if (options['expected-artifact-sha256'] && options['expected-artifact-sha256'] !== artifactSha256) throw new Error('artifact-identity-mismatch');
     const registry: Category[] = JSON.parse(await readFile(path.join(root, 'benchmarks/categories.json'), 'utf8'));
     const assignments: Record<string, string[]> = JSON.parse(await readFile(path.join(root, 'benchmarks/fixture-detectors.json'), 'utf8'));
-    const baseline = JSON.parse(await readFile(path.join(root, 'baselines/0.1.0-beta.4.json'), 'utf8'));
+    // The newest saved release, the same comparison point the Workbench reads (src/catalog.ts).
+    const baselineName = newestBaselineName(await readdir(path.join(root, 'baselines')));
+    if (!baselineName) throw new Error('missing-baseline');
+    const baseline = JSON.parse(await readFile(path.join(root, 'baselines', baselineName), 'utf8'));
     validateContracts();
     const selected: { category: string; fixture: Fixture }[] = [];
     for (const category of registry) {

@@ -4,16 +4,25 @@
 
 - Engine 1.1.0 · accounting 1.1 · report schema 2
 - Status: **`execution-qualified`**
-- Run ID: 7a6ce4a5-9736-40a8-ba40-cd8988c75d1e
-- Completed: 2026-09-19T17:47:07.313Z
-- Source fingerprint: 421ea59224d25f443661f99cbbb8a697fee42e54421af488e633da0a92df481f (revision c0eba10, clean tree)
-- Cases / variants: 2,253 / 6,107 (twin 56/112, benign 206/206, metamorphic 641/3,047, mutation 641/2,033, differential 697/697, holdout 12/12)
-- Every scanner completed and agreed across 2 replays; 0 generation errors; 0 `not-measured` assertions
-- `unresolvedGroups`: none — every scored stratum resolves at 1.000 against the 0.9 floor
-- Review queue: 1,615 entries, **0 `unknown`**, 1,233 open, 382 resolved (`benchmarks/review-ledger.json`, triaged in [#28](https://github.com/redact-secret/redact-secret-benchmarks/issues/28))
+- Run ID: 28ca6c2b-f763-4384-8862-5a1a322f3368
+- Completed: 2026-09-24T21:23:09.244Z
+- Scanners: redact-secret 0.1.0-beta.7 (the released lockfile package), gitleaks 8.30.1, trufflehog 3.97.4, the pins in `qualification/suite-v1.json`
+- Source fingerprint: 9c39720b0cc3031c85ea7dbe8146e6294b6dc8b33f7f3898a644caa0d01cda0e (revision fcc12a4, clean tree)
+- Cases / variants: twin 638/1,276, benign 944/944, metamorphic 2,102/9,858, mutation 2,102/7,395, differential 2,740/2,740, holdout 12/12
+- Every scanner completed and agreed across 2 replays; 0 generation errors
+- `unresolvedGroups`: none
+- Review queue: 5,430 entries, **0 `unknown`**, 220 open, 1,238 resolved, 3,972 not-assertable (`benchmarks/review-ledger.json`)
 - Public holdout lifecycle controls: 12/12 assertions passed for each scanner
-- Development findings: 3,783 failed assertions
-- Unit tests: 187 passed; real-adapter integration tests: 7 passed; TypeScript, production build, fixture-storage, pin-manifest and evidence validation: passed
+- Development findings: 13,028 failed assertions
+
+Regenerated for #213, when the suite's redact-secret pin moved from 0.1.0-beta.4
+to the lockfile's 0.1.0-beta.7 (a pin `eval:qualify` enforces, so the stale pin
+had stopped the site from publishing any qualification run). The publish
+workflow now produces this same report on every staging and production publish
+and ships it inside `evaluation-v1.json`; this file is the checked-in reference
+copy `validate.yml` re-validates.
+
+The history below describes the first engine v1.1 run (2026-09-19, beta.4).
 
 Execution itself is unchanged from the v1.0 evidence this file replaces: all six
 methods ran with all three pinned scanners. The prior run here was `incomplete`

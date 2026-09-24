@@ -60,7 +60,10 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/292",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-292",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "contextual-negative-windows-env-reference-excluded",
+          "contextual-negative-sql-bind-parameter-excluded"
+        ]
       },
       "fix": {
         "commit": "8d8d5b4e8dae8de1b42e174d8d21dc0075147fc6",
@@ -338,7 +341,9 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/404",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-404",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "sendgrid-token-regression-crlf-and-unicode-prefix"
+        ]
       },
       "evidence": [
         {
@@ -1001,7 +1006,9 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/552",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-552",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "regression-generic-token-markdown-inline-code-boundary"
+        ]
       },
       "fix": {
         "commit": "11dba979d98a5c91420bf82a66e86eb6a9d5c559"
@@ -1518,7 +1525,22 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/671",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-671",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "datadog-application-key-positive-bare",
+          "datadog-application-key-positive-dotenv",
+          "datadog-application-key-positive-json",
+          "datadog-application-key-positive-yaml",
+          "datadog-application-key-positive-header-marker",
+          "datadog-application-key-positive-crlf-unicode-prefix",
+          "datadog-application-key-positive-repeated-value",
+          "datadog-application-key-positive-doc-style-placeholder",
+          "datadog-application-key-boundary-one-short",
+          "datadog-application-key-boundary-one-long",
+          "datadog-application-key-negative-wrong-prefix-case",
+          "datadog-application-key-negative-embedded-identifier",
+          "datadog-application-key-negative-underscore-in-body",
+          "datadog-application-key-adversarial-long-suffix"
+        ]
       },
       "fix": {
         "commit": "2ca56a29ea19f93ec111370a5d4a8115cb8ddf33"
@@ -1718,7 +1740,11 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/670",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-670",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "discord-bot-token-positive-current-new-bot-bare",
+          "discord-bot-token-positive-current-reset-bot-bare",
+          "discord-bot-token-negative-19-digit-id-legacy-shape"
+        ]
       },
       "fix": {
         "commit": "c053505335844d763491a85eb57826cbb7aeee8a"
@@ -2135,7 +2161,12 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/738",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-738",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "confluent-cloud-api-secret-checksum-valid",
+          "confluent-cloud-api-secret-negative-checksum-mismatch",
+          "confluent-cloud-api-secret-negative-checksum-big-endian",
+          "confluent-cloud-api-secret-negative-checksum-prefix-included"
+        ]
       },
       "evidence": [
         {
@@ -2337,7 +2368,14 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/740",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-740",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "heroku-api-key-hrku-uuid-env",
+          "heroku-api-key-hrku-uuid-bare",
+          "heroku-api-key-hrku-uuid-authorizations-create",
+          "heroku-api-key-negative-hrku-uuid-one-short",
+          "heroku-api-key-negative-hrku-underscore-separator",
+          "heroku-hrku-uuid-generation-partitions"
+        ]
       },
       "evidence": [
         {
@@ -2428,7 +2466,13 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/749",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-749",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "firebase-positive-client-config-javascript",
+          "firebase-positive-client-config-json",
+          "firebase-positive-client-config-minimal-javascript",
+          "firebase-positive-client-config-dotenv",
+          "firebase-positive-google-services-json"
+        ]
       },
       "evidence": [
         {
@@ -2514,7 +2558,13 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/741",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-207-atlassian-crc32-tail",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "atlassian-api-token-positive-crc32-suffix-full-span",
+          "atlassian-api-token-positive-crc32-suffix-json",
+          "atlassian-api-token-positive-no-suffix-exact",
+          "atlassian-api-token-boundary-nine-hex-tail",
+          "atlassian-api-token-crc32-tail-partition"
+        ]
       },
       "evidence": [
         {
@@ -2770,7 +2820,13 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/742",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-207-supabase-layout-twins",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "supabase-token-positive-documented-layout",
+          "supabase-token-negative-random-part-21",
+          "supabase-token-negative-checksum-9",
+          "supabase-token-negative-dash-delimiter",
+          "supabase-positive-documented-layout-exact-width"
+        ]
       },
       "evidence": [
         {
@@ -2877,7 +2933,13 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/743",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-207-heroku-legacy-multi-line",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "heroku-api-key-legacy-positive-netrc-multi-line",
+          "heroku-api-key-legacy-positive-auth-token-output",
+          "heroku-api-key-legacy-negative-uuid-without-heroku-context",
+          "heroku-legacy-netrc-multi-line-partitions",
+          "heroku-legacy-auth-token-output-partitions"
+        ]
       },
       "evidence": [
         {
@@ -2965,7 +3027,9 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/743",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-207-heroku-legacy-url-path",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "heroku-api-key-legacy-negative-app-url-path"
+        ]
       },
       "evidence": [
         {
@@ -3046,7 +3110,10 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/744",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-207-labelled-digest-controls",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "twilio-auth-token-negative-md5-digest",
+          "confluent-cloud-api-secret-legacy-negative-image-digest"
+        ]
       },
       "evidence": [
         {
@@ -3140,7 +3207,12 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/745",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-207-bearer-long-placeholder",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "bearer-token-negative-your-oauth-token-placeholder",
+          "bearer-token-negative-insert-access-token-placeholder",
+          "bearer-token-regression-base64url-value-still-detected",
+          "bearer-token-regression-placeholder-lead-word-with-random-suffix"
+        ]
       },
       "evidence": [
         {
@@ -3220,7 +3292,10 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/746",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-207-generic-twilio-sid",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "generic-token-negative-twilio-account-sid",
+          "generic-token-regression-uppercase-hex-sid-lookalike"
+        ]
       },
       "evidence": [
         {
@@ -3300,7 +3375,11 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/747",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-207-telegram-atlassian-account-id",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "telegram-bot-token-negative-atlassian-account-id",
+          "telegram-bot-token-negative-atlassian-account-id-uppercase",
+          "telegram-bot-token-positive-control-exact"
+        ]
       },
       "evidence": [
         {
@@ -3385,7 +3464,16 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/754",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-754",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "new-relic-license-key-marked-newrelic-yml-no-keyword",
+          "new-relic-license-key-marked-newrelic-js-no-keyword",
+          "new-relic-license-key-marked-log-api-header-no-keyword",
+          "new-relic-license-key-marked-helm-values-no-keyword",
+          "new-relic-license-key-negative-sha1-without-suffix",
+          "new-relic-license-key-boundary-marked-31-byte-body",
+          "new-relic-license-key-boundary-marked-33-byte-body",
+          "new-relic-license-key-boundary-marked-joined-identifier"
+        ]
       },
       "evidence": [
         {
@@ -3495,7 +3583,12 @@
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/756",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-756",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "generic-token-negative-your-api-key-placeholder",
+          "generic-token-negative-env-your-api-key-placeholder",
+          "generic-token-regression-placeholder-lead-word-random-suffix",
+          "generic-token-regression-random-api-key-value-still-detected"
+        ]
       },
       "evidence": [
         {

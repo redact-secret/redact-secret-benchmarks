@@ -138,8 +138,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #209: confluent-cloud-api-secret's contract now validates the provider-published CRC32
   // checksum; detector-coverage's three prefixed-shape positives were regenerated with a valid
   // checksum (#209/#213), so they stay must-redact/T1 (net 0 here and below).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 389);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 395);
+  // #213: detector-coverage's three supabase-token shape-1 positives are regenerated in the
+  // documented sb_secret_ 22 + _ + 8 layout, so they move back from policy/T3 to must-redact/T1
+  // (+3 files/+3 spans here, -3 below).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 392);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 398);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -150,8 +153,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#312: 3 more — heroku-api-key-legacy's keyword-gated bare UUID.
   // #207 (research #231): supabase-token is re-reviewed onto the documented sb_secret_
   // 22 + _ + 8 grammar, so its three shape-1 positives (40 alphanumeric, no inner _)
-  // move from must-redact/T0 to retained legacy policy/T3.
-  assert.deepEqual(tally['policy/T3'], { files: 208, spans: 208 });
+  // move from must-redact/T0 to retained legacy policy/T3; #213 regenerates them in the
+  // documented layout, so they leave policy/T3 again (-3).
+  assert.deepEqual(tally['policy/T3'], { files: 205, spans: 205 });
   assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -289,9 +293,9 @@ test('malformed fixtures, missing companions and pending variants cannot pass as
   assert.equal(get('docker-token-shape-1-bare').assessment.kind, 'must-redact');
   assert.equal(get('docker-token-shape-1-bare').assessment.tier, 'T1');
   for (const id of ['vercel-token-shape-1-bare', 'linear-token-shape-2-bare', 'slack-token-shape-4-bare']) assert.equal(get(id).assessment.tier, 'T0', id);
-  // #207: supabase-token's T1 contract is the documented sb_secret_ 22 + _ + 8 grammar; the legacy
-  // 40-alphanumeric shape-1 value falls outside it and is retained only as a policy regression.
-  assert.deepEqual([get('supabase-token-shape-1-bare').assessment.kind, get('supabase-token-shape-1-bare').assessment.tier], ['policy', 'T3']);
+  // #207: supabase-token's T1 contract is the documented sb_secret_ 22 + _ + 8 grammar; #213
+  // regenerated the shape-1 value (once a flat 40-alphanumeric run) in that layout.
+  assert.deepEqual([get('supabase-token-shape-1-bare').assessment.kind, get('supabase-token-shape-1-bare').assessment.tier], ['must-redact', 'T1']);
   assert.equal(get('digitalocean-token-shape-1-bare').assessment.tier, 'T1');
   assert.equal(get('linear-token-shape-1-bare').assessment.tier, 'T1');
   const anthropic = structuredClone(common.find(f => f.id === 'anthropic-token-api03-plain'));

@@ -39,3 +39,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Qualify T2 families as empirically stable through independent corroboration](2026-09-24-qualify-empirical-stable-by-corroboration.md) (amends the entry above)
 - [Amend #207's added scope to 348 family-fixture assignments (proposed)](2026-09-24-amend-207-scope-to-348-assignments.md)
 - [Settle classification disagreements where only the peer's label is coarser](2026-09-24-settle-peer-coarser-classification-disagreements.md)
+- [Stop asserting provider-undecided format properties](2026-09-24-stop-asserting-provider-undecided-format-properties.md) (amends the corroboration decision)

@@ -476,14 +476,13 @@
       ],
       "cells": {
         "totalFixtures": 40,
-        "positiveCases": 10,
+        "positiveCases": 12,
         "benignControls": 15,
         "twinPairs": 9,
-        "positiveContextAxes": 11,
+        "positiveContextAxes": 14,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
-          "#213d · databricks-personal-access-token · ci-config",
           "#213d · databricks-personal-access-token · cli",
           "#213d · databricks-personal-access-token · env",
           "#213d · databricks-personal-access-token · header",
@@ -493,6 +492,10 @@
           "#213d · databricks-personal-access-token · structured-file",
           "#213d · databricks-personal-access-token · tool-output",
           "#213d · databricks-personal-access-token · url",
+          "#213f · databricks-personal-access-token · basic-auth",
+          "#213f · databricks-personal-access-token · ci-config",
+          "#213f · databricks-personal-access-token · container-config",
+          "#213f · databricks-personal-access-token · log",
           "databricks-personal-access-token"
         ],
         "controlAxisIds": [
@@ -511,8 +514,8 @@
           "public-identifier",
           "reference",
           "twin:alphabet",
-          "twin:boundary",
-          "twin:length"
+          "twin:length",
+          "twin:prefix"
         ]
       },
       "debt": []
@@ -1786,11 +1789,11 @@
         "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 40,
-        "positiveCases": 10,
+        "totalFixtures": 41,
+        "positiveCases": 13,
         "benignControls": 14,
         "twinPairs": 8,
-        "positiveContextAxes": 13,
+        "positiveContextAxes": 14,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
@@ -1806,6 +1809,7 @@
           "#213d · mailchimp-api-key · source-code",
           "#213d · mailchimp-api-key · structured-file",
           "#213d · mailchimp-api-key · tool-output",
+          "#213f · mailchimp-api-key · url",
           "mailchimp-api-key"
         ],
         "controlAxisIds": [
@@ -1846,8 +1850,8 @@
         "totalFixtures": 40,
         "positiveCases": 12,
         "benignControls": 16,
-        "twinPairs": 9,
-        "positiveContextAxes": 10,
+        "twinPairs": 8,
+        "positiveContextAxes": 11,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
@@ -1860,6 +1864,7 @@
           "#213d · mailgun-api-key · source-code",
           "#213d · mailgun-api-key · structured-file",
           "#213d · mailgun-api-key · tool-output",
+          "#213f · mailgun-api-key · container-config",
           "mailgun-api-key"
         ],
         "controlAxisIds": [
@@ -1877,7 +1882,7 @@
           "placeholder",
           "public-identifier",
           "reference",
-          "twin:alphabet",
+          "twin:boundary",
           "twin:length",
           "twin:prefix"
         ]
@@ -2304,11 +2309,11 @@
         "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 44,
-        "positiveCases": 13,
+        "totalFixtures": 45,
+        "positiveCases": 15,
         "benignControls": 15,
         "twinPairs": 8,
-        "positiveContextAxes": 7,
+        "positiveContextAxes": 8,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -2318,6 +2323,7 @@
           "#213d · openai-token · sdk-config",
           "#213d · openai-token · shell-export",
           "#213d · openai-token · source-code",
+          "#213f · openai-token · container-config",
           "openai-token"
         ],
         "controlAxisIds": [

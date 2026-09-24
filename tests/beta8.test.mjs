@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { contracts, controlAxis, arrivalIds } from '../benchmarks/lib/assessment.ts';
+import { contracts, controlAxis, arrivalIds, disputedProperty } from '../benchmarks/lib/assessment.ts';
 import { BETA8_MODULES, arrivalFamilies, validateBeta8 } from '../benchmarks/lib/beta8/index.ts';
 import { POSITIVE_AXES, countProfile } from '../benchmarks/lib/beta8/profiles.ts';
 import { CONTROL_SUFFIXES } from '../fixtures/generated/beta8/helpers.mjs';
@@ -18,7 +18,7 @@ const beta8 = Object.entries(generated).filter(([id]) => id.startsWith('beta8-')
 
 test('Beta.8 modules: arrival families are declared once, carry a taxonomy family and a contract, and never shadow a registry detector', () => {
   assert.deepEqual(validateBeta8(registry.detectors.map(d => d.id), taxonomy.families.map(f => f.id)), []);
-  assert.deepEqual(BETA8_MODULES.map(m => m.issue), [207, 208, 209, 210, 211, 212, 213, 213, '213d', '213e']);
+  assert.deepEqual(BETA8_MODULES.map(m => m.issue), [207, 208, 209, 210, 211, 212, 213, 213, '213d', '213e', '213f']);
   for (const f of arrivalFamilies) {
     const family = taxonomy.families.find(t => t.id === f.taxonomy);
     assert.ok(family, f.id);
@@ -46,7 +46,8 @@ test('every beta8-<issue> corpus is registered, and its fixtures follow the targ
       const secret = f.expected.some(r => r.role === 'secret');
       if (secret) assert.ok(POSITIVE_AXES.includes(f.contextAxis), `${f.id}: positive names its context axis`);
       else if (!f.twinOf) assert.ok(CONTROL_SUFFIXES.some(s => f.id.endsWith(`-${s}`)) && controlAxis(category, f), `${f.id}: control carries an axis`);
-      assert.notEqual(f.assessment.tier, 'T0', `${f.id}: ${f.assessment.reason}`);
+      // Only a fixture re-scoped off a provider-undecided property (lib/assessment.ts DISPUTED_PROPERTIES) may read T0.
+      if (!disputedProperty(category, f.id)) assert.notEqual(f.assessment.tier, 'T0', `${f.id}: ${f.assessment.reason}`);
     }
   }
 });

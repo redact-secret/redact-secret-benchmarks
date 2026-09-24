@@ -181,12 +181,11 @@
       "family": "databricks-personal-access-token",
       "mode": "shape",
       "supportsBareValues": true,
-      "uncertainty": "No Databricks page states the token grammar; dapi + 32 lowercase hex rests on tools, and the optional -<digit> suffix has no provider source at all (its meaning, digit count and even existence differ across tools). Microsoft Purview gives only a 32-character length, admits A-F, and its own example contradicts its pattern; no issued token has been measured (redact-secret#697/#698 open).",
+      "uncertainty": "No Databricks page states the token grammar; dapi + 32 lowercase hex rests on tools, and the optional -<digit> suffix has no provider source at all (its meaning, digit count and even existence differ across tools). Microsoft Purview gives only a 32-character length, admits A-F, and its own example contradicts its pattern; no issued token has been measured (redact-secret#697/#698 open). Since 2026-09-24 the suffix is outside the claim (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no fixture asserts a suffixed span or silence on a suffix, so the product's handling of it is unmeasured.",
       "supportedContexts": [
         "bare value (the dapi prefix is the only marker; no keyword or workspace host required)",
         "double-quoted assignment value",
-        "value on the line after an unrelated comment line (CRLF)",
-        "optional -<one digit> rotation suffix inside the span"
+        "value on the line after an unrelated comment line (CRLF)"
       ],
       "observations": [],
       "corroboration": [
@@ -248,11 +247,13 @@
         },
         {
           "statement": "Nosey Parker allows a multi-digit suffix (-[0-9]+); the contract allows exactly one digit and its rotated-shape boundary twin asserts silence on a two-digit suffix (redact-secret#698).",
-          "status": "unresolved"
+          "status": "bounded",
+          "bound": "Outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no Databricks source states any suffix, so the benchmark asserts no silence on a multi-digit suffix. The detector-coverage rotated-shape boundary twin (three contexts) stays as unscored T0 history, beta8-213f replaces its twin pairs on undisputed properties, and the product's behaviour on suffixed tokens is unmeasured for this family."
         },
         {
           "statement": "plenoai, CredSweeper and secrets-patterns-db have no suffix and no provider source says what the suffix is; the contract puts '-<digit>' inside the positive's secret span (redact-secret#698).",
-          "status": "unresolved"
+          "status": "bounded",
+          "bound": "Outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): the contract pattern stops at dapi + 32 lowercase hex and asserts no span for a -<digit> suffix. The detector-coverage rotated-shape positive (three contexts) and the beta8-213d actions-env positive, whose secret spans include the suffix, stay as unscored T0 history; beta8-213f replaces them with unsuffixed positives, and whether the product includes a suffix in its span is unmeasured for this family."
         },
         {
           "statement": "Purview's own format example is 30 characters and contains letters past f, disagreeing with its stated 32-character hex pattern and with the contract's lowercase-hex body (the alphabet twin asserts silence on a non-hex byte).",
@@ -614,10 +615,10 @@
       "family": "mailchimp-api-key",
       "mode": "shape",
       "supportsBareValues": false,
-      "uncertainty": "Mailchimp states the shape only by examples: its fundamentals page shows a 31-hex-character body with -us6, and its own WordPress plugin shows 32 hex with -us19, matching every tool and 111 of 115 public-code candidates (redact-secret#699); the contract follows the 32-byte example. The fundamentals page says the data center is always appended as key-dc. Hex case and the data-center alphabet (only us<N> is ever shown) are not stated by the provider. The only staff statement (2009) advises against regex validation because keys may change.",
+      "uncertainty": "Mailchimp states the shape only by examples: its fundamentals page shows a 31-hex-character body with -us6, and its own WordPress plugin shows 32 hex with -us19, matching every tool and 111 of 115 public-code candidates (redact-secret#699); the contract follows the 32-byte example. The fundamentals page says the data center is always appended as key-dc. Hex case and the data-center alphabet (only us<N> is ever shown) are not stated by the provider. The only staff statement (2009) advises against regex validation because keys may change. Non-us data-center literals are outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no scored fixture asserts them either way, so the product's handling of them is unmeasured.",
       "supportedContexts": [
         "same-line mailchimp keyword assignment (e.g. MAILCHIMP_API_KEY=<value>), bare, double-quoted, or after a CRLF comment line",
-        "suffix -us + one or two digits"
+        "suffix -us + one or two digits (no other data-center literal is claimed)"
       ],
       "observations": [],
       "corroboration": [
@@ -694,7 +695,8 @@
         },
         {
           "statement": "keyhacks allows any [0-9a-z]{2,5} suffix; the contract's boundary twin asserts silence on an -eu6 suffix.",
-          "status": "unresolved"
+          "status": "bounded",
+          "bound": "Outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): Mailchimp shows only us<N> data centers and states no data-center alphabet, and the research pass found no source that decides whether another literal is issued, so the contract claims us<N> suffixes only and asserts no silence on any other. The detector-coverage -eu6 boundary twin (three contexts) stays as unscored T0 history, beta8-213f replaces its twin pairs on undisputed properties, and the product's behaviour on non-us suffixes is unmeasured for this family."
         },
         {
           "statement": "Mailchimp staff (2009) say not to regex-validate because key formats may change, and their regex made the -us suffix optional; the missing-marker control asserts silence on a suffix-less 32-hex value.",
@@ -708,7 +710,7 @@
       "family": "mailgun-api-key",
       "mode": "shape",
       "supportsBareValues": false,
-      "uncertainty": "No Mailgun page states any key grammar; key- + 32 is shown only as a placeholder for the HTTP webhook signing key, and 2018-2025 sources say the current private API key is a prefix-less 32-8-8 hex triplet, making key- possibly the older shape (redact-secret#701). Mailgun's own PHP SDK test uses a key- signing key with g-z letters, so the body is [a-z0-9], not hex-only; case sensitivity is unsettled, Mailgun documents pubkey- as a front-end public key (its Python SDK still scrubs it from logs as a conservative choice), and no issued key has been measured.",
+      "uncertainty": "No Mailgun page states any key grammar; key- + 32 is shown only as a placeholder for the HTTP webhook signing key, and 2018-2025 sources say the current private API key is a prefix-less 32-8-8 hex triplet, making key- possibly the older shape (redact-secret#701). Mailgun's own PHP SDK test uses a key- signing key with g-z letters, so the body is [a-z0-9], not hex-only; case sensitivity is unsettled, Mailgun documents pubkey- as a front-end public key (its Python SDK still scrubs it from logs as a conservative choice), and no issued key has been measured. Case is outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no scored fixture asserts an uppercase body either way, so the product's handling of it is unmeasured.",
       "supportedContexts": [
         "same-line mailgun keyword assignment (MAILGUN_API_KEY= / MAILGUN_WEBHOOK_SIGNING_KEY=), bare, double-quoted, or after a CRLF comment line",
         "private API key and HTTP webhook signing key roles, both key- + 32"
@@ -781,7 +783,8 @@
         },
         {
           "statement": "gitleaks and Nosey Parker are case-insensitive (1 of 31 measured candidates had an uppercase letter); the contract's alphabet twin asserts silence on a body with one uppercase byte.",
-          "status": "unresolved"
+          "status": "bounded",
+          "bound": "Outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no Mailgun source decides case and the 2026-09-23 research pass found none, so the benchmark asserts neither detection nor silence on an uppercase body byte. The detector-coverage alphabet twin (three contexts) stays as unscored T0 history, beta8-213f replaces its twin pairs on undisputed properties (length, the key- delimiter), and the product's behaviour on uppercase bodies is unmeasured for this family."
         },
         {
           "statement": "gitleaks has a mailgun-pub-key rule treating pubkey- + 32 hex as a secret, and Mailgun's own mailgun-python log filter (v1.9.1, https://github.com/mailgun/mailgun-python/blob/v1.9.1/mailgun/filters.py#L9-L12) scrubs pubkey- values alongside key-; the family's public-id controls assert silence on a pubkey- value.",
@@ -895,7 +898,7 @@
       "family": "openai-token",
       "mode": "shape",
       "supportsBareValues": true,
-      "uncertainty": "OpenAI documents no key grammar. Its own code (openai/codex) fixes only the prefixes, the T3BlbkFJ watermark and a 51-character minimum, and one staff forum post confirms sk-proj-. The 74/74 segment widths rest on scanner rules and revoked samples that gitleaks adopted. Earlier project-key generations (20/20, 58/58), sk-None- user keys and sk-service- keys all appear in public code, and the service-account length dispute is still open. No freshly issued key has been measured.",
+      "uncertainty": "OpenAI documents no key grammar. Its own code (openai/codex) fixes only the prefixes, the T3BlbkFJ watermark and a 51-character minimum, and one staff forum post confirms sk-proj-. The 74/74 segment widths rest on scanner rules and revoked samples that gitleaks adopted. Earlier project-key generations (20/20, 58/58), sk-None- user keys and sk-service- keys all appear in public code, and the service-account length dispute is still open. No freshly issued key has been measured. Service-account widths other than 74/74 are outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no scored fixture asserts them either way, so the product's handling of them is unmeasured.",
       "supportedContexts": [
         "bare sk-... key anywhere on a line",
         "quoted string literal",
@@ -949,7 +952,8 @@
       "contradictions": [
         {
           "statement": "Service-account key length: gitleaks#1780's revoked samples are a fixed 74/74 (167 chars), but gitleaks#1467 (2024) says length varies with the account name, gitleaks#2240 (2026, open) claims ~51 before the marker, leaktk synthetic samples are 45/46 and 49/50, and Trivy#10794 reports an svcacct offset of 80.",
-          "status": "unresolved"
+          "status": "bounded",
+          "bound": "Outside the claim since 2026-09-24 (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md): no OpenAI source states a service-account width (openai/codex fixes only prefixes, the watermark and a 51-character minimum), and the research pass found none, so the contract claims sk-svcacct- keys only at the 74/74 widths its positives carry and asserts no silence on any other svcacct width. The common-formats svcacct 73/74 twin (two contexts) stays as unscored T0 history, beta8-213f replaces its twin pairs on undisputed properties, and the product's behaviour on other service-account widths is unmeasured for this family."
         },
         {
           "statement": "sk-proj-/sk-svcacct- with 58 + marker + 58 (132/134 chars): reported Aug 2024, accepted by gitleaks and secretlint, 18 public-code files; Trivy says a fixed 74 misses about 14% of real project keys.",

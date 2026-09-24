@@ -28,7 +28,7 @@ export const SUPPORT_STATUS_COPY: Record<SupportStatus, SupportStatusCopy> = {
   stable: {
     kind: 'pass', word: 'Stable', short: 'every floor met',
     meaning: 'Detected, and every evidence floor in the profile is met — the floors are listed below.',
-    rationale: statusCriteria.stable.positiveContract.rationale,
+    rationale: `${statusCriteria.stable.documented.rationale} ${statusCriteria.stable.empirical.rationale}`,
   },
   provisional: {
     kind: 'unstable', word: 'Provisional', short: 'evidence incomplete',
@@ -57,15 +57,22 @@ const n = (value: number) => value.toLocaleString('en-US');
 const families = (count: number) => `${n(count)} ${count === 1 ? 'family' : 'families'}`;
 const tierTitle = (tier: string) => (tiers as Record<string, { title: string }>)[tier]?.title ?? tier;
 
-/** The `stable` floors, read from `status-criteria.json`: no threshold is repeated here. */
+/** The two `stable` profiles, read from `status-criteria.json`: no threshold is repeated here. */
 function floors(): string {
   const s = statusCriteria.stable;
   const rows: [string, string, string][] = [
-    ['Positive contract', 'Provider-documented (T1)', s.positiveContract.rationale],
-    ['Twin pairs', `at least ${n(s.minimumTwinPairs.value)}`, s.minimumTwinPairs.rationale],
+    ['Documented provenance', 'T1 with provider source', s.documented.rationale],
+    ['Documented positives / axes', `${n(s.documented.minimumPositiveCases.value)} / ${n(s.documented.minimumPositiveAxes.value)}`, s.documented.minimumPositiveCases.rationale],
+    ['Documented benign / axes', `${n(s.documented.minimumBenignCases.value)} / ${n(s.documented.minimumControlAxes.value)}`, s.documented.minimumBenignCases.rationale],
+    ['Documented twin pairs', `at least ${n(s.documented.minimumTwinPairs.value)}`, s.documented.minimumTwinPairs.rationale],
+    ['Empirical provenance', 'T2; remains T2', s.empirical.rationale],
+    ['Provider-issued observations', `at least ${n(s.empirical.minimumObservations.value)} across ${n(s.empirical.minimumSubjects.value)} subjects and ${n(s.empirical.minimumIssuanceDates.value)} dates`, s.empirical.minimumObservations.rationale],
+    ['Corroboration from separate source classes', `at least ${n(s.empirical.minimumCorroborationClasses.value)}`, s.empirical.minimumCorroborationClasses.rationale],
+    ['Empirical positives / axes', `${n(s.empirical.minimumPositiveCases.value)} / ${n(s.empirical.minimumPositiveAxes.value)}`, s.empirical.minimumPositiveCases.rationale],
+    ['Empirical benign / axes', `${n(s.empirical.minimumBenignCases.value)} / ${n(s.empirical.minimumControlAxes.value)}`, s.empirical.minimumBenignCases.rationale],
+    ['Empirical twin pairs', `at least ${n(s.empirical.minimumTwinPairs.value)}`, s.empirical.minimumTwinPairs.rationale],
+    ['Opaque context profile', `${n(s.empirical.contextConstrained.minimumContextTwinPairs.value)} context twins, ${n(s.empirical.contextConstrained.minimumConfusionAxes.value)} axes, ${n(s.empirical.contextConstrained.minimumFixtures.value)} fixtures`, s.empirical.contextConstrained.minimumFixtures.rationale],
     ['Twin failures', `at most ${n(s.twinFailures.value)}`, s.twinFailures.rationale],
-    ['Benign controls', `at least ${n(s.benign.minimumCases.value)}`, s.benign.minimumCases.rationale],
-    ['Distinct benign taxonomy axes', `at least ${n(s.benign.minimumAxes.value)}`, s.benign.minimumAxes.rationale],
     ['False alarms on benign controls', `at most ${n(s.benign.falseAlarms.value)}`, s.benign.falseAlarms.rationale],
     ['Metamorphic critical failures', `at most ${n(s.metamorphic.criticalFailures.value)}`, s.metamorphic.criticalFailures.rationale],
     ['Unresolved critical mutation findings', `at most ${n(s.mutation.unresolvedCritical.value)}`, s.mutation.unresolvedCritical.rationale],
@@ -97,24 +104,32 @@ function evidence(entry: SupportMatrixEntry): string {
   const source = entry.providerSource;
   const twin = entry.twinCoverage;
   const items = entry.unresolvedCriticalItems;
+  const empirical = entry.empiricalEvidence;
+  const fixture = entry.fixtureProfile;
   const lines = [
     `<b>Detectors</b> ${entry.detectors.map(id => `<a href="/coverage/${e(id)}">${e(id)}</a>`).join(' · ')}`,
     `<b>Format evidence</b> ${entry.evidenceTier ? `${e(entry.evidenceTier)} · ${e(tierTitle(entry.evidenceTier))}` : 'none recorded'}`,
+    `<b>Evidence basis</b> ${e(entry.evidenceBasis)}`,
+    `<b>Qualification profile</b> ${entry.qualificationProfile ? e(entry.qualificationProfile) : 'not qualified'}`,
     `<b>Provider source</b> ${source ? `<a href="${e(source.url)}" rel="noreferrer">${e(source.formatVersion)}</a> <span class="muted">observed ${e(source.observedAt)} · ${e(source.covers)}</span>` : 'none recorded'}`,
     `<b>Corroborating scanners</b> ${entry.corroboratingScanners.length ? entry.corroboratingScanners.map(e).join(' · ') : 'none recorded'}`,
     `<b>Twin coverage</b> ${!twin ? 'none recorded' : twin.unprobeable ? `un-probeable · ${e(twin.unprobeable.reason)} <span class="muted">checked ${e(twin.unprobeable.observedAt)}</span>` : `${n(twin.pairs)} pair${twin.pairs === 1 ? '' : 's'} · ${n(twin.failures)} failure${twin.failures === 1 ? '' : 's'}`}`,
     `<b>Unresolved critical items</b> ${items ? `metamorphic ${n(items.metamorphic)} · mutation ${n(items.mutation)} · differential ${n(items.differential)}` : 'none recorded'}`,
+    `<b>Fixture profile</b> ${fixture ? `${n(fixture.positiveCases)} positives / ${n(fixture.positiveAxes)} axes · ${n(fixture.benignCases)} benign / ${n(fixture.controlAxes)} axes · ${n(fixture.twinPairs)} twin pairs · ${n(fixture.totalFixtures)} fixtures` : 'none recorded'}`,
+    `<b>Empirical observations</b> ${empirical ? `${n(empirical.observations)} observations · ${n(empirical.subjects)} subjects · ${n(empirical.issuanceDates)} issuance dates · ${n(empirical.corroborationClasses.length)} corroboration classes · ${n(empirical.contradictions)} contradictions` : 'none recorded'}`,
+    `<b>Uncertainty and context limits</b> ${empirical?.uncertainty ? `${e(empirical.uncertainty)} · contexts: ${empirical.supportedContexts.map(e).join(', ')}` : 'none recorded'}`,
   ];
   return `<details data-key="support:${e(entry.family)}"><summary><small>Evidence</small></summary><ul class="small">${lines.map(line => `<li>${line}</li>`).join('')}</ul></details>`;
 }
 
 function familyRow(entry: SupportMatrixEntry): string {
   const copy = SUPPORT_STATUS_COPY[entry.status];
+  const statusWord = entry.status === 'stable' && entry.qualificationProfile === 'empirical' ? 'Stable · Empirically qualified' : copy.word;
   const reasons = entry.reason ? entry.reason.split(' | ') : [];
   return `<tr data-support-status="${e(entry.status)}" data-family="${e(entry.family)}">
     <td>${e(providerName(entry.provider))}</td>
     <td>${e(entry.familyName)}<small class="mono">${e(entry.family)}</small></td>
-    <td>${statusMark(copy.kind, copy.word)}<small>${e(copy.short)}</small></td>
+    <td>${statusMark(copy.kind, statusWord)}<small>${e(copy.short)}</small></td>
     <td>${reasons.length ? `<ul class="small">${reasons.map(reason => `<li>${e(reason)}</li>`).join('')}</ul>` : '<small>No unmet floor is recorded.</small>'}</td>
     <td>${evidence(entry)}</td></tr>`;
 }
@@ -136,6 +151,7 @@ export function supportPage(matrix: SupportMatrixFile | null, problem: string | 
     ? `<span>Measured <b>candidate</b> redact-secret <b>${e(source.product.declaredVersion)}</b> at <a class="mono" href="https://github.com/redact-secret/redact-secret/commit/${e(source.product.sourceCommit)}" rel="noreferrer">${e(source.product.sourceCommit.slice(0, 7))}</a></span>`
     : '<span>Measured the <b>published</b> redact-secret package</span>';
   const meta = `<span><b>${n(matrix.familyCount)}</b> families across <b>${n(matrix.providerCount)}</b> providers</span>
+    <span>Stable: <b>${n(matrix.stableDistribution.documented)}</b> documented · <b>${n(matrix.stableDistribution.empirical)}</b> empirical</span>
     ${measured}
     <span>Evidence run <b>${e(source.runId.slice(0, 8))}</b> · ${e(source.generatedAt.slice(0, 10))}</span>
     <span>Revision <code>${e(source.revision.slice(0, 12))}</code></span>

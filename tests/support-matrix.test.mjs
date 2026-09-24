@@ -20,7 +20,7 @@ function fullStatusReport() {
   const families = Object.keys(contracts).sort().map(family => {
     const evidence = familyEvidence(family, {}, {}, [], emptyLedger);
     const assessment = classifyFamilySupport(evidence);
-    return { ...assessment, taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable: contracts[family].unprobeable ?? null };
+    return { ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable: contracts[family].unprobeable ?? null };
   });
   return {
     schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'test-run', revision: 'abc123', dirty: false,
@@ -35,7 +35,7 @@ test('every taxonomy family gets exactly one matrix entry', () => {
 });
 
 test('distribution sums to the taxonomy family count', () => {
-  const { distribution, families } = buildSupportMatrix(fullStatusReport());
+  const { distribution, stableDistribution, families } = buildSupportMatrix(fullStatusReport());
   const total = Object.values(distribution).reduce((a, b) => a + b, 0);
   assert.equal(total, families.length);
 });
@@ -99,11 +99,11 @@ test('throws when two detector results claim the same taxonomy family', () => {
 });
 
 test('a synthetic full matrix satisfies its schema', () => {
-  const { distribution, families } = buildSupportMatrix(fullStatusReport());
+  const { distribution, stableDistribution, families } = buildSupportMatrix(fullStatusReport());
   const matrix = {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
     sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'test-run', revision: 'abc123', dirty: false, criteriaSchemaVersion: 1 },
-    providerCount: taxonomy.providers.length, familyCount: families.length, distribution, families,
+    providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };
   assert.ok(validate(matrix), JSON.stringify(validate.errors));
 });

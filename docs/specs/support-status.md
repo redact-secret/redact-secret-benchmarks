@@ -21,13 +21,19 @@ pure function: same evidence in, same status and reasons out, every time.
 
 | status | meaning |
 | --- | --- |
-| `stable` | Every floor in `status-criteria.json`'s `stable` block is met: a T1, provider-documented positive contract, plus twin, benign, metamorphic, mutation and differential evidence with no unresolved critical disagreement. |
+| `stable` | Every floor in either the T1 `documented` profile or the T2 `empirical` profile is met. Tier and evidence basis do not change when qualification changes. |
 | `provisional` | At least one detector exists for the family, but it does not clear every `stable` floor (typically T2/tool-corroborated, or T1 with evidence still incomplete). |
 | `pending` | The family's positive contract is tier T0, or no detector exists for it and no `unsupportedReason` was recorded. |
 | `unsupported` | No detector exists for the family, and a reason was recorded for why. Never assigned without one — a detectorless family with no reason reports `pending` instead, per fail-closed convention (`benchmarks/lib/assessment.ts`: "Unknown fixtures fail closed into T0"). |
 
-Tier alone never grants `stable`: a T1 contract with zero twin pairs still
-fails `minimumTwinPairs` and lands on `provisional`.
+Tier alone never grants `stable`. T1 must clear the documented fixture and
+behavioral gates. T2 must additionally clear the safe-observation,
+corroboration, uncertainty, supported-context, and empirical fixture gates.
+T3 is ineligible for empirical qualification regardless of fixture volume.
+
+Evidence tier, evidence basis, and qualification profile are separate output
+fields. In particular, empirical stable is represented as tier `T2`, basis
+`empirically-observed`, profile `empirical` and is never rewritten as T1.
 
 ## Shape
 
@@ -39,8 +45,8 @@ sits near that floor — no code change required:
 {
   "schemaVersion": 1,
   "stable": {
-    "positiveContract": { "requireProviderSource": true, "rationale": "..." },
-    "minimumTwinPairs": { "value": 5, "rationale": "..." },
+    "documented": { "tier": "T1", "minimumPositiveCases": { "value": 6, "rationale": "..." }, "minimumTwinPairs": { "value": 5, "rationale": "..." } },
+    "empirical": { "tier": "T2", "minimumObservations": { "value": 5, "rationale": "..." }, "minimumTwinPairs": { "value": 8, "rationale": "..." }, "contextConstrained": { "minimumFixtures": { "value": 48, "rationale": "..." } } },
     "twinFailures": { "value": 0, "rationale": "..." },
     "benign": { "minimumCases": { "value": 5, "rationale": "..." }, "minimumAxes": { "value": 3, "rationale": "..." }, "falseAlarms": { "value": 0, "rationale": "..." } },
     "metamorphic": { "criticalFailures": { "value": 0, "rationale": "..." } },
@@ -66,7 +72,8 @@ axes such as `near-miss`/`placeholder`/`reference`, not merely a case count),
 metamorphic critical failures, mutation unresolved critical, differential
 unresolved contract disagreements, detector list, and an optional
 `unsupportedReason`) and returns `{ family, status, reasons }`.
-`reasons` names every `stable` criterion the evidence missed — the family's
+`qualificationProfile` is `documented` or `empirical` only for stable results;
+otherwise it is null. `reasons` names every `stable` criterion the evidence missed — the family's
 actual number, the floor, and the floor's rationale — so a failing family
 never reports a bare status with no explanation.
 

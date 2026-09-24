@@ -25,6 +25,7 @@ export interface SupportMatrixFile {
   providerCount: number;
   familyCount: number;
   distribution: Record<SupportStatus, number>;
+  stableDistribution: { documented: number; empirical: number };
   families: SupportMatrixEntry[];
 }
 
@@ -61,6 +62,12 @@ export function supportMatrixProblem(value: unknown): string | null {
     if (new Set(matrix.families.map(f => f.family)).size !== matrix.families.length) return 'Support matrix repeats a family';
     const counted = countStatuses(matrix.families);
     if (SUPPORT_STATUSES.some(status => matrix.distribution[status] !== counted[status])) return 'Support matrix distribution does not recount from its families';
+    const stableProfiles = {
+      documented: matrix.families.filter(entry => entry.status === 'stable' && entry.qualificationProfile === 'documented').length,
+      empirical: matrix.families.filter(entry => entry.status === 'stable' && entry.qualificationProfile === 'empirical').length,
+    };
+    if (matrix.stableDistribution.documented !== stableProfiles.documented || matrix.stableDistribution.empirical !== stableProfiles.empirical ||
+        stableProfiles.documented + stableProfiles.empirical !== counted.stable) return 'Support matrix stable distribution does not recount from its families';
     const known = new Map(taxonomy.families.map(f => [f.id, f]));
     if (matrix.families.length !== known.size || matrix.providerCount !== taxonomy.providers.length) return 'Stale support matrix: the taxonomy changed';
     for (const entry of matrix.families) {
@@ -70,8 +77,12 @@ export function supportMatrixProblem(value: unknown): string | null {
       // Every status but `stable` owes the reader a reason; `buildSupportMatrix`
       // enforces it upstream, and a published file is checked again here.
       if (entry.status !== 'stable' && !entry.reason) return `Support matrix entry ${entry.family} carries ${entry.status} with no reason`;
-      if (!entry.detectors.length && (entry.evidenceTier || entry.twinCoverage || entry.unresolvedCriticalItems)) return `Support matrix entry ${entry.family} has no detector but carries evidence`;
+      if (!entry.detectors.length && (entry.evidenceTier || entry.evidenceBasis !== 'none' || entry.qualificationProfile || entry.twinCoverage || entry.unresolvedCriticalItems || entry.empiricalEvidence || entry.fixtureProfile)) return `Support matrix entry ${entry.family} has no detector but carries evidence`;
       if (entry.detectors.length && !entry.evidenceTier) return `Support matrix entry ${entry.family} has a detector but no format evidence tier`;
+      if (entry.status === 'stable' && !entry.qualificationProfile) return `Support matrix entry ${entry.family} is stable without a qualification profile`;
+      if (entry.status !== 'stable' && entry.qualificationProfile) return `Support matrix entry ${entry.family} is not stable but carries a qualification profile`;
+      if (entry.qualificationProfile === 'empirical' && (entry.evidenceTier !== 'T2' || entry.evidenceBasis !== 'empirically-observed')) return `Support matrix entry ${entry.family} masquerades as empirically qualified`;
+      if (entry.qualificationProfile === 'documented' && entry.evidenceTier !== 'T1') return `Support matrix entry ${entry.family} masquerades as documented`;
     }
     return null;
   } catch {

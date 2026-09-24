@@ -21,7 +21,7 @@ async function main() {
   } catch (error) {
     throw new Error(`Cannot read ${path.relative(root, inputPath)} — run \`npm run eval:classify\` first (A3, #504). ${error instanceof Error ? error.message : error}`);
   }
-  const { distribution, families } = buildSupportMatrix(statusReport);
+  const { distribution, stableDistribution, families } = buildSupportMatrix(statusReport);
   const output = {
     schemaVersion: 1 as const,
     taxonomySchemaVersion: taxonomy.schemaVersion,
@@ -39,6 +39,7 @@ async function main() {
     providerCount: taxonomy.providers.length,
     familyCount: families.length,
     distribution,
+    stableDistribution,
     families,
   };
   const target = path.resolve(root, typeof options.output === 'string' ? options.output : 'results-output/support-matrix.json');

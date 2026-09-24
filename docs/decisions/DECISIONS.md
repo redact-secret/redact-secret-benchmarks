@@ -34,3 +34,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Run the performance evaluation for real and retire the by-construction verdict](2026-09-23-run-the-performance-evaluation-for-real.md)
 - [Require pinned peer scanners for classification claims](2026-09-23-require-pinned-peer-scanners-for-classification.md)
 - [Decouple pin freshness from pin consistency](2026-09-23-decouple-pin-freshness-from-pin-consistency.md)
+- [Qualify T2 families empirically without changing their provenance](2026-09-24-qualify-t2-empirically.md)

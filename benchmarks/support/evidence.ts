@@ -62,7 +62,11 @@ function fixtureProfile(family: string, cases: EvaluationCase[]) {
     positiveAxes: new Set(positive.map(c => `${c.source.category}/${c.seed.group}`)).size,
     benignCases: benign.length,
     totalFixtures: base.length,
-    contextTwinPairs: twins.filter(c => c.source.category === 'context-edges').length,
+    // A context-twin pair keeps the value byte-for-byte and changes only its assignment context: the
+    // authored `mutationKind: 'context'` (lib/assessment.ts classifyControl; fixture-profiles.json's
+    // cellNote), in whichever corpus it is authored. The `context-edges` category is not that: it holds
+    // no context-kind twin at all, only length/prefix value twins.
+    contextTwinPairs: twins.filter(c => c.twin?.mutationKind === 'context').length,
     confusionAxes: confusion.size,
   };
 }

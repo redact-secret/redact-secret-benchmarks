@@ -169,6 +169,22 @@
     {
       "id": "okta",
       "name": "Okta"
+    },
+    {
+      "id": "replicate",
+      "name": "Replicate"
+    },
+    {
+      "id": "groq",
+      "name": "Groq"
+    },
+    {
+      "id": "xai",
+      "name": "xAI"
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter"
     }
   ],
   "families": [
@@ -1121,6 +1137,66 @@
         "https://developer.okta.com/docs/guides/create-an-api-token/main/"
       ],
       "note": "redact-secret#315 (product PR #681) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. OAuth access/ID tokens are JWTs and belong to the jwt family, not this one."
+    },
+    {
+      "id": "replicate:api-token",
+      "provider": "replicate",
+      "name": "API token",
+      "description": "r8_ prefixed API token; the provider documents a 40-character total (a 37-character body) and does not state the body alphabet.",
+      "detectors": [],
+      "sources": [
+        "https://replicate.com/docs/topics/security/api-tokens",
+        "https://replicate.com/changelog/2024-04-03-bearer-tokens"
+      ],
+      "note": "Beta.8 arrival family (#208, research #217): no product detector at the pinned registry revision; measured as the arrival target replicate-api-token (benchmarks/lib/beta8/208.ts). The body alphabet is peer-contested (TruffleHog admits - and _; flare-redact alphanumeric only) and stays provisional. The cog/r8.im login token's relation to this token is undocumented and not claimed. Product counterpart redact-secret/redact-secret#727."
+    },
+    {
+      "id": "groq:api-key",
+      "provider": "groq",
+      "name": "API key",
+      "description": "gsk_ prefixed API key; the 52-character alphanumeric body is tool-corroborated, not provider-stated.",
+      "detectors": [],
+      "sources": [
+        "https://console.groq.com/docs/production-readiness/security-onboarding",
+        "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/groq/groq.go"
+      ],
+      "note": "Beta.8 arrival family (#208, research #218): no product detector at the pinned registry revision; measured as the arrival target groq-api-key at T2. The observed WGdyb3FY body segment is a four-sample maintainer observation recorded as unresolved, not a grammar requirement; the community 48-character body proposal is unsupported. Not Grok/xAI. Product counterpart redact-secret/redact-secret#727."
+    },
+    {
+      "id": "xai:api-key",
+      "provider": "xai",
+      "name": "API key",
+      "description": "xai- prefixed API key; the 80-character body is documented only by the provider's example and corroborated by tools.",
+      "detectors": [],
+      "sources": [
+        "https://docs.x.ai/developers/rest-api-reference/management/auth",
+        "https://docs.x.ai/developers/quickstart"
+      ],
+      "note": "Beta.8 arrival family (#208, research #216): no product detector at the pinned registry revision; measured as the arrival target xai-api-key at T2. Management keys (tool-reported xai-token- prefix, XAI_MANAGEMENT_KEY) are a separate credential and not members of this family; no taxonomy family is added for them until the provider documents a format. Product counterpart redact-secret/redact-secret#727."
+    },
+    {
+      "id": "openrouter:api-key",
+      "provider": "openrouter",
+      "name": "Inference API key",
+      "description": "sk-or-v1- followed by 64 lowercase hexadecimal characters (73 characters), per OpenRouter's secret-format documentation.",
+      "detectors": [],
+      "sources": [
+        "https://openrouter.ai/docs/guides/features/guardrails/secret-formats",
+        "https://openrouter.ai/docs/api/api-reference/api-keys/create-keys"
+      ],
+      "note": "Beta.8 arrival family (#208, research #220): no product detector at the pinned registry revision; measured as the arrival target openrouter-api-key. Management keys (sk-or-mgmt-) are openrouter:management-api-key, not members of this family. The public key hash has the same 64-hex body shape without the prefix. Product counterpart redact-secret/redact-secret#727."
+    },
+    {
+      "id": "openrouter:management-api-key",
+      "provider": "openrouter",
+      "name": "Management API key",
+      "description": "sk-or-mgmt- prefixed management (formerly provisioning) key for the /api/v1/keys routes; cannot call completion endpoints. Body length and alphabet are undocumented.",
+      "detectors": [],
+      "sources": [
+        "https://openrouter.ai/docs/guides/overview/auth/management-api-keys",
+        "https://github.com/OpenRouterTeam/terraform-provider-openrouter"
+      ],
+      "note": "Unsupported and unclaimed (#208, research #220): a real secret, but no body grammar is published and no product detector, contract or fixture targets it. It is never used as a benign control of openrouter:api-key."
     }
   ]
 }

@@ -26,13 +26,21 @@ const trufflehog = {
   SendGrid: 'sendgrid-token', Slack: 'slack-token', AWS: 'aws-access-key',
   PrivateKey: 'private-key', JWT: 'jwt', Anthropic: 'anthropic-token',
   OpenAI: 'openai-token', Shopify: 'shopify-token', Stripe: 'stripe-token',
+  // Beta.8 arrival families (#208, benchmarks/lib/beta8/208.ts): each detector
+  // matches exactly that provider's inference key (`\b`-bounded prefix + fixed
+  // body); OpenRouter is `sk-or-v1-` only, never the `sk-or-mgmt-` management key.
+  Replicate: 'replicate-api-token', Groq: 'groq-api-key', XAI: 'xai-api-key',
+  OpenRouter: 'openrouter-api-key',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;
 // providers with no family in this corpus (Sentry, Airtable, Figma,
-// Notion, Doppler, Square, Azure, Discord, Telegram, New Relic, Groq, xAI,
-// Perplexity, OpenRouter, Replicate, GCP,
+// Notion, Doppler, Square, Azure, Discord, Telegram, New Relic,
+// Perplexity, GCP,
 // Google, Twilio, Stripe webhook secrets) stay unmapped rather than guessed.
+// `groq_key`, `xai_key`, `openrouter_key` and `replicate_token` name the same
+// inference-key credentials as #208's arrival families (over looser widths for
+// Groq, xAI and Replicate), so they map to those arrival ids.
 // `databricks_token` (dapi + 32 hex, optional rotation digit) is the same
 // credential the post-beta.6 `databricks-personal-access-token` family
 // scores (redact-secret#308); `postman_key` (PMAK- + 24 hex + "-" + 34 hex)
@@ -59,6 +67,8 @@ const flareRedact = {
   // key-[a-f0-9]{32}: the private API key `mailgun-api-key` scores, over
   // gitleaks's narrower hex-only body (redact-secret#314).
   mailgun_key: 'mailgun-api-key',
+  groq_key: 'groq-api-key', xai_key: 'xai-api-key', openrouter_key: 'openrouter-api-key',
+  replicate_token: 'replicate-api-token',
 };
 const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };
 export function findingFamily(scanner, label) {

@@ -1,6 +1,7 @@
 import type { Summary, ReviewLedger, EvaluationCase } from '../engine/types.ts';
 import type { FamilySupportEvidence } from './status.ts';
 import { contracts } from '../lib/assessment.ts';
+import { measureFixtureCells, profileClaim } from './profiles.ts';
 import { empiricalEvidence } from './empirical.ts';
 
 /**
@@ -66,7 +67,7 @@ function fixtureProfile(family: string, cases: EvaluationCase[]) {
   };
 }
 
-export function familyEvidence(family: string, byDetector: Record<string, Summary>, axesByDetector: Record<string, string[]>, reviewQueue: QueuedReview[], ledger: ReviewLedger, cases: EvaluationCase[] = []): FamilySupportEvidence {
+export function familyEvidence(family: string, byDetector: Record<string, Summary>, axesByDetector: Record<string, string[]>, reviewQueue: QueuedReview[], ledger: ReviewLedger, cases?: EvaluationCase[]): FamilySupportEvidence {
   const summary = byDetector[family] ?? {};
   const contract = contracts[family];
   const twin = totalWhere(summary, 'twin', 'must-flip');
@@ -74,7 +75,7 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
   const metamorphic = totalWhere(summary, 'metamorphic');
   const mutation = totalWhere(summary, 'mutation');
   const benignAxisIds = axesByDetector[family] ?? [];
-  const profile = fixtureProfile(family, cases);
+  const profile = fixtureProfile(family, cases ?? []);
   const empirical = empiricalEvidence(family);
   const evidenceBasis = contract?.tier === 'T1' ? 'provider-documented' : contract?.tier === 'T3' ? 'project-policy' :
     contract?.tier === 'T2' && empirical.evidenceBasis === 'none' ? 'independently-corroborated' : empirical.evidenceBasis;
@@ -93,7 +94,7 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
     confusionAxes: profile.confusionAxes,
     twinPairs: twin.pass + twin.fail,
     twinFailures: twin.fail,
-    benignCases: cases.length ? profile.benignCases : benign.pass + benign.fail,
+    benignCases: cases?.length ? profile.benignCases : benign.pass + benign.fail,
     benignFalseAlarms: benign.fail,
     benignAxes: benignAxisIds.length,
     benignAxisIds,
@@ -102,5 +103,7 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
     // signed off that either is acceptable (only a `resolved` ledger entry does).
     mutationUnresolvedCritical: mutation.fail + unresolvedInQueue(family, 'mutation', reviewQueue, ledger),
     differentialUnresolvedContractDisagreements: unresolvedInQueue(family, 'differential', reviewQueue, ledger),
+    // No corpus supplied means unmeasured: `profileFailures` fails closed on that for any binding claim.
+    ...(cases ? { fixtureProfile: { claim: profileClaim(contract), cells: measureFixtureCells(family, cases), supportedContext: contract?.supportedContext } } : {}),
   };
 }

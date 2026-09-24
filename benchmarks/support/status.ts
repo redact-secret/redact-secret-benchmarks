@@ -1,5 +1,6 @@
 import type { Tier } from '../types.ts';
 import data from './status-criteria.json';
+import { fixtureProfiles, profileFailures as fixtureProfileFailures, type FixtureProfileEvidence, type FixtureProfiles } from './profiles.ts';
 
 /**
  * Family support status (issue #503, part of epic #500). A machine-readable
@@ -117,6 +118,8 @@ export interface FamilySupportEvidence {
   metamorphicCriticalFailures: number;
   mutationUnresolvedCritical: number;
   differentialUnresolvedContractDisagreements: number;
+  /** Corpus-measured evidence cells and the profile this family claims (issue #206). Absent means unmeasured, which fails closed for any binding claim. */
+  fixtureProfile?: FixtureProfileEvidence;
   /** Only meaningful when `detectors` is empty; required to ever report `unsupported`. */
   unsupportedReason?: string;
 }
@@ -150,7 +153,7 @@ function behavioralFailures(evidence: FamilySupportEvidence, criteria: StatusCri
   return reasons;
 }
 
-function profileFailures(evidence: FamilySupportEvidence, criteria: StatusCriteria): { profile: QualificationProfile | null; reasons: string[] } {
+function qualificationFailures(evidence: FamilySupportEvidence, criteria: StatusCriteria): { profile: QualificationProfile | null; reasons: string[] } {
   const check = (reasons: string[], id: string, point: number, threshold: Threshold) => {
     if (point < threshold.value) reasons.push(`${id}: ${point} < ${threshold.value} — ${threshold.rationale}`);
   };
@@ -197,7 +200,7 @@ function profileFailures(evidence: FamilySupportEvidence, criteria: StatusCriter
  * `provisional`). `unsupported` is refused without `unsupportedReason`; a
  * detectorless family without one reports `pending`, not `unsupported`.
  */
-export function classifyFamilySupport(evidence: FamilySupportEvidence, criteria: StatusCriteria = statusCriteria): SupportAssessment {
+export function classifyFamilySupport(evidence: FamilySupportEvidence, criteria: StatusCriteria = statusCriteria, profiles: FixtureProfiles = fixtureProfiles): SupportAssessment {
   const { family } = evidence;
   if (!evidence.detectors.length) {
     if (evidence.unsupportedReason) return { family, status: 'unsupported', reasons: [evidence.unsupportedReason], qualificationProfile: null };
@@ -205,8 +208,8 @@ export function classifyFamilySupport(evidence: FamilySupportEvidence, criteria:
   }
   if (evidence.positiveContractTier === null || evidence.positiveContractTier === criteria.pending.tier)
     return { family, status: 'pending', reasons: [`positiveContractTier ${evidence.positiveContractTier ?? 'none'} — ${criteria.pending.rationale}`], qualificationProfile: null };
-  const qualification = profileFailures(evidence, criteria);
-  const reasons = [...qualification.reasons, ...behavioralFailures(evidence, criteria)];
+  const qualification = qualificationFailures(evidence, criteria);
+  const reasons = [...qualification.reasons, ...behavioralFailures(evidence, criteria), ...fixtureProfileFailures(evidence, profiles)];
   if (!reasons.length && qualification.profile) return { family, status: 'stable', reasons: [], qualificationProfile: qualification.profile };
   return { family, status: 'provisional', reasons, qualificationProfile: null };
 }

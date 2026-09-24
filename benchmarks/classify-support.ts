@@ -16,6 +16,7 @@ import { contracts, registryContractIds } from './lib/assessment.ts';
 import { classifyFamilySupport, statusCriteria, type SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
 import { familyEvidence } from './support/evidence.ts';
+import { fixtureProfileReport, fixtureProfiles } from './support/profiles.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const CANDIDATE_KEYS = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit'] as const;
@@ -91,11 +92,13 @@ async function main() {
       // into a bare "not enough twins" reading: zero twin pairs reads differently
       // when the provider gives nothing a twin could mutate.
       const unprobeable = contracts[family].unprobeable ?? null;
+      const { fixtureProfile: measured, ...scored } = evidence;
       return {
         ...assessment,
         evidenceTier: evidence.positiveContractTier,
         evidenceBasis: evidence.evidenceBasis,
-        taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable,
+        taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence: scored, unprobeable,
+        fixtureProfile: fixtureProfileReport(measured!.claim, measured!.cells),
       };
     });
     const distribution = results.reduce((d, r) => { d[r.status] = (d[r.status] ?? 0) + 1; return d; },
@@ -106,7 +109,7 @@ async function main() {
     };
     const output = {
       schemaVersion: 1, generatedAt: new Date().toISOString(), runId: report.runId,
-      revision, dirty, criteriaSchemaVersion: statusCriteria.schemaVersion,
+      revision, dirty, criteriaSchemaVersion: statusCriteria.schemaVersion, fixtureProfilesVersion: fixtureProfiles.profilesVersion,
       // Null except on a candidate run: default behaviour (and its output shape
       // for every other field) is unchanged from before candidate support existed.
       product,

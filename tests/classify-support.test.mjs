@@ -8,6 +8,7 @@ import Ajv from 'ajv';
 import { familyEvidence } from '../benchmarks/support/evidence.ts';
 import { classifyFamilySupport } from '../benchmarks/support/status.ts';
 import { contracts } from '../benchmarks/lib/assessment.ts';
+import { fixtureProfileReport, measureFixtureCells } from '../benchmarks/support/profiles.ts';
 
 const exec = promisify(execFile);
 const repositoryRoot = path.resolve(new URL('..', import.meta.url).pathname);
@@ -150,10 +151,10 @@ test('a synthetic report shaped like eval:classify output satisfies the schema',
   const assessment = classifyFamilySupport(evidence);
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
-    criteriaSchemaVersion: 1, product: null, scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
+    criteriaSchemaVersion: 1, fixtureProfilesVersion: 1, product: null, scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
     familyCount: 1, distribution: { stable: Number(assessment.status === 'stable'), provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
     stableDistribution: { documented: Number(assessment.qualificationProfile === 'documented'), empirical: Number(assessment.qualificationProfile === 'empirical') },
-    families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null }],
+    families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
   };
   assert.ok(validate(synthetic), JSON.stringify(validate.errors));
 });
@@ -164,13 +165,13 @@ test('a synthetic report shaped like a candidate eval:classify run satisfies the
   const assessment = classifyFamilySupport(evidence);
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
-    criteriaSchemaVersion: 1,
+    criteriaSchemaVersion: 1, fixtureProfilesVersion: 1,
     product: { sourceCommit: 'a'.repeat(40), packageName: '@redact-secret/core', declaredVersion: '9.9.9-candidate.1',
       artifacts: ['package', 'node', 'wasm'].map(role => ({ role, sha256: 'b'.repeat(64) })) },
     scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
     familyCount: 1, distribution: { stable: Number(assessment.status === 'stable'), provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
     stableDistribution: { documented: Number(assessment.qualificationProfile === 'documented'), empirical: Number(assessment.qualificationProfile === 'empirical') },
-    families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null }],
+    families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
   };
   assert.ok(validate(synthetic), JSON.stringify(validate.errors));
 });

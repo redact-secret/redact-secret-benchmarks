@@ -77,6 +77,65 @@ otherwise it is null. `reasons` names every `stable` criterion the evidence miss
 actual number, the floor, and the floor's rationale — so a failing family
 never reports a bare status with no explanation.
 
+## Fixture profiles
+
+Issue [#206](https://github.com/redact-secret/redact-secret-benchmarks/issues/206),
+part of #114 and #177. `status-criteria.json` counts pass rates; it cannot say
+that a family's 24 fixtures are all twins with no non-twin benign control.
+`benchmarks/support/fixture-profiles.json` (schema `schemas/fixture-profiles-v1.json`,
+`profilesVersion` 1) states how much fixture evidence each qualification path
+needs, cell by cell, so a total never hides an empty cell.
+
+The table below is generated from that file by `npm run profiles:generate`; CI
+(`npm run profiles:check`) fails when it or `docs/generated/fixture-profile-coverage.md`
+differs from a fresh generation.
+
+<!-- fixture-profiles:begin -->
+| Cell | Arrival / provisional | Stable / documented | Stable / empirical | Context-constrained empirical |
+| --- | ---: | ---: | ---: | ---: |
+| Total fixtures | 24 | 24 | 40 | 48 |
+| Positive/context cases | 6 | 6 | 10 | 1 |
+| Non-twin benign controls | 8 | 8 | 14 | 1 |
+| Twin pairs | 5 | 5 | 8 | 10 |
+| Positive-context axes | 4 | 4 | 6 | — |
+| Control axes | 4 | 4 | 5 | — |
+| Confusion axes | — | — | — | 6 |
+| Evidence tier required | — | T1 | T2 | T2 |
+| Enforcement | reported | reported | enforced | enforced |
+<!-- fixture-profiles:end -->
+
+Cells are counted from the corpus alone (`measureFixtureCells`): a twin pair is
+an authored positive plus its negative twin, a positive/context case is a
+secret-bearing fixture with no twin, an non-twin benign control is a
+non-secret non-twin fixture. Positive-context axes are the distinct authored
+context groups of the family's positives; control axes are the reviewed benign
+taxonomy axes (never the unscored `pending`); confusion axes add the distinct
+twin mutation kinds.
+
+**Claims and fail-closed classification.** A family claims a profile with
+`contracts[id].fixtureProfile`; a T1 provider-documented family implicitly
+claims `stable-documented`. `classifyFamilySupport` refuses `stable` to a family
+that misses a claimed profile and names each short cell (`fixtureProfile <id>:
+<n> <cell> < <floor>`). An explicit claim, and any profile whose `enforcement`
+is `enforced`, is binding; an unmeasured family fails closed. The two empirical
+profiles require T2 evidence, so a T2 family can never be relabelled T1 to fit,
+and they stay unreachable for `stable` until the observation and corroboration
+gates of #177 and #205 are enforced.
+
+**Measured before any status changed.** The arrival and documented profiles
+ship as `reported`: the debt is published per family in the support matrix, the
+coverage UI and `docs/generated/fixture-profile-coverage.md`, but does not yet
+gate, because most families that read `stable` today miss arrival cells
+(#207 and #209 raise them). Flipping `enforcement` to `enforced` is the whole
+ratchet, in the same manner as `benign.minimumAxes`. See
+[the decision record](../decisions/2026-09-24-enforce-fixture-profiles-and-publish-coverage-debt.md).
+
+**Wilson bounds are corpus-relative.** A published Wilson bound describes the
+fixtures in this corpus, treated as the sample it is. It is not a probability of
+error on real-world text, and it does not bound how a detector behaves on
+values this corpus does not contain. A bound tightens when more fixtures are
+authored; it never measures the population.
+
 ## What this issue does not do
 
 Producing real `FamilySupportEvidence` per family — aggregating

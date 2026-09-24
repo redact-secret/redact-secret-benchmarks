@@ -50,6 +50,8 @@
     "eval:matrix:drift": "node --import tsx benchmarks/support-matrix-drift.ts",
     "support:check:ui": "node --import tsx scripts/check-support-ui.mjs",
     "arrival:check": "node --import tsx scripts/check-evidence-arrival.mjs",
+    "profiles:generate": "node --import tsx scripts/generate-fixture-profile-coverage.mjs",
+    "profiles:check": "node --import tsx scripts/generate-fixture-profile-coverage.mjs --check",
     "beta8:profiles": "node --import tsx scripts/report-beta8-profiles.mjs",
     "decisions:validate": "node scripts/validate-decisions.mjs",
     "ledger:decisions:check": "node scripts/check-ledger-decisions.mjs",

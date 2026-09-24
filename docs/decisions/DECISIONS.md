@@ -33,5 +33,6 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Lift five families out of un-probeable and widen context coverage for the floor families](2026-09-22-lift-five-families-out-of-un-probeable.md)
 - [Run the performance evaluation for real and retire the by-construction verdict](2026-09-23-run-the-performance-evaluation-for-real.md)
 - [Require pinned peer scanners for classification claims](2026-09-23-require-pinned-peer-scanners-for-classification.md)
+- [Enforce fixture profiles by claim and publish per-family coverage debt](2026-09-24-enforce-fixture-profiles-and-publish-coverage-debt.md)
 - [Decouple pin freshness from pin consistency](2026-09-23-decouple-pin-freshness-from-pin-consistency.md)
 - [Qualify T2 families empirically without changing their provenance](2026-09-24-qualify-t2-empirically.md)

@@ -79,6 +79,10 @@ export interface FormatContract {
   twinSource?: FormatContract['providerSource'];
   /** No twin is authored: documentation establishes nothing mutable. Published as its own line, never inside the twin rate (#36). */
   unprobeable?: { reason: string; observedAt: string };
+  /** An explicit claim of a fixture profile (benchmarks/support/fixture-profiles.json, #206). A claim is always enforced: a family that does not meet it cannot read stable. Absent, a T1 provider-documented family is measured against `stable-documented` at that profile's own enforcement mode. */
+  fixtureProfile?: 'arrival-provisional' | 'stable-documented' | 'stable-empirical' | 'context-constrained-empirical';
+  /** The contexts a `context-constrained-empirical` family supports; required by that profile, and the family makes no bare-value support claim. */
+  supportedContext?: string[];
   /** A structural constraint `pattern` alone can't express (#128). `lexical.mutate()` consults this, when present, in addition to `pattern`: a value the regex matches but this rejects is still contract-invalid. */
   validate?: (value: string) => boolean;
   /** No bare-value grammar: a value is recognised only beside a same-line identifier or keyword, so positives

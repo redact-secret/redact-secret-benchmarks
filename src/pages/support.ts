@@ -3,6 +3,7 @@ import { tiers } from '../../benchmarks/lib/assessment.ts';
 import { statusCriteria } from '../../benchmarks/support/status.ts';
 import type { SupportMatrixEntry } from '../../benchmarks/support/matrix.ts';
 import type { SupportStatus } from '../../benchmarks/support/status.ts';
+import { fixtureProfiles, type CellId } from '../../benchmarks/support/profiles.ts';
 import { orderedFamilies, providerName, statusesOf, SUPPORT_STATUSES, type SupportMatrixFile } from '../support-model';
 
 /**
@@ -98,6 +99,35 @@ function filterBar(matrix: SupportMatrixFile, filter: SupportFilter): string {
   return `<div class="seg" role="group" aria-label="Filter families by support status">${link('/support', `All ${n(matrix.familyCount)}`, filter === 'all')}${statusesOf(matrix).map(status => link(`/support?status=${status}`, `${SUPPORT_STATUS_COPY[status].word} ${n(matrix.distribution[status])}`, filter === status, status)).join('')}</div>`;
 }
 
+
+const CELL_LABEL: Record<CellId, string> = {
+  totalFixtures: 'total fixtures', positiveCases: 'positive/context cases', benignControls: 'non-twin benign controls', twinPairs: 'twin pairs',
+  positiveContextAxes: 'positive-context axes', controlAxes: 'control axes', confusionAxes: 'confusion axes',
+};
+
+/** One family's fixture cells, axis counts and remaining debt against its target profile. */
+function fixtureProfileLine(entry: SupportMatrixEntry): string {
+  const p = entry.profileCoverage;
+  if (!p) return `<b>Fixture profile</b> not recorded in this matrix`;
+  const c = p.cells;
+  const title = fixtureProfiles.profiles[p.target]?.title ?? p.target;
+  const debt = p.debt.length ? p.debt.map(d => `${e(CELL_LABEL[d.cell])} ${n(d.actual)} of ${n(d.required)}`).join(' · ') : 'none';
+  return `<b>Fixture profile</b> ${e(title)}${p.explicit ? ' (claimed)' : ''} · ${n(c.totalFixtures)} fixtures = ${n(c.positiveCases)} positive/context + ${n(c.benignControls)} benign + ${n(c.twinPairs)} twin pairs · axes: ${n(c.positiveContextAxes)} positive-context, ${n(c.controlAxes)} control, ${n(c.confusionAxes)} confusion · <b>remaining debt</b> ${debt}`;
+}
+
+/** Every detector's cells and debt in one table, largest debt first. The debt is reported; whether it gates is each profile's own `enforcement`. */
+function fixtureDebt(matrix: SupportMatrixFile): string {
+  const seen = new Set<string>();
+  const rows = matrix.families.filter(entry => entry.profileCoverage && entry.detectors.length && !seen.has(entry.detectors[0]) && seen.add(entry.detectors[0]))
+    .map(entry => ({ id: entry.detectors[0], p: entry.profileCoverage! }))
+    .sort((a, b) => b.p.debt.reduce((t, d) => t + d.shortfall, 0) - a.p.debt.reduce((t, d) => t + d.shortfall, 0) || a.id.localeCompare(b.id));
+  if (!rows.length) return '';
+  const cells = (p: SupportMatrixEntry['profileCoverage'] & object) => `${n(p.cells.totalFixtures)} · ${n(p.cells.positiveCases)} · ${n(p.cells.benignControls)} · ${n(p.cells.twinPairs)}`;
+  return `<section class="section" id="fixture-profiles"><h2 class="h2-compact">Fixture profile coverage debt</h2>
+    <p class="small">Each family is measured against the fixture profile it claims (a T1 provider-documented family: <b>${e(fixtureProfiles.profiles['stable-documented'].title)}</b>; otherwise <b>${e(fixtureProfiles.profiles['arrival-provisional'].title)}</b>), cell by cell, so a large total cannot hide an empty cell. Cells: total · positive/context · non-twin benign · twin pairs. Meeting a profile's cells is not qualifying for it. Wilson bounds elsewhere on this site are corpus-relative, never population error probabilities. Generated from the corpus in <code>docs/generated/fixture-profile-coverage.md</code>; criteria in <code>benchmarks/support/fixture-profiles.json</code> (version ${n(fixtureProfiles.profilesVersion)}).</p>
+    <div class="tbl wide"><table><thead><tr><th scope="col">Detector</th><th scope="col">Target profile</th><th scope="col">Cells</th><th scope="col" class="num">Positive-context axes</th><th scope="col" class="num">Control axes</th><th scope="col" class="num">Confusion axes</th><th scope="col">Remaining debt</th></tr></thead><tbody>${rows.map(({ id, p }) => `<tr data-fixture-profile="${e(p.target)}"><td><a href="/coverage/${e(id)}">${e(id)}</a></td><td>${e(fixtureProfiles.profiles[p.target]?.title ?? p.target)}</td><td>${cells(p)}</td><td class="num">${n(p.cells.positiveContextAxes)}</td><td class="num">${n(p.cells.controlAxes)}</td><td class="num">${n(p.cells.confusionAxes)}</td><td><small>${p.debt.length ? p.debt.map(d => `${e(CELL_LABEL[d.cell])} ${n(d.actual)}/${n(d.required)}`).join(' · ') : 'none'}</small></td></tr>`).join('')}</tbody></table></div></section>`;
+}
+
 /** Tier, provider source, corroboration, twin coverage and unresolved items — the evidence a status was decided from. */
 function evidence(entry: SupportMatrixEntry): string {
   if (!entry.detectors.length) return '<small>No detector is registered for this family, so there is no evidence to inspect.</small>';
@@ -114,6 +144,7 @@ function evidence(entry: SupportMatrixEntry): string {
     `<b>Provider source</b> ${source ? `<a href="${e(source.url)}" rel="noreferrer">${e(source.formatVersion)}</a> <span class="muted">observed ${e(source.observedAt)} · ${e(source.covers)}</span>` : 'none recorded'}`,
     `<b>Corroborating scanners</b> ${entry.corroboratingScanners.length ? entry.corroboratingScanners.map(e).join(' · ') : 'none recorded'}`,
     `<b>Twin coverage</b> ${!twin ? 'none recorded' : twin.unprobeable ? `un-probeable · ${e(twin.unprobeable.reason)} <span class="muted">checked ${e(twin.unprobeable.observedAt)}</span>` : `${n(twin.pairs)} pair${twin.pairs === 1 ? '' : 's'} · ${n(twin.failures)} failure${twin.failures === 1 ? '' : 's'}`}`,
+    fixtureProfileLine(entry),
     `<b>Unresolved critical items</b> ${items ? `metamorphic ${n(items.metamorphic)} · mutation ${n(items.mutation)} · differential ${n(items.differential)}` : 'none recorded'}`,
     `<b>Fixture profile</b> ${fixture ? `${n(fixture.positiveCases)} positives / ${n(fixture.positiveAxes)} axes · ${n(fixture.benignCases)} benign / ${n(fixture.controlAxes)} axes · ${n(fixture.twinPairs)} twin pairs · ${n(fixture.totalFixtures)} fixtures` : 'none recorded'}`,
     `<b>Empirical observations</b> ${empirical ? `${n(empirical.observations)} observations · ${n(empirical.subjects)} subjects · ${n(empirical.issuanceDates)} issuance dates · ${n(empirical.corroborationClasses.length)} corroboration classes · ${n(empirical.contradictions)} contradictions` : 'none recorded'}`,
@@ -163,5 +194,6 @@ export function supportPage(matrix: SupportMatrixFile | null, problem: string | 
   return `${head(meta)}
     <p class="prose small" style="margin-bottom:var(--space-4)">Every provider × credential family in the taxonomy is listed, including the ones nothing here detects: an unsupported family is visible with its recorded reason rather than left out. This repository measures and records — a status is the output of the published profile run against evidence, not a claim about the product.</p>
     ${legend(matrix)}
-    <section class="section"><h2 class="h2-compact">Families</h2><p class="small">${n(shown.length)} of ${families(matrix.familyCount)}${filter === 'all' ? '' : `, filtered to ${e(SUPPORT_STATUS_COPY[filter].word)}`}. Open a family's evidence to see the tier, the provider source it was read from, and the twin coverage behind its status.</p>${table}</section>`;
+    <section class="section"><h2 class="h2-compact">Families</h2><p class="small">${n(shown.length)} of ${families(matrix.familyCount)}${filter === 'all' ? '' : `, filtered to ${e(SUPPORT_STATUS_COPY[filter].word)}`}. Open a family's evidence to see the tier, the provider source it was read from, and the twin coverage behind its status.</p>${table}</section>
+    ${fixtureDebt(matrix)}`;
 }

@@ -50,7 +50,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
       tally[key].files++;
       tally[key].spans += f.expected.filter(r => r.role === 'secret').length;
     }
-    if (f.assessment.kind === 'must-not-flag') assert.equal(f.expected.length, 0, f.id);
+    // A control carries no secret span; #213 lets a twin keep its positive's `companion` span
+    // (beta8-209's Confluent key ID, redact-secret#739), which never makes it must-redact.
+    if (f.assessment.kind === 'must-not-flag') assert.equal(f.expected.filter(r => r.role !== 'companion').length, 0, f.id);
     if (f.assessment.kind === 'policy') assert.equal(f.assessment.tier, 'T3', f.id);
     if (f.assessment.kind === 'must-redact' && f.assessment.tier !== 'T0') assert.equal(contracts[f.assessment.contract].tier, f.assessment.tier, f.id);
   }

@@ -565,7 +565,8 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
   if (category === 'detector-coverage' || isBeta8(category)) {
     const family = targetFamily(f)!;
     if (!contracts[family ?? '']) throw new Error(`Unknown contract: ${f.id}`);
-    const value = bytesOf(f, f.expected[0]);
+    // The first secret span: a `companion` span (e.g. a paired public key ID) can precede it.
+    const value = bytesOf(f, f.expected.find(r => (r.role ?? 'secret') === 'secret')!);
     // #162/#671: datadog-application-key now carries only the ddapp_-prefixed shape, which
     // has its own identifying grammar and is scored on the contract's T1 tier below; the
     // grammar-less legacy sibling is datadog-application-key-legacy, in CONTEXT_GATED.

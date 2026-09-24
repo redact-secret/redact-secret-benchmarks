@@ -381,6 +381,11 @@
       "resolvedRun": "2cf33c19-8df6-410e-8fa8-25823bed3880",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "00d69c53e09989db66d5acf4c670f76b61b9a9358ea3738d9524463d82c718e6": {
+      "status": "open",
+      "firstSeenRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks matches exactly this corpus's authored expected secret span [15,56) — the 41-character HRKU-<uuid> OAuth generation Heroku documents (changelog-items/2842, 3175; research #235), which the product grammar frozen by redact-secret#312 (PR #675) does not cover. A candidate detector coverage gap for \"heroku-api-key\", not a peer artifact. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Promoted 2026-09-24 through promote-finding: benchmarks/known-gaps.json product-740 (redact-secret#740); the row stays open until a fixed candidate is re-measured. Class: differential-coverage-gap/heroku-api-key."
+    },
     "00dd8c9c0823667ef257075c3e3396663b5abd47b8a7f2436906d0b4ac3de2ff": {
       "status": "resolved",
       "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
@@ -773,6 +778,12 @@
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
+    "01d8024dc53cf76af408f9aa050f60d90fa239c860a3c2b9c6563877a7e6f552": {
+      "status": "resolved",
+      "firstSeenRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "resolvedRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "01d95bff3a0cbd5aa695d5658785991461569d0492191c6b8d2571dca359707a": {
       "status": "resolved",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
@@ -1028,6 +1039,12 @@
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "02660e154a3a392534de3443c9016e75741a814be24bc252c84d0d9ce347c63c": {
+      "status": "resolved",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "resolvedRun": "b40aa413-35c8-43d0-808e-20ac4b157a30",
+      "note": "Observed: redact-secret [15,31) generic-token and [50,114) confluent-cloud-api-secret; gitleaks [15,31) generic-token and [50,114) generic-token. The ranges are identical to the authored spans ([15,31) companion, [50,114) secret). The only label difference is on the authored secret span, where the peer's label is coarser (gitleaks' catch-all rule matches before its provider rule), which is the peer-coarser case of docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. That decision kept this row open only for the #739 collateral on the key ID. The key ID [15,31) is now an authored companion span under the redact-secret#739 policy decision (closed as not planned; known gap product-739 is policy-decision), and both tools label it generic-token alike, so nothing is left to adjudicate. Class: classification-disagreement/gitleaks/peer-coarser-with-companion-span."
     },
     "0268eaa60f6c41f6953a673424c4f6bff4575b38cb0cd4ca96774107f90b289f": {
       "status": "open",
@@ -7564,6 +7581,12 @@
       "status": "not-assertable",
       "firstSeenRun": "6398f935-55da-493b-88b4-ae05338b5524",
       "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/slack-token-shape-4-bare, family slack-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names (a provider grammar or pinned-tool corroboration) exists, so this redact-secret/trufflehog redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture."
+    },
+    "11b12e916a8c6b686e4f6d5455dc4c91121a657621226532cf80c646d6f5d823": {
+      "status": "resolved",
+      "firstSeenRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "resolvedRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: the twin (the documented secret_ prefix's underscore replaced by a dash (secret-); body unchanged) is scoped to notion-token, and redact-secret attributes its finding [69,119) to bearer-token — the project's masking policy for any Authorization: Bearer value (T3 policy, never a provider-format claim) — not to notion-token. The twin method scores this as coDetected, not as a twin failure; trufflehog reports nothing. Class: redact-secret-only/trufflehog/independent-policy-family-on-scoped-twin."
     },
     "11b924b96e69835f1ca4034719495d3c4ab7dc345d0bb06f4183f51eda1c02b7": {
       "status": "resolved",
@@ -14311,6 +14334,11 @@
       "resolvedRun": "e1-107-resweep-2026-09-21",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by trufflehog flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/trufflehog/range-matches-corpus."
     },
+    "21833a4f1505235399b87c464b3d91e18d5369bc2f149a1eca9f0f609934e633": {
+      "status": "not-assertable",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "redact-secret and gitleaks both report [157,221), the authored expected span, on the canonical variant of beta8-209--confluent-cloud-api-secret-kafka-client-properties. redact-secret labels it confluent-cloud-api-secret (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
     "2185084303cc6b0a6f4add3ae8bf472431b7d6a744c8e58737419256e5e168f5": {
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
@@ -15289,6 +15317,12 @@
       "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
       "note": "redact-secret flags this negative twin (alphabet: the separator between the second and third sections is '_' instead of '-' (no cited source puts '_' in an xapp- value; widths unchanged)) through its shared slack-token detector — the product's unpromoted interim xapp- guard (xapp-[A-Za-z0-9_-]{20,}, redact-secret#512/#551/#570) — over the whole mutated value. The twin method scopes this twin to the arrival family slack-app-level-token and so records the finding as co-detection by another family rather than a failure, and trufflehog reports nothing. Whether the product should discriminate this mutation is a product contract decision for redact-secret#729 (blocked by #726), not something this corpus can settle; nothing here asserts the product output. Not resolved per the boundary rule (AGENTS.md). Class: differential-shared-detector-twin/slack-app-level-token."
     },
+    "23be69d137364162b5459379880bba445d13643a235373dfd6d2b293cda4561f": {
+      "status": "resolved",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "resolvedRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly (byte-exact boundary, no collateral). trufflehog reports [24,40): only the 16-byte span, the Confluent API key ID, which docs.confluent.io documents as \"not considered secret information\", which trufflehog 3.97.4's confluent detector emits as the Raw value of a key-and-secret pair (research #234). That is a peer rule-scope difference on a documented public identifier, not a corpus or redact-secret defect. Class: range-disagreement/trufflehog/peer-flags-public-key-id. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
+    },
     "23bed71170e6c5fa3183bad1206cfcf05621546021d103604bbde4be082599f3": {
       "status": "resolved",
       "firstSeenRun": "b9a3021f-36ef-4928-bbbc-e2d007c3861d",
@@ -16261,6 +16295,11 @@
       "firstSeenRun": "38b9928b-e336-4916-ab09-96ec9a77af7f",
       "resolvedRun": "38b9928b-e336-4916-ab09-96ec9a77af7f",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "2642b85fd920a3a0b10191f259de6714139ab7f97fdde1c486f7ef186f5f37cc": {
+      "status": "open",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Confirmed defect, not a tool-comparison artifact: redact-secret flags [101,165) on this checksum-invalid twin (checksum: the CRC32 computed over cflt plus the body (58 characters) instead of the documented 54 body characters; prefix, length and alphabet unchanged), against this corpus's must-not-flag expectation — the twin method's authored.twin assertion also fails. The provider publishes the checksum algorithm (docs.confluent.io API-key overview and its secret-detection snippet; research #234), and the product detector (confluent.rs) checks only the cflt prefix and 64-byte length. trufflehog reports nothing; neither pinned peer validates the checksum either. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Promoted 2026-09-24 through promote-finding: benchmarks/known-gaps.json product-738 (redact-secret#738); the row stays open until a fixed candidate is re-measured. Class: confirmed-twin-false-positive/confluent-cloud-api-secret. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
     },
     "2644409037143747809f5c0a07206a25bdc3b110b0d39684e8b952ba9b7c0b16": {
       "status": "resolved",
@@ -18091,6 +18130,12 @@
       "firstSeenRun": "f0fb2bb8-e106-4915-8b08-279bc26c5f94",
       "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/stripe-token-shape-5-bare, family stripe-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names (a provider grammar or pinned-tool corroboration) exists, so this redact-secret/trufflehog redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture."
     },
+    "2a6a848d429bf83c7dbdbcc564e1798d12fc5f0b316b8647c64b77628392b9c7": {
+      "status": "resolved",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "resolvedRun": "b40aa413-35c8-43d0-808e-20ac4b157a30",
+      "note": "Resolved by the redact-secret#739 policy decision (maintainer, 2026-09-24; issue closed as not planned; benchmarks/known-gaps.json product-739 is policy-decision). Observed: redact-secret [15,31) generic-token only; trufflehog none. This alphabet twin asserts silence for confluent-cloud-api-secret, and the mutated cflt value at [50,114) is correctly not flagged. [15,31) is the unchanged public Confluent API key ID in the \"apiKey\" field, authored as a companion span (#213): generic-token warning on a 16-character random value under an apiKey name is accepted behaviour, since without cross-line context it cannot be told apart from a real API key, and the twin's scoped reading records it as co-detection by another known family, not a twin failure. Class: redact-secret-only/trufflehog/companion-span-policy-decision."
+    },
     "2a776e8f12c72a465e9f5c090ac27762a531d6934b8b19a9aff0ad5adf651cbb": {
       "status": "not-assertable",
       "firstSeenRun": "9f1524ba-6473-4e9a-a53e-d688c08a3b70",
@@ -18804,6 +18849,12 @@
       "resolvedRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
     },
+    "2c6c9f678bf86ff5134b476f1941119057bea0982e9631d330cef17386bc7f4c": {
+      "status": "resolved",
+      "firstSeenRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "resolvedRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "2c7382b6af6cf0e8acffb2a9ed89a961763fa6f9e47fa4677469f9e5645115ab": {
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
@@ -18978,6 +19029,12 @@
       "status": "resolved",
       "firstSeenRun": "add99f0b-3338-44ed-8def-7883513a356c",
       "resolvedRun": "add99f0b-3338-44ed-8def-7883513a356c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "2cdb553fc982533004f8d259c343a87ec54710f01eb4d78189079c8ec3f44dfd": {
+      "status": "resolved",
+      "firstSeenRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "resolvedRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "2cde8436ada5da3f45721ec912802f24a5816516c3376b82301d38b4404e0fda": {
@@ -23281,6 +23338,12 @@
       "resolvedRun": "bd071fbb-ec12-4ba0-b36e-ae4bd0e90af2",
       "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
     },
+    "36bcf88c2657e09053868029873f563cbe4d762e4c9bf5832a99de10e13fc19b": {
+      "status": "resolved",
+      "firstSeenRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "resolvedRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "36c322f47e346d0dc116a0b8f57ed4ec329b2109973294de558da90f16133b93": {
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
@@ -24740,6 +24803,12 @@
       "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
       "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "3a1c8bc608d7ef5abc1bb37c130352071a2533d51fef93d25fe6fe4219bbdcd9": {
+      "status": "resolved",
+      "firstSeenRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "resolvedRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: the twin (the documented upper-case HRKU- prefix lower-cased (hrku-); body unchanged) is scoped to heroku-api-key, and redact-secret attributes its finding [112,177) to bearer-token — the project's masking policy for any Authorization: Bearer value (T3 policy, never a provider-format claim) — not to heroku-api-key. The twin method scores this as coDetected, not as a twin failure; trufflehog reports nothing. Class: redact-secret-only/trufflehog/independent-policy-family-on-scoped-twin."
     },
     "3a25215521edec056b578f80e455daf226ec1822595bd818906f30f5b5bcab2f": {
       "status": "resolved",
@@ -27383,6 +27452,12 @@
       "resolvedRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "4012a6c8e4bd43a73482556e0229d8ff6ff2b48e9d780dd2d2e5deb1699d5c2c": {
+      "status": "resolved",
+      "firstSeenRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "resolvedRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: the twin (the documented upper-case HRKU- prefix lower-cased (hrku-); body unchanged) is scoped to heroku-api-key, and redact-secret attributes its finding [112,177) to bearer-token — the project's masking policy for any Authorization: Bearer value (T3 policy, never a provider-format claim) — not to heroku-api-key. The twin method scores this as coDetected, not as a twin failure; gitleaks reports nothing. Class: redact-secret-only/gitleaks/independent-policy-family-on-scoped-twin."
+    },
     "4013eadfa1879f74e4653721e577068d354f11714724dadc93d7b8b0caba0c31": {
       "status": "resolved",
       "firstSeenRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
@@ -27411,6 +27486,12 @@
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "4019a8d2fb987b1dc45c148373edfedee2284573bc899ef0d12e608917413b8d": {
+      "status": "resolved",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "resolvedRun": "b40aa413-35c8-43d0-808e-20ac4b157a30",
+      "note": "Resolved by the redact-secret#739 policy decision (maintainer, 2026-09-24; issue closed as not planned; benchmarks/known-gaps.json product-739 is policy-decision). Observed: redact-secret [15,31) generic-token and [50,114) confluent-cloud-api-secret; trufflehog none. [50,114) is the authored secret span, matched exactly. [15,31) is the public Confluent API key ID in the \"apiKey\" field, now authored as a companion span (#213): a 16-character random value under an apiKey name cannot be told apart from a real API key without cross-line context, and the key ID is the paired companion of the secret, so redacting it leaks nothing and costs no collateral. trufflehog's silence is a peer rule-coverage gap (its confluent detector reports only keyword-gated bare 64-byte bodies). Class: redact-secret-only/trufflehog/companion-span-policy-decision."
     },
     "401bea9751862ea147a4933b6076710a2db12842885ea2f7cf77c2148092f806": {
       "status": "resolved",
@@ -27800,6 +27881,12 @@
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
+    "40ef11b4fb1877800cbbca22a98d1781c1aa5a2fa907ed656af2b7998f156a49": {
+      "status": "resolved",
+      "firstSeenRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "resolvedRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by trufflehog flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/trufflehog/range-matches-corpus."
     },
     "40f05fa5ae8df8b5a9ee19c15c27dc2e3461ee5371064558e2ecb88e58aadddf": {
       "status": "resolved",
@@ -28326,6 +28413,11 @@
       "firstSeenRun": "add99f0b-3338-44ed-8def-7883513a356c",
       "resolvedRun": "add99f0b-3338-44ed-8def-7883513a356c",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "42378ea0db7379060ae693a16eaaca9192175f5111ee32e00ec281492e5ae6cd": {
+      "status": "open",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Confirmed defect, not a tool-comparison artifact: redact-secret flags [157,221) on this checksum-invalid twin (checksum: the CRC32 of the 54 body characters encoded big-endian instead of the documented little-endian; prefix, length and alphabet unchanged), against this corpus's must-not-flag expectation — the twin method's authored.twin assertion also fails. The provider publishes the checksum algorithm (docs.confluent.io API-key overview and its secret-detection snippet; research #234), and the product detector (confluent.rs) checks only the cflt prefix and 64-byte length. trufflehog reports nothing; neither pinned peer validates the checksum either. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Promoted 2026-09-24 through promote-finding: benchmarks/known-gaps.json product-738 (redact-secret#738); the row stays open until a fixed candidate is re-measured. Class: confirmed-twin-false-positive/confluent-cloud-api-secret. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
     },
     "423c345cb4e41429fa43e0d11a3fb17f52c9aef17b30b6cf9e5455b04a1b81a6": {
       "status": "resolved",
@@ -29391,6 +29483,12 @@
       "firstSeenRun": "210326cc-8fe5-433c-958b-527cbe8ce5ba",
       "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/stripe-token-shape-6-unicode-crlf, family stripe-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names (a provider grammar or pinned-tool corroboration) exists, so this redact-secret/trufflehog redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture."
     },
+    "4459af386626ff94b6bcf84eb37ae39ddd1518c9449279439824c404f25ebd18": {
+      "status": "resolved",
+      "firstSeenRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "resolvedRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: the twin (the lower-case secret_ prefix capitalised (Secret_); body unchanged) is scoped to notion-token, and redact-secret attributes its finding [79,129) to generic-token — the project's masking policy for a literal in a sensitive assignment field (T3 policy, never a provider-format claim) — not to notion-token. The twin method scores this as coDetected, not as a twin failure; trufflehog reports nothing. Class: redact-secret-only/trufflehog/independent-policy-family-on-scoped-twin."
+    },
     "445fb94ed6a34fed593e098076dff4c3318c764a83e46fc4930e04a7fc5c2176": {
       "status": "not-assertable",
       "firstSeenRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
@@ -29659,6 +29757,11 @@
       "firstSeenRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "resolvedRun": "09cfb4e4-5cfe-4326-bf0b-499a977f480a",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "4511368523735c0e681b5aaedc192b983a0c604e40933029e63266c4acf3301f": {
+      "status": "open",
+      "firstSeenRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while trufflehog reports [20,56), the UUID part of this corpus's authored expected secret span [15,56) — the 41-character HRKU-<uuid> OAuth generation Heroku documents (changelog-items/2842, 3175; research #235), which the product grammar frozen by redact-secret#312 (PR #675) does not cover. A candidate detector coverage gap for \"heroku-api-key\", not a peer artifact. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). Promoted 2026-09-24 through promote-finding: benchmarks/known-gaps.json product-740 (redact-secret#740); the row stays open until a fixed candidate is re-measured. Class: differential-coverage-gap/heroku-api-key."
     },
     "4518eca56df7754f55be3571844e782124dc23ef5074ec40d6fbc8c49f23d144": {
       "status": "not-assertable",
@@ -30047,6 +30150,12 @@
       "firstSeenRun": "b777ef11-41c3-47d4-92aa-eafeada29d7d",
       "resolvedRun": "b777ef11-41c3-47d4-92aa-eafeada29d7d",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. gitleaks reports no finding for the ddapp_-prefixed key. It stays silent even with a DD_APPLICATION_KEY= assignment present, so the pinned gitleaks rules do not cover the prefixed format. This is a difference in reporting scope, not a defect in either tool or in the corpus. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "462b5b49a2f920549a801c15910d2a04bb8589e5981b7c33c4530e9fe38921e5": {
+      "status": "resolved",
+      "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "462d7655d73c853aedc1fbf570949364430ff009c2b44b43aeb63ccd018449a3": {
       "status": "not-assertable",
@@ -30867,6 +30976,12 @@
       "status": "resolved",
       "firstSeenRun": "c5c87dc1-8952-4003-941b-eb110923eb37",
       "resolvedRun": "c5c87dc1-8952-4003-941b-eb110923eb37",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "481ab078f37a0b5945332cd89fc31262b33520e34e44f8a38905dafb818215f7": {
+      "status": "resolved",
+      "firstSeenRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "resolvedRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "481fb9bdfff8471bfa8a653a991487ccc8bec2c440b34982f20b93f23bb382cb": {
@@ -32481,6 +32596,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
     },
+    "4c0b72e22a2e2cddaf2e578fe8d8c0e3ed1afa2bd554f4fb580ce815c49390f5": {
+      "status": "resolved",
+      "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
     "4c0e2ff969a79d68128d3a9be7f34966ce8e86a939bca5c54f6c2bfbb1fe7365": {
       "status": "resolved",
       "firstSeenRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
@@ -33247,6 +33368,12 @@
       "status": "resolved",
       "firstSeenRun": "c5c87dc1-8952-4003-941b-eb110923eb37",
       "resolvedRun": "c5c87dc1-8952-4003-941b-eb110923eb37",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "4db97806ce0faab0cf2d7a3a54822db89a9e0cb1d057e52373ad427823266502": {
+      "status": "resolved",
+      "firstSeenRun": "79e350dd-bb9b-4082-a055-9f41c7382694",
+      "resolvedRun": "79e350dd-bb9b-4082-a055-9f41c7382694",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "4dbd706f86fc78ae330a0f8a60a1317ad4208e9b6ee8a3a1610d3bf80ba29cdd": {
@@ -35996,6 +36123,12 @@
       "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "53fb352eccfc60a5ca599c3370609feb7a2e8fcad0383c0f286409fb92fe81ae": {
+      "status": "resolved",
+      "firstSeenRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "resolvedRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
     "5405f69b6c4c4a53edc9fa64cc43287d81ef3ad2bab5780d0149860a4644d39c": {
       "status": "resolved",
       "firstSeenRun": "080e35d1-daf8-44da-9faf-557903115017",
@@ -37410,6 +37543,12 @@
       "firstSeenRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "resolvedRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "5766d0d09f08a0b0f101d310629301a4a3dd34521f1c70d729d3e08d6466b66f": {
+      "status": "resolved",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "resolvedRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
     },
     "576836f61edac1f7a9a540fca763462e6fbefe08125b282047378123adba8fc2": {
       "status": "not-assertable",
@@ -38845,6 +38984,12 @@
       "status": "not-assertable",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
+    },
+    "5ac95c03f86cc8671e6aaec180174719c38d22815225bf79ac788608a0c8571a": {
+      "status": "resolved",
+      "firstSeenRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "resolvedRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "5aca6510adb28105df5fd4b930c0856322bbcbec4e15dc56d36e0750207948b8": {
       "status": "resolved",
@@ -41065,6 +41210,12 @@
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
+    "5f9c0b0b0edcc6cc8fc93160ed2682d4819c432281159397c2c0537e92bdce2a": {
+      "status": "resolved",
+      "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
     "5f9d71c049ce7230223e4aac27e689a6a78be5206a362d19b39b68d0770ccff9": {
       "status": "resolved",
       "firstSeenRun": "080e35d1-daf8-44da-9faf-557903115017",
@@ -41281,6 +41432,12 @@
       "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
       "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
+    "600318e820364479bb0b5a71ea8d473d65601857d5e92061ee24bc3d87ae605d": {
+      "status": "resolved",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "resolvedRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly (byte-exact boundary, no collateral). gitleaks reports [24,40), [68,132): the secret span plus a 16-byte span, the Confluent API key ID, which docs.confluent.io documents as \"not considered secret information\", which gitleaks 8.30.1's confluent-access-token rule labels a secret. That is a peer rule-scope difference on a documented public identifier, not a corpus or redact-secret defect. Class: range-disagreement/gitleaks/peer-flags-public-key-id. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
     },
     "60063f0de4c5012984200f826cf5b9f134f2e74e7f7166b763d959432ff20432": {
       "status": "resolved",
@@ -53199,6 +53356,11 @@
       "resolvedRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "7c535464ff20c8a317e54d3562cd0cbd046ff0525fc71aee442561f8adffe235": {
+      "status": "not-assertable",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
     "7c566f73d2e8b04f2d687eb21e61b2df7a16aead38d04a8c287296589f84501d": {
       "status": "resolved",
       "firstSeenRun": "b265cd9e-7779-4d11-96a0-132cac809382",
@@ -54616,6 +54778,12 @@
       "resolvedRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
+    "80191f8634a2c6d9ef386d513160d37b4fa18031a829232cc9bf2fd7d607fe82": {
+      "status": "resolved",
+      "firstSeenRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "resolvedRun": "8d2ba403-04b6-4d6d-9533-7143afe27c45",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
     "80193be5b4a050322d0dcabf5355fca4031dad1308cc24d30c4ad327e75fffbf": {
       "status": "not-assertable",
       "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
@@ -55152,6 +55320,11 @@
       "firstSeenRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "resolvedRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "815292106518d17d3e292b99f942c0ca787116b7cf74e540de6183220c6b6640": {
+      "status": "open",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret; gitleaks: generic-token). It appears at integration (#207-#212) because #207 mapped the product label confluent-cloud-api-secret in scanners/families.mjs. This corpus's authored expectation (beta8-209, #209) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
     },
     "8154c39bc433410267f84fe5607a063447106fe8aa946d95468aac33d11c22c8": {
       "status": "resolved",
@@ -58131,6 +58304,12 @@
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "8855018b0570089e05bb0f07cf6e3851d846f5b24eef1edd56fba83e84bc1ba7": {
+      "status": "resolved",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "resolvedRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
+    },
     "885a9a099b8a6546ce256d700ca4c199ba7d2125b815a2a277b82520a5192989": {
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
@@ -59004,6 +59183,11 @@
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly (byte-exact boundary, no collateral). The disagreement is fully explained by trufflehog reporting a wider span (the whole credential/URI construct) as its finding unit, rather than the narrower substring this corpus asserts — a peer measurement-unit difference, not a corpus or redact-secret defect. Class: range-disagreement/trufflehog/peer-measures-broader-span."
     },
+    "8a7ca1d94ed1c9914b815c58610db5b271ae12ead6313fac5d8f936c48d1bd5f": {
+      "status": "open",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Confirmed defect, not a tool-comparison artifact: redact-secret flags [68,132) on this checksum-invalid twin (checksum: the first of the six checksum characters changed, so they no longer equal the Base64 CRC32 of the 54 body characters; prefix, length and alphabet unchanged), against this corpus's must-not-flag expectation — the twin method's authored.twin assertion also fails. The provider publishes the checksum algorithm (docs.confluent.io API-key overview and its secret-detection snippet; research #234), and the product detector (confluent.rs) checks only the cflt prefix and 64-byte length. gitleaks reports [24,40), [68,132) (including the Confluent API key ID, which docs.confluent.io documents as \"not considered secret information\"); neither pinned peer validates the checksum either. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Promoted 2026-09-24 through promote-finding: benchmarks/known-gaps.json product-738 (redact-secret#738); the row stays open until a fixed candidate is re-measured. Class: confirmed-twin-false-positive/confluent-cloud-api-secret. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
+    },
     "8a7dec9cadaf05c1c46279368b0fec27b4a3f9492efeb7389b3f91047ad022af": {
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
@@ -59107,6 +59291,12 @@
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "8ab2225867249d4947df82d819d186703395cb23c4eb7866ce321979126b7964": {
+      "status": "resolved",
+      "firstSeenRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "resolvedRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "8ab464d3dc85a62f61f0fe9fa99df56b09ec6818987be88a96128f3c686c1cc4": {
       "status": "resolved",
@@ -62526,6 +62716,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
     },
+    "92e719a2446455beec61e40e40f55b7f8f72b62a592d564f2bf014f6345f54b6": {
+      "status": "resolved",
+      "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "92e7747c51310787d3ab7510e01ed1f48c7af205ca3adcae73d99721459bf6ee": {
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
@@ -62689,6 +62885,12 @@
       "status": "not-assertable",
       "firstSeenRun": "57a180ad-4fe0-4b5a-81a0-39dd112dcae3",
       "note": "Mutation review-required by construction: operator `lexical.replace-last` replaces the last character of the contracted secret value with a different character, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.replace-last."
+    },
+    "9345887d2958b471638ca34e47ae0e9a9b5d1c0ffc0263fc0223f0ae293f612b": {
+      "status": "resolved",
+      "firstSeenRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "resolvedRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "935275bae4ae14dae0c72f29d9c45d509e73739a5d7d729748ef33f69710dfe0": {
       "status": "not-assertable",
@@ -68617,6 +68819,11 @@
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "a0af005d2a71c59962517f12873cf600f59b89fca3f1363895b2f44e8f6be252": {
+      "status": "not-assertable",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
     "a0afe563daca4a5d9d96c7783ed054a38b09afd90ba0a9a6505953688c1b6da3": {
       "status": "not-assertable",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -71336,6 +71543,12 @@
       "firstSeenRun": "7001931a-afd3-4297-bb4d-e430bd5dc8b9",
       "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks matches this corpus's authored expected secret span exactly ([21,57)) — a candidate detector coverage gap for \"databricks-personal-access-token\", not a peer artifact. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records; it does not fix product output). The pinned published package (@redact-secret/core 0.1.0-beta.6, built at 079095e) predates this family's detector: redact-secret/redact-secret#308 (PR #665, commit cea02ac) landed it on the product main after that tag, so the row stays open until a release carrying the detector is pinned here. Needs a person / a promote-finding pass to confirm. Class: differential-coverage-gap/databricks-personal-access-token."
     },
+    "a6c6381d930d7a3ecf4d1da380dc94be34b4162b1cf1ba068eda5ff25afd95c9": {
+      "status": "resolved",
+      "firstSeenRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "resolvedRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
     "a6c7505d4ba7d98b318d1dc1a6dfab2ee69ba9c54d52b37232bf1c3c8df3cd66": {
       "status": "resolved",
       "firstSeenRun": "f0fb2bb8-e106-4915-8b08-279bc26c5f94",
@@ -72775,6 +72988,12 @@
       "status": "resolved",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "resolvedRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "aa6ac6d71ae69219a00730d289b4eca6c87c7ff470e157484133a131ec0939ff": {
+      "status": "resolved",
+      "firstSeenRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "resolvedRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "aa70ed37bc1b2bbe323aeeac1899a318c04d90ec63c4418c6896b3fa0e8884f9": {
@@ -77076,6 +77295,12 @@
       "resolvedRun": "38b9928b-e336-4916-ab09-96ec9a77af7f",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
+    "b4db4c4cd6aa7e94048c23cf50611ee0757ce4c3663b3007e287a64c6121a9a0": {
+      "status": "resolved",
+      "firstSeenRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "resolvedRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "b4ddeedf8b2bee78c0532c483c2d4ea6d92f8966cdb79460b89790f7755769d8": {
       "status": "resolved",
       "firstSeenRun": "c5c87dc1-8952-4003-941b-eb110923eb37",
@@ -78124,6 +78349,11 @@
       "status": "not-assertable",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/vercel-token-shape-4-quoted, family vercel-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names (a provider grammar or pinned-tool corroboration) exists, so this redact-secret/gitleaks redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture."
+    },
+    "b7524e540bad2566f860fe10516f0fa7724fd84b27af582f0e8ca700f506bb3d": {
+      "status": "not-assertable",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
     },
     "b752d28eb0b972b6feee7f92b8a4d1a04c3b5f705f39b7537382413e4a0c2cf0": {
       "status": "resolved",
@@ -83261,6 +83491,11 @@
       "firstSeenRun": "57a180ad-4fe0-4b5a-81a0-39dd112dcae3",
       "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
     },
+    "c391c36d483396586fc5f7ddc8e0720c5c424a3a26684c63b46b3552028b2571": {
+      "status": "open",
+      "firstSeenRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "note": "Differential disagreement not covered by any established class: redact-secret reports no finding for this input while gitleaks matches this corpus's authored expected secret span [36,75) exactly. The product source (crates/secret-scan-core/src/pipeline.rs, redact-secret#520 B3a) deliberately suppresses a google_api_key match inside a Firebase web client-config object (two or more of authDomain/projectId/… nearby), citing firebase.google.com's statement that API keys restricted to Firebase services need not be treated as secrets. This benchmark records no such exclusion (and #209 does not invent one), and the fixture's AIza value carries no evidence of a Firebase-only restriction, so the authored must-redact expectation stands as first measured. Recorded 2026-09-24 as benchmarks/known-gaps.json product-520 at observed, not promoted: awaiting maintainer decision between a product gap and a documented scope exclusion (redact-secret#520 B3a). Class: differential-coverage-gap/google-api-key."
+    },
     "c396038cd2637e94f7a516e0ea28b2f4ad310625d5ed9426615f9625b26a748e": {
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
@@ -83519,6 +83754,12 @@
       "firstSeenRun": "6398f935-55da-493b-88b4-ae05338b5524",
       "resolvedRun": "6398f935-55da-493b-88b4-ae05338b5524",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "c41d3be2b5c9efc672622bac618de77da12441d89a774c3b67619ca683955158": {
+      "status": "resolved",
+      "firstSeenRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "resolvedRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: the twin (the documented secret_ prefix's underscore replaced by a dash (secret-); body unchanged) is scoped to notion-token, and redact-secret attributes its finding [69,119) to bearer-token — the project's masking policy for any Authorization: Bearer value (T3 policy, never a provider-format claim) — not to notion-token. The twin method scores this as coDetected, not as a twin failure; gitleaks reports nothing. Class: redact-secret-only/gitleaks/independent-policy-family-on-scoped-twin."
     },
     "c41f8d756ea520a3d64d44347ccb7ddca04ec64f447726e3de316745c3502970": {
       "status": "resolved",
@@ -85204,6 +85445,12 @@
       "resolvedRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "c8be7451bd17fcc12cac235b84362189dabc80be66eb9634bdbfbe7f3614ba3c": {
+      "status": "resolved",
+      "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
     "c8be83341959c49d3d821e58f803ad4e7f39f7910cf71c47b6d72810389cb21c": {
       "status": "resolved",
       "firstSeenRun": "add99f0b-3338-44ed-8def-7883513a356c",
@@ -85501,6 +85748,12 @@
       "resolvedRun": "080e35d1-daf8-44da-9faf-557903115017",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
+    "c96f5355765efb98884c10a9c0ed1126e8e759b204fa66783cdb447bf05b0ad6": {
+      "status": "resolved",
+      "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
     "c97132bc155da6877b5e33fa6f1fb28f48a7e17a50c64b338f73f942508540d3": {
       "status": "resolved",
       "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
@@ -85534,6 +85787,11 @@
       "firstSeenRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "resolvedRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by trufflehog flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/trufflehog/range-matches-corpus."
+    },
+    "c981bd88719e8a7be5d243da8af0ab4608070f9b9f9d44503e3b356c848f478b": {
+      "status": "not-assertable",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
     },
     "c98635aed553a423c4729c9ccec764920db7cbab6ec7cd380bba271c76454f00": {
       "status": "not-assertable",
@@ -86882,6 +87140,12 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
     },
+    "cc9d1fc7ebb9432949095c1ffa239f2396623ee7fffd446c9205be8335baa5f9": {
+      "status": "resolved",
+      "firstSeenRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "resolvedRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
     "cc9ddda8b495ea4b7e6a94261c25829baedb8ff5397fd3e52374898908f5638d": {
       "status": "resolved",
       "firstSeenRun": "04b6292b-871a-449d-a3b9-4b95af181d14",
@@ -87375,6 +87639,12 @@
       "firstSeenRun": "bd071fbb-ec12-4ba0-b36e-ae4bd0e90af2",
       "resolvedRun": "bd071fbb-ec12-4ba0-b36e-ae4bd0e90af2",
       "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
+    },
+    "cdf095afd05c70da68c08797318d367908393d9625ed1e348d8182be9795203f": {
+      "status": "resolved",
+      "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "cdf2a5c92da9ce07f91e0d55624c2deae9ecb56d0aa6e54f98d7cc03027601cc": {
       "status": "not-assertable",
@@ -92767,6 +93037,12 @@
       "resolvedRun": "007df8e3-4fca-43e6-84c2-d578ccc666bb",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "da54a1feef56f0dba9831124df0a152d040d144df17f44889ee7807364db78b5": {
+      "status": "resolved",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "resolvedRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly (byte-exact boundary, no collateral). gitleaks reports [69,85), [101,165): the secret span plus a 16-byte span, the Confluent API key ID, which docs.confluent.io documents as \"not considered secret information\", which gitleaks 8.30.1's confluent-access-token rule labels a secret. That is a peer rule-scope difference on a documented public identifier, not a corpus or redact-secret defect. Class: range-disagreement/gitleaks/peer-flags-public-key-id. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
+    },
     "da5c4a6ca9a611d64a96c44954f955aa35af87c772cabca0ff5be9c05ab33ba0": {
       "status": "not-assertable",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
@@ -94994,6 +95270,12 @@
       "resolvedRun": "f0fb2bb8-e106-4915-8b08-279bc26c5f94",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "e032698430b1a8a28ca662e8f40158e5f74c0256f3522ba4ddf121d204f647df": {
+      "status": "resolved",
+      "firstSeenRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "resolvedRun": "371cfa58-6c0f-407b-8007-790abc5aa919",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
     "e03e541c0f89925e0488492b0843bff7b3c9b98ef1736aee4349acf94a92b8bb": {
       "status": "not-assertable",
       "firstSeenRun": "57a180ad-4fe0-4b5a-81a0-39dd112dcae3",
@@ -96635,6 +96917,12 @@
       "status": "not-assertable",
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.length-plus-one` appends an extra character to the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-plus-one."
+    },
+    "e40f1c012b211c9f9176adca3f31bcca2dd41c9f83798907105aae659caf554e": {
+      "status": "resolved",
+      "firstSeenRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "resolvedRun": "5febe5f1-60aa-4248-97b4-15f4deb16b9d",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
     },
     "e40f71716fe94f56019328d345706f6d38674cca32fc00028f7a1adb266ec2b6": {
       "status": "resolved",
@@ -98676,6 +98964,12 @@
       "status": "resolved",
       "firstSeenRun": "080e35d1-daf8-44da-9faf-557903115017",
       "resolvedRun": "080e35d1-daf8-44da-9faf-557903115017",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "e8b50dca0be7d26118b7bc83fc91278d9015f519c35b4365db3b43d3af70d5dc": {
+      "status": "resolved",
+      "firstSeenRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
+      "resolvedRun": "e7f2ae31-b68e-465c-b78d-cd049f3efe88",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "e8b5b3a3482e5e1b19f8e157cb59f5c6e19b3a536095f892a6259529cf8cdfbf": {
@@ -102895,6 +103189,11 @@
       "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
+    "f27c4dad9d5871a60c616f663e118582ef891ef245faa6d3f15a89d16ea0b899": {
+      "status": "open",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Confirmed defect, not a tool-comparison artifact: redact-secret flags [68,132) on this checksum-invalid twin (checksum: the first of the six checksum characters changed, so they no longer equal the Base64 CRC32 of the 54 body characters; prefix, length and alphabet unchanged), against this corpus's must-not-flag expectation — the twin method's authored.twin assertion also fails. The provider publishes the checksum algorithm (docs.confluent.io API-key overview and its secret-detection snippet; research #234), and the product detector (confluent.rs) checks only the cflt prefix and 64-byte length. trufflehog reports [24,40) (including the Confluent API key ID, which docs.confluent.io documents as \"not considered secret information\"); neither pinned peer validates the checksum either. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Promoted 2026-09-24 through promote-finding: benchmarks/known-gaps.json product-738 (redact-secret#738); the row stays open until a fixed candidate is re-measured. Class: confirmed-twin-false-positive/confluent-cloud-api-secret. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
+    },
     "f27c782cdbf8b7a7b78261f688930112159359d0741c97e859804c1dff6d334e": {
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
@@ -103206,6 +103505,11 @@
       "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
       "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
+    "f34241c0f4adc3de33cd11f14bfdddcc7546957ee4fa219d931e7f0bf74626ec": {
+      "status": "not-assertable",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Mutation review-required by construction: operator `lexical.replace-last` replaces the last character of the contracted secret value with a different character, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.replace-last."
     },
     "f3479249782c90f45aed3a31bd0d5873518b693427fb9b3a15250bcad29e51b1": {
       "status": "resolved",
@@ -103825,6 +104129,11 @@
       "resolvedRun": "6398f935-55da-493b-88b4-ae05338b5524",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
     },
+    "f49a26d0d40396bd4ab83c52bf42be9eafaba6a563674cfa1e12a8870be1fea1": {
+      "status": "open",
+      "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
+      "note": "Confirmed defect, not a tool-comparison artifact: redact-secret flags [101,165) on this checksum-invalid twin (checksum: the CRC32 computed over cflt plus the body (58 characters) instead of the documented 54 body characters; prefix, length and alphabet unchanged), against this corpus's must-not-flag expectation — the twin method's authored.twin assertion also fails. The provider publishes the checksum algorithm (docs.confluent.io API-key overview and its secret-detection snippet; research #234), and the product detector (confluent.rs) checks only the cflt prefix and 64-byte length. gitleaks reports [69,85), [101,165) (including the Confluent API key ID, which docs.confluent.io documents as \"not considered secret information\"); neither pinned peer validates the checksum either. Not resolved here per the boundary rule (this repository measures and records; it does not fix product output). Promoted 2026-09-24 through promote-finding: benchmarks/known-gaps.json product-738 (redact-secret#738); the row stays open until a fixed candidate is re-measured. Class: confirmed-twin-false-positive/confluent-cloud-api-secret. Carried at integration (#207-#212): the only change is that the product label confluent-cloud-api-secret is now mapped in scanners/families.mjs (#207), so the same finding carries its family."
+    },
     "f4a89033526482407a2f0f1b7e4935d0f69a65f82724f6376118c603019b555f": {
       "status": "resolved",
       "firstSeenRun": "c5c87dc1-8952-4003-941b-eb110923eb37",
@@ -104014,6 +104323,12 @@
       "status": "resolved",
       "firstSeenRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
       "resolvedRun": "964db25c-035b-4ef6-89b2-7aaa8f2cf754",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "f53d0422b5895d4bed377cebefea2df3e96fa373b1a34a1a417d2b69bbd12a42": {
+      "status": "resolved",
+      "firstSeenRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
+      "resolvedRun": "b0837e0c-11bb-4bcb-b759-a0c3f297df69",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "f544c7f11f10534e9f18cd83d66c365379f14a362ae5ea66a8ef5978fcdb1267": {

@@ -58,6 +58,28 @@ test('familyEvidence reports benignAxes/benignAxisIds from axesByDetector, keyed
   assert.deepEqual(missing.benignAxisIds, []);
 });
 
+test('familyEvidence counts context-twin pairs by the authored context mutation, in any corpus, never by the context-edges category', () => {
+  const twin = (category, id, mutationKind) => ({
+    method: 'twin', targets: ['example-token'], source: { category, fixtureId: id },
+    seed: { id: `${id}-positive`, expected: [{ start: 0, end: 1 }], group: 'g' }, twin: { id, twinOf: `${id}-positive`, mutationKind },
+  });
+  const cases = [
+    twin('beta8-207', 'env-context-twin', 'context'),
+    twin('detector-coverage', 'keyword-context-twin', 'context'),
+    twin('beta8-212', 'legacy-context-twin', 'context'),
+    // The same twin fixture seen twice (it is one pair).
+    twin('beta8-207', 'env-context-twin', 'context'),
+    // A value twin in context-edges is not a context-twin pair.
+    twin('context-edges', 'length-twin', 'length'),
+    twin('context-edges', 'prefix-twin', 'prefix'),
+    twin('beta8-207', 'other-family-context-twin', 'context'),
+  ];
+  cases[6].targets = ['other-token'];
+  const evidence = familyEvidence('example-token', {}, {}, [], emptyLedger, cases);
+  assert.equal(evidence.contextTwinPairs, 3);
+  assert.equal(evidence.confusionAxes, 3, 'length, prefix and context twin kinds are three confusion axes');
+});
+
 test('familyEvidence counts a hard mutation failure as unresolved even with no queue entry', () => {
   const byDetector = { 'example-token': { 'mutation/redact-secret/must-redact:T1/present-within-envelope': { pass: 1, fail: 3, 'review-required': 0, 'not-measured': 0 } } };
   const evidence = familyEvidence('example-token', byDetector, {}, [], emptyLedger);

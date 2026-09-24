@@ -18,7 +18,7 @@ const beta8 = Object.entries(generated).filter(([id]) => id.startsWith('beta8-')
 
 test('Beta.8 modules: arrival families are declared once, carry a taxonomy family and a contract, and never shadow a registry detector', () => {
   assert.deepEqual(validateBeta8(registry.detectors.map(d => d.id), taxonomy.families.map(f => f.id)), []);
-  assert.deepEqual(BETA8_MODULES.map(m => m.issue), [207, 208, 209, 210, 211, 212, 213, 213]);
+  assert.deepEqual(BETA8_MODULES.map(m => m.issue), [207, 208, 209, 210, 211, 212, 213, 213, '213d']);
   for (const f of arrivalFamilies) {
     const family = taxonomy.families.find(t => t.id === f.taxonomy);
     assert.ok(family, f.id);

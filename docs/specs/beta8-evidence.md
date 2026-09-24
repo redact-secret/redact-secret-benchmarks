@@ -12,6 +12,12 @@ It adds no support status and no product behavior.
 | --- | --- | --- | --- |
 | #N | `benchmarks/lib/beta8/N.ts` | `fixtures/generated/beta8/N.mjs` | `beta8-N` |
 
+An issue whose work runs in parallel slices uses a corpus key instead of the
+bare number, for example #213's `213d` (`benchmarks/lib/beta8/213d.ts`,
+`fixtures/generated/beta8/213d.mjs`, category `beta8-213d`). The module's
+`issue` is then that key. One key per slice keeps each slice's source hash, and
+so its ledger rows, independent of the others.
+
 Each issue owns its two files. `benchmarks/lib/beta8/index.ts` and
 `fixtures/generated/beta8/index.mjs` merge them. Because every issue gets its
 own corpus, editing one issue's fixtures changes only that corpus's source

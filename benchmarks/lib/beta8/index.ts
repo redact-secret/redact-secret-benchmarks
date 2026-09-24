@@ -7,13 +7,14 @@ import * as i211 from './211.ts';
 import * as i212 from './212.ts';
 import * as i213c from './213c.ts';
 import * as i213b from './213b.ts';
+import * as i213d from './213d.ts';
 
 /**
- * Beta.8 evidence modules, one per consumer issue (#207–#212). Each owns its
+ * Beta.8 evidence modules, one per consumer issue (#207–#212) or #213 corpus key (213b, 213c, 213d). Each owns its
  * arrival families, their contracts and its profile declarations, so parallel
  * issue work never edits a shared table. See docs/specs/beta8-evidence.md.
  */
-export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c, i213b];
+export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c, i213b, i213d];
 export const arrivalFamilies: ArrivalFamily[] = BETA8_MODULES.flatMap(m => m.arrivalFamilies);
 export const arrivalIds = new Set(arrivalFamilies.map(f => f.id));
 export const arrivalContracts: Record<string, FormatContract> = {};
@@ -23,7 +24,7 @@ for (const m of BETA8_MODULES)
     arrivalContracts[id] = contract;
   }
 /** target → { issue, profile }. A target is declared by exactly one issue. */
-export const beta8Profiles: Record<string, { issue: number; profile: FixtureProfile }> = {};
+export const beta8Profiles: Record<string, { issue: number | string; profile: FixtureProfile }> = {};
 for (const m of BETA8_MODULES)
   for (const [target, profile] of Object.entries(m.profiles)) {
     if (Object.hasOwn(beta8Profiles, target)) throw new Error(`Beta.8 profile declared by two issues: ${target}`);

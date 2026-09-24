@@ -211,16 +211,10 @@ claim that any upstream product issue has been validated here.
 
 ## Deployment
 
-| Host | Publishes | When |
+| Branch | Publishes | Role |
 | --- | --- | --- |
-| `staging.benchmarks.redactsecret.dev` | the latest `develop` commit | every push to `develop` (the default branch; open PRs here) |
-| `benchmarks.redactsecret.dev` | the latest benchmarks release (`vX.Y.Z`, tagged on `main`) | when a release is published |
-
-To ship to production, promote `develop` to `main`, then publish a release from
-`main` (`gh release create vX.Y.Z --target main --generate-notes`). A push to
-`main` alone publishes nothing. Production refuses a release that is not the
-latest one or whose commit is not on `main`. Prereleases are not published.
-The footer names the release on production and the `develop` commit on staging.
+| `develop` (default) | `staging.benchmarks.redactsecret.dev` | integration branch; open PRs here |
+| `main` | `benchmarks.redactsecret.dev` | always publishable; updated by promoting `develop` |
 
 - **Production** (`benchmarks.redactsecret.dev`) shows the corpus measured
   against the latest released `@redact-secret/core`. This is the citable site.
@@ -236,8 +230,6 @@ using GitHub OIDC and the `staging` and `production` environments.
 
 To republish without pushing, dispatch the workflow with the environment:
 `gh workflow run publish-site.yml -f environment=staging` (or `production`).
-Staging always rebuilds `develop`'s HEAD, and production always rebuilds the
-latest release, whichever branch the dispatch runs on.
 From a workstation, `scripts/publish-site.sh` in `redact-secret-sites` is the
 fallback.
 

@@ -1,7 +1,7 @@
 import { categories, registry, fixtures, corpusHashes, baseline } from './catalog';
 import { parseRoute, isAppPath, reportProblem } from './model.mjs';
 import { mountShell, renderPage, setBuildLine, type NavItem, type SearchTarget } from './shell';
-import { siteEnvOf, commitOf, releaseOf, envBanner, buildLine, type Provenance } from './provenance';
+import { siteEnvOf, commitOf, envBanner, buildLine, type Provenance } from './provenance';
 import { summaryProblem, PRODUCT, type BenchData, type RunSummary } from './pages/data';
 import { reportPage, levelOf } from './pages/report';
 import { coveragePage, coverageViewOf, detectorPage, bindInventory } from './pages/coverage';
@@ -23,7 +23,7 @@ let request = 0, lastPayload = '', downloadUrl = '';
 /** Allowlist flag for a future customer-only build: set VITE_PUBLIC_ROUTES_ONLY=1 and Workbench paths stop resolving. */
 const PUBLIC_ONLY = import.meta.env.VITE_PUBLIC_ROUTES_ONLY === '1';
 /** Build-time environment and commit (#155); an unset VITE_SITE_ENV is a local build, never production. */
-const SITE: Provenance = { env: siteEnvOf(import.meta.env.VITE_SITE_ENV), commit: commitOf(import.meta.env.VITE_BUILD_COMMIT), release: releaseOf(import.meta.env.VITE_BUILD_RELEASE) };
+const SITE: Provenance = { env: siteEnvOf(import.meta.env.VITE_SITE_ENV), commit: commitOf(import.meta.env.VITE_BUILD_COMMIT) };
 const suiteIds = categories.map(c => c.id);
 const route = () => parseRoute(location.pathname, { suites: suiteIds, publicOnly: PUBLIC_ONLY });
 // <details> state survives the 5-second polling re-render.

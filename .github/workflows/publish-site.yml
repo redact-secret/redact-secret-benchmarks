@@ -9,17 +9,10 @@
 # redact-secret account, using the OIDC role that `infra/bootstrap` creates and
 # that each site stack grants bucket access to.
 #
-# What each environment publishes:
+# Branches map to environments:
 #
-#   staging     the latest `develop` commit -> staging.benchmarks.redactsecret.dev
-#               (on every push to develop, and when redact-secret dispatches it)
-#   production  the latest benchmarks release -> benchmarks.redactsecret.dev
-#               (when a release is published; a push to main publishes nothing)
-#
-# A manual dispatch publishes the same thing: staging always builds develop's
-# HEAD, production always builds the latest release's tag, whichever ref the
-# dispatch ran on. Production refuses a release that is not the latest one or
-# whose commit is not on main.
+#   develop -> staging.benchmarks.redactsecret.dev
+#   main    -> benchmarks.redactsecret.dev
 #
 # Both measure the corpus against the released `@redact-secret/core` in the
 # lockfile. Staging also measures a `redact-secret` `main` commit with
@@ -35,13 +28,11 @@ name: Publish benchmarks site
 
 on:
   push:
-    branches: [develop]
-  release:
-    types: [released]
+    branches: [develop, main]
   workflow_dispatch:
     inputs:
       environment:
-        description: Republish a site (staging builds develop's HEAD, production the latest release).
+        description: Republish a site without pushing.
         type: environment
         required: true
         default: staging
@@ -57,21 +48,21 @@ on:
 permissions: {}
 
 env:
-  TARGET: ${{ inputs.environment || (github.event_name == 'release' && 'production' || 'staging') }}
+  TARGET: ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
 
 # One group per environment, never cancelling a run mid-sync. GitHub keeps at
 # most one pending run per group and replaces it with the newest, so a burst of
 # redact-secret pushes already collapses to the running publish plus the latest
 # queued one (#153).
 concurrency:
-  group: publish-site-${{ inputs.environment || (github.event_name == 'release' && 'production' || 'staging') }}
+  group: publish-site-${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
   cancel-in-progress: false
 
 jobs:
   publish:
-    name: Publish to ${{ inputs.environment || (github.event_name == 'release' && 'production' || 'staging') }}
+    name: Publish to ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment || (github.event_name == 'release' && 'production' || 'staging') }}
+    environment: ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
     permissions:
       contents: read
       id-token: write
@@ -86,39 +77,7 @@ jobs:
           echo "::error::product_sha applies to staging only; production measures the released package."
           exit 1
 
-      # Staging publishes develop's latest commit and production the latest
-      # release, whatever ref or event started the run.
-      - name: Resolve what to publish
-        id: source
-        env:
-          GH_TOKEN: ${{ github.token }}
-          EVENT_TAG: ${{ github.event.release.tag_name }}
-        run: |
-          set -euo pipefail
-          release=
-          if [ "$TARGET" = production ]; then
-            release=$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name) \
-              || { echo "::error::no published release to put on production"; exit 1; }
-            if ! [[ "$release" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
-              echo "::error::latest release tag '$release' is not vX.Y.Z"; exit 1
-            fi
-            if [ -n "$EVENT_TAG" ] && [ "$EVENT_TAG" != "$release" ]; then
-              echo "::error::release $EVENT_TAG is not the latest release ($release); production only publishes the latest release"; exit 1
-            fi
-            commit=$(gh api "repos/$GITHUB_REPOSITORY/commits/$release" --jq .sha)
-            status=$(gh api "repos/$GITHUB_REPOSITORY/compare/main...$commit" --jq .status)
-            if [ "$status" != identical ] && [ "$status" != behind ]; then
-              echo "::error::release $release ($commit) is not on main"; exit 1
-            fi
-          else
-            commit=$(gh api "repos/$GITHUB_REPOSITORY/commits/develop" --jq .sha)
-          fi
-          echo "Publishing ${release:-develop} at $commit to $TARGET."
-          { echo "commit=$commit"; echo "release=$release"; } >> "$GITHUB_OUTPUT"
-
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          ref: ${{ steps.source.outputs.commit }}
 
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v5.0.0
         with:
@@ -255,8 +214,7 @@ jobs:
       - name: Build the site
         env:
           VITE_SITE_ENV: ${{ env.TARGET }}
-          VITE_BUILD_COMMIT: ${{ steps.source.outputs.commit }}
-          VITE_BUILD_RELEASE: ${{ steps.source.outputs.release }}
+          VITE_BUILD_COMMIT: ${{ github.sha }}
         run: npm run build
 
       - uses: aws-actions/configure-aws-credentials@f503a1870408dcf2c35d5c2b8a68e69211042c7d # v5.0.0
@@ -294,15 +252,12 @@ jobs:
       - name: Record what was published
         env:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
-          BUILD_COMMIT: ${{ steps.source.outputs.commit }}
-          BUILD_RELEASE: ${{ steps.source.outputs.release }}
           QUALIFICATION_RUN_URL: ${{ steps.product.outputs.run-url }}
         run: |
           {
             echo "### Published to $TARGET"
             echo
-            if [ -n "$BUILD_RELEASE" ]; then echo "- benchmarks release: \`$BUILD_RELEASE\`"; fi
-            echo "- benchmarks commit: \`$BUILD_COMMIT\`"
+            echo "- benchmarks commit: \`${{ github.sha }}\`"
             echo "- run id: $(jq -r .runId public/results/run.json)"
             if [ "$TARGET" = staging ]; then
               echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"

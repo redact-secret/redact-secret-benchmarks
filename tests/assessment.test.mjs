@@ -136,10 +136,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // body Docker's Hub API example shows; one new must-redact/T1 positive × 3 contexts
   // (+3 files/+3 spans), 3 twins × 3 contexts (netted out below).
   // #209: confluent-cloud-api-secret's contract now validates the provider-published CRC32
-  // checksum; detector-coverage's three prefixed-shape positives (flat random bodies) fail it
-  // and move must-redact/T1 -> policy/T3 as retained regressions (-3 files/-3 spans here, +3 below).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 386);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 392);
+  // checksum; detector-coverage's three prefixed-shape positives were regenerated with a valid
+  // checksum (#209/#213), so they stay must-redact/T1 (net 0 here and below).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 389);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 395);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -151,8 +151,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #207 (research #231): supabase-token is re-reviewed onto the documented sb_secret_
   // 22 + _ + 8 grammar, so its three shape-1 positives (40 alphanumeric, no inner _)
   // move from must-redact/T0 to retained legacy policy/T3.
-  // #209: +3 — the checksum-invalid confluent-cloud-api-secret prefixed-shape positives above.
-  assert.deepEqual(tally['policy/T3'], { files: 211, spans: 211 });
+  assert.deepEqual(tally['policy/T3'], { files: 208, spans: 208 });
   assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,

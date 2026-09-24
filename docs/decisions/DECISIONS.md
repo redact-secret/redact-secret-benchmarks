@@ -37,3 +37,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Decouple pin freshness from pin consistency](2026-09-23-decouple-pin-freshness-from-pin-consistency.md)
 - [Qualify T2 families empirically without changing their provenance](2026-09-24-qualify-t2-empirically.md)
 - [Amend #207's added scope to 348 family-fixture assignments (proposed)](2026-09-24-amend-207-scope-to-348-assignments.md)
+- [Settle classification disagreements where only the peer's label is coarser](2026-09-24-settle-peer-coarser-classification-disagreements.md)

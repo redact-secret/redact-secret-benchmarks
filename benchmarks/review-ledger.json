@@ -669,9 +669,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "01a97a297154aeed3f67504e1cd8800059321882d14ed8ad1ad68b1315cdd51a": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
-      "note": "Byte ranges agree between redact-secret and gitleaks ([96,133), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: huggingface-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [96,133), the authored expected span, on the canonical variant of beta8-213b--huggingface-token-inference-client. redact-secret labels it huggingface-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "01aa9fdd05a2022ceb52ae3408866f1c1dd6f0628aeab6228dd47a894c4c660a": {
       "status": "not-assertable",
@@ -2402,9 +2402,9 @@
       "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet."
     },
     "05bcca358ab0776a72e64a0f0927839ac74b89b5fe98e036d79631de00f21fdc": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
-      "note": "Byte ranges agree between redact-secret and gitleaks ([73,110), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: huggingface-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [73,110), the authored expected span, on the canonical variant of beta8-213b--huggingface-token-actions-sync-to-hub. redact-secret labels it huggingface-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "05befe42b081712ec2ad372171fbd6d3340bd1dbf31d2018d932d51404b869b6": {
       "status": "resolved",
@@ -3896,9 +3896,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "0988b756febf6276462aa4fa7918bff9fe48def494f3eada18a3019679f4e39c": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: supabase-token; gitleaks: generic-token). This corpus's authored expectation (beta8-207, #207) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [80,121), the authored expected span, on the canonical variant of beta8-207--supabase-token-actions-env. redact-secret labels it supabase-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "0988bcba0f0e33e09b66658853b3570558258935a31f4a4d29eeb8f18185e8e1": {
       "status": "resolved",
@@ -4655,9 +4655,9 @@
       "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/slack-token-shape-4-quoted, family slack-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names (a provider grammar or pinned-tool corroboration) exists, so this redact-secret/trufflehog redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture."
     },
     "0b608e0877fdf17b891960754cbd102d1e3579a253a9a708ca7042b44aefca1b": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "bd071fbb-ec12-4ba0-b36e-ae4bd0e90af2",
-      "note": "Byte ranges agree between redact-secret and gitleaks, and both equal this corpus's authored expected span ([147,211)); the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret; gitleaks: generic-token). This corpus's authored expectation (beta8-213c, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [147,211), the authored expected span, on the canonical variant of beta8-213c--confluent-cloud-api-secret-k8s-secret-stringdata. redact-secret labels it confluent-cloud-api-secret (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "0b6645784cb29ea4254467509c9b5d6f6c720c181608f9f056abefa2b55ee769": {
       "status": "resolved",
@@ -7325,9 +7325,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "125186a219b86a246837e65b282ceba91a5a892e525d333fb379a2b05b807903": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
-      "note": "Byte ranges agree between redact-secret and gitleaks ([24,61), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: huggingface-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [24,61), the authored expected span, on the canonical variant of beta8-213b--huggingface-token-stored-tokens-ini. redact-secret labels it huggingface-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "1257ee9ffbbe0b1e1cd1bd74825444e8510c04cecc3b8b86ac46018a1c394442": {
       "status": "not-assertable",
@@ -21785,9 +21785,9 @@
       "note": "Mutation review-required by construction: operator `lexical.length-minus-one` removes the last character of the contracted secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.length-minus-one."
     },
     "36d5f2a8da7e58d33f600f6fa168c130281c0382e35c776aea6af2b065b44bde": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret-legacy; gitleaks: generic-token). This corpus's authored expectation (beta8-207, #207) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [30,94), the authored expected span, on the canonical variant of beta8-207--confluent-cloud-api-secret-legacy-tfvars. redact-secret labels it confluent-cloud-api-secret-legacy (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "36de6f3375698bcf5ec364d1902b9e7892688c3730761f64548fd100721323c5": {
       "status": "resolved",
@@ -25363,9 +25363,9 @@
       "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/vercel-token-shape-4-bare, family vercel-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names (a provider grammar or pinned-tool corroboration) exists, so this redact-secret/gitleaks redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture."
     },
     "3f953c425670b8447cd4d8c9486bed065a4d28361bc0bb7dfc5f06cdb1589485": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret-legacy; gitleaks: generic-token). This corpus's authored expectation (beta8-207, #207) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [28,92), the authored expected span, on the canonical variant of beta8-207--confluent-cloud-api-secret-legacy-js-constant. redact-secret labels it confluent-cloud-api-secret-legacy (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "3f98ccd8dc4644fc245daf7476a89ac64b03f484e981f4b6a393cb774dfdc4a6": {
       "status": "not-assertable",
@@ -35374,9 +35374,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "58945d0699b0d8979bfa451c6bfcc2d59a8926d9e844aa4aa0d8301608a46fde": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "92adaa6b-7282-4580-a424-cc67bf112555",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret; gitleaks: generic-token). It appears at integration (#207-#212) because #207 mapped the product label confluent-cloud-api-secret in scanners/families.mjs. This corpus's authored expectation (beta8-209, #209) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [157,221), the authored expected span, on the canonical variant of beta8-209--confluent-cloud-api-secret-kafka-client-properties. redact-secret labels it confluent-cloud-api-secret (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "5899e9d09520dba2561573117521e7440bb23e83f70788291e45fd3108cd43df": {
       "status": "resolved",
@@ -36749,9 +36749,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "5bee3f2fbe191523d68d26a542b22cdd91bcd0745d16fac2a51b63507568866f": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret-legacy; gitleaks: generic-token). This corpus's authored expectation (beta8-207, #207) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [35,99), the authored expected span, on the canonical variant of beta8-207--confluent-cloud-api-secret-legacy-actions-env. redact-secret labels it confluent-cloud-api-secret-legacy (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "5bee54faf8be79396c65ccae770eac7f03a7d4129878ed8783a6e0a1122a62eb": {
       "status": "open",
@@ -37150,9 +37150,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly (byte-exact boundary, no collateral). The disagreement is fully explained by trufflehog reporting a wider span (the whole credential/URI construct) as its finding unit, rather than the narrower substring this corpus asserts — a peer measurement-unit difference, not a corpus or redact-secret defect. Class: range-disagreement/trufflehog/peer-measures-broader-span."
     },
     "5ce5c8a162f61d4da41143230a064701802c7ff9236bdfd95a00c48da99550d7": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: supabase-token; gitleaks: generic-token). This corpus's authored expectation (beta8-207, #207) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [62,103), the authored expected span, on the canonical variant of beta8-207--supabase-token-self-hosted-compose. redact-secret labels it supabase-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "5ce78080b52bb6ac7cd4da87b0a8e80d3e530c1e31adc3849971cb2fb11deb88": {
       "status": "not-assertable",
@@ -54505,9 +54505,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "898cfaa5656db2097384338cf6652ed849bf447470612a44e5e3e6a6caf58e4f": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
-      "note": "Byte ranges agree between redact-secret and gitleaks ([9,46), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: huggingface-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [9,46), the authored expected span, on the canonical variant of beta8-213b--huggingface-token-hf-token-env. redact-secret labels it huggingface-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "899024f25dfe9caa2ffc2e6a097c53c3bd8acaf70be14d92defea6db4e188e8c": {
       "status": "not-assertable",
@@ -61818,9 +61818,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by trufflehog flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/trufflehog/range-matches-corpus."
     },
     "9bbf2afea31b20929760271c606a6e19d5808761ebf9334f08daafa7e8bd6681": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret-legacy; gitleaks: generic-token). This corpus's authored expectation (beta8-207, #207) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [27,91), the authored expected span, on the canonical variant of beta8-207--confluent-cloud-api-secret-legacy-env. redact-secret labels it confluent-cloud-api-secret-legacy (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "9bc58e7da19489000270e1a95eba220cf6bf4be964a3bfbdd7e80bbc79442720": {
       "status": "open",
@@ -62096,9 +62096,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "9c5f8d6dd529d085b0755136b7030d1f817394012f715da13207c2734b3e0437": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret-legacy; gitleaks: generic-token). This corpus's authored expectation (beta8-207, #207) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [35,99), the authored expected span, on the canonical variant of beta8-207--confluent-cloud-api-secret-legacy-export. redact-secret labels it confluent-cloud-api-secret-legacy (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "9c60d7dbb669b4c986caf74c7c377e46bf7d797eb482940baea926e1c112aea0": {
       "status": "resolved",
@@ -84184,9 +84184,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by trufflehog flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/trufflehog/range-matches-corpus."
     },
     "d500a76dd73b2db57e324f3d3871d7f280415c7c74d2838ac52453f9f117c78c": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
-      "note": "Byte ranges agree between redact-secret and gitleaks ([166,219), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: cloudflare-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [166,219), the authored expected span, on the canonical variant of beta8-213b--cloudflare-token-wrangler-action. redact-secret labels it cloudflare-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "d5017bcc0b20223c1d52a6625d14712ab68611ba41ede026fdbbb97f8f525aa5": {
       "status": "resolved",
@@ -92726,9 +92726,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
     },
     "eb28ee36383fcb26f387b7e28998d235c6f5c4d2a19bf47d61f8bbaafd13aa0c": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "7a73f0f4-b9d3-4c70-9cec-9d7a4c1e572b",
-      "note": "Byte ranges agree between redact-secret and gitleaks; the disagreement is purely over family classification of one span (redact-secret: supabase-token; gitleaks: generic-token). This corpus's authored expectation (beta8-207, #207) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [20,61), the authored expected span, on the canonical variant of beta8-207--supabase-token-env. redact-secret labels it supabase-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "eb308bfb3c4756c242729f5cf500a74cf34560bba6a4dd39e24ea5a88ea17155": {
       "status": "not-assertable",
@@ -93123,9 +93123,9 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "ec1fb441f1ac5eda150ab4de3f58e7bf0fbc10b5377444ec8580f2ba574d3668": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "007e456c-8fa4-4d80-9f1c-0f0023212fec",
-      "note": "Byte ranges agree between redact-secret and gitleaks ([39,92), the authored expected span); the disagreement is purely over family classification of that span (redact-secret: cloudflare-token; gitleaks: generic-token). This corpus's authored expectation (beta8-213b, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending the same authored classification-policy decision as the other rows of this class. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [39,92), the authored expected span, on the canonical variant of beta8-213b--cloudflare-token-terraform-provider. redact-secret labels it cloudflare-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "ec204a90c3e8080a7cb4a151cc99600fca0bf66f58adcbc28b76b592f519d2ee": {
       "status": "not-assertable",
@@ -94842,9 +94842,9 @@
       "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/vercel-token-shape-5-quoted, family vercel-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names (a provider grammar or pinned-tool corroboration) exists, so this redact-secret/gitleaks redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture."
     },
     "f064715ffd1c68c03176eb85cd618eeea98ba3947d92c385d7280daf82c06802": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "bd071fbb-ec12-4ba0-b36e-ae4bd0e90af2",
-      "note": "Byte ranges agree between redact-secret and gitleaks, and both equal this corpus's authored expected span ([265,329)); the disagreement is purely over family classification of one span (redact-secret: confluent-cloud-api-secret; gitleaks: generic-token). This corpus's authored expectation (beta8-213c, #213) records byte ranges and role only and asserts no required per-span family label, so there is no authored ground truth to adjudicate classification granularity between tools. Open pending an authored classification-policy decision. Class: classification-granularity-unasserted."
+      "note": "redact-secret and gitleaks both report [265,329), the authored expected span, on the canonical variant of beta8-213c--confluent-cloud-api-secret-python-producer-config. redact-secret labels it confluent-cloud-api-secret (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "f06792432bfaa3002c3db4fb2e46c517e110053c02eb8846de418d27371938a1": {
       "status": "resolved",

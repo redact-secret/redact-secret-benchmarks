@@ -105,6 +105,54 @@ unchanged, after the detector-coverage source hash changed.
   settled for published mode (benchmarks #175/#176) and candidate-mode ledger
   ids hash differently. The published matrix counts them as `stable`.
 
+## Update 2026-09-23: clean-main qualification
+
+Both branches merged, as redact-secret PR #709 (main `44bb3d60ca60c42a039bb69326040156994c2cb1`;
+fix commit `dc855b6222928252a661945828f88a3022e768fd`) and redact-secret-benchmarks
+PR #178 (main `186e6e7053195ad14ebecf823c1cb269d3496654`). The merges rewrote the branch
+commits above. The measurement was repeated at both clean mains with the same pinned scanners
+(gitleaks 8.30.1, trufflehog 3.97.4):
+
+- **Candidate run** `a9862a93-f185-4abf-94fd-a71d17504fd8`: complete, 1,466 of 1,466
+  fixtures, corpus hash `29bde22bb7488be6ff18c8453d0090b6fe3403fac82de1de2540a0898068601c`
+  (unchanged), 0 `MISS`. The only `must-not-flag` outcome is the same pre-existing
+  heroku-legacy `flagged:1`. Node artifact SHA-256
+  `d4d90ede5548722a8a606e0d7ab241e0f2ec59d5ea3159bcaf375f8ab1eb220f`; the facade and wasm
+  hashes are unchanged from the branch run.
+- **Pinned candidate-mode classification** `715d2d8e-0862-4ba8-9ef2-18b90091030c`: 4,444
+  cases / 11,917 variants, benchmark tree clean. The 93-family matrix has **49 `stable`**,
+  23 `provisional`, 2 `pending` and 19 `unsupported`. It matches the branch run family for
+  family: no regression and no extra change.
+
+The raw records are in [`clean-main/`](clean-main/): `candidate-evidence-v1.json`,
+`support-status.json` and `support-matrix.json`. With this, Epic A's final measurement
+exists at clean mains.
+
+A published-mode classification at the same benchmark main (`3797613a-a5d0-44a6-9d3c-dbe6caf968ea`,
+default product = published `@redact-secret/core` 0.1.0-beta.6) reports 43 `stable`.
+In that mode Entra, Docker, New Relic license, Datadog application key and the #574
+families stay `provisional`, because beta.6 does not contain the detector changes. Their
+open ledger rows there (for example `differential-coverage-gap/new-relic-license-key` and
+`differential-coverage-gap/microsoft-entra-client-secret`) are real beta.6 misses. They
+can only be resolved against a published beta.7.
+
+### Follow-up: #574 candidate-mode rows and matrix
+
+This follow-up branch adds 12 candidate-mode ledger rows. They settle the only open
+gate on `netlify-token` and `confluent-cloud-api-secret`: the candidate span matches
+the authored T1 expectation, and both peers report these tokens only beside a
+provider keyword. The pinned classification at `43b2d615a0d9fd4a2d49dbaeb1e36c86ea6c856e`
+(run `8a2e90a9-e7f9-4731-ae87-ae8c41d018ce`, candidate `44bb3d6`) reports
+**51 `stable`**. The only status changes from `715d2d8e` are those two families. The
+same branch moves known gaps `product-707`/`product-708` to `fixed` (fix
+`dc855b6`), and re-points `benchmarks/pin-manifest.json` from a pre-merge branch
+revision to `186e6e7`, with content unchanged.
+
+Before running classify, check `trufflehog --version`. The binary auto-updates
+itself when invoked without `--no-update`, and a 3.97.8 binary under a
+`3.97.4` directory name re-keys every peer-dependent ledger id: the same tree
+then reported 7 `stable`.
+
 ## Commands
 
 From the clean product worktree:

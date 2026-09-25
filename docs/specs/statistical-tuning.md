@@ -72,7 +72,10 @@ Every proposed scoring configuration has one tuning manifest,
   the holdout lifecycle freezes.
 - **benchmark**: the benchmark commit, with `dirty: false`.
 - **featureDataset**: the #254 extractor version, the extractor source
-  hash, and the dataset hash.
+  hash, and the dataset hash, copied from the dataset's `manifestBinding`
+  ([candidate-feature dataset](candidate-features.md), `npm run
+  features:extract`). The dataset's per-category counts by origin, family
+  and context have the same shape as `corpora.tuning[]`.
 - **selection**: the #255 selection method, its source hash, and the fixed
   seed (or `none`).
 - **scoring**: the contract decision id, the feature schema and aggregation

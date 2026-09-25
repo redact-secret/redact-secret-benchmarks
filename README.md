@@ -146,6 +146,7 @@ npm run test:redaction               # Published npm scan/redact parity over eve
 npm run fixtures:check               # Verify generated fixtures have not drifted
 npm run baseline -- --save 0.1.0-beta.8  # Store (fixture, scanner) → outcome from a complete run
 npm run baseline:report              # Regenerate docs/generated/release-comparison.md from baselines/
+npm run features:extract            # Maintainer-local candidate-feature dataset -> results-output/calibration/ (never published)
 npm run build                       # Type-check and build a static dashboard snapshot
 npm run preview                     # Preview that snapshot
 ```

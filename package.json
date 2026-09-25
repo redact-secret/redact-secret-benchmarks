@@ -72,6 +72,9 @@
     "performance:noise": "node --import tsx scripts/measure-regression-noise.mjs",
     "adversarial:check": "node --import tsx scripts/check-adversarial-intake.mjs",
     "tuning:check": "node --import tsx scripts/check-tuning-manifests.mjs",
+    "prefeatures:extract": "node --import tsx scripts/generate-fixtures.mjs --ensure",
+    "features:extract": "node --import tsx benchmarks/candidate-features.ts",
+    "features:check-public": "node scripts/check-feature-dataset-exclusion.mjs",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",
     "observations:capture": "node --import tsx scripts/capture-empirical-observation.ts",
     "peers:provision": "node scripts/provision-peers.mjs"

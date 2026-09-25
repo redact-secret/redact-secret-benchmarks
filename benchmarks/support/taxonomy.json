@@ -334,11 +334,13 @@
       "provider": "github",
       "name": "Fine-grained personal access token",
       "description": "Repository- and permission-scoped PAT, prefixed github_pat_.",
-      "detectors": [],
+      "detectors": [
+        "github-fine-grained-pat"
+      ],
       "sources": [
         "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats"
       ],
-      "note": "Named explicitly in issue #502 as a family the github-token detector does not cover: its pattern only matches the ghp_/gho_/ghu_/ghs_/ghr_ underscore-plus-36-character-body shape, which github_pat_ does not fit. Measured as the Beta.8 arrival family github-fine-grained-pat (#211, research #223): only the github_pat_ prefix is provider-documented; the 22 + _ + 59 body is community/tool evidence kept provisional, with no checksum or fixed 11 lead claimed."
+      "note": "Named explicitly in issue #502 as a family the github-token detector does not cover: its pattern only matches the ghp_/gho_/ghu_/ghs_/ghr_ underscore-plus-36-character-body shape, which github_pat_ does not fit. Measured as the Beta.8 arrival family github-fine-grained-pat (#211, research #223): only the github_pat_ prefix is provider-documented; the 22 + _ + 59 body is community/tool evidence kept provisional, with no checksum or fixed 11 lead claimed. Scored as the arrival family github-fine-grained-pat (#730; docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md): the product types it inside the shared github-token detector as github_fine_grained_personal_access_token, so its findings carry the arrival id and its status comes from its own contract, profile and ledger rows. github-fine-grained-pat is not a registry detector id."
     },
     {
       "id": "gitlab:legacy-personal-access-token",
@@ -478,12 +480,14 @@
       "provider": "stripe",
       "name": "Webhook signing secret",
       "description": "Webhook endpoint signing secret, prefixed whsec_.",
-      "detectors": [],
+      "detectors": [
+        "stripe-webhook-signing-secret"
+      ],
       "sources": [
         "https://docs.stripe.com/webhooks",
         "benchmarks/lib/assessment.ts (classifyFixture variant guard: \"Variant support must not be inferred from a related family name.\")"
       ],
-      "note": "Same classifyFixture guard as the organization API key covers whsec_ values; stripe-token's pattern does not match them. Measured as the context-gated Beta.8 arrival family stripe-webhook-signing-secret (#211, research #224): Stripe documents the whsec_ prefix only; the body width and alphabet stay provisional (32 alphanumerics is a provider example, not a grammar; Stripe's own scrubber admits + / =)."
+      "note": "Same classifyFixture guard as the organization API key covers whsec_ values; stripe-token's pattern does not match them. Measured as the context-gated Beta.8 arrival family stripe-webhook-signing-secret (#211, research #224): Stripe documents the whsec_ prefix only; the body width and alphabet stay provisional (32 alphanumerics is a provider example, not a grammar; Stripe's own scrubber admits + / =). Scored as the arrival family stripe-webhook-signing-secret (#730; docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md): the product types it inside the shared stripe-token detector as stripe_webhook_signing_secret, so its findings carry the arrival id and its status comes from its own contract, profile and ledger rows. stripe-webhook-signing-secret is not a registry detector id."
     },
     {
       "id": "slack:bot-token",
@@ -499,22 +503,26 @@
       "provider": "slack",
       "name": "User token",
       "description": "User OAuth token, prefixed xoxp-.",
-      "detectors": [],
+      "detectors": [
+        "slack-user-token"
+      ],
       "sources": [
         "https://docs.slack.dev/authentication/tokens"
       ],
-      "note": "slack-token's contract lists xoxp- among the provider-documented prefixes but its pattern only matches xoxb-."
+      "note": "slack-token's contract lists xoxp- among the provider-documented prefixes but its pattern only matches xoxb-. Scored as the arrival family slack-user-token (#730; docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md): the product types it inside the shared slack-token detector as slack_user_token, so its findings carry the arrival id and its status comes from its own contract, profile and ledger rows. slack-user-token is not a registry detector id."
     },
     {
       "id": "slack:app-level-token",
       "provider": "slack",
       "name": "App-level token",
       "description": "App-level token, prefixed xapp-.",
-      "detectors": [],
+      "detectors": [
+        "slack-app-level-token"
+      ],
       "sources": [
         "https://docs.slack.dev/authentication/tokens"
       ],
-      "note": "Documented alongside xoxb- in the same provider prefix table; not matched by the bot-token-only pattern. Measured as the Beta.8 arrival family slack-app-level-token (#211, research #222): only the xapp- prefix is provider-documented; section widths and alphabet are tool-only and contradictory (4-section 97-character vs Nosey Parker's 2-section 42-character) and stay unresolved."
+      "note": "Documented alongside xoxb- in the same provider prefix table; not matched by the bot-token-only pattern. Measured as the Beta.8 arrival family slack-app-level-token (#211, research #222): only the xapp- prefix is provider-documented; section widths and alphabet are tool-only and contradictory (4-section 97-character vs Nosey Parker's 2-section 42-character) and stay unresolved. Scored as the arrival family slack-app-level-token (#730; docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md): the product types it inside the shared slack-token detector as slack_app_level_token, so its findings carry the arrival id and its status comes from its own contract, profile and ledger rows. slack-app-level-token is not a registry detector id."
     },
     {
       "id": "slack:workflow-webhook-token",
@@ -1327,7 +1335,7 @@
       "sources": [
         "https://docs.pinecone.io/reference/api/authentication"
       ],
-      "note": "Beta.8 context-gated arrival family pinecone-api-key-legacy (#212, research #228); the UUID shape is corroborated by unpinned tools only."
+      "note": "Beta.8 context-gated arrival family pinecone-api-key-legacy (#212, research #228); the UUID shape is corroborated by unpinned tools only. Owned by the product pinecone-api-key detector since product main 2420e80 (redact-secret#766 and its ADR 2026-09-24-claim-a-legacy-pinecone-uuid-key-only-under-its-api-key-name): the UUID is redacted at high confidence under a Pinecone API-key name (PINECONE_API_KEY, pinecone_api_key, PINECONE_KEY, or api_key/apiKey/Api-Key on a line naming pinecone), and a bare UUID stays unclaimed. The detector reports it with the same pinecone_api_key finding type as pcsk_, so detectors stays empty: mapping the family to pinecone-api-key would merge it into that contract (#253)."
     },
     {
       "id": "gitlab:runner-authentication-token",

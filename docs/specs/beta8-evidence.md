@@ -45,8 +45,11 @@ A fixture targets one of two kinds of family:
   catalog and coverage pages never show them as product detectors.
   `loadCases` adds the arrival id to each case's `targets`, which lets the
   evaluation engine, `arrival:check`, and the review queue measure the family.
-  `eval:classify` skips arrival ids because a support status describes a
-  product detector.
+  `eval:classify` skips an arrival id, because a support status describes what
+  the product claims, unless the family has a recorded finding-type mapping
+  (below): then the product's findings carry the arrival id and the family is
+  scored like a registry family
+  ([`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md), #730).
 
 An arrival id never equals a registry id.
 
@@ -84,17 +87,70 @@ context-gated arrival family `mailgun-api-key-triplet`.
 A family the product only types inside a shared detector stays an arrival
 family, because its id is not a registry id: `slack-user-token` and
 `slack-app-level-token` (inside `slack-token`), `stripe-webhook-signing-secret`
-(inside `stripe-token`), `github-fine-grained-pat`, `notion-integration-token`
-and the context-gated `pinecone-api-key-legacy`.
+(inside `stripe-token`), `github-fine-grained-pat` (inside `github-token`),
+`notion-integration-token` (inside `notion-token`), the context-gated
+`pinecone-api-key-legacy` (inside `pinecone-api-key` since redact-secret#766)
+and the context-gated `mailgun-api-key-triplet` (inside `mailgun-api-key`).
+
+### Finding types inside a shared detector (#251)
+
+When the product gives such a family its own finding type, the redact-secret
+adapter labels the finding with the arrival id instead of the detector id
+(`arrivalFindingTypes` in `scanners/families.mjs`). The table is built from
+the family's recorded `reason` and the product's documented finding types,
+never from scanner output:
+
+| Shared detector | Finding type | Arrival family |
+| --- | --- | --- |
+| `github-token` | `github_fine_grained_personal_access_token` | `github-fine-grained-pat` |
+| `stripe-token` | `stripe_webhook_signing_secret` | `stripe-webhook-signing-secret` |
+| `slack-token` | `slack_app_level_token` | `slack-app-level-token` |
+| `slack-token` | `slack_user_token` | `slack-user-token` |
+
+A coarser type keeps the detector id. The published 0.1.0-beta.7 reports
+`whsec_` as `stripe_credential` and `xoxp-`/`xapp-` as `slack_token`, so its
+findings still read `stripe-token`/`slack-token` and still show up as a
+classification disagreement. `notion-token`, `pinecone-api-key` and
+`mailgun-api-key` give the arrival shape the same type as their registry shape,
+so their findings keep the detector id too.
+
+### Scoring a mapped arrival family (#730)
+
+An arrival family with a row in the table above is scored like a registry
+family ([`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md)).
+It amends the rule that arrival ids get no status:
+
+- `eval:classify` classifies every registry id plus `scoredArrivalIds`
+  (`benchmarks/lib/assessment.ts`, from `scoredArrivalFamilies` in
+  `scanners/families.mjs`), each from its own contract, its own profile and the
+  ledger rows that target it. No evidence is borrowed from the shared detector.
+- The family's taxonomy entry maps to the arrival id (`github:fine-grained-personal-access-token`
+  → `github-fine-grained-pat`, `stripe:webhook-signing-secret` →
+  `stripe-webhook-signing-secret`, `slack:app-level-token` →
+  `slack-app-level-token`, `slack:user-token` → `slack-user-token`), so the
+  matrix shows the measured status, not `unsupported`.
+- The tier rules are the registry's and follow the family's contract tier: T1
+  can reach documented stable, T2 needs its own
+  `benchmarks/support/empirical-observations.json` record to reach empirical
+  stable, T3 stays provisional, T0 is pending.
+- The id stays an arrival id: it is not in `benchmarks/detectors.json`, has no
+  coverage page and no `detector-coverage` minimum, and graduates as above if
+  the product registry gains a detector for it.
+- Every other arrival family (`notion-integration-token`,
+  `pinecone-api-key-legacy` and `mailgun-api-key-triplet`, whose owning
+  detectors give them the same type as the registry shape) stays an unscored
+  arrival id.
 
 Twins are scoped to their declared family. When a product finding on an
 arrival family's twin is attributed to a *different* known family (for
-example `github-token` on a `github-fine-grained-pat` twin), the twin records
-`coDetected` rather than a false alarm. For an arrival family that the product
-already catches through a shared detector (#211, parts of #212), twin
-discrimination is therefore an upper bound: read it together with the
-co-detection count and the open ledger rows, never on its own. `validateBeta8` and
-`tests/beta8.test.mjs` enforce this.
+example `github-token` on a `github-fine-grained-pat` twin from a build that
+does not type `github_pat_`), the twin records `coDetected` rather than a
+false alarm. A finding the adapter labels with the twin's own arrival id is a
+false alarm. For an arrival family that the product catches only through a
+shared detector's coarser label (#211, parts of #212), twin discrimination is
+therefore an upper bound: read it together with the co-detection count and the
+open ledger rows, never on its own. `validateBeta8` and `tests/beta8.test.mjs`
+enforce this.
 
 ## Per-field provenance
 

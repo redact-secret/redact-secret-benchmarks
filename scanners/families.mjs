@@ -93,9 +93,49 @@ const flareRedact = {
   // pplx-[A-Za-z0-9]{40,60}: the Beta.8 #212 perplexity-api-key family (registry detector since redact-secret#730), over a wider width.
   perplexity_key: 'perplexity-api-key',
 };
+// #251: arrival families the product types inside a shared detector, keyed by
+// product detector id, then by product finding type. A finding whose (detector,
+// type) pair is listed here is labelled with the arrival family; every other
+// redact-secret finding keeps its detector id. Built only from recorded
+// sources, never from scanner output:
+// - each target's recorded `reason` in benchmarks/lib/beta8/*.ts, which names
+//   the shared detector and the finding type;
+// - the product's documented finding types per detector, redact-secret
+//   docs/reference/detection.md at main 10263e5 (github-token L53,
+//   stripe-token L59, slack-token L60).
+// A coarser type for the same shape (the published 0.1.0-beta.7 reports whsec_
+// as `stripe_credential` and xoxp-/xapp- as `slack_token`) is not listed, so it
+// keeps the detector id and still shows up as a classification disagreement.
+// A shared detector that gives the arrival shape the same type as its registry
+// shape is not listed either: notion-token (`notion_integration_token` for
+// secret_ and ntn_), pinecone-api-key (`pinecone_api_key` for pcsk_ and the
+// legacy UUID, redact-secret#766) and mailgun-api-key (`mailgun_api_key` for
+// key- and the triplet, redact-secret#773). tests/evaluation-methods.test.mjs checks the
+// table against the arrival families and their reasons.
+export const arrivalFindingTypes = Object.freeze({
+  'github-token': Object.freeze({ github_fine_grained_personal_access_token: 'github-fine-grained-pat' }),
+  'stripe-token': Object.freeze({ stripe_webhook_signing_secret: 'stripe-webhook-signing-secret' }),
+  'slack-token': Object.freeze({ slack_app_level_token: 'slack-app-level-token', slack_user_token: 'slack-user-token' }),
+});
+// The arrival families with a recorded finding-type mapping. eval:classify scores
+// these like registry families, each on its own contract, profile and ledger rows
+// (docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md). Every
+// other arrival id stays unscored.
+export const scoredArrivalFamilies = Object.freeze(
+  [...new Set(Object.values(arrivalFindingTypes).flatMap(types => Object.values(types)))].sort());
 const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };
-export function findingFamily(scanner, label) {
-  if (scanner === 'redact-secret') return families.includes(label) ? { family: label } : {};
+/**
+ * The benchmark family of one scanner finding. `label` is the scanner's native
+ * rule label (the product detector id for redact-secret); `findingType` is the
+ * product finding type and is read only for redact-secret.
+ */
+export function findingFamily(scanner, label, findingType) {
+  if (scanner === 'redact-secret') {
+    const arrival = Object.hasOwn(arrivalFindingTypes, label) && typeof findingType === 'string'
+      && Object.hasOwn(arrivalFindingTypes[label], findingType) ? arrivalFindingTypes[label][findingType] : undefined;
+    if (arrival) return { family: arrival };
+    return families.includes(label) ? { family: label } : {};
+  }
   const table = nativeTables[scanner];
   if (!table) return {};
   return Object.hasOwn(table, label) ? { family: table[label] } : {};

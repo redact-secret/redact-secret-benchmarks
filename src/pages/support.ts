@@ -4,7 +4,12 @@ import { EVIDENCE_BASIS_LABEL, statusCriteria } from '../../benchmarks/support/s
 import type { SupportMatrixEntry } from '../../benchmarks/support/matrix.ts';
 import type { SupportStatus } from '../../benchmarks/support/status.ts';
 import { fixtureProfiles, type CellId } from '../../benchmarks/support/profiles.ts';
+import registry from '../../benchmarks/detectors.json';
 import { orderedFamilies, providerName, statusesOf, SUPPORT_STATUSES, type SupportMatrixFile } from '../support-model';
+
+const registryIds = new Set(registry.detectors.map(d => d.id));
+/** A registry detector links to its coverage page; a scored arrival family (#730) has none, so it is named, not linked. */
+const scoredIdLink = (id: string) => registryIds.has(id) ? `<a href="/coverage/${e(id)}">${e(id)}</a>` : `<span class="mono">${e(id)}</span> <small class="muted">arrival family</small>`;
 
 /**
  * Support status per provider x credential family (issue #50, A9). Every
@@ -126,7 +131,7 @@ function fixtureDebt(matrix: SupportMatrixFile): string {
   const cells = (p: SupportMatrixEntry['profileCoverage'] & object) => `${n(p.cells.totalFixtures)} · ${n(p.cells.positiveCases)} · ${n(p.cells.benignControls)} · ${n(p.cells.twinPairs)}`;
   return `<section class="section" id="fixture-profiles"><h2 class="h2-compact">Fixture profile coverage debt</h2>
     <p class="small">Each family is measured against the fixture profile it claims (a T1 provider-documented family: <b>${e(fixtureProfiles.profiles['stable-documented'].title)}</b>; otherwise <b>${e(fixtureProfiles.profiles['arrival-provisional'].title)}</b>), cell by cell, so a large total cannot hide an empty cell. Cells: total · positive/context · non-twin benign · twin pairs. Meeting a profile's cells is not qualifying for it. Wilson bounds elsewhere on this site are corpus-relative, never population error probabilities. Generated from the corpus in <code>docs/generated/fixture-profile-coverage.md</code>; criteria in <code>benchmarks/support/fixture-profiles.json</code> (version ${n(fixtureProfiles.profilesVersion)}).</p>
-    <div class="tbl wide"><table><thead><tr><th scope="col">Detector</th><th scope="col">Target profile</th><th scope="col">Cells</th><th scope="col" class="num">Positive-context axes</th><th scope="col" class="num">Control axes</th><th scope="col" class="num">Confusion axes</th><th scope="col">Remaining debt</th></tr></thead><tbody>${rows.map(({ id, p }) => `<tr data-fixture-profile="${e(p.target)}"><td><a href="/coverage/${e(id)}">${e(id)}</a></td><td>${e(fixtureProfiles.profiles[p.target]?.title ?? p.target)}</td><td>${cells(p)}</td><td class="num">${n(p.cells.positiveContextAxes)}</td><td class="num">${n(p.cells.controlAxes)}</td><td class="num">${n(p.cells.confusionAxes)}</td><td><small>${p.debt.length ? p.debt.map(d => `${e(CELL_LABEL[d.cell])} ${n(d.actual)}/${n(d.required)}`).join(' · ') : 'none'}</small></td></tr>`).join('')}</tbody></table></div></section>`;
+    <div class="tbl wide"><table><thead><tr><th scope="col">Detector</th><th scope="col">Target profile</th><th scope="col">Cells</th><th scope="col" class="num">Positive-context axes</th><th scope="col" class="num">Control axes</th><th scope="col" class="num">Confusion axes</th><th scope="col">Remaining debt</th></tr></thead><tbody>${rows.map(({ id, p }) => `<tr data-fixture-profile="${e(p.target)}"><td>${scoredIdLink(id)}</td><td>${e(fixtureProfiles.profiles[p.target]?.title ?? p.target)}</td><td>${cells(p)}</td><td class="num">${n(p.cells.positiveContextAxes)}</td><td class="num">${n(p.cells.controlAxes)}</td><td class="num">${n(p.cells.confusionAxes)}</td><td><small>${p.debt.length ? p.debt.map(d => `${e(CELL_LABEL[d.cell])} ${n(d.actual)}/${n(d.required)}`).join(' · ') : 'none'}</small></td></tr>`).join('')}</tbody></table></div></section>`;
 }
 
 /** Tier, provider source, corroboration, twin coverage and unresolved items — the evidence a status was decided from. */
@@ -138,7 +143,7 @@ function evidence(entry: SupportMatrixEntry): string {
   const empirical = entry.empiricalEvidence;
   const fixture = entry.fixtureProfile;
   const lines = [
-    `<b>Detectors</b> ${entry.detectors.map(id => `<a href="/coverage/${e(id)}">${e(id)}</a>`).join(' · ')}`,
+    `<b>Detectors</b> ${entry.detectors.map(scoredIdLink).join(' · ')}`,
     `<b>Format evidence</b> ${entry.evidenceTier ? `${e(entry.evidenceTier)} · ${e(tierTitle(entry.evidenceTier))}` : 'none recorded'}`,
     `<b>Evidence basis</b> ${e(EVIDENCE_BASIS_LABEL[entry.evidenceBasis])} <span class="mono muted">${e(entry.evidenceBasis)}</span>`,
     `<b>Qualification profile</b> ${entry.qualificationProfile ? e(entry.qualificationProfile) : 'not qualified'}`,

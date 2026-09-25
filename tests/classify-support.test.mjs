@@ -7,7 +7,8 @@ import { promisify } from 'node:util';
 import Ajv from 'ajv';
 import { familyEvidence } from '../benchmarks/support/evidence.ts';
 import { classifyFamilySupport } from '../benchmarks/support/status.ts';
-import { contracts, registryContractIds } from '../benchmarks/lib/assessment.ts';
+import { contracts, registryContractIds, scoredArrivalIds, scoredContractIds } from '../benchmarks/lib/assessment.ts';
+import { arrivalFindingTypes } from '../scanners/families.mjs';
 import { fixtureProfileReport, measureFixtureCells } from '../benchmarks/support/profiles.ts';
 
 const exec = promisify(execFile);
@@ -161,9 +162,10 @@ test('a real classify-support report, if present from a prior eval:classify run,
   let report;
   try { report = await read('results-output/support-status.json'); } catch { return; }
   assert.ok(validate(report), JSON.stringify(validate.errors));
-  // eval:classify covers registry families only; Beta.8 arrival contracts have no product detector.
-  assert.equal(report.familyCount, registryContractIds.length);
-  assert.deepEqual(report.families.map(f => f.family).sort(), [...registryContractIds].sort());
+  // eval:classify covers registry families plus the arrival families with a finding-type mapping (#730);
+  // every other Beta.8 arrival contract stays unscored.
+  assert.equal(report.familyCount, scoredContractIds.length);
+  assert.deepEqual(report.families.map(f => f.family).sort(), [...scoredContractIds].sort());
   assert.equal(new Set(report.families.map(f => f.family)).size, report.familyCount);
   const total = Object.values(report.distribution).reduce((a, b) => a + b, 0);
   assert.equal(total, report.familyCount);
@@ -211,4 +213,24 @@ test('eval:classify CLI rejects a malformed candidate source commit', async () =
     '--candidate-package=/tmp/does-not-matter.tgz', '--candidate-node-package=/tmp/does-not-matter.tgz',
     '--candidate-wasm-package=/tmp/does-not-matter.tgz', '--candidate-source-commit=not-a-sha'],
     { cwd: repositoryRoot, timeout: 30_000 }), /Usage: npm run eval:classify/);
+});
+
+test('#730: the scored ids are the registry ids plus exactly the arrival families with a finding-type mapping', () => {
+  const mapped = [...new Set(Object.values(arrivalFindingTypes).flatMap(types => Object.values(types)))].sort();
+  assert.deepEqual([...scoredArrivalIds], mapped);
+  assert.deepEqual([...scoredArrivalIds], ['github-fine-grained-pat', 'slack-app-level-token', 'slack-user-token', 'stripe-webhook-signing-secret']);
+  assert.deepEqual([...scoredContractIds], [...registryContractIds, ...scoredArrivalIds]);
+  for (const id of scoredArrivalIds) assert.ok(!registryContractIds.includes(id), `${id} is an arrival id, never a registry id`);
+  // An arrival family without a mapping stays unscored: the context-gated legacy Pinecone key and the Mailgun triplet.
+  for (const id of ['pinecone-api-key-legacy', 'mailgun-api-key-triplet', 'notion-integration-token']) assert.ok(!scoredContractIds.includes(id), id);
+});
+
+test('#730: a scored arrival family is classified from its own contract tier by the same gates', () => {
+  for (const id of scoredArrivalIds) {
+    const evidence = familyEvidence(id, {}, {}, [], emptyLedger);
+    assert.deepEqual(evidence.detectors, [id]);
+    assert.equal(evidence.positiveContractTier, contracts[id].tier);
+    // No measured evidence clears no floor: a detector-bearing T1/T2 family with nothing measured is provisional, never stable.
+    assert.equal(classifyFamilySupport(evidence).status, 'provisional', id);
+  }
 });

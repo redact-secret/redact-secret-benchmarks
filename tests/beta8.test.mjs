@@ -6,6 +6,7 @@ import { contracts, controlAxis, arrivalIds, disputedProperty } from '../benchma
 import { BETA8_MODULES, arrivalFamilies, validateBeta8 } from '../benchmarks/lib/beta8/index.ts';
 import { POSITIVE_AXES, countProfile } from '../benchmarks/lib/beta8/profiles.ts';
 import { CONTROL_SUFFIXES } from '../fixtures/generated/beta8/helpers.mjs';
+import { scoredArrivalFamilies } from '../scanners/families.mjs';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));
 const registry = await read('benchmarks/detectors.json');
@@ -22,7 +23,9 @@ test('Beta.8 modules: arrival families are declared once, carry a taxonomy famil
   for (const f of arrivalFamilies) {
     const family = taxonomy.families.find(t => t.id === f.taxonomy);
     assert.ok(family, f.id);
-    assert.ok(!family.detectors.length, `${f.id}: ${f.taxonomy} already maps to a registry detector; target it instead`);
+    // #730: a family with a finding-type mapping maps to its own scored arrival id, never to a registry detector.
+    if (scoredArrivalFamilies.includes(f.id)) assert.deepEqual(family.detectors, [f.id], `${f.id}: a scored arrival family maps its taxonomy family to its own id`);
+    else assert.ok(!family.detectors.length, `${f.id}: ${f.taxonomy} already maps to a registry detector; target it instead`);
   }
 });
 

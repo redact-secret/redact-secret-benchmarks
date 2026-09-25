@@ -2,7 +2,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { buildPinManifest } from '../benchmarks/lib/pin-manifest.ts';
+import { buildPinManifest, mergePinSources, packPinEntries } from '../benchmarks/lib/pin-manifest.ts';
+import { loadPacks } from '../benchmarks/lib/adversarial-packs.ts';
 
 const root = new URL('../', import.meta.url);
 const read = async path => JSON.parse(await readFile(new URL(path, root), 'utf8'));
@@ -34,7 +35,12 @@ const currentText = await readFile(target, 'utf8').catch(error => {
 const current = currentText ? JSON.parse(currentText) : null;
 const revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: fileURLToPath(root), encoding: 'utf8' }).trim();
 
-const manifest = buildPinManifest({ pins, corpusHashes, fixtureIds: Object.keys(assignments) }, current, revision);
+// Frozen adversarial packs are pinned alongside the corpus categories (#310).
+const sources = mergePinSources(
+  { corpusHashes, fixtureIds: Object.keys(assignments) },
+  packPinEntries(loadPacks(fileURLToPath(root)).map(pack => pack.record)),
+);
+const manifest = buildPinManifest({ pins, ...sources }, current, revision);
 const serialized = `${JSON.stringify(manifest, null, 2)}\n`;
 
 if (process.argv.includes('--check')) {

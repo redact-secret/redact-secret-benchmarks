@@ -1,0 +1,6360 @@
+{
+  "schema": "redact-secret-benchmarks/adapter-overhead-series-v1",
+  "issue": 143,
+  "description": "Candidate (redact-secret 6d61c27, beta.9 candidate) re-measurement of the adapter overhead harnesses: five independent processes per language, alternating js/py, sequential, on the same Apple M4 workstation as the beta.8 baseline. Measurements only; scratch evidence, not committed.",
+  "provenance": {
+    "adaptersRepository": "redact-secret/redact-secret-adapters",
+    "adapterSourceCommit": "27fc04f690d50d90977c594a95e13774126d7eae",
+    "harnessCommit": "099c07a0c306cfb35949a76348136869ddd6b411",
+    "harnessNote": "Detached git worktree of the harness commit; tree clean during every process.",
+    "core": {
+      "javascript": "@redact-secret/core tarball packed from redact-secret d4bab4e (JS and wasm identical to 6d61c27) + @redact-secret/node-darwin-arm64 addon rebuilt with napi --release from 6d61c27; package version string still reads 0.1.0-beta.8",
+      "python": "redact_secret wheel built with maturin --release --locked from 6d61c27; version string still reads 0.1.0b8"
+    },
+    "candidateSourceCommit": "6d61c271bd20213afa9a0158bf332edbd2d103f2",
+    "processesPerLanguage": 5,
+    "command": "node scripts/measure-overhead.mjs --out js-N.json; python scripts/measure-overhead.py --out py-N.json (defaults: 15 repetitions x 400 events, 200 warm-up events per mode), alternating, N=1..5"
+  },
+  "outputs": [
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "javascript",
+      "measuredAt": "2026-09-25T20:34:11.263Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "totalMemoryBytes": 25769803776,
+        "runtime": "node-22.16.0",
+        "loadAverage1m": {
+          "start": 4.43701171875,
+          "end": 5.6806640625
+        },
+        "packages": {
+          "@redact-secret/core": "0.1.0-beta.8",
+          "@redact-secret/adapter": "0.1.0",
+          "@redact-secret/adapter-pino": "0.1.0",
+          "@redact-secret/adapter-otel": "0.1.0",
+          "pino": "10.3.1",
+          "@opentelemetry/sdk-trace-base": "2.11.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "process.hrtime.bigint",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "pino",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9,
+          "scannedCodeUnitsPerEvent": 367.063,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                2.284,
+                1.44,
+                1.355,
+                1.74,
+                1.192,
+                1.356,
+                1.284,
+                1.24,
+                1.564,
+                1.393,
+                1.297,
+                1.53,
+                1.261,
+                1.329,
+                1.494
+              ],
+              "median": 1.356,
+              "p95": 2.284,
+              "minimum": 1.192,
+              "maximum": 2.284,
+              "standardDeviation": 0.262
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.456,
+                3.71,
+                2.79,
+                3.422,
+                3.274,
+                2.787,
+                2.941,
+                3.374,
+                3.193,
+                3.138,
+                3.053,
+                2.717,
+                2.803,
+                3.028,
+                2.763
+              ],
+              "median": 3.053,
+              "p95": 5.456,
+              "minimum": 2.717,
+              "maximum": 5.456,
+              "standardDeviation": 0.656
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                85.92,
+                80.115,
+                79.369,
+                81.507,
+                80.41,
+                80.584,
+                80.371,
+                99.877,
+                134.076,
+                83.296,
+                81.307,
+                89.813,
+                84.057,
+                86.963,
+                82.698
+              ],
+              "median": 82.698,
+              "p95": 134.076,
+              "minimum": 79.369,
+              "maximum": 134.076,
+              "standardDeviation": 13.483
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                78.178,
+                76.209,
+                77.398,
+                128.35,
+                76.934,
+                76.839,
+                82.005,
+                80.882,
+                79.138,
+                78.164,
+                82.426,
+                100.806,
+                79.007,
+                79.48,
+                79.911
+              ],
+              "median": 79.138,
+              "p95": 128.35,
+              "minimum": 76.209,
+              "maximum": 128.35,
+              "standardDeviation": 13.225
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 1.697,
+            "coreScan": 79.138,
+            "adapterOverhead": 81.342,
+            "unattributed": 0.507
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 18,
+          "scannedCodeUnitsPerEvent": 734.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1.356,
+                1.755,
+                1.478,
+                1.801,
+                1.318,
+                1.315,
+                1.362,
+                2.336,
+                1.276,
+                1.451,
+                1.424,
+                1.234,
+                1.475,
+                1.456,
+                1.259
+              ],
+              "median": 1.424,
+              "p95": 2.336,
+              "minimum": 1.234,
+              "maximum": 2.336,
+              "standardDeviation": 0.277
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.285,
+                5.253,
+                5.495,
+                6.752,
+                6.046,
+                5.286,
+                5.765,
+                7.388,
+                5.215,
+                5.215,
+                4.878,
+                4.996,
+                4.99,
+                5.044,
+                5.015
+              ],
+              "median": 5.253,
+              "p95": 7.388,
+              "minimum": 4.878,
+              "maximum": 7.388,
+              "standardDeviation": 0.691
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                156.443,
+                158.778,
+                164.043,
+                204.636,
+                196.915,
+                197.921,
+                165.922,
+                191.66,
+                190.13,
+                159.879,
+                158.601,
+                160.308,
+                169.782,
+                163.584,
+                160.502
+              ],
+              "median": 164.043,
+              "p95": 204.636,
+              "minimum": 156.443,
+              "maximum": 204.636,
+              "standardDeviation": 16.806
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                159.439,
+                154.129,
+                159.694,
+                167.683,
+                207.075,
+                181.126,
+                158.283,
+                167.741,
+                159.465,
+                155.228,
+                153.134,
+                152.839,
+                160.346,
+                155.309,
+                154.273
+              ],
+              "median": 159.439,
+              "p95": 207.075,
+              "minimum": 152.839,
+              "maximum": 207.075,
+              "standardDeviation": 13.798
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 3.829,
+            "coreScan": 159.439,
+            "adapterOverhead": 162.619,
+            "unattributed": -0.649
+          }
+        },
+        {
+          "host": "pino",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                2.765,
+                1.916,
+                1.715,
+                1.708,
+                1.616,
+                1.714,
+                1.713,
+                1.697,
+                1.907,
+                1.698,
+                2.439,
+                1.733,
+                2.046,
+                1.664,
+                1.728
+              ],
+              "median": 1.715,
+              "p95": 2.765,
+              "minimum": 1.616,
+              "maximum": 2.765,
+              "standardDeviation": 0.312
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.886,
+                5.315,
+                5.62,
+                5.874,
+                4.706,
+                5.121,
+                4.898,
+                5.059,
+                4.649,
+                5.751,
+                5.444,
+                5.069,
+                5.899,
+                5.413,
+                5.124
+              ],
+              "median": 5.315,
+              "p95": 5.899,
+              "minimum": 4.649,
+              "maximum": 5.899,
+              "standardDeviation": 0.406
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                237.417,
+                236.026,
+                236.595,
+                235.362,
+                233.995,
+                232.393,
+                260.448,
+                249.105,
+                239.668,
+                330.339,
+                286.305,
+                301.885,
+                253.94,
+                260.575,
+                281.048
+              ],
+              "median": 249.105,
+              "p95": 330.339,
+              "minimum": 232.393,
+              "maximum": 330.339,
+              "standardDeviation": 28.335
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                226.084,
+                226.093,
+                233.8,
+                239.136,
+                228.913,
+                242.706,
+                238.859,
+                241.356,
+                259.942,
+                271.755,
+                351.159,
+                265.817,
+                336.824,
+                249.482,
+                273.996
+              ],
+              "median": 242.706,
+              "p95": 351.159,
+              "minimum": 226.084,
+              "maximum": 351.159,
+              "standardDeviation": 36.66
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 3.6,
+            "coreScan": 242.706,
+            "adapterOverhead": 247.39,
+            "unattributed": 1.084
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 54,
+          "scannedCodeUnitsPerEvent": 2154.25,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1.83,
+                2.069,
+                1.778,
+                1.721,
+                1.707,
+                1.916,
+                1.724,
+                1.674,
+                1.613,
+                1.642,
+                1.657,
+                1.592,
+                1.635,
+                1.701,
+                1.704
+              ],
+              "median": 1.704,
+              "p95": 2.069,
+              "minimum": 1.592,
+              "maximum": 2.069,
+              "standardDeviation": 0.122
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                12.591,
+                11.586,
+                10.537,
+                10.787,
+                10.663,
+                10.471,
+                10.623,
+                10.461,
+                10.1,
+                10.367,
+                10.176,
+                10.268,
+                10.673,
+                10.487,
+                10.631
+              ],
+              "median": 10.537,
+              "p95": 12.591,
+              "minimum": 10.1,
+              "maximum": 12.591,
+              "standardDeviation": 0.605
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                524.035,
+                502.267,
+                504.457,
+                466.509,
+                475.135,
+                463.469,
+                460.953,
+                475.093,
+                458.736,
+                467.85,
+                460.595,
+                470.582,
+                476.198,
+                467.123,
+                475.23
+              ],
+              "median": 470.582,
+              "p95": 524.035,
+              "minimum": 458.736,
+              "maximum": 524.035,
+              "standardDeviation": 18.236
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                495.559,
+                472.972,
+                474.391,
+                496.465,
+                478.481,
+                452.315,
+                455.823,
+                451.892,
+                455.527,
+                457.584,
+                460.277,
+                453.482,
+                452.444,
+                462.989,
+                484.476
+              ],
+              "median": 460.277,
+              "p95": 496.465,
+              "minimum": 451.892,
+              "maximum": 496.465,
+              "standardDeviation": 15.18
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 8.833,
+            "coreScan": 460.277,
+            "adapterOverhead": 468.878,
+            "unattributed": -0.232
+          }
+        },
+        {
+          "host": "otel-js",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.493,
+                3.452,
+                2.484,
+                4.128,
+                1.93,
+                2.065,
+                1.951,
+                3.963,
+                1.728,
+                3.612,
+                1.848,
+                3.923,
+                1.716,
+                3.497,
+                3.533
+              ],
+              "median": 3.452,
+              "p95": 5.493,
+              "minimum": 1.716,
+              "maximum": 5.493,
+              "standardDeviation": 1.106
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                9.02,
+                22.524,
+                3.963,
+                3.402,
+                3.196,
+                4.881,
+                3.005,
+                3.056,
+                2.822,
+                5.289,
+                2.863,
+                2.938,
+                2.83,
+                5.003,
+                2.796
+              ],
+              "median": 3.196,
+              "p95": 22.524,
+              "minimum": 2.796,
+              "maximum": 22.524,
+              "standardDeviation": 4.904
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                487.988,
+                626.26,
+                504.834,
+                494.125,
+                484.566,
+                511.519,
+                494.252,
+                513.439,
+                487.787,
+                484.284,
+                504.456,
+                476.601,
+                478.75,
+                480.262,
+                503.47
+              ],
+              "median": 494.125,
+              "p95": 626.26,
+              "minimum": 476.601,
+              "maximum": 626.26,
+              "standardDeviation": 35.094
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                492.815,
+                487.526,
+                477.894,
+                499.895,
+                480.817,
+                967.633,
+                517.156,
+                486.276,
+                525.062,
+                472.331,
+                496.463,
+                468.691,
+                468.991,
+                492.247,
+                471.393
+              ],
+              "median": 487.526,
+              "p95": 967.633,
+              "minimum": 468.691,
+              "maximum": 967.633,
+              "standardDeviation": 120.622
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": -0.256,
+            "coreScan": 487.526,
+            "adapterOverhead": 490.673,
+            "unattributed": 3.403
+          }
+        },
+        {
+          "host": "mask-js",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.013,
+                0.018,
+                0.013,
+                0.013,
+                0.015,
+                0.015,
+                0.014,
+                0.066,
+                0.005,
+                0.007,
+                0.006,
+                0.006,
+                0.007,
+                0.006,
+                0.006
+              ],
+              "median": 0.013,
+              "p95": 0.066,
+              "minimum": 0.005,
+              "maximum": 0.066,
+              "standardDeviation": 0.014
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                4.153,
+                4.21,
+                4.785,
+                4.75,
+                5.127,
+                4.812,
+                4.163,
+                5.148,
+                4.241,
+                4.226,
+                4.216,
+                4.184,
+                4.266,
+                4.291,
+                4.772
+              ],
+              "median": 4.266,
+              "p95": 5.148,
+              "minimum": 4.153,
+              "maximum": 5.148,
+              "standardDeviation": 0.353
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                378.279,
+                381.077,
+                390.018,
+                429.856,
+                400.735,
+                398.658,
+                446.216,
+                389.945,
+                381.693,
+                386.734,
+                397.018,
+                394.619,
+                398.054,
+                395.476,
+                417.028
+              ],
+              "median": 395.476,
+              "p95": 446.216,
+              "minimum": 378.279,
+              "maximum": 446.216,
+              "standardDeviation": 18.091
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                372.041,
+                376.466,
+                376.438,
+                376.457,
+                394.909,
+                386.562,
+                381.342,
+                391.882,
+                379.727,
+                387.525,
+                385.582,
+                378.333,
+                407.261,
+                452.99,
+                407.913
+              ],
+              "median": 385.582,
+              "p95": 452.99,
+              "minimum": 372.041,
+              "maximum": 452.99,
+              "standardDeviation": 19.73
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.253,
+            "coreScan": 385.582,
+            "adapterOverhead": 395.463,
+            "unattributed": 5.628
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op, so export cost is excluded; pino writes to a no-op destination, so I/O cost is excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "python",
+      "measuredAt": "2026-09-25T20:34:56.049451Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "runtime": "cpython-3.14.7",
+        "loadAverage1m": {
+          "start": 5.3857421875,
+          "end": 27.10009765625
+        },
+        "packages": {
+          "redact-secret": "0.1.0b8",
+          "redact-secret-adapters": "0.1.0",
+          "opentelemetry-sdk": "1.45.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "time.perf_counter_ns",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "python-logging",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9.0,
+          "scannedCodeUnitsPerEvent": 367.062,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                4.701,
+                4.701,
+                5.129,
+                4.797,
+                4.565,
+                13.33,
+                4.906,
+                5.304,
+                5.197,
+                5.308,
+                7.028,
+                6.405,
+                8.017,
+                13.59,
+                8.171
+              ],
+              "median": 5.304,
+              "p95": 13.59,
+              "minimum": 4.565,
+              "maximum": 13.59,
+              "standardDeviation": 2.869
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                8.882,
+                9.062,
+                9.297,
+                9.454,
+                9.607,
+                10.142,
+                9.069,
+                10.383,
+                9.653,
+                9.018,
+                10.773,
+                9.843,
+                8.958,
+                10.203,
+                15.133
+              ],
+              "median": 9.607,
+              "p95": 15.133,
+              "minimum": 8.882,
+              "maximum": 15.133,
+              "standardDeviation": 1.489
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                125.957,
+                124.65,
+                162.048,
+                125.148,
+                137.458,
+                135.318,
+                250.579,
+                133.356,
+                134.017,
+                139.531,
+                140.908,
+                134.965,
+                133.528,
+                140.105,
+                256.046
+              ],
+              "median": 135.318,
+              "p95": 256.046,
+              "minimum": 124.65,
+              "maximum": 256.046,
+              "standardDeviation": 40.826
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                116.404,
+                129.57,
+                124.629,
+                116.522,
+                116.437,
+                195.242,
+                122.892,
+                122.423,
+                126.621,
+                124.656,
+                135.964,
+                163.238,
+                124.816,
+                185.939,
+                1021.783
+              ],
+              "median": 124.816,
+              "p95": 1021.783,
+              "minimum": 116.404,
+              "maximum": 1021.783,
+              "standardDeviation": 222.247
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.303,
+            "coreScan": 124.816,
+            "adapterOverhead": 130.014,
+            "unattributed": 0.895
+          }
+        },
+        {
+          "host": "python-logging",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27.0,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                15.522,
+                35.539,
+                78.283,
+                15.947,
+                21.249,
+                9.939,
+                48.441,
+                22.13,
+                33.623,
+                15.017,
+                20.274,
+                12.441,
+                9.529,
+                11.794,
+                9.156
+              ],
+              "median": 15.947,
+              "p95": 78.283,
+              "minimum": 9.156,
+              "maximum": 78.283,
+              "standardDeviation": 18.115
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                31.984,
+                42.505,
+                73.246,
+                239.184,
+                82.854,
+                38.374,
+                25.699,
+                119.161,
+                81.474,
+                73.34,
+                46.534,
+                32.617,
+                27.226,
+                28.213,
+                24.791
+              ],
+              "median": 42.505,
+              "p95": 239.184,
+              "minimum": 24.791,
+              "maximum": 239.184,
+              "standardDeviation": 53.934
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                675.077,
+                915.671,
+                1274.167,
+                1649.432,
+                1868.609,
+                1325.868,
+                1414.549,
+                1659.233,
+                1605.272,
+                1008.804,
+                664.912,
+                630.26,
+                706.154,
+                525.896,
+                507.139
+              ],
+              "median": 1008.804,
+              "p95": 1868.609,
+              "minimum": 507.139,
+              "maximum": 1868.609,
+              "standardDeviation": 455.314
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                909.847,
+                1184.361,
+                1401.79,
+                1297.33,
+                1064.161,
+                1078.34,
+                974.413,
+                1031.266,
+                2091.933,
+                692.192,
+                621.0,
+                585.395,
+                508.841,
+                482.532,
+                467.126
+              ],
+              "median": 974.413,
+              "p95": 2091.933,
+              "minimum": 467.126,
+              "maximum": 2091.933,
+              "standardDeviation": 422.267
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 26.558,
+            "coreScan": 974.413,
+            "adapterOverhead": 992.857,
+            "unattributed": -8.114
+          }
+        },
+        {
+          "host": "otel-python",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43.0,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                24.497,
+                27.755,
+                22.915,
+                22.171,
+                18.963,
+                25.993,
+                335.47,
+                62.047,
+                57.937,
+                47.986,
+                115.6,
+                31.985,
+                34.155,
+                42.368,
+                69.467
+              ],
+              "median": 34.155,
+              "p95": 335.47,
+              "minimum": 18.963,
+              "maximum": 335.47,
+              "standardDeviation": 76.952
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                56.731,
+                59.044,
+                46.394,
+                42.002,
+                44.673,
+                97.739,
+                126.072,
+                125.92,
+                127.054,
+                349.868,
+                126.557,
+                68.176,
+                86.072,
+                82.808,
+                81.49
+              ],
+              "median": 82.808,
+              "p95": 349.868,
+              "minimum": 42.002,
+              "maximum": 349.868,
+              "standardDeviation": 72.981
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                945.961,
+                897.267,
+                936.634,
+                855.514,
+                893.231,
+                2070.641,
+                1373.655,
+                1903.122,
+                3232.101,
+                3046.586,
+                2057.569,
+                1572.83,
+                1522.761,
+                1379.041,
+                1330.464
+              ],
+              "median": 1379.041,
+              "p95": 3232.101,
+              "minimum": 855.514,
+              "maximum": 3232.101,
+              "standardDeviation": 724.52
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                841.083,
+                916.221,
+                776.657,
+                765.654,
+                1053.534,
+                1096.222,
+                2170.108,
+                2676.326,
+                3007.728,
+                2354.187,
+                1758.678,
+                1377.937,
+                1322.312,
+                1413.653,
+                1460.874
+              ],
+              "median": 1377.937,
+              "p95": 3007.728,
+              "minimum": 765.654,
+              "maximum": 3007.728,
+              "standardDeviation": 690.014
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 48.653,
+            "coreScan": 1377.937,
+            "adapterOverhead": 1344.886,
+            "unattributed": -81.704
+          }
+        },
+        {
+          "host": "mask-python",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22.0,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.055,
+                0.063,
+                0.074,
+                0.055,
+                0.049,
+                0.1,
+                0.058,
+                0.049,
+                0.045,
+                0.053,
+                0.046,
+                0.062,
+                0.046,
+                0.048,
+                0.062
+              ],
+              "median": 0.055,
+              "p95": 0.1,
+              "minimum": 0.045,
+              "maximum": 0.1,
+              "standardDeviation": 0.014
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                23.548,
+                20.434,
+                42.462,
+                18.886,
+                18.749,
+                18.965,
+                17.433,
+                16.247,
+                16.266,
+                16.769,
+                17.887,
+                14.244,
+                21.348,
+                17.996,
+                20.487
+              ],
+              "median": 18.749,
+              "p95": 42.462,
+              "minimum": 14.244,
+              "maximum": 42.462,
+              "standardDeviation": 6.376
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                779.627,
+                708.041,
+                785.417,
+                707.739,
+                740.89,
+                639.8,
+                924.025,
+                588.766,
+                635.477,
+                591.151,
+                653.997,
+                607.794,
+                607.68,
+                622.13,
+                628.67
+              ],
+              "median": 639.8,
+              "p95": 924.025,
+              "minimum": 588.766,
+              "maximum": 924.025,
+              "standardDeviation": 90.458
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                755.645,
+                749.746,
+                858.536,
+                721.653,
+                659.214,
+                686.707,
+                687.796,
+                567.272,
+                597.132,
+                588.149,
+                593.796,
+                587.506,
+                622.71,
+                596.852,
+                565.712
+              ],
+              "median": 622.71,
+              "p95": 858.536,
+              "minimum": 565.712,
+              "maximum": 858.536,
+              "standardDeviation": 82.976
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 18.694,
+            "coreScan": 622.71,
+            "adapterOverhead": 639.745,
+            "unattributed": -1.659
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op and the logging stream discards writes, so export and I/O cost are excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "javascript",
+      "measuredAt": "2026-09-25T20:35:28.789Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "totalMemoryBytes": 25769803776,
+        "runtime": "node-22.16.0",
+        "loadAverage1m": {
+          "start": 27.10009765625,
+          "end": 18.00244140625
+        },
+        "packages": {
+          "@redact-secret/core": "0.1.0-beta.8",
+          "@redact-secret/adapter": "0.1.0",
+          "@redact-secret/adapter-pino": "0.1.0",
+          "@redact-secret/adapter-otel": "0.1.0",
+          "pino": "10.3.1",
+          "@opentelemetry/sdk-trace-base": "2.11.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "process.hrtime.bigint",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "pino",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9,
+          "scannedCodeUnitsPerEvent": 367.063,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                2.911,
+                1.738,
+                1.742,
+                3.271,
+                1.575,
+                1.797,
+                1.402,
+                1.511,
+                1.984,
+                1.437,
+                1.738,
+                1.72,
+                1.472,
+                1.489,
+                1.76
+              ],
+              "median": 1.738,
+              "p95": 3.271,
+              "minimum": 1.402,
+              "maximum": 3.271,
+              "standardDeviation": 0.52
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                6.129,
+                4.903,
+                3.326,
+                10.968,
+                4.175,
+                3.722,
+                3.471,
+                3.659,
+                3.855,
+                5.066,
+                3.44,
+                3.354,
+                3.405,
+                3.405,
+                3.418
+              ],
+              "median": 3.659,
+              "p95": 10.968,
+              "minimum": 3.326,
+              "maximum": 10.968,
+              "standardDeviation": 1.918
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                101.075,
+                102.504,
+                101.995,
+                103.073,
+                105.62,
+                105.252,
+                101.487,
+                104.514,
+                107.215,
+                105.814,
+                101.656,
+                107.621,
+                105.051,
+                97.629,
+                106.898
+              ],
+              "median": 104.514,
+              "p95": 107.621,
+              "minimum": 97.629,
+              "maximum": 107.621,
+              "standardDeviation": 2.687
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                98.569,
+                97.627,
+                98.59,
+                97.652,
+                102.222,
+                102.536,
+                94.674,
+                99.133,
+                116.189,
+                99.159,
+                98.217,
+                101.729,
+                104.005,
+                97.968,
+                99.653
+              ],
+              "median": 99.133,
+              "p95": 116.189,
+              "minimum": 94.674,
+              "maximum": 116.189,
+              "standardDeviation": 4.766
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 1.921,
+            "coreScan": 99.133,
+            "adapterOverhead": 102.776,
+            "unattributed": 1.722
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 18,
+          "scannedCodeUnitsPerEvent": 734.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1.738,
+                2.037,
+                1.95,
+                1.8,
+                1.578,
+                1.608,
+                1.545,
+                1.498,
+                1.516,
+                1.624,
+                1.815,
+                1.438,
+                1.741,
+                1.464,
+                1.342
+              ],
+              "median": 1.608,
+              "p95": 2.037,
+              "minimum": 1.342,
+              "maximum": 2.037,
+              "standardDeviation": 0.19
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                6.558,
+                6.978,
+                6.651,
+                6.105,
+                6.419,
+                8.204,
+                6.722,
+                6.31,
+                5.868,
+                6.436,
+                6.298,
+                5.854,
+                6.202,
+                5.833,
+                5.807
+              ],
+              "median": 6.31,
+              "p95": 8.204,
+              "minimum": 5.807,
+              "maximum": 8.204,
+              "standardDeviation": 0.587
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                196.051,
+                214.39,
+                207.24,
+                198.005,
+                206.952,
+                212.241,
+                207.052,
+                190.672,
+                190.735,
+                195.693,
+                203.28,
+                219.096,
+                200.274,
+                197.125,
+                184.913
+              ],
+              "median": 200.274,
+              "p95": 219.096,
+              "minimum": 184.913,
+              "maximum": 219.096,
+              "standardDeviation": 9.282
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                215.342,
+                207.637,
+                192.3,
+                198.89,
+                213.818,
+                203.478,
+                189.422,
+                187.537,
+                186.167,
+                184.19,
+                188.604,
+                190.052,
+                193.812,
+                190.474,
+                178.578
+              ],
+              "median": 190.474,
+              "p95": 215.342,
+              "minimum": 178.578,
+              "maximum": 215.342,
+              "standardDeviation": 10.517
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.702,
+            "coreScan": 190.474,
+            "adapterOverhead": 198.666,
+            "unattributed": 3.49
+          }
+        },
+        {
+          "host": "pino",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                2.691,
+                2.358,
+                2.08,
+                1.908,
+                1.656,
+                1.879,
+                2.217,
+                2.129,
+                2.038,
+                2.054,
+                1.773,
+                1.947,
+                1.811,
+                2.052,
+                2.132
+              ],
+              "median": 2.052,
+              "p95": 2.691,
+              "minimum": 1.656,
+              "maximum": 2.691,
+              "standardDeviation": 0.244
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                6.034,
+                6.27,
+                5.401,
+                5.448,
+                4.998,
+                6.089,
+                5.472,
+                5.506,
+                5.621,
+                5.001,
+                5.661,
+                5.513,
+                5.319,
+                6.001,
+                6.191
+              ],
+              "median": 5.513,
+              "p95": 6.27,
+              "minimum": 4.998,
+              "maximum": 6.27,
+              "standardDeviation": 0.389
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                274.424,
+                298.911,
+                308.62,
+                279.359,
+                280.756,
+                288.934,
+                272.386,
+                281.694,
+                274.214,
+                273.821,
+                284.623,
+                268.315,
+                268.828,
+                267.957,
+                290.485
+              ],
+              "median": 279.359,
+              "p95": 308.62,
+              "minimum": 267.957,
+              "maximum": 308.62,
+              "standardDeviation": 11.393
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                266.937,
+                295.602,
+                276.364,
+                270.236,
+                273.561,
+                279.707,
+                260.908,
+                266.663,
+                255.558,
+                279.065,
+                273.754,
+                262.128,
+                263.22,
+                287.64,
+                291.777
+              ],
+              "median": 273.561,
+              "p95": 295.602,
+              "minimum": 255.558,
+              "maximum": 295.602,
+              "standardDeviation": 11.303
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 3.461,
+            "coreScan": 273.561,
+            "adapterOverhead": 277.307,
+            "unattributed": 0.285
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 54,
+          "scannedCodeUnitsPerEvent": 2154.25,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                3.853,
+                2.553,
+                2.759,
+                2.711,
+                2.439,
+                2.753,
+                2.821,
+                2.748,
+                2.423,
+                2.256,
+                2.388,
+                2.197,
+                2.227,
+                2.129,
+                2.403
+              ],
+              "median": 2.439,
+              "p95": 3.853,
+              "minimum": 2.129,
+              "maximum": 3.853,
+              "standardDeviation": 0.407
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                23.633,
+                14.796,
+                19.613,
+                16.676,
+                15.358,
+                21.093,
+                17.417,
+                14.475,
+                14.795,
+                14.178,
+                13.012,
+                12.485,
+                12.112,
+                12.245,
+                12.91
+              ],
+              "median": 14.795,
+              "p95": 23.633,
+              "minimum": 12.112,
+              "maximum": 23.633,
+              "standardDeviation": 3.336
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                686.677,
+                921.397,
+                808.937,
+                803.619,
+                860.681,
+                860.725,
+                848.426,
+                674.273,
+                721.97,
+                740.102,
+                667.163,
+                575.762,
+                556.038,
+                577.339,
+                602.204
+              ],
+              "median": 721.97,
+              "p95": 921.397,
+              "minimum": 556.038,
+              "maximum": 921.397,
+              "standardDeviation": 115.218
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                741.122,
+                867.465,
+                722.222,
+                788.253,
+                774.851,
+                797.791,
+                888.513,
+                703.727,
+                692.747,
+                693.172,
+                599.317,
+                576.908,
+                553.419,
+                573.416,
+                591.864
+              ],
+              "median": 703.727,
+              "p95": 888.513,
+              "minimum": 553.419,
+              "maximum": 888.513,
+              "standardDeviation": 104.258
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 12.356,
+            "coreScan": 703.727,
+            "adapterOverhead": 719.531,
+            "unattributed": 3.448
+          }
+        },
+        {
+          "host": "otel-js",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                8.201,
+                5.263,
+                3.603,
+                3.17,
+                2.728,
+                2.61,
+                2.529,
+                2.564,
+                2.595,
+                2.866,
+                2.861,
+                3.12,
+                2.46,
+                2.837,
+                2.847
+              ],
+              "median": 2.847,
+              "p95": 8.201,
+              "minimum": 2.46,
+              "maximum": 8.201,
+              "standardDeviation": 1.459
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                12.5,
+                8.917,
+                11.299,
+                9.318,
+                7.321,
+                4.608,
+                6.698,
+                7.073,
+                7.05,
+                4.783,
+                7.453,
+                8.991,
+                6.949,
+                4.665,
+                6.964
+              ],
+              "median": 7.073,
+              "p95": 12.5,
+              "minimum": 4.608,
+              "maximum": 12.5,
+              "standardDeviation": 2.193
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                705.001,
+                753.962,
+                683.558,
+                744.733,
+                684.881,
+                712.229,
+                700.736,
+                730.478,
+                721.043,
+                742.778,
+                723.212,
+                729.772,
+                778.863,
+                737.012,
+                801.75
+              ],
+              "median": 729.772,
+              "p95": 801.75,
+              "minimum": 683.558,
+              "maximum": 801.75,
+              "standardDeviation": 31.258
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                714.723,
+                673.46,
+                660.695,
+                723.966,
+                713.433,
+                706.702,
+                675.748,
+                692.477,
+                713.513,
+                704.259,
+                775.604,
+                739.514,
+                738.917,
+                716.082,
+                771.125
+              ],
+              "median": 713.513,
+              "p95": 775.604,
+              "minimum": 660.695,
+              "maximum": 775.604,
+              "standardDeviation": 31.61
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.226,
+            "coreScan": 713.513,
+            "adapterOverhead": 726.925,
+            "unattributed": 9.186
+          }
+        },
+        {
+          "host": "mask-js",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.019,
+                0.022,
+                0.024,
+                0.019,
+                0.018,
+                0.019,
+                0.018,
+                0.161,
+                0.008,
+                0.008,
+                0.007,
+                0.008,
+                0.008,
+                0.009,
+                0.009
+              ],
+              "median": 0.018,
+              "p95": 0.161,
+              "minimum": 0.007,
+              "maximum": 0.161,
+              "standardDeviation": 0.037
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                7.996,
+                7.712,
+                5.996,
+                7.349,
+                6.358,
+                6.633,
+                6.585,
+                7.137,
+                6.35,
+                6.469,
+                6.342,
+                6.422,
+                6.828,
+                6.387,
+                6.934
+              ],
+              "median": 6.585,
+              "p95": 7.996,
+              "minimum": 5.996,
+              "maximum": 7.996,
+              "standardDeviation": 0.544
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                553.417,
+                571.351,
+                607.177,
+                629.456,
+                595.097,
+                673.531,
+                592.678,
+                608.644,
+                595.225,
+                608.826,
+                554.252,
+                563.255,
+                568.198,
+                546.752,
+                585.518
+              ],
+              "median": 592.678,
+              "p95": 673.531,
+              "minimum": 546.752,
+              "maximum": 673.531,
+              "standardDeviation": 32.286
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                530.575,
+                625.207,
+                547.346,
+                544.466,
+                559.138,
+                592.35,
+                583.642,
+                631.113,
+                601.962,
+                580.21,
+                552.427,
+                555.884,
+                582.59,
+                550.511,
+                565.053
+              ],
+              "median": 565.053,
+              "p95": 631.113,
+              "minimum": 530.575,
+              "maximum": 631.113,
+              "standardDeviation": 28.658
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 6.567,
+            "coreScan": 565.053,
+            "adapterOverhead": 592.66,
+            "unattributed": 21.04
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op, so export cost is excluded; pino writes to a no-op destination, so I/O cost is excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "python",
+      "measuredAt": "2026-09-25T20:36:06.925682Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "runtime": "cpython-3.14.7",
+        "loadAverage1m": {
+          "start": 18.00244140625,
+          "end": 13.64306640625
+        },
+        "packages": {
+          "redact-secret": "0.1.0b8",
+          "redact-secret-adapters": "0.1.0",
+          "opentelemetry-sdk": "1.45.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "time.perf_counter_ns",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "python-logging",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9.0,
+          "scannedCodeUnitsPerEvent": 367.062,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                6.402,
+                8.974,
+                7.764,
+                6.887,
+                6.77,
+                7.225,
+                6.911,
+                6.969,
+                6.749,
+                7.101,
+                7.718,
+                7.028,
+                6.791,
+                31.79,
+                9.689
+              ],
+              "median": 7.028,
+              "p95": 31.79,
+              "minimum": 6.402,
+              "maximum": 31.79,
+              "standardDeviation": 6.155
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                11.843,
+                15.506,
+                14.678,
+                13.011,
+                13.053,
+                13.199,
+                13.377,
+                12.871,
+                12.89,
+                13.356,
+                14.814,
+                13.208,
+                13.206,
+                13.223,
+                17.774
+              ],
+              "median": 13.208,
+              "p95": 17.774,
+              "minimum": 11.843,
+              "maximum": 17.774,
+              "standardDeviation": 1.388
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                174.539,
+                187.051,
+                197.208,
+                187.426,
+                187.268,
+                231.198,
+                193.085,
+                187.349,
+                184.22,
+                196.121,
+                222.382,
+                187.377,
+                186.857,
+                240.827,
+                295.698
+              ],
+              "median": 187.426,
+              "p95": 295.698,
+              "minimum": 174.539,
+              "maximum": 295.698,
+              "standardDeviation": 30.57
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                181.11,
+                215.052,
+                196.615,
+                189.927,
+                171.646,
+                185.1,
+                173.251,
+                173.001,
+                186.614,
+                174.89,
+                193.006,
+                177.426,
+                171.684,
+                342.352,
+                237.183
+              ],
+              "median": 185.1,
+              "p95": 342.352,
+              "minimum": 171.646,
+              "maximum": 342.352,
+              "standardDeviation": 42.362
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 6.18,
+            "coreScan": 185.1,
+            "adapterOverhead": 180.398,
+            "unattributed": -10.882
+          }
+        },
+        {
+          "host": "python-logging",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27.0,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                18.977,
+                15.299,
+                14.854,
+                12.524,
+                12.239,
+                13.257,
+                13.195,
+                12.978,
+                12.212,
+                12.644,
+                11.097,
+                10.194,
+                21.426,
+                9.345,
+                10.351
+              ],
+              "median": 12.644,
+              "p95": 21.426,
+              "minimum": 9.345,
+              "maximum": 21.426,
+              "standardDeviation": 3.129
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                58.237,
+                39.646,
+                40.12,
+                31.985,
+                48.127,
+                54.591,
+                30.869,
+                32.846,
+                32.025,
+                58.309,
+                30.295,
+                26.283,
+                43.161,
+                26.806,
+                26.738
+              ],
+              "median": 32.846,
+              "p95": 58.309,
+              "minimum": 26.283,
+              "maximum": 58.309,
+              "standardDeviation": 11.03
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                815.714,
+                942.662,
+                786.527,
+                626.513,
+                607.162,
+                633.616,
+                629.417,
+                619.561,
+                619.304,
+                888.715,
+                624.1,
+                478.691,
+                474.272,
+                528.03,
+                487.735
+              ],
+              "median": 624.1,
+              "p95": 942.662,
+              "minimum": 474.272,
+              "maximum": 942.662,
+              "standardDeviation": 140.423
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                686.899,
+                600.125,
+                684.836,
+                590.987,
+                605.628,
+                582.812,
+                583.782,
+                671.195,
+                715.665,
+                594.637,
+                562.378,
+                489.603,
+                465.351,
+                466.567,
+                463.418
+              ],
+              "median": 590.987,
+              "p95": 715.665,
+              "minimum": 463.418,
+              "maximum": 715.665,
+              "standardDeviation": 80.982
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 20.202,
+            "coreScan": 590.987,
+            "adapterOverhead": 611.456,
+            "unattributed": 0.267
+          }
+        },
+        {
+          "host": "otel-python",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43.0,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                26.454,
+                25.914,
+                39.629,
+                34.546,
+                34.532,
+                32.228,
+                26.062,
+                28.365,
+                25.548,
+                37.54,
+                43.402,
+                31.202,
+                32.928,
+                30.078,
+                45.511
+              ],
+              "median": 32.228,
+              "p95": 45.511,
+              "minimum": 25.548,
+              "maximum": 45.511,
+              "standardDeviation": 6.135
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                52.328,
+                53.126,
+                81.607,
+                79.961,
+                68.693,
+                75.738,
+                52.414,
+                57.308,
+                59.815,
+                84.653,
+                82.819,
+                62.677,
+                64.035,
+                57.138,
+                128.933
+              ],
+              "median": 64.035,
+              "p95": 128.933,
+              "minimum": 52.328,
+              "maximum": 128.933,
+              "standardDeviation": 19.215
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                907.416,
+                970.643,
+                1116.16,
+                1399.478,
+                1264.794,
+                1226.439,
+                1289.741,
+                1049.516,
+                1490.09,
+                1670.93,
+                1490.111,
+                1180.092,
+                1112.066,
+                1049.568,
+                1026.628
+              ],
+              "median": 1180.092,
+              "p95": 1670.93,
+              "minimum": 907.416,
+              "maximum": 1670.93,
+              "standardDeviation": 210.962
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                890.102,
+                909.847,
+                1299.709,
+                1801.317,
+                1035.206,
+                1099.9,
+                986.774,
+                986.606,
+                1899.68,
+                1435.123,
+                1382.062,
+                1197.105,
+                1177.675,
+                1026.849,
+                1247.302
+              ],
+              "median": 1177.675,
+              "p95": 1899.68,
+              "minimum": 890.102,
+              "maximum": 1899.68,
+              "standardDeviation": 292.261
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 31.807,
+            "coreScan": 1177.675,
+            "adapterOverhead": 1147.864,
+            "unattributed": -61.618
+          }
+        },
+        {
+          "host": "mask-python",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22.0,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.057,
+                0.052,
+                0.054,
+                0.062,
+                0.066,
+                0.06,
+                0.062,
+                0.128,
+                0.058,
+                0.064,
+                0.066,
+                0.067,
+                0.056,
+                0.064,
+                0.064
+              ],
+              "median": 0.062,
+              "p95": 0.128,
+              "minimum": 0.052,
+              "maximum": 0.128,
+              "standardDeviation": 0.017
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                27.567,
+                20.438,
+                18.79,
+                22.228,
+                32.795,
+                33.146,
+                23.678,
+                24.19,
+                24.911,
+                23.819,
+                25.08,
+                32.488,
+                22.361,
+                26.549,
+                22.654
+              ],
+              "median": 24.19,
+              "p95": 33.146,
+              "minimum": 18.79,
+              "maximum": 33.146,
+              "standardDeviation": 4.269
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                946.815,
+                720.659,
+                638.237,
+                974.644,
+                1015.96,
+                1091.877,
+                856.271,
+                1002.257,
+                1002.495,
+                1154.594,
+                895.569,
+                953.115,
+                892.478,
+                957.964,
+                962.914
+              ],
+              "median": 957.964,
+              "p95": 1154.594,
+              "minimum": 638.237,
+              "maximum": 1154.594,
+              "standardDeviation": 125.239
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                760.754,
+                633.82,
+                654.066,
+                807.203,
+                936.691,
+                850.04,
+                882.439,
+                856.631,
+                978.976,
+                907.154,
+                877.357,
+                1091.433,
+                900.086,
+                880.102,
+                853.23
+              ],
+              "median": 877.357,
+              "p95": 1091.433,
+              "minimum": 633.82,
+              "maximum": 1091.433,
+              "standardDeviation": 111.037
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 24.128,
+            "coreScan": 877.357,
+            "adapterOverhead": 957.902,
+            "unattributed": 56.417
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op and the logging stream discards writes, so export and I/O cost are excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "javascript",
+      "measuredAt": "2026-09-25T20:36:45.836Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "totalMemoryBytes": 25769803776,
+        "runtime": "node-22.16.0",
+        "loadAverage1m": {
+          "start": 13.64306640625,
+          "end": 11.4091796875
+        },
+        "packages": {
+          "@redact-secret/core": "0.1.0-beta.8",
+          "@redact-secret/adapter": "0.1.0",
+          "@redact-secret/adapter-pino": "0.1.0",
+          "@redact-secret/adapter-otel": "0.1.0",
+          "pino": "10.3.1",
+          "@opentelemetry/sdk-trace-base": "2.11.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "process.hrtime.bigint",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "pino",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9,
+          "scannedCodeUnitsPerEvent": 367.063,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                3.718,
+                3.201,
+                3.308,
+                3.236,
+                2.339,
+                3.221,
+                3.12,
+                3.148,
+                7.724,
+                3.055,
+                2.155,
+                2.566,
+                2.09,
+                2.153,
+                3.174
+              ],
+              "median": 3.148,
+              "p95": 7.724,
+              "minimum": 2.09,
+              "maximum": 7.724,
+              "standardDeviation": 1.3
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                11.648,
+                7.351,
+                9.005,
+                11.095,
+                30.692,
+                7.19,
+                7.312,
+                9.025,
+                4.791,
+                6.85,
+                4.825,
+                7.169,
+                4.567,
+                6.672,
+                7.52
+              ],
+              "median": 7.312,
+              "p95": 30.692,
+              "minimum": 4.567,
+              "maximum": 30.692,
+              "standardDeviation": 6.116
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                163.864,
+                171.832,
+                205.622,
+                235.004,
+                286.739,
+                189.935,
+                207.728,
+                310.766,
+                209.224,
+                265.053,
+                187.536,
+                150.227,
+                149.204,
+                163.841,
+                168.002
+              ],
+              "median": 189.935,
+              "p95": 310.766,
+              "minimum": 149.204,
+              "maximum": 310.766,
+              "standardDeviation": 48.231
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                174.938,
+                178.548,
+                157.144,
+                198.315,
+                198.307,
+                151.167,
+                174.82,
+                182.104,
+                185.329,
+                326.833,
+                164.209,
+                138.023,
+                152.361,
+                149.61,
+                165.846
+              ],
+              "median": 174.82,
+              "p95": 326.833,
+              "minimum": 138.023,
+              "maximum": 326.833,
+              "standardDeviation": 42.872
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.164,
+            "coreScan": 174.82,
+            "adapterOverhead": 186.787,
+            "unattributed": 7.803
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 18,
+          "scannedCodeUnitsPerEvent": 734.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                3.071,
+                3.107,
+                3.099,
+                2.416,
+                2.35,
+                2.443,
+                2.141,
+                2.368,
+                1.919,
+                2.013,
+                2.507,
+                1.93,
+                2.036,
+                1.737,
+                1.73
+              ],
+              "median": 2.35,
+              "p95": 3.107,
+              "minimum": 1.73,
+              "maximum": 3.107,
+              "standardDeviation": 0.452
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                12.584,
+                13.786,
+                13.494,
+                13.919,
+                10.106,
+                10.871,
+                9.182,
+                8.383,
+                7.72,
+                7.101,
+                10.524,
+                7.725,
+                7.647,
+                9.066,
+                7.057
+              ],
+              "median": 9.182,
+              "p95": 13.919,
+              "minimum": 7.057,
+              "maximum": 13.919,
+              "standardDeviation": 2.404
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                331.558,
+                328.954,
+                338.839,
+                412.413,
+                348.379,
+                328.955,
+                285.127,
+                255.743,
+                236.058,
+                210.258,
+                260.782,
+                243.107,
+                243.797,
+                263.07,
+                222.141
+              ],
+              "median": 263.07,
+              "p95": 412.413,
+              "minimum": 210.258,
+              "maximum": 412.413,
+              "standardDeviation": 55.625
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                320.259,
+                317.512,
+                313.499,
+                348.448,
+                313.093,
+                277.434,
+                263.437,
+                262.253,
+                221.267,
+                205.613,
+                266.562,
+                265.368,
+                220.22,
+                230.413,
+                227.275
+              ],
+              "median": 265.368,
+              "p95": 348.448,
+              "minimum": 205.613,
+              "maximum": 348.448,
+              "standardDeviation": 42.637
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 6.832,
+            "coreScan": 265.368,
+            "adapterOverhead": 260.72,
+            "unattributed": -11.48
+          }
+        },
+        {
+          "host": "pino",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                3.486,
+                2.8,
+                2.823,
+                2.802,
+                2.448,
+                2.803,
+                3.31,
+                3.059,
+                3.041,
+                3.13,
+                2.843,
+                2.78,
+                2.923,
+                3.143,
+                2.878
+              ],
+              "median": 2.878,
+              "p95": 3.486,
+              "minimum": 2.448,
+              "maximum": 3.486,
+              "standardDeviation": 0.243
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                8.194,
+                16.178,
+                7.515,
+                8.028,
+                7.963,
+                7.224,
+                8.701,
+                8.204,
+                7.83,
+                13.577,
+                8.22,
+                8.079,
+                9.138,
+                12.182,
+                8.726
+              ],
+              "median": 8.204,
+              "p95": 16.178,
+              "minimum": 7.224,
+              "maximum": 16.178,
+              "standardDeviation": 2.487
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                334.18,
+                426.113,
+                395.049,
+                373.914,
+                360.855,
+                422.748,
+                397.634,
+                469.482,
+                431.544,
+                441.982,
+                417.624,
+                424.091,
+                440.788,
+                476.56,
+                401.098
+              ],
+              "median": 422.748,
+              "p95": 476.56,
+              "minimum": 334.18,
+              "maximum": 476.56,
+              "standardDeviation": 37.179
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                608.483,
+                412.081,
+                351.059,
+                435.137,
+                355.857,
+                395.761,
+                415.38,
+                408.42,
+                485.864,
+                423.744,
+                411.385,
+                395.283,
+                427.461,
+                413.76,
+                386.025
+              ],
+              "median": 412.081,
+              "p95": 608.483,
+              "minimum": 351.059,
+              "maximum": 608.483,
+              "standardDeviation": 58.691
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 5.326,
+            "coreScan": 412.081,
+            "adapterOverhead": 419.87,
+            "unattributed": 2.463
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 54,
+          "scannedCodeUnitsPerEvent": 2154.25,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                3.149,
+                2.828,
+                2.798,
+                2.729,
+                4.665,
+                3.681,
+                3.091,
+                3.076,
+                3.584,
+                3.318,
+                4.363,
+                3.125,
+                3.593,
+                3.353,
+                2.974
+              ],
+              "median": 3.149,
+              "p95": 4.665,
+              "minimum": 2.729,
+              "maximum": 4.665,
+              "standardDeviation": 0.536
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                18.807,
+                19.299,
+                17.054,
+                16.964,
+                26.558,
+                33.566,
+                17.059,
+                16.984,
+                27.067,
+                20.217,
+                27.496,
+                18.626,
+                23.189,
+                19.973,
+                16.942
+              ],
+              "median": 19.299,
+              "p95": 33.566,
+              "minimum": 16.942,
+              "maximum": 33.566,
+              "standardDeviation": 4.94
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                820.86,
+                819.578,
+                812.916,
+                946.816,
+                1150.55,
+                1099.476,
+                872.002,
+                855.455,
+                1135.772,
+                1070.605,
+                1051.055,
+                1034.287,
+                951.98,
+                911.689,
+                859.487
+              ],
+              "median": 946.816,
+              "p95": 1150.55,
+              "minimum": 812.916,
+              "maximum": 1150.55,
+              "standardDeviation": 116.836
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                798.512,
+                814.868,
+                820.862,
+                807.095,
+                1010.575,
+                1078.154,
+                835.653,
+                774.059,
+                1070.286,
+                1126.595,
+                1064.13,
+                954.306,
+                876.138,
+                985.224,
+                771.309
+              ],
+              "median": 876.138,
+              "p95": 1126.595,
+              "minimum": 771.309,
+              "maximum": 1126.595,
+              "standardDeviation": 122.614
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 16.15,
+            "coreScan": 876.138,
+            "adapterOverhead": 943.667,
+            "unattributed": 51.379
+          }
+        },
+        {
+          "host": "otel-js",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                7.944,
+                5.536,
+                3.731,
+                3.255,
+                4.829,
+                2.618,
+                2.869,
+                3.114,
+                2.676,
+                3.372,
+                8.928,
+                3.298,
+                2.67,
+                2.881,
+                2.372
+              ],
+              "median": 3.255,
+              "p95": 8.928,
+              "minimum": 2.372,
+              "maximum": 8.928,
+              "standardDeviation": 1.929
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                11.823,
+                8.03,
+                10.857,
+                8.432,
+                4.114,
+                4.049,
+                7.156,
+                7.278,
+                7.17,
+                7.332,
+                11.47,
+                7.779,
+                6.894,
+                4.71,
+                5.925
+              ],
+              "median": 7.278,
+              "p95": 11.823,
+              "minimum": 4.049,
+              "maximum": 11.823,
+              "standardDeviation": 2.327
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                728.18,
+                667.416,
+                712.606,
+                629.211,
+                617.081,
+                576.841,
+                998.764,
+                801.595,
+                772.429,
+                1022.785,
+                1117.191,
+                790.843,
+                734.664,
+                736.726,
+                665.051
+              ],
+              "median": 734.664,
+              "p95": 1117.191,
+              "minimum": 576.841,
+              "maximum": 1117.191,
+              "standardDeviation": 152.236
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                690.922,
+                661.989,
+                659.631,
+                664.978,
+                584.879,
+                629.764,
+                697.087,
+                701.306,
+                962.337,
+                979.274,
+                868.045,
+                826.282,
+                756.553,
+                737.953,
+                625.374
+              ],
+              "median": 697.087,
+              "p95": 979.274,
+              "minimum": 584.879,
+              "maximum": 979.274,
+              "standardDeviation": 116.587
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.023,
+            "coreScan": 697.087,
+            "adapterOverhead": 731.409,
+            "unattributed": 30.299
+          }
+        },
+        {
+          "host": "mask-js",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.015,
+                0.015,
+                0.025,
+                0.016,
+                0.016,
+                0.015,
+                0.014,
+                0.068,
+                0.008,
+                0.008,
+                0.008,
+                0.008,
+                0.007,
+                0.008,
+                0.007
+              ],
+              "median": 0.014,
+              "p95": 0.068,
+              "minimum": 0.007,
+              "maximum": 0.068,
+              "standardDeviation": 0.015
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                6.727,
+                6.435,
+                5.437,
+                6.871,
+                5.3,
+                5.101,
+                4.987,
+                5.325,
+                5.402,
+                5.349,
+                6.324,
+                5.793,
+                5.668,
+                6.322,
+                4.974
+              ],
+              "median": 5.437,
+              "p95": 6.871,
+              "minimum": 4.974,
+              "maximum": 6.871,
+              "standardDeviation": 0.617
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                493.184,
+                494.009,
+                474.704,
+                519.974,
+                492.464,
+                476.127,
+                462.47,
+                490.769,
+                491.311,
+                542.875,
+                542.35,
+                541.295,
+                531.268,
+                463.311,
+                515.346
+              ],
+              "median": 493.184,
+              "p95": 542.875,
+              "minimum": 462.47,
+              "maximum": 542.875,
+              "standardDeviation": 27.261
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                485.783,
+                480.545,
+                490.101,
+                480.967,
+                463.861,
+                473.928,
+                474.701,
+                461.989,
+                487.594,
+                573.743,
+                588.361,
+                532.872,
+                522.136,
+                512.333,
+                457.908
+              ],
+              "median": 485.783,
+              "p95": 588.361,
+              "minimum": 457.908,
+              "maximum": 588.361,
+              "standardDeviation": 38.292
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 5.423,
+            "coreScan": 485.783,
+            "adapterOverhead": 493.17,
+            "unattributed": 1.964
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op, so export cost is excluded; pino writes to a no-op destination, so I/O cost is excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "python",
+      "measuredAt": "2026-09-25T20:37:10.033775Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "runtime": "cpython-3.14.7",
+        "loadAverage1m": {
+          "start": 11.4091796875,
+          "end": 10.7705078125
+        },
+        "packages": {
+          "redact-secret": "0.1.0b8",
+          "redact-secret-adapters": "0.1.0",
+          "opentelemetry-sdk": "1.45.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "time.perf_counter_ns",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "python-logging",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9.0,
+          "scannedCodeUnitsPerEvent": 367.062,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                4.892,
+                5.591,
+                5.615,
+                5.201,
+                5.074,
+                5.066,
+                5.172,
+                5.029,
+                4.814,
+                4.97,
+                4.923,
+                4.881,
+                4.857,
+                4.698,
+                4.985
+              ],
+              "median": 4.985,
+              "p95": 5.615,
+              "minimum": 4.698,
+              "maximum": 5.615,
+              "standardDeviation": 0.251
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                9.437,
+                11.246,
+                10.471,
+                9.748,
+                9.788,
+                9.423,
+                9.49,
+                9.397,
+                9.346,
+                10.005,
+                9.28,
+                9.226,
+                9.28,
+                9.626,
+                9.446
+              ],
+              "median": 9.446,
+              "p95": 11.246,
+              "minimum": 9.226,
+              "maximum": 11.246,
+              "standardDeviation": 0.525
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                136.533,
+                168.378,
+                147.49,
+                149.764,
+                140.319,
+                134.422,
+                167.403,
+                138.652,
+                138.461,
+                135.683,
+                134.992,
+                134.149,
+                142.645,
+                132.433,
+                129.318
+              ],
+              "median": 138.461,
+              "p95": 168.378,
+              "minimum": 129.318,
+              "maximum": 168.378,
+              "standardDeviation": 11.398
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                175.012,
+                148.014,
+                147.77,
+                130.41,
+                123.733,
+                130.328,
+                127.265,
+                126.771,
+                130.59,
+                121.144,
+                122.75,
+                121.636,
+                127.703,
+                119.047,
+                126.915
+              ],
+              "median": 127.265,
+              "p95": 175.012,
+              "minimum": 119.047,
+              "maximum": 175.012,
+              "standardDeviation": 14.15
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.461,
+            "coreScan": 127.265,
+            "adapterOverhead": 133.476,
+            "unattributed": 1.75
+          }
+        },
+        {
+          "host": "python-logging",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27.0,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                8.103,
+                9.58,
+                8.937,
+                9.581,
+                10.359,
+                9.388,
+                9.637,
+                9.491,
+                8.732,
+                8.738,
+                8.744,
+                7.903,
+                7.774,
+                8.338,
+                11.241
+              ],
+              "median": 8.937,
+              "p95": 11.241,
+              "minimum": 7.774,
+              "maximum": 11.241,
+              "standardDeviation": 0.907
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                21.08,
+                21.732,
+                23.184,
+                24.822,
+                26.818,
+                24.544,
+                25.005,
+                23.743,
+                23.07,
+                23.204,
+                22.911,
+                20.662,
+                20.8,
+                19.572,
+                53.446
+              ],
+              "median": 23.184,
+              "p95": 53.446,
+              "minimum": 19.572,
+              "maximum": 53.446,
+              "standardDeviation": 7.835
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                392.001,
+                517.896,
+                457.224,
+                492.65,
+                495.194,
+                466.351,
+                461.265,
+                428.012,
+                443.246,
+                440.264,
+                457.419,
+                393.372,
+                385.799,
+                355.231,
+                455.151
+              ],
+              "median": 455.151,
+              "p95": 517.896,
+              "minimum": 355.231,
+              "maximum": 517.896,
+              "standardDeviation": 43.594
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                397.325,
+                420.745,
+                423.888,
+                441.443,
+                441.728,
+                437.459,
+                428.15,
+                434.441,
+                403.232,
+                404.371,
+                426.222,
+                381.275,
+                344.326,
+                365.108,
+                502.507
+              ],
+              "median": 423.888,
+              "p95": 502.507,
+              "minimum": 344.326,
+              "maximum": 502.507,
+              "standardDeviation": 36.056
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 14.247,
+            "coreScan": 423.888,
+            "adapterOverhead": 446.214,
+            "unattributed": 8.079
+          }
+        },
+        {
+          "host": "otel-python",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43.0,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                35.91,
+                32.084,
+                31.082,
+                28.618,
+                24.558,
+                18.723,
+                20.164,
+                18.541,
+                19.531,
+                18.461,
+                18.471,
+                18.48,
+                18.211,
+                18.577,
+                18.751
+              ],
+              "median": 18.751,
+              "p95": 35.91,
+              "minimum": 18.211,
+              "maximum": 35.91,
+              "standardDeviation": 5.929
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                64.103,
+                63.08,
+                64.321,
+                81.167,
+                50.592,
+                38.555,
+                36.937,
+                37.396,
+                37.449,
+                36.946,
+                36.559,
+                37.256,
+                37.044,
+                38.752,
+                38.036
+              ],
+              "median": 38.036,
+              "p95": 81.167,
+              "minimum": 36.559,
+              "maximum": 81.167,
+              "standardDeviation": 13.992
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1195.461,
+                1219.811,
+                1266.554,
+                1059.875,
+                833.946,
+                702.513,
+                690.535,
+                711.954,
+                690.207,
+                681.395,
+                712.571,
+                687.91,
+                683.548,
+                678.689,
+                694.778
+              ],
+              "median": 702.513,
+              "p95": 1266.554,
+              "minimum": 678.689,
+              "maximum": 1266.554,
+              "standardDeviation": 218.569
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1100.407,
+                1142.882,
+                1149.72,
+                1045.19,
+                699.427,
+                638.767,
+                680.21,
+                638.793,
+                637.533,
+                654.031,
+                655.762,
+                636.594,
+                677.157,
+                636.828,
+                651.977
+              ],
+              "median": 655.762,
+              "p95": 1149.72,
+              "minimum": 636.594,
+              "maximum": 1149.72,
+              "standardDeviation": 202.835
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 19.285,
+            "coreScan": 655.762,
+            "adapterOverhead": 683.762,
+            "unattributed": 8.715
+          }
+        },
+        {
+          "host": "mask-python",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22.0,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.042,
+                0.034,
+                0.034,
+                0.037,
+                0.036,
+                0.052,
+                0.04,
+                0.039,
+                0.034,
+                0.034,
+                0.048,
+                0.041,
+                0.033,
+                0.048,
+                0.043
+              ],
+              "median": 0.039,
+              "p95": 0.052,
+              "minimum": 0.033,
+              "maximum": 0.052,
+              "standardDeviation": 0.006
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                13.526,
+                13.484,
+                13.214,
+                13.1,
+                13.493,
+                13.728,
+                15.847,
+                13.543,
+                13.107,
+                14.282,
+                13.511,
+                13.104,
+                13.304,
+                15.064,
+                13.778
+              ],
+              "median": 13.511,
+              "p95": 15.847,
+              "minimum": 13.1,
+              "maximum": 15.847,
+              "standardDeviation": 0.75
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                490.399,
+                484.393,
+                486.358,
+                502.822,
+                484.259,
+                477.754,
+                549.271,
+                487.597,
+                478.747,
+                483.513,
+                480.01,
+                488.261,
+                482.005,
+                491.15,
+                480.062
+              ],
+              "median": 484.393,
+              "p95": 549.271,
+              "minimum": 477.754,
+              "maximum": 549.271,
+              "standardDeviation": 17.021
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                468.152,
+                462.876,
+                461.11,
+                464.671,
+                483.043,
+                475.279,
+                471.915,
+                477.036,
+                486.188,
+                462.173,
+                461.094,
+                483.231,
+                490.516,
+                482.326,
+                470.446
+              ],
+              "median": 471.915,
+              "p95": 490.516,
+              "minimum": 461.094,
+              "maximum": 490.516,
+              "standardDeviation": 9.649
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 13.472,
+            "coreScan": 471.915,
+            "adapterOverhead": 484.354,
+            "unattributed": -1.033
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op and the logging stream discards writes, so export and I/O cost are excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "javascript",
+      "measuredAt": "2026-09-25T20:37:33.235Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "totalMemoryBytes": 25769803776,
+        "runtime": "node-22.16.0",
+        "loadAverage1m": {
+          "start": 10.7705078125,
+          "end": 10.01123046875
+        },
+        "packages": {
+          "@redact-secret/core": "0.1.0-beta.8",
+          "@redact-secret/adapter": "0.1.0",
+          "@redact-secret/adapter-pino": "0.1.0",
+          "@redact-secret/adapter-otel": "0.1.0",
+          "pino": "10.3.1",
+          "@opentelemetry/sdk-trace-base": "2.11.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "process.hrtime.bigint",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "pino",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9,
+          "scannedCodeUnitsPerEvent": 367.063,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                2.142,
+                1.753,
+                1.184,
+                1.17,
+                1.311,
+                1.215,
+                1.261,
+                1.252,
+                1.186,
+                1.285,
+                1.578,
+                1.225,
+                1.318,
+                1.343,
+                1.173
+              ],
+              "median": 1.261,
+              "p95": 2.142,
+              "minimum": 1.17,
+              "maximum": 2.142,
+              "standardDeviation": 0.26
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.001,
+                4.015,
+                2.806,
+                3.334,
+                3.094,
+                2.942,
+                2.597,
+                2.71,
+                2.866,
+                2.52,
+                2.838,
+                2.712,
+                2.688,
+                2.646,
+                2.739
+              ],
+              "median": 2.806,
+              "p95": 5.001,
+              "minimum": 2.52,
+              "maximum": 5.001,
+              "standardDeviation": 0.636
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                89.034,
+                84.003,
+                81.362,
+                83.052,
+                81.705,
+                84.289,
+                80.146,
+                80.528,
+                80.375,
+                83.053,
+                82.347,
+                82.326,
+                81.606,
+                84.218,
+                82.554
+              ],
+              "median": 82.347,
+              "p95": 89.034,
+              "minimum": 80.146,
+              "maximum": 89.034,
+              "standardDeviation": 2.126
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                79.112,
+                78.662,
+                76.999,
+                77.335,
+                79.14,
+                81.542,
+                75.825,
+                76.405,
+                76.898,
+                77.984,
+                78.897,
+                78.207,
+                79.138,
+                82.03,
+                78.387
+              ],
+              "median": 78.387,
+              "p95": 82.03,
+              "minimum": 75.825,
+              "maximum": 82.03,
+              "standardDeviation": 1.656
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 1.545,
+            "coreScan": 78.387,
+            "adapterOverhead": 81.086,
+            "unattributed": 1.154
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 18,
+          "scannedCodeUnitsPerEvent": 734.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1.532,
+                1.364,
+                1.374,
+                1.351,
+                1.17,
+                1.371,
+                1.319,
+                1.231,
+                1.276,
+                1.182,
+                1.262,
+                1.385,
+                1.204,
+                1.261,
+                1.188
+              ],
+              "median": 1.276,
+              "p95": 1.532,
+              "minimum": 1.17,
+              "maximum": 1.532,
+              "standardDeviation": 0.096
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.155,
+                5.352,
+                6.073,
+                4.926,
+                4.98,
+                5.155,
+                5.081,
+                4.978,
+                4.808,
+                5.062,
+                4.979,
+                5.017,
+                4.916,
+                4.864,
+                5.049
+              ],
+              "median": 5.017,
+              "p95": 6.073,
+              "minimum": 4.808,
+              "maximum": 6.073,
+              "standardDeviation": 0.292
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                159.006,
+                157.471,
+                160.572,
+                156.654,
+                156.203,
+                160.221,
+                157.103,
+                159.288,
+                158.337,
+                160.938,
+                157.639,
+                159.164,
+                169.002,
+                171.959,
+                157.086
+              ],
+              "median": 159.006,
+              "p95": 171.959,
+              "minimum": 156.203,
+              "maximum": 171.959,
+              "standardDeviation": 4.357
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                153.682,
+                151.232,
+                157.326,
+                153.624,
+                150.587,
+                151.182,
+                152.169,
+                153.583,
+                153.494,
+                151.868,
+                153.855,
+                158.877,
+                153.593,
+                154.526,
+                154.483
+              ],
+              "median": 153.593,
+              "p95": 158.877,
+              "minimum": 150.587,
+              "maximum": 158.877,
+              "standardDeviation": 2.145
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 3.741,
+            "coreScan": 153.593,
+            "adapterOverhead": 157.73,
+            "unattributed": 0.396
+          }
+        },
+        {
+          "host": "pino",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                2.585,
+                1.605,
+                1.875,
+                1.837,
+                1.556,
+                1.906,
+                1.698,
+                1.628,
+                1.763,
+                1.63,
+                1.588,
+                1.598,
+                1.876,
+                1.693,
+                1.906
+              ],
+              "median": 1.698,
+              "p95": 2.585,
+              "minimum": 1.556,
+              "maximum": 2.585,
+              "standardDeviation": 0.247
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                6.305,
+                4.847,
+                4.636,
+                4.725,
+                4.532,
+                4.505,
+                5.019,
+                4.856,
+                4.472,
+                4.833,
+                4.768,
+                4.629,
+                4.621,
+                4.562,
+                4.916
+              ],
+              "median": 4.725,
+              "p95": 6.305,
+              "minimum": 4.472,
+              "maximum": 6.305,
+              "standardDeviation": 0.428
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                234.816,
+                258.487,
+                231.904,
+                232.277,
+                235.832,
+                230.353,
+                231.503,
+                240.698,
+                234.727,
+                233.449,
+                232.382,
+                230.203,
+                235.871,
+                230.402,
+                232.808
+              ],
+              "median": 232.808,
+              "p95": 258.487,
+              "minimum": 230.203,
+              "maximum": 258.487,
+              "standardDeviation": 6.805
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                229.17,
+                225.7,
+                224.372,
+                236.465,
+                225.199,
+                226.726,
+                230.812,
+                230.621,
+                225.69,
+                227.701,
+                223.484,
+                222.183,
+                223.696,
+                231.06,
+                228.052
+              ],
+              "median": 226.726,
+              "p95": 236.465,
+              "minimum": 222.183,
+              "maximum": 236.465,
+              "standardDeviation": 3.631
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 3.027,
+            "coreScan": 226.726,
+            "adapterOverhead": 231.11,
+            "unattributed": 1.357
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 54,
+          "scannedCodeUnitsPerEvent": 2154.25,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1.958,
+                1.682,
+                1.952,
+                1.809,
+                1.756,
+                1.886,
+                1.644,
+                1.646,
+                1.819,
+                1.859,
+                1.725,
+                1.682,
+                1.625,
+                1.958,
+                2.098
+              ],
+              "median": 1.809,
+              "p95": 2.098,
+              "minimum": 1.625,
+              "maximum": 2.098,
+              "standardDeviation": 0.138
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                10.572,
+                12.423,
+                10.175,
+                10.264,
+                10.032,
+                10.182,
+                10.28,
+                10.213,
+                10.287,
+                10.559,
+                23.264,
+                10.417,
+                10.587,
+                10.719,
+                14.121
+              ],
+              "median": 10.417,
+              "p95": 23.264,
+              "minimum": 10.032,
+              "maximum": 23.264,
+              "standardDeviation": 3.287
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                484.849,
+                473.343,
+                468.859,
+                461.927,
+                478.908,
+                481.13,
+                462.733,
+                478.619,
+                465.454,
+                471.933,
+                472.718,
+                465.443,
+                483.9,
+                472.511,
+                611.806
+              ],
+              "median": 472.718,
+              "p95": 611.806,
+              "minimum": 461.927,
+              "maximum": 611.806,
+              "standardDeviation": 35.336
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                466.817,
+                460.006,
+                457.275,
+                459.421,
+                460.431,
+                453.344,
+                455.694,
+                444.636,
+                462.143,
+                459.781,
+                455.346,
+                463.797,
+                461.799,
+                484.643,
+                528.399
+              ],
+              "median": 460.006,
+              "p95": 528.399,
+              "minimum": 444.636,
+              "maximum": 528.399,
+              "standardDeviation": 18.837
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 8.608,
+            "coreScan": 460.006,
+            "adapterOverhead": 470.909,
+            "unattributed": 2.295
+          }
+        },
+        {
+          "host": "otel-js",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.951,
+                3.79,
+                2.687,
+                2.417,
+                2.223,
+                2.041,
+                2.1,
+                2.059,
+                1.859,
+                2.265,
+                1.931,
+                1.899,
+                1.928,
+                2.047,
+                1.838
+              ],
+              "median": 2.059,
+              "p95": 5.951,
+              "minimum": 1.838,
+              "maximum": 5.951,
+              "standardDeviation": 1.044
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                9.107,
+                7.607,
+                8.285,
+                5.454,
+                5.358,
+                3.254,
+                5.77,
+                5.518,
+                5.268,
+                3.519,
+                4.798,
+                2.895,
+                5.458,
+                3.146,
+                4.756
+              ],
+              "median": 5.358,
+              "p95": 9.107,
+              "minimum": 2.895,
+              "maximum": 9.107,
+              "standardDeviation": 1.777
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                505.62,
+                557.284,
+                499.458,
+                511.106,
+                495.025,
+                494.921,
+                490.603,
+                501.041,
+                515.244,
+                528.213,
+                527.021,
+                486.865,
+                488.103,
+                484.825,
+                478.46
+              ],
+              "median": 499.458,
+              "p95": 557.284,
+              "minimum": 478.46,
+              "maximum": 557.284,
+              "standardDeviation": 20.12
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                502.23,
+                512.73,
+                516.158,
+                490.677,
+                483.223,
+                503.751,
+                492.794,
+                514.434,
+                511.586,
+                502.618,
+                496.054,
+                479.285,
+                475.945,
+                510.766,
+                485.604
+              ],
+              "median": 502.23,
+              "p95": 516.158,
+              "minimum": 475.945,
+              "maximum": 516.158,
+              "standardDeviation": 12.976
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 3.299,
+            "coreScan": 502.23,
+            "adapterOverhead": 497.399,
+            "unattributed": -8.13
+          }
+        },
+        {
+          "host": "mask-js",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.011,
+                0.013,
+                0.014,
+                0.014,
+                0.013,
+                0.013,
+                0.015,
+                0.061,
+                0.005,
+                0.006,
+                0.007,
+                0.006,
+                0.005,
+                0.006,
+                0.006
+              ],
+              "median": 0.011,
+              "p95": 0.061,
+              "minimum": 0.005,
+              "maximum": 0.061,
+              "standardDeviation": 0.013
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.207,
+                5.151,
+                4.338,
+                5.067,
+                4.375,
+                4.837,
+                4.786,
+                4.211,
+                4.065,
+                4.147,
+                4.347,
+                4.162,
+                4.562,
+                4.666,
+                4.158
+              ],
+              "median": 4.375,
+              "p95": 5.207,
+              "minimum": 4.065,
+              "maximum": 5.207,
+              "standardDeviation": 0.378
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                383.931,
+                392.059,
+                404.406,
+                387.874,
+                389.084,
+                389.723,
+                392.909,
+                378.885,
+                386.518,
+                400.792,
+                385.514,
+                381.635,
+                377.548,
+                376.479,
+                378.613
+              ],
+              "median": 386.518,
+              "p95": 404.406,
+              "minimum": 376.479,
+              "maximum": 404.406,
+              "standardDeviation": 7.929
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                386.607,
+                386.375,
+                391.541,
+                385.174,
+                395.446,
+                385.483,
+                373.053,
+                372.491,
+                381.278,
+                407.761,
+                383.071,
+                375.111,
+                372.483,
+                383.558,
+                380.428
+              ],
+              "median": 383.558,
+              "p95": 407.761,
+              "minimum": 372.483,
+              "maximum": 407.761,
+              "standardDeviation": 9.142
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.364,
+            "coreScan": 383.558,
+            "adapterOverhead": 386.507,
+            "unattributed": -1.415
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op, so export cost is excluded; pino writes to a no-op destination, so I/O cost is excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "python",
+      "measuredAt": "2026-09-25T20:37:54.437035Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "runtime": "cpython-3.14.7",
+        "loadAverage1m": {
+          "start": 10.01123046875,
+          "end": 8.4755859375
+        },
+        "packages": {
+          "redact-secret": "0.1.0b8",
+          "redact-secret-adapters": "0.1.0",
+          "opentelemetry-sdk": "1.45.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "time.perf_counter_ns",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "python-logging",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9.0,
+          "scannedCodeUnitsPerEvent": 367.062,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                9.268,
+                4.432,
+                4.346,
+                4.462,
+                4.324,
+                4.503,
+                4.434,
+                4.49,
+                4.447,
+                4.94,
+                4.889,
+                4.742,
+                4.471,
+                4.476,
+                4.414
+              ],
+              "median": 4.471,
+              "p95": 9.268,
+              "minimum": 4.324,
+              "maximum": 9.268,
+              "standardDeviation": 1.196
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                11.817,
+                8.944,
+                8.375,
+                8.488,
+                8.367,
+                8.523,
+                8.687,
+                8.574,
+                8.546,
+                9.565,
+                9.241,
+                8.931,
+                8.6,
+                8.557,
+                8.595
+              ],
+              "median": 8.595,
+              "p95": 11.817,
+              "minimum": 8.367,
+              "maximum": 11.817,
+              "standardDeviation": 0.837
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                126.299,
+                123.38,
+                121.023,
+                119.023,
+                118.948,
+                119.955,
+                120.086,
+                120.12,
+                121.61,
+                129.793,
+                125.37,
+                124.863,
+                122.728,
+                121.152,
+                119.901
+              ],
+              "median": 121.152,
+              "p95": 129.793,
+              "minimum": 118.948,
+              "maximum": 129.793,
+              "standardDeviation": 3.009
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                126.918,
+                114.72,
+                110.266,
+                111.911,
+                108.641,
+                111.439,
+                110.808,
+                111.734,
+                112.925,
+                118.932,
+                116.288,
+                116.062,
+                111.93,
+                111.94,
+                110.256
+              ],
+              "median": 111.93,
+              "p95": 126.918,
+              "minimum": 108.641,
+              "maximum": 126.918,
+              "standardDeviation": 4.412
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.124,
+            "coreScan": 111.93,
+            "adapterOverhead": 116.681,
+            "unattributed": 0.627
+          }
+        },
+        {
+          "host": "python-logging",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27.0,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                7.455,
+                7.621,
+                7.815,
+                7.22,
+                7.348,
+                7.134,
+                8.057,
+                7.412,
+                8.429,
+                7.47,
+                7.493,
+                7.602,
+                7.335,
+                7.44,
+                7.281
+              ],
+              "median": 7.455,
+              "p95": 8.429,
+              "minimum": 7.134,
+              "maximum": 8.429,
+              "standardDeviation": 0.326
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                19.398,
+                20.757,
+                19.614,
+                18.734,
+                19.624,
+                19.991,
+                20.534,
+                19.426,
+                19.919,
+                20.222,
+                19.587,
+                19.632,
+                20.442,
+                19.72,
+                18.986
+              ],
+              "median": 19.632,
+              "p95": 20.757,
+              "minimum": 18.734,
+              "maximum": 20.757,
+              "standardDeviation": 0.537
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                360.877,
+                401.216,
+                361.924,
+                355.349,
+                359.738,
+                357.944,
+                362.152,
+                370.007,
+                362.144,
+                364.993,
+                398.467,
+                368.037,
+                371.151,
+                361.781,
+                356.721
+              ],
+              "median": 362.144,
+              "p95": 401.216,
+              "minimum": 355.349,
+              "maximum": 401.216,
+              "standardDeviation": 13.422
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                359.56,
+                387.236,
+                340.739,
+                358.076,
+                351.134,
+                329.806,
+                343.627,
+                417.667,
+                338.221,
+                339.142,
+                344.978,
+                329.534,
+                361.107,
+                340.449,
+                332.626
+              ],
+              "median": 343.627,
+              "p95": 417.667,
+              "minimum": 329.534,
+              "maximum": 417.667,
+              "standardDeviation": 22.857
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 12.177,
+            "coreScan": 343.627,
+            "adapterOverhead": 354.689,
+            "unattributed": -1.115
+          }
+        },
+        {
+          "host": "otel-python",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43.0,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                18.572,
+                19.338,
+                18.841,
+                18.851,
+                19.966,
+                18.704,
+                18.18,
+                19.168,
+                18.106,
+                18.822,
+                19.834,
+                19.085,
+                17.83,
+                18.784,
+                21.109
+              ],
+              "median": 18.841,
+              "p95": 21.109,
+              "minimum": 17.83,
+              "maximum": 21.109,
+              "standardDeviation": 0.794
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                36.642,
+                38.424,
+                37.992,
+                38.627,
+                38.526,
+                37.144,
+                37.12,
+                38.535,
+                37.689,
+                37.493,
+                57.72,
+                37.943,
+                36.799,
+                37.825,
+                38.286
+              ],
+              "median": 37.943,
+              "p95": 57.72,
+              "minimum": 36.642,
+              "maximum": 57.72,
+              "standardDeviation": 5.01
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                698.5,
+                707.309,
+                695.106,
+                718.563,
+                716.057,
+                699.974,
+                710.339,
+                685.303,
+                715.842,
+                704.008,
+                710.714,
+                701.618,
+                679.348,
+                685.124,
+                723.237
+              ],
+              "median": 704.008,
+              "p95": 723.237,
+              "minimum": 679.348,
+              "maximum": 723.237,
+              "standardDeviation": 12.658
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                683.861,
+                669.095,
+                642.104,
+                644.345,
+                650.206,
+                663.271,
+                656.839,
+                663.808,
+                664.344,
+                656.532,
+                650.162,
+                685.378,
+                641.566,
+                668.729,
+                675.911
+              ],
+              "median": 663.271,
+              "p95": 685.378,
+              "minimum": 641.566,
+              "maximum": 685.378,
+              "standardDeviation": 13.594
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 19.102,
+            "coreScan": 663.271,
+            "adapterOverhead": 685.167,
+            "unattributed": 2.794
+          }
+        },
+        {
+          "host": "mask-python",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22.0,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.033,
+                0.043,
+                0.042,
+                0.034,
+                0.035,
+                0.036,
+                0.04,
+                0.045,
+                0.031,
+                0.034,
+                0.041,
+                0.037,
+                0.036,
+                0.035,
+                0.035
+              ],
+              "median": 0.036,
+              "p95": 0.045,
+              "minimum": 0.031,
+              "maximum": 0.045,
+              "standardDeviation": 0.004
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                13.287,
+                13.065,
+                13.145,
+                13.127,
+                13.117,
+                13.546,
+                13.298,
+                12.989,
+                13.006,
+                14.544,
+                13.197,
+                12.928,
+                13.3,
+                13.674,
+                13.133
+              ],
+              "median": 13.145,
+              "p95": 14.544,
+              "minimum": 12.928,
+              "maximum": 14.544,
+              "standardDeviation": 0.387
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                496.568,
+                478.615,
+                487.749,
+                479.006,
+                480.452,
+                526.273,
+                483.556,
+                475.725,
+                481.455,
+                495.774,
+                479.634,
+                481.098,
+                488.285,
+                489.483,
+                480.664
+              ],
+              "median": 481.455,
+              "p95": 526.273,
+              "minimum": 475.725,
+              "maximum": 526.273,
+              "standardDeviation": 12.098
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                470.041,
+                477.284,
+                471.252,
+                465.769,
+                470.564,
+                487.249,
+                461.362,
+                465.921,
+                467.414,
+                472.699,
+                466.316,
+                464.395,
+                489.913,
+                464.339,
+                455.746
+              ],
+              "median": 467.414,
+              "p95": 489.913,
+              "minimum": 455.746,
+              "maximum": 489.913,
+              "standardDeviation": 8.765
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 13.109,
+            "coreScan": 467.414,
+            "adapterOverhead": 481.419,
+            "unattributed": 0.896
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op and the logging stream discards writes, so export and I/O cost are excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "javascript",
+      "measuredAt": "2026-09-25T20:38:18.453Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "totalMemoryBytes": 25769803776,
+        "runtime": "node-22.16.0",
+        "loadAverage1m": {
+          "start": 8.4755859375,
+          "end": 6.90380859375
+        },
+        "packages": {
+          "@redact-secret/core": "0.1.0-beta.8",
+          "@redact-secret/adapter": "0.1.0",
+          "@redact-secret/adapter-pino": "0.1.0",
+          "@redact-secret/adapter-otel": "0.1.0",
+          "pino": "10.3.1",
+          "@opentelemetry/sdk-trace-base": "2.11.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "process.hrtime.bigint",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "pino",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9,
+          "scannedCodeUnitsPerEvent": 367.063,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                2.178,
+                1.527,
+                1.468,
+                1.336,
+                1.245,
+                1.393,
+                1.192,
+                1.217,
+                1.335,
+                1.205,
+                1.222,
+                1.399,
+                1.266,
+                1.328,
+                1.78
+              ],
+              "median": 1.335,
+              "p95": 2.178,
+              "minimum": 1.192,
+              "maximum": 2.178,
+              "standardDeviation": 0.255
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.017,
+                3.674,
+                2.846,
+                3.15,
+                3.423,
+                2.736,
+                2.708,
+                3.203,
+                2.743,
+                2.778,
+                2.879,
+                2.742,
+                2.735,
+                2.994,
+                3.939
+              ],
+              "median": 2.879,
+              "p95": 5.017,
+              "minimum": 2.708,
+              "maximum": 5.017,
+              "standardDeviation": 0.614
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                87.668,
+                81.946,
+                82.769,
+                81.263,
+                80.139,
+                81.985,
+                79.477,
+                82.307,
+                81.118,
+                80.43,
+                79.955,
+                87.734,
+                92.343,
+                87.043,
+                129.193
+              ],
+              "median": 81.985,
+              "p95": 129.193,
+              "minimum": 79.477,
+              "maximum": 129.193,
+              "standardDeviation": 11.995
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                78.111,
+                78.424,
+                77.556,
+                76.866,
+                76.582,
+                76.955,
+                76.514,
+                77.932,
+                77.808,
+                77.333,
+                77.618,
+                78.64,
+                95.813,
+                88.065,
+                107.103
+              ],
+              "median": 77.808,
+              "p95": 107.103,
+              "minimum": 76.514,
+              "maximum": 107.103,
+              "standardDeviation": 8.556
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 1.544,
+            "coreScan": 77.808,
+            "adapterOverhead": 80.65,
+            "unattributed": 1.298
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 18,
+          "scannedCodeUnitsPerEvent": 734.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1.428,
+                1.611,
+                1.85,
+                1.609,
+                1.343,
+                1.492,
+                1.783,
+                1.555,
+                1.582,
+                1.722,
+                1.834,
+                1.538,
+                1.555,
+                1.458,
+                1.58
+              ],
+              "median": 1.58,
+              "p95": 1.85,
+              "minimum": 1.343,
+              "maximum": 1.85,
+              "standardDeviation": 0.142
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                6.588,
+                8.57,
+                7.23,
+                6.952,
+                6.529,
+                5.763,
+                10.338,
+                6.772,
+                6.536,
+                7.321,
+                6.427,
+                8.094,
+                5.643,
+                6.398,
+                6.162
+              ],
+              "median": 6.588,
+              "p95": 10.338,
+              "minimum": 5.643,
+              "maximum": 10.338,
+              "standardDeviation": 1.165
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                233.581,
+                251.084,
+                225.091,
+                202.272,
+                201.396,
+                201.395,
+                198.439,
+                198.391,
+                196.11,
+                195.418,
+                184.58,
+                197.049,
+                199.279,
+                193.787,
+                194.458
+              ],
+              "median": 198.439,
+              "p95": 251.084,
+              "minimum": 184.58,
+              "maximum": 251.084,
+              "standardDeviation": 17.097
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                213.635,
+                181.926,
+                193.874,
+                189.405,
+                194.624,
+                190.132,
+                190.04,
+                183.118,
+                188.926,
+                187.624,
+                182.106,
+                198.357,
+                183.94,
+                192.05,
+                187.93
+              ],
+              "median": 189.405,
+              "p95": 213.635,
+              "minimum": 181.926,
+              "maximum": 213.635,
+              "standardDeviation": 7.695
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 5.008,
+            "coreScan": 189.405,
+            "adapterOverhead": 196.859,
+            "unattributed": 2.446
+          }
+        },
+        {
+          "host": "pino",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                3.202,
+                2.076,
+                1.616,
+                1.747,
+                1.686,
+                1.619,
+                1.774,
+                1.697,
+                1.586,
+                1.865,
+                1.566,
+                1.718,
+                1.78,
+                1.607,
+                1.64
+              ],
+              "median": 1.697,
+              "p95": 3.202,
+              "minimum": 1.566,
+              "maximum": 3.202,
+              "standardDeviation": 0.392
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                7.151,
+                6.093,
+                5.007,
+                5.303,
+                4.917,
+                4.633,
+                4.55,
+                4.528,
+                4.637,
+                4.702,
+                4.697,
+                5.022,
+                4.733,
+                5.142,
+                4.682
+              ],
+              "median": 4.733,
+              "p95": 7.151,
+              "minimum": 4.528,
+              "maximum": 7.151,
+              "standardDeviation": 0.68
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                290.245,
+                268.771,
+                252.887,
+                234.226,
+                233.56,
+                231.027,
+                236.588,
+                229.74,
+                232.053,
+                239.15,
+                230.661,
+                235.309,
+                237.127,
+                233.574,
+                231.226
+              ],
+              "median": 234.226,
+              "p95": 290.245,
+              "minimum": 229.74,
+              "maximum": 290.245,
+              "standardDeviation": 16.478
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                286.304,
+                260.071,
+                227.794,
+                235.803,
+                225.412,
+                230.026,
+                224.757,
+                223.055,
+                226.547,
+                229.757,
+                223.013,
+                225.625,
+                238.978,
+                225.362,
+                225.217
+              ],
+              "median": 226.547,
+              "p95": 286.304,
+              "minimum": 223.013,
+              "maximum": 286.304,
+              "standardDeviation": 16.718
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 3.036,
+            "coreScan": 226.547,
+            "adapterOverhead": 232.529,
+            "unattributed": 2.946
+          }
+        },
+        {
+          "host": "pino-streamwrite",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 54,
+          "scannedCodeUnitsPerEvent": 2154.25,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                1.624,
+                1.628,
+                1.675,
+                1.619,
+                1.741,
+                1.789,
+                1.648,
+                1.896,
+                1.599,
+                1.618,
+                1.941,
+                1.84,
+                1.885,
+                1.674,
+                1.918
+              ],
+              "median": 1.675,
+              "p95": 1.941,
+              "minimum": 1.599,
+              "maximum": 1.941,
+              "standardDeviation": 0.122
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                10.201,
+                10.281,
+                10.211,
+                10.144,
+                10.712,
+                10.187,
+                10.222,
+                10.297,
+                10.04,
+                10.061,
+                11.016,
+                10.204,
+                10.288,
+                10.134,
+                10.699
+              ],
+              "median": 10.211,
+              "p95": 11.016,
+              "minimum": 10.04,
+              "maximum": 11.016,
+              "standardDeviation": 0.266
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                465.353,
+                471.097,
+                465.653,
+                812.591,
+                468.38,
+                468.018,
+                474.34,
+                462.604,
+                461.126,
+                457.859,
+                463.102,
+                472.71,
+                491.019,
+                462.443,
+                499.399
+              ],
+              "median": 468.018,
+              "p95": 812.591,
+              "minimum": 457.859,
+              "maximum": 812.591,
+              "standardDeviation": 86.088
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                453.49,
+                451.03,
+                453.104,
+                452.597,
+                453.374,
+                518.008,
+                453.788,
+                451.435,
+                447.206,
+                444.666,
+                468.957,
+                462.76,
+                448.655,
+                457.796,
+                524.404
+              ],
+              "median": 453.374,
+              "p95": 524.404,
+              "minimum": 444.666,
+              "maximum": 524.404,
+              "standardDeviation": 23.665
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 8.536,
+            "coreScan": 453.374,
+            "adapterOverhead": 466.343,
+            "unattributed": 4.433
+          }
+        },
+        {
+          "host": "otel-js",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                14.827,
+                4.018,
+                2.705,
+                2.384,
+                2.031,
+                1.974,
+                2.057,
+                1.982,
+                1.809,
+                2.117,
+                2.07,
+                1.832,
+                1.957,
+                1.925,
+                2.079
+              ],
+              "median": 2.057,
+              "p95": 14.827,
+              "minimum": 1.809,
+              "maximum": 14.827,
+              "standardDeviation": 3.191
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                13.745,
+                7.81,
+                8.618,
+                6.197,
+                5.419,
+                3.383,
+                5.253,
+                5.094,
+                5.104,
+                3.493,
+                5.185,
+                4.742,
+                5.322,
+                3.151,
+                5.335
+              ],
+              "median": 5.253,
+              "p95": 13.745,
+              "minimum": 3.151,
+              "maximum": 13.745,
+              "standardDeviation": 2.54
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                541.011,
+                541.041,
+                498.73,
+                496.453,
+                497.093,
+                499.786,
+                484.278,
+                488.283,
+                564.541,
+                513.507,
+                508.83,
+                493.981,
+                484.156,
+                507.413,
+                495.841
+              ],
+              "median": 498.73,
+              "p95": 564.541,
+              "minimum": 484.156,
+              "maximum": 564.541,
+              "standardDeviation": 22.625
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                520.988,
+                523.749,
+                485.758,
+                482.563,
+                518.017,
+                490.834,
+                500.951,
+                495.637,
+                528.573,
+                523.566,
+                479.1,
+                481.529,
+                504.495,
+                486.365,
+                501.946
+              ],
+              "median": 500.951,
+              "p95": 528.573,
+              "minimum": 479.1,
+              "maximum": 528.573,
+              "standardDeviation": 16.854
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 3.196,
+            "coreScan": 500.951,
+            "adapterOverhead": 496.673,
+            "unattributed": -7.474
+          }
+        },
+        {
+          "host": "mask-js",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.015,
+                0.014,
+                0.013,
+                0.014,
+                0.01,
+                0.012,
+                0.026,
+                0.069,
+                0.005,
+                0.007,
+                0.005,
+                0.006,
+                0.005,
+                0.006,
+                0.006
+              ],
+              "median": 0.01,
+              "p95": 0.069,
+              "minimum": 0.005,
+              "maximum": 0.069,
+              "standardDeviation": 0.016
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                5.481,
+                5.739,
+                4.613,
+                4.938,
+                4.162,
+                4.308,
+                8.322,
+                4.256,
+                4.214,
+                4.727,
+                4.225,
+                4.208,
+                4.721,
+                4.88,
+                4.404
+              ],
+              "median": 4.613,
+              "p95": 8.322,
+              "minimum": 4.162,
+              "maximum": 8.322,
+              "standardDeviation": 1.028
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                380.236,
+                417.776,
+                385.311,
+                381.746,
+                381.203,
+                393.247,
+                408.43,
+                408.771,
+                399.518,
+                419.518,
+                406.006,
+                384.882,
+                379.364,
+                381.816,
+                423.36
+              ],
+              "median": 393.247,
+              "p95": 423.36,
+              "minimum": 379.364,
+              "maximum": 423.36,
+              "standardDeviation": 15.474
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                387.756,
+                404.66,
+                389.137,
+                393.063,
+                373.297,
+                386.386,
+                407.347,
+                391.035,
+                428.294,
+                402.166,
+                372.119,
+                374.686,
+                381.799,
+                383.6,
+                390.458
+              ],
+              "median": 389.137,
+              "p95": 428.294,
+              "minimum": 372.119,
+              "maximum": 428.294,
+              "standardDeviation": 14.34
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.603,
+            "coreScan": 389.137,
+            "adapterOverhead": 393.237,
+            "unattributed": -0.503
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op, so export cost is excluded; pino writes to a no-op destination, so I/O cost is excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    },
+    {
+      "schema": "redact-secret-adapters/overhead-v1",
+      "language": "python",
+      "measuredAt": "2026-09-25T20:38:41.566975Z",
+      "source": {
+        "repository": "redact-secret/redact-secret-adapters",
+        "commit": "099c07a0c306cfb35949a76348136869ddd6b411",
+        "dirty": false
+      },
+      "workloads": {
+        "file": "fixtures/overhead-profiles.json",
+        "schemaVersion": 1,
+        "digest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243"
+      },
+      "environment": {
+        "os": "darwin-25.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpuModel": "Apple M4",
+        "logicalCpus": 10,
+        "runtime": "cpython-3.14.7",
+        "loadAverage1m": {
+          "start": 6.90380859375,
+          "end": 6.99951171875
+        },
+        "packages": {
+          "redact-secret": "0.1.0b8",
+          "redact-secret-adapters": "0.1.0",
+          "opentelemetry-sdk": "1.45.0"
+        }
+      },
+      "method": {
+        "quick": false,
+        "repetitions": 15,
+        "eventsPerRepetition": 400,
+        "warmupEventsPerMode": 200,
+        "distinctEvents": 64,
+        "order": "modes interleaved within each repetition, rotated by one position per repetition",
+        "clock": "time.perf_counter_ns",
+        "percentile": "nearest-rank",
+        "processes": 1
+      },
+      "results": [
+        {
+          "host": "python-logging",
+          "profileId": "log-flat",
+          "scannerCallsPerEvent": 9.0,
+          "scannedCodeUnitsPerEvent": 367.062,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                4.632,
+                4.778,
+                4.375,
+                4.374,
+                4.261,
+                4.441,
+                4.326,
+                4.316,
+                4.272,
+                4.377,
+                4.481,
+                4.43,
+                4.453,
+                4.493,
+                4.768
+              ],
+              "median": 4.43,
+              "p95": 4.778,
+              "minimum": 4.261,
+              "maximum": 4.778,
+              "standardDeviation": 0.155
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                9.48,
+                8.802,
+                8.541,
+                8.34,
+                8.391,
+                8.363,
+                8.416,
+                8.425,
+                8.299,
+                8.716,
+                8.479,
+                8.366,
+                8.449,
+                8.558,
+                8.681
+              ],
+              "median": 8.449,
+              "p95": 9.48,
+              "minimum": 8.299,
+              "maximum": 9.48,
+              "standardDeviation": 0.286
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                136.857,
+                130.155,
+                133.794,
+                120.929,
+                120.268,
+                120.602,
+                121.816,
+                121.764,
+                121.052,
+                121.475,
+                120.918,
+                122.148,
+                120.221,
+                120.533,
+                122.439
+              ],
+              "median": 121.475,
+              "p95": 136.857,
+              "minimum": 120.221,
+              "maximum": 136.857,
+              "standardDeviation": 5.156
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                125.286,
+                125.065,
+                119.65,
+                119.561,
+                110.503,
+                111.048,
+                111.924,
+                111.976,
+                111.318,
+                110.592,
+                111.938,
+                110.672,
+                110.655,
+                115.064,
+                114.808
+              ],
+              "median": 111.938,
+              "p95": 125.286,
+              "minimum": 110.503,
+              "maximum": 125.286,
+              "standardDeviation": 5.049
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 4.019,
+            "coreScan": 111.938,
+            "adapterOverhead": 117.045,
+            "unattributed": 1.088
+          }
+        },
+        {
+          "host": "python-logging",
+          "profileId": "log-nested",
+          "scannerCallsPerEvent": 27.0,
+          "scannedCodeUnitsPerEvent": 1077.125,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                7.304,
+                7.089,
+                7.244,
+                7.285,
+                7.72,
+                7.452,
+                7.741,
+                7.25,
+                6.918,
+                7.088,
+                7.629,
+                7.476,
+                7.346,
+                7.534,
+                7.3
+              ],
+              "median": 7.304,
+              "p95": 7.741,
+              "minimum": 6.918,
+              "maximum": 7.741,
+              "standardDeviation": 0.228
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                19.464,
+                18.896,
+                19.066,
+                18.976,
+                19.75,
+                20.218,
+                20.667,
+                18.72,
+                18.496,
+                20.258,
+                19.226,
+                18.657,
+                20.106,
+                19.348,
+                18.918
+              ],
+              "median": 19.226,
+              "p95": 20.667,
+              "minimum": 18.496,
+              "maximum": 20.667,
+              "standardDeviation": 0.647
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                454.827,
+                352.886,
+                359.139,
+                364.382,
+                428.12,
+                371.394,
+                358.395,
+                355.23,
+                360.066,
+                364.449,
+                348.283,
+                371.857,
+                377.765,
+                351.153,
+                351.842
+              ],
+              "median": 360.066,
+              "p95": 454.827,
+              "minimum": 348.283,
+              "maximum": 454.827,
+              "standardDeviation": 29.091
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                337.004,
+                351.983,
+                335.157,
+                334.09,
+                366.234,
+                347.615,
+                340.49,
+                354.661,
+                355.398,
+                349.519,
+                355.338,
+                337.481,
+                339.099,
+                336.294,
+                364.794
+              ],
+              "median": 347.615,
+              "p95": 366.234,
+              "minimum": 334.09,
+              "maximum": 366.234,
+              "standardDeviation": 10.436
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 11.922,
+            "coreScan": 347.615,
+            "adapterOverhead": 352.762,
+            "unattributed": -6.775
+          }
+        },
+        {
+          "host": "otel-python",
+          "profileId": "span-attributes",
+          "scannerCallsPerEvent": 43.0,
+          "scannedCodeUnitsPerEvent": 3060.438,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                18.429,
+                22.485,
+                24.364,
+                38.778,
+                27.6,
+                22.484,
+                20.711,
+                20.041,
+                19.274,
+                20.422,
+                22.489,
+                20.284,
+                19.534,
+                19.38,
+                19.207
+              ],
+              "median": 20.422,
+              "p95": 38.778,
+              "minimum": 18.429,
+              "maximum": 38.778,
+              "standardDeviation": 4.96
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                36.737,
+                57.372,
+                47.587,
+                52.449,
+                56.106,
+                66.236,
+                40.315,
+                40.05,
+                38.171,
+                36.832,
+                44.982,
+                40.277,
+                39.532,
+                40.075,
+                37.798
+              ],
+              "median": 40.277,
+              "p95": 66.236,
+              "minimum": 36.737,
+              "maximum": 66.236,
+              "standardDeviation": 8.74
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                754.342,
+                917.533,
+                876.755,
+                1006.298,
+                1130.946,
+                1044.219,
+                772.411,
+                737.826,
+                712.914,
+                701.841,
+                743.931,
+                752.472,
+                752.164,
+                735.698,
+                705.893
+              ],
+              "median": 752.472,
+              "p95": 1130.946,
+              "minimum": 701.841,
+              "maximum": 1130.946,
+              "standardDeviation": 133.691
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                794.487,
+                802.998,
+                843.3,
+                1001.109,
+                1036.048,
+                828.128,
+                727.791,
+                697.404,
+                652.641,
+                726.0,
+                763.672,
+                749.551,
+                675.952,
+                669.384,
+                658.508
+              ],
+              "median": 749.551,
+              "p95": 1036.048,
+              "minimum": 652.641,
+              "maximum": 1036.048,
+              "standardDeviation": 112.207
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 19.855,
+            "coreScan": 749.551,
+            "adapterOverhead": 732.05,
+            "unattributed": -37.356
+          }
+        },
+        {
+          "host": "mask-python",
+          "profileId": "mask-payload",
+          "scannerCallsPerEvent": 22.0,
+          "scannedCodeUnitsPerEvent": 3024.547,
+          "modes": {
+            "host": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                0.035,
+                0.044,
+                0.046,
+                0.042,
+                0.035,
+                0.044,
+                0.047,
+                0.046,
+                0.041,
+                0.05,
+                0.038,
+                0.044,
+                0.036,
+                0.041,
+                0.045
+              ],
+              "median": 0.044,
+              "p95": 0.05,
+              "minimum": 0.035,
+              "maximum": 0.05,
+              "standardDeviation": 0.004
+            },
+            "adapter-identity": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                14.175,
+                13.55,
+                13.665,
+                14.322,
+                13.126,
+                14.591,
+                15.42,
+                14.983,
+                15.038,
+                14.017,
+                12.989,
+                13.403,
+                13.586,
+                15.135,
+                17.612
+              ],
+              "median": 14.175,
+              "p95": 17.612,
+              "minimum": 12.989,
+              "maximum": 17.612,
+              "standardDeviation": 1.137
+            },
+            "adapter-core": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                499.278,
+                490.486,
+                501.734,
+                513.477,
+                507.608,
+                530.421,
+                607.631,
+                537.523,
+                537.835,
+                494.056,
+                500.882,
+                506.007,
+                536.556,
+                528.899,
+                513.75
+              ],
+              "median": 513.477,
+              "p95": 607.631,
+              "minimum": 490.486,
+              "maximum": 607.631,
+              "standardDeviation": 28.128
+            },
+            "core-direct": {
+              "unit": "microseconds-per-event",
+              "samples": [
+                496.182,
+                500.655,
+                483.247,
+                488.45,
+                509.685,
+                492.516,
+                566.999,
+                528.822,
+                495.685,
+                477.942,
+                455.457,
+                472.654,
+                581.252,
+                487.902,
+                504.551
+              ],
+              "median": 495.685,
+              "p95": 581.252,
+              "minimum": 455.457,
+              "maximum": 581.252,
+              "standardDeviation": 32.442
+            }
+          },
+          "derived": {
+            "unit": "microseconds-per-event",
+            "basis": "difference of per-mode medians",
+            "traversal": 14.131,
+            "coreScan": 495.685,
+            "adapterOverhead": 513.433,
+            "unattributed": 3.617
+          }
+        }
+      ],
+      "limitations": [
+        "Host-dependent: these numbers describe this machine and runtime only.",
+        "Per-event times are batch means over eventsPerRepetition events; the distribution is across repetitions, not across single events.",
+        "derived values are differences of medians, not medians of differences, and can be negative within noise.",
+        "The OpenTelemetry exporter is a no-op and the logging stream discards writes, so export and I/O cost are excluded.",
+        "This output carries no threshold and no verdict."
+      ]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "profilesVersion": 1,
-  "familyCount": 73,
+  "familyCount": 77,
   "cellsMetByProfile": {
-    "arrival-provisional": 59,
-    "stable-documented": 59,
+    "arrival-provisional": 62,
+    "stable-documented": 62,
     "stable-empirical": 15,
     "context-constrained-empirical": 8
   },
@@ -1947,6 +1947,63 @@
       "debt": []
     },
     {
+      "family": "mailgun-api-key-triplet",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": null,
+      "explicit": false,
+      "target": "arrival-provisional",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 50,
+        "positiveCases": 0,
+        "benignControls": 24,
+        "twinPairs": 14,
+        "positiveContextAxes": 10,
+        "controlAxes": 6,
+        "confusionAxes": 9,
+        "positiveContextAxisIds": [
+          "#259 · mailgun-api-key-triplet · ci-config",
+          "#259 · mailgun-api-key-triplet · cli",
+          "#259 · mailgun-api-key-triplet · container-config",
+          "#259 · mailgun-api-key-triplet · env",
+          "#259 · mailgun-api-key-triplet · log",
+          "#259 · mailgun-api-key-triplet · sdk-config",
+          "#259 · mailgun-api-key-triplet · shell-export",
+          "#259 · mailgun-api-key-triplet · source-code",
+          "#259 · mailgun-api-key-triplet · structured-file",
+          "#259 · mailgun-api-key-triplet · tool-output"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:boundary",
+          "twin:context",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 6,
+          "shortfall": 6
+        }
+      ]
+    },
+    {
       "family": "microsoft-entra-client-secret",
       "tier": "T1",
       "profilesVersion": 1,
@@ -1996,6 +2053,78 @@
         ]
       },
       "debt": []
+    },
+    {
+      "family": "neon-api-key",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": "stable-empirical",
+      "explicit": false,
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 16,
+        "twinPairs": 5,
+        "positiveContextAxes": 9,
+        "controlAxes": 6,
+        "confusionAxes": 10,
+        "positiveContextAxisIds": [
+          "#259 · neon-api-key · ci-config",
+          "#259 · neon-api-key · cli",
+          "#259 · neon-api-key · env",
+          "#259 · neon-api-key · header",
+          "#259 · neon-api-key · sdk-config",
+          "#259 · neon-api-key · shell-export",
+          "#259 · neon-api-key · structured-file",
+          "#259 · neon-api-key · tool-output",
+          "neon-api-key"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        }
+      ]
     },
     {
       "family": "netlify-token",
@@ -2770,6 +2899,77 @@
         ]
       },
       "debt": []
+    },
+    {
+      "family": "postman-collection-access-key",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": "stable-empirical",
+      "explicit": false,
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 16,
+        "twinPairs": 5,
+        "positiveContextAxes": 9,
+        "controlAxes": 6,
+        "confusionAxes": 9,
+        "positiveContextAxisIds": [
+          "#259 · postman-collection-access-key · ci-config",
+          "#259 · postman-collection-access-key · cli",
+          "#259 · postman-collection-access-key · env",
+          "#259 · postman-collection-access-key · prose",
+          "#259 · postman-collection-access-key · shell-export",
+          "#259 · postman-collection-access-key · structured-file",
+          "#259 · postman-collection-access-key · tool-output",
+          "#259 · postman-collection-access-key · url",
+          "postman-collection-access-key"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 40,
+          "shortfall": 8
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        }
+      ]
     },
     {
       "family": "private-key",
@@ -3629,6 +3829,71 @@
         ]
       },
       "debt": []
+    },
+    {
+      "family": "travisci-api-token",
+      "tier": "T2",
+      "profilesVersion": 1,
+      "claimed": "context-constrained-empirical",
+      "explicit": false,
+      "target": "context-constrained-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 32,
+        "positiveCases": 6,
+        "benignControls": 16,
+        "twinPairs": 5,
+        "positiveContextAxes": 9,
+        "controlAxes": 6,
+        "confusionAxes": 9,
+        "positiveContextAxisIds": [
+          "#259 · travisci-api-token · ci-config",
+          "#259 · travisci-api-token · cli",
+          "#259 · travisci-api-token · env",
+          "#259 · travisci-api-token · header",
+          "#259 · travisci-api-token · log",
+          "#259 · travisci-api-token · shell-export",
+          "#259 · travisci-api-token · source-code",
+          "#259 · travisci-api-token · structured-file",
+          "travisci-api-token"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:context",
+          "twin:length"
+        ]
+      },
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 32,
+          "required": 48,
+          "shortfall": 16
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 5,
+          "required": 10,
+          "shortfall": 5
+        }
+      ]
     },
     {
       "family": "twilio-api-key-secret",

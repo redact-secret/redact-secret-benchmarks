@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "reviewedAt": "2026-09-22",
   "redactSecretVersion": "0.1.0-beta.7",
-  "redactSecretRevision": "f2082ab6fe1d0fc8cc703e371e9203bc4ff68f6b",
-  "method": "Explicit provider-family mapping against the 67 registered beta.7 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+  "redactSecretRevision": "3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+  "method": "Explicit provider-family mapping against the 70 registered beta.7 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
   "sources": {
     "gitleaks": {
       "version": "8.30.1",
@@ -1753,8 +1753,8 @@
       "id": "mailgun-signing-key",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L2563",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "mailgun-api-key",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -2337,8 +2337,8 @@
       "id": "travisci-access-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L3111",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "travisci-api-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -9667,8 +9667,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1734",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "travisci-api-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",

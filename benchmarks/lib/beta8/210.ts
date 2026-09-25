@@ -101,7 +101,6 @@ export const registryContracts: Record<string, FormatContract> = {
 };
 
 /** The Beta.8 profile each target this issue owns is authored toward (registry detector ids or arrival ids). */
+// langsmith-api-key, langfuse-secret-key: profile declared by #263, which raised them to the empirical floors.
 export const profiles: Record<string, FixtureProfile> = {
-  'langsmith-api-key': 'arrival-24',
-  'langfuse-secret-key': 'arrival-24',
 };

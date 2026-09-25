@@ -4,23 +4,21 @@
 
 - Engine 1.1.0 · accounting 1.1 · report schema 2
 - Status: **`execution-qualified`**
-- Run ID: 28ca6c2b-f763-4384-8862-5a1a322f3368
-- Completed: 2026-09-24T21:23:09.244Z
-- Scanners: redact-secret 0.1.0-beta.7 (the released lockfile package), gitleaks 8.30.1, trufflehog 3.97.4, the pins in `qualification/suite-v1.json`
-- Source fingerprint: 9c39720b0cc3031c85ea7dbe8146e6294b6dc8b33f7f3898a644caa0d01cda0e (revision fcc12a4, clean tree)
-- Cases / variants: twin 638/1,276, benign 944/944, metamorphic 2,102/9,858, mutation 2,102/7,395, differential 2,740/2,740, holdout 12/12
+- Run ID: c2c8b99d-200c-4059-9d51-959e71e3591b
+- Completed: 2026-09-25T12:07:41.353Z
+- Scanners: redact-secret 0.1.0-beta.8 (the released lockfile package), gitleaks 8.30.1, trufflehog 3.97.4, the pins in `qualification/suite-v1.json`
+- Source fingerprint: 074a3506637ac603ce4d48cd9695ccf13939e34d079e1ab0f6e27050242a51ae (revision f94abb1, clean tree)
+- Cases / variants: twin 698/1,396, benign 1,016/1,016, metamorphic 2,292/10,675, mutation 2,292/8,165, differential 2,990/2,990, holdout 12/12
 - Every scanner completed and agreed across 2 replays; 0 generation errors
 - `unresolvedGroups`: none
-- Review queue: 5,430 entries, **0 `unknown`**, 220 open, 1,238 resolved, 3,972 not-assertable (`benchmarks/review-ledger.json`)
+- Review queue: 5,962 entries, **0 `unknown`**, 0 open, 1,530 resolved, 4,432 not-assertable (`benchmarks/review-ledger.json`)
 - Public holdout lifecycle controls: 12/12 assertions passed for each scanner
-- Development findings: 13,028 failed assertions
+- Development findings: 12,820 failed assertions
 
-Regenerated for #213, when the suite's redact-secret pin moved from 0.1.0-beta.4
-to the lockfile's 0.1.0-beta.7 (a pin `eval:qualify` enforces, so the stale pin
-had stopped the site from publishing any qualification run). The publish
-workflow now produces this same report on every staging and production publish
-and ships it inside `evaluation-v1.json`; this file is the checked-in reference
-copy `validate.yml` re-validates.
+Refreshed for the 0.1.0-beta.8 release after the suite and lockfile pins moved
+from 0.1.0-beta.7. The publish workflow produces this same report on every
+staging and production publish and ships it inside `evaluation-v1.json`; this
+file is the checked-in reference copy `validate.yml` re-validates.
 
 The history below describes the first engine v1.1 run (2026-09-19, beta.4).
 

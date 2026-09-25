@@ -4,19 +4,19 @@
   "engineVersion": "1.1.0",
   "accountingVersion": "1.1",
   "suiteId": "engine-v1",
-  "suiteHash": "c4c75daeff985f9fe47dd8fbcc645afa643bd9761d243e5949f3eef91662063f",
-  "runId": "28ca6c2b-f763-4384-8862-5a1a322f3368",
-  "startedAt": "2026-09-24T21:22:31.426Z",
-  "finishedAt": "2026-09-24T21:23:09.244Z",
+  "suiteHash": "ae43260814c362348d97ba119bc9bd310ba81b695b4f4cc3133078b2b44381e3",
+  "runId": "c2c8b99d-200c-4059-9d51-959e71e3591b",
+  "startedAt": "2026-09-25T12:07:03.893Z",
+  "finishedAt": "2026-09-25T12:07:41.353Z",
   "scope": "engine-conformance",
   "status": "execution-qualified",
   "supportClaims": false,
   "provenance": {
-    "revision": "fcc12a4f403ce4f128099e55afa5f7344b86614f",
+    "revision": "f94abb1b622d8605036d77e0934ee12d332c26c2",
     "dirty": false,
-    "sourceHash": "9c39720b0cc3031c85ea7dbe8146e6294b6dc8b33f7f3898a644caa0d01cda0e",
-    "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
-    "candidateArtifactHash": "d1951560006916ae15f149d43b394225f85377ec18c1ca74cb9389e140902262",
+    "sourceHash": "074a3506637ac603ce4d48cd9695ccf13939e34d079e1ab0f6e27050242a51ae",
+    "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+    "candidateArtifactHash": "4021f6b165642b119952e5e44e4f872530be521e5853cf3cd8d43e67a6cd6a27",
     "runtime": {
       "node": "v22.16.0",
       "platform": "darwin",
@@ -25,7 +25,7 @@
   },
   "development": {
     "seed": "engine-v1",
-    "casesHash": "5680fd55614ed8d28fa149ecfa8dca3e2b9293e34a6b47a882105dc6c2541a88",
+    "casesHash": "192d9216b734d2892725c2fa6a9529a2bcda840ed957ee1ae8b744bc729fa0a9",
     "corpusHashes": {
       "common-formats": "b1f80a34054a95af6e873a9583f6001b1cc71f861aba2e5e1faabe7c31f00b89",
       "accuracy": "d0ea3b8ccc8b89f67653ac27fb7b429c75bf682fd71e07e0231a9bcf5a18817e",
@@ -36,7 +36,7 @@
       "sendgrid-regressions": "cd4333a8a1ffc7dc9e09931c5baa5867836193ac19cd5d5ab4b5b6769d546f34",
       "reference-syntax": "99a18074ce7bec0528f9643ba0c92dc5d64ee6408be9cd29478a7d19f250c341",
       "milestone-6-closed": "437b70a7cee78a70ba76f057b61796f1c3b23aa7b406053f7df9c1267a099d6b",
-      "detector-coverage": "c7d195c91a6af63fda6ea67d6daa68cb141e52e4dce1e3be91fdfde49963ced0",
+      "detector-coverage": "272601ff74ca60ab9b6248d6e319f87a3f9de9f736b87125f17114addeace536",
       "real-world-shapes": "2bd89ce7218c40c7863b72ee4985b9c9acfb762b6f0ffa800ee37e389a40379f",
       "beta8-207": "8fb195bfb16336a5f841ceb484d408e506a15e98e5a2f7b681105835c3245c37",
       "beta8-209": "15e855403263fcf0ee2291e2dae811a3c97172777c55e7f54ed530ccfb901998",
@@ -49,10 +49,12 @@
       "beta8-213b": "90ba1c18252c5dfdd048135945f723329c3027c1ac6574afeac5c2da722999f5",
       "beta8-213d": "867c0126adcc2ee3eb5e5cee017c7c901c715eadad17902653250409f18c70e6",
       "beta8-213e": "dcac61fc8c088f4f6995834e276bd9a849f8fff463510580de1a592f0141bec5",
-      "beta8-213f": "4b84faa77ed22b9a3286d7726047ab5a80196a2dc0aa49e1486c2415b88ae7ba"
+      "beta8-213f": "4b84faa77ed22b9a3286d7726047ab5a80196a2dc0aa49e1486c2415b88ae7ba",
+      "beta8-259": "7d17afa1f7745c509be57b6e767e6fe9348826644536498e31220cd24ffa167c",
+      "beta8-263": "e83345bbe5592d8a640b00423f09ba0ad30b7dfbd3ff9545325ff517d2c52b3e"
     },
-    "failures": 13028,
-    "reviewEntries": 5430,
+    "failures": 12820,
+    "reviewEntries": 5962,
     "byDetector": {
       "github-token": {
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
@@ -6590,8 +6592,8 @@
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T3/absent": {
-          "pass": 9,
-          "fail": 1,
+          "pass": 10,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -6608,14 +6610,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3/absent": {
-          "pass": 48,
-          "fail": 4,
+          "pass": 52,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
-          "pass": 39,
-          "fail": 3,
+          "pass": 42,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -6644,8 +6646,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T3/absent": {
-          "pass": 19,
-          "fail": 1,
+          "pass": 20,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -10288,8 +10290,8 @@
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T2/absent": {
-          "pass": 7,
-          "fail": 1,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -10306,14 +10308,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2/absent": {
-          "pass": 36,
-          "fail": 4,
+          "pass": 40,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
-          "pass": 29,
-          "fail": 3,
+          "pass": 32,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -10342,8 +10344,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 7,
-          "fail": 1,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -10560,8 +10562,8 @@
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T2/absent": {
-          "pass": 6,
-          "fail": 1,
+          "pass": 7,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -10578,14 +10580,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2/absent": {
-          "pass": 32,
-          "fail": 4,
+          "pass": 36,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
-          "pass": 26,
-          "fail": 3,
+          "pass": 29,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -10614,8 +10616,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 6,
-          "fail": 1,
+          "pass": 7,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -11502,8 +11504,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 7,
-          "fail": 3,
+          "pass": 10,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -11628,8 +11630,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 0,
-          "fail": 3,
+          "pass": 3,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -11700,14 +11702,14 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 0,
-          "fail": 3,
+          "pass": 3,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 0,
-          "fail": 3,
+          "pass": 3,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -11938,14 +11940,14 @@
       },
       "google-api-key": {
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 47,
-          "fail": 4,
+          "pass": 51,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 36,
-          "fail": 3,
+          "pass": 39,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -11974,8 +11976,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 22,
-          "fail": 2,
+          "pass": 24,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -11998,8 +12000,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 11,
-          "fail": 1,
+          "pass": 12,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -12554,14 +12556,14 @@
       },
       "atlassian-api-token": {
         "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 15,
-          "fail": 60,
+          "pass": 75,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 12,
-          "fail": 45,
+          "pass": 57,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -12590,14 +12592,14 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 9,
-          "fail": 45,
+          "pass": 54,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 16,
-          "fail": 1,
+          "pass": 17,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -12608,14 +12610,14 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 3,
-          "fail": 5,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 6,
-          "fail": 30,
+          "pass": 36,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -12680,8 +12682,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 3,
-          "fail": 5,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -12692,8 +12694,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 3,
-          "fail": 5,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -12734,8 +12736,8 @@
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T2/absent": {
-          "pass": 8,
-          "fail": 1,
+          "pass": 9,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -12752,14 +12754,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2/absent": {
-          "pass": 40,
-          "fail": 4,
+          "pass": 44,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
-          "pass": 32,
-          "fail": 3,
+          "pass": 35,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -13784,14 +13786,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 23,
-          "fail": 16,
+          "pass": 39,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 18,
-          "fail": 12,
+          "pass": 30,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -13820,8 +13822,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 5,
-          "fail": 4,
+          "pass": 9,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -15638,8 +15640,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 8,
-          "fail": 3,
+          "pass": 11,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -15650,8 +15652,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 4,
-          "fail": 3,
+          "pass": 7,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -15710,14 +15712,14 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 7,
-          "fail": 3,
+          "pass": 10,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 7,
-          "fail": 3,
+          "pass": 10,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -15928,8 +15930,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 13,
-          "fail": 1,
+          "pass": 14,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -16030,8 +16032,8 @@
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T2/absent": {
-          "pass": 10,
-          "fail": 1,
+          "pass": 11,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -16048,14 +16050,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2/absent": {
-          "pass": 48,
-          "fail": 4,
+          "pass": 52,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
-          "pass": 38,
-          "fail": 3,
+          "pass": 41,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -16828,14 +16830,14 @@
       },
       "heroku-api-key": {
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 43,
-          "fail": 8,
+          "pass": 51,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 33,
-          "fail": 6,
+          "pass": 39,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -16864,8 +16866,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 19,
-          "fail": 2,
+          "pass": 21,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -16882,8 +16884,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 4,
-          "fail": 2,
+          "pass": 6,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -16954,8 +16956,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 7,
-          "fail": 2,
+          "pass": 9,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -16966,8 +16968,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 7,
-          "fail": 2,
+          "pass": 9,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -17136,14 +17138,14 @@
       },
       "heroku-api-key-legacy": {
         "metamorphic/redact-secret/policy:T3/present-within-envelope": {
-          "pass": 59,
-          "fail": 8,
+          "pass": 67,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/policy:T3->policy:T3/same-detection": {
-          "pass": 45,
-          "fail": 6,
+          "pass": 51,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -17172,14 +17174,14 @@
           "not-measured": 0
         },
         "mutation/redact-secret/policy:T3/present-within-envelope": {
-          "pass": 14,
-          "fail": 2,
+          "pass": 16,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 14,
-          "fail": 1,
+          "pass": 15,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -17280,8 +17282,8 @@
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T2/absent": {
-          "pass": 11,
-          "fail": 1,
+          "pass": 12,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -17298,14 +17300,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2/absent": {
-          "pass": 52,
-          "fail": 4,
+          "pass": 56,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
-          "pass": 41,
-          "fail": 3,
+          "pass": 44,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -17768,8 +17770,8 @@
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T3/absent": {
-          "pass": 6,
-          "fail": 1,
+          "pass": 7,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -17786,14 +17788,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3/absent": {
-          "pass": 32,
-          "fail": 4,
+          "pass": 36,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
-          "pass": 26,
-          "fail": 3,
+          "pass": 29,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -17822,8 +17824,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T3/absent": {
-          "pass": 6,
-          "fail": 1,
+          "pass": 7,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -18476,14 +18478,14 @@
       },
       "replicate-api-token": {
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 8,
-          "fail": 43,
+          "pass": 51,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 6,
-          "fail": 33,
+          "pass": 39,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -18512,8 +18514,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 4,
-          "fail": 20,
+          "pass": 24,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -18524,8 +18526,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 2,
-          "fail": 10,
+          "pass": 12,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -18710,8 +18712,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 1,
-          "fail": 5,
+          "pass": 6,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -18728,8 +18730,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 1,
-          "fail": 5,
+          "pass": 6,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -18740,8 +18742,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 1,
-          "fail": 5,
+          "pass": 6,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -18784,79 +18786,79 @@
       },
       "groq-api-key": {
         "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 8,
-          "fail": 43,
+          "pass": 79,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 6,
-          "fail": 33,
+          "pass": 60,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 32,
-          "fail": 19,
+          "pass": 56,
+          "fail": 23,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 24,
-          "fail": 15,
+          "pass": 42,
+          "fail": 18,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 51,
+          "pass": 79,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 39,
+          "pass": 60,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 4,
-          "fail": 20,
+          "pass": 38,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 60,
+          "review-required": 95,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 2,
-          "fail": 10,
+          "pass": 19,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 16,
-          "fail": 8,
+          "pass": 28,
+          "fail": 10,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 60,
+          "review-required": 95,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 8,
-          "fail": 4,
+          "pass": 14,
+          "fail": 5,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 24,
+          "pass": 38,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -18864,11 +18866,11 @@
         "mutation/trufflehog/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 60,
+          "review-required": 95,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 12,
+          "pass": 19,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -18928,26 +18930,26 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 13,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-not-flag:T2/absent": {
-          "pass": 12,
+          "pass": 14,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-not-flag:T2/absent": {
-          "pass": 13,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T3/absent": {
-          "pass": 6,
-          "fail": 1,
+          "pass": 7,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -18964,14 +18966,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3/absent": {
-          "pass": 32,
-          "fail": 4,
+          "pass": 36,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
-          "pass": 26,
-          "fail": 3,
+          "pass": 29,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19000,8 +19002,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T3/absent": {
-          "pass": 6,
-          "fail": 1,
+          "pass": 7,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19018,73 +19020,73 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 1,
-          "fail": 5,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
+          "pass": 6,
           "fail": 2,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 1,
-          "fail": 5,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 1,
-          "fail": 5,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 5,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-not-flag:T2/absent": {
-          "pass": 5,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
+          "pass": 6,
           "fail": 2,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-not-flag:T2/absent": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -19092,79 +19094,79 @@
       },
       "xai-api-key": {
         "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 20,
-          "fail": 31,
+          "pass": 79,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 15,
-          "fail": 24,
+          "pass": 60,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 24,
-          "fail": 27,
+          "pass": 44,
+          "fail": 35,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 18,
-          "fail": 21,
+          "pass": 33,
+          "fail": 27,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 51,
+          "pass": 79,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 39,
+          "pass": 60,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 10,
-          "fail": 14,
+          "pass": 38,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 60,
+          "review-required": 95,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 5,
-          "fail": 7,
+          "pass": 19,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 12,
-          "fail": 12,
+          "pass": 22,
+          "fail": 16,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 60,
+          "review-required": 95,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 6,
-          "fail": 6,
+          "pass": 11,
+          "fail": 8,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 24,
+          "pass": 38,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -19172,18 +19174,18 @@
         "mutation/trufflehog/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 60,
+          "review-required": 95,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 12,
+          "pass": 19,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T2/absent": {
-          "pass": 5,
-          "fail": 1,
+          "pass": 6,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19200,14 +19202,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2/absent": {
-          "pass": 28,
-          "fail": 4,
+          "pass": 32,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
-          "pass": 23,
-          "fail": 3,
+          "pass": 26,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19236,19 +19238,19 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 11,
-          "fail": 1,
+          "pass": 14,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-not-flag:T2/absent": {
-          "pass": 11,
+          "pass": 13,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-not-flag:T2/absent": {
-          "pass": 12,
+          "pass": 14,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -19326,73 +19328,73 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
-          "fail": 2,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
+          "pass": 6,
           "fail": 2,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 4,
-          "fail": 2,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
-          "fail": 2,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 5,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-not-flag:T2/absent": {
-          "pass": 5,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
+          "pass": 6,
           "fail": 2,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-not-flag:T2/absent": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -19400,14 +19402,14 @@
       },
       "openrouter-api-key": {
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 12,
-          "fail": 39,
+          "pass": 51,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 9,
-          "fail": 30,
+          "pass": 39,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19436,8 +19438,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 3,
-          "fail": 9,
+          "pass": 12,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19616,8 +19618,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 6,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19634,8 +19636,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 6,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19646,8 +19648,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 6,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -19690,67 +19692,67 @@
       },
       "langsmith-api-key": {
         "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 8,
-          "fail": 39,
+          "pass": 75,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 6,
-          "fail": 30,
+          "pass": 57,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 28,
-          "fail": 19,
+          "pass": 44,
+          "fail": 31,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 21,
-          "fail": 15,
+          "pass": 33,
+          "fail": 24,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 47,
+          "pass": 75,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 36,
+          "pass": 57,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 2,
-          "fail": 9,
+          "pass": 18,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 66,
+          "review-required": 108,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 7,
-          "fail": 4,
+          "pass": 11,
+          "fail": 7,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 66,
+          "review-required": 108,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 11,
+          "pass": 18,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -19758,7 +19760,7 @@
         "mutation/trufflehog/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 66,
+          "review-required": 108,
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T2/absent": {
@@ -19816,19 +19818,19 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 12,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-not-flag:T2/absent": {
-          "pass": 11,
+          "pass": 14,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-not-flag:T2/absent": {
-          "pass": 12,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -19906,73 +19908,73 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 3,
+          "pass": 6,
           "fail": 2,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-not-flag:T2/absent": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 3,
+          "pass": 6,
           "fail": 2,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-not-flag:T2/absent": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -19980,75 +19982,75 @@
       },
       "langfuse-secret-key": {
         "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 12,
-          "fail": 35,
+          "pass": 75,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 9,
-          "fail": 27,
+          "pass": 57,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 24,
-          "fail": 23,
+          "pass": 40,
+          "fail": 35,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 18,
-          "fail": 18,
+          "pass": 30,
+          "fail": 27,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 16,
-          "fail": 31,
+          "pass": 20,
+          "fail": 55,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 12,
-          "fail": 24,
+          "pass": 15,
+          "fail": 42,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 3,
-          "fail": 8,
+          "pass": 18,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 66,
+          "review-required": 108,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 6,
-          "fail": 5,
+          "pass": 10,
+          "fail": 8,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 66,
+          "review-required": 108,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 4,
-          "fail": 7,
+          "pass": 5,
+          "fail": 13,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 66,
+          "review-required": 108,
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T2/absent": {
@@ -20106,20 +20108,20 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 14,
+          "pass": 17,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-not-flag:T2/absent": {
-          "pass": 13,
+          "pass": 16,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-not-flag:T2/absent": {
-          "pass": 14,
-          "fail": 0,
+          "pass": 16,
+          "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20196,135 +20198,135 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
           "pass": 2,
-          "fail": 3,
+          "fail": 6,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-not-flag:T2/absent": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 3,
+          "fail": 5,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-not-flag:T2/absent": {
-          "pass": 5,
-          "fail": 0,
+          "pass": 7,
+          "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
           "pass": 2,
-          "fail": 3,
+          "fail": 6,
           "review-required": 0,
           "not-measured": 0
         }
       },
       "perplexity-api-key": {
         "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 16,
-          "fail": 31,
+          "pass": 75,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 12,
-          "fail": 24,
+          "pass": 57,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 47,
+          "pass": 75,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 36,
+          "pass": 57,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
           "pass": 0,
-          "fail": 47,
+          "fail": 75,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
           "pass": 0,
-          "fail": 36,
+          "fail": 57,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 8,
-          "fail": 14,
+          "pass": 36,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 55,
+          "review-required": 90,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 4,
-          "fail": 7,
+          "pass": 18,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 22,
+          "pass": 36,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -20332,30 +20334,30 @@
         "mutation/gitleaks/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 55,
+          "review-required": 90,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 11,
+          "pass": 18,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2/present-within-envelope": {
           "pass": 0,
-          "fail": 22,
+          "fail": 36,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 55,
+          "review-required": 90,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
           "pass": 0,
-          "fail": 11,
+          "fail": 18,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20414,19 +20416,19 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 13,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-not-flag:T2/absent": {
-          "pass": 12,
+          "pass": 14,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-not-flag:T2/absent": {
-          "pass": 13,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -20504,88 +20506,88 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 5,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
           "pass": 0,
-          "fail": 6,
+          "fail": 8,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-not-flag:T2/absent": {
-          "pass": 5,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 5,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2/present-within-envelope": {
           "pass": 0,
-          "fail": 6,
+          "fail": 8,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-not-flag:T2/absent": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
           "pass": 0,
-          "fail": 6,
+          "fail": 8,
           "review-required": 0,
           "not-measured": 0
         }
       },
       "fireworks-ai-api-key": {
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 12,
-          "fail": 35,
+          "pass": 47,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 9,
-          "fail": 27,
+          "pass": 36,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20614,8 +20616,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 6,
-          "fail": 16,
+          "pass": 22,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20626,8 +20628,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 3,
-          "fail": 8,
+          "pass": 11,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20740,8 +20742,8 @@
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T3/absent": {
-          "pass": 8,
-          "fail": 1,
+          "pass": 9,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20758,14 +20760,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3/absent": {
-          "pass": 40,
-          "fail": 4,
+          "pass": 44,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
-          "pass": 32,
-          "fail": 3,
+          "pass": 35,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20794,8 +20796,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T3/absent": {
-          "pass": 8,
-          "fail": 1,
+          "pass": 9,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20812,8 +20814,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 1,
-          "fail": 4,
+          "pass": 5,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20830,8 +20832,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 1,
-          "fail": 4,
+          "pass": 5,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20842,8 +20844,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T1->must-not-flag:T2/must-flip": {
-          "pass": 1,
-          "fail": 4,
+          "pass": 5,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -20886,79 +20888,79 @@
       },
       "pinecone-api-key": {
         "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 12,
-          "fail": 35,
+          "pass": 75,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 9,
-          "fail": 27,
+          "pass": 57,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 28,
-          "fail": 19,
+          "pass": 48,
+          "fail": 27,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 21,
-          "fail": 15,
+          "pass": 36,
+          "fail": 21,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 47,
+          "pass": 75,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 36,
+          "pass": 57,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 6,
-          "fail": 16,
+          "pass": 36,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 55,
+          "review-required": 90,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 3,
-          "fail": 8,
+          "pass": 18,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 14,
-          "fail": 8,
+          "pass": 24,
+          "fail": 12,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 55,
+          "review-required": 90,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 7,
-          "fail": 4,
+          "pass": 12,
+          "fail": 6,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 22,
+          "pass": 36,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -20966,11 +20968,11 @@
         "mutation/trufflehog/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 55,
+          "review-required": 90,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 11,
+          "pass": 18,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -21030,26 +21032,26 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 12,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-not-flag:T2/absent": {
-          "pass": 11,
+          "pass": 14,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-not-flag:T2/absent": {
-          "pass": 12,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "benign/redact-secret/must-not-flag:T3/absent": {
-          "pass": 8,
-          "fail": 1,
+          "pass": 9,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -21066,14 +21068,14 @@
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3/absent": {
-          "pass": 40,
-          "fail": 4,
+          "pass": 44,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
-          "pass": 32,
-          "fail": 3,
+          "pass": 35,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -21102,8 +21104,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T3/absent": {
-          "pass": 8,
-          "fail": 1,
+          "pass": 9,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -21120,73 +21122,73 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 2,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-not-flag:T2/absent": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 4,
+          "pass": 7,
           "fail": 1,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2/present-within-envelope": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-not-flag:T2/absent": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 5,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -21194,92 +21196,92 @@
       },
       "gitlab-runner-authentication-token": {
         "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 27,
-          "fail": 16,
+          "pass": 79,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 21,
-          "fail": 12,
+          "pass": 60,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 35,
-          "fail": 8,
+          "pass": 67,
+          "fail": 12,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 27,
-          "fail": 6,
+          "pass": 51,
+          "fail": 9,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
           "pass": 0,
-          "fail": 43,
+          "fail": 79,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
           "pass": 0,
-          "fail": 33,
+          "fail": 60,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 12,
-          "fail": 4,
+          "pass": 34,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 54,
+          "review-required": 99,
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 6,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 13,
-          "fail": 3,
+          "pass": 29,
+          "fail": 5,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 54,
+          "review-required": 99,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
-          "pass": 5,
-          "fail": 1,
+          "pass": 13,
+          "fail": 2,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2/present-within-envelope": {
           "pass": 0,
-          "fail": 16,
+          "fail": 34,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T0/absolute": {
           "pass": 0,
           "fail": 0,
-          "review-required": 54,
+          "review-required": 99,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
           "pass": 0,
-          "fail": 6,
+          "fail": 15,
           "review-required": 0,
           "not-measured": 0
         },
@@ -21338,19 +21340,19 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-not-flag:T2/absent": {
-          "pass": 13,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-not-flag:T2/absent": {
-          "pass": 10,
+          "pass": 12,
           "fail": 3,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-not-flag:T2/absent": {
-          "pass": 13,
+          "pass": 15,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
@@ -21428,74 +21430,1016 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 2,
+          "pass": 4,
           "fail": 4,
           "review-required": 0,
           "not-measured": 0
         },
         "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
           "pass": 0,
-          "fail": 6,
+          "fail": 8,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2/present-within-envelope": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-not-flag:T2/absent": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 3,
-          "fail": 3,
+          "pass": 8,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2/present-within-envelope": {
-          "pass": 4,
+          "pass": 6,
           "fail": 2,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-not-flag:T2/absent": {
-          "pass": 3,
+          "pass": 5,
           "fail": 3,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
-          "pass": 2,
+          "pass": 4,
           "fail": 4,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2/present-within-envelope": {
           "pass": 0,
-          "fail": 6,
+          "fail": 8,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-not-flag:T2/absent": {
-          "pass": 6,
+          "pass": 8,
           "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
           "pass": 0,
-          "fail": 6,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        }
+      },
+      "travisci-api-token": {
+        "metamorphic/redact-secret/policy:T3/present-within-envelope": {
+          "pass": 79,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/policy:T3->policy:T3/same-detection": {
+          "pass": 60,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/policy:T3/present-within-envelope": {
+          "pass": 59,
+          "fail": 20,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/policy:T3->policy:T3/same-detection": {
+          "pass": 45,
+          "fail": 15,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/policy:T3/present-within-envelope": {
+          "pass": 75,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/policy:T3->policy:T3/same-detection": {
+          "pass": 57,
+          "fail": 3,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/policy:T3/present-within-envelope": {
+          "pass": 19,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/policy:T3/present-within-envelope": {
+          "pass": 14,
+          "fail": 5,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/policy:T3/present-within-envelope": {
+          "pass": 18,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/redact-secret/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/gitleaks/must-not-flag:T2/absent": {
+          "pass": 7,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/trufflehog/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T2/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T2/absent": {
+          "pass": 32,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 25,
+          "fail": 7,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T2/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-not-flag:T2/absent": {
+          "pass": 11,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-not-flag:T2/absent": {
+          "pass": 9,
+          "fail": 2,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-not-flag:T2/absent": {
+          "pass": 11,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/redact-secret/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/gitleaks/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/trufflehog/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T3/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T3/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T3/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-not-flag:T3/absent": {
+          "pass": 18,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-not-flag:T3/absent": {
+          "pass": 14,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-not-flag:T3/absent": {
+          "pass": 14,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 3,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 2,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 2,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 10,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 3,
+          "fail": 7,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 6,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/policy:T3/present-within-envelope": {
+          "pass": 13,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-not-flag:T2/absent": {
+          "pass": 3,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 3,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/policy:T3/present-within-envelope": {
+          "pass": 10,
+          "fail": 3,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-not-flag:T2/absent": {
+          "pass": 2,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 2,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/policy:T3/present-within-envelope": {
+          "pass": 12,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-not-flag:T2/absent": {
+          "pass": 3,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 2,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-not-flag:T3/absent": {
+          "pass": 10,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 10,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-not-flag:T3/absent": {
+          "pass": 6,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 3,
+          "fail": 7,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-not-flag:T3/absent": {
+          "pass": 6,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 6,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        }
+      },
+      "neon-api-key": {
+        "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
+          "pass": 75,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 57,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
+          "pass": 40,
+          "fail": 35,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 30,
+          "fail": 27,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
+          "pass": 0,
+          "fail": 75,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 0,
+          "fail": 57,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-redact:T2/present-within-envelope": {
+          "pass": 54,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-redact:T0/absolute": {
+          "pass": 0,
+          "fail": 0,
+          "review-required": 72,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-redact:T2/present-within-envelope": {
+          "pass": 30,
+          "fail": 24,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-redact:T0/absolute": {
+          "pass": 0,
+          "fail": 0,
+          "review-required": 72,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 20,
+          "fail": 16,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-redact:T2/present-within-envelope": {
+          "pass": 0,
+          "fail": 54,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-redact:T0/absolute": {
+          "pass": 0,
+          "fail": 0,
+          "review-required": 72,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 0,
+          "fail": 36,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/redact-secret/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/gitleaks/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/trufflehog/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T2/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T2/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T2/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-not-flag:T2/absent": {
+          "pass": 16,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-not-flag:T2/absent": {
+          "pass": 16,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-not-flag:T2/absent": {
+          "pass": 16,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/redact-secret/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/gitleaks/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/trufflehog/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T3/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T3/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T3/absent": {
+          "pass": 40,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 32,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-not-flag:T3/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 5,
+          "fail": 3,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 0,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-redact:T2/present-within-envelope": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-redact:T2/present-within-envelope": {
+          "pass": 5,
+          "fail": 3,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 5,
+          "fail": 3,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-redact:T2/present-within-envelope": {
+          "pass": 0,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 0,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        }
+      },
+      "postman-collection-access-key": {
+        "metamorphic/redact-secret/must-redact:T2/present-within-envelope": {
+          "pass": 75,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 57,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-redact:T2/present-within-envelope": {
+          "pass": 56,
+          "fail": 19,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 42,
+          "fail": 15,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-redact:T2/present-within-envelope": {
+          "pass": 0,
+          "fail": 75,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 0,
+          "fail": 57,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-redact:T2/present-within-envelope": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-redact:T0/absolute": {
+          "pass": 0,
+          "fail": 0,
+          "review-required": 90,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 18,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-redact:T2/present-within-envelope": {
+          "pass": 28,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-redact:T0/absolute": {
+          "pass": 0,
+          "fail": 0,
+          "review-required": 90,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 14,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-redact:T2/present-within-envelope": {
+          "pass": 0,
+          "fail": 36,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-redact:T0/absolute": {
+          "pass": 0,
+          "fail": 0,
+          "review-required": 90,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-redact:T2->must-redact:T2/same-detection": {
+          "pass": 0,
+          "fail": 18,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/redact-secret/must-not-flag:T2/absent": {
+          "pass": 7,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/gitleaks/must-not-flag:T2/absent": {
+          "pass": 7,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/trufflehog/must-not-flag:T2/absent": {
+          "pass": 7,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T2/absent": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 29,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T2/absent": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 29,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T2/absent": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 29,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-not-flag:T2/absent": {
+          "pass": 15,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-not-flag:T2/absent": {
+          "pass": 15,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-not-flag:T2/absent": {
+          "pass": 15,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/redact-secret/must-not-flag:T3/absent": {
+          "pass": 9,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/gitleaks/must-not-flag:T3/absent": {
+          "pass": 9,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/trufflehog/must-not-flag:T3/absent": {
+          "pass": 9,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T3/absent": {
+          "pass": 44,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 35,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T3/absent": {
+          "pass": 44,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 35,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T3/absent": {
+          "pass": 44,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 35,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-not-flag:T3/absent": {
+          "pass": 9,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-not-flag:T3/absent": {
+          "pass": 9,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-not-flag:T3/absent": {
+          "pass": 9,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 0,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-redact:T2/present-within-envelope": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-redact:T2/present-within-envelope": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-redact:T2/present-within-envelope": {
+          "pass": 0,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-redact:T2->must-not-flag:T2/must-flip": {
+          "pass": 0,
+          "fail": 8,
           "review-required": 0,
           "not-measured": 0
         }
@@ -23042,14 +23986,14 @@
       },
       "pinecone-api-key-legacy": {
         "metamorphic/redact-secret/policy:T3/present-within-envelope": {
-          "pass": 12,
-          "fail": 36,
+          "pass": 48,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/policy:T3->policy:T3/same-detection": {
-          "pass": 9,
-          "fail": 27,
+          "pass": 36,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -23078,8 +24022,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/policy:T3/present-within-envelope": {
-          "pass": 3,
-          "fail": 9,
+          "pass": 12,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -23090,8 +24034,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/policy:T3->must-not-flag:T3/must-flip": {
-          "pass": 3,
-          "fail": 9,
+          "pass": 12,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -23132,8 +24076,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/policy:T3/present-within-envelope": {
-          "pass": 3,
-          "fail": 9,
+          "pass": 12,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -23144,8 +24088,8 @@
           "not-measured": 0
         },
         "twin/redact-secret/policy:T3->must-not-flag:T3/must-flip": {
-          "pass": 3,
-          "fail": 9,
+          "pass": 12,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -23314,14 +24258,14 @@
       },
       "slack-user-token": {
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 28,
-          "fail": 4,
+          "pass": 32,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
         "metamorphic/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 21,
-          "fail": 3,
+          "pass": 24,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -23350,8 +24294,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1/present-within-envelope": {
-          "pass": 28,
-          "fail": 4,
+          "pass": 32,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -23374,8 +24318,8 @@
           "not-measured": 0
         },
         "mutation/redact-secret/must-redact:T1->must-redact:T1/same-detection": {
-          "pass": 21,
-          "fail": 3,
+          "pass": 24,
+          "fail": 0,
           "review-required": 0,
           "not-measured": 0
         },
@@ -23619,6 +24563,314 @@
           "review-required": 0,
           "not-measured": 0
         }
+      },
+      "mailgun-api-key-triplet": {
+        "metamorphic/redact-secret/policy:T3/present-within-envelope": {
+          "pass": 48,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/policy:T3->policy:T3/same-detection": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/policy:T3/present-within-envelope": {
+          "pass": 40,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/policy:T3->policy:T3/same-detection": {
+          "pass": 30,
+          "fail": 6,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/policy:T3/present-within-envelope": {
+          "pass": 48,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/policy:T3->policy:T3/same-detection": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/policy:T3/present-within-envelope": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-not-flag:T3/absent": {
+          "pass": 24,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/policy:T3/present-within-envelope": {
+          "pass": 10,
+          "fail": 2,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-not-flag:T3/absent": {
+          "pass": 15,
+          "fail": 9,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 2,
+          "fail": 10,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/policy:T3/present-within-envelope": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-not-flag:T3/absent": {
+          "pass": 15,
+          "fail": 9,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 3,
+          "fail": 9,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/policy:T3/present-within-envelope": {
+          "pass": 14,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-not-flag:T3/absent": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/policy:T3/present-within-envelope": {
+          "pass": 12,
+          "fail": 2,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-not-flag:T3/absent": {
+          "pass": 4,
+          "fail": 8,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 2,
+          "fail": 10,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/policy:T3/present-within-envelope": {
+          "pass": 14,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-not-flag:T3/absent": {
+          "pass": 3,
+          "fail": 9,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/policy:T3->must-not-flag:T3/must-flip": {
+          "pass": 3,
+          "fail": 9,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/must-not-flag:T2/absent": {
+          "pass": 2,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/redact-secret/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 2,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/must-not-flag:T2/absent": {
+          "pass": 2,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/gitleaks/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 2,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/must-not-flag:T2/absent": {
+          "pass": 2,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "twin/trufflehog/policy:T3->must-not-flag:T2/must-flip": {
+          "pass": 2,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/redact-secret/must-not-flag:T2/absent": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/gitleaks/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/trufflehog/must-not-flag:T2/absent": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T2/absent": {
+          "pass": 48,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T2/absent": {
+          "pass": 32,
+          "fail": 16,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 24,
+          "fail": 12,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T2/absent": {
+          "pass": 48,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T2->must-not-flag:T2/same-detection": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/redact-secret/must-not-flag:T2/absent": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/gitleaks/must-not-flag:T2/absent": {
+          "pass": 8,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "mutation/trufflehog/must-not-flag:T2/absent": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/redact-secret/must-not-flag:T3/absent": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/gitleaks/must-not-flag:T3/absent": {
+          "pass": 11,
+          "fail": 1,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "benign/trufflehog/must-not-flag:T3/absent": {
+          "pass": 12,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T3/absent": {
+          "pass": 48,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/redact-secret/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T3/absent": {
+          "pass": 44,
+          "fail": 4,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/gitleaks/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 33,
+          "fail": 3,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T3/absent": {
+          "pass": 48,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        },
+        "metamorphic/trufflehog/must-not-flag:T3->must-not-flag:T3/same-detection": {
+          "pass": 36,
+          "fail": 0,
+          "review-required": 0,
+          "not-measured": 0
+        }
       }
     }
   },
@@ -23626,26 +24878,26 @@
     "reasons": [],
     "unresolvedGroups": [],
     "review": {
-      "open": 220,
-      "resolved": 1238,
-      "notAssertable": 3972,
+      "open": 0,
+      "resolved": 1530,
+      "notAssertable": 4432,
       "unknown": 0,
-      "oldestOpenRun": "010bf94a-761d-481d-91f3-404c1f93f79b"
+      "oldestOpenRun": null
     }
   },
   "methods": [
     {
       "method": "twin",
-      "cases": 638,
-      "variants": 1276,
+      "cases": 698,
+      "variants": 1396,
       "generationErrors": 0,
       "scanners": [
         {
           "id": "redact-secret",
           "status": "complete",
           "assertions": {
-            "pass": 1775,
-            "fail": 112,
+            "pass": 2067,
+            "fail": 0,
             "review-required": 27,
             "not-measured": 0
           }
@@ -23654,8 +24906,8 @@
           "id": "gitleaks",
           "status": "complete",
           "assertions": {
-            "pass": 1464,
-            "fail": 423,
+            "pass": 1602,
+            "fail": 465,
             "review-required": 27,
             "not-measured": 0
           }
@@ -23664,8 +24916,8 @@
           "id": "trufflehog",
           "status": "complete",
           "assertions": {
-            "pass": 1208,
-            "fail": 679,
+            "pass": 1314,
+            "fail": 753,
             "review-required": 27,
             "not-measured": 0
           }
@@ -23674,16 +24926,16 @@
     },
     {
       "method": "benign",
-      "cases": 944,
-      "variants": 944,
+      "cases": 1016,
+      "variants": 1016,
       "generationErrors": 0,
       "scanners": [
         {
           "id": "redact-secret",
           "status": "complete",
           "assertions": {
-            "pass": 933,
-            "fail": 11,
+            "pass": 1016,
+            "fail": 0,
             "review-required": 0,
             "not-measured": 0
           }
@@ -23692,8 +24944,8 @@
           "id": "gitleaks",
           "status": "complete",
           "assertions": {
-            "pass": 901,
-            "fail": 43,
+            "pass": 967,
+            "fail": 49,
             "review-required": 0,
             "not-measured": 0
           }
@@ -23702,7 +24954,7 @@
           "id": "trufflehog",
           "status": "complete",
           "assertions": {
-            "pass": 920,
+            "pass": 992,
             "fail": 24,
             "review-required": 0,
             "not-measured": 0
@@ -23712,16 +24964,16 @@
     },
     {
       "method": "metamorphic",
-      "cases": 2102,
-      "variants": 9858,
+      "cases": 2292,
+      "variants": 10675,
       "generationErrors": 0,
       "scanners": [
         {
           "id": "redact-secret",
           "status": "complete",
           "assertions": {
-            "pass": 16408,
-            "fail": 929,
+            "pass": 18781,
+            "fail": 0,
             "review-required": 277,
             "not-measured": 0
           }
@@ -23730,8 +24982,8 @@
           "id": "gitleaks",
           "status": "complete",
           "assertions": {
-            "pass": 14160,
-            "fail": 3177,
+            "pass": 15325,
+            "fail": 3456,
             "review-required": 277,
             "not-measured": 0
           }
@@ -23740,8 +24992,8 @@
           "id": "trufflehog",
           "status": "complete",
           "assertions": {
-            "pass": 12749,
-            "fail": 4588,
+            "pass": 13768,
+            "fail": 5013,
             "review-required": 277,
             "not-measured": 0
           }
@@ -23750,17 +25002,17 @@
     },
     {
       "method": "mutation",
-      "cases": 2102,
-      "variants": 7395,
+      "cases": 2292,
+      "variants": 8165,
       "generationErrors": 0,
       "scanners": [
         {
           "id": "redact-secret",
           "status": "complete",
           "assertions": {
-            "pass": 4460,
-            "fail": 355,
-            "review-required": 3961,
+            "pass": 5303,
+            "fail": 0,
+            "review-required": 4392,
             "not-measured": 0
           }
         },
@@ -23768,9 +25020,9 @@
           "id": "gitleaks",
           "status": "complete",
           "assertions": {
-            "pass": 3739,
-            "fail": 1076,
-            "review-required": 3961,
+            "pass": 4104,
+            "fail": 1199,
+            "review-required": 4392,
             "not-measured": 0
           }
         },
@@ -23778,9 +25030,9 @@
           "id": "trufflehog",
           "status": "complete",
           "assertions": {
-            "pass": 3204,
-            "fail": 1611,
-            "review-required": 3961,
+            "pass": 3442,
+            "fail": 1861,
+            "review-required": 4392,
             "not-measured": 0
           }
         }
@@ -23788,8 +25040,8 @@
     },
     {
       "method": "differential",
-      "cases": 2740,
-      "variants": 2740,
+      "cases": 2990,
+      "variants": 2990,
       "generationErrors": 0,
       "scanners": [
         {
@@ -23863,10 +25115,10 @@
   "holdout": {
     "schemaVersion": 1,
     "reportType": "holdout",
-    "runId": "28ca6c2b-f763-4384-8862-5a1a322f3368",
-    "planHash": "49cb8cbfb8b7384a667beb1f64ddce4eb95b7ec7316b37a71a566affb9322c5f",
-    "startedAt": "2026-09-24T21:23:06.856Z",
-    "finishedAt": "2026-09-24T21:23:09.090Z",
+    "runId": "c2c8b99d-200c-4059-9d51-959e71e3591b",
+    "planHash": "541ac7e5741c5313583641fa0b55ca25c0d76e02836cd33ad62c069fc1069b60",
+    "startedAt": "2026-09-25T12:07:38.300Z",
+    "finishedAt": "2026-09-25T12:07:41.181Z",
     "methodology": "frozen-candidate-canonical-cases-aggregate-only",
     "independence": "public-control",
     "status": "complete",
@@ -23879,9 +25131,9 @@
       "lifecycle": "sealed-at-execution"
     },
     "candidate": {
-      "sourceHash": "9c39720b0cc3031c85ea7dbe8146e6294b6dc8b33f7f3898a644caa0d01cda0e",
-      "lockHash": "cbbb00a192cf384857e286d9e81a8851bb43797d47410a0618e21690ff050363",
-      "candidateArtifactHash": "d1951560006916ae15f149d43b394225f85377ec18c1ca74cb9389e140902262"
+      "sourceHash": "074a3506637ac603ce4d48cd9695ccf13939e34d079e1ab0f6e27050242a51ae",
+      "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+      "candidateArtifactHash": "4021f6b165642b119952e5e44e4f872530be521e5853cf3cd8d43e67a6cd6a27"
     },
     "caseCount": 12,
     "variantCount": 12,
@@ -23889,14 +25141,14 @@
     "scanners": [
       {
         "id": "redact-secret",
-        "version": "0.1.0-beta.7",
+        "version": "0.1.0-beta.8",
         "configuration": {
-          "adapterVersion": 2,
+          "adapterVersion": 3,
           "familyMappingVersion": 2,
           "detectors": "default",
           "runtime": "node"
         },
-        "configurationHash": "bf2a8a5391006a3522838be5e413db3e71ab89169fd5bfb945ad7905b0b2eb20",
+        "configurationHash": "0912b70566befbde46ce9986387537ed16b6f2c5a64e822e466be08ac26cf53e",
         "status": "complete",
         "assertions": {
           "pass": 12,

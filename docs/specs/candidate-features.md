@@ -88,7 +88,7 @@ stored as integers `round(v × 1 000 000)` (suffix `Micro`, JavaScript
 | `lengthBytes` | lexical | UTF-8 byte length of `s` |
 | `distinctSymbols` | lexical | `k` |
 | `distinctRatioMicro` | lexical | `k / n` |
-| `shannonEntropyBitsMicro` | randomness | `H = −Σ_x (c_x/n) · log2(c_x/n)`, summed over symbols in first-occurrence order (the core's summation order, so the `f64` is bit-identical before rounding) |
+| `shannonEntropyBitsMicro` | randomness | `H = −Σ_x (c_x/n) · log2(c_x/n)`, summed over symbols in first-occurrence order (the core's summation order; `Math.log2` and a host `libm` can differ in the last place, which rounding to 10⁻⁶ absorbs) |
 | `minEntropyBitsMicro` | randomness | `−log2(max_x c_x / n)` |
 | `informationBitsMicro` | randomness | `n · H` (total empirical information in bits) |
 | `alphabet` | lexical | the first of `decimal` `[0-9]+`, `hex-lower` `[0-9a-f]+`, `hex-upper` `[0-9A-F]+`, `base32` `[A-Z2-7]+=*`, `alphanumeric` `[A-Za-z0-9]+`, `base64url` `[A-Za-z0-9_-]+`, `base64` `[A-Za-z0-9+/]+=*`, `printable-ascii` `[\x20-\x7e]+` that matches the whole value, else `other`; `empty` when `n = 0` |

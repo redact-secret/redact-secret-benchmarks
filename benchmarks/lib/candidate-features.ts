@@ -157,7 +157,8 @@ function histogram(symbols: string[]): [string, number][] {
   return [...counts];
 }
 
-/** Shannon entropy in bits per symbol, log base 2, summed in first-occurrence order (bit-identical to the core's f64). */
+/** Shannon entropy in bits per symbol, log base 2, summed in first-occurrence order like the core's f64 `shannon_entropy`.
+ * JavaScript's `Math.log2` and a host `libm` may differ in the last place; the 1e-6 fixed-point rounding absorbs that. */
 export function shannonEntropy(value: string): number {
   const symbols = [...value];
   if (!symbols.length) return 0;

@@ -16,6 +16,14 @@
  * (benchmarks/lib/calibration-projection.mjs). Rules:
  * docs/specs/calibration-experiments.md §6.
  *
+ * #289 extends it to the score-evasion evaluation: the maintainer-local
+ * variants, raw shadow-evaluation output, plain-scan output and per-variant
+ * detail (scores, bands, signals, which operators moved a band) must not
+ * appear on a public surface, and must not be committed anywhere in the
+ * tree. Only the closed aggregate (schemas/score-evasion-aggregate-v1.json)
+ * may be; tests/score-evasion.test.mjs validates every committed copy. Rules:
+ * docs/specs/score-evasion.md §5.
+ *
  * Run: npm run features:check-public [-- --root=<dir>]
  */
 import { execFileSync } from 'node:child_process';
@@ -25,10 +33,14 @@ import { fileURLToPath } from 'node:url';
 import { PROJECTION_TYPE, projectionProblems } from '../benchmarks/lib/calibration-projection.mjs';
 
 export const PUBLIC_DIRECTORIES = ['public', 'dist'];
-const NAME = /candidate-features|calibration-experiments|tuning-manifest-draft/i;
+const NAME = /candidate-features|calibration-experiments|tuning-manifest-draft|score-evasion-(?:detail|inputs)|shadow-run-\d/i;
 const MARKERS = [
   /"datasetType"\s*:\s*"candidate-features"/, /datasetType:\s*["']candidate-features["']/, /candidate-features-v1\.json/, /"manifestBinding"\s*:/,
   /"datasetType"\s*:\s*"calibration-experiments"/, /datasetType:\s*["']calibration-experiments["']/, /calibration-experiments-v1\.(json|md)/, /"draftNotes"\s*:/,
+];
+/** Maintainer-local score-evasion content (#289): raw shadow-evaluation records and the per-variant detail. */
+export const EVASION_MARKERS = [
+  /"record"\s*:\s*"shadow-(?:comparison|evaluation|error)"/, /"evaluationVersion"\s*:\s*"score-evasion\//, /"movedVariants"\s*:/, /"boundarySweeps"\s*:/,
 ];
 const PROJECTION = new RegExp(`"datasetType"\\s*:\\s*"${PROJECTION_TYPE}"`);
 /** Local outputs that must stay git-ignored. */
@@ -37,6 +49,10 @@ export const IGNORED_OUTPUTS = [
   'results-output/calibration/calibration-experiments-v1.json',
   'results-output/calibration/calibration-experiments-v1.md',
   'results-output/calibration/tuning-manifest-draft.json',
+  'results-output/score-evasion/detail.json',
+  'results-output/score-evasion/inputs.jsonl',
+  'results-output/score-evasion/shadow-run-1.jsonl',
+  'results-output/score-evasion/plain-scan.json',
 ];
 const TEXT = /\.(json|js|mjs|cjs|html|css|txt|map|md|csv|jsonl|svg|xml)$/i;
 
@@ -49,7 +65,22 @@ function* walk(directory) {
 }
 
 /** Problems for one repository root; empty when no public surface carries a feature dataset. */
-export function exclusionProblems(root, { checkIgnore = true } = {}) {
+/** Tracked files anywhere in the tree that carry maintainer-local score-evasion content (#289). */
+export function trackedEvasionProblems(root) {
+  let files;
+  try { files = execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 1 << 26 }).split('\0').filter(Boolean); } catch { return []; }
+  const problems = [];
+  for (const relative of files) {
+    if (!TEXT.test(relative) || relative.startsWith('node_modules/')) continue;
+    const file = path.join(root, relative);
+    if (!existsSync(file) || statSync(file).size > 1 << 24) continue;
+    const text = readFileSync(file, 'utf8');
+    if (EVASION_MARKERS.some(marker => marker.test(text))) problems.push(`${relative}: tracked file carries score-evasion variants, shadow-evaluation records or per-variant detail; keep them under results-output/`);
+  }
+  return problems;
+}
+
+export function exclusionProblems(root, { checkIgnore = true, checkTracked = true } = {}) {
   const problems = [];
   for (const name of PUBLIC_DIRECTORIES) {
     const directory = path.join(root, name);
@@ -60,6 +91,7 @@ export function exclusionProblems(root, { checkIgnore = true } = {}) {
       if (!TEXT.test(file)) continue;
       const text = readFileSync(file, 'utf8');
       if (MARKERS.some(marker => marker.test(text))) { problems.push(`${relative}: embeds candidate-feature dataset or calibration experiment content; both are maintainer-local only`); continue; }
+      if (EVASION_MARKERS.some(marker => marker.test(text))) { problems.push(`${relative}: embeds score-evasion variants, shadow-evaluation records or per-variant detail; only the aggregate may be published`); continue; }
       if (PROJECTION.test(text)) {
         let parsed = null;
         try { parsed = JSON.parse(text); } catch { problems.push(`${relative}: embeds a calibration projection that is not a standalone JSON document, so its shape cannot be checked`); continue; }
@@ -67,6 +99,7 @@ export function exclusionProblems(root, { checkIgnore = true } = {}) {
       }
     }
   }
+  if (checkTracked) problems.push(...trackedEvasionProblems(root));
   if (checkIgnore) {
     for (const output of IGNORED_OUTPUTS) {
       try {
@@ -87,6 +120,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     console.error(`Candidate-feature publication check failed:\n${problems.map(p => `  - ${p}`).join('\n')}`);
     process.exitCode = 1;
   } else {
-    console.log(`Candidate-feature and calibration publication check passed: nothing under ${PUBLIC_DIRECTORIES.join('/, ')}/ carries a feature dataset or calibration boundary detail; results-output/ is ignored.`);
+    console.log(`Candidate-feature, calibration and score-evasion publication check passed: nothing under ${PUBLIC_DIRECTORIES.join('/, ')}/ carries a feature dataset, calibration boundary detail or score-evasion detail, no tracked file carries score-evasion detail, and results-output/ is ignored.`);
   }
 }

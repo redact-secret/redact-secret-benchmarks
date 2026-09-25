@@ -74,6 +74,8 @@
     "mcp:qualify": "node --import tsx benchmarks/mcp-qualification.ts",
     "tuning:check": "node --import tsx scripts/check-tuning-manifests.mjs",
     "scorer-promotion:check": "node --import tsx scripts/check-scorer-promotion-contract.mjs",
+    "preevasion:run": "node --import tsx scripts/generate-fixtures.mjs --ensure",
+    "evasion:run": "node --import tsx benchmarks/score-evasion.ts",
     "prefeatures:extract": "node --import tsx scripts/generate-fixtures.mjs --ensure",
     "features:extract": "node --import tsx benchmarks/candidate-features.ts",
     "features:check-public": "node scripts/check-feature-dataset-exclusion.mjs",

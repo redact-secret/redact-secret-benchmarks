@@ -80,6 +80,8 @@ benchmarks/lib/candidate-features.ts Maintainer-local candidate-feature dataset 
 benchmarks/lib/calibration-experiments.ts Shadow-scorer calibration experiments: grouped/halving/lookup/logistic models, band sweeps, selection, manifest draft (#255; docs/specs/calibration-experiments.md)
 benchmarks/lib/calibration-projection.mjs Closed public projection shape for calibration outcomes; used by the run and by features:check-public (#255)
 benchmarks/lib/scorer-promotion.ts Future-promotion contract for the scorer: hard constraints per question Q1-Q5, #289 evasion aggregate, evaluator (#257; docs/specs/scorer-promotion-gates.md)
+benchmarks/lib/score-evasion.ts Score-evasion and negative-evidence abuse: deterministic operators per attack class, invariant checks, the #289 aggregate (docs/specs/score-evasion.md)
+benchmarks/score-evasion.ts   Runs the variants through the product's shadow evaluation path and plain CLI scan; detail stays in results-output/ (#289)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
 benchmarks/blind/              Custodian-held blind evaluation: private root, freeze, one run per candidate, aggregate-only release (#142; docs/specs/blind-evaluation.md)
 benchmarks/mcp-qualification.ts Black-box MCP adapter qualification: clean consumers per SDK endpoint, sink containment, overhead (#281; docs/specs/mcp-qualification.md)
@@ -290,6 +292,12 @@ it may set `Confidence` or action is a versioned set of hard constraints,
 one verdict per question and never a mixed score, in
 `benchmarks/scorer-promotion-contract.json`, checked by `npm run
 scorer-promotion:check` ([docs/specs/scorer-promotion-gates.md](docs/specs/scorer-promotion-gates.md)).
+`npm run evasion:run` treats that scorer as attacker-known: it reshapes
+reviewed fixtures with deterministic operators for each attack class, runs
+them through the product's maintainer-local shadow evaluation path and a
+plain product scan, and publishes only the closed aggregate that question 4
+reads. Variants, scores, bands and the operators that moved a band stay in
+`results-output/` ([docs/specs/score-evasion.md](docs/specs/score-evasion.md)).
 
 ## Accounting (engine v1.1)
 

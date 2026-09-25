@@ -75,6 +75,7 @@ benchmarks/lib/beta8/          Beta.8 per-issue contracts, arrival families and 
 benchmarks/lib/reporting.ts   Per (kind × tier) groups; no mixed overall score
 benchmarks/lib/adversarial-intake.ts External adversarial intake: lifecycle, synthetic-only, frozen expectations and first run, qualification
 benchmarks/lib/evidence-classes.ts Public adversarial / protected holdout / maintainer regression queries and independence wording
+benchmarks/lib/tuning-manifest.ts Statistical scorer tuning manifests: corpus roles, holdout isolation, scoring identity, generated share, strata (#256; docs/specs/statistical-tuning.md)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
 scripts/baseline.mjs           Save baselines and generate docs/generated/release-comparison.md
@@ -246,7 +247,10 @@ npm run eval:publish -- --qualification=results-output/qualification/engine-v1.j
 
 The default manifest uses repeatable public conformance controls. Protected holdout
 runs retain their existing custodian lifecycle and budgets; do not run them merely
-to refresh a UI. Qualification is separately dated aggregate evidence, and
+to refresh a UI, and never while tuning a statistical scorer: tuning reads development
+categories only, is recorded in a tuning manifest, and treats holdout as a final
+check on a frozen candidate ([statistical tuning](docs/specs/statistical-tuning.md)).
+Qualification is separately dated aggregate evidence, and
 `execution-qualified` describes infrastructure execution with `supportClaims: false`.
 
 ## Accounting (engine v1.1)

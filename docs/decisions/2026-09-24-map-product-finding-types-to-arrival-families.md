@@ -8,7 +8,7 @@ decided_at: 2026-09-24
 
 # Label arrival families typed inside a shared detector by the product's finding type
 
-Status: **accepted** (2026-09-24, #251).
+Status: **accepted** (2026-09-24, #251; the legacy Pinecone section, #253).
 Narrows: [`2026-09-24-settle-arrival-classification-by-owning-detector.md`](2026-09-24-settle-arrival-classification-by-owning-detector.md).
 
 ## Context
@@ -72,6 +72,32 @@ detector (redact-secret `docs/reference/detection.md`, generated from
 The mapping labels findings only. It does not make an arrival id a registry id,
 and `eval:classify` still gives arrival ids no support status
 (`docs/specs/beta8-evidence.md`).
+
+### The legacy Pinecone key (#253)
+
+Since product main 2420e80 (redact-secret#766 and its ADR
+`2026-09-24-claim-a-legacy-pinecone-uuid-key-only-under-its-api-key-name.md`),
+`pinecone-api-key` claims a legacy bare-UUID key at high confidence with the
+redact action when the UUID is assigned to a Pinecone API-key name
+(`PINECONE_API_KEY`, `pinecone_api_key`, `PINECONE_KEY`, or
+`api_key`/`apiKey`/`Api-Key` on a line naming `pinecone`). A bare UUID stays
+unclaimed.
+
+- `pinecone-api-key` is the recorded owning detector of
+  `pinecone-api-key-legacy`. Its `reason` in `benchmarks/lib/beta8/212.ts` and
+  the `pinecone:legacy-api-key` taxonomy note say so.
+- It gets no row in the finding-type table. The product reports the legacy
+  UUID with the same `pinecone_api_key` type as the `pcsk_` shape, so the
+  recorded sources name no type that tells the two apart (point 3). The
+  finding keeps the `pinecone-api-key` detector id.
+- The family stays a context-gated arrival family, and the taxonomy maps it to
+  no detector. Mapping it to `pinecone-api-key` would score the name-gated UUID
+  against the `pcsk_` contract. It is a separate provider generation that the
+  product claims only in context.
+- If a classification row ever settles on this family, the owning-detector
+  decision applies to it with `pinecone-api-key` as the owner. The adapter
+  maps no redact-secret `pinecone-api-key` label to a family yet, so no such
+  row exists today.
 
 ## Consequences
 

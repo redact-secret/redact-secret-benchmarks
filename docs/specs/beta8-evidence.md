@@ -147,7 +147,9 @@ rejects T0 fixtures in a Beta.8 corpus.
 
 Each module's `profiles` declares the Beta.8 profile that each target it owns
 is authored toward: `arrival-24`, `documented-24`, `empirical-40` or
-`context-48`. `npm run beta8:profiles` counts every fixture in every corpus
+`context-48`. A later issue may take over a target's declaration when it raises that target to a higher profile: #263 declares `empirical-40` for nine T2 registry families and `context-48` for travisci-api-token, adding its own corpus (`beta8-263`) instead of editing theirs, so their source hashes and ledger ids stay unchanged.
+
+`npm run beta8:profiles` counts every fixture in every corpus
 that targets a declared family and prints the remaining debt per cell: total,
 positives, independent controls, twin pairs, context-twin pairs, positive axes
 and control axes. The floors transcribe #206's draft. The report is advisory

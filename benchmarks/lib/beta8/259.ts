@@ -111,9 +111,7 @@ export const registryContracts: Record<string, FormatContract> = {
 };
 
 /** The Beta.8 profile each target this issue owns is authored toward. */
+// travisci-api-token, neon-api-key, postman-collection-access-key: profile declared by #263, which raised them to the empirical floors.
 export const profiles: Record<string, FixtureProfile> = {
-  'travisci-api-token': 'arrival-24',
-  'neon-api-key': 'arrival-24',
-  'postman-collection-access-key': 'arrival-24',
   'mailgun-api-key-triplet': 'context-48',
 };

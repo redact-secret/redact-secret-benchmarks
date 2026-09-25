@@ -10,6 +10,12 @@ decided_at: 2026-09-24
 
 Status: **accepted** (2026-09-24, Beta.8 arrival re-measure for #211).
 Amends: [`2026-09-24-settle-peer-coarser-classification-disagreements.md`](2026-09-24-settle-peer-coarser-classification-disagreements.md).
+Narrowed by: [`2026-09-24-map-product-finding-types-to-arrival-families.md`](2026-09-24-map-product-finding-types-to-arrival-families.md)
+(#251). The adapter now labels a finding with the arrival family when the
+product gives the family its own finding type, so this decision applies only
+where redact-secret's label is still the owning detector id: a build with a
+coarser type (the published 0.1.0-beta.7's `stripe_credential`) or a family the
+product does not type separately.
 
 ## Context
 
@@ -79,5 +85,9 @@ Families are never settled because they look alike.
 - The same rule applies to the other arrival families the product types inside a
   shared detector (`slack-app-level-token` and `slack-user-token` in
   `slack-token`). They had no row of this class when this was decided.
+- Since #251 the candidate-keyed rows of this class read the arrival family and
+  are settled by the peer-coarser decision instead. The five published-keyed
+  rows keep this class while the pinned release types `whsec_` as
+  `stripe_credential`.
 - If an arrival family graduates to a registry detector, its rows re-key and
   the peer-coarser decision applies directly.

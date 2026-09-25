@@ -5,7 +5,8 @@ import { createOperators } from '../benchmarks/operators/index.ts';
 import { loadCases } from '../benchmarks/engine/cases.ts';
 import { generateCase, hash, secrets, bytes } from '../benchmarks/engine/model.ts';
 import { runEvaluation, exitCode } from '../benchmarks/engine/runner.ts';
-import { findingFamily } from '../scanners/families.mjs';
+import { findingFamily, arrivalFindingTypes } from '../scanners/families.mjs';
+import { arrivalFamilies } from '../benchmarks/lib/beta8/index.ts';
 
 const methods = createMethods(), operators = createOperators();
 const cases = await loadCases(operators);
@@ -182,6 +183,32 @@ test('native family labels have explicit mappings; unknown labels remain unsuppo
   assert.deepEqual(findingFamily('gitleaks', 'future-provider-rule'), {});
   assert.deepEqual(findingFamily('trufflehog', 'toString'), {});
   assert.deepEqual(findingFamily('unknown-scanner', 'Github'), {});
+});
+
+test('#251: a product finding type maps to the arrival family it types; a coarser type keeps the detector id', () => {
+  assert.deepEqual(findingFamily('redact-secret', 'stripe-token', 'stripe_webhook_signing_secret'), { family: 'stripe-webhook-signing-secret' });
+  assert.deepEqual(findingFamily('redact-secret', 'slack-token', 'slack_user_token'), { family: 'slack-user-token' });
+  assert.deepEqual(findingFamily('redact-secret', 'slack-token', 'slack_app_level_token'), { family: 'slack-app-level-token' });
+  assert.deepEqual(findingFamily('redact-secret', 'github-token', 'github_fine_grained_personal_access_token'), { family: 'github-fine-grained-pat' });
+  // Published 0.1.0-beta.7 types whsec_ as stripe_credential and xoxp-/xapp- as slack_token.
+  assert.deepEqual(findingFamily('redact-secret', 'stripe-token', 'stripe_credential'), { family: 'stripe-token' });
+  assert.deepEqual(findingFamily('redact-secret', 'slack-token', 'slack_token'), { family: 'slack-token' });
+  assert.deepEqual(findingFamily('redact-secret', 'slack-token'), { family: 'slack-token' });
+  // A type is read only under the detector that documents it, and only for redact-secret.
+  assert.deepEqual(findingFamily('redact-secret', 'generic-token', 'stripe_webhook_signing_secret'), { family: 'generic-token' });
+  assert.deepEqual(findingFamily('redact-secret', 'slack-token', 'toString'), { family: 'slack-token' });
+  assert.deepEqual(findingFamily('gitleaks', 'stripe-access-token', 'stripe_webhook_signing_secret'), { family: 'stripe-token' });
+});
+
+test('#251: every finding-type target is an arrival family whose recorded reason names the shared detector and the type', () => {
+  const byId = new Map(arrivalFamilies.map(f => [f.id, f]));
+  for (const [detector, types] of Object.entries(arrivalFindingTypes))
+    for (const [type, family] of Object.entries(types)) {
+      const arrival = byId.get(family);
+      assert.ok(arrival, `${detector}/${type} targets ${family}, which is not a declared arrival family`);
+      assert.ok(arrival.reason.includes(detector), `${family}'s reason does not name the shared ${detector} detector`);
+      assert.ok(arrival.reason.includes(type), `${family}'s reason does not name the ${type} finding type`);
+    }
 });
 
 test('flare-redact family labels map only explicitly recognized ids and fail closed on the rest', () => {

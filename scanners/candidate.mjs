@@ -10,7 +10,8 @@ const exec = promisify(execFile);
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 export const candidateConfiguration = Object.freeze({
-  adapterVersion: 1,
+  // 2 since #251: arrival families typed inside a shared detector are labelled by finding type.
+  adapterVersion: 2,
   familyMappingVersion,
   detectors: 'default',
   runtime: 'node',
@@ -75,7 +76,7 @@ export async function loadCandidate(installation, ruleset, { actions = false } =
             path: fixture.path,
             start: Buffer.byteLength(text.slice(0, finding.start)),
             end: Buffer.byteLength(text.slice(0, finding.end)),
-            ...findingFamily('redact-secret', finding.detector),
+            ...findingFamily('redact-secret', finding.detector, finding.type),
             ...(actions && finding.action !== undefined ? { action: finding.action } : {}),
           });
         }

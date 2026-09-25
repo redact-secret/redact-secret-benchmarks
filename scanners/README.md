@@ -10,7 +10,10 @@ external binaries on `PATH`. No competitor's source or binary is bundled.
 
 Adapters return `{ path, start, end, family? }` in UTF-8 bytes. `families.mjs`
 maps explicitly recognized native detector labels to shared families; unknown
-labels remain unmapped. No family is inferred from the expected fixture. Raw external findings
+labels remain unmapped. For redact-secret the native label is the product
+detector id, except where `arrivalFindingTypes` maps the product finding type
+of a shared detector to a Beta.8 arrival family (#251,
+`docs/decisions/2026-09-24-map-product-finding-types-to-arrival-families.md`). No family is inferred from the expected fixture. Raw external findings
 are mapped using the file, matched value, and reported line, then discarded.
 Ambiguous mappings fail closed rather than manufacturing a range. TruffleHog
 verification and update checks are disabled. Missing binaries and execution

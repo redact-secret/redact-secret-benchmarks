@@ -123784,11 +123784,10 @@
       "firstSeenRun": "6dc5fbb2-af75-4bb5-ac49-ad816f774d94",
       "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change."
     },
-    "feb2b8e846e104c68826b877917e927ac374a8ce65ec1e49b5d74b537fb65694": {
+    "bf203e6c6ce2180ed8f3c0517714b80acee6a4e6ccf52ae69105f3b6ad8ec379": {
       "status": "resolved",
       "firstSeenRun": "e821cebd-de3f-4753-86f5-4943631076f9",
-      "resolvedRun": "e821cebd-de3f-4753-86f5-4943631076f9",
-      "note": "Resolved as authored-expectation-correct: both redact-secret and gitleaks report exactly this corpus's authored expected span(s) ([77,128)); only the family label differs (redact-secret slack-token, gitleaks generic-token). The peer's label is the coarser one, the peer-coarser case of docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: classification-disagreement/gitleaks/peer-coarser."
+      "note": "Resolved as authored-expectation-correct: both redact-secret and gitleaks report exactly this corpus's authored expected span(s) ([77,128)); only the family label differs (redact-secret slack-user-token, the product's slack_user_token finding type on candidate 10263e5 (product main) mapped by #251; gitleaks generic-token). The peer's label is the coarser one, the peer-coarser case of docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: classification-disagreement/gitleaks/peer-coarser."
     },
     "febe3d03b82fe753325dfb33ce84180ed40e8c4b116be4f3d3831a468550257a": {
       "status": "not-assertable",
@@ -124585,6 +124584,340 @@
       "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
       "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([20,56) on beta8-212--pinecone-api-key-legacy-shell-key; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "ccd2f7d4a2c18dacf490d0aedd8d6d905f5dab2aa7f1e8392bf79b6f4bf9fe08": {
+      "status": "resolved",
+      "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "54a151bd6df2811c1b84bea87c42099047565be98a62ac9f4908f6416c922fff": {
+      "status": "resolved",
+      "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "a41bba9033806aaa8713104740e4330684503f4726e82768c101d32406396d98": {
+      "status": "resolved",
+      "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "f1d78d82e99f35a949bb5bd969f5f9c14c3573e4f48ea5e96163a115128211bf": {
+      "status": "resolved",
+      "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "79ede252502ffe61834d45504d59720f225e3bd45471721de874decba47dcbbb": {
+      "status": "resolved",
+      "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "e4398086042b02f24d2ddbf765afb2b09655771c17ae697e812b50321e2bf86d": {
+      "status": "resolved",
+      "firstSeenRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "resolvedRun": "8a128d7e-810d-4bbb-89b2-c845393add6f",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "d66d849266e537d4df3ba03e31429773a45917256786e1204d764de8f7b859fc": {
+      "status": "resolved",
+      "firstSeenRun": "e821cebd-de3f-4753-86f5-4943631076f9",
+      "resolvedRun": "e821cebd-de3f-4753-86f5-4943631076f9",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Observed: redact-secret [0,25) (slack-token-shape-3-bare's authored expected span); trufflehog none. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "581c607d9460d2175bd33df8a162f52ff69251f0d632d2220ddd157ff9f565c8": {
+      "status": "resolved",
+      "firstSeenRun": "e821cebd-de3f-4753-86f5-4943631076f9",
+      "resolvedRun": "e821cebd-de3f-4753-86f5-4943631076f9",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Observed: redact-secret [7,32) (slack-token-shape-3-quoted's authored expected span); trufflehog none. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "bfe086e59e266028c6be2685dc0cbeebcfc8bda6a8e865b199030b8af21d84a9": {
+      "status": "resolved",
+      "firstSeenRun": "e821cebd-de3f-4753-86f5-4943631076f9",
+      "resolvedRun": "e821cebd-de3f-4753-86f5-4943631076f9",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Observed: redact-secret [21,46) (slack-token-shape-3-unicode-crlf's authored expected span); trufflehog none. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "56cb855fbaf6cfca6672c264e0936280dae322c5b2f1e33ad804fae0a37d90f7": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "3717d585b31577c8746e9cb31c9264528860c4f3251d0435bce79c1227befd3b": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "a435a14f4dd1e80629d0a03efc814dfbbba9d3953dbe821de4a52effec5b0125": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "5f13fe16c85512543fee1b5eb8e0021b8d66fb1c19b158719e8df30093c02f26": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "3735b9effa5268b64aa402513fb90e9ec73c69f624019d05b641a7808f6bd665": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "f7323d497122f3bce55bc6fd5cb68009ad8ea08d6901105eee938f03dc25a205": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "fdd8e7f9f41b700a70f0024bcdfee5684e8f0c033e977a1d3ce7b220bbccf11b": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "52ab811309ad785123b22bd1864b15bd847774fc079f039a9170a416c6285fd4": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "a429e1f75ac65dcc7f988ddfec8c22573d54e8c324d8a62cc63cf907ecbf0cf0": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "07bbd16cd8233de66ac91a2cb52c871b65703c48c1a5af389956ce822781e141": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "f60253cecac59449d488799ac78c55ada39b7b142116ca3a33013ec319d80fb3": {
+      "status": "not-assertable",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "redact-secret and gitleaks both report [61,99), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-dotenv-webhook-secret. redact-secret labels it stripe-webhook-signing-secret (the fixture's assigned arrival family): the product reports it with the stripe_webhook_signing_secret finding type inside its shared stripe-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). gitleaks labels it generic-token (its catch-all generic-api-key rule). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Before #251 this row was f030ca04c0c7, where redact-secret's label was the shared stripe-token detector id; the published 0.1.0-beta.7 still produces that row. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "b35aa45836f90b43f923dad7fbb360b6983f371c1be046cdd34f5d00171361db": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "fac6f559c5ec2d7300de030e18b0abe3038a195e9968c1123d5019a4d0cdd559": {
+      "status": "not-assertable",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "redact-secret and gitleaks both report [29,67), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-export-webhook-secret. redact-secret labels it stripe-webhook-signing-secret (the fixture's assigned arrival family): the product reports it with the stripe_webhook_signing_secret finding type inside its shared stripe-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). gitleaks labels it generic-token (its catch-all generic-api-key rule). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Before #251 this row was fb7f5adafda0, where redact-secret's label was the shared stripe-token detector id; the published 0.1.0-beta.7 still produces that row. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "0d7b4feb5c2c872824dc260fb00ff6aa00d3e684ac935be4c43ba2d8099244d1": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "9ace72d051c06fd73bad869cb1aad8a5e32100e077abd5cc4c4a2d2cfcb0d9d5": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "eebefcc22de198b253e7155667c034f243923eb04faa24c6eeeb27ee158be0ef": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "e056ddac14e3c50d5c10a2fb1be429dc72c84cee782945217f03b7c3997793e3": {
+      "status": "not-assertable",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "redact-secret and gitleaks both report [19,57), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-python-construct-event. redact-secret labels it stripe-webhook-signing-secret (the fixture's assigned arrival family): the product reports it with the stripe_webhook_signing_secret finding type inside its shared stripe-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). gitleaks labels it generic-token (its catch-all generic-api-key rule). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Before #251 this row was 4ff1d959fcd4, where redact-secret's label was the shared stripe-token detector id; the published 0.1.0-beta.7 still produces that row. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "6b1270edeef09646c43a395207817dfd565ea614fcf21a50f80008dc7bbd00ac": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "94967e1b25d190cde7c1f60d5cb555d0ab5bce879c82e4e8eba63ac4e3f3d228": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "1fde8bf3da25d92a2f03a1013c9c18c3cdc386192d4dea1caa0bd838804501af": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "b4181b91cee2e9a913e632d2879e43277ef1ce39881b1207ff34717d39683a81": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "93dcf30053825794fc2601d4c29c573b7e3e326edfe55a6f950f89c453881462": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "6c67c39391c67e3d9dd509c3c1e5a35cbafe7c0cf7cdcd7318b1930a421c0d80": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "0a9a64b2eae2e207a4cbd0377adb3e5cbaaab40b3a875eb2b17dac59dd1a5359": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "25b63c353e41001e6e391a42e5d617d3ea81981946432cc79bf5637574321f8b": {
+      "status": "not-assertable",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "redact-secret and gitleaks both report [63,133), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-compose-webhook-secret. redact-secret labels it stripe-webhook-signing-secret (the fixture's assigned arrival family): the product reports it with the stripe_webhook_signing_secret finding type inside its shared stripe-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). gitleaks labels it generic-token (its catch-all generic-api-key rule). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Before #251 this row was 520218affa9e, where redact-secret's label was the shared stripe-token detector id; the published 0.1.0-beta.7 still produces that row. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "dcd3e4fe6c4dd5891baa8846466f293ee1c83287a338113222f5b594ea76476e": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "8ef5cfb781b7fca8270fccef98f1ec3e363fe63a6f666d98adef460f863f7aea": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "3251eb462d7480cdf27311536af2d53c0c64703bfd10f39bb7a0ac170d350aa9": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "cc4ba7fd44c6f2a40cb18fd6377dea39caa750d73705a930ddd05806a59e8903": {
+      "status": "not-assertable",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "redact-secret and gitleaks both report [52,90), the authored expected span, on the canonical variant of beta8-211--stripe-webhook-signing-secret-actions-env. redact-secret labels it stripe-webhook-signing-secret (the fixture's assigned arrival family): the product reports it with the stripe_webhook_signing_secret finding type inside its shared stripe-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). gitleaks labels it generic-token (its catch-all generic-api-key rule). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Before #251 this row was d234036d2368, where redact-secret's label was the shared stripe-token detector id; the published 0.1.0-beta.7 still produces that row. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "9549307c8fb30aad05bee8976ba18bf2ccdf2fe9cc01b2a2d209f28c8988ceca": {
+      "status": "resolved",
+      "firstSeenRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "resolvedRun": "54e4b802-70b8-448f-9948-fb7544f00bb4",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "d721484a49968a45484b2d202924d4cb25ec62ea644813305cb98503dcbdafe0": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [94,187), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-dotenv-gh-token. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "c8f2f355773be18777796889a6699e32d8ebbd9fdbab55e5c5f6f5b30eb5998f": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [18,111), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-export-github-pat. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "f49f82214b4330651e3656fc53bb35c1a310bee8f9eb508d7d3a8cc5674f7f88": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [94,187), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-bearer-header. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "ba1157963d1b1ca190526c4c7fe942cf92a8fea0db01f3a77a76472c3023c45b": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [41,134), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-git-remote-userinfo. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "10a7900b443d17541e72b1ab44925407b3a1eb9a58ae42d64962e65fc18a342f": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [41,134), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-composer-auth-json. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "b3ce5f40236e8b5d32682bead635500244c99f9d298eb5bce8747733a039797f": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [101,194), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-actions-env. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "db584a45b21e6499c26ff3ffd112c5a5efe73b7493501db90d8aa67d96a07789": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [48,141), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-terraform-provider. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "e50e41f253fd2e41fd1834c76de238c3aa45a28c3f7f68fc726d64fa045f7602": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [8,101), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-gh-auth-login. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "a8dad7670a33d2e0d0f2402c1d13807cbb2c0f6b006c998c7405489e8cc8a41d": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [111,204), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-octokit-debug-log. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "935099b519e4e0d904acb0afbfa963adcb7c34cc2c5bd90dbc9b7bd29af327b1": {
+      "status": "not-assertable",
+      "firstSeenRun": "6a1fa372-c64b-42dc-a31d-597e4bbfda4b",
+      "note": "redact-secret and trufflehog both report [125,218), the authored expected span, on the canonical variant of beta8-211--github-fine-grained-pat-compose-renovate. redact-secret labels it github-fine-grained-pat (the fixture's assigned arrival family): the product reports it with the github_fine_grained_personal_access_token finding type inside its shared github-token detector on both the published 0.1.0-beta.7 and candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it github-token (its one Github detector covers every GitHub token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "e62fc46b4851908df90d41995e446ac08cf1d521301bfc3e4c0264397c74da4c": {
+      "status": "resolved",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "Resolved as authored-expectation-correct: redact-secret and trufflehog both report [0,76), the authored expected span, on the canonical variant of detector-coverage--slack-token-shape-2-bare, an xoxp- value kept in the slack-token group only as a T3 policy regression (its assessment records that it is outside the reviewed slack-token contract, which is xoxb- only). trufflehog labels it slack-token, the group's assignment. redact-secret labels it slack-user-token: on candidate 10263e5 (product main) the product types xoxp- as slack_user_token inside its shared slack-token detector, and the adapter maps that type to the arrival family (#251). That is the family this benchmark's own taxonomy files xoxp- under (slack:user-token, benchmarks/lib/beta8/212.ts), so the product's label is the more specific one and neither the span nor the attribution is a product defect. Not settled by the peer-coarser decision, whose third condition needs redact-secret's label to be a row target. Class: classification-disagreement/trufflehog/product-label-matches-taxonomy."
+    },
+    "5d20f7c72cac90e3838bf8880ec187130189f41c7aaaa2a6e481134b656b4f8a": {
+      "status": "resolved",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "Resolved as authored-expectation-correct: redact-secret and trufflehog both report [7,83), the authored expected span, on the canonical variant of detector-coverage--slack-token-shape-2-quoted, an xoxp- value kept in the slack-token group only as a T3 policy regression (its assessment records that it is outside the reviewed slack-token contract, which is xoxb- only). trufflehog labels it slack-token, the group's assignment. redact-secret labels it slack-user-token: on candidate 10263e5 (product main) the product types xoxp- as slack_user_token inside its shared slack-token detector, and the adapter maps that type to the arrival family (#251). That is the family this benchmark's own taxonomy files xoxp- under (slack:user-token, benchmarks/lib/beta8/212.ts), so the product's label is the more specific one and neither the span nor the attribution is a product defect. Not settled by the peer-coarser decision, whose third condition needs redact-secret's label to be a row target. Class: classification-disagreement/trufflehog/product-label-matches-taxonomy."
+    },
+    "bb9b94d3278ad1a16c0b89373019b97cf3daeaede0a5ff44586517c5f199a85d": {
+      "status": "resolved",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "Resolved as authored-expectation-correct: redact-secret and trufflehog both report [21,97), the authored expected span, on the canonical variant of detector-coverage--slack-token-shape-2-unicode-crlf, an xoxp- value kept in the slack-token group only as a T3 policy regression (its assessment records that it is outside the reviewed slack-token contract, which is xoxb- only). trufflehog labels it slack-token, the group's assignment. redact-secret labels it slack-user-token: on candidate 10263e5 (product main) the product types xoxp- as slack_user_token inside its shared slack-token detector, and the adapter maps that type to the arrival family (#251). That is the family this benchmark's own taxonomy files xoxp- under (slack:user-token, benchmarks/lib/beta8/212.ts), so the product's label is the more specific one and neither the span nor the attribution is a product defect. Not settled by the peer-coarser decision, whose third condition needs redact-secret's label to be a row target. Class: classification-disagreement/trufflehog/product-label-matches-taxonomy."
+    },
+    "435923146eb21805a84324610a6b55648f39ceba98d78e03ec7cc30834220548": {
+      "status": "not-assertable",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "redact-secret and trufflehog both report [17,93), the authored expected span, on the canonical variant of beta8-212--slack-user-token-dotenv. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "f3ce56b141949467967abb9486a9f89d9a95f9650f959a86b246f2516f73648e": {
+      "status": "not-assertable",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "redact-secret and trufflehog both report [66,138), the authored expected span, on the canonical variant of beta8-212--slack-user-token-bearer-curl. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "cc66c98470673b13c32e82925cb20b96cedc95460db81b88c278ac2ca5a76c44": {
+      "status": "not-assertable",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "redact-secret and trufflehog both report [132,211), the authored expected span, on the canonical variant of beta8-212--slack-user-token-oauth-v2-access. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "40e54a4b967212ffd82e906ba45f1c196b15034d9e6c5687561ecd7d53514c57": {
+      "status": "not-assertable",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "redact-secret and trufflehog both report [59,135), the authored expected span, on the canonical variant of beta8-212--slack-user-token-python-webclient. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "cf8320c3ba15c9e92f618093c1f5960fbe3d4b0292723a86be95349010049c71": {
+      "status": "not-assertable",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "redact-secret and trufflehog both report [48,124), the authored expected span, on the canonical variant of beta8-212--slack-user-token-legacy-query-token. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "1c95bed23b1aed944aa5c9e9d753115470d21179fa113e2978fe3da012d5fc2c": {
+      "status": "not-assertable",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "redact-secret and trufflehog both report [20,95), the authored expected span, on the canonical variant of beta8-212--slack-user-token-slack-login. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "0f056acb62f8e5e0ea680d0b493261b69c5ae8ba76b84a3f959cac2ba7b75333": {
+      "status": "not-assertable",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "redact-secret and trufflehog both report [76,152), the authored expected span, on the canonical variant of beta8-212--slack-user-token-audit-env. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "3212919c62d2e2a2a8049a79628ca08c69c8b169ade03351e5beb07a4814240c": {
+      "status": "not-assertable",
+      "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
+      "note": "redact-secret and trufflehog both report [77,128), the authored expected span, on the canonical variant of beta8-212--slack-user-token-legacy-short-secret. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     }
   }
 }

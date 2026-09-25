@@ -157,3 +157,28 @@ test('the MCP overhead rows feed the #143 adapter-overhead dimension under their
   assert.equal(metrics.find(m => m.id === 'adapter/mcp-in-process/mcp-text-small/traversal').samples, 30);
   assert.throws(() => metricsFromAdapterOverhead([{ ...output('h', 1), schema: 'other' }]), /adapter-overhead-schema/);
 });
+
+test('the committed #281 evidence is a complete, clean, schema-valid run with no plaintext and a flagged control in every cell', async () => {
+  const { default: Ajv } = await import('ajv');
+  const schema = JSON.parse(readFileSync('schemas/mcp-qualification-v1.json', 'utf8'));
+  const text = readFileSync('evidence/612/mcp-qualification.json', 'utf8');
+  const report = JSON.parse(text);
+  const validate = new Ajv({ strict: false, allErrors: true }).compile(schema);
+  assert.ok(validate(report), JSON.stringify(validate.errors?.slice(0, 3)));
+  assert.equal(report.status, 'complete');
+  assert.equal(report.quick, false);
+  assert.equal(report.benchmark.dirty, false);
+  assert.equal(report.matrix.length, 24);
+  for (const cell of report.matrix) {
+    assert.equal(cell.status, 'complete');
+    assert.equal(cell.summary.controlsDetected, 1, `${cell.node} ${cell.transport}`);
+  }
+  for (const file of ['mcp-qualification.json', 'mcp-qualification.md', 'mcp-overhead-series.json', 'README.md']) {
+    assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join('evidence/612', file), 'utf8'), W.allSecrets()), file);
+  }
+  const series = JSON.parse(readFileSync('evidence/612/mcp-overhead-series.json', 'utf8'));
+  assert.deepEqual(series, report.operational.overhead.series);
+  const { metrics, profiles } = metricsFromAdapterOverhead(series.outputs);
+  assert.ok(profiles['mcp-javascript']);
+  assert.ok(metrics.some(m => m.id === 'adapter/mcp-in-process/mcp-large-benign/traversal'));
+});

@@ -4,7 +4,7 @@
   "measuredVersion": "0.1.0-beta.6",
   "milestone": "v0.1.0-beta.6",
   "milestoneUrl": "https://github.com/redact-secret/redact-secret/milestone/9",
-  "reviewedAt": "2026-09-24",
+  "reviewedAt": "2026-09-25",
   "issues": [
     {
       "id": "product-292",
@@ -4055,6 +4055,1225 @@
             }
           ],
           "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-815",
+      "title": "generic-token misses assignments with escaped JSON quotes, `:=`, Objective-C `@\"...\"`, or braces inside the value",
+      "url": "https://github.com/redact-secret/redact-secret/issues/815",
+      "number": 815,
+      "fixtures": [
+        "beta9-external-inputs--composed-json-string-in-json-log",
+        "beta9-external-inputs--ds-keyword-template-chars-in-secret",
+        "beta9-external-inputs--ds-keyword-go-short-assign",
+        "beta9-external-inputs--ds-objc-at-string"
+      ],
+      "kind": "false-negative",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://www.rfc-editor.org/rfc/rfc6749.txt",
+          "https://github.com/Yelp/detect-secrets/tree/5e141933554a0b74e7341841f318be21e895339c/tests"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://www.rfc-editor.org/rfc/rfc6749.txt",
+            "https://github.com/Yelp/detect-secrets/tree/5e141933554a0b74e7341841f318be21e895339c/tests"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/815"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/831",
+            "https://github.com/redact-secret/redact-secret/commit/6bbfba8860456688bfe52f85195007c323f06366"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/815",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-815",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "6bbfba8860456688bfe52f85195007c323f06366"
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--composed-json-string-in-json-log",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 45,
+              "end": 67
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--ds-keyword-template-chars-in-secret",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 9,
+              "end": 48
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--ds-keyword-go-short-assign",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 11,
+              "end": 50
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--ds-objc-at-string",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 13,
+              "end": 52
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-816",
+      "title": "generic-token misses credential parameters in URL query strings, fragments and form bodies (`?access_token=`, `&client_secret=`, `code_verifier=`)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/816",
+      "number": 816,
+      "fixtures": [
+        "beta9-external-inputs--rfc6750-query-access-token",
+        "beta9-external-inputs--rfc6750-get-request-line",
+        "beta9-external-inputs--rfc6749-implicit-fragment-display-break",
+        "beta9-external-inputs--rfc6749-authorization-code-location",
+        "beta9-external-inputs--rfc7636-code-verifier",
+        "beta9-external-inputs--rfc6749-refresh-request-body",
+        "beta9-external-inputs--rfc6749-token-request-basic-and-code"
+      ],
+      "kind": "false-negative",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://www.rfc-editor.org/rfc/rfc6750.txt",
+          "https://www.rfc-editor.org/rfc/rfc6749.txt",
+          "https://www.rfc-editor.org/rfc/rfc7636.txt"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://www.rfc-editor.org/rfc/rfc6750.txt",
+            "https://www.rfc-editor.org/rfc/rfc6749.txt",
+            "https://www.rfc-editor.org/rfc/rfc7636.txt"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/816"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/832",
+            "https://github.com/redact-secret/redact-secret/commit/855bf9698959af4cd8d475b477b23a32c2453cc2"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/816",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-816",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "855bf9698959af4cd8d475b477b23a32c2453cc2"
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--rfc6750-query-access-token",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 49,
+              "end": 64
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc6750-get-request-line",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 27,
+              "end": 42
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc6749-implicit-fragment-display-break",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 64,
+              "end": 86
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc6749-authorization-code-location",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 64,
+              "end": 86
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc7636-code-verifier",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 14,
+              "end": 57
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc6749-refresh-request-body",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 39,
+              "end": 61
+            },
+            {
+              "start": 98,
+              "end": 120
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc6749-token-request-basic-and-code",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 67,
+              "end": 95
+            },
+            {
+              "start": 180,
+              "end": 202
+            }
+          ],
+          "actual": [
+            {
+              "start": 67,
+              "end": 95,
+              "type": "authorization_credential",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-817",
+      "title": "generic-token flags non-secret references and identifiers under credential names (HTML-escaped placeholder, quoted `$VAR`, `env.X`, string concatenation, AWS ARN)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/817",
+      "number": 817,
+      "fixtures": [
+        "beta9-external-inputs--np-html-escaped-placeholder",
+        "beta9-external-inputs--np-echo-concatenated-reference",
+        "beta9-external-inputs--np-env-attribute-reference",
+        "beta9-external-inputs--np-java-getter-concatenation",
+        "beta9-external-inputs--np-iam-managed-policy-arn"
+      ],
+      "kind": "false-positive",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://github.com/praetorian-inc/noseyparker/tree/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://github.com/praetorian-inc/noseyparker/tree/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/817"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/833",
+            "https://github.com/redact-secret/redact-secret/commit/840266c3d8c46c9f308740719c3b0d8e54b5f6ba"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/817",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-817",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "840266c3d8c46c9f308740719c3b0d8e54b5f6ba"
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--np-html-escaped-placeholder",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [],
+          "actual": [
+            {
+              "start": 13,
+              "end": 33,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--np-echo-concatenated-reference",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [],
+          "actual": [
+            {
+              "start": 34,
+              "end": 56,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--np-env-attribute-reference",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [],
+          "actual": [
+            {
+              "start": 48,
+              "end": 73,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--np-java-getter-concatenation",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [],
+          "actual": [
+            {
+              "start": 32,
+              "end": 61,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--np-iam-managed-policy-arn",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [],
+          "actual": [
+            {
+              "start": 25,
+              "end": 70,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-818",
+      "title": "Authorization header credentials missed: `Proxy-Authorization`, Basic/Token not at line start, header-anchored Bearer values of 12-15 bytes",
+      "url": "https://github.com/redact-secret/redact-secret/issues/818",
+      "number": 818,
+      "fixtures": [
+        "beta9-external-inputs--rfc7617-basic-utf8-proxy",
+        "beta9-external-inputs--composed-curl-single-quoted-json",
+        "beta9-external-inputs--composed-zero-width-inside-bearer"
+      ],
+      "kind": "false-negative",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://www.rfc-editor.org/rfc/rfc7617.txt",
+          "https://www.rfc-editor.org/rfc/rfc6749.txt",
+          "https://www.rfc-editor.org/rfc/rfc6750.txt",
+          "https://github.com/nickboucher/trojan-source/tree/e3dc153fcf465f4a84424ea874ff39be29adb1f7/JavaScript"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://www.rfc-editor.org/rfc/rfc7617.txt",
+            "https://www.rfc-editor.org/rfc/rfc6749.txt",
+            "https://www.rfc-editor.org/rfc/rfc6750.txt",
+            "https://github.com/nickboucher/trojan-source/tree/e3dc153fcf465f4a84424ea874ff39be29adb1f7/JavaScript"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/818"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/834",
+            "https://github.com/redact-secret/redact-secret/commit/ebaff0af3c472384646afa80a25851d2c2959463"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/818",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-818",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "ebaff0af3c472384646afa80a25851d2c2959463"
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--rfc7617-basic-utf8-proxy",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 27,
+              "end": 43
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--composed-curl-single-quoted-json",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 30,
+              "end": 58
+            },
+            {
+              "start": 82,
+              "end": 104
+            }
+          ],
+          "actual": [
+            {
+              "start": 82,
+              "end": 104,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--composed-zero-width-inside-bearer",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 22,
+              "end": 40
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-819",
+      "title": "RFC 8959 `secret-token:` URIs are redacted without their scheme, and missed with an upper-case scheme or behind another assignment",
+      "url": "https://github.com/redact-secret/redact-secret/issues/819",
+      "number": 819,
+      "fixtures": [
+        "beta9-external-inputs--rfc8959-secret-token-folded-bearer",
+        "beta9-external-inputs--rfc8959-secret-token-prose",
+        "beta9-external-inputs--composed-secret-token-uppercase-scheme"
+      ],
+      "kind": "false-negative",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://www.rfc-editor.org/rfc/rfc8959.txt",
+          "https://www.rfc-editor.org/rfc/rfc3986.txt"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://www.rfc-editor.org/rfc/rfc8959.txt",
+            "https://www.rfc-editor.org/rfc/rfc3986.txt"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/819"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/835",
+            "https://github.com/redact-secret/redact-secret/commit/56cd309dc569fa9d45fd8279c6d4863ab9ec57ad"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/819",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-819",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "56cd309dc569fa9d45fd8279c6d4863ab9ec57ad"
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--rfc8959-secret-token-folded-bearer",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 80,
+              "end": 135
+            }
+          ],
+          "actual": [
+            {
+              "start": 93,
+              "end": 135,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc8959-secret-token-prose",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 16,
+              "end": 71
+            }
+          ],
+          "actual": [
+            {
+              "start": 29,
+              "end": 71,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--composed-secret-token-uppercase-scheme",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 8,
+              "end": 63
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-820",
+      "title": "connection-string misses the password in http(s)/ftp URL userinfo (`https://user:pass@host/`)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/820",
+      "number": 820,
+      "fixtures": [
+        "beta9-external-inputs--composed-userinfo-password-url"
+      ],
+      "kind": "false-negative",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://www.rfc-editor.org/rfc/rfc7617.txt",
+          "https://www.rfc-editor.org/rfc/rfc3986.txt"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://www.rfc-editor.org/rfc/rfc7617.txt",
+            "https://www.rfc-editor.org/rfc/rfc3986.txt"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/820"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/836",
+            "https://github.com/redact-secret/redact-secret/commit/58089c3b0e843275f753f98bd19f876e1eb57c53"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/820",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-820",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "58089c3b0e843275f753f98bd19f876e1eb57c53"
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--composed-userinfo-password-url",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 16,
+              "end": 29
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-821",
+      "title": "JWK secret members (`\"k\"`, `\"d\"`, `\"p\"`, `\"q\"`, `\"dp\"`, `\"dq\"`, `\"qi\"`) are not detected",
+      "url": "https://github.com/redact-secret/redact-secret/issues/821",
+      "number": 821,
+      "fixtures": [
+        "beta9-external-inputs--composed-jwk-k-single-line"
+      ],
+      "kind": "false-negative",
+      "status": "fixed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://www.rfc-editor.org/rfc/rfc7515.txt"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://www.rfc-editor.org/rfc/rfc7515.txt"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/821"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/837",
+            "https://github.com/redact-secret/redact-secret/commit/bc52fb58a2625880c808de8aeab502c12a24ce50"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/821",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-821",
+        "canonicalFixtureIds": []
+      },
+      "fix": {
+        "commit": "bc52fb58a2625880c808de8aeab502c12a24ce50"
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--composed-jwk-k-single-line",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 18,
+              "end": 104
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-822",
+      "title": "Policy: credentials visible only after undoing a presentation transform (RFC display line breaks, percent-encoded query in JSON)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/822",
+      "number": 822,
+      "fixtures": [
+        "beta9-external-inputs--rfc7519-jwt-display-breaks",
+        "beta9-external-inputs--rfc7515-jwk-k-display-break",
+        "beta9-external-inputs--composed-percent-encoded-url-in-json"
+      ],
+      "kind": "false-negative",
+      "status": "policy-decision",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://www.rfc-editor.org/rfc/rfc7519.txt",
+          "https://www.rfc-editor.org/rfc/rfc7515.txt",
+          "https://www.rfc-editor.org/rfc/rfc6750.txt"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://www.rfc-editor.org/rfc/rfc7519.txt",
+            "https://www.rfc-editor.org/rfc/rfc7515.txt",
+            "https://www.rfc-editor.org/rfc/rfc6750.txt"
+          ]
+        }
+      },
+      "disposition": {
+        "reason": "Maintainer decision (keep current policy): detectors never span a line terminator, an engine invariant that keeps whole-input and incremental scans in agreement; the RFC 7519/7515 figures break their values for display only, so the single-range expectation across those breaks is too strict. The percent-encoded query inside JSON is a real but out-of-contract false negative: the engine does not decode transport encodings before detection. Revisit only with a decoding or line-join decision record.",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/822#issuecomment-5840078456"
+        ]
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--rfc7519-jwt-display-breaks",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 0,
+              "end": 184
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc7515-jwk-k-display-break",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 20,
+              "end": 113
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--composed-percent-encoded-url-in-json",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 64,
+              "end": 79
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-823",
+      "title": "Policy: keyword-scanner shapes outside the contextual-assignment contract (reversed comparison, C++ constructor argument, `db_pass`)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/823",
+      "number": 823,
+      "fixtures": [
+        "beta9-external-inputs--ds-keyword-reversed-comparison",
+        "beta9-external-inputs--ds-cpp-string-constructor",
+        "beta9-external-inputs--ds-keyword-non-ascii-secret"
+      ],
+      "kind": "false-negative",
+      "status": "policy-decision",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://github.com/Yelp/detect-secrets/tree/5e141933554a0b74e7341841f318be21e895339c/tests"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://github.com/Yelp/detect-secrets/tree/5e141933554a0b74e7341841f318be21e895339c/tests"
+          ]
+        }
+      },
+      "disposition": {
+        "reason": "Maintainer decision: the db_pass fixture (ds-keyword-non-ascii-secret) is fixed by redact-secret#838 (merge 54e55fefe34255ecf77a4f635792d8d566eefeb1), which makes db_pass a high-signal name as the exact whole name; on that commit the fixture reports the expected 10-23 range at warn/medium because the value is under 16 bytes (the #825 policy). The reversed comparison (ds-keyword-reversed-comparison) and the C++ constructor argument (ds-cpp-string-constructor) stay unfixed as policy: comparison grammar would flag test assertions, and call arguments would match accessor calls whose argument is a name. The record is annotated rather than split because a second record for #823 would need a product manifest record id that no promotion created.",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/823#issuecomment-5840079863",
+          "https://github.com/redact-secret/redact-secret/pull/838",
+          "https://github.com/redact-secret/redact-secret/commit/54e55fefe34255ecf77a4f635792d8d566eefeb1"
+        ]
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--ds-keyword-reversed-comparison",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 5,
+              "end": 44
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--ds-cpp-string-constructor",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 20,
+              "end": 59
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta9-external-inputs--ds-keyword-non-ascii-secret",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 10,
+              "end": 23
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-824",
+      "title": "Policy: warn on short literals under high-signal names in benign code (`\"somefakekey\"`, `\"#add-password\"`)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/824",
+      "number": 824,
+      "fixtures": [
+        "beta9-external-inputs--ds-fake-in-value",
+        "beta9-external-inputs--np-css-selector"
+      ],
+      "kind": "false-positive",
+      "status": "policy-decision",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://github.com/Yelp/detect-secrets/tree/5e141933554a0b74e7341841f318be21e895339c/tests",
+          "https://github.com/praetorian-inc/noseyparker/tree/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://github.com/Yelp/detect-secrets/tree/5e141933554a0b74e7341841f318be21e895339c/tests",
+            "https://github.com/praetorian-inc/noseyparker/tree/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules"
+          ]
+        }
+      },
+      "disposition": {
+        "reason": "Maintainer decision (keep current policy): already decided by the accepted record that warns unconditionally on high-signal contextual names. A short literal under a high-signal name warns without redacting because it could be a real weak password; splitting placeholder words out of larger runs or excluding #kebab-case values would drop real passwords. The first-run schema records ranges only and so counts a warn as a flag.",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/824#issuecomment-5840078933",
+          "https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md"
+        ]
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--ds-fake-in-value",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [],
+          "actual": [
+            {
+              "start": 12,
+              "end": 23,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--np-css-selector",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [],
+          "actual": [
+            {
+              "start": 20,
+              "end": 33,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-825",
+      "title": "Policy: short values under high-signal names warn instead of redact (beta9 adversarial pack)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/825",
+      "number": 825,
+      "fixtures": [
+        "beta9-external-inputs--composed-yaml-block-scalar-json",
+        "beta9-external-inputs--rfc6750-token-response-json",
+        "beta9-external-inputs--composed-prefixed-key-name-secret",
+        "beta9-external-inputs--np-generic-password-dollar",
+        "beta9-external-inputs--np-generic-user-password-pair"
+      ],
+      "kind": "false-negative",
+      "status": "policy-decision",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.8",
+        "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
+        "sourceCommit": "5639a0ea02e0eefbd1533bea23a05c749b529bef"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+          "https://www.rfc-editor.org/rfc/rfc6750.txt",
+          "https://github.com/praetorian-inc/noseyparker/tree/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules",
+          "https://www.rfc-editor.org/rfc/rfc7617.txt"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/docs/reports/2026-09-25-beta9-external-inputs-first-run.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/first-run.json"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-25",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/dc965bbb194a0490207556674b1f0331d80a5d33/adversarial/packs/beta9-external-inputs/intake.json",
+            "https://www.rfc-editor.org/rfc/rfc6750.txt",
+            "https://github.com/praetorian-inc/noseyparker/tree/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules",
+            "https://www.rfc-editor.org/rfc/rfc7617.txt"
+          ]
+        }
+      },
+      "disposition": {
+        "reason": "Maintainer decision (keep current policy): a value under 16 bytes under a high-signal name is medium confidence by design, and contextual_secret is confidence-gated, so it warns instead of redacting. Real OAuth access tokens are longer than the 15-byte RFC 6750 example. Revisit only through the confidence-scoring work (redact-secret#767/#771).",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/issues/825#issuecomment-5840079519",
+          "https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-20-warn-unconditionally-on-high-signal-contextual-names.md"
+        ]
+      },
+      "evidence": [
+        {
+          "fixture": "beta9-external-inputs--composed-yaml-block-scalar-json",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 36,
+              "end": 51
+            }
+          ],
+          "actual": [
+            {
+              "start": 36,
+              "end": 51,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--rfc6750-token-response-json",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 20,
+              "end": 35
+            },
+            {
+              "start": 103,
+              "end": 125
+            }
+          ],
+          "actual": [
+            {
+              "start": 20,
+              "end": 35,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            },
+            {
+              "start": 103,
+              "end": 125,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--composed-prefixed-key-name-secret",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 15,
+              "end": 30
+            }
+          ],
+          "actual": [
+            {
+              "start": 15,
+              "end": 30,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--np-generic-password-dollar",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 12,
+              "end": 23
+            }
+          ],
+          "actual": [
+            {
+              "start": 12,
+              "end": 23,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta9-external-inputs--np-generic-user-password-pair",
+          "corpusHash": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+          "expected": [
+            {
+              "start": 29,
+              "end": 40
+            }
+          ],
+          "actual": [
+            {
+              "start": 29,
+              "end": 40,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
         }
       ]
     }

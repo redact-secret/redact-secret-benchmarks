@@ -232,7 +232,9 @@ metrics from it alone.
   fewer than 5 variants is never published.
 
 Variants, recipes, operator parameters, per-candidate scores, bands and
-contributions stay maintainer-local.
+contributions stay maintainer-local. How the aggregate is produced (bases,
+operators, the candidate projection in shadow mode, the invariant checks) is
+[score-evasion.md](score-evasion.md).
 
 ## 6. Publication boundary and versioning
 

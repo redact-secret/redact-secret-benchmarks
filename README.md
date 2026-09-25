@@ -157,6 +157,7 @@ npm run baseline:report              # Regenerate docs/generated/release-compari
 npm run features:extract            # Maintainer-local candidate-feature dataset -> results-output/calibration/ (never published)
 npm run calibration:run             # Shadow-scorer calibration experiments over that dataset -> results-output/calibration/ (never published)
 npm run scorer-promotion:check      # Validate the future-promotion contract for the shadow scorer (#257)
+npm run evasion:run -- --product <clean redact-secret checkout>  # Score-evasion aggregate (#289); detail -> results-output/score-evasion/ (never published)
 npm run build                       # Type-check and build a static dashboard snapshot
 npm run preview                     # Preview that snapshot
 ```

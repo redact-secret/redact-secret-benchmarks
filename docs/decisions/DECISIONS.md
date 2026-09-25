@@ -44,3 +44,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Label arrival families typed inside a shared detector by the product's finding type](2026-09-24-map-product-finding-types-to-arrival-families.md) (narrows the entry above)
 - [Score arrival families the product types inside a shared detector](2026-09-24-score-arrival-families-by-finding-type.md) (amends the beta8 evidence spec; builds on the entry above)
 - [Protect holdout from statistical scorer tuning with a tuning manifest](2026-09-25-protect-holdout-from-statistical-scorer-tuning.md)
+- [Classify a pack the project assembles from external inputs as maintainer regression](2026-09-25-classify-project-assembled-external-inputs-as-maintainer-regression.md) (proposed; applies the adversarial intake decision to #140)

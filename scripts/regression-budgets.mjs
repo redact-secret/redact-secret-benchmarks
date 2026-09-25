@@ -7,6 +7,10 @@
  *       Freezes, from git history, each committed release-build summary's
  *       within-run p95/median dispersion and memory maxima, so derivation
  *       never needs history at check time.
+ *   runner-reruns --runs <manifest.json> --out <file>
+ *       Reduces several performance-evaluation.yml runs at one pinned core
+ *       commit (their downloaded summary.json plus run provenance) into
+ *       same-artifact rerun noise on the official GitHub-hosted Linux runner.
  *   snapshot --id <id> --product-version <v> --summary <f> --operational <f> --adapter <series> --out <f>
  *       Writes an immutable baseline snapshot of every budgeted metric.
  *   derive [--check]
@@ -85,6 +89,79 @@ function ciDispersion(args) {
     runs,
   });
   console.log(`Wrote ${args.out}: ${runs.length} runs`);
+}
+
+/**
+ * The manifest lists each run as { runId, url, benchmarksCommit, benchmarksRef,
+ * startedAt, completedAt, runner: { name, label }, artifact: { id, name, digest },
+ * summary: <path to the downloaded summary.json> }. Only the reduced timing
+ * and memory statistics are kept; raw logs and per-sample files are not.
+ */
+function runnerReruns(args) {
+  const manifest = readJson(args.runs);
+  const series = new Map();
+  const runs = [];
+  let sourceCommit = null, workloadProfiles = null, repetitions = null;
+  const environment = new Map();
+  for (const entry of manifest.runs) {
+    const text = readFileSync(entry.summary, 'utf8');
+    const summary = JSON.parse(text);
+    const problem = completeAssessmentProblem(summary);
+    if (problem !== null) throw new Error(`runner-reruns:${entry.runId}:${problem}`);
+    sourceCommit ??= summary.sourceCommit;
+    workloadProfiles ??= summary.workloadProfiles;
+    repetitions ??= summary.repetitions;
+    if (summary.sourceCommit !== sourceCommit) throw new Error(`runner-reruns:${entry.runId}:different pinned commit ${summary.sourceCommit}`);
+    if (summary.workloadProfiles.hash !== workloadProfiles.hash) throw new Error(`runner-reruns:${entry.runId}:different workload profiles`);
+    if (summary.repetitions !== repetitions) throw new Error(`runner-reruns:${entry.runId}:different repetitions`);
+    const { summary: _path, ...provenance } = entry;
+    runs.push({ ...provenance, summarySha256: sha256OfText(text) });
+    for (const run of summary.runs) {
+      if (run.kind !== 'performance' || run.status !== 'complete') continue;
+      const p = run.result.performance;
+      const key = `${run.surface}/${run.profileId}`;
+      const { os, cpu, runtime, buildProfile } = run.result.provenance;
+      const env = JSON.stringify({ os, cpu, runtime, ...(buildProfile ? { buildProfile } : {}) });
+      if (environment.has(run.surface) && environment.get(run.surface) !== env) throw new Error(`runner-reruns:${entry.runId}:${run.surface} environment changed`);
+      environment.set(run.surface, env);
+      if (!series.has(key)) series.set(key, { surface: run.surface, profileId: run.profileId, runs: [] });
+      series.get(key).runs.push({
+        runId: entry.runId,
+        initialization: { p95: p.initialization.p95, median: p.initialization.median },
+        processing: { p95: p.processing.p95, median: p.processing.median, samples: p.processing.samples },
+        memoryMaximumBytes: Object.fromEntries(Object.entries(p.memory).filter(([, m]) => m.samples.length > 0)
+          .map(([category, m]) => [category, Math.max(...m.samples.map(s => s.maximumObservedBytes))])),
+      });
+    }
+  }
+  for (const s of series.values()) {
+    if (s.runs.length !== runs.length) throw new Error(`runner-reruns:${s.surface}/${s.profileId}:missing from some runs`);
+  }
+  writeJson(args.out, {
+    schema: 'redact-secret-benchmarks/regression-noise-v1',
+    issue: 143,
+    measuredAt: runs.map(run => run.completedAt).sort().at(-1),
+    method: {
+      protocol: 'performance-evaluation.yml, dispatched repeatedly at one pinned core commit: each run checks the commit out, builds release artifacts, and runs core\'s bounded assessment (one fresh process per sample, one untimed warm-up pass, one timed pass)',
+      samplesPerRun: repetitions,
+      runs: runs.length,
+      percentile: 'nearest-rank p95 over each run\'s samples, as core\'s summaries compute it',
+      spread: 'maximum over minimum minus one, across runs',
+      runsAreSequential: false,
+      reducedBy: 'node --import tsx scripts/regression-budgets.mjs runner-reruns',
+    },
+    sourceCommit,
+    artifacts: { build: 'release artifacts built by each run from the pinned core commit (same source, rebuilt per run)' },
+    workloadProfiles: { hash: workloadProfiles.hash },
+    environment: {
+      runner: 'GitHub-hosted ubuntu-latest (official Linux x86_64 profile)',
+      surfaces: Object.fromEntries([...environment].map(([surface, env]) => [surface, JSON.parse(env)])),
+    },
+    runs,
+    series: [...series.values()],
+    limitations: manifest.limitations,
+  });
+  console.log(`Wrote ${args.out}: ${runs.length} runs, ${series.size} series`);
 }
 
 function adapterSeries(file) {
@@ -292,7 +369,7 @@ function backtest(args) {
 }
 
 const args = parseArgs(process.argv.slice(2));
-const commands = { 'ci-dispersion': ciDispersion, snapshot, derive, evaluate, check, backtest };
+const commands = { 'ci-dispersion': ciDispersion, 'runner-reruns': runnerReruns, snapshot, derive, evaluate, check, backtest };
 const command = commands[args._[0]];
 if (command === undefined) {
   console.error(`usage: regression-budgets.mjs <${Object.keys(commands).join('|')}> [options]`);

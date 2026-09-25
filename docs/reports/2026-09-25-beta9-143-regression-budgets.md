@@ -133,6 +133,55 @@ baseline. Improvements are within budget by definition.
 | 2b98027 → f2082ab (next expansion) | 8 latency rows, +22% to +32% | — |
 | f2082ab → 3144bb3 (beta.8) | — | rust-core small-whole p95 +20%, median +6.7% |
 
+## Official-runner rerun study (follow-up)
+
+`performance-evaluation.yml` ran six times at the baseline pin
+`3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c`: the baseline run
+[36078460497](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36078460497)
+and five develop dispatches,
+[36177107404](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177107404),
+[36177116881](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177116881),
+[36177124781](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177124781),
+[36177797166](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177797166) and
+[36177805247](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177805247).
+All six used runner image ubuntu-24.04 20260920.314.1, the same kernel and the
+same runtimes. The reduction is
+`benchmarks/regression-evidence/rerun-noise-linux-x64.json`, with run ids, URLs,
+artifact digests and summary sha256s, produced by
+`node --import tsx scripts/regression-budgets.mjs runner-reruns`.
+
+| Runs | Processing median spread | Initialization median spread | Memory spread |
+| --- | ---: | ---: | ---: |
+| the first four (baseline + three develop) | ≤ 6.4% | ≤ 26.0% | ≤ 2.2% |
+| all six | ≤ 91.6% | ≤ 88.7% | ≤ 5.2% |
+
+The last two runs were about 22% and 45% faster than the other four on every
+surface and profile at once, while the first four agree within 6.4%. A
+uniform shift of that size is a faster runner machine, not rerun noise. Region
+does not predict it: eastus hosted one slow and one fast run. The job log does
+not name the CPU, so the evidence cannot tell which machine class a run had.
+All six runs judge `accepted` against the current budgets, because a faster
+machine only lowers timings.
+
+Applying the decision's rule as written (re-derive with this spread) would
+give 2 × 91.6%, a threshold near 185% on every latency and initialization
+trigger. The backtest would then flag nothing, including both
+detector-expansion slowdowns. The same pattern means a baseline and a
+candidate measured on different machine classes can differ by 22–82% with no
+product change. The backtest's uniform +22% to +64% steps may include such a
+shift.
+
+**Review decision: the budgets stay `proposed`.** The review condition in the
+decision (at least three dispatches at one pin) was met, and three runs alone
+would have looked like confirmation: the first three develop dispatches all
+landed on the slower class. The six runs show the rerun term on the official
+runner is not a noise bound that thresholds can absorb. Promotion needs a
+policy change first: bind timing budgets to an identified runner machine class
+(record the CPU model in each run, as adapter budgets bind to their host), or
+measure baseline and candidate paired in one job. The derivation keeps the
+workstation rerun term. The Linux study is recorded as evidence, not used as a
+derivation source.
+
 ## Validation
 
 - **Out-of-sample run.** A fresh adapter-harness run in each language, taken
@@ -162,11 +211,14 @@ npm run performance:budgets:derive && npm run performance:budgets:check && npm r
 
 ## Limitations
 
-- **The Linux rerun term is not yet measured on the official runner.** It
-  comes from the workstation study, and each committed Linux run is a
-  different commit. Until `performance-evaluation.yml` has run several times
-  at one pin, a runner-to-runner shift larger than the workstation's could
-  surface as a corroborated regression, and the budgets stay `proposed`.
+- **The official runner's machine class varies, and timing budgets do not
+  account for it.** Six runs at one pin spread up to 91.6% on the processing
+  median (see "Official-runner rerun study"). The derivation keeps the
+  workstation rerun term. A candidate on a slower machine than the baseline
+  can surface as a corroborated regression, so a latency or initialization
+  breach on the hosted runner should be rerun before anyone acts on it. The
+  budgets stay `proposed` until timing is bound to a machine class or
+  measured paired.
 - The rerun study covers the Node and Python surfaces only. Rust, CLI and
   browser rows use the same rerun term plus their own CI dispersion.
 - The adapter budgets bind to the measuring host. Any other host is

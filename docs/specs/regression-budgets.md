@@ -96,6 +96,13 @@ The noise inputs are committed under `benchmarks/regression-evidence/`:
   (`scripts/measure-regression-noise.mjs`). The median moved at most 3.8%
   between reruns. The p95, which for five samples is their maximum, moved up
   to 21.9%.
+- `rerun-noise-linux-x64.json` reduces six `performance-evaluation.yml`
+  runs at the baseline pin on the GitHub-hosted runner
+  (`scripts/regression-budgets.mjs runner-reruns`). It is evidence, not a
+  derivation source. Four runs agree within 6.4% on the processing median.
+  Two ran 22% and 45% faster across every row, which points to a faster
+  runner machine, and two times that spread would disable every timing
+  trigger.
 - `adapter-overhead-darwin-arm64.json` holds five independent processes per
   language of the adapter harnesses. Each trigger's between-process spread and
   standard deviation come from it.
@@ -191,11 +198,13 @@ job summary.
 
 ## Limitations
 
-- **Runner-to-runner variance on the official Linux profile is not yet
-  measured.** Every committed Linux run is a different commit. The
-  same-artifact rerun noise was measured on a macOS arm64 workstation, not a
-  GitHub-hosted runner, and it stands in for the rerun term until
-  `performance-evaluation.yml` has been dispatched repeatedly at one pin.
+- **The official Linux runner's machine class is not controlled.** Six runs
+  at one pin (`rerun-noise-linux-x64.json`) show a shift of up to 45% between
+  runs on every row at once. That is machine-class variation, not noise the
+  thresholds can absorb. The rerun term therefore still comes from the macOS
+  arm64 workstation. A hosted-runner latency or initialization breach should
+  be rerun before it is acted on. The budgets stay `proposed` until timing is
+  bound to a recorded runner machine class or measured paired in one job.
 - The rerun study covers the Node and Python surfaces. Rust, CLI and browser
   rows take their rerun term from those, and their own CI dispersion.
 - Adapter-overhead budgets are bound to the host that measured them (Apple M4,

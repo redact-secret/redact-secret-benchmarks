@@ -270,3 +270,31 @@ test('the committed budgets cover every dimension from the committed baseline, a
   const self = evaluateBudgets(committed, current, candidateFromSnapshot(current), ledger);
   assert.equal(self.status, 'accepted');
 });
+
+test('runner-reruns reduces same-pin performance runs and rejects a different pin', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { mkdtempSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const path = await import('node:path');
+  const dir = mkdtempSync(path.join(tmpdir(), 'runner-reruns-'));
+  const summary = readJson('evidence/603/summary.json');
+  const entry = (runId, file) => ({ runId, url: `https://example.invalid/${runId}`, runner: { label: 'ubuntu-latest' },
+    artifact: { digest: 'sha256:0' }, completedAt: `2026-09-25T00:0${runId}:00Z`, summary: file });
+  const manifest = path.join(dir, 'manifest.json');
+  const out = path.join(dir, 'out.json');
+  const run = () => execFileSync(process.execPath, ['--import', 'tsx', 'scripts/regression-budgets.mjs', 'runner-reruns', '--runs', manifest, '--out', out], { stdio: 'pipe' });
+
+  writeFileSync(manifest, JSON.stringify({ runs: [entry(1, 'evidence/603/summary.json'), entry(2, 'evidence/603/summary.json')], limitations: [] }));
+  run();
+  const study = readJson(out);
+  assert.equal(study.sourceCommit, summary.sourceCommit);
+  assert.equal(study.method.runs, 2);
+  assert.equal(study.runs[0].summarySha256, sha256OfText(readFileSync('evidence/603/summary.json', 'utf8')));
+  assert.ok(study.series.length > 0 && study.series.every(s => s.runs.length === 2));
+  assert.equal(study.series[0].runs[0].processing.median, study.series[0].runs[1].processing.median);
+
+  const other = path.join(dir, 'other.json');
+  writeFileSync(other, JSON.stringify({ ...summary, sourceCommit: COMMIT_B }));
+  writeFileSync(manifest, JSON.stringify({ runs: [entry(1, 'evidence/603/summary.json'), entry(2, other)], limitations: [] }));
+  assert.throws(run, /different pinned commit/);
+});

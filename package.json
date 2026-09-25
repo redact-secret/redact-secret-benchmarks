@@ -71,6 +71,7 @@
     "performance:budgets:backtest": "node --import tsx scripts/regression-budgets.mjs backtest",
     "performance:noise": "node --import tsx scripts/measure-regression-noise.mjs",
     "adversarial:check": "node --import tsx scripts/check-adversarial-intake.mjs",
+    "adversarial:rerun": "node --import tsx scripts/rerun-adversarial-candidate.mjs",
     "mcp:qualify": "node --import tsx benchmarks/mcp-qualification.ts",
     "tuning:check": "node --import tsx scripts/check-tuning-manifests.mjs",
     "scorer-promotion:check": "node --import tsx scripts/check-scorer-promotion-contract.mjs",

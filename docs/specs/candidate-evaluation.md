@@ -100,3 +100,28 @@ candidate's `sourceCommit`, `packageName`, `declaredVersion` and per-artifact
 sha256 digests when one was supplied — so a support-status report can never
 be mistaken for one about a different build. It reuses `installCandidate` /
 `loadCandidate` from `scanners/candidate.mjs`; no second installer.
+
+## Rerunning an adversarial pack against a candidate
+
+`eval:candidate` scores the measurement-v4 corpus. Adversarial-pack fixtures
+(`adversarial/packs/<id>`) are not in it, so a known gap whose fixtures come
+from a pack is revalidated with `adversarial:rerun`, which takes the same three
+tarballs and the same isolated installer:
+
+```sh
+npm run adversarial:rerun -- --pack=<id> \
+  --candidate-package=/absolute/path/redact-secret-core.tgz \
+  --candidate-node-package=/absolute/path/redact-secret-node-platform.tgz \
+  --candidate-wasm-package=/absolute/path/redact-secret-wasm.tgz \
+  --candidate-source-commit=<full-product-commit-sha> \
+  --product-state=clean --out=/absolute/path/rerun.json
+```
+
+It refuses a pack without a valid frozen first run, scans every fixture alone
+as the first run did, and scores it with the same `compareResult`. The report
+(`adversarial-candidate-rerun-v1`) records the benchmark commit and dirty
+state, lockfile hash, expectations digest, first-run SHA-256, the candidate's
+source commit and tarball hashes, run id and timestamps, and per-fixture
+ranges with the candidate outcome beside the product's first-run outcome. It
+never rewrites `first-run.json` and holds no fixture content. A
+`scanner-failed` fixture makes the run `incomplete` and exits nonzero.

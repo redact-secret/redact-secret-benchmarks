@@ -83,23 +83,28 @@ its corpus hash. One product issue backs each root cause:
 
 | Record | Product issue | Status | Fixtures |
 | --- | --- | --- | ---: |
-| `product-815` | [assignment forms: escaped JSON quotes, `:=`, `@"..."`, braces in the value](https://github.com/redact-secret/redact-secret/issues/815) | fixed | 4 |
-| `product-816` | [URL query, fragment and form-body parameters](https://github.com/redact-secret/redact-secret/issues/816) | fixed | 7 |
-| `product-817` | [references and identifiers flagged under credential names](https://github.com/redact-secret/redact-secret/issues/817) | fixed | 5 |
-| `product-818` | [`Proxy-Authorization`, mid-line Basic, header-anchored Bearer floor](https://github.com/redact-secret/redact-secret/issues/818) | fixed | 3 |
-| `product-819` | [RFC 8959 `secret-token:` URIs](https://github.com/redact-secret/redact-secret/issues/819) | fixed | 3 |
-| `product-820` | [http(s)/ftp URL userinfo passwords](https://github.com/redact-secret/redact-secret/issues/820) | fixed | 1 |
-| `product-821` | [JWK secret members](https://github.com/redact-secret/redact-secret/issues/821) | fixed | 1 |
+| `product-815` | [assignment forms: escaped JSON quotes, `:=`, `@"..."`, braces in the value](https://github.com/redact-secret/redact-secret/issues/815) | verified | 4 |
+| `product-816` | [URL query, fragment and form-body parameters](https://github.com/redact-secret/redact-secret/issues/816) | verified | 7 |
+| `product-817` | [references and identifiers flagged under credential names](https://github.com/redact-secret/redact-secret/issues/817) | verified | 5 |
+| `product-818` | [`Proxy-Authorization`, mid-line Basic, header-anchored Bearer floor](https://github.com/redact-secret/redact-secret/issues/818) | verified | 3 |
+| `product-819` | [RFC 8959 `secret-token:` URIs](https://github.com/redact-secret/redact-secret/issues/819) | verified | 3 |
+| `product-820` | [http(s)/ftp URL userinfo passwords](https://github.com/redact-secret/redact-secret/issues/820) | verified | 1 |
+| `product-821` | [JWK secret members](https://github.com/redact-secret/redact-secret/issues/821) | verified | 1 |
 | `product-822` | [policy: RFC display line breaks, percent-encoded query in JSON](https://github.com/redact-secret/redact-secret/issues/822) | policy-decision | 3 |
 | `product-823` | [policy: reversed comparison, C++ constructor, `db_pass`](https://github.com/redact-secret/redact-secret/issues/823) | policy-decision | 3 |
 | `product-824` | [policy: `warn` on short literals in benign code](https://github.com/redact-secret/redact-secret/issues/824) | policy-decision | 2 |
 | `product-825` | [policy: short values warn instead of redact](https://github.com/redact-secret/redact-secret/issues/825) | policy-decision | 5 |
 
-`product-815` to `product-821` are `fixed`, each by the redact-secret merge
-commit named in its `fix.commit`. On that code every fixture in them reports
-its expected range. A maintainer confirmed the four policy records. The
-`product-823` disposition also notes that its `db_pass` fixture is fixed by
-redact-secret#838; the other two fixtures in that record stay out of
-contract. Reaching `verified` needs a product regression record for each
-gap, and the pin manifest has listed pack fixtures only since #310. The first
-run stays frozen; fixed candidates are measured by a separate rerun.
+`product-815` to `product-821` are `verified`. Each was fixed by the
+redact-secret merge commit named in its `fix.commit`. Both acceptance gates
+are linked in its `verification` block: the canonical product regression
+fixtures of its `benchmark-gap-*` manifest record pass across the supported
+surfaces in Artifact qualification run 36197068993 at product `main`
+`192c964`, and `npm run adversarial:rerun` of this pack against a candidate
+built at that commit ([`reruns/192c964-43655c9.json`](reruns/192c964-43655c9.json),
+`evidence/815` to `evidence/821`) finds every one of their fixtures at its
+expected outcome, with no pack fixture regressed. A maintainer confirmed the
+four policy records. The `product-823` disposition also notes that its
+`db_pass` fixture is fixed by redact-secret#838; the other two fixtures in
+that record stay out of contract. The first run stays frozen; fixed
+candidates are measured by a separate rerun under `reruns/`.

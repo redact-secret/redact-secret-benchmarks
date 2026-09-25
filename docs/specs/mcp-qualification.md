@@ -30,8 +30,9 @@ pinned commit and runs its endpoints.
 
 | Input | Identity recorded |
 | --- | --- |
-| Core candidate | the façade, native and Wasm tarballs (sha256 each) and the product source commit, built as in [candidate evaluation](candidate-evaluation.md) |
-| Adapters | the `@redact-secret/adapter`, `adapter-ai-context` and `adapter-mcp` tarballs, verified against redact-secret's `adapters/pin-source.json` content digests (the same digest `scripts/adapter-pins.py` computes); a mismatch stops the run |
+| Core | the façade, native and Wasm tarballs (sha256 each) and the product source commit: a candidate built as in [candidate evaluation](candidate-evaluation.md), or a published version fetched with `npm pack <name>@<version>` (npm checks each against the registry's `dist.integrity`), which is what a consumer installs |
+| Contract | the redact-secret commit whose MCP boundary contract and decision the report links (`--contract-commit`, default the core's source commit). A published core can predate the contract document, so the two are named separately |
+| Adapters | the `@redact-secret/adapter`, `adapter-ai-context` and `adapter-mcp` tarballs, verified against a pin-source v1 record's content digests (the same digest `scripts/adapter-pins.py` computes): redact-secret's `adapters/pin-source.json`, or, to qualify a release candidate, a record naming the rc head and the digests of the tarballs its publish jobs would upload; a mismatch stops the run |
 | Supported range | the adapters' `compatibility.json` (sha256): the lowest and highest endpoint of the 1.x and 2.x SDK lines |
 | Runtimes | every `--node` binary; the host and the server process both run on it |
 | Corpus | `workloads.mjs` (sha256 in the report) |
@@ -157,7 +158,7 @@ git -C <adapters checkout> show <pinned commit>:compatibility.json > compatibili
 # 3. The run:
 npm run mcp:qualify -- \
   --core-package <core.tgz> --core-node-package <node-<platform>.tgz> --core-wasm-package <wasm.tgz> \
-  --core-source-commit <40-hex> --adapter-dir <product>/.cache/adapters/<commit> \
+  --core-source-commit <40-hex> [--contract-commit <40-hex>] --adapter-dir <product>/.cache/adapters/<commit> \
   --adapter-pin <product>/adapters/pin-source.json --compatibility compatibility.json \
   --node <node20> --node <node22> --node <node24> \
   --out mcp-qualification.json --markdown-out mcp-qualification.md --overhead-out mcp-overhead-series.json

@@ -3,7 +3,7 @@
  *
  *   npm run mcp:qualify -- \
  *     --core-package <core.tgz> --core-node-package <node-<platform>.tgz> --core-wasm-package <wasm.tgz> \
- *     --core-source-commit <40-hex> --adapter-dir <dir with the pinned adapter tarballs> \
+ *     --core-source-commit <40-hex> [--contract-commit <40-hex>] --adapter-dir <dir with the pinned adapter tarballs> \
  *     --adapter-pin <redact-secret adapters/pin-source.json> --compatibility <adapters compatibility.json> \
  *     [--node <path>]... [--transports stdio,http] [--overhead-processes 3] [--init-processes 15] [--quick] \
  *     --out <report.json> [--markdown-out <report.md>] [--overhead-out <series.json>]
@@ -72,6 +72,13 @@ const coreNodePackage = path.resolve(one(flags, 'core-node-package'));
 const coreWasmPackage = path.resolve(one(flags, 'core-wasm-package'));
 const coreSourceCommit = one(flags, 'core-source-commit');
 if (!/^[0-9a-f]{40}$/.test(coreSourceCommit)) throw new Error('mcp-qualification: --core-source-commit must be a 40-hex commit');
+// The redact-secret commit whose MCP boundary contract the run is checked
+// against. It defaults to the core's source commit. A published core can
+// predate the contract (0.1.0-beta.8 predates #612), so the run names the
+// contract's commit separately instead of linking a document that isn't
+// in the core's tree.
+const contractCommit = one(flags, 'contract-commit', coreSourceCommit);
+if (!/^[0-9a-f]{40}$/.test(contractCommit)) throw new Error('mcp-qualification: --contract-commit must be a 40-hex commit');
 const adapterDir = path.resolve(one(flags, 'adapter-dir'));
 const adapterPinPath = path.resolve(one(flags, 'adapter-pin'));
 const compatibilityPath = path.resolve(one(flags, 'compatibility'));
@@ -361,8 +368,8 @@ const report = {
   finishedAt: new Date().toISOString(),
   benchmark: { repository: 'redact-secret/redact-secret-benchmarks', commit: git(['rev-parse', 'HEAD']), dirty: git(['status', '--porcelain']) !== '' },
   contract: {
-    reference: `https://github.com/redact-secret/redact-secret/blob/${coreSourceCommit}/docs/reference/mcp-boundary.md`,
-    decision: `https://github.com/redact-secret/redact-secret/blob/${coreSourceCommit}/docs/decisions/2026-09-25-define-the-supported-mcp-redaction-boundary.md`,
+    reference: `https://github.com/redact-secret/redact-secret/blob/${contractCommit}/docs/reference/mcp-boundary.md`,
+    decision: `https://github.com/redact-secret/redact-secret/blob/${contractCommit}/docs/decisions/2026-09-25-define-the-supported-mcp-redaction-boundary.md`,
   },
   artifacts: {
     core: {

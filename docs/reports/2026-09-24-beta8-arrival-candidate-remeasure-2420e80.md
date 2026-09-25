@@ -243,6 +243,10 @@ and `POSTMAN_API_KEY=`, which #766 does not change.
   `performance-criteria.json` `baseline.sourceCommit` to match, which means a
   performance re-baseline. That is left to the maintainer, and the pin is not
   refreshed here.
+  **Update:** #260 (merged into `develop`, then into this branch) pins the
+  registry to product `3144bb3`, which includes 2420e80/#766, and re-derives
+  the performance criteria. `pins:check` and the `pin-drift` CI check now pass.
+  The candidate measurement above was not re-run.
 - **The recorded reason for `pinecone-api-key-legacy` is stale.**
   `benchmarks/lib/beta8/212.ts` and the `pinecone:legacy-api-key` taxonomy note
   still say the product detector leaves the bare UUID unclaimed. At 2420e80 the

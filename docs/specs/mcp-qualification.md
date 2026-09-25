@@ -11,6 +11,8 @@ Runner: `benchmarks/mcp-qualification.ts` (`npm run mcp:qualify`). Pure
 pieces (artifact digests, the leak scan, verdicts): `benchmarks/lib/mcp-qualification.ts`.
 Consumer-side host, server and workload corpus: `benchmarks/mcp-qualification/consumer/`.
 Report schema: `schemas/mcp-qualification-v1.json`. Tests: `tests/mcp-qualification.test.mjs`.
+First run: [`evidence/612/`](../../evidence/612/README.md), reported in
+[`docs/reports/2026-09-25-beta9-281-mcp-qualification.md`](../reports/2026-09-25-beta9-281-mcp-qualification.md).
 
 ## What it answers
 

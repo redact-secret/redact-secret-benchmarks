@@ -293,13 +293,14 @@ async function containment() {
         return { observed: { outcome: outcomes.every(o => o === 'ok') ? 'ok' : outcomes.join(',') }, delivered: delivered > 0, deliveredFixed: null };
       }
       const before = c.dispatch === false ? await low.stats() : null;
+      const statsBefore = c.tool.startsWith('wrapped-stream') || c.tool === 'wrapped-slow-stream' ? await low.stats() : null;
+      // The abort timer starts with the call, so settledAfterAbortMs excludes the stats round trip above.
       let signal;
       if (c.abortAfterMs !== undefined) {
         const controller = new AbortController();
         setTimeout(() => controller.abort(), c.abortAfterMs);
         signal = controller.signal;
       }
-      const statsBefore = c.tool.startsWith('wrapped-stream') || c.tool === 'wrapped-slow-stream' ? await low.stats() : null;
       const started = performance.now();
       const outcome = await hostCall(connection, c.tool, {
         signal,

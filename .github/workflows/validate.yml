@@ -31,6 +31,8 @@ jobs:
         run: npm run decisions:validate
       - name: Performance criteria are derived from the committed release-build evidence, and its schema pin has not drifted (#136)
         run: npm run performance:criteria:check && npm run performance:schema:check
+      - name: Regression budgets match their derivation, baselines are unchanged, and no breach was replaced away (#143)
+        run: npm run performance:budgets:check
       - name: No not-assertable ledger entry lacks a checked-in ADR decision (#63)
         run: npm run ledger:decisions:check
       - name: External adversarial packs satisfy the intake contract, first runs are immutable, and no project-authored evidence is called independent (#139)

@@ -132,6 +132,34 @@ jobs:
         if: always() && hashFiles('performance-output/acceptance.md') != ''
         run: sed -n '1,$p' performance-output/acceptance.md >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Judge the run against the reviewed regression budgets (#143)
+        # Exit 1 is a measured regression; exit 2 is a measurement that cannot
+        # be judged (wrong profile, too few samples, a tail-only change) and
+        # must be rerun. The two carry different annotations so a rerun is
+        # never mistaken for a regression, or the reverse.
+        if: always() && hashFiles('performance-output/summary.json') != ''
+        working-directory: benchmarks-repo
+        env:
+          REVISION: ${{ steps.pin.outputs.revision }}
+        run: |
+          set +e
+          node --import tsx scripts/regression-budgets.mjs evaluate \
+            --summary ../performance-output/summary.json \
+            --source-commit "$REVISION" \
+            --json-out ../performance-output/regression-budgets.json \
+            --markdown-out ../performance-output/regression-budgets.md
+          code=$?
+          case "$code" in
+            0) ;;
+            1) echo "::error title=Budget regression::a measured change breached a reviewed budget; fix it or record an accepted tradeoff" ;;
+            2) echo "::error title=Measurement invalid, rerun::the run cannot be judged against the budgets; rerun before deciding" ;;
+          esac
+          exit "$code"
+
+      - name: Add the budget verdict to the workflow summary
+        if: always() && hashFiles('performance-output/regression-budgets.md') != ''
+        run: sed -n '1,$p' performance-output/regression-budgets.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload raw samples, results, and the acceptance verdict
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

@@ -1,0 +1,969 @@
+{
+  "schema": "redact-secret-benchmarks/regression-noise-v1",
+  "issue": 143,
+  "measuredAt": "2026-09-25T13:54:01.285Z",
+  "method": {
+    "protocol": "core's per-sample protocol: one fresh process per sample, one untimed warm-up pass, one timed pass",
+    "samplesPerRun": 5,
+    "runs": 10,
+    "percentile": "nearest-rank p95 over each run's samples, as core's summaries compute it",
+    "spread": "maximum over minimum minus one, across runs",
+    "runsAreSequential": true,
+    "sampleTimeoutMs": 60000
+  },
+  "artifacts": {
+    "node": "@redact-secret/core@0.1.0-beta.8 (published release package)",
+    "python": "redact-secret==0.1.0b8 (published release wheel)"
+  },
+  "workloadProfiles": {
+    "hash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806"
+  },
+  "environment": {
+    "os": "darwin-25.5.0",
+    "arch": "arm64",
+    "cpuModel": "Apple M4",
+    "logicalCpus": 10,
+    "totalMemoryBytes": 25769803776,
+    "node": "v22.16.0",
+    "python": "cpython-3.14.7"
+  },
+  "series": [
+    {
+      "surface": "node",
+      "profileId": "scale-logs-small-whole",
+      "runs": [
+        {
+          "initialization": {
+            "p95": 3.335833000000008,
+            "median": 0.8485000000000014
+          },
+          "processing": {
+            "p95": 6.020083,
+            "median": 5.790499999999994,
+            "samples": [
+              6.020083,
+              5.6923340000000024,
+              5.8088750000000005,
+              5.790499999999994,
+              5.713999999999999
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8868696,
+            "nodeRss": 86032384
+          },
+          "loadAverage1m": 2.47998046875
+        },
+        {
+          "initialization": {
+            "p95": 0.8758339999999976,
+            "median": 0.8251249999999999
+          },
+          "processing": {
+            "p95": 5.814458000000002,
+            "median": 5.799582999999998,
+            "samples": [
+              5.790750000000003,
+              5.808417000000006,
+              5.799582999999998,
+              5.786124999999998,
+              5.814458000000002
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8870496,
+            "nodeRss": 85868544
+          },
+          "loadAverage1m": 2.47998046875
+        },
+        {
+          "initialization": {
+            "p95": 0.8818330000000003,
+            "median": 0.8699589999999944
+          },
+          "processing": {
+            "p95": 5.922875000000005,
+            "median": 5.801084000000003,
+            "samples": [
+              5.722458000000003,
+              5.884458000000009,
+              5.922875000000005,
+              5.801084000000003,
+              5.7663749999999965
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8867328,
+            "nodeRss": 86016000
+          },
+          "loadAverage1m": 2.47998046875
+        },
+        {
+          "initialization": {
+            "p95": 0.9725839999999977,
+            "median": 0.8794579999999996
+          },
+          "processing": {
+            "p95": 5.856749999999991,
+            "median": 5.836042000000006,
+            "samples": [
+              5.8386250000000075,
+              5.781750000000002,
+              5.763083000000009,
+              5.836042000000006,
+              5.856749999999991
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8868120,
+            "nodeRss": 85688320
+          },
+          "loadAverage1m": 2.47998046875
+        },
+        {
+          "initialization": {
+            "p95": 1.1070419999999928,
+            "median": 0.8659170000000103
+          },
+          "processing": {
+            "p95": 6.041542000000007,
+            "median": 5.837583000000009,
+            "samples": [
+              5.897458,
+              5.803665999999993,
+              5.794708,
+              6.041542000000007,
+              5.837583000000009
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8868848,
+            "nodeRss": 86163456
+          },
+          "loadAverage1m": 2.47998046875
+        },
+        {
+          "initialization": {
+            "p95": 0.8995000000000033,
+            "median": 0.8820420000000126
+          },
+          "processing": {
+            "p95": 5.917791000000008,
+            "median": 5.886832999999996,
+            "samples": [
+              5.917791000000008,
+              5.886832999999996,
+              5.898624999999996,
+              5.871083999999996,
+              5.797083999999998
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8869792,
+            "nodeRss": 85688320
+          },
+          "loadAverage1m": 2.44140625
+        },
+        {
+          "initialization": {
+            "p95": 0.9812919999999963,
+            "median": 0.9528749999999917
+          },
+          "processing": {
+            "p95": 5.872583000000006,
+            "median": 5.848249999999993,
+            "samples": [
+              5.828500000000005,
+              5.8138330000000025,
+              5.853875000000002,
+              5.848249999999993,
+              5.872583000000006
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8869944,
+            "nodeRss": 85688320
+          },
+          "loadAverage1m": 2.44140625
+        },
+        {
+          "initialization": {
+            "p95": 0.9823749999999905,
+            "median": 0.959541999999999
+          },
+          "processing": {
+            "p95": 5.999583000000001,
+            "median": 5.86075000000001,
+            "samples": [
+              5.86075000000001,
+              5.820583999999997,
+              5.860917000000001,
+              5.999583000000001,
+              5.829499999999996
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8870304,
+            "nodeRss": 85753856
+          },
+          "loadAverage1m": 2.44140625
+        },
+        {
+          "initialization": {
+            "p95": 0.9550830000000019,
+            "median": 0.9207090000000022
+          },
+          "processing": {
+            "p95": 5.883499999999998,
+            "median": 5.834458999999995,
+            "samples": [
+              5.82566700000001,
+              5.883499999999998,
+              5.834458999999995,
+              5.851957999999996,
+              5.823999999999998
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8867312,
+            "nodeRss": 85704704
+          },
+          "loadAverage1m": 2.44140625
+        },
+        {
+          "initialization": {
+            "p95": 0.9294170000000008,
+            "median": 0.9154999999999944
+          },
+          "processing": {
+            "p95": 5.913875000000004,
+            "median": 5.848375000000004,
+            "samples": [
+              5.848375000000004,
+              5.832415999999995,
+              5.913875000000004,
+              5.873000000000005,
+              5.7927919999999915
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 8869400,
+            "nodeRss": 85786624
+          },
+          "loadAverage1m": 2.44140625
+        }
+      ],
+      "rerunSpread": {
+        "initializationP95": 2.8087502882966606,
+        "processingP95": 0.0390550589582046,
+        "processingMedian": 0.016636387185908097,
+        "memory.nodeHeap": 0.00035907161042714186,
+        "memory.nodeRss": 0.005544933078393877
+      }
+    },
+    {
+      "surface": "node",
+      "profileId": "scale-logs-medium-fixed4096",
+      "runs": [
+        {
+          "initialization": {
+            "p95": 0.9022500000000093,
+            "median": 0.8827079999999938
+          },
+          "processing": {
+            "p95": 42.26691700000001,
+            "median": 42.01683299999999,
+            "samples": [
+              42.01683299999999,
+              42.26691700000001,
+              41.76445800000002,
+              41.65745799999999,
+              42.075041999999996
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17097504,
+            "nodeRss": 113311744
+          },
+          "loadAverage1m": 2.44140625
+        },
+        {
+          "initialization": {
+            "p95": 0.9268749999999955,
+            "median": 0.8939579999999978
+          },
+          "processing": {
+            "p95": 42.10695900000002,
+            "median": 41.960916,
+            "samples": [
+              41.64500000000001,
+              42.10695900000002,
+              41.960916,
+              41.709749999999985,
+              42.08262500000001
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17088344,
+            "nodeRss": 113131520
+          },
+          "loadAverage1m": 2.44140625
+        },
+        {
+          "initialization": {
+            "p95": 0.9394580000000019,
+            "median": 0.9092080000000067
+          },
+          "processing": {
+            "p95": 42.596667,
+            "median": 42.20262500000001,
+            "samples": [
+              42.596667,
+              42.592749999999995,
+              42.20262500000001,
+              42.157917,
+              41.513792000000024
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17097392,
+            "nodeRss": 114884608
+          },
+          "loadAverage1m": 2.40576171875
+        },
+        {
+          "initialization": {
+            "p95": 1.003042000000022,
+            "median": 0.9267499999999984
+          },
+          "processing": {
+            "p95": 42.694041,
+            "median": 42.00079200000002,
+            "samples": [
+              42.00079200000002,
+              41.60954099999998,
+              41.928583,
+              42.176499999999976,
+              42.694041
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17093344,
+            "nodeRss": 113164288
+          },
+          "loadAverage1m": 2.40576171875
+        },
+        {
+          "initialization": {
+            "p95": 0.9853329999999971,
+            "median": 0.9182089999999903
+          },
+          "processing": {
+            "p95": 42.33783299999999,
+            "median": 42.235375000000005,
+            "samples": [
+              42.116749999999996,
+              42.235375000000005,
+              42.29391699999999,
+              42.33783299999999,
+              42.039833000000016
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17093048,
+            "nodeRss": 113344512
+          },
+          "loadAverage1m": 2.40576171875
+        },
+        {
+          "initialization": {
+            "p95": 0.9667500000000189,
+            "median": 0.9441669999999931
+          },
+          "processing": {
+            "p95": 42.1575,
+            "median": 41.789916000000005,
+            "samples": [
+              41.789916000000005,
+              41.41987500000002,
+              42.08824999999999,
+              42.1575,
+              41.630416
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17093176,
+            "nodeRss": 113131520
+          },
+          "loadAverage1m": 2.40576171875
+        },
+        {
+          "initialization": {
+            "p95": 1.1362499999999898,
+            "median": 0.9007090000000062
+          },
+          "processing": {
+            "p95": 42.321083000000016,
+            "median": 41.85787500000001,
+            "samples": [
+              41.85787500000001,
+              41.029375000000016,
+              41.56420800000001,
+              42.321083000000016,
+              42.25399999999999
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17096520,
+            "nodeRss": 113131520
+          },
+          "loadAverage1m": 2.453125
+        },
+        {
+          "initialization": {
+            "p95": 1.6637920000000008,
+            "median": 1.015416000000016
+          },
+          "processing": {
+            "p95": 43.358833000000004,
+            "median": 42.35933299999999,
+            "samples": [
+              43.358833000000004,
+              42.35933299999999,
+              42.22024999999999,
+              41.626834,
+              42.39666699999998
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17092656,
+            "nodeRss": 113278976
+          },
+          "loadAverage1m": 2.453125
+        },
+        {
+          "initialization": {
+            "p95": 0.9134169999999813,
+            "median": 0.9097499999999741
+          },
+          "processing": {
+            "p95": 42.536167000000006,
+            "median": 42.28829200000001,
+            "samples": [
+              42.33525,
+              42.536167000000006,
+              42.28829200000001,
+              41.636583,
+              41.77354199999999
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17093136,
+            "nodeRss": 113213440
+          },
+          "loadAverage1m": 2.453125
+        },
+        {
+          "initialization": {
+            "p95": 0.984375,
+            "median": 0.9062909999999818
+          },
+          "processing": {
+            "p95": 42.404459,
+            "median": 42.17491699999999,
+            "samples": [
+              42.17491699999999,
+              42.404459,
+              42.25566699999999,
+              41.61250000000001,
+              42.02279199999998
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 17092696,
+            "nodeRss": 113295360
+          },
+          "loadAverage1m": 2.453125
+        }
+      ],
+      "rerunSpread": {
+        "initializationP95": 0.8440476586311816,
+        "processingP95": 0.02973081005446132,
+        "processingMedian": 0.013625703387390997,
+        "memory.nodeHeap": 0.0005360378981134062,
+        "memory.nodeRss": 0.015496017378711091
+      }
+    },
+    {
+      "surface": "python",
+      "profileId": "scale-logs-small-whole",
+      "runs": [
+        {
+          "initialization": {
+            "p95": 2.637959,
+            "median": 0.927084
+          },
+          "processing": {
+            "p95": 5.917666,
+            "median": 5.656292,
+            "samples": [
+              5.917666,
+              5.585708,
+              5.524792,
+              5.656292,
+              5.670084
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 26886144
+          },
+          "loadAverage1m": 2.73486328125
+        },
+        {
+          "initialization": {
+            "p95": 0.902833,
+            "median": 0.881083
+          },
+          "processing": {
+            "p95": 5.708625,
+            "median": 5.671875,
+            "samples": [
+              5.671875,
+              5.656,
+              5.64025,
+              5.708625,
+              5.682875
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 26968064
+          },
+          "loadAverage1m": 2.73486328125
+        },
+        {
+          "initialization": {
+            "p95": 0.992459,
+            "median": 0.906416
+          },
+          "processing": {
+            "p95": 5.875083,
+            "median": 5.705292,
+            "samples": [
+              5.638458,
+              5.705542,
+              5.705292,
+              5.6685,
+              5.875083
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 26902528
+          },
+          "loadAverage1m": 2.73486328125
+        },
+        {
+          "initialization": {
+            "p95": 0.914625,
+            "median": 0.891375
+          },
+          "processing": {
+            "p95": 5.837875,
+            "median": 5.749833,
+            "samples": [
+              5.758125,
+              5.749833,
+              5.837875,
+              5.740792,
+              5.7335
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 26935296
+          },
+          "loadAverage1m": 2.73486328125
+        },
+        {
+          "initialization": {
+            "p95": 0.923792,
+            "median": 0.890125
+          },
+          "processing": {
+            "p95": 5.928334,
+            "median": 5.7835,
+            "samples": [
+              5.7835,
+              5.802875,
+              5.928334,
+              5.713625,
+              5.7345
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 26902528
+          },
+          "loadAverage1m": 2.916015625
+        },
+        {
+          "initialization": {
+            "p95": 0.969042,
+            "median": 0.906958
+          },
+          "processing": {
+            "p95": 5.926708,
+            "median": 5.784333,
+            "samples": [
+              5.784333,
+              5.760417,
+              5.738667,
+              5.913333,
+              5.926708
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 26869760
+          },
+          "loadAverage1m": 2.916015625
+        },
+        {
+          "initialization": {
+            "p95": 0.955458,
+            "median": 0.904375
+          },
+          "processing": {
+            "p95": 5.825625,
+            "median": 5.769666,
+            "samples": [
+              5.825625,
+              5.696334,
+              5.769666,
+              5.767792,
+              5.790625
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 27017216
+          },
+          "loadAverage1m": 2.916015625
+        },
+        {
+          "initialization": {
+            "p95": 0.971042,
+            "median": 0.872792
+          },
+          "processing": {
+            "p95": 6.7115,
+            "median": 5.787125,
+            "samples": [
+              6.7115,
+              5.851334,
+              5.771042,
+              5.787125,
+              5.776917
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 27033600
+          },
+          "loadAverage1m": 2.916015625
+        },
+        {
+          "initialization": {
+            "p95": 0.967791,
+            "median": 0.897125
+          },
+          "processing": {
+            "p95": 5.993833,
+            "median": 5.787584,
+            "samples": [
+              5.779875,
+              5.823209,
+              5.787584,
+              5.993833,
+              5.781458
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 26918912
+          },
+          "loadAverage1m": 2.916015625
+        },
+        {
+          "initialization": {
+            "p95": 1.040333,
+            "median": 0.895125
+          },
+          "processing": {
+            "p95": 6.002666,
+            "median": 5.779083,
+            "samples": [
+              5.916291,
+              5.779083,
+              5.750167,
+              5.759875,
+              6.002666
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 74188,
+            "processRss": 27000832
+          },
+          "loadAverage1m": 2.916015625
+        }
+      ],
+      "rerunSpread": {
+        "initializationP95": 1.9218681638796986,
+        "processingP95": 0.17567715518185212,
+        "processingMedian": 0.023211672947577755,
+        "memory.pythonHeap": 0,
+        "memory.processRss": 0.0060975609756097615
+      }
+    },
+    {
+      "surface": "python",
+      "profileId": "scale-logs-medium-fixed4096",
+      "runs": [
+        {
+          "initialization": {
+            "p95": 1.288291,
+            "median": 0.906042
+          },
+          "processing": {
+            "p95": 43.616458,
+            "median": 42.72025,
+            "samples": [
+              42.175666,
+              43.616458,
+              42.72025,
+              43.472583,
+              42.443708
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27607040
+          },
+          "loadAverage1m": 2.916015625
+        },
+        {
+          "initialization": {
+            "p95": 0.963917,
+            "median": 0.9185
+          },
+          "processing": {
+            "p95": 45.089916,
+            "median": 43.510166,
+            "samples": [
+              43.422833,
+              43.510166,
+              43.147542,
+              44.128375,
+              45.089916
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27639808
+          },
+          "loadAverage1m": 2.916015625
+        },
+        {
+          "initialization": {
+            "p95": 2.756,
+            "median": 0.981458
+          },
+          "processing": {
+            "p95": 47.936125,
+            "median": 43.717584,
+            "samples": [
+              43.717584,
+              43.54025,
+              43.092834,
+              47.936125,
+              43.926958
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27967488
+          },
+          "loadAverage1m": 2.916015625
+        },
+        {
+          "initialization": {
+            "p95": 0.9875,
+            "median": 0.93275
+          },
+          "processing": {
+            "p95": 44.327875,
+            "median": 43.152208,
+            "samples": [
+              42.13075,
+              44.327875,
+              42.5375,
+              43.152208,
+              43.73625
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27525120
+          },
+          "loadAverage1m": 2.76220703125
+        },
+        {
+          "initialization": {
+            "p95": 1.203042,
+            "median": 0.93375
+          },
+          "processing": {
+            "p95": 46.281333,
+            "median": 44.338333,
+            "samples": [
+              44.338333,
+              46.281333,
+              43.496625,
+              42.85175,
+              45.140208
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27541504
+          },
+          "loadAverage1m": 2.76220703125
+        },
+        {
+          "initialization": {
+            "p95": 0.912292,
+            "median": 0.904417
+          },
+          "processing": {
+            "p95": 44.385208,
+            "median": 42.853958,
+            "samples": [
+              43.232333,
+              42.719542,
+              42.645375,
+              42.853958,
+              44.385208
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27426816
+          },
+          "loadAverage1m": 2.76220703125
+        },
+        {
+          "initialization": {
+            "p95": 0.987459,
+            "median": 0.928125
+          },
+          "processing": {
+            "p95": 43.436458,
+            "median": 42.954708,
+            "samples": [
+              43.255083,
+              42.954708,
+              42.3715,
+              42.937875,
+              43.436458
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27508736
+          },
+          "loadAverage1m": 2.76220703125
+        },
+        {
+          "initialization": {
+            "p95": 0.941583,
+            "median": 0.893083
+          },
+          "processing": {
+            "p95": 52.947167,
+            "median": 44.120791,
+            "samples": [
+              46.438458,
+              42.84275,
+              44.120791,
+              43.891625,
+              52.947167
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27443200
+          },
+          "loadAverage1m": 2.76220703125
+        },
+        {
+          "initialization": {
+            "p95": 3.592958,
+            "median": 0.938584
+          },
+          "processing": {
+            "p95": 44.128542,
+            "median": 43.747833,
+            "samples": [
+              43.747833,
+              42.960375,
+              43.501375,
+              44.128542,
+              43.835916
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27705344
+          },
+          "loadAverage1m": 4.22119140625
+        },
+        {
+          "initialization": {
+            "p95": 0.928,
+            "median": 0.909791
+          },
+          "processing": {
+            "p95": 43.958667,
+            "median": 43.735708,
+            "samples": [
+              43.045167,
+              43.735708,
+              43.958667,
+              42.8515,
+              43.944708
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 536615,
+            "processRss": 27541504
+          },
+          "loadAverage1m": 4.123046875
+        }
+      ],
+      "rerunSpread": {
+        "initializationP95": 2.938385955373937,
+        "processingP95": 0.21895682654419013,
+        "processingMedian": 0.03787625306499831,
+        "memory.pythonHeap": 0,
+        "memory.processRss": 0.019713261648745428
+      }
+    }
+  ],
+  "limitations": [
+    "One host, not the official Linux x86_64 runner: this bounds rerun noise on this host only.",
+    "Runs are sequential on a shared workstation; other load is recorded per run as loadAverage1m.",
+    "Rust, CLI and browser surfaces are not rerun here; their noise is inferred from the Node and Python spreads and the committed summaries."
+  ]
+}

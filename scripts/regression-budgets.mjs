@@ -29,7 +29,7 @@ import path from 'node:path';
 
 import {
   deriveTriggers, evaluateBudgets, exitCodeFor, historyProblems, ledgerProblems, metricsFromAdapterOverhead,
-  metricsFromOperational, metricsFromSummary, renderReportMarkdown, RULES, sha256OfText,
+  metricsFromOperational, metricsFromPaired, metricsFromSummary, ratioDeviation, renderReportMarkdown, RULES, sha256OfText,
 } from '../benchmarks/lib/regression-budgets.ts';
 import { completeAssessmentProblem } from '../benchmarks/lib/performance-schema.ts';
 
@@ -40,7 +40,13 @@ const NOISE_FILES = {
   ciDispersion: `${EVIDENCE}/ci-dispersion.json`,
   rerun: `${EVIDENCE}/rerun-noise-darwin-arm64.json`,
   adapter: `${EVIDENCE}/adapter-overhead-darwin-arm64.json`,
+  // Same-job A/A paired runs on the official Linux runner: the timing noise term (#303).
+  pairedAA: `${EVIDENCE}/paired-aa-linux-x64.json`,
 };
+// Same-job paired runs of historical revision pairs, replayed by `backtest` (#303).
+const PAIRED_BACKTEST = `${EVIDENCE}/paired-backtest-linux-x64.json`;
+// The review condition (#303): at least this many A/A runs at the baseline commit, each with its CPU model recorded.
+const MINIMUM_AA_RUNS = 3;
 
 const readJson = file => JSON.parse(readFileSync(file, 'utf8'));
 const writeJson = (file, value) => {
@@ -196,20 +202,32 @@ function snapshot(args) {
   console.log(`Wrote ${args.out}: ${metrics.length} metrics`);
 }
 
+/** Largest A/A deviation of the paired ratios over the A/A runs, per row, for the p95 and the median. */
+function pairedNoise() {
+  const study = readJson(NOISE_FILES.pairedAA);
+  const noise = { processing: { p95: {}, median: {} }, initialization: { p95: {}, median: {} } };
+  for (const run of study.runs) {
+    for (const metric of metricsFromPaired(run).metrics) {
+      const statistic = metric.dimension === 'latency' ? 'processing' : 'initialization';
+      const row = metric.id.split('/').slice(1, 3).join('/');
+      noise[statistic].median[row] = Math.max(noise[statistic].median[row] ?? 0, ratioDeviation(metric.value));
+      noise[statistic].p95[row] = Math.max(noise[statistic].p95[row] ?? 0, ratioDeviation(metric.tail.value));
+    }
+  }
+  return noise;
+}
+
 function noiseInputs() {
   const ci = readJson(NOISE_FILES.ciDispersion);
-  const processing = {}, initialization = {}, memoryValues = {};
+  const memoryValues = {};
   for (const run of ci.runs) {
     for (const [row, values] of Object.entries(run.rows)) {
-      processing[row] = Math.max(processing[row] ?? 0, values.processing.dispersion);
-      initialization[row] = Math.max(initialization[row] ?? 0, values.initialization.dispersion);
       for (const [category, bytes] of Object.entries(values.memoryMaximumBytes)) {
         (memoryValues[`${row}/${category}`] ??= []).push(bytes);
       }
     }
   }
   const rerun = readJson(NOISE_FILES.rerun);
-  const rerunMedian = key => Math.max(...rerun.series.map(s => spread(s.runs.map(r => r[key].median))));
   const rerunMemory = Math.max(...rerun.series.flatMap(s => Object.keys(s.runs[0].memoryMaximumBytes)
     .map(category => spread(s.runs.map(r => r.memoryMaximumBytes[category])))));
   const adapterTraversal = {};
@@ -223,9 +241,8 @@ function noiseInputs() {
     return [key, { spread: (Math.max(...values) - Math.min(...values)) / Math.abs(nearestRankMedian(values)), standardDeviation }];
   }));
   return {
-    ciDispersion: { processing, initialization },
+    paired: pairedNoise(),
     ciMemorySpread: Object.fromEntries(Object.entries(memoryValues).map(([key, values]) => [key, spread(values)])),
-    rerunMedianSpread: { processing: rerunMedian('processing'), initialization: rerunMedian('initialization') },
     rerunMemorySpread: rerunMemory,
     adapterTraversal: adapter,
   };
@@ -241,7 +258,18 @@ function derive(args) {
     noise: {
       sources: NOISE_FILES,
       summary: {
-        rerunMedianSpread: { processing: round(noise.rerunMedianSpread.processing), initialization: round(noise.rerunMedianSpread.initialization) },
+        pairedAA: {
+          runs: readJson(NOISE_FILES.pairedAA).runs.length,
+          cpuModels: [...new Set(readJson(NOISE_FILES.pairedAA).runs.map(run => run.runner?.cpuModel ?? 'unrecorded'))].sort(),
+          p95RatioDeviationMax: {
+            processing: round(Math.max(...Object.values(noise.paired.processing.p95))),
+            initialization: round(Math.max(...Object.values(noise.paired.initialization.p95))),
+          },
+          medianRatioDeviationMax: {
+            processing: round(Math.max(...Object.values(noise.paired.processing.median))),
+            initialization: round(Math.max(...Object.values(noise.paired.initialization.median))),
+          },
+        },
         rerunMemorySpread: round(noise.rerunMemorySpread),
         ciRuns: readJson(NOISE_FILES.ciDispersion).runs.length,
         adapterProcesses: adapterSeries(NOISE_FILES.adapter).length,
@@ -277,10 +305,18 @@ function evaluate(args) {
     if (problem !== null) invalidSource.push(`summary: ${problem}`);
     else {
       const extracted = metricsFromSummary(summary);
+      // Absolute latency and initialization metrics stay in the report as informational rows only.
       for (const metric of extracted.metrics) metrics[metric.id] = metric;
-      for (const dimension of ['latency', 'initialization', 'memory']) profiles[dimension] = extracted.profile;
+      profiles.memory = extracted.profile;
       detection = extracted.detection;
     }
+  }
+  if (args.paired) {
+    sources.push(args.paired);
+    const extracted = metricsFromPaired(readJson(args.paired));
+    for (const metric of extracted.metrics) metrics[metric.id] = metric;
+    profiles.latency = extracted.profile;
+    profiles.initialization = extracted.profile;
   }
   if (args.operational) {
     sources.push(args.operational);
@@ -304,10 +340,30 @@ function evaluate(args) {
   const github = process.env.GITHUB_ACTIONS === 'true';
   for (const result of final.triggers) {
     if (result.verdict === 'regression') console.error(`${github ? '::error title=Budget regression::' : 'REGRESSION '}${result.id}: ${result.baseline} -> ${result.candidate} ${result.unit}`);
+    if (result.verdict === 'not-evaluated' && (result.dimension === 'latency' || result.dimension === 'initialization') && args.summary && !args.paired) {
+      console.error(`NOT JUDGED ${result.id}: timing needs a same-job paired run (--paired)`);
+    }
     if (result.verdict === 'invalid-measurement') console.error(`${github ? '::warning title=Measurement invalid, rerun::' : 'INVALID '}${result.id}: ${result.reason}`);
   }
   for (const problem of invalidSource) console.error(`${github ? '::error title=Measurement invalid, rerun::' : 'INVALID '}${problem}`);
   process.exit(invalidSource.length > 0 && final.status !== 'regression' ? 2 : exitCodeFor(final));
+}
+
+/**
+ * The review condition (#303): `reviewed` budgets need at least three same-job
+ * A/A runs of the current baseline commit on the hosted runner, each naming
+ * its CPU model, as the timing noise source.
+ */
+function reviewProblems(budgets) {
+  if (budgets.reviewStatus !== 'reviewed') return [];
+  const pinned = budgets.baselines.find(record => record.id === budgets.baseline)?.sourceCommit;
+  const runs = existsSync(NOISE_FILES.pairedAA) ? readJson(NOISE_FILES.pairedAA).runs : [];
+  const problems = [];
+  const valid = runs.filter(run => run.aa && run.baseline.revision === pinned && run.candidate.revision === pinned && run.runner?.cpuModel);
+  if (new Set(valid.map(run => run.runId)).size < MINIMUM_AA_RUNS) {
+    problems.push(`reviewed budgets need at least ${MINIMUM_AA_RUNS} same-job A/A runs of ${pinned} with a recorded CPU model in ${NOISE_FILES.pairedAA}`);
+  }
+  return problems;
 }
 
 function check() {
@@ -318,6 +374,7 @@ function check() {
     ...historyProblems(budgets, file => readFileSync(file, 'utf8'), ledger),
   ];
   for (const record of budgets.baselines) if (!existsSync(record.file)) problems.push(`baseline ${record.id}: ${record.file} is missing`);
+  problems.push(...reviewProblems(budgets));
   for (const [dimension] of Object.entries(RULES)) {
     if (!budgets.triggers.some(t => t.dimension === dimension)) problems.push(`no trigger covers the ${dimension} dimension`);
   }
@@ -335,37 +392,50 @@ function check() {
 }
 
 /**
- * Replays the latency, initialization and memory triggers over each
- * consecutive pair of committed Linux runs (ci-dispersion.json), treating the
- * earlier run as the baseline. It shows what the rules would have said about
- * real product changes; it is not a gate.
+ * Replays the budgets over history; it shows what the rules would have said
+ * about real product changes and is not a gate.
+ *  - memory: each consecutive pair of committed Linux runs (ci-dispersion.json),
+ *    the earlier run as the baseline;
+ *  - timing: each committed same-job paired run of a historical revision pair
+ *    (paired-backtest-linux-x64.json), judged on its paired ratios (#303).
+ *    Absolute timing across jobs is not replayed: it is informational only.
  */
 function backtest(args) {
   const budgets = readJson(BUDGETS);
   const { runs } = readJson(NOISE_FILES.ciDispersion);
   const profile = readJson(budgets.baselines.find(r => r.id === budgets.baseline).file).profiles.latency;
-  const asSnapshot = run => ({
-    id: run.productCommit.slice(0, 7), sourceCommit: run.productCommit, profiles: { latency: profile },
-    metrics: Object.fromEntries(Object.entries(run.rows).flatMap(([row, v]) => [
-      [`latency/${row}/processing-p95`, { id: `latency/${row}/processing-p95`, dimension: 'latency', value: v.processing.p95, samples: run.repetitions, corroboration: { value: v.processing.median } }],
-      [`initialization/${row}/initialization-p95`, { id: `initialization/${row}/initialization-p95`, dimension: 'initialization', value: v.initialization.p95, samples: run.repetitions, corroboration: { value: v.initialization.median } }],
-      ...Object.entries(v.memoryMaximumBytes).map(([category, bytes]) => [`memory/${row}/${category}`, { id: `memory/${row}/${category}`, dimension: 'memory', value: bytes, samples: run.repetitions }]),
-    ])),
-  });
-  const triggers = budgets.triggers.filter(t => ['latency', 'initialization', 'memory'].includes(t.dimension));
   const rows = [];
+  const memoryTriggers = budgets.triggers.filter(t => t.dimension === 'memory');
+  const summarize = (kind, from, to, report) => {
+    const flagged = verdict => report.triggers.filter(t => t.verdict === verdict)
+      .map(t => `${t.id.replace(/\/(processing|initialization)-ratio$/, '')} ${t.relativeChange >= 0 ? '+' : ''}${(t.relativeChange * 100).toFixed(0)}%`);
+    rows.push({ kind, from, to, regression: flagged('regression'), invalid: flagged('invalid-measurement'),
+      withinBudget: report.triggers.filter(t => t.verdict === 'within-budget').length });
+  };
   for (let i = 1; i < runs.length; i += 1) {
+    const asSnapshot = run => ({
+      id: run.productCommit.slice(0, 7), sourceCommit: run.productCommit, profiles: { latency: profile },
+      metrics: Object.fromEntries(Object.entries(run.rows).flatMap(([row, v]) => Object.entries(v.memoryMaximumBytes)
+        .map(([category, bytes]) => [`memory/${row}/${category}`, { id: `memory/${row}/${category}`, dimension: 'memory', value: bytes, samples: run.repetitions }]))),
+    });
     const before = asSnapshot(runs[i - 1]);
     const after = asSnapshot(runs[i]);
-    const report = evaluateBudgets({ budgetsId: budgets.budgetsId, triggers }, before,
-      { sourceCommit: after.sourceCommit, sources: [], metrics: after.metrics, profiles: { latency: profile, initialization: profile, memory: profile } }, []);
-    const flagged = verdict => report.triggers.filter(t => t.verdict === verdict)
-      .map(t => `${t.id.replace(/\/(processing|initialization)-p95$/, '')} ${t.relativeChange >= 0 ? '+' : ''}${(t.relativeChange * 100).toFixed(0)}%`);
-    rows.push({ from: before.id, to: after.id, regression: flagged('regression'), invalid: flagged('invalid-measurement'),
-      withinBudget: report.triggers.filter(t => t.verdict === 'within-budget').length });
+    summarize('memory', before.id, after.id, evaluateBudgets({ budgetsId: budgets.budgetsId, triggers: memoryTriggers }, before,
+      { sourceCommit: after.sourceCommit, sources: [], metrics: after.metrics, profiles: { memory: profile } }, []));
+  }
+  if (existsSync(PAIRED_BACKTEST)) {
+    const timingTriggers = budgets.triggers.filter(t => t.dimension === 'latency' || t.dimension === 'initialization');
+    for (const run of readJson(PAIRED_BACKTEST).runs) {
+      const extracted = metricsFromPaired(run);
+      const before = { id: run.baseline.revision.slice(0, 7), sourceCommit: run.baseline.revision, profiles: { latency: profile }, metrics: {} };
+      summarize(`paired timing (run ${run.runId}, ${run.runner?.cpuModel ?? 'unrecorded CPU'})`, before.id, run.candidate.revision.slice(0, 7),
+        evaluateBudgets({ budgetsId: budgets.budgetsId, triggers: timingTriggers }, before,
+          { sourceCommit: run.candidate.revision, sources: [], metrics: Object.fromEntries(extracted.metrics.map(m => [m.id, m])),
+            profiles: { latency: extracted.profile, initialization: extracted.profile } }, []));
+    }
   }
   if (args.json) process.stdout.write(`${JSON.stringify(rows, null, 2)}\n`);
-  else for (const row of rows) console.log(`${row.from} -> ${row.to}: ${row.regression.length} regression, ${row.invalid.length} invalid, ${row.withinBudget} within budget\n  regression: ${row.regression.join('; ') || '-'}\n  invalid: ${row.invalid.join('; ') || '-'}`);
+  else for (const row of rows) console.log(`${row.kind}: ${row.from} -> ${row.to}: ${row.regression.length} regression, ${row.invalid.length} invalid, ${row.withinBudget} within budget\n  regression: ${row.regression.join('; ') || '-'}\n  invalid: ${row.invalid.join('; ') || '-'}`);
 }
 
 const args = parseArgs(process.argv.slice(2));

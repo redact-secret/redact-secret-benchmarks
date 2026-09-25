@@ -17,7 +17,10 @@ route the one tail-only jump to "rerun" rather than "regression".
 
 Spec: [`docs/specs/regression-budgets.md`](../specs/regression-budgets.md).
 Decision: [`2026-09-25-introduce-reviewed-performance-regression-budgets.md`](../decisions/2026-09-25-introduce-reviewed-performance-regression-budgets.md).
-Budgets: `benchmarks/regression-budgets.json` (`reviewStatus: proposed`).
+Budgets: `benchmarks/regression-budgets.json` (`reviewStatus: proposed` as
+measured here; `reviewed` since #303, which moved timing to same-job paired
+ratios: [`2026-09-25-beta9-303-paired-timing-budgets.md`](2026-09-25-beta9-303-paired-timing-budgets.md)).
+The figures below are the #143 measurement as recorded.
 Baseline: `benchmarks/regression-baselines/0.1.0-beta.8.json`.
 
 ## Source revisions and artifacts
@@ -118,7 +121,13 @@ Size history from the npm registry (unpacked bytes) anchors the 5% policy:
 | adapter harness, 5 processes | traversal spread, median-based | 6.8%, apart from otel-js at the noise floor |
 | adapter harness, within one process | adapter-core coefficient of variation across repetitions | up to 46% on a single repetition. The medians stay stable, which is why every adapter figure is median-based |
 
-## Backtest over the committed Linux history (`npm run performance:budgets:backtest`)
+## Backtest over the committed Linux history (as run for #143)
+
+Superseded for timing by the paired backtest in the #303 report. Measured in
+one job each, fdca511 → 2b98027 is flat, so the beta.7 row below was a
+runner machine-class shift. 2b98027 → f2082ab is a real +8% to +16%, and
+9443419 → 079095e also slowed processing on every row. The table stays as the
+#143 absolute backtest reported it.
 
 Each pair is judged with today's thresholds and the earlier run as the
 baseline. Improvements are within budget by definition.
@@ -171,7 +180,9 @@ candidate measured on different machine classes can differ by 22–82% with no
 product change. The backtest's uniform +22% to +64% steps may include such a
 shift.
 
-**Review decision: the budgets stay `proposed`.** The review condition in the
+**Review decision at this point: the budgets stay `proposed`.** (Superseded
+by #303: timing is now judged on same-job paired ratios, and the budgets are
+`reviewed`.) The review condition in the
 decision (at least three dispatches at one pin) was met, and three runs alone
 would have looked like confirmation: the first three develop dispatches all
 landed on the slower class. The six runs show the rerun term on the official
@@ -211,8 +222,8 @@ npm run performance:budgets:derive && npm run performance:budgets:check && npm r
 
 ## Limitations
 
-- **The official runner's machine class varies, and timing budgets do not
-  account for it.** Six runs at one pin spread up to 91.6% on the processing
+- **The official runner's machine class varies, and these timing budgets do
+  not account for it.** Resolved by #303 (same-job paired ratios). Six runs at one pin spread up to 91.6% on the processing
   median (see "Official-runner rerun study"). The derivation keeps the
   workstation rerun term. A candidate on a slower machine than the baseline
   can surface as a corroborated regression, so a latency or initialization

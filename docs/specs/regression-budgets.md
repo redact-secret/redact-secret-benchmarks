@@ -2,10 +2,18 @@
 
 Issue: [#143](https://github.com/redact-secret/redact-secret-benchmarks/issues/143),
 part of [#138](https://github.com/redact-secret/redact-secret-benchmarks/issues/138).
-Decision: [`2026-09-25-introduce-reviewed-performance-regression-budgets.md`](../decisions/2026-09-25-introduce-reviewed-performance-regression-budgets.md).
-Baseline and derivation evidence: [`docs/reports/2026-09-25-beta9-143-regression-budgets.md`](../reports/2026-09-25-beta9-143-regression-budgets.md).
-Library: `benchmarks/lib/regression-budgets.ts`. CLI: `scripts/regression-budgets.mjs`
-(`npm run performance:budgets:*`). Tests: `tests/regression-budgets.test.mjs`.
+Timing follow-up: [#303](https://github.com/redact-secret/redact-secret-benchmarks/issues/303).
+Decisions: [`2026-09-25-introduce-reviewed-performance-regression-budgets.md`](../decisions/2026-09-25-introduce-reviewed-performance-regression-budgets.md),
+amended for latency and initialization by
+[`2026-09-25-judge-timing-budgets-on-same-job-paired-ratios.md`](../decisions/2026-09-25-judge-timing-budgets-on-same-job-paired-ratios.md).
+Baseline and derivation evidence: [`docs/reports/2026-09-25-beta9-143-regression-budgets.md`](../reports/2026-09-25-beta9-143-regression-budgets.md)
+and, for paired timing, [`docs/reports/2026-09-25-beta9-303-paired-timing-budgets.md`](../reports/2026-09-25-beta9-303-paired-timing-budgets.md).
+Library: `benchmarks/lib/regression-budgets.ts`. CLIs: `scripts/regression-budgets.mjs`
+(`npm run performance:budgets:*`) and `scripts/paired-performance.mjs`. Tests: `tests/regression-budgets.test.mjs`.
+
+Status: `reviewStatus: "reviewed"` since #303. `npm run performance:budgets:check`
+refuses `reviewed` unless the A/A study holds at least three same-job runs of
+the current baseline commit, each with its CPU model recorded.
 
 ## What a budget is
 
@@ -22,7 +30,7 @@ Every trigger ends in one outcome of the decision model:
 | `within-budget` | the change is at or below the trigger's threshold, noise included | 0 |
 | `accepted-tradeoff` | the change breaches the threshold, and `benchmarks/accepted-regressions.json` records why, with a linked detection or safety benefit | 0 |
 | `regression` | the change breaches the threshold and nothing accepts it: fix it, or record the tradeoff | 1 |
-| `invalid-measurement` | the candidate cannot be judged: wrong profile, too few samples, a missing metric, a `--quick` harness run, or a tail-only change the median does not corroborate. Rerun it | 2 |
+| `invalid-measurement` | the candidate cannot be judged: wrong profile, too few samples, a missing metric, a `--quick` harness run, timing not measured paired against the baseline commit, or a tail-only change (the p95 ratio breaches while the median ratio does not). Rerun it | 2 |
 | `not-evaluated` | no candidate source for this dimension was supplied | 0 |
 
 A measured regression anywhere makes the report `regression` (exit 1), even
@@ -38,11 +46,24 @@ report combines them into a score.
 
 | Dimension | Source | Profile | Triggers |
 | --- | --- | --- | --- |
-| `latency` | core `CompleteAssessment` summary (`performance-evaluation.yml`) | `linux-x64-release` | processing p95 per surface × workload profile |
-| `initialization` | the same summary | `linux-x64-release` | initialization p95 per surface × workload profile |
-| `memory` | the same summary | `linux-x64-release` | largest observed sample per surface × profile × observable category |
+| `latency` | same-job paired run (`paired.json` from `performance-evaluation.yml`) | `linux-x64-release`, same job, in-job baseline = the budgets' baseline commit | processing median, candidate/baseline ratio, per surface × workload profile; the p95 ratio is the tail check |
+| `initialization` | the same paired run | the same | initialization median ratio per surface × workload profile; the p95 ratio is the tail check |
+| `memory` | core `CompleteAssessment` summary (`performance-evaluation.yml`) | `linux-x64-release` | largest observed sample per surface × profile × observable category |
 | `size` | `benchmarks/operational-evidence.json` (#141) | `release-artifacts` | compressed WebAssembly per profile, the quickstart browser bundle, npm tarballs, native addons, wheels, CLI binaries |
 | `adapter-overhead` | the `redact-secret-adapters` overhead harnesses | the measuring host (platform, arch, CPU model, runtime line) | adapter traversal per host × workload, scanner calls per event, scanned code units per event |
+
+**Timing is judged on same-job paired ratios** (#303). The hosted runner's
+machine class varies from job to job: six runs at one pin measured up to 45%
+apart on every row at once (`rerun-noise-linux-x64.json`). The workflow
+therefore builds the budgets' baseline commit next to the candidate and runs
+both through core's assessment in counterbalanced rounds (A B B A ...) on the
+one runner, six rounds of two fresh-process samples per side. The machine
+cancels out of the candidate/baseline ratio. Absolute latency and
+initialization compared with the frozen snapshot are still reported, under
+"Absolute timing across jobs (informational, not judged)", and never produce
+a verdict. Memory and size stay absolute: the six-run study moved memory by
+at most 5.2%, inside every memory threshold and its 1 MiB floor, and sizes do
+not depend on the machine.
 
 **Detection** is reported next to them, never budgeted. A detection change is
 the benefit side of a tradeoff, not a cost.
@@ -73,12 +94,15 @@ the recorded noise. Nothing is hand-edited, and `npm run performance:budgets:che
 fails CI when `benchmarks/regression-budgets.json` differs from what the
 derivation produces. `ceil5%` rounds up to the next five percentage points. A
 change breaches when it exceeds both the relative threshold times the baseline
-value and the absolute floor.
+value and the absolute floor. For a paired ratio the baseline value is 1, and
+the millisecond floor is divided by the in-job baseline statistic. A/A
+deviation is `max(r, 1/r) − 1` of a ratio measured with the baseline commit on
+both sides.
 
 | Dimension | Relative threshold | Absolute floor | Corroboration | Minimum samples |
 | --- | --- | --- | --- | --- |
-| latency | `ceil5%(max(15%, row's CI dispersion, 2 × rerun median spread))` | 1 ms | the processing median must rise more than `ceil5%(max(10%, 2 × rerun median spread))` and 1 ms | 5 |
-| initialization | `ceil5%(max(50%, row's CI dispersion, 2 × rerun median spread))` | 2 ms | the initialization median must rise more than `ceil5%(max(25%, 2 × rerun median spread))` and 2 ms | 5 |
+| latency (paired median ratio) | `ceil5%(max(10%, 2 × row's largest A/A median ratio deviation))` | 1 ms of the in-job baseline median | tail check: a p95 ratio above `ceil5%(max(15%, 2 × row's largest A/A p95 ratio deviation))` and 1 ms with the median inside is `invalid-measurement` | 10 per side |
+| initialization (paired median ratio) | `ceil5%(max(25%, 2 × row's largest A/A median ratio deviation))` | 2 ms | tail check at `ceil5%(max(50%, 2 × row's largest A/A p95 ratio deviation))` and 2 ms | 10 per side |
 | memory | `ceil5%(max(10%, 2 × max(CI cross-run spread, rerun spread)))` | 1 MiB | — | 5 |
 | size | 5% | 4 KiB (compressed wasm, bundle, npm), 16 KiB (addons, wheels, CLI) | — | 1 |
 | adapter traversal | `ceil5%(max(15%, 2 × between-process spread))` | `max(0.5 µs, 3 × between-process SD)` | — | 15 repetitions |
@@ -86,38 +110,47 @@ value and the absolute floor.
 
 The noise inputs are committed under `benchmarks/regression-evidence/`:
 
+- `paired-aa-linux-x64.json` holds six same-job A/A runs of the baseline
+  commit on the hosted runner, on four CPU models (AMD EPYC 7763, 9V74, 9V45,
+  Intel Xeon Platinum 8573C), reduced by `scripts/paired-performance.mjs collect`
+  with run ids, URLs, artifact digests and CPU models. Its per-row largest
+  deviations set every latency and initialization threshold.
+- `paired-backtest-linux-x64.json` holds same-job paired runs of four
+  historical consecutive revision pairs. `backtest` replays the timing
+  triggers over them.
 - `ci-dispersion.json` holds every committed release-build summary from the
   history of `evidence/603/summary.json` (eight Linux x86_64 runs). From each
-  it keeps per-row p95/median dispersion and memory maxima. Each run is a
-  different product commit, so only the *within-run* dispersion is noise, and
-  it is what sets the per-row p95 threshold.
+  it keeps per-row p95/median dispersion and memory maxima. It sets the memory
+  cross-run spread and the memory backtest. Its timing dispersion set the
+  #143 thresholds, which #303 replaced.
 - `rerun-noise-darwin-arm64.json` measures the *same* published release
   artifacts again and again with core's own per-sample protocol
   (`scripts/measure-regression-noise.mjs`). The median moved at most 3.8%
   between reruns. The p95, which for five samples is their maximum, moved up
-  to 21.9%.
+  to 21.9%. It now sets only the memory rerun term.
 - `rerun-noise-linux-x64.json` reduces six `performance-evaluation.yml`
   runs at the baseline pin on the GitHub-hosted runner
-  (`scripts/regression-budgets.mjs runner-reruns`). It is evidence, not a
-  derivation source. Four runs agree within 6.4% on the processing median.
-  Two ran 22% and 45% faster across every row, which points to a faster
-  runner machine, and two times that spread would disable every timing
-  trigger.
+  (`scripts/regression-budgets.mjs runner-reruns`). It is the evidence for
+  #303, not a derivation source. Four runs agree within 6.4% on the processing
+  median. Two ran 22% and 45% faster across every row, which points to a
+  faster runner machine, and two times that spread would disable every
+  absolute timing trigger.
 - `adapter-overhead-darwin-arm64.json` holds five independent processes per
   language of the adapter harnesses. Each trigger's between-process spread and
   standard deviation come from it.
 
-### Why p95 needs a corroborating median
+### Why timing is judged on the median ratio, with the p95 ratio as a tail check
 
-With five samples, the nearest-rank p95 is the slowest sample. A single slow
-sample can move it by 20% or more between reruns of the same artifact, while
-the median barely moves. The trigger therefore keeps p95 as the metric people
-reason about. A breach counts as a regression only when the median also moved
-past its own, tighter threshold. A p95-only breach is sent back as
-`invalid-measurement`: the change is tail-shaped, and a rerun decides whether
-it is real. The historical backtest in the report shows this routing: the one
-tail-only breach in the eight Linux runs lands there, and both real
-detector-expansion slowdowns land as regressions on every surface.
+In the six A/A runs the paired processing median ratio stayed within 2.6% of
+1 on nine of ten rows (browser small-whole: 14.7%). The paired p95 ratio,
+which for twelve samples is the ratio of two maxima, moved by up to 45%. A
+p95-primary trigger would therefore need thresholds of up to 95% and would
+miss a uniform 20% slowdown on half the rows. The median ratio is the judged
+statistic. The p95 ratio still guards the tail: when it breaches its own,
+wider threshold and the median does not, the change is tail-shaped and comes
+back as `invalid-measurement`, so a rerun decides whether it is real. #143
+judged the p95 corroborated by the median in absolute terms. For a change that
+moves the whole distribution, the median ratio decides in both designs.
 
 ### Why size uses policy, not noise
 
@@ -169,44 +202,61 @@ promotion is invalid.
 ## Commands
 
 ```sh
-# Judge a candidate (any subset of sources; unsupplied dimensions are not evaluated)
-npm run performance:budgets:evaluate -- --summary <summary.json> --operational <operational-evidence.json> \
-  --adapter <overhead-v1 output or series> --source-commit <40-hex> --json-out r.json --markdown-out r.md
+# Judge a candidate (any subset of sources; unsupplied dimensions are not evaluated).
+# Timing needs --paired; --summary alone judges memory and reports timing as informational.
+npm run performance:budgets:evaluate -- --summary <summary.json> --paired <paired.json> \
+  --operational <operational-evidence.json> --adapter <overhead-v1 output or series> \
+  --source-commit <40-hex> --json-out r.json --markdown-out r.md
 
 npm run performance:budgets:check      # ledger, baseline history, derivation drift (CI: validate.yml)
 npm run performance:budgets:derive     # rewrite triggers after a new baseline or new noise evidence
-npm run performance:budgets:backtest   # replay the rules over the committed Linux history
+npm run performance:budgets:backtest   # memory over the committed Linux history, timing over the committed paired pairs
+# paired measurement (in performance-evaluation.yml; A/A when both revisions are the same)
+node --import tsx scripts/paired-performance.mjs run --baseline-dir <core> --candidate-dir <core> --rounds 6 --runs 2 --out-dir <dir>
+node --import tsx scripts/paired-performance.mjs reduce --dir <dir> --baseline-revision <sha> --candidate-revision <sha> --runner runner.json --out paired.json
+node --import tsx scripts/paired-performance.mjs collect --runs <manifest.json> --out benchmarks/regression-evidence/paired-aa-linux-x64.json
 npm run performance:noise -- --core-repo <redact-secret checkout> --python <python> --out <file>
 ```
 
-`.github/workflows/performance-evaluation.yml` runs `evaluate` on every fresh
-Linux summary, right after the acceptance criteria, and adds the verdict to the
-job summary.
+`.github/workflows/performance-evaluation.yml` builds the candidate (default:
+the pin manifest's revision) and the paired baseline (default: the budgets'
+baseline commit) in one job, records the runner's CPU model in `runner.json`,
+runs the candidate's absolute assessment for the acceptance criteria and
+memory, then the interleaved paired rounds. It then runs `evaluate` with
+`--summary` and `--paired` and adds the verdict to the job summary. Dispatch
+inputs `baseline_revision`, `candidate_revision` and `rounds` select other
+pairs. The same commit on both sides is an A/A run. Building both sides
+roughly doubles the job's measurement time.
 
 ## Promoting a new baseline
 
 1. Measure the release: the Linux performance run, the #141 size evidence, and
-   five adapter-harness processes per language on the adapter profile.
+   five adapter-harness processes per language on the adapter profile. Judge
+   the promotion's timing with a paired run of the old baseline commit
+   against the new one. Snapshots do not carry paired ratios, so the history
+   check marks timing between baselines as not evaluated.
 2. Write the snapshot with `scripts/regression-budgets.mjs snapshot`, append a
    history record with `supersedes` set to the previous baseline and the
    snapshot's sha256, and set `baseline` to the new id.
 3. Run `npm run performance:budgets:check`. Every breach against the previous
    baseline must be accepted in the ledger before the check passes.
-4. Run `npm run performance:budgets:derive` so thresholds move to the new
-   baseline values, then commit the snapshot, the history record, the ledger
-   entries and the derived budgets together.
+4. Dispatch at least three A/A runs of the new baseline commit, collect them
+   into `paired-aa-linux-x64.json`, and run `npm run performance:budgets:derive`
+   so thresholds move to the new baseline and its A/A noise. Commit the
+   snapshot, the history record, the ledger entries, the A/A study and the
+   derived budgets together. `reviewed` is refused until the A/A study
+   matches the new baseline commit.
 
 ## Limitations
 
-- **The official Linux runner's machine class is not controlled.** Six runs
-  at one pin (`rerun-noise-linux-x64.json`) show a shift of up to 45% between
-  runs on every row at once. That is machine-class variation, not noise the
-  thresholds can absorb. The rerun term therefore still comes from the macOS
-  arm64 workstation. A hosted-runner latency or initialization breach should
-  be rerun before it is acted on. The budgets stay `proposed` until timing is
-  bound to a recorded runner machine class or measured paired in one job.
-- The rerun study covers the Node and Python surfaces. Rust, CLI and browser
-  rows take their rerun term from those, and their own CI dispersion.
+- **The A/A study covers six runs on four CPU models.** A machine class not
+  seen there could be noisier within one job. Each threshold doubles a
+  per-row maximum of six runs and never goes below the policy floors.
+- **Paired timing does not see whole-machine effects that change between
+  commits.** Both sides share the runner, so a slowdown that appears only on
+  one machine class shows up in proportion to that class's share of the
+  runs.
+- The paired design roughly doubles the workflow's build and measurement time.
 - Adapter-overhead budgets are bound to the host that measured them (Apple M4,
   Node 22, CPython 3.14). A candidate from another host is
   `invalid-measurement` by construction. An official adapter profile on Linux

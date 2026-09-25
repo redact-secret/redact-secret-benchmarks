@@ -139,7 +139,7 @@ function reduce(args) {
 function collect(args) {
   const manifest = readJson(args.runs);
   const runs = manifest.runs.map(entry => {
-    const text = readFileSync(entry.paired, 'utf8');
+    const text = readFileSync(path.resolve(path.dirname(args.runs), entry.paired), 'utf8');
     const paired = JSON.parse(text);
     if (paired.schema !== 'redact-secret-benchmarks/paired-performance-v1') throw new Error(`paired-performance:${entry.runId}:not a paired evidence file`);
     if (manifest.purpose === 'aa' && !paired.aa) throw new Error(`paired-performance:${entry.runId}:not an A/A run`);

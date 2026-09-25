@@ -225,8 +225,40 @@ runs the candidate's absolute assessment for the acceptance criteria and
 memory, then the interleaved paired rounds. It then runs `evaluate` with
 `--summary` and `--paired` and adds the verdict to the job summary. Dispatch
 inputs `baseline_revision`, `candidate_revision` and `rounds` select other
-pairs. The same commit on both sides is an A/A run. Building both sides
-roughly doubles the job's measurement time.
+pairs. The same commit on both sides is an A/A run.
+
+**The baseline build is cached by commit**
+([#307](https://github.com/redact-secret/redact-secret-benchmarks/issues/307)).
+`scripts/build-core.sh` is the one build for both sides.
+
+- **What is cached.** `scripts/core-build-cache.mjs collect` gathers the
+  baseline checkout's build outputs: every git-ignored, untracked file outside
+  `node_modules`, `target` and `.venv`, plus the release CLI binary. It writes
+  a manifest of each file's sha256 and the commit.
+- **The key.** `paired-baseline-build-v1-<runner OS>-<arch>-<baseline commit>-<digest>`.
+  The digest covers the rustc, cargo, wasm-bindgen, maturin, Node and Python
+  versions, the runner image, and the hashes of `build-core.sh` and
+  `core-build-cache.mjs`. The key is matched exactly; there are no
+  `restore-keys`.
+- **Hit, miss, and A/A.** A hit skips the baseline build. A miss builds the
+  baseline and saves it. An A/A run builds once and reuses the candidate's
+  build for both sides. It no longer carries build-to-build variation, which
+  release builds of one commit do not show.
+- **Verification.** Every path goes through `restore`. It fails the run on a
+  missing, extra or changed file, or a manifest of another commit. It records
+  `baselineBuild` (`source`: `cache`, `built` or `shared-with-candidate`, the
+  key, and the manifest's sha256) in `paired.json`.
+- **Who can write the cache.** The workflow runs only on `workflow_dispatch`
+  in this repository, so no pull request or fork run writes an entry it
+  restores. GitHub also scopes cache entries to the ref that saved them: a
+  branch can read its own and the default branch's entries, so the first run
+  on a new ref fills its own.
+- **Cost.** A run builds core once after the first fill. On the pair
+  f2082ab → 3144bb3 with a warm Cargo cache, the two-side build took 89–90 s
+  (runs 36180547649 without the cache, 36184676984 as a cache miss) and a
+  cache hit took 53 s. Whole jobs: 287 s, 287 s and 257 s. The interleaved
+  measurement, about 105–115 s, is the rest of the doubled cost and is not
+  cached.
 
 ## Promoting a new baseline
 
@@ -256,7 +288,8 @@ roughly doubles the job's measurement time.
   commits.** Both sides share the runner, so a slowdown that appears only on
   one machine class shows up in proportion to that class's share of the
   runs.
-- The paired design roughly doubles the workflow's build and measurement time.
+- The paired design doubles measurement time. With the baseline build cached
+  (#307), the build is paid once per run after the first fill.
 - Adapter-overhead budgets are bound to the host that measured them (Apple M4,
   Node 22, CPython 3.14). A candidate from another host is
   `invalid-measurement` by construction. An official adapter profile on Linux

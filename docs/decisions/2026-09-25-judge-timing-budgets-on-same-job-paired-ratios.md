@@ -98,7 +98,15 @@ digests. No workload, matched value or credential is recorded.
 
 - A timing verdict no longer depends on which machine class a job landed on.
   A candidate on a slower machine than the baseline's is not a regression.
-- Each performance run builds core twice and takes about twice as long.
+- Each performance run measures both sides. Since
+  [#307](https://github.com/redact-secret/redact-secret-benchmarks/issues/307),
+  the baseline side's build is cached by commit, so a run builds core once
+  after the cache's first fill. It still measures twice as long. The cache
+  entry is verified against a sha256 manifest, and its source, key and
+  manifest digest are recorded in the paired evidence. On the same pair, a
+  cache hit took 257 s against 287 s for a build of both sides (run
+  36185209615 against 36180547649). Paired measurement, about 105–115 s,
+  remains the main cost.
 - A baseline promotion needs new A/A runs of the new baseline commit. Its
   timing against the previous baseline is judged by a paired run of the two
   commits, not from stored snapshots.

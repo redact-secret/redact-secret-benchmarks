@@ -104,7 +104,7 @@ test('floors show met or not plus the actual value, and absent evidence is Not m
   assert.deepEqual([get('twin-coverage').status, get('twin-coverage').value], ['met', '0.534 ≥ 0.5']);
   // The evidence says why it is incomplete; the page repeats that, it does not decide it.
   assert.deepEqual(evidence.accounting.reasons, ['unreviewed-queue']);
-  assert.equal(qualificationGates(suite.accounting, qualified, null).find(g => g.id === 'ledger').status, 'watch', 'the checked-in run has a ledger row for every entry');
+  assert.equal(qualificationGates(suite.accounting, qualified, null).find(g => g.id === 'ledger').status, 'met', 'the checked-in run has no open or missing ledger rows');
   assert.equal(get('ledger').status, 'not-met');
   assert.match(get('ledger').detail, new RegExp(`${evidence.accounting.review.unknown} queue entries have no ledger row`));
   assert.equal(get('resolved-rate').status, 'met');

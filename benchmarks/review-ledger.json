@@ -124513,71 +124513,713 @@
       "resolvedRun": "080e35d1-daf8-44da-9faf-557903115017",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
+    "d766788ae90fa45cb97b866eac340d94913a6f08d47974b9eac8d195ef9e6ccb": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "3ba6e93803bcc79676e1f92ce9e26210be24474b61266654e4fcadb8a584d7a9": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "1686edcd158c64f632b1b9bbf338563641eb4323a1c585245d9fb1aeb403f41a": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "c0747e854122cb48cb6f1f74b3e5ba0ac7f3e593efcce18c500a000959187be7": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "518c7a146e221e68ee4f6c9dd9ae98690aee34e299846b89e501fed9222000fb": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "d8ba3e69398c2d7b838de97be121c0d33cce6668566721462e5a758a9d9eb8ed": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "c8a99f6ce4d210953324e2d3e4d13f0c447e1d58fcf7c750f1a9ebc84030c524": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "5839d7ff8a1d7b04388af14a4bcdec3123366cd8c07ac5b0a36f4146b445a886": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "3f2bff31c720ead257cd3ffaac19a47cac9a8c7ba6ff101c5cc739647653395a": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 35 vs contracted 36) correctly falls outside the github-token contract, so its own target family is not asserted here. redact-secret's finding ([10,49)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to github-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "dc0575fd4ef9168393a3dff44a4b2a637449a670d5f2736c69f18c688dee3d2f": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([20,61)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "14fe81683fa67d4a8a60f40cf339e1ac8d17736ec886c9ee54099d79936800d4": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([20,61)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "1f9a48af74540c988cb89844aae569297236347eae9fe70f1862da55a4ce4af3": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([21,62)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "79d8d12332de2acb0a7eeb0ca6c3894dc50af2f5dc8e2bd1a3e32a3cf390bb8c": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([21,62)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "5ea798a88ed27a362a5a9920af627aba86188231864468030ecbace4eb78ebe4": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([24,65)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "dcd1757848e8851e3beacf63891dea6ad31ce37d20e2564663b02a8cd82e65be": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([24,65)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "eb301ff549f9dd33eabce5c9f776beca2ee1108342ad709a866bcf9b8da531ea": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([22,63)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "cdcc1dbe9d45e4195d25c33fee0a2c2db2b0fa5d9a8afb0f7ffee67d696361b4": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([22,63)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "4be11ffb4ecf29aa12b5990472b3b516a179b26b3b5356a6c8d36f8d613c3e11": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([23,64)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "8f0d3aa19834ee2545b1f2c8280e68085a16673b5c90fc06e308dd7a05f92d11": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([23,64)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "49bb8bd8ae2e7ab617f182754aeac6d4bd7237c49842bed26ae9c02fe225bb2e": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([23,64)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "0176a469d12625fcb3d5b78022491014e1579d61215cb2f255be0a82cb525ea8": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([23,64)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "6c56010e03ad9737490b388c88240d17404867acd85a4507fccdbb0fd8802c63": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([23,64)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "033ea64366b2c693ec555efbb89e8a89f3297107a161a763fc898411eba8e603": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 41 vs the provider-documented maximum of 40 characters) correctly falls outside the microsoft-entra-client-secret contract, so its own target family is not asserted here. redact-secret's finding ([23,64)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to microsoft-entra-client-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "b18607383a70ce4e1dde41453072e1e5b09851e839fc6b3ff998c0fa7208460d": {
+      "status": "not-assertable",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/databricks-personal-access-token-rotated-shape-bare-twin, family databricks-personal-access-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores, so this redact-secret/gitleaks redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Candidate 3144bb3 (redact-secret#697/#698) now reports the multi-digit rotation shape. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md. Class: decision=differential.t0-pending-fixture."
+    },
+    "d9b4b7f79235458da416196cb33daabc6a41c8b40db3ba319f5401e31981c696": {
+      "status": "not-assertable",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/databricks-personal-access-token-rotated-shape-bare-twin, family databricks-personal-access-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores, so this redact-secret/trufflehog redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Candidate 3144bb3 (redact-secret#697/#698) now reports the multi-digit rotation shape. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md. Class: decision=differential.t0-pending-fixture."
+    },
+    "45dca1091e3ab6994b4110c3ceee9c03a0b8ab9a319e718dc1bb67d8744aec05": {
+      "status": "not-assertable",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/databricks-personal-access-token-rotated-shape-quoted-twin, family databricks-personal-access-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores, so this redact-secret/gitleaks redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Candidate 3144bb3 (redact-secret#697/#698) now reports the multi-digit rotation shape. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md. Class: decision=differential.t0-pending-fixture."
+    },
+    "edbe7771b12cfc77266d0e31021498f8f43609af5f666f10277336162900ef0b": {
+      "status": "not-assertable",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/databricks-personal-access-token-rotated-shape-quoted-twin, family databricks-personal-access-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores, so this redact-secret/trufflehog redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Candidate 3144bb3 (redact-secret#697/#698) now reports the multi-digit rotation shape. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md. Class: decision=differential.t0-pending-fixture."
+    },
+    "ceb3852393ef73f2862a953ca39cb3f51fe168ffd0529c76ef95ba049eaa88e4": {
+      "status": "not-assertable",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/databricks-personal-access-token-rotated-shape-unicode-crlf-twin, family databricks-personal-access-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores, so this redact-secret/gitleaks redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Candidate 3144bb3 (redact-secret#697/#698) now reports the multi-digit rotation shape. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md. Class: decision=differential.t0-pending-fixture."
+    },
+    "bd3b8a9a15f337d8ddded4254145336d13d0429e05f70b1812e6fab29f5977e0": {
+      "status": "not-assertable",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture detector-coverage/databricks-personal-access-token-rotated-shape-unicode-crlf-twin, family databricks-personal-access-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores, so this redact-secret/trufflehog redact-secret-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Candidate 3144bb3 (redact-secret#697/#698) now reports the multi-digit rotation shape. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md. Class: decision=differential.t0-pending-fixture."
+    },
+    "128b9d2c48ae1ae18507fdb9e02991934445fe551940fc70344a7adba3e98212": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,40); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "91982dcd422b8a3c34332381245a531ce427f9527bd3f2393bff55c5374cfa5e": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,47); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "67aa1fb19b73d4c06e532cbf633c5b512bba0dd42562f290e6238e4890487200": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,61); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "376f1dafe1ae36d1de5203f632b0576ac2f154554000a0ae9b5a972a951f7746": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,56); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "09989a41b127d3771d3e2ea9d22551661e383cd7c757d1b3ca753d7880ce42fb": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,63); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "88b4bf7692512724663b6274ff9b73824fe54a04b017ee5fd3d67fe917bd557f": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,77); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "d5b7e22f414bdfc2d64fb514c1ed111e9556d6a2fd8f396bf024bc4c6069015c": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,84); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "737f0062d39f5e1162faa6fa64151d6d09d14316c55fcf3ea947c1f6d0a054be": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,91); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "70645ab97dabed60cb3c19a1f25cb8c11d24fed9bb7fdcbb91848459957ee495": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,105); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "14cde8d3d5d64326b83d91d9e6f7a3d25398b5c6da432ded321069a0848032ad": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,73); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "6533df86cc2eb16d0838f74281089f96639d1e869481856d290e69361afa55eb": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,80); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "fa0dc140c5d5c29886575efec81d2adfde122a0b9717bcc181d553dc3f25dbea": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,94); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "b57359df8f93a7c217a1c41dc006ea233d6a8684b37a280adcf6a67d7c7c60a6": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,51); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "818fb63cc3cbade97c02285adeec5e590a5b7855e89e07a662f4fa234d1a5092": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,58); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "0be1fcd11d0a8d4b3a2653ad852fb4b62f4fd32ce4dbe4adc5c9afa197626c6f": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,72); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "16b206c98526c487036082ce214743b91d6d41db8441afa8282d3ed476b94a08": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,42); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "65aa43a5216ba17d624c4cb4331103e1e673fd5d936e78c5fa95e388dc7976d3": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,42); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "c92dba2bf6d4f53d5ce45f32132b6194c85a2598069d16012502084ad572ae0a": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,49); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "55c5a22007c6b6549258f073cd726dee04c040022d3ad384d53d4849d241fe52": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,49); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "bb70b784fc89f62bff6c98afaa40d796930270f6df1c648b690a7e8e8a11e68d": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,63); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "1c05ee8a307c0a67f5b9879f57e63e99f6390989f9530c4c221190b8d8df4975": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,63); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "8a07fbff4e5b7f724e8b9449dc5ac2272ed7b16cff3eed300cb34ded2809b87d": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,53); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "ab62d1b0fc08eb45d4e26864bcaac6ea58728e512b6803529357c30162bacbbf": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,60); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "e7e30489ddac011fd403ebdf81103fc250a558262bc9b588717c87aa11732acc": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,74); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "7e43cb4a15a6e8be03f78d035b1e1c6897e5d51dffc2784caf9a120cd5f332e4": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,27); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "074419e72dd1eb76c44391bb2049686827e132390eb53b0e3f8f151154870f9d": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,27); must-redact, tier T1). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "9b8ec4c0c9ab7f0679bc068eb6cf3a348933bc7c51bffd74b09ca50834283bef": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,34); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "bc43dae9b0d7c2034809d65aeff434e53ab2e2ac5ac6cd1580a34812b3a62df3": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,34); must-redact, tier T1). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "3c78dd94c45e0de73a456d1d27f5b3933f8e072b23d69f0410b06a7721d594d8": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,48); must-redact, tier T1). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "3bdbe826854c1d8e02b5131d53788e0aa5c6d4121c4d9597e771553696dcb69a": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,48); must-redact, tier T1). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "c640dc421c979cbf361b079a57b761c4721427ab72cfc8ee63452c745d2796d6": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,75); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "2f42db6cf6e0310bdac82288a002009776ec44202fe5e77cc75ac5bc2f1d4b67": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,82); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "1176de90c502d227351396c76b7ed5e8feed5b350376c6228e8950369971dd25": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,96); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "0895a73062f171736e5086579603f02a9e14085e118f03d9c41b299616d81e98": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,25); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "b3f16cd000c39268878558c44fcc0d6b8b80d21c3b0dedb38695301a283f0f7f": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,32); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "73c683323a2c3636ad3f2de45b93bab33cb5a04d0ef5832d06ee0b777c583700": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,46); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "401cc38e3d7209bc0c2c8394f5414ca65f535697a96cb12838956bee40eed95b": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,69); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "42708b5d8ea14c51927baaa9e068722d7f2a4cb34b3de2473ae6f3026c3374df": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,69); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "62e5a646c34cf8d1420e76dff1d37f92c4431c7fb852cdc90eaa4f5a311332d1": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,76); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "f958bfeddad7685d5948e0775d096595eb4076d4f1c66738cf9224c6de822c78": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,76); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "5bbd81ff496de942a170808243f79f21fa5a759a688d35a8d02f296e0ab68f5a": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,90); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "f3f50a0292dcb2c4a15a3a40e4cdb6474c950b5099fb2445a184ad30bf123f90": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,90); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "c2d70bedf5a78bfc6d2afadbc381ca538372bbc1540f8930c0af0f8b55627473": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,31); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "7f1af5cad06b6be05ba56ee2a046b4e09046bd6094c0406ee754188ba5ef7dae": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([0,31); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "ecf8bf83a057bd13a8b6d7fb916aae8c92adfea15ffb869df32ea719f61e694c": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,38); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "f30cd60ca744f572de57891ea2677c6dd3163f9464b0010c7a846c447fc9551e": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([7,38); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "9ca600103e5bee8b8932b31cfc9dc77e0d40b2f577dc5e1677677ce8bb113f69": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,52); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "af9eac5966eedf2f2e7756c901b112187e3e615543294d51afc1516d013fe283": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,52); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "425a2deba0673a73f7eeb073d366b3e1d869839328f92b097a4d65bf6caf704c": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 99 body characters after ATAT vs the contract's 100-character floor) correctly falls outside the atlassian-api-token contract, so its own target family is not asserted here. redact-secret's finding ([62,165)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to atlassian-api-token, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "a423525f4c0b41b4d446c5b6956cafa93bfa4625cbdbf1bce26411b6320dc941": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 99 body characters after ATAT vs the contract's 100-character floor) correctly falls outside the atlassian-api-token contract. redact-secret reports only generic-token ([62,165)), never atlassian-api-token, so the twin's scoped assertion holds and the finding is co-detection (redact-secret#702, product 3144bb3). trufflehog reports [62,86) unmapped; the range disagreement is between classifications outside this twin's family. No corpus or redact-secret defect. Class: range-disagreement/trufflehog/co-detection."
+    },
+    "4dc4a5bffa9dc215ad17683f468aeb6ed1445fda01a3ef917b04265a04c29c00": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 33-character secret vs the contract's 34-character floor) correctly falls outside the telegram-bot-token contract, so its own target family is not asserted here. redact-secret's finding ([23,67)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to telegram-bot-token, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "cf334fa479ac57c67524e3ae7d19c48b67a0baa8d3a7a528b115a72e1e69bdea": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 33-character secret vs the contract's 34-character floor) correctly falls outside the telegram-bot-token contract, so its own target family is not asserted here. redact-secret's finding ([23,67)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to telegram-bot-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "ef382ac03fc1271475e1ead65d5e0d87201f4badc0b64f9fbedbabc221189110": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: \"/\" in the secret; the Bot API server rejects any token containing \"/\" (tdlib/telegram-bot-api ClientManager.cpp)) correctly falls outside the telegram-bot-token contract, so its own target family is not asserted here. redact-secret's finding ([52,98)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to telegram-bot-token, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "2564e4309894e937a7404e72ad6f46b4efe9980bc2f2a00183f8e7d6a7acd8f7": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: \"/\" in the secret; the Bot API server rejects any token containing \"/\" (tdlib/telegram-bot-api ClientManager.cpp)) correctly falls outside the telegram-bot-token contract, so its own target family is not asserted here. redact-secret's finding ([52,98)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to telegram-bot-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "e3648b8bd0473feb436b2348b8f849d9f8ce80a39576fa24785d6a0bbdffd6d3": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: \"+\" in the secret, outside [A-Za-z0-9_-]) correctly falls outside the telegram-bot-token contract, so its own target family is not asserted here. redact-secret's finding ([23,69)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to telegram-bot-token, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "43e8d6dc667e895556adf4b1815f21529753376dbc27dda113402d09a695590b": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: \"+\" in the secret, outside [A-Za-z0-9_-]) correctly falls outside the telegram-bot-token contract, so its own target family is not asserted here. redact-secret's finding ([23,69)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to telegram-bot-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "645e0a3cef73730f44e22e203901f9dc9735d7cf08adcab0ecbd037cd1f19740": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line \"twilio\" keyword removed from the log line) correctly falls outside the twilio-api-key-secret contract, so its own target family is not asserted here. redact-secret's finding ([44,76)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to twilio-api-key-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "fe9b05d190cb2aa67349ab839cdbf4067ca21d0768666c95dd2a3ed246af94f8": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (CONFLUENT_CLOUD_API_SECRET renamed KAFKA_API_SECRET)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([17,81)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "87eb3d30b6a816c3094e80d53c40d7b999be3b2b149ba2a2ae518102df8366b1": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (CONFLUENT_CLOUD_API_SECRET renamed SASL_PASSWORD)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([22,86)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "9c4c99909f86cf31d763c638b946e85ab9d12ade9e46693d2b945faa53166773": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (the bootstrap host)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([102,166)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "7af3cb3f9452db576fe9d6eb942d9180ea22f99f9bc8b9a2936e66885b9b3df9": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (the bootstrap host)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([102,166)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "825607e6703b6a6a2680d335cb6258873a633f8adc6b29c33d20475152ce8969": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (confluent_cloud_api_secret renamed cloud_api_secret)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([20,84)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "2518fae6aeac5987c91b660facaef8150c649cc5e19d2e952ff654e372ce7f90": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (CONFLUENT_CLOUD_API_SECRET renamed KAFKA_API_SECRET)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([25,89)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "36d0d887039c41db1b6da15eb907040a26a6d22924c3c1f08140ca10d8a8d8a7": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (CONFLUENT_API_SECRET renamed KAFKA_API_SECRET)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([60,124)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "37c31027db541a7e79817ae013d9295e5d8eca0a48eb96c9ae7d0c8f859e000e": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (CONFLUENT_API_SECRET renamed KAFKA_API_SECRET)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([60,124)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "0c5ae6be41eb8cae89cbffdf3fabe8ee91bffb8f0cadaec53ac65d03a0ac15de": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (context: context: the same-line confluent keyword removed (confluentApiSecret renamed kafkaApiSecret)) correctly falls outside the confluent-cloud-api-secret-legacy contract, so its own target family is not asserted here. redact-secret's finding ([24,88)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret-legacy, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "40a1f809ce678fe69e70487927ad5c198e462f0ea9e2455a9bb2904d5dddccfc": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (prefix: the AIza prefix's second byte lower-cased (Aiza); body unchanged) correctly falls outside the google-api-key contract, so its own target family is not asserted here. redact-secret's finding ([111,150)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to google-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "900aa61c3b6076c7eb43043cbf64ef201a678fe1dc8aa057b47d8be31c11a053": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (prefix: the sk- stem of the documented sk-ant-api03- prefix broken (xk-ant-api03-, not an Anthropic prefix); body unchanged) correctly falls outside the anthropic-token contract, so its own target family is not asserted here. redact-secret's finding ([62,170)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to anthropic-token, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "15a458cd65cfcbe035117d69c72196506b3f5307a8718ecdd9accbec5792849e": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (prefix: the sk- stem of the documented sk-ant-api03- prefix broken (xk-ant-api03-, not an Anthropic prefix); body unchanged) correctly falls outside the anthropic-token contract, so its own target family is not asserted here. redact-secret's finding ([62,170)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to anthropic-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "2982590c61072bd3691ea5fc690338aa8be1a88e4f4eb749ddb299b1de36d6d8": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (checksum: checksum: the CRC32 of the 54 body characters encoded big-endian instead of the documented little-endian; prefix, length and alphabet unchanged) correctly falls outside the confluent-cloud-api-secret contract, so its own target family is not asserted here. redact-secret's finding ([157,221)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "669e0339c6afa1f78f6b55dbe7730155886a1dab8739d772e08a2da54cb78048": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: body character 21 replaced by \"_\" (URL-safe Base64, outside the documented A-Z a-z 0-9 + /), with the checksum recomputed over the mutated body so only the alphabet property fails) correctly falls outside the confluent-cloud-api-secret contract. redact-secret reports only generic-token ([15,31), [50,114)), never confluent-cloud-api-secret, so the twin's scoped assertion holds and the finding is co-detection (redact-secret#702, product 3144bb3). gitleaks reports [15,31) generic-token; the range disagreement is between classifications outside this twin's family. No corpus or redact-secret defect. Class: range-disagreement/gitleaks/co-detection."
+    },
+    "44fbecf8a1f1761512308dd920736978a364047dd882c0223fb9de6f7c585df1": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: body character 21 replaced by \"_\" (URL-safe Base64, outside the documented A-Z a-z 0-9 + /), with the checksum recomputed over the mutated body so only the alphabet property fails) correctly falls outside the confluent-cloud-api-secret contract, so its own target family is not asserted here. redact-secret's finding ([15,31), [50,114)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to confluent-cloud-api-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "9c186e4cf96300e5c505dbe1ac881aac4126f1e2e57b2ba3a1c48e0b71141ea0": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: Tail segment shortened from 10 to 9 hex characters; every other byte and the context are unchanged) correctly falls outside the langsmith-api-key contract, so its own target family is not asserted here. redact-secret's finding ([23,73)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to langsmith-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "2a3c959b4f004dcc72434337b47f3947d2c27086b8b9a5fcf83153dd7c771f93": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: One body character replaced by z, outside the hex alphabet every peer rule uses; width and context unchanged. The provider SDK redactor is alphanumeric, so this twin rests on the tool-corroborated alphabet only) correctly falls outside the langsmith-api-key contract, so its own target family is not asserted here. redact-secret's finding ([198,249)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to langsmith-api-key, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "7f2c7a4957db497b980a30f710aa165888dcf55dff11d27666da8698dc171603": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: One body character replaced by z, outside the hex alphabet every peer rule uses; width and context unchanged. The provider SDK redactor is alphanumeric, so this twin rests on the tool-corroborated alphabet only) correctly falls outside the langsmith-api-key contract, so its own target family is not asserted here. redact-secret's finding ([198,249)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to langsmith-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "c8f6e36501bad625a0803f9997e5a2698ae309e000449bb84093d6670b781eaa": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: one character inside the second section replaced with '!', outside every cited alphabet; widths unchanged) correctly falls outside the slack-app-level-token contract, so its own target family is not asserted here. redact-secret's finding ([40,137)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to slack-app-level-token, so it is recorded as co-detection. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/co-detection."
+    },
+    "6023e33d363faa84e9d283d09b018afedd9bf0f70e72e7c7fd83f0573267d255": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: one character inside the second section replaced with '!', outside every cited alphabet; widths unchanged) correctly falls outside the slack-app-level-token contract, so its own target family is not asserted here. redact-secret's finding ([40,137)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to slack-app-level-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "d11a200be027d5a510ca46991709a3d415cd13064fb896baa413c754e6b5b26d": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (prefix: prefix: whsec- with a dash separator vs the documented whsec_ (separator of the documented prefix changed; body unchanged)) correctly falls outside the stripe-webhook-signing-secret contract, so its own target family is not asserted here. redact-secret's finding ([19,57)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to stripe-webhook-signing-secret, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "28ba64d48b13df9b512ddb7aaeff4b126e6c43733794bacedbcb71983f071d7f": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (alphabet: alphabet: one body byte replaced with \"-\" (48-character body kept), outside the tool-corroborated [A-Za-z0-9] body; osv-scalibr's test rejects an internal dash) correctly falls outside the perplexity-api-key contract, so its own target family is not asserted here. redact-secret's finding ([80,133)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to perplexity-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
     "700ae396c776fdf2b7702fb34f361b870dbb8194c9e78df7221058d9fbddb307": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([17,53) on beta8-212--pinecone-api-key-legacy-dotenv; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([17,53); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "04990737abddd9f7e6103368710efa093426566eb88f0ae72d8747c5c9e3e105": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([25,61) on beta8-212--pinecone-api-key-legacy-export; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([25,61); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "1dd2a673d1c08c491269212626069e70dbf551bf2b440771d479c27d31291366": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([40,76) on beta8-212--pinecone-api-key-legacy-legacy-init; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([40,76); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "33f43005bb4841dfddfc9078d9d10ef65bbefd1d89b0cc5652712130736f1014": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([82,118) on beta8-212--pinecone-api-key-legacy-api-key-header; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([82,118); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "1164a818aefd3bc07a16c3cf875e602781b2fdab82469fae8b9852aff7fc78b6": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([70,106) on beta8-212--pinecone-api-key-legacy-ts-legacy-init; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([70,106); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "e766630d6b7fe4ef7ef08e3f42ce46d47e6e4a012d17a548c6416db0269557be": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([33,69) on beta8-212--pinecone-api-key-legacy-yaml-config; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([33,69); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "6f3c65f730412f2698f43a0bd8c0c88d78739fbfd4b9a3d4495897bb23bb8aae": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([49,85) on beta8-212--pinecone-api-key-legacy-actions-env; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([49,85); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "2920784e15d805ad802a4e02f81e193ee541860903bbe43f5a4c1ca3279e68d3": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([65,101) on beta8-212--pinecone-api-key-legacy-compose-env; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([65,101); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "5251bed55246136b86f0055cf5dca46be0b0db9c7a289d4adb243b309464b991": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([71,107) on beta8-212--pinecone-api-key-legacy-langchain; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([71,107); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "f6b805b4eec721a79d9b609e0699fd4650659cf1ac6347ca2187cfe5ce7796e0": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([39,75) on beta8-212--pinecone-api-key-legacy-terraform-output; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([39,75); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "ef47a1375cfc18a7e0dc8dcb873f22232ee58f573b78ed4f623a4674504e7d70": {
       "status": "resolved",
-      "firstSeenRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "resolvedRun": "4128e2af-7b5c-4a0b-a8e3-111b1d24d954",
-      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([44,80) on beta8-212--pinecone-api-key-legacy-n8n-credential; the product's pinecone-api-key detector, finding type pinecone_api_key, on candidate 2420e80, which claims a legacy UUID under a Pinecone API-key name since redact-secret#766). The disagreement is fully explained by trufflehog reporting no finding at all for this input (trufflehog 3.97.4's Pinecone detector claims only pcsk_ keys) — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([44,80); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "897107984f4509f6dee8b88f2c7e74ab584f153dca6aaebb2f405109a56ed3c1": {
       "status": "resolved",
@@ -124918,6 +125560,174 @@
       "status": "not-assertable",
       "firstSeenRun": "6794c8a7-b815-495b-9c5d-242b24c8e41e",
       "note": "redact-secret and trufflehog both report [77,128), the authored expected span, on the canonical variant of beta8-212--slack-user-token-legacy-short-secret. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "a4a4730b521a3ec8df775cf0e813868b45fca7e727d3ef32ab501c86e7604d18": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: the base36 payload-length holder claims one more character than the base64url payload carries (checksum recomputed over the altered text, so only the length holder is wrong)) correctly falls outside the gitlab-runner-authentication-token contract. redact-secret reports only generic-token ([53,133)), never gitlab-runner-authentication-token, so the twin's scoped assertion holds and the finding is co-detection (redact-secret#702, product 3144bb3). gitleaks reports [53,78) gitlab-runner-authentication-token; [53,133) generic-token; the range disagreement is between classifications outside this twin's family plus a peer slice attributed to the target family, a peer over-match of a value the contract excludes by construction. No corpus or redact-secret defect. Class: range-disagreement/gitleaks/co-detection."
+    },
+    "4cce6ef5f3040673733471eb2d03da2aad0aacb72fd7fff2c5a94a67f75097dd": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: the base36 payload-length holder claims one more character than the base64url payload carries (checksum recomputed over the altered text, so only the length holder is wrong)) correctly falls outside the gitlab-runner-authentication-token contract, so its own target family is not asserted here. redact-secret's finding ([53,133)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to gitlab-runner-authentication-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "8dfc0334521f931e50c88c7913e83ea5c24581437c186961fe22942a7bd08a88": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: length: 19-character legacy body vs the 20-character Devise.friendly_token GitLab's token field generates) correctly falls outside the gitlab-runner-authentication-token contract, so its own target family is not asserted here. redact-secret's finding ([57,81)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to gitlab-runner-authentication-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "beeede152077c58bc14911b58d5181d60dc8b8f631e122a3f9a7ac5736203467": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (prefix: prefix namespace: xlrt- breaks the gl- stem every GitLab token prefix shares (the registry gitlab-token twin precedent, xlpat-); real gl- siblings are secrets and are not used) correctly falls outside the gitlab-runner-authentication-token contract, so its own target family is not asserted here. redact-secret's finding ([141,166)) is attributed to generic-token instead: since redact-secret#702 (product 3144bb3) a credential-named assignment key makes generic-token report the value, a legitimate independent classification this corpus does not exclude; the twin is scoped to gitlab-runner-authentication-token, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "f2dcbae1649a9b77bac26c8a81bc4e3c6de5585b5199ecc22eb9831bde35c5bb": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([60,82); policy, tier T3). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "43087fb9bf668d52d667d9c333fe3ff3d5e7875a2bc7fe968cb11470d942a33a": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([28,50); policy, tier T3). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "a4c6fa0d3ffd12e8b95fb57253b3738fa5a3f77e3220e09b619896164d80399d": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([50,72); policy, tier T3). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "66b14d7b1451fe761bd9714e1581eba90ac23908b8a88de88ce3cf536d112f99": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([50,72); policy, tier T3). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "b2f767363032d89cb6a3792dbc6c82b2a9e4e7bd028eb69401f7d3312face7ca": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([13,82); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "f1ad605612f88f0f3fde4f4ae75ea39e7dbf6a832eb9814d310f009ce902feb2": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([21,90); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "4b9d169dd453d14c04c48ce9845aae5f0760e882b822c77254c3572d86e90a38": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([73,142); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "cac462d7c5524077e080dd8661d67307a91586bd7ce2dbacfde40ec35cf76e11": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([32,101); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "1b120c5e454c03a6cbd2c211e967028d125734e19e01a0840bd8d63b06206728": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([32,101); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "64fba75af6229b1fc61bfe4cfd35132694b64b589acf756580984906adc275dc": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([106,175); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "0079e673679452dd4b395d3818ccc2b1e1f7b429ef69cb0922990047d886209f": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([127,196); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "0cfa742053a5cff83cf2954b302e8b3b0d305b411f0800e98bbb6afee97765a8": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([122,191); must-redact, tier T2). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "fc5730f5ab6ce328f7aacb8f3a452511b650babae83eb232040c3999691e6aa9": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([122,191); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "f1d854c9ff38e00aa07bb4e796dbd5b6429f5572bfe171707edad1a8b38f693a": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([88,157); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "4941edb1738d17e4bf8070bc7884ef1af4ce491ac2948de96ccf30cb867ff5ce": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([97,128); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "a3c3df43ec09ca77ad018f5bce7b70f79915fd7ecf6491f1a47a5a5d633fb336": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([30,61); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "ed8214a5b6ce0cf3b137f99a2ce407608285f758064ec059714d5cdc3c6e090d": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([103,134); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "679c13512ab0a62ea4110d6a0f16587ca909c8b32ba6e7888e2e5e7a30e84aae": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([177,208); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "665ac50867ca7ba4ca2c095893e58877018eb7410d4bd227f83b7daf0932c3b5": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([37,68); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "bfe4bf13561fe4f5287df7d694335de244c6acc664c52df07b3bcb6ac90d6ea3": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([78,109); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "ce332ba5158c189ea5567a20cdc9a60d39bd6ba4d06af6fe879813aee5a0a76a": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([126,157); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "16a811a82e62d940152b5b47189a3fddef52a1a3c4e4be87fb979d8546890e02": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([142,173); must-redact, tier T2). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "21da21c1dd996ec8791e6c623031a4c34b386a3513d160bd153242074c317a09": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([57,107); policy, tier T3). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "1673b0ac9af9792f99976677bccea722672cc7d0046c69b8096340848fa47937": {
+      "status": "resolved",
+      "firstSeenRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "resolvedRun": "20c14612-fe4a-4af3-8118-aab313fa794c",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly ([27,77); policy, tier T3). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. First seen in candidate mode at product 3144bb3. Class: redact-secret-only/gitleaks/range-matches-corpus."
     }
   }
 }

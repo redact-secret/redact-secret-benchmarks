@@ -80,6 +80,9 @@ benchmarks/lib/candidate-features.ts Maintainer-local candidate-feature dataset 
 benchmarks/lib/calibration-experiments.ts Shadow-scorer calibration experiments: grouped/halving/lookup/logistic models, band sweeps, selection, manifest draft (#255; docs/specs/calibration-experiments.md)
 benchmarks/lib/calibration-projection.mjs Closed public projection shape for calibration outcomes; used by the run and by features:check-public (#255)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
+benchmarks/mcp-qualification.ts Black-box MCP adapter qualification: clean consumers per SDK endpoint, sink containment, overhead (#281; docs/specs/mcp-qualification.md)
+benchmarks/lib/mcp-qualification.ts Adapter tarball digests, the plaintext sink scan and per-case verdicts
+benchmarks/mcp-qualification/consumer/ Host, server and workload corpus copied into each clean consumer
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
 scripts/baseline.mjs           Save baselines and generate docs/generated/release-comparison.md
 benchmarks/lib/validate-structures.ts Offline key/JWT validation

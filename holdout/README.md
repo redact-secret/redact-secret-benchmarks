@@ -111,5 +111,14 @@ public controls provide reproducible engine qualification instead.
    opaque epoch ID, and seal a **new manifest**. Keep the old manifest and ledger
    for audit. Freeze a new candidate and perform a new qualification run.
 
+## Statistical scorer tuning
+
+Holdout is never a tuning input for the beta.9 statistical scorer. A tuning
+manifest names no holdout identity or path and attests `holdoutAccess:
+"none"`. Each scoring identity is a new frozen candidate and uses this
+budget. A retune prompted by a holdout result is `used-for-tuning`
+contamination and must be recorded before the next run. See
+[statistical tuning](../docs/specs/statistical-tuning.md).
+
 Gitignore and access modes do not make a public generator an independent
 holdout, and consensus between scanners never changes authored expectations.

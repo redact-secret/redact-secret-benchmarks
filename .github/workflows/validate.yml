@@ -37,6 +37,8 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin main:refs/remotes/origin/main || true
           npm run adversarial:check
+      - name: Statistical scorer tuning manifests keep protected holdout out of tuning (#256)
+        run: npm run tuning:check
       - run: npm run build
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check

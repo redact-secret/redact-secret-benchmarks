@@ -37,6 +37,9 @@ accuracy.
 - Leaked-span, false-alarm, collateral, and policy results remain separated by
   kind and tier.
 - Missing or inaccessible holdout data cannot be reported as a pass.
+- Holdout is never used to select statistical scorer features, weights or
+  thresholds, and a retune prompted by a holdout result contaminates the
+  epoch ([statistical tuning](../statistical-tuning.md)).
 
 ## Reporting
 

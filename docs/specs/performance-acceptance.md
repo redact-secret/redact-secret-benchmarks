@@ -153,3 +153,15 @@ schema-valid result and an acceptance verdict in this repository's own CI —
 first actually exercised, end to end, by
 [run 35861463332](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/35861463332)
 (#150; see `evidence/603/README.md`).
+
+## Operational evidence (#141)
+
+`benchmarks/operational-evidence.json` publishes one pinned candidate's measurements. It is schema-checked against `schemas/operational-evidence-v1.json`, and `tests/operational-evidence.test.mjs` enforces the schema and its invariants. The measurements are:
+
+- initialization and processing, per surface and profile, from the committed performance summary;
+- WebAssembly raw, gzip and brotli sizes;
+- npm packed and unpacked sizes;
+- native addon, wheel and CLI sizes from the product's artifact inventory;
+- a minimal browser bundle.
+
+The acceptance verdict is a separate section. Artifact sizes carry no threshold. To regenerate, use `scripts/collect-operational-evidence.mjs`; its header lists the inputs. The report is `docs/reports/2026-09-25-beta8-141-operational-evidence.md`, and the site shows the data under `/performance#operational-evidence`.

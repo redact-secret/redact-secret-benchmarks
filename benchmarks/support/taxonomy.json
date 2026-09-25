@@ -1327,7 +1327,7 @@
       "sources": [
         "https://docs.pinecone.io/reference/api/authentication"
       ],
-      "note": "Beta.8 context-gated arrival family pinecone-api-key-legacy (#212, research #228); the UUID shape is corroborated by unpinned tools only."
+      "note": "Beta.8 context-gated arrival family pinecone-api-key-legacy (#212, research #228); the UUID shape is corroborated by unpinned tools only. Owned by the product pinecone-api-key detector since product main 2420e80 (redact-secret#766 and its ADR 2026-09-24-claim-a-legacy-pinecone-uuid-key-only-under-its-api-key-name): the UUID is redacted at high confidence under a Pinecone API-key name (PINECONE_API_KEY, pinecone_api_key, PINECONE_KEY, or api_key/apiKey/Api-Key on a line naming pinecone), and a bare UUID stays unclaimed. The detector reports it with the same pinecone_api_key finding type as pcsk_, so detectors stays empty: mapping the family to pinecone-api-key would merge it into that contract (#253)."
     },
     {
       "id": "gitlab:runner-authentication-token",

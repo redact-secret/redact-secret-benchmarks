@@ -150,6 +150,45 @@ function median(values: readonly number[]): number {
   return sorted[Math.ceil(0.5 * sorted.length) - 1]!;
 }
 
+/** Nearest-rank p95, as core's summaries compute it. */
+function p95(values: readonly number[]): number {
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.ceil(0.95 * sorted.length) - 1]!;
+}
+
+/** A B B A A B B A ...: each side runs first in half the rounds, so drift over the job cancels out. */
+export function roundOrder(rounds: number): { side: 'baseline' | 'candidate'; round: number }[] {
+  const order: { side: 'baseline' | 'candidate'; round: number }[] = [];
+  for (let round = 0; round < rounds; round += 1) {
+    const sides = round % 2 === 0 ? (['baseline', 'candidate'] as const) : (['candidate', 'baseline'] as const);
+    for (const side of sides) order.push({ side, round });
+  }
+  return order;
+}
+
+export interface PairedRatio {
+  /** candidate p95 / baseline p95 over all interleaved samples of each side. */
+  readonly p95: number;
+  /** candidate median / baseline median. */
+  readonly median: number;
+  /** The in-job baseline statistics, in milliseconds, that absolute floors are scaled by. */
+  readonly baselineP95: number;
+  readonly baselineMedian: number;
+  readonly samples: number;
+}
+
+/** Candidate/baseline ratios of the nearest-rank p95 and median, from samples measured in one job. */
+export function pairedRatios(baseline: readonly number[], candidate: readonly number[]): PairedRatio {
+  if (baseline.length === 0 || candidate.length === 0) throw new Error('regression-budgets:paired-ratio-without-samples');
+  return {
+    p95: p95(candidate) / p95(baseline),
+    median: median(candidate) / median(baseline),
+    baselineP95: p95(baseline),
+    baselineMedian: median(baseline),
+    samples: Math.min(baseline.length, candidate.length),
+  };
+}
+
 export const LATENCY_PROFILE = 'linux-x64-release';
 
 /** Latency, initialization, memory, and detection from one core `CompleteAssessment` summary. */

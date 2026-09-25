@@ -24,7 +24,7 @@ interface Report {
   summary: { cells: number; completeCells: number; caseRuns: number; leaks: number; deviations: number; knownFalseNegatives: number; deliveredByPolicy: number; processOutputLeaks: number };
   matrix: Cell[];
   operational: {
-    overhead: { runtime: string; summary: OverheadRow[] };
+    overhead: { runtime: string; summary: OverheadRow[]; series: { outputs: { memory?: { profileId: string; calls: number; retainedHeapHost: number; retainedHeapAdapterCore: number; maxRssBytes: number } | null }[] } };
     initialization: { processes: number; core: { median: number; p95: number }; adapter: { median: number; p95: number }; adapterOverMedian: number } | null;
   };
   notMeasured: string[];
@@ -86,6 +86,13 @@ export function renderMarkdown(input: unknown): string {
     out.push(`| ${r.host} | ${r.profileId} | ${r.processes} | ${r.scannerCallsPerEvent} | ${us(r.unprotectedMedian)} | ${us(r.protectedMedian)} / ${us(r.protectedP95)} | ${us(r.adapterOverhead)} | ${us(r.traversal)} | ${us(r.coreScan)} |`);
   }
   out.push('');
+  const memory = report.operational.overhead.series.outputs.map(o => o.memory).filter((m): m is NonNullable<typeof m> => m !== null && m !== undefined);
+  if (memory.length > 0) {
+    const worst = memory.reduce((a, b) => (b.retainedHeapAdapterCore > a.retainedHeapAdapterCore ? b : a));
+    const rss = Math.max(...memory.map(m => m.maxRssBytes));
+    out.push(`Memory, ${memory.length} processes: after ${worst.calls} protected calls of \`${worst.profileId}\` and a full GC, retained heap is at most ${kib(worst.retainedHeapAdapterCore)} with the boundary `
+      + `(${kib(Math.max(...memory.map(m => m.retainedHeapHost)))} without); peak RSS ${(rss / 1048576).toFixed(1)} MiB.`, '');
+  }
   const init = report.operational.initialization;
   if (init) {
     out.push(`Initialization, ${init.processes} fresh processes each: core import + initialize ${init.core.median.toFixed(2)} ms median (p95 ${init.core.p95.toFixed(2)}); `

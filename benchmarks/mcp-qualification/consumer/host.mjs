@@ -399,6 +399,33 @@ async function hostSideStreams() {
     };
   });
 
+  await runCase(byId['stream-multibyte-partition-sweep'], async () => {
+    const mb = W.MULTIBYTE_TEXT();
+    const whole = await hostBoundary.sanitizeToolResult({ content: [{ type: 'text', text: mb }] });
+    const isHigh = c => c >= 0xd800 && c <= 0xdbff;
+    const isLow = c => c >= 0xdc00 && c <= 0xdfff;
+    const outcomes = {};
+    let boundaryCutsNotEqual = 0;
+    let surrogateCutsDelivered = 0;
+    let surrogateCuts = 0;
+    for (let i = 1; i < mb.length; i += 1) {
+      const splitsPair = isHigh(mb.charCodeAt(i - 1)) && isLow(mb.charCodeAt(i));
+      const outcome = await hostBoundary.sanitizeStreamedToolResult([mb.slice(0, i), mb.slice(i)]);
+      const key = `${outcome.outcome}${outcome.code ? `/${outcome.code}` : ''}`;
+      outcomes[key] = (outcomes[key] ?? 0) + 1;
+      if (splitsPair) {
+        surrogateCuts += 1;
+        if (outcome.outcome === 'ok') surrogateCutsDelivered += 1;
+      } else if (outcome.outcome !== 'ok' || canonical(outcome.value) !== canonical(whole.value)) boundaryCutsNotEqual += 1;
+      deliver('stream', outcome);
+    }
+    const passes = whole.outcome === 'ok' && boundaryCutsNotEqual === 0 && surrogateCutsDelivered === 0;
+    return {
+      observed: { outcome: passes ? 'ok-or-blocked-at-surrogate-splits' : 'unexpected' },
+      runs: mb.length - 1, surrogateCuts, outcomes, boundaryCutsNotEqual, surrogateCutsDelivered, delivered: true, deliveredFixed: null,
+    };
+  });
+
   await runCase(byId['stream-block-finding-stops-pulling'], async () => {
     const chunks = W.wrappedStreamChunks('block');
     const { iterable, counter } = countedAsync(chunks);

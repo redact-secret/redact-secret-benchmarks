@@ -249,8 +249,11 @@ export interface CaseVerdict {
   readonly [key: string]: unknown;
 }
 
+/** Sweep cases report their own composite outcome; it must equal the expected one exactly. */
+const COMPOSITE_OUTCOMES = new Set(['ok-or-aborted', 'ok-or-blocked-at-surrogate-splits']);
+
 export function outcomeMatches(expect: Expectation, observed: HostCaseRow['observed']): boolean {
-  if (expect.outcome === 'ok-or-aborted') return observed.outcome === 'ok-or-aborted';
+  if (COMPOSITE_OUTCOMES.has(expect.outcome)) return observed.outcome === expect.outcome;
   if (observed.outcome !== expect.outcome) return false;
   return expect.reason === undefined || observed.reason === expect.reason;
 }

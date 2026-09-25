@@ -193,6 +193,11 @@ export const RESULT_CASES = Object.freeze([
     id: 'unknown-top-level-field', area: 'fields', expect: { outcome: 'ok' },
     result: () => textResult('ordinary text', { extension: { notes: [`AWS_ACCESS_KEY_ID=${aws}`] } }),
   },
+  {
+    // Offsets are UTF-16 code units: astral and combining characters before a value must not shift its redaction.
+    id: 'multibyte-text-and-structured', area: 'text', expect: { outcome: 'ok' },
+    result: () => ({ content: [{ type: 'text', text: MULTIBYTE_TEXT() }], structuredContent: { note: MULTIBYTE_TEXT(), list: [MULTIBYTE_TEXT()] } }),
+  },
   { id: 'is-error-result-is-scanned', area: 'text', expect: { outcome: 'ok' }, result: () => textResult(`upstream error: GITHUB_TOKEN=${github}`, { isError: true }) },
   { id: 'text-private-key-block-finding', area: 'text', expect: { outcome: 'blocked', reason: 'policy' }, result: () => textResult(`key follows\n${privateKeyPem()}\n`) },
   {
@@ -281,6 +286,9 @@ export function halfOfSecret(index) {
 // Host-side streamed cases (sanitizeStreamedToolResult over a local producer).
 // ---------------------------------------------------------------------------
 
+/** Astral, combining and right-to-left characters around two synthetic values. */
+export const MULTIBYTE_TEXT = () => `\u65e5\u672c\u8a9e \u{1F680}\u{1F680} re\u0301sume\u0301 \u05e9\u05dc\u05d5\u05dd\nAWS_ACCESS_KEY_ID=${aws}\n\u{1D518}\u{1D52B}\u{1D526} token=${github} \u{1F680} done`;
+
 export const STREAM_TEXT = () => `step 1 ok\nAWS_ACCESS_KEY_ID=${aws}\nstep 2 ok\nGITHUB_TOKEN=${github}\ndone\n`;
 
 /**
@@ -311,6 +319,9 @@ export function partitions(text, { random = 64, seed = 2810 } = {}) {
 
 export const STREAM_CASES = Object.freeze([
   { id: 'stream-partition-sweep', area: 'streaming', expect: { outcome: 'ok' } },
+  // Every two-chunk split of a multibyte text: a cut between code points must equal the whole result;
+  // a cut inside a surrogate pair is not decoder output and must fail closed, never deliver.
+  { id: 'stream-multibyte-partition-sweep', area: 'streaming', expect: { outcome: 'ok-or-blocked-at-surrogate-splits' } },
   { id: 'stream-block-finding-stops-pulling', area: 'streaming', expect: { outcome: 'blocked', reason: 'policy' } },
   { id: 'stream-input-limit-stops-pulling', area: 'streaming', expect: { outcome: 'blocked', reason: 'limit_exceeded' } },
   { id: 'stream-token-limit', area: 'streaming', expect: { outcome: 'blocked', reason: 'limit_exceeded' } },

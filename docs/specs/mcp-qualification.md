@@ -68,6 +68,10 @@ from adapter output):
 - opt-in arguments: redacted before dispatch, or blocked and never dispatched;
 - server-wrapped results, throws, arguments and streams, checked on the
   server's own wire output and handler input;
+- multibyte text (astral, combining and right-to-left characters) in text and
+  structured content, and every two-chunk split of it: a cut between code
+  points must equal the whole result, a cut inside a surrogate pair must fail
+  closed;
 - host-side streamed output: every two-chunk split, one code unit per chunk
   and seeded random partitions (each must equal the whole-result outcome),
   block findings, input and token limits (each must stop pulling and close

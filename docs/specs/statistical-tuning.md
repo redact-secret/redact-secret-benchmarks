@@ -145,10 +145,11 @@ dimension in `strata.dimensions`, at least by family and by context. Each
 tuning source's family and context counts must add up to its rows. A
 report may not state an aggregate improvement without the per-stratum
 deltas beside it, and a regression in any stratum is reported whatever the
-aggregate shows. Whether a stratum regression blocks promotion is for the
-future promotion gates
-([#257](https://github.com/redact-secret/redact-secret-benchmarks/issues/257))
-to decide. This page only makes the regression visible.
+aggregate shows. Whether a stratum regression blocks promotion is decided
+by the future promotion gates
+([scorer promotion gates](scorer-promotion-gates.md), #257): leaked spans
+and promotion-only leaks block in every stratum, and the other rates carry
+their own per-stratum bounds. This page only makes the regression visible.
 
 ## 7. Publication boundary
 

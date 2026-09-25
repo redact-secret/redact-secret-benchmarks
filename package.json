@@ -73,6 +73,7 @@
     "adversarial:check": "node --import tsx scripts/check-adversarial-intake.mjs",
     "mcp:qualify": "node --import tsx benchmarks/mcp-qualification.ts",
     "tuning:check": "node --import tsx scripts/check-tuning-manifests.mjs",
+    "scorer-promotion:check": "node --import tsx scripts/check-scorer-promotion-contract.mjs",
     "prefeatures:extract": "node --import tsx scripts/generate-fixtures.mjs --ensure",
     "features:extract": "node --import tsx benchmarks/candidate-features.ts",
     "features:check-public": "node scripts/check-feature-dataset-exclusion.mjs",

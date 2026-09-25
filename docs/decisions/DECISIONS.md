@@ -47,3 +47,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Classify a pack the project assembles from external inputs as maintainer regression](2026-09-25-classify-project-assembled-external-inputs-as-maintainer-regression.md) (proposed; applies the adversarial intake decision to #140)
 - [Introduce reviewed performance-regression budgets derived from recorded variance](2026-09-25-introduce-reviewed-performance-regression-budgets.md)
 - [Qualify adapter boundaries black-box by sink containment](2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md)
+- [Gate future scorer promotion on hard constraints, not a mixed score](2026-09-25-gate-future-scorer-promotion-on-hard-constraints.md)

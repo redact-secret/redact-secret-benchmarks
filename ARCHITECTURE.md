@@ -79,6 +79,7 @@ benchmarks/lib/tuning-manifest.ts Statistical scorer tuning manifests: corpus ro
 benchmarks/lib/candidate-features.ts Maintainer-local candidate-feature dataset for calibration: features, classes, holdout and publication guards (#254; docs/specs/candidate-features.md)
 benchmarks/lib/calibration-experiments.ts Shadow-scorer calibration experiments: grouped/halving/lookup/logistic models, band sweeps, selection, manifest draft (#255; docs/specs/calibration-experiments.md)
 benchmarks/lib/calibration-projection.mjs Closed public projection shape for calibration outcomes; used by the run and by features:check-public (#255)
+benchmarks/lib/scorer-promotion.ts Future-promotion contract for the scorer: hard constraints per question Q1-Q5, #289 evasion aggregate, evaluator (#257; docs/specs/scorer-promotion-gates.md)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
 benchmarks/mcp-qualification.ts Black-box MCP adapter qualification: clean consumers per SDK endpoint, sink containment, overhead (#281; docs/specs/mcp-qualification.md)
 benchmarks/lib/mcp-qualification.ts Adapter tarball digests, the plaintext sink scan and per-case verdicts
@@ -282,6 +283,12 @@ redact-secret#770, and emits a #256 tuning-manifest draft. Weights, caps,
 thresholds and per-configuration results stay in `results-output/`; only an
 aggregate projection passes the public whitelist
 ([docs/specs/calibration-experiments.md](docs/specs/calibration-experiments.md)).
+
+Beta.9 keeps that scorer shadow-only. What a later release must show before
+it may set `Confidence` or action is a versioned set of hard constraints,
+one verdict per question and never a mixed score, in
+`benchmarks/scorer-promotion-contract.json`, checked by `npm run
+scorer-promotion:check` ([docs/specs/scorer-promotion-gates.md](docs/specs/scorer-promotion-gates.md)).
 
 ## Accounting (engine v1.1)
 

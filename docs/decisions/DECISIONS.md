@@ -40,3 +40,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Amend #207's added scope to 348 family-fixture assignments](2026-09-24-amend-207-scope-to-348-assignments.md)
 - [Settle classification disagreements where only the peer's label is coarser](2026-09-24-settle-peer-coarser-classification-disagreements.md)
 - [Stop asserting provider-undecided format properties](2026-09-24-stop-asserting-provider-undecided-format-properties.md) (amends the corroboration decision)
+- [Settle arrival-family classification rows labelled by the owning shared detector](2026-09-24-settle-arrival-classification-by-owning-detector.md) (amends the peer-coarser decision)

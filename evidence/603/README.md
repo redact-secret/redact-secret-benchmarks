@@ -58,6 +58,20 @@ and the `41fc366` run (35868842776) are superseded here; its verdict is still re
 above and in the decision records.
 
 
+### Re-derived at `3144bb3` (#259 registry re-pin)
+
+The registry pin moved to product `main`
+`3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c` (redact-secret#773: the
+`travisci-api-token`, `neon-api-key` and `postman-collection-access-key`
+detectors and the Mailgun key triplet), so #150 required a new run.
+[Run 36078460497](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36078460497)
+reads **ACCEPTED**: it passed all 46 timing, throughput, memory and
+accuracy-count checks against the `f2082ab` criteria, with the accuracy corpus
+unchanged (version `3`, hash `ca96dddd…`). Its `summary.json`,
+`acceptance.json` and `acceptance.md` replace the `f2082ab` ones here, and
+`benchmarks/performance-criteria.json` was re-derived from it
+(`baseline.sourceCommit` `3144bb3`).
+
 ### Re-derived at `f2082ab` (#762 accuracy-corpus change)
 
 The registry pin moved to product `main`
@@ -87,8 +101,8 @@ No criteria were derived from it, and the `f2082ab` run passed that check.
 
 | Repository | Revision |
 | --- | --- |
-| `redact-secret` (measured) | `f2082ab6fe1d0fc8cc703e371e9203bc4ff68f6b` (product `main`; the registry pin), evaluated against the `2b98027` criteria (run 36052694026). Before it, `2b98027bbf38d63f07b75129fe2864ef32ed4732` (published `0.1.0-beta.7`) was evaluated against the `fdca511` criteria (run 35994341768). Before it, `fdca511d5a161202deebfd5906b17d7218ef9b2c` (product `main` after #709) supplied the criteria, and before that `15fce66e7c2d45003d7c6e31a341e5bc875a7326` (after #684) supplied the criteria before that. The earlier `41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1` run supplied the criteria this one was checked against — the commit `benchmarks/pin-manifest.json`'s `pins.redactSecretRevision` names at measurement time. The published npm package this repository scores accuracy against stays 0.1.0-beta.6 (`079095e`). |
-| `redact-secret-benchmarks` | `milocosmopolitan/existing-families` at `5309b47`, the registry re-pin commit at measurement time — the workflow ref this run was dispatched against and the criteria file it evaluated `summary.json` with. |
+| `redact-secret` (measured) | `3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c` (product `main`; the registry pin), evaluated against the `f2082ab` criteria (run 36078460497). Before it, `f2082ab6fe1d0fc8cc703e371e9203bc4ff68f6b` (product `main`) was evaluated against the `2b98027` criteria (run 36052694026). Before it, `2b98027bbf38d63f07b75129fe2864ef32ed4732` (published `0.1.0-beta.7`) was evaluated against the `fdca511` criteria (run 35994341768). Before it, `fdca511d5a161202deebfd5906b17d7218ef9b2c` (product `main` after #709) supplied the criteria, and before that `15fce66e7c2d45003d7c6e31a341e5bc875a7326` (after #684) supplied the criteria before that. The earlier `41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1` run supplied the criteria this one was checked against — the commit `benchmarks/pin-manifest.json`'s `pins.redactSecretRevision` names at measurement time. The published npm package this repository scores accuracy against stays 0.1.0-beta.6 (`079095e`). |
+| `redact-secret-benchmarks` | `beta8/core-closeout-arrival-families` at `282bb37`, the registry re-pin commit at measurement time — the workflow ref this run was dispatched against and the criteria file it evaluated `summary.json` with. |
 
 ## Pinned scanner versions
 
@@ -107,7 +121,7 @@ own `provenance.artifactIdentity`, `provenance.runtime`, and (for `rust-core`)
 
 The raw evidence (`summary.json`, `acceptance.json`, `acceptance.md`,
 alongside this README) is this repository's own `ubuntu-latest` CI run:
-[`performance-evaluation` run 36052694026](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36052694026),
+[`performance-evaluation` run 36078460497](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36078460497),
 dispatched against the branch carrying the refreshed pin and reproducible by
 anyone with:
 

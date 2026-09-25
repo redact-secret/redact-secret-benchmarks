@@ -29,6 +29,10 @@ const gitleaks = {
   'perplexity-api-key': 'perplexity-api-key',
   'gitlab-runner-authentication-token': 'gitlab-runner-authentication-token',
   'gitlab-runner-authentication-token-routable': 'gitlab-runner-authentication-token',
+  // #259: registry detector travisci-api-token since the 3144bb3 pin (redact-secret#523),
+  // and the prefix-less Mailgun triplet (the #259 context-gated arrival family).
+  'travisci-access-token': 'travisci-api-token',
+  'mailgun-signing-key': 'mailgun-api-key-triplet',
 };
 const trufflehog = {
   Github: 'github-token', Gitlab: 'gitlab-token', Npm: 'npm-token',
@@ -47,6 +51,8 @@ const trufflehog = {
   LangSmith: 'langsmith-api-key', Langfuse: 'langfuse-secret-key',
   // Beta.8 #212: pcsk_<5-6>_<63>, exactly the pinecone-api-key contract's shape (registry detector since redact-secret#730).
   Pinecone: 'pinecone-api-key',
+  // #259: travis keyword + 22 characters, the travisci-api-token contract's shape (redact-secret#523).
+  TravisCI: 'travisci-api-token',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;

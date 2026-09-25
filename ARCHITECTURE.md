@@ -76,6 +76,7 @@ benchmarks/lib/reporting.ts   Per (kind × tier) groups; no mixed overall score
 benchmarks/lib/adversarial-intake.ts External adversarial intake: lifecycle, synthetic-only, frozen expectations and first run, qualification
 benchmarks/lib/evidence-classes.ts Public adversarial / protected holdout / maintainer regression queries and independence wording
 benchmarks/lib/tuning-manifest.ts Statistical scorer tuning manifests: corpus roles, holdout isolation, scoring identity, generated share, strata (#256; docs/specs/statistical-tuning.md)
+benchmarks/lib/candidate-features.ts Maintainer-local candidate-feature dataset for calibration: features, classes, holdout and publication guards (#254; docs/specs/candidate-features.md)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
 scripts/baseline.mjs           Save baselines and generate docs/generated/release-comparison.md
@@ -252,6 +253,19 @@ categories only, is recorded in a tuning manifest, and treats holdout as a final
 check on a frozen candidate ([statistical tuning](docs/specs/statistical-tuning.md)).
 Qualification is separately dated aggregate evidence, and
 `execution-qualified` describes infrastructure execution with `supportClaims: false`.
+
+## Candidate-feature dataset (maintainer-local)
+
+`npm run features:extract` derives one row of randomness, lexical, context
+and negative-evidence features per candidate value from reviewed development
+and regression fixtures, for offline calibration (#254). It reads no holdout,
+runs no scanner and leaves the measurement-v4 scorer unchanged. The output
+lands in `results-output/calibration/candidate-features-v1.json`, the only
+place it may be written. It carries no candidate bytes or value hashes and
+is never projected to the site; `npm run features:check-public` fails CI if
+one reaches `public/` or `dist/`. Its `manifestBinding` is the
+`featureDataset` block a tuning manifest records. Formulas and the boundary
+are in [docs/specs/candidate-features.md](docs/specs/candidate-features.md).
 
 ## Accounting (engine v1.1)
 

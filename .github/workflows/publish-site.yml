@@ -15,7 +15,7 @@
 #   main    -> benchmarks.redactsecret.dev
 #
 # Both measure the corpus against the released `@redact-secret/core` in the
-# lockfile. Staging also measures a `redact-secret` `main` commit with
+# lockfile. Staging also measures a qualified `redact-secret` `main` commit with
 # `eval:candidate`, from the artifacts that commit's own `artifact-qualification`
 # run qualified, and ships it as candidate evidence (#152); production does not,
 # and its Workbench Changes page says it reads the release instead (#213).
@@ -39,12 +39,20 @@ on:
         type: environment
         required: true
         default: staging
-      # redact-secret dispatches staging with this after its main passes
-      # artifact qualification (#153; the sending side is
+      # redact-secret dispatches staging with this provenance group after its
+      # main push passes artifact qualification (#153; the sending side is
       # docs/upstream/redact-secret--notify-benchmarks.yml). Untrusted: the
       # staging steps only use it to select artifacts.
       product_sha:
         description: redact-secret commit to measure on staging; ignored for production.
+        type: string
+        required: false
+      qualification_run_id:
+        description: Exact successful artifact-qualification run for product_sha; staging only.
+        type: string
+        required: false
+      product_ref:
+        description: Exact source ref for product_sha (main); staging only.
         type: string
         required: false
 
@@ -75,9 +83,9 @@ jobs:
       # Production measures the released package only; a product commit sent
       # to it is a mistake, so fail rather than silently drop it.
       - name: Refuse a product commit for production
-        if: env.TARGET == 'production' && inputs.product_sha != ''
+        if: env.TARGET == 'production' && (inputs.product_sha != '' || inputs.qualification_run_id != '' || inputs.product_ref != '')
         run: |
-          echo "::error::product_sha applies to staging only; production measures the released package."
+          echo "::error::candidate provenance inputs apply to staging only; production measures the released package."
           exit 1
 
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -89,7 +97,7 @@ jobs:
 
       - run: npm ci
 
-      # Staging only (#152): stage a redact-secret `main` commit for eval:candidate
+      # Staging only (#152): stage an allowed redact-secret commit for eval:candidate
       # before anything slow runs, so a commit with no qualified artifacts fails
       # here. Production skips all of it and measures the released lockfile package.
       #
@@ -108,17 +116,20 @@ jobs:
           permission-contents: read
 
       # PRODUCT_SHA (a dispatch input, #153) is untrusted: it must be 40 hex or the
-      # run fails, and that commit must have a successful artifact-qualification run
-      # on `main`. Empty (a push here) means the newest `main` commit that passed
+      # run fails. A dispatched commit must name its exact successful push run and
+      # source ref, which is restricted to `main`. Empty
+      # (a push here) means the newest `main` commit that passed
       # qualification, so a push does not fail while the product's HEAD is still
       # qualifying. With no qualified candidate, staging is not published (the step
       # summary says why).
-      - name: Resolve the redact-secret main commit and its qualification run
+      - name: Resolve the redact-secret commit and its qualification run
         id: product
         if: env.TARGET == 'staging'
         env:
           GH_TOKEN: ${{ steps.product-token.outputs.token }}
           PRODUCT_SHA: ${{ inputs.product_sha }}
+          QUALIFICATION_RUN_ID: ${{ inputs.qualification_run_id }}
+          PRODUCT_REF: ${{ inputs.product_ref }}
         run: node scripts/qualified-candidate.mjs resolve --repository redact-secret/redact-secret
 
       # Downloads the run's artifact-inventory and the linux-x64 addon and both wasm
@@ -130,9 +141,11 @@ jobs:
           GH_TOKEN: ${{ steps.product-token.outputs.token }}
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           QUALIFICATION_RUN: ${{ steps.product.outputs.run-id }}
+          PRODUCT_REF: ${{ steps.product.outputs.product-ref }}
         run: >-
           node scripts/qualified-candidate.mjs fetch --repository redact-secret/redact-secret
-          --sha "$PRODUCT_COMMIT" --run-id "$QUALIFICATION_RUN" --dir "$RUNNER_TEMP/qualified"
+          --sha "$PRODUCT_COMMIT" --run-id "$QUALIFICATION_RUN" --product-ref "$PRODUCT_REF"
+          --dir "$RUNNER_TEMP/qualified"
 
       - name: Check out redact-secret at the measured commit
         if: env.TARGET == 'staging'
@@ -180,8 +193,8 @@ jobs:
 
       # --strict: a scanner that is unavailable fails the run instead of being
       # published as an "unavailable" row. Staging (#201) measures redact-secret
-      # from the qualified main candidate, so its Report shows how main behaves
-      # now; every report and run.json name that candidate as unreleased.
+      # from the qualified main candidate, so its Report shows how that
+      # exact source behaves; every report and run.json names it as unreleased.
       # Production measures the released lockfile package.
       - name: Measure the corpus
         env:
@@ -228,7 +241,7 @@ jobs:
       # is the core tarball digest the product's qualification recorded, so
       # eval:candidate itself refuses any other core package. An incomplete
       # measurement exits non-zero and staging is not published.
-      - name: Measure the redact-secret main commit as candidate evidence
+      - name: Measure the qualified redact-secret commit as candidate evidence
         if: env.TARGET == 'staging'
         env:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
@@ -326,5 +339,10 @@ jobs:
             echo "- support matrix: $(jq -r '.distribution.stable|tostring' public/results/support-matrix-v1.json) stable, $(jq -r 'if .sourceReport.product then "candidate " + .sourceReport.product.sourceCommit[0:7] else "released " + (.sourceReport.publishedPackage.version // "package") end' public/results/support-matrix-v1.json)"
             if [ "$TARGET" = staging ]; then
               echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"
+            else
+              echo "- published product version: \`$(jq -r .pins.packageVersion benchmarks/pin-manifest.json)\`"
+              echo "- product release source SHA: \`$(jq -r .pins.sourceRevision benchmarks/pin-manifest.json)\`"
+              echo "- benchmark snapshot SHA: \`${{ github.sha }}\`"
+              echo "- corpus manifest hash: \`$(jq -r .revision benchmarks/pin-manifest.json)\`"
             fi
           } >> "$GITHUB_STEP_SUMMARY"

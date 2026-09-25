@@ -8,7 +8,8 @@
  * tarballs its `scripts/pack-npm-candidate.mjs` packed from them. So the chain is:
  *
  *   resolve  the commit (an untrusted 40-hex input, or else the newest `main` commit
- *            that passed qualification) and its successful `main` qualification run;
+ *            that passed qualification) and its successful qualification push on the
+ *            explicitly named `main` ref;
  *   fetch    that run's inventory and binaries, each zip checked against the digest
  *            GitHub recorded at upload, the inventory checked to be about this commit and
  *            this run, and each binary checked against the inventory;
@@ -19,8 +20,10 @@
  * Nothing unverified reaches eval:candidate: a digest mismatch anywhere fails the run.
  * GitHub access goes through `gh` with GH_TOKEN; outputs go to GITHUB_OUTPUT.
  *
- * Run: node scripts/qualified-candidate.mjs resolve --repository <owner/repo>   (PRODUCT_SHA optional)
- *      node scripts/qualified-candidate.mjs fetch --repository <owner/repo> --sha <40-hex> --run-id <id> --dir <path>
+ * Run: node scripts/qualified-candidate.mjs resolve --repository <owner/repo>
+ *        (PRODUCT_SHA, QUALIFICATION_RUN_ID, and PRODUCT_REF optional only as one group)
+ *      node scripts/qualified-candidate.mjs fetch --repository <owner/repo> --sha <40-hex>
+ *        --run-id <id> --product-ref main --dir <path>
  *      node scripts/qualified-candidate.mjs verify --dir <path> --packed <path>
  */
 import { createHash } from 'node:crypto';
@@ -56,13 +59,24 @@ export function productShaInput(value) {
   return value;
 }
 
-const qualifiedOnMain = (r, repository) => r.head_branch === 'main' && ['push', 'workflow_dispatch'].includes(r.event)
+export function productRefInput(value) {
+  if (value !== 'main') throw new Error('PRODUCT_REF must be main');
+  return value;
+}
+
+export function qualificationRunIdInput(value) {
+  if (typeof value !== 'string' || !/^[1-9][0-9]*$/.test(value)) throw new Error('QUALIFICATION_RUN_ID must be numeric');
+  return value;
+}
+
+const qualifiedOnRef = (r, repository, productRef) => r.head_branch === productRef && r.event === 'push'
   && r.status === 'completed' && r.conclusion === 'success' && r.head_repository?.full_name === repository && r.path === `.github/workflows/${WORKFLOW}`;
 const newest = runs => runs.sort((a, b) => b.id - a.id || b.run_attempt - a.run_attempt)[0] ?? null;
 
-/** The newest successful, complete qualification run of `sha` pushed to (or dispatched on) this repository's `main`. */
-export function selectQualificationRun(runs, { sha, repository }) {
-  return newest(runs.filter(r => r.head_sha === sha && qualifiedOnMain(r, repository)));
+/** The one named successful qualification push for `sha` on an allowed product ref. */
+export function selectQualificationRun(runs, { sha, repository, productRef, runId }) {
+  const ref = productRefInput(productRef);
+  return newest(runs.filter(r => r.head_sha === sha && String(r.id) === String(runId) && qualifiedOnRef(r, repository, ref)));
 }
 
 /**
@@ -71,7 +85,7 @@ export function selectQualificationRun(runs, { sha, repository }) {
  * product's HEAD is still qualifying or has failed qualification.
  */
 export function latestQualificationRun(runs, { repository }) {
-  return newest(runs.filter(r => /^[0-9a-f]{40}$/.test(r.head_sha ?? '') && qualifiedOnMain(r, repository)));
+  return newest(runs.filter(r => /^[0-9a-f]{40}$/.test(r.head_sha ?? '') && qualifiedOnRef(r, repository, 'main')));
 }
 
 /** Exactly one unexpired artifact per required name, each with the digest GitHub recorded at upload. */
@@ -95,12 +109,17 @@ export function verifyDigest(label, actual, expected) {
 /**
  * What the inventory attests for this commit: the three tarballs and the binaries packed
  * into them, from the `node` clean-install lane. The inventory must be about this commit,
- * built on main, by this run, and the lane must have passed every check.
+ * built on the selected main ref, by this run, and the lane must
+ * have passed every check.
  */
-export function qualifiedCandidate(inventory, { sha, runId }) {
+export function qualifiedCandidate(inventory, { sha, runId, productRef }) {
+  const ref = productRefInput(productRef);
   if (inventory?.sourceCommit !== sha) throw new Error(`the artifact inventory is for ${inventory?.sourceCommit}, not ${sha}`);
-  if (inventory.sourceRef !== 'refs/heads/main') throw new Error(`the artifact inventory was built from ${inventory.sourceRef}, not refs/heads/main`);
+  if (inventory.sourceRef !== `refs/heads/${ref}`) throw new Error(`the artifact inventory was built from ${inventory.sourceRef}, not refs/heads/${ref}`);
   if (String(inventory.workflowRun) !== String(runId)) throw new Error(`the artifact inventory names run ${inventory.workflowRun}, not ${runId}`);
+  const productVersion = inventory.productVersion;
+  if (typeof productVersion !== 'string' || !/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?$/.test(productVersion))
+    throw new Error(`the artifact inventory carries invalid product version ${productVersion}`);
   const lanes = (inventory.cleanInstallQualification ?? []).filter(l => l.lane === LANE);
   if (lanes.length !== 1) throw new Error(`the artifact inventory has ${lanes.length} ${LANE} clean-install lanes; expected exactly one`);
   const [lane] = lanes;
@@ -110,7 +129,7 @@ export function qualifiedCandidate(inventory, { sha, runId }) {
   const hex = value => /^[0-9a-f]{64}$/.test(value ?? '');
   const packages = Object.fromEntries(Object.entries(PACKAGES).map(([role, name]) => {
     const matches = (lane.packages ?? []).filter(p => p.name === name);
-    if (matches.length !== 1 || !hex(matches[0].sha256) || !/^[a-z0-9.-]+\.tgz$/.test(matches[0].file ?? '')) throw new Error(`the ${LANE} clean-install lane does not attest exactly one ${name} tarball`);
+    if (matches.length !== 1 || matches[0].version !== productVersion || !hex(matches[0].sha256) || !/^[a-z0-9.-]+\.tgz$/.test(matches[0].file ?? '')) throw new Error(`the ${LANE} clean-install lane does not attest exactly one ${name} tarball at ${productVersion}`);
     return [role, { name, version: matches[0].version, file: matches[0].file, sha256: matches[0].sha256 }];
   }));
   const binaries = Object.fromEntries(Object.entries(BINARIES).map(([artifact, file]) => {
@@ -118,7 +137,7 @@ export function qualifiedCandidate(inventory, { sha, runId }) {
     if (matches.length !== 1 || !hex(matches[0].sha256)) throw new Error(`the ${LANE} clean-install lane does not attest exactly one ${file}`);
     return [artifact, { file, sha256: matches[0].sha256 }];
   }));
-  return { sha, runId: String(runId), productVersion: inventory.productVersion ?? null, packages, binaries };
+  return { sha, productRef: ref, runId: String(runId), productVersion, packages, binaries };
 }
 
 /** Every packed tarball must be the one the product qualified; returns eval:candidate's inputs. */
@@ -150,7 +169,10 @@ function args(argv, required) {
 
 async function resolve({ repository }) {
   const requested = productShaInput(process.env.PRODUCT_SHA);
+  const requestedRunId = process.env.QUALIFICATION_RUN_ID || '';
+  const requestedRef = process.env.PRODUCT_REF || '';
   if (!requested) {
+    if (requestedRunId || requestedRef) throw new Error('PRODUCT_SHA, QUALIFICATION_RUN_ID, and PRODUCT_REF must be supplied together');
     const runs = (await ghJson(`repos/${repository}/actions/workflows/${WORKFLOW}/runs?branch=main&status=success&per_page=100`)).workflow_runs ?? [];
     const selected = latestQualificationRun(runs, { repository });
     if (!selected) {
@@ -158,20 +180,21 @@ async function resolve({ repository }) {
       throw new Error(`no successful ${WORKFLOW} run on main in the latest ${runs.length} runs`);
     }
     console.log(`Measuring the newest qualified ${repository} main commit ${selected.head_sha}, qualified by run ${selected.id} (${selected.html_url}).`);
-    await output({ sha: selected.head_sha, 'run-id': selected.id, 'run-url': selected.html_url });
+    await output({ sha: selected.head_sha, 'product-ref': 'main', 'run-id': selected.id, 'run-url': selected.html_url });
     return;
   }
   const sha = requested;
-  const source = 'requested';
-  const runs = (await ghJson(`repos/${repository}/actions/workflows/${WORKFLOW}/runs?head_sha=${sha}&per_page=100`)).workflow_runs ?? [];
-  const selected = selectQualificationRun(runs, { sha, repository });
+  const runId = qualificationRunIdInput(requestedRunId);
+  const productRef = productRefInput(requestedRef);
+  const run = await ghJson(`repos/${repository}/actions/runs/${runId}`);
+  const selected = selectQualificationRun([run], { sha, repository, productRef, runId });
   if (!selected) {
-    const seen = runs.map(r => `${r.id} (${r.event} on ${r.head_branch}: ${r.status}${r.conclusion ? `/${r.conclusion}` : ''})`).join(', ') || 'none';
-    await summary(`### Staging not published\n\nNo successful \`${WORKFLOW}\` run on \`main\` exists for ${source} \`${sha}\`, so there is no qualified candidate to measure. Staging is not published without candidate evidence.\n\nRuns seen for that commit: ${seen}.`);
-    throw new Error(`no successful ${WORKFLOW} run on main for ${sha} (runs seen: ${seen})`);
+    const seen = `${run.id} (${run.event} on ${run.head_branch}: ${run.status}${run.conclusion ? `/${run.conclusion}` : ''})`;
+    await summary(`### Staging not published\n\nRun ${runId} is not a successful \`${WORKFLOW}\` push for \`${sha}\` on allowed ref \`${productRef}\`. Staging is not published without candidate evidence.\n\nRun seen: ${seen}.`);
+    throw new Error(`run ${runId} is not a successful ${WORKFLOW} push for ${sha} on ${productRef} (${seen})`);
   }
-  console.log(`Measuring ${source} ${sha}, qualified by run ${selected.id} (${selected.html_url}).`);
-  await output({ sha, 'run-id': selected.id, 'run-url': selected.html_url });
+  console.log(`Measuring requested ${sha} from ${productRef}, qualified by run ${selected.id} (${selected.html_url}).`);
+  await output({ sha, 'product-ref': productRef, 'run-id': selected.id, 'run-url': selected.html_url });
 }
 
 /**
@@ -185,7 +208,7 @@ async function normalizeModes(dir) {
     if (entry.isFile()) await chmod(path.join(entry.parentPath, entry.name), 0o644);
 }
 
-async function fetchArtifacts({ repository, sha, 'run-id': runId, dir }) {
+async function fetchArtifacts({ repository, sha, 'run-id': runId, 'product-ref': productRef, dir }) {
   const listing = await ghJson(`repos/${repository}/actions/runs/${runId}/artifacts?per_page=100`);
   if (listing.total_count > (listing.artifacts ?? []).length) throw new Error(`run ${runId} has more artifacts than one page lists`);
   const artifacts = pickArtifacts(listing.artifacts);
@@ -199,7 +222,7 @@ async function fetchArtifacts({ repository, sha, 'run-id': runId, dir }) {
     await normalizeModes(path.join(dir, name));
   }
   const inventory = JSON.parse(await readFile(path.join(dir, 'artifact-inventory', 'artifact-inventory.json'), 'utf8'));
-  const qualified = qualifiedCandidate(inventory, { sha, runId });
+  const qualified = qualifiedCandidate(inventory, { sha, runId, productRef });
   for (const [artifact, binary] of Object.entries(qualified.binaries))
     verifyDigest(`${artifact}/${binary.file}`, sha256(await readFile(path.join(dir, artifact, binary.file))), binary.sha256);
   await writeFile(path.join(dir, 'qualified.json'), `${JSON.stringify(qualified, null, 2)}\n`);
@@ -221,7 +244,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const [command, ...rest] = process.argv.slice(2);
   const commands = {
     resolve: () => resolve(args(rest, ['repository'])),
-    fetch: () => fetchArtifacts(args(rest, ['repository', 'sha', 'run-id', 'dir'])),
+    fetch: () => fetchArtifacts(args(rest, ['repository', 'sha', 'run-id', 'product-ref', 'dir'])),
     verify: () => verify(args(rest, ['dir', 'packed'])),
   };
   try {

@@ -12,7 +12,7 @@ import { createOperators } from './operators/index.ts';
 import { loadCases } from './engine/cases.ts';
 import type { ReviewLedger, Scanner } from './engine/types.ts';
 import { runEvaluation } from './engine/runner.ts';
-import { contracts, registryContractIds } from './lib/assessment.ts';
+import { contracts, scoredContractIds } from './lib/assessment.ts';
 import { classifyFamilySupport, statusCriteria, type SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
 import { familyEvidence } from './support/evidence.ts';
@@ -86,9 +86,11 @@ async function main() {
     console.log(`Running every registered family's evidence through the profile: ${cases.length} cases with ${scanners.map((s: { id: string }) => s.id).join(', ')}…`);
     const report = await runEvaluation({ cases, methods, operators, scanners, ledger, onProgress: console.log });
     // The unit is a registered detector (issue #504's "42" at filing time; the count follows
-    // `detectors.json`, 46 as of 2026-09-21), not a taxonomy sub-family. Beta.8 arrival families
-    // (#207–#212) have contracts but no product detector, so they carry no support status here.
-    const families = [...registryContractIds].sort();
+    // `detectors.json`, 46 as of 2026-09-21), not a taxonomy sub-family, plus the arrival
+    // families the product types inside a shared detector (`scoredArrivalIds`, #730): their
+    // findings carry the arrival id, so they are scored on their own contract and rows.
+    // Every other Beta.8 arrival family carries no support status here.
+    const families = [...scoredContractIds].sort();
     const results = families.map(family => {
       const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger, cases);
       const assessment = classifyFamilySupport(evidence);

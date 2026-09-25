@@ -38,7 +38,11 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
 
 - **`families[].detectors`** is many-to-many against `benchmarks/detectors.json`.
   A family with several entries (rare; none currently) is served by more than
-  one detector. A detector serving several families is common — `github-token`
+  one detector. The one exception is a Beta.8 arrival family that the product
+  types inside a shared detector (`scoredArrivalFamilies`,
+  `scanners/families.mjs`): its taxonomy family maps to the arrival id, which
+  `eval:classify` scores on its own contract
+  ([`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md), #730). A detector serving several families is common — `github-token`
   serves five, `stripe-token` serves four.
 - **`families[].detectors: []`** is a family a provider offers that this
   project does not detect. This is deliberate and representable, not an

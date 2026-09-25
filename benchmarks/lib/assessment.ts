@@ -18,6 +18,7 @@ export const tiers = {
 
 import { observedAt, th, gl, unprobeable, provider } from './contract-sources.ts';
 import { arrivalContracts, arrivalIds, graduatedContracts } from './beta8/index.ts';
+import { scoredArrivalFamilies } from '../../scanners/families.mjs';
 
 /**
  * Confluent Cloud API-secret checksum (#209, research #234). docs.confluent.io's
@@ -378,6 +379,17 @@ for (const id of Object.keys(arrivalContracts)) if (Object.hasOwn(registryContra
 export const contracts: Record<string, FormatContract> = { ...registryContracts, ...arrivalContracts };
 /** Registry detector ids only: the unit a product support status is classified on. */
 export const registryContractIds: readonly string[] = Object.keys(registryContracts);
+for (const id of scoredArrivalFamilies as readonly string[])
+  if (!arrivalIds.has(id) || !Object.hasOwn(arrivalContracts, id)) throw new Error(`Scored arrival family is not a declared arrival family with a contract: ${id}`);
+/**
+ * Arrival families the product types inside a shared detector (`arrivalFindingTypes`,
+ * scanners/families.mjs). Their findings carry the arrival id, so each is scored on its
+ * own contract, profile and ledger rows like a registry family
+ * (docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md).
+ */
+export const scoredArrivalIds: readonly string[] = [...(scoredArrivalFamilies as readonly string[])];
+/** The unit a product support status is classified on: every registry detector id plus the scored arrival ids. */
+export const scoredContractIds: readonly string[] = [...registryContractIds, ...scoredArrivalIds];
 export { arrivalIds };
 
 export const evidence = (family?: string) => {

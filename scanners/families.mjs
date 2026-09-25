@@ -117,6 +117,12 @@ export const arrivalFindingTypes = Object.freeze({
   'stripe-token': Object.freeze({ stripe_webhook_signing_secret: 'stripe-webhook-signing-secret' }),
   'slack-token': Object.freeze({ slack_app_level_token: 'slack-app-level-token', slack_user_token: 'slack-user-token' }),
 });
+// The arrival families with a recorded finding-type mapping. eval:classify scores
+// these like registry families, each on its own contract, profile and ledger rows
+// (docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md). Every
+// other arrival id stays unscored.
+export const scoredArrivalFamilies = Object.freeze(
+  [...new Set(Object.values(arrivalFindingTypes).flatMap(types => Object.values(types)))].sort());
 const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };
 /**
  * The benchmark family of one scanner finding. `label` is the scanner's native

@@ -1,0 +1,921 @@
+{
+  "schemaVersion": 1,
+  "issue": 141,
+  "sourceCommit": "6b124ac50803fe35aad99abbb2dbe89c32f5f284",
+  "productVersion": "0.1.0-beta.8",
+  "measuredAt": "2026-09-25",
+  "provenance": {
+    "performanceRun": "36201286835",
+    "performanceSummaryPath": "/private/tmp/claude-501/-Users-minhokang-orca-workspaces-redact-secret-beta-9-third-iteration/7f8aa07b-eb69-49ea-bd86-52734e2d0c35/scratchpad/q772/perf/36201286835/performance-evaluation-6b124ac50803fe35aad99abbb2dbe89c32f5f284/summary.json",
+    "qualificationRun": "36201281792",
+    "repetitions": 5,
+    "workloadProfiles": {
+      "version": "1",
+      "hash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806"
+    },
+    "officialProfile": "linux-x64 release builds (performance workflow on ubuntu-latest)",
+    "buildProfile": "release for every surface: napi build --release (Node addon), build-browser-artifact.mjs default release profile (wasm), cargo build --release (CLI and Rust core), maturin build --release (Python); only the Rust core result records it in its own provenance, the others report null"
+  },
+  "measurements": {
+    "timings": [
+      {
+        "surface": "browser-wasm",
+        "profileId": "scale-logs-medium-fixed4096",
+        "path": "incremental",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "chromium-153.0.8010.12",
+          "buildProfile": null,
+          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.8"
+        },
+        "initialization": {
+          "median": 14.400000000023283,
+          "p95": 16.10000000000582,
+          "minimum": 13.89999999999418,
+          "maximum": 16.10000000000582,
+          "standardDeviation": 0.7924645102484146,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 111.89999999999418,
+          "p95": 113.5,
+          "minimum": 110.90000000002328,
+          "maximum": 113.5,
+          "standardDeviation": 1.0442221985715345,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 2342752.457551507,
+          "minimum": 2309726.872246696,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "nodeHeap": {
+            "unavailableReason": "A browser process does not expose Node heapUsed."
+          },
+          "nodeRss": {
+            "unavailableReason": "Browser pages do not expose process RSS through a standard API."
+          },
+          "nodeExternal": {
+            "unavailableReason": "Browser pages do not expose Node external memory."
+          },
+          "browserJsHeap": {
+            "maximumObservedBytes": 39600000,
+            "maximumGrowthBytes": 0,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The package intentionally keeps its WebAssembly.Memory handle private; the test harness cannot read linear-memory size without adding product instrumentation."
+          },
+          "pythonHeap": {
+            "unavailableReason": "The browser surface does not run inside a Python allocator."
+          },
+          "processRss": {
+            "unavailableReason": "Browser pages do not expose whole-process RSS through a standard API."
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size."
+          }
+        }
+      },
+      {
+        "surface": "browser-wasm",
+        "profileId": "scale-logs-small-whole",
+        "path": "whole-input",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "chromium-153.0.8010.12",
+          "buildProfile": null,
+          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.8"
+        },
+        "initialization": {
+          "median": 10.10000000000582,
+          "p95": 11,
+          "minimum": 7.800000000017462,
+          "maximum": 11,
+          "standardDeviation": 1.3166624472399955,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 24.89999999999418,
+          "p95": 36.5,
+          "minimum": 22.79999999998836,
+          "maximum": 36.5,
+          "standardDeviation": 4.933801779562846,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 2632690.763052824,
+          "minimum": 1796000,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "nodeHeap": {
+            "unavailableReason": "A browser process does not expose Node heapUsed."
+          },
+          "nodeRss": {
+            "unavailableReason": "Browser pages do not expose process RSS through a standard API."
+          },
+          "nodeExternal": {
+            "unavailableReason": "Browser pages do not expose Node external memory."
+          },
+          "browserJsHeap": {
+            "maximumObservedBytes": 10000000,
+            "maximumGrowthBytes": 0,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The package intentionally keeps its WebAssembly.Memory handle private; the test harness cannot read linear-memory size without adding product instrumentation."
+          },
+          "pythonHeap": {
+            "unavailableReason": "The browser surface does not run inside a Python allocator."
+          },
+          "processRss": {
+            "unavailableReason": "Browser pages do not expose whole-process RSS through a standard API."
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size."
+          }
+        }
+      },
+      {
+        "surface": "cli",
+        "profileId": "scale-logs-medium-fixed4096",
+        "path": "standard-input",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
+          "buildProfile": null,
+          "artifactIdentity": "redact-secret@0.1.0-beta.8"
+        },
+        "initialization": {
+          "median": 1.9051000000000045,
+          "p95": 1.9542579999999816,
+          "minimum": 1.846826999999962,
+          "maximum": 1.9542579999999816,
+          "standardDeviation": 0.04543002938410348,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 76.56107499999996,
+          "p95": 76.89767799999993,
+          "minimum": 76.27380799999997,
+          "maximum": 76.89767799999993,
+          "standardDeviation": 0.23288600191114261,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 3424115.9753830535,
+          "minimum": 3409127.6462209984,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "nodeHeap": {
+            "unavailableReason": "The CLI is a native process, not a Node.js process."
+          },
+          "nodeRss": {
+            "unavailableReason": "The CLI is a native process, not a Node.js process."
+          },
+          "nodeExternal": {
+            "unavailableReason": "The CLI is a native process, not a Node.js process."
+          },
+          "browserJsHeap": {
+            "unavailableReason": "The CLI is a native process, not a browser JavaScript environment."
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The CLI is a native process and does not use WebAssembly linear memory."
+          },
+          "pythonHeap": {
+            "unavailableReason": "The CLI is a native process, not a Python allocator."
+          },
+          "processRss": {
+            "maximumObservedBytes": 3399680,
+            "maximumGrowthBytes": 3399680,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The CLI's standard-input path streams through the incremental core, but the public contract exposes no retained plaintext buffer size."
+          }
+        }
+      },
+      {
+        "surface": "cli",
+        "profileId": "scale-logs-small-whole",
+        "path": "whole-input",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
+          "buildProfile": null,
+          "artifactIdentity": "redact-secret@0.1.0-beta.8"
+        },
+        "initialization": {
+          "median": 1.9033799999999985,
+          "p95": 2.0777280000000076,
+          "minimum": 1.7759949999999947,
+          "maximum": 2.0777280000000076,
+          "standardDeviation": 0.0996939419804459,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 20.816385999999994,
+          "p95": 21.298817999999983,
+          "minimum": 20.669375000000002,
+          "maximum": 21.298817999999983,
+          "standardDeviation": 0.22717713357905717,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 3149153.7483980176,
+          "minimum": 3077823.3796823868,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "nodeHeap": {
+            "unavailableReason": "The CLI is a native process, not a Node.js process."
+          },
+          "nodeRss": {
+            "unavailableReason": "The CLI is a native process, not a Node.js process."
+          },
+          "nodeExternal": {
+            "unavailableReason": "The CLI is a native process, not a Node.js process."
+          },
+          "browserJsHeap": {
+            "unavailableReason": "The CLI is a native process, not a browser JavaScript environment."
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The CLI is a native process and does not use WebAssembly linear memory."
+          },
+          "pythonHeap": {
+            "unavailableReason": "The CLI is a native process, not a Python allocator."
+          },
+          "processRss": {
+            "maximumObservedBytes": 3350528,
+            "maximumGrowthBytes": 3350528,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The CLI's standard-input path streams through the incremental core, but the public contract exposes no retained plaintext buffer size."
+          }
+        }
+      },
+      {
+        "surface": "node",
+        "profileId": "scale-logs-medium-fixed4096",
+        "path": "incremental",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "node-22.23.2",
+          "buildProfile": null,
+          "artifactIdentity": "@redact-secret/core@0.1.0-beta.8"
+        },
+        "initialization": {
+          "median": 5.17101199999999,
+          "p95": 5.7550139999999885,
+          "minimum": 5.137660000000011,
+          "maximum": 5.7550139999999885,
+          "standardDeviation": 0.28901863762490554,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 82.68083100000001,
+          "p95": 85.19685700000002,
+          "minimum": 81.74156300000004,
+          "maximum": 85.19685700000002,
+          "standardDeviation": 1.3286141391313815,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 3170674.4698780295,
+          "minimum": 3077038.393564212,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "nodeHeap": {
+            "maximumObservedBytes": 21704776,
+            "maximumGrowthBytes": 0,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "nodeRss": {
+            "maximumObservedBytes": 95186944,
+            "maximumGrowthBytes": 0,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "nodeExternal": {
+            "maximumObservedBytes": 2348375,
+            "maximumGrowthBytes": 40,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "browserJsHeap": {
+            "unavailableReason": "The Node process does not expose a browser JavaScript heap."
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The Node N-API surface does not use WebAssembly linear memory."
+          },
+          "pythonHeap": {
+            "unavailableReason": "The Node process does not run inside a Python allocator."
+          },
+          "processRss": {
+            "unavailableReason": "Node process RSS is reported as nodeRss; duplicating it as processRss would report one overlapping measure twice."
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size."
+          }
+        }
+      },
+      {
+        "surface": "node",
+        "profileId": "scale-logs-small-whole",
+        "path": "whole-input",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "node-22.23.2",
+          "buildProfile": null,
+          "artifactIdentity": "@redact-secret/core@0.1.0-beta.8"
+        },
+        "initialization": {
+          "median": 5.463067000000009,
+          "p95": 6.2403659999999945,
+          "minimum": 4.838211000000001,
+          "maximum": 6.2403659999999945,
+          "standardDeviation": 0.5069516623665817,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 14.125107,
+          "p95": 14.245176999999998,
+          "minimum": 14.016897999999998,
+          "maximum": 14.245176999999998,
+          "standardDeviation": 0.07797932211297971,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 4640955.994174062,
+          "minimum": 4601838.222157577,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "nodeHeap": {
+            "maximumObservedBytes": 7470960,
+            "maximumGrowthBytes": 124440,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "nodeRss": {
+            "maximumObservedBytes": 67309568,
+            "maximumGrowthBytes": 69632,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "nodeExternal": {
+            "maximumObservedBytes": 2316568,
+            "maximumGrowthBytes": 40,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "browserJsHeap": {
+            "unavailableReason": "The Node process does not expose a browser JavaScript heap."
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The Node N-API surface does not use WebAssembly linear memory."
+          },
+          "pythonHeap": {
+            "unavailableReason": "The Node process does not run inside a Python allocator."
+          },
+          "processRss": {
+            "unavailableReason": "Node process RSS is reported as nodeRss; duplicating it as processRss would report one overlapping measure twice."
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size."
+          }
+        }
+      },
+      {
+        "surface": "python",
+        "profileId": "scale-logs-medium-fixed4096",
+        "path": "incremental",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "cpython-3.12.14",
+          "buildProfile": null,
+          "artifactIdentity": "redact-secret==0.1.0b8"
+        },
+        "initialization": {
+          "median": 0.783376,
+          "p95": 0.792763,
+          "minimum": 0.775468,
+          "maximum": 0.792763,
+          "standardDeviation": 0.00565191360868156,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 73.883596,
+          "p95": 74.007341,
+          "minimum": 73.828605,
+          "maximum": 74.007341,
+          "standardDeviation": 0.06076382492700768,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 3548203.040902341,
+          "minimum": 3542270.21884221,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "nodeHeap": {
+            "unavailableReason": "The Python process does not run inside a Node.js heap."
+          },
+          "nodeRss": {
+            "unavailableReason": "The Python process is not a Node.js process; its whole-process RSS is reported as processRss."
+          },
+          "nodeExternal": {
+            "unavailableReason": "The Python process has no Node external-memory category."
+          },
+          "browserJsHeap": {
+            "unavailableReason": "The Python process does not run inside a browser JavaScript heap."
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The Python package uses a native extension, not WebAssembly linear memory."
+          },
+          "pythonHeap": {
+            "maximumObservedBytes": 537604,
+            "maximumGrowthBytes": 537604,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "processRss": {
+            "maximumObservedBytes": 21381120,
+            "maximumGrowthBytes": 0,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size."
+          }
+        }
+      },
+      {
+        "surface": "python",
+        "profileId": "scale-logs-small-whole",
+        "path": "whole-input",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "cpython-3.12.14",
+          "buildProfile": null,
+          "artifactIdentity": "redact-secret==0.1.0b8"
+        },
+        "initialization": {
+          "median": 0.774364,
+          "p95": 0.782566,
+          "minimum": 0.767599,
+          "maximum": 0.782566,
+          "standardDeviation": 0.005226118000963983,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 13.91347,
+          "p95": 13.979766,
+          "minimum": 13.891411,
+          "maximum": 13.979766,
+          "standardDeviation": 0.02994331378187781,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 4711549.311566417,
+          "minimum": 4689205.813602316,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "nodeHeap": {
+            "unavailableReason": "The Python process does not run inside a Node.js heap."
+          },
+          "nodeRss": {
+            "unavailableReason": "The Python process is not a Node.js process; its whole-process RSS is reported as processRss."
+          },
+          "nodeExternal": {
+            "unavailableReason": "The Python process has no Node external-memory category."
+          },
+          "browserJsHeap": {
+            "unavailableReason": "The Python process does not run inside a browser JavaScript heap."
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The Python package uses a native extension, not WebAssembly linear memory."
+          },
+          "pythonHeap": {
+            "maximumObservedBytes": 75205,
+            "maximumGrowthBytes": 75205,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "processRss": {
+            "maximumObservedBytes": 21614592,
+            "maximumGrowthBytes": 12288,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size."
+          }
+        }
+      },
+      {
+        "surface": "rust-core",
+        "profileId": "scale-logs-medium-fixed4096",
+        "path": "incremental",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x86_64",
+          "runtime": "rustc-1.98.1 (48a229cea 2026-09-01)",
+          "buildProfile": "release",
+          "artifactIdentity": "redact-secret@0.1.0-beta.8"
+        },
+        "initialization": {
+          "median": 0.012279,
+          "p95": 0.024454,
+          "minimum": 0.011214,
+          "maximum": 0.024454,
+          "standardDeviation": 0.004877090091437721,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 72.719387,
+          "p95": 72.845124,
+          "minimum": 70.62173200000001,
+          "maximum": 72.845124,
+          "standardDeviation": 0.8540163005982924,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 3605008.386553094,
+          "minimum": 3598785.8295086436,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "browserJsHeap": {
+            "unavailableReason": "The Rust library does not run inside a browser JavaScript heap."
+          },
+          "nodeExternal": {
+            "unavailableReason": "The Rust library has no Node external-memory category."
+          },
+          "nodeHeap": {
+            "unavailableReason": "The Rust library does not run inside a Node.js heap."
+          },
+          "nodeRss": {
+            "unavailableReason": "The Rust library does not run inside a Node.js process."
+          },
+          "processRss": {
+            "maximumObservedBytes": 3997696,
+            "maximumGrowthBytes": 4096,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "pythonHeap": {
+            "unavailableReason": "The Rust library does not run inside a Python allocator."
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size."
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The Rust library surface does not use WebAssembly linear memory."
+          }
+        }
+      },
+      {
+        "surface": "rust-core",
+        "profileId": "scale-logs-small-whole",
+        "path": "whole-input",
+        "environment": {
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x86_64",
+          "runtime": "rustc-1.98.1 (48a229cea 2026-09-01)",
+          "buildProfile": "release",
+          "artifactIdentity": "redact-secret@0.1.0-beta.8"
+        },
+        "initialization": {
+          "median": 0.013229,
+          "p95": 0.024088000000000002,
+          "minimum": 0.012972999999999998,
+          "maximum": 0.024088000000000002,
+          "standardDeviation": 0.005127655331630628,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "processing": {
+          "median": 14.118742,
+          "p95": 16.536364000000003,
+          "minimum": 13.926086000000002,
+          "maximum": 16.536364000000003,
+          "standardDeviation": 0.9968204422362142,
+          "samples": 5,
+          "unit": "milliseconds"
+        },
+        "throughput": {
+          "median": 4643048.226251319,
+          "minimum": 3964233.0079333037,
+          "unit": "bytes-per-second"
+        },
+        "memory": {
+          "browserJsHeap": {
+            "unavailableReason": "The Rust library does not run inside a browser JavaScript heap."
+          },
+          "nodeExternal": {
+            "unavailableReason": "The Rust library has no Node external-memory category."
+          },
+          "nodeHeap": {
+            "unavailableReason": "The Rust library does not run inside a Node.js heap."
+          },
+          "nodeRss": {
+            "unavailableReason": "The Rust library does not run inside a Node.js process."
+          },
+          "processRss": {
+            "maximumObservedBytes": 4001792,
+            "maximumGrowthBytes": 4096,
+            "samples": 5,
+            "unit": "bytes"
+          },
+          "pythonHeap": {
+            "unavailableReason": "The Rust library does not run inside a Python allocator."
+          },
+          "streamingBuffer": {
+            "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size."
+          },
+          "wasmLinearMemory": {
+            "unavailableReason": "The Rust library surface does not use WebAssembly linear memory."
+          }
+        }
+      }
+    ],
+    "artifacts": {
+      "nativeAddons": [
+        {
+          "target": "aarch64-apple-darwin",
+          "file": "redact-secret.darwin-arm64.node",
+          "bytes": 1004784,
+          "sha256": "6ea540f1ce41fedcddacc6a0ad6a6adc04f777e4e3bd1de6a5d1a7b75043bbf8"
+        },
+        {
+          "target": "aarch64-pc-windows-msvc",
+          "file": "redact-secret.win32-arm64-msvc.node",
+          "bytes": 720896,
+          "sha256": "50aae621e8dd0479c88d1d53010681b774ad4be412ea2b5b3505ab4bee0c65ab"
+        },
+        {
+          "target": "aarch64-unknown-linux-gnu",
+          "file": "redact-secret.linux-arm64-gnu.node",
+          "bytes": 1150824,
+          "sha256": "eb02a658ea8b906078c3e0ac02e94bcb91562612d2a432e9b47a34cdaceda49d"
+        },
+        {
+          "target": "aarch64-unknown-linux-musl",
+          "file": "redact-secret.linux-arm64-musl.node",
+          "bytes": 1149920,
+          "sha256": "3d6145bd41d7d7f54d5a490bc2047a91d4bedb7a46ae13db5e30954c4ffb7059"
+        },
+        {
+          "target": "x86_64-apple-darwin",
+          "file": "redact-secret.darwin-x64.node",
+          "bytes": 1059992,
+          "sha256": "5f21106fa775079add8b2de0b1f8fcda477e091433a8aae6318a4c312f2696eb"
+        },
+        {
+          "target": "x86_64-pc-windows-msvc",
+          "file": "redact-secret.win32-x64-msvc.node",
+          "bytes": 797184,
+          "sha256": "e1643848d51017c7ef7b39dab3f93f134af615ba8bfebf34f197a8018bca931a"
+        },
+        {
+          "target": "x86_64-unknown-linux-gnu",
+          "file": "redact-secret.linux-x64-gnu.node",
+          "bytes": 1134336,
+          "sha256": "0e9a7a1a98a40337df12eaac23548aaaba89e1ded7ea7dd6d32bb6668382437c"
+        },
+        {
+          "target": "x86_64-unknown-linux-musl",
+          "file": "redact-secret.linux-x64-musl.node",
+          "bytes": 1139792,
+          "sha256": "67a77b68a47bf7758dacdaa053b7e569738593df89b431a3bfcc6ebfbc4c70ac"
+        }
+      ],
+      "pythonWheels": [
+        {
+          "target": "aarch64-apple-darwin",
+          "file": "redact_secret-0.1.0b8-cp310-abi3-macosx_11_0_arm64.whl",
+          "bytes": 448851,
+          "sha256": "6e07b2b293d71c26634bbb6dcc18d586e13d121e34c9a2fbcbe2fcb66b007926"
+        },
+        {
+          "target": "aarch64-pc-windows-msvc",
+          "file": "redact_secret-0.1.0b8-cp310-abi3-win_arm64.whl",
+          "bytes": 346483,
+          "sha256": "d818b2cebf966f773852a9998a59b4fe97027e3ff35ca0f9d9fe7f3dec9b4804"
+        },
+        {
+          "target": "aarch64-unknown-linux-gnu",
+          "file": "redact_secret-0.1.0b8-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+          "bytes": 481187,
+          "sha256": "c90e7661d139f5a4f41a75c52f47b2bc07a217b233c0c56b279a2173c90c2bf8"
+        },
+        {
+          "target": "aarch64-unknown-linux-musl",
+          "file": "redact_secret-0.1.0b8-cp310-abi3-musllinux_1_2_aarch64.whl",
+          "bytes": 660614,
+          "sha256": "1afe91d444ac5f615ebcd83cb40694fc1736eec5d19150fc95a63e8a884ddc2f"
+        },
+        {
+          "target": "x86_64-apple-darwin",
+          "file": "redact_secret-0.1.0b8-cp310-abi3-macosx_10_12_x86_64.whl",
+          "bytes": 460609,
+          "sha256": "23290fc1f4af04434c9d695306b398ce3cd21e24396e8f192ddeb18b8e945c42"
+        },
+        {
+          "target": "x86_64-pc-windows-msvc",
+          "file": "redact_secret-0.1.0b8-cp310-abi3-win_amd64.whl",
+          "bytes": 363121,
+          "sha256": "524e5d568ce2fc6efe0672ff0009797f7500d590cfadee7b3324fa75f941cab5"
+        },
+        {
+          "target": "x86_64-unknown-linux-gnu",
+          "file": "redact_secret-0.1.0b8-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "bytes": 489435,
+          "sha256": "049913908fb6459d63677690adbcd550f428100bfe8911f21a4dbcf176ee0a83"
+        },
+        {
+          "target": "x86_64-unknown-linux-musl",
+          "file": "redact_secret-0.1.0b8-cp310-abi3-musllinux_1_2_x86_64.whl",
+          "bytes": 702215,
+          "sha256": "21463c219b9649b97724b722a367767216f45c9f15d8d56b3df6622561b04955"
+        }
+      ],
+      "cli": [
+        {
+          "target": "aarch64-apple-darwin",
+          "file": "redact-secret",
+          "bytes": 779728,
+          "sha256": "99b60b242a65a8d30d29514136092d1ef5080293444b52d3fc442c97bdf7e6aa"
+        },
+        {
+          "target": "aarch64-pc-windows-msvc",
+          "file": "redact-secret.exe",
+          "bytes": 507904,
+          "sha256": "4b8009c4b1e1842dbed2db570fcf0d4ae52f2bbc557fc0b5b3ec89392661e5db"
+        },
+        {
+          "target": "aarch64-unknown-linux-gnu",
+          "file": "redact-secret",
+          "bytes": 930576,
+          "sha256": "9b632fdf9dd13f461500180492f876c4028fc304f9ff2b393c1718849a0b028f"
+        },
+        {
+          "target": "x86_64-apple-darwin",
+          "file": "redact-secret",
+          "bytes": 815448,
+          "sha256": "d6b5c55f25912a86db0b8374ed897ecce9d3e0a3a5f066e25a56d2630f322797"
+        },
+        {
+          "target": "x86_64-pc-windows-msvc",
+          "file": "redact-secret.exe",
+          "bytes": 561152,
+          "sha256": "c66f0dba59aeea80e5cbf274ebaf51f94ca9b3fca8d0a49936ef6de5220bad1f"
+        },
+        {
+          "target": "x86_64-unknown-linux-gnu",
+          "file": "redact-secret",
+          "bytes": 881288,
+          "sha256": "d5253aa7d380f4ef744fa42fd1e6896a21537e6c19c7ca0272eaf333a9cc3cd8"
+        }
+      ],
+      "wasm": [
+        {
+          "profile": "full",
+          "artifact": "wasm-web",
+          "file": "redact_secret_wasm_bg.wasm",
+          "sha256": "e174349ecd3459d593ca660f6d4d74f4ba1695ee7311babd491978d3f109b8ed",
+          "rawBytes": 418746,
+          "gzipBytes": 141731,
+          "brotliBytes": 111681,
+          "jsGlueBytes": 32261
+        },
+        {
+          "profile": "common",
+          "artifact": "wasm-web-common",
+          "file": "redact_secret_wasm_common_bg.wasm",
+          "sha256": "e5d8c0e9d8c2605f12026b218150755749262bbb3ead4142b4b370235638dab2",
+          "rawBytes": 288619,
+          "gzipBytes": 104117,
+          "brotliBytes": 84029,
+          "jsGlueBytes": 32282
+        }
+      ],
+      "npmPackages": [
+        {
+          "label": "core",
+          "file": "redact-secret-core-0.1.0-beta.8.tgz",
+          "packedBytes": 39461,
+          "unpackedBytes": 151345,
+          "files": 53
+        },
+        {
+          "label": "wasm",
+          "file": "redact-secret-wasm-0.1.0-beta.8.tgz",
+          "packedBytes": 262234,
+          "unpackedBytes": 805602,
+          "files": 9
+        },
+        {
+          "label": "node-darwin-arm64",
+          "file": "redact-secret-node-darwin-arm64-0.1.0-beta.8.tgz",
+          "packedBytes": 428907,
+          "unpackedBytes": 1005382,
+          "files": 2
+        }
+      ]
+    },
+    "browserBundle": {
+      "tool": "vite 7.3.6",
+      "entry": "docs/quickstart.md browser main.js (initialize + scanAndRedact)",
+      "files": [
+        {
+          "file": "assets/index-I5a9m-J6.js",
+          "kind": "js",
+          "bytes": 9999,
+          "gzipBytes": 3619
+        },
+        {
+          "file": "assets/redact_secret_wasm_bg-<hash>.wasm",
+          "kind": "wasm",
+          "bytes": 418746,
+          "gzipBytes": 141731
+        },
+        {
+          "file": "assets/redact_secret_wasm-<hash>.js",
+          "kind": "js",
+          "bytes": 10707,
+          "gzipBytes": 3051
+        },
+        {
+          "file": "index.html",
+          "kind": "html",
+          "bytes": 187,
+          "gzipBytes": 165
+        }
+      ],
+      "totals": {
+        "jsBytes": 20706,
+        "jsGzipBytes": 6670,
+        "wasmBytes": 418746,
+        "wasmGzipBytes": 141731,
+        "allBytes": 439639,
+        "allGzipBytes": 148566
+      }
+    }
+  },
+  "judgement": {
+    "criteriaId": "rc-performance-resource-linux-x64-benchmarks-v1",
+    "criteriaFixedAt": "2026-09-23",
+    "status": "accepted",
+    "checksPassed": 46,
+    "checksTotal": 46,
+    "note": "Acceptance of the timing and memory measurements against benchmarks/performance-criteria.json. Artifact sizes carry no threshold and no verdict."
+  },
+  "limitations": [
+    "Timings are host-dependent. They come from one Linux x86_64 GitHub-hosted runner, five repetitions each, and do not transfer to other hosts or architectures.",
+    "Initialization and processing are measured and reported separately; neither includes the other.",
+    "Each surface (Rust core, Node native addon, browser WebAssembly, Python, CLI) is reported on its own. No combined score is computed.",
+    "The Node WebAssembly fallback lane is qualified for behavior in artifact qualification but has no timing profile of its own here.",
+    "The browser bundle is a Vite build of the quickstart on the candidate tarballs built on darwin-arm64; its wasm asset can differ by a few bytes from the Linux-built wasm-web artifact reported under artifacts.",
+    "Adapter traversal and host overhead are not measured: no compatible evidence exists at this commit.",
+    "No cross-product speed comparison is made, because detection scope and output semantics differ between scanners."
+  ]
+}

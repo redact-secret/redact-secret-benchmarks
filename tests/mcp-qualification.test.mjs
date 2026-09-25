@@ -158,10 +158,11 @@ test('the MCP overhead rows feed the #143 adapter-overhead dimension under their
   assert.throws(() => metricsFromAdapterOverhead([{ ...output('h', 1), schema: 'other' }]), /adapter-overhead-schema/);
 });
 
-test('the committed #281 evidence is a complete, clean, schema-valid run with no plaintext and a flagged control in every cell', async () => {
+for (const dir of ['evidence/612', 'evidence/612/release-2026.09.25']) {
+test(`the committed #281 evidence in ${dir} is a complete, clean, schema-valid run with no plaintext and a flagged control in every cell`, async () => {
   const { default: Ajv } = await import('ajv');
   const schema = JSON.parse(readFileSync('schemas/mcp-qualification-v1.json', 'utf8'));
-  const text = readFileSync('evidence/612/mcp-qualification.json', 'utf8');
+  const text = readFileSync(path.join(dir, 'mcp-qualification.json'), 'utf8');
   const report = JSON.parse(text);
   const validate = new Ajv({ strict: false, allErrors: true }).compile(schema);
   assert.ok(validate(report), JSON.stringify(validate.errors?.slice(0, 3)));
@@ -174,11 +175,27 @@ test('the committed #281 evidence is a complete, clean, schema-valid run with no
     assert.equal(cell.summary.controlsDetected, 1, `${cell.node} ${cell.transport}`);
   }
   for (const file of ['mcp-qualification.json', 'mcp-qualification.md', 'mcp-overhead-series.json', 'README.md']) {
-    assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join('evidence/612', file), 'utf8'), W.allSecrets()), file);
+    assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join(dir, file), 'utf8'), W.allSecrets()), file);
   }
-  const series = JSON.parse(readFileSync('evidence/612/mcp-overhead-series.json', 'utf8'));
+  const series = JSON.parse(readFileSync(path.join(dir, 'mcp-overhead-series.json'), 'utf8'));
   assert.deepEqual(series, report.operational.overhead.series);
   const { metrics, profiles } = metricsFromAdapterOverhead(series.outputs);
   assert.ok(profiles['mcp-javascript']);
   assert.ok(metrics.some(m => m.id === 'adapter/mcp-in-process/mcp-large-benign/traversal'));
+});
+}
+
+test('the release-train consumer check committed with the rc requalification passed and carries no plaintext', () => {
+  const dir = 'evidence/612/release-2026.09.25';
+  const report = JSON.parse(readFileSync(path.join(dir, 'registry-consumer-check.json'), 'utf8'));
+  assert.equal(report.pass, true);
+  for (const c of Object.values(report.consumers)) {
+    assert.equal(c.install.exit, 0);
+    assert.equal(c.resolution.ok, true);
+    assert.ok(c.resolution.packages.filter(p => p.path.includes('@redact-secret/adapter')).every(p => p.resolved.startsWith('file:')));
+    for (const e of Object.values(c.examples)) assert.deepEqual([e.exit, e.leak, e.expectedOutput], [0, false, true]);
+  }
+  for (const file of ['registry-consumer-check.json', 'rc-release-pin.json']) {
+    assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join(dir, file), 'utf8'), W.allSecrets()), file);
+  }
 });

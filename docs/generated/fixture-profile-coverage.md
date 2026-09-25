@@ -24,10 +24,10 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 59 | 73 |
-| Stable / documented | 59 | 73 |
-| Stable / empirical | 15 | 73 |
-| Context-constrained empirical | 8 | 73 |
+| Arrival / provisional | 62 | 77 |
+| Stable / documented | 62 | 77 |
+| Stable / empirical | 15 | 77 |
+| Context-constrained empirical | 8 | 77 |
 
 ## Per family
 
@@ -69,7 +69,9 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | linear-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 4 | 4 | 5 | none |
 | mailchimp-api-key | T2 | stable-empirical | 41 | 14 | 14 | 8 | 14 | 6 | 8 | none |
 | mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 8 | 11 | 6 | 9 | none |
+| mailgun-api-key-triplet | T2 | arrival-provisional | 50 | 0 | 24 | 14 | 10 | 6 | 9 | positive/context cases 0/6 |
 | microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
+| neon-api-key | T2 | stable-empirical | 32 | 6 | 16 | 5 | 9 | 6 | 10 | total fixtures 32/40; positive/context cases 6/10; twin pairs 5/8 |
 | netlify-token | T1 | stable-documented | 24 | 7 | 8 | 6 | 5 | 6 | 8 | none |
 | new-relic-license-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 7 | 6 | 8 | none |
 | new-relic-user-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
@@ -84,6 +86,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | pinecone-api-key | T2 | stable-empirical | 32 | 6 | 16 | 5 | 9 | 6 | 8 | total fixtures 32/40; positive/context cases 6/10; twin pairs 5/8 |
 | pinecone-api-key-legacy | T3 | arrival-provisional | 48 | 0 | 24 | 12 | 9 | 6 | 7 | positive/context cases 0/6 |
 | postman-api-key | T2 | stable-empirical | 40 | 11 | 17 | 9 | 12 | 6 | 9 | none |
+| postman-collection-access-key | T2 | stable-empirical | 32 | 6 | 16 | 5 | 9 | 6 | 9 | total fixtures 32/40; positive/context cases 6/10; twin pairs 5/8 |
 | private-key | T1 | stable-documented | 36 | 18 | 8 | 5 | 4 | 6 | 8 | none |
 | pulumi-access-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
 | pypi-token | T1 | stable-documented | 26 | 6 | 8 | 9 | 7 | 6 | 9 | none |
@@ -101,6 +104,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | supabase-token | T1 | stable-documented | 30 | 6 | 14 | 5 | 9 | 6 | 9 | none |
 | telegram-bot-token | T2 | stable-empirical | 41 | 12 | 15 | 8 | 14 | 5 | 8 | none |
 | terraform-cloud-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
+| travisci-api-token | T2 | context-constrained-empirical | 32 | 6 | 16 | 5 | 9 | 6 | 9 | total fixtures 32/48; twin pairs 5/10 |
 | twilio-api-key-secret | T2 | context-constrained-empirical | 49 | 13 | 16 | 10 | 18 | 6 | 7 | none |
 | twilio-auth-token | T2 | context-constrained-empirical | 49 | 12 | 17 | 10 | 18 | 6 | 7 | none |
 | vault-token | T1 | stable-documented | 28 | 12 | 8 | 6 | 4 | 6 | 9 | none |

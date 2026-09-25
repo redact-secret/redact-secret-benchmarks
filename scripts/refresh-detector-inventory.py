@@ -39,9 +39,14 @@ GITLEAKS_FAMILIES = {
     # keyword-gated bare-UUID rule it would otherwise be swallowed by.
     "heroku-api-key-v2": "heroku-api-key", "heroku-api-key": "heroku-api-key-legacy",
     "mailchimp-": "mailchimp-api-key",
-    # mailgun-signing-key is the superseded 32-8-8 triplet and mailgun-pub-key
-    # the public validation key; only the key-prefixed private/signing key maps.
-    "mailgun-private-api-token": "mailgun-api-key", "okta-": "okta-api-token",
+    # mailgun-pub-key is the public validation key and stays unmapped. The
+    # product mailgun-api-key detector also reports the prefix-less 32-8-8
+    # triplet mailgun-signing-key matches since redact-secret#701 (registry pin
+    # 3144bb3); the triplet itself is measured as the #259 arrival family.
+    "mailgun-private-api-token": "mailgun-api-key", "mailgun-signing-key": "mailgun-api-key",
+    "okta-": "okta-api-token",
+    # Travis CI API token, registry detector since redact-secret#523 (pin 3144bb3).
+    "travisci-": "travisci-api-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -67,6 +72,8 @@ TRUFFLEHOG_FAMILIES = {
     "replicate": "replicate-api-token", "groq": "groq-api-key", "xai": "xai-api-key",
     "openrouter": "openrouter-api-key", "langsmith": "langsmith-api-key", "langfuse": "langfuse-secret-key",
     "pinecone": "pinecone-api-key",
+    # Travis CI API token, registry detector since redact-secret#523 (pin 3144bb3).
+    "travisci": "travisci-api-token",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",

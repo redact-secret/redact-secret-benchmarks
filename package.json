@@ -75,6 +75,7 @@
     "prefeatures:extract": "node --import tsx scripts/generate-fixtures.mjs --ensure",
     "features:extract": "node --import tsx benchmarks/candidate-features.ts",
     "features:check-public": "node scripts/check-feature-dataset-exclusion.mjs",
+    "calibration:run": "node --import tsx benchmarks/calibration-experiments.ts",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",
     "observations:capture": "node --import tsx scripts/capture-empirical-observation.ts",
     "peers:provision": "node scripts/provision-peers.mjs"

@@ -132,6 +132,12 @@ hide one family made almost entirely of generated rows. Only a
 a reviewer. The override is part of the manifest, so it is reviewed with the
 change.
 
+The feature dataset counts origin per row (`originBasis`,
+[candidate features](candidate-features.md) §2). The beta.9 calibration
+experiments cannot meet the cap and carry a reviewed override, backed by a
+reweighting sensitivity check
+([calibration experiments](calibration-experiments.md) §7).
+
 ## 6. Strata
 
 Every tuning or evaluation report for a manifest is broken down by each

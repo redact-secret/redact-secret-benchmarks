@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 import Ajv from 'ajv';
 import {
   DEFAULT_OUTPUT, FEATURE_EXTRACTION_VERSION, assertNoCandidateBytes, assertNoHoldout, buildDataset, contextClassOf,
-  datasetHashOf, extractorSourceHash, holdoutIdentifiers, loadCategoryInputs, longestToken, negativeClassOf, resolveNonPublicOutput,
+  datasetHashOf, extractorSourceHash, generatorLiteralTest, holdoutIdentifiers, loadCategoryInputs, longestToken, negativeClassOf,
+  originOf, resolveNonPublicOutput, rowOrigin,
 } from '../benchmarks/lib/candidate-features.ts';
 import { CORE_FEATURE_SCHEMA, FEATURE_NAMES, extractEvidenceFeatures, log2Q16, permille } from '../benchmarks/lib/evidence-features.ts';
 import { exclusionProblems } from '../scripts/check-feature-dataset-exclusion.mjs';
@@ -167,6 +168,34 @@ test('ground truth is copied from the authored fixture, never derived from featu
     assert.equal(Object.values(c.families).reduce((a, f) => a + f.generated + f.authored, 0), rows);
     assert.equal(Object.values(c.contexts).reduce((a, n) => a + n, 0), rows);
     assert.equal(dataset.rows.filter(r => r.category === c.category).length, rows);
+  }
+});
+
+test('origin is refined per row: only a value typed into a generator counts as authored inside a generated corpus', () => {
+  assert.deepEqual(rowOrigin('authored', RANDOMISH), { origin: 'authored', originBasis: 'authored-corpus' });
+  assert.deepEqual(rowOrigin('generated', RANDOMISH, () => false), { origin: 'generated', originBasis: 'generator-computed' });
+  assert.deepEqual(rowOrigin('generated', 'changeme', v => v === 'changeme'), { origin: 'authored', originBasis: 'generator-literal' });
+  assert.deepEqual(rowOrigin('generated', '', () => true), { origin: 'generated', originBasis: 'generator-computed' }, 'an empty value is never evidence of authorship');
+  assert.deepEqual(rowOrigin('generated', 'x'), { origin: 'generated', originBasis: 'generator-computed' }, 'no generator source means generated');
+
+  const literal = generatorLiteralTest(root);
+  const inputs = new Map(loadCategoryInputs(root).map(i => [i.id, i]));
+  const counts = { 'authored-corpus': 0, 'generator-literal': 0, 'generator-computed': 0 };
+  for (const r of dataset.rows) {
+    counts[r.originBasis]++;
+    const input = inputs.get(r.category);
+    const generatedCorpus = originOf(input.corpusPath) === 'generated';
+    assert.equal(r.originBasis === 'authored-corpus', !generatedCorpus, r.id);
+    assert.equal(r.origin, r.originBasis === 'generator-computed' ? 'generated' : 'authored', r.id);
+    if (generatedCorpus) {
+      const f = input.fixtures.find(x => x.id === r.fixtureId);
+      const value = Buffer.from(f.content).subarray(r.range.start, r.range.end).toString();
+      assert.equal(literal(value), r.originBasis === 'generator-literal', r.id);
+    }
+  }
+  assert.ok(counts['generator-literal'] > 100 && counts['generator-computed'] > 1000, JSON.stringify(counts));
+  for (const c of dataset.corpora) {
+    assert.equal(c.rows.authored, dataset.rows.filter(r => r.category === c.category && r.origin === 'authored').length);
   }
 });
 

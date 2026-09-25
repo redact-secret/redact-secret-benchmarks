@@ -2,102 +2,265 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/redact-secret/redact-secret-benchmarks/schemas/candidate-features-v1.json",
   "title": "Candidate-feature dataset v1 (maintainer-local)",
-  "description": "Per-candidate numeric and categorical features derived from reviewed development and regression fixtures for offline statistical calibration (#254). Maintainer-local: written only under results-output/, never published, never projected to the site. Carries no candidate bytes, substrings, character-class runs or value hashes, and no holdout identity. Formulas: docs/specs/candidate-features.md.",
+  "description": "Per-candidate rows derived from reviewed development and regression fixtures for offline statistical calibration (#254): redact-secret's 27-integer evidence-features/v1 vector plus benchmark-only context and negative-evidence classes. Maintainer-local: written only under results-output/, never published, never projected to the site. Carries no candidate bytes, substrings, character-class runs or value hashes, and no holdout identity. Rules: docs/specs/candidate-features.md.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "datasetType", "visibility", "holdoutAccess", "extractor", "benchmark", "corpora", "rows", "datasetHash", "manifestBinding"],
+  "required": [
+    "schemaVersion",
+    "datasetType",
+    "visibility",
+    "holdoutAccess",
+    "extractor",
+    "featureSchema",
+    "benchmark",
+    "corpora",
+    "rows",
+    "datasetHash",
+    "manifestBinding"
+  ],
   "definitions": {
-    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
-    "count": { "type": "integer", "minimum": 0 },
-    "micro": { "type": "integer", "minimum": 0 },
-    "ratioMicro": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
     "originCounts": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["generated", "authored"],
-      "properties": { "generated": { "$ref": "#/definitions/count" }, "authored": { "$ref": "#/definitions/count" } }
-    },
-    "partition": { "enum": ["development", "regression"] },
-    "origin": { "enum": ["generated", "authored"] },
-    "contextClass": { "enum": ["url-userinfo", "authorization-header", "credential-name", "other-name", "bare"] },
-    "features": {
-      "type": "object",
-      "additionalProperties": false,
       "required": [
-        "lengthCodePoints", "lengthBytes", "distinctSymbols", "distinctRatioMicro", "shannonEntropyBitsMicro", "minEntropyBitsMicro",
-        "informationBitsMicro", "alphabet", "upperRatioMicro", "lowerRatioMicro", "digitRatioMicro", "symbolRatioMicro",
-        "whitespaceRatioMicro", "otherRatioMicro", "classesPresent", "maxRunLength", "maxMonotonicStepRun",
-        "repeatedBigramRatioMicro", "smallestPeriod", "maxAutocorrelationMicro"
+        "generated",
+        "authored"
       ],
       "properties": {
-        "lengthCodePoints": { "$ref": "#/definitions/count" },
-        "lengthBytes": { "$ref": "#/definitions/count" },
-        "distinctSymbols": { "$ref": "#/definitions/count" },
-        "distinctRatioMicro": { "$ref": "#/definitions/ratioMicro" },
-        "shannonEntropyBitsMicro": { "$ref": "#/definitions/micro" },
-        "minEntropyBitsMicro": { "$ref": "#/definitions/micro" },
-        "informationBitsMicro": { "$ref": "#/definitions/micro" },
-        "alphabet": { "enum": ["empty", "decimal", "hex-lower", "hex-upper", "base32", "alphanumeric", "base64url", "base64", "printable-ascii", "other"] },
-        "upperRatioMicro": { "$ref": "#/definitions/ratioMicro" },
-        "lowerRatioMicro": { "$ref": "#/definitions/ratioMicro" },
-        "digitRatioMicro": { "$ref": "#/definitions/ratioMicro" },
-        "symbolRatioMicro": { "$ref": "#/definitions/ratioMicro" },
-        "whitespaceRatioMicro": { "$ref": "#/definitions/ratioMicro" },
-        "otherRatioMicro": { "$ref": "#/definitions/ratioMicro" },
-        "classesPresent": { "type": "integer", "minimum": 0, "maximum": 4 },
-        "maxRunLength": { "$ref": "#/definitions/count" },
-        "maxMonotonicStepRun": { "$ref": "#/definitions/count" },
-        "repeatedBigramRatioMicro": { "$ref": "#/definitions/ratioMicro" },
-        "smallestPeriod": { "$ref": "#/definitions/count" },
-        "maxAutocorrelationMicro": { "$ref": "#/definitions/ratioMicro" }
+        "generated": {
+          "$ref": "#/definitions/count"
+        },
+        "authored": {
+          "$ref": "#/definitions/count"
+        }
       }
+    },
+    "partition": {
+      "enum": [
+        "development",
+        "regression"
+      ]
+    },
+    "origin": {
+      "enum": [
+        "generated",
+        "authored"
+      ]
+    },
+    "contextClass": {
+      "enum": [
+        "url-userinfo",
+        "authorization-header",
+        "credential-name",
+        "other-name",
+        "bare"
+      ]
+    },
+    "features": {
+      "type": "array",
+      "minItems": 27,
+      "maxItems": 27,
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
+      },
+      "description": "evidence-features/v1 in featureSchema.names order."
     }
   },
   "properties": {
-    "schemaVersion": { "const": 1 },
-    "datasetType": { "const": "candidate-features" },
-    "visibility": { "const": "maintainer-local" },
-    "holdoutAccess": { "const": "none" },
+    "schemaVersion": {
+      "const": 1
+    },
+    "datasetType": {
+      "const": "candidate-features"
+    },
+    "visibility": {
+      "const": "maintainer-local"
+    },
+    "holdoutAccess": {
+      "const": "none"
+    },
     "extractor": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["version", "sourceHash", "fixedPointScale", "contextWindow", "maxAutocorrelationLag"],
+      "required": [
+        "version",
+        "sourceHash",
+        "contextWindow"
+      ],
       "properties": {
-        "version": { "type": "string", "pattern": "^candidate-features/[0-9]+$" },
-        "sourceHash": { "$ref": "#/definitions/sha256" },
-        "fixedPointScale": { "const": 1000000 },
-        "contextWindow": { "type": "integer", "minimum": 1 },
-        "maxAutocorrelationLag": { "type": "integer", "minimum": 1 }
+        "version": {
+          "type": "string",
+          "pattern": "^candidate-features/[0-9]+$"
+        },
+        "sourceHash": {
+          "$ref": "#/definitions/sha256"
+        },
+        "contextWindow": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "featureSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "repository",
+        "sourceRevision",
+        "sources",
+        "maxAnalysedSymbols",
+        "names"
+      ],
+      "description": "The redact-secret feature schema the row vectors follow, pinned to the core revision and file hashes it was reproduced from.",
+      "properties": {
+        "id": {
+          "const": "evidence-features/v1"
+        },
+        "repository": {
+          "const": "redact-secret/redact-secret"
+        },
+        "sourceRevision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "$ref": "#/definitions/sha256"
+              }
+            }
+          }
+        },
+        "maxAnalysedSymbols": {
+          "const": 256
+        },
+        "names": {
+          "type": "array",
+          "minItems": 27,
+          "maxItems": 27,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          }
+        }
       }
     },
     "benchmark": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["commit", "dirty"],
-      "properties": { "commit": { "type": "string" }, "dirty": { "type": "boolean" } }
+      "required": [
+        "commit",
+        "dirty"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string"
+        },
+        "dirty": {
+          "type": "boolean"
+        }
+      }
     },
     "corpora": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["category", "partition", "origin", "corpusPath", "corpusHash", "reviewStatus", "fixtures", "rows", "families", "contexts", "excluded"],
+        "required": [
+          "category",
+          "partition",
+          "origin",
+          "corpusPath",
+          "corpusHash",
+          "reviewStatus",
+          "fixtures",
+          "rows",
+          "families",
+          "contexts",
+          "excluded"
+        ],
         "properties": {
-          "category": { "type": "string" },
-          "partition": { "$ref": "#/definitions/partition" },
-          "origin": { "$ref": "#/definitions/origin" },
-          "corpusPath": { "type": "string", "pattern": "^(fixtures|corpora/development|corpora/regression)/" },
-          "corpusHash": { "$ref": "#/definitions/sha256" },
-          "reviewStatus": { "type": ["string", "null"] },
-          "fixtures": { "$ref": "#/definitions/count" },
-          "rows": { "$ref": "#/definitions/originCounts" },
-          "families": { "type": "object", "additionalProperties": { "$ref": "#/definitions/originCounts" } },
-          "contexts": { "type": "object", "propertyNames": { "$ref": "#/definitions/contextClass" }, "additionalProperties": { "$ref": "#/definitions/count" } },
+          "category": {
+            "type": "string"
+          },
+          "partition": {
+            "$ref": "#/definitions/partition"
+          },
+          "origin": {
+            "$ref": "#/definitions/origin"
+          },
+          "corpusPath": {
+            "type": "string",
+            "pattern": "^(fixtures|corpora/development|corpora/regression)/"
+          },
+          "corpusHash": {
+            "$ref": "#/definitions/sha256"
+          },
+          "reviewStatus": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fixtures": {
+            "$ref": "#/definitions/count"
+          },
+          "rows": {
+            "$ref": "#/definitions/originCounts"
+          },
+          "families": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/definitions/originCounts"
+            }
+          },
+          "contexts": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "#/definitions/contextClass"
+            },
+            "additionalProperties": {
+              "$ref": "#/definitions/count"
+            }
+          },
           "excluded": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["pendingT0Fixtures", "controlsWithoutToken"],
-            "properties": { "pendingT0Fixtures": { "$ref": "#/definitions/count" }, "controlsWithoutToken": { "$ref": "#/definitions/count" } }
+            "required": [
+              "pendingT0Fixtures",
+              "controlsWithoutToken"
+            ],
+            "properties": {
+              "pendingT0Fixtures": {
+                "$ref": "#/definitions/count"
+              },
+              "controlsWithoutToken": {
+                "$ref": "#/definitions/count"
+              }
+            }
           }
         }
       }
@@ -108,49 +271,174 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "id", "category", "fixtureId", "partition", "tuningEligible", "origin", "kind", "tier", "role", "candidateSource", "candidateIndex",
-          "range", "family", "contract", "targets", "contextAxis", "twinOf", "mutationKind", "contextClass", "negativeClass", "features"
+          "id",
+          "category",
+          "fixtureId",
+          "partition",
+          "tuningEligible",
+          "origin",
+          "kind",
+          "tier",
+          "role",
+          "candidateSource",
+          "candidateIndex",
+          "range",
+          "family",
+          "contract",
+          "targets",
+          "contextAxis",
+          "twinOf",
+          "mutationKind",
+          "contextClass",
+          "negativeClass",
+          "features"
         ],
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+#[0-9]+$" },
-          "category": { "type": "string" },
-          "fixtureId": { "type": "string", "pattern": "^[a-z0-9-]+$" },
-          "partition": { "$ref": "#/definitions/partition" },
-          "tuningEligible": { "type": "boolean" },
-          "origin": { "$ref": "#/definitions/origin" },
-          "kind": { "enum": ["must-redact", "must-not-flag", "policy"] },
-          "tier": { "enum": ["T1", "T2", "T3"] },
-          "role": { "enum": ["secret", "companion", "none"] },
-          "candidateSource": { "enum": ["expected-span", "control-longest-token"] },
-          "candidateIndex": { "$ref": "#/definitions/count" },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+--[a-z0-9-]+#[0-9]+$"
+          },
+          "category": {
+            "type": "string"
+          },
+          "fixtureId": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "partition": {
+            "$ref": "#/definitions/partition"
+          },
+          "tuningEligible": {
+            "type": "boolean"
+          },
+          "origin": {
+            "$ref": "#/definitions/origin"
+          },
+          "kind": {
+            "enum": [
+              "must-redact",
+              "must-not-flag",
+              "policy"
+            ]
+          },
+          "tier": {
+            "enum": [
+              "T1",
+              "T2",
+              "T3"
+            ]
+          },
+          "role": {
+            "enum": [
+              "secret",
+              "companion",
+              "none"
+            ]
+          },
+          "candidateSource": {
+            "enum": [
+              "expected-span",
+              "control-longest-token"
+            ]
+          },
+          "candidateIndex": {
+            "$ref": "#/definitions/count"
+          },
           "range": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["start", "end"],
-            "properties": { "start": { "$ref": "#/definitions/count" }, "end": { "$ref": "#/definitions/count" } }
+            "required": [
+              "start",
+              "end"
+            ],
+            "properties": {
+              "start": {
+                "$ref": "#/definitions/count"
+              },
+              "end": {
+                "$ref": "#/definitions/count"
+              }
+            }
           },
-          "family": { "type": "string" },
-          "contract": { "type": ["string", "null"] },
-          "targets": { "type": "array", "items": { "type": "string" } },
-          "contextAxis": { "type": ["string", "null"] },
-          "twinOf": { "type": ["string", "null"] },
-          "mutationKind": { "type": ["string", "null"] },
-          "contextClass": { "$ref": "#/definitions/contextClass" },
-          "negativeClass": { "enum": ["template-reference", "environment-reference", "command-substitution", "angle-placeholder", "mask", "placeholder-vocabulary", "dotted-reference", "none"] },
-          "features": { "$ref": "#/definitions/features" }
+          "family": {
+            "type": "string"
+          },
+          "contract": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contextAxis": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "twinOf": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mutationKind": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "contextClass": {
+            "$ref": "#/definitions/contextClass"
+          },
+          "negativeClass": {
+            "enum": [
+              "template-reference",
+              "environment-reference",
+              "command-substitution",
+              "angle-placeholder",
+              "mask",
+              "placeholder-vocabulary",
+              "dotted-reference",
+              "none"
+            ]
+          },
+          "features": {
+            "$ref": "#/definitions/features"
+          }
         }
       }
     },
-    "datasetHash": { "$ref": "#/definitions/sha256" },
+    "datasetHash": {
+      "$ref": "#/definitions/sha256"
+    },
     "manifestBinding": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schemaVersion", "extractorVersion", "extractorSourceHash", "datasetHash"],
+      "required": [
+        "schemaVersion",
+        "extractorVersion",
+        "extractorSourceHash",
+        "datasetHash"
+      ],
       "properties": {
-        "schemaVersion": { "const": 1 },
-        "extractorVersion": { "type": "string" },
-        "extractorSourceHash": { "$ref": "#/definitions/sha256" },
-        "datasetHash": { "$ref": "#/definitions/sha256" }
+        "schemaVersion": {
+          "const": 1
+        },
+        "extractorVersion": {
+          "type": "string"
+        },
+        "extractorSourceHash": {
+          "$ref": "#/definitions/sha256"
+        },
+        "datasetHash": {
+          "$ref": "#/definitions/sha256"
+        }
       }
     }
   }

@@ -45,6 +45,7 @@ const tuning = dataset.rows.filter(r => r.tuningEligible).length;
 console.log([
   `Candidate feature dataset written to ${path.relative(root, output)} (maintainer-local; never publish it).`,
   `  extractor ${dataset.extractor.version}, source ${dataset.extractor.sourceHash}`,
+  `  features ${dataset.featureSchema.id} (redact-secret ${dataset.featureSchema.sourceRevision.slice(0, 12)})`,
   `  dataset ${dataset.datasetHash}${dataset.benchmark.dirty ? ' (benchmark tree dirty: not citable in a tuning manifest)' : ''}`,
   `  rows: ${dataset.rows.length} (${tuning} development/tuning-eligible, ${dataset.rows.length - tuning} regression/evaluation-only) from ${dataset.corpora.length} categories; holdout read: none`,
 ].join('\n'));

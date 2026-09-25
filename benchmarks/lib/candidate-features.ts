@@ -3,11 +3,12 @@
  * cross-repo parent redact-secret/redact-secret#767).
  *
  * For every reviewed fixture in the development and regression corpora this
- * module derives a small, closed set of numeric and categorical features for
- * each candidate value: randomness (Shannon entropy, min-entropy, information
- * bits, repetition, periodicity), lexical shape (length, alphabet, character
- * class ratios), a contextual evidence class and a negative-evidence class.
- * The formulas are normative in docs/specs/candidate-features.md; changing any
+ * module emits one row per candidate value: redact-secret's 27-integer
+ * `evidence-features/v1` vector (randomness and lexical groups, defined once in
+ * ./evidence-features.ts from the core spec), plus two benchmark-only
+ * categorical fields kept apart from it, a contextual evidence class and a
+ * negative-evidence class, and the authored ground truth for stratification.
+ * The rules are normative in docs/specs/candidate-features.md; changing any
  * of them changes FEATURE_EXTRACTION_VERSION.
  *
  * Boundary (docs/specs/candidate-features.md §5, redact-secret
@@ -33,26 +34,20 @@ import { readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 import type { Fixture, Kind, Tier } from '../types.ts';
 import { canonicalJson } from './adversarial-intake.ts';
+import { CORE_FEATURE_SCHEMA, FEATURE_NAMES, MAX_ANALYSED_SYMBOLS, extractEvidenceFeatures } from './evidence-features.ts';
 
 export const CANDIDATE_FEATURES_SCHEMA_VERSION = 1;
 /** Bump on any change to a feature formula, class vocabulary, candidate rule or row field. */
 export const FEATURE_EXTRACTION_VERSION = 'candidate-features/1';
-/** Real-valued features are recorded as integers: round(value × FIXED_POINT_SCALE). */
-export const FIXED_POINT_SCALE = 1_000_000;
 /** Bounded local context, in Unicode scalar values, read before a candidate on its own line. */
 export const CONTEXT_WINDOW = 64;
-/** Autocorrelation lags examined: 1 ..= min(floor(n / 2), MAX_AUTOCORRELATION_LAG). */
-export const MAX_AUTOCORRELATION_LAG = 64;
 export const DATASET_TYPE = 'candidate-features' as const;
 export const DEFAULT_OUTPUT = 'results-output/calibration/candidate-features-v1.json';
 /** The only directory a dataset may be written under; git-ignored and never part of the site build. */
 export const NON_PUBLIC_ROOT = 'results-output';
 /** The files whose bytes define the extractor; their hash is `extractor.sourceHash`. */
-export const EXTRACTOR_SOURCES = ['benchmarks/lib/candidate-features.ts', 'benchmarks/candidate-features.ts'] as const;
+export const EXTRACTOR_SOURCES = ['benchmarks/lib/evidence-features.ts', 'benchmarks/lib/candidate-features.ts', 'benchmarks/candidate-features.ts'] as const;
 
-export type Alphabet =
-  | 'empty' | 'decimal' | 'hex-lower' | 'hex-upper' | 'base32' | 'alphanumeric'
-  | 'base64url' | 'base64' | 'printable-ascii' | 'other';
 export type ContextClass = 'url-userinfo' | 'authorization-header' | 'credential-name' | 'other-name' | 'bare';
 export type NegativeClass =
   | 'template-reference' | 'environment-reference' | 'command-substitution' | 'angle-placeholder'
@@ -60,29 +55,6 @@ export type NegativeClass =
 export type Partition = 'development' | 'regression';
 export type Origin = 'generated' | 'authored';
 export type CandidateSource = 'expected-span' | 'control-longest-token';
-
-export interface CandidateFeatures {
-  lengthCodePoints: number;
-  lengthBytes: number;
-  distinctSymbols: number;
-  distinctRatioMicro: number;
-  shannonEntropyBitsMicro: number;
-  minEntropyBitsMicro: number;
-  informationBitsMicro: number;
-  alphabet: Alphabet;
-  upperRatioMicro: number;
-  lowerRatioMicro: number;
-  digitRatioMicro: number;
-  symbolRatioMicro: number;
-  whitespaceRatioMicro: number;
-  otherRatioMicro: number;
-  classesPresent: number;
-  maxRunLength: number;
-  maxMonotonicStepRun: number;
-  repeatedBigramRatioMicro: number;
-  smallestPeriod: number;
-  maxAutocorrelationMicro: number;
-}
 
 export interface CandidateRow {
   /** `<category>--<fixture id>#<candidate index>`; stable while the fixture is. */
@@ -107,9 +79,12 @@ export interface CandidateRow {
   contextAxis: string | null;
   twinOf: string | null;
   mutationKind: string | null;
+  /** Benchmark-only: not part of the core feature schema. */
   contextClass: ContextClass;
+  /** Benchmark-only: not part of the core feature schema. */
   negativeClass: NegativeClass;
-  features: CandidateFeatures;
+  /** The core `evidence-features/v1` vector, in `featureSchema.names` order. */
+  features: number[];
 }
 
 export interface OriginCounts { generated: number; authored: number }
@@ -133,7 +108,12 @@ export interface CandidateFeatureDataset {
   datasetType: typeof DATASET_TYPE;
   visibility: 'maintainer-local';
   holdoutAccess: 'none';
-  extractor: { version: string; sourceHash: string; fixedPointScale: number; contextWindow: number; maxAutocorrelationLag: number };
+  extractor: { version: string; sourceHash: string; contextWindow: number };
+  /** The core feature schema the `features` vectors follow, and where it was read from. */
+  featureSchema: {
+    id: string; repository: string; sourceRevision: string; sources: { path: string; sha256: string }[];
+    maxAnalysedSymbols: number; names: string[];
+  };
   benchmark: { commit: string; dirty: boolean };
   corpora: CorpusSummary[];
   rows: CandidateRow[];
@@ -144,138 +124,6 @@ export interface CandidateFeatureDataset {
 }
 
 const sha256 = (input: string | Buffer) => createHash('sha256').update(input).digest('hex');
-const fixed = (value: number) => Math.round(value * FIXED_POINT_SCALE);
-
-// ---------------------------------------------------------------------------
-// Features over one candidate value. Symbols are Unicode scalar values, the
-// same unit redact-secret's `shannon_entropy` counts (crates/secret-scan-core/src/entropy.rs).
-
-/** First-occurrence ordered symbol histogram: the summation order redact-secret's entropy uses. */
-function histogram(symbols: string[]): [string, number][] {
-  const counts = new Map<string, number>();
-  for (const s of symbols) counts.set(s, (counts.get(s) ?? 0) + 1);
-  return [...counts];
-}
-
-/** Shannon entropy in bits per symbol, log base 2, summed in first-occurrence order like the core's f64 `shannon_entropy`.
- * JavaScript's `Math.log2` and a host `libm` may differ in the last place; the 1e-6 fixed-point rounding absorbs that. */
-export function shannonEntropy(value: string): number {
-  const symbols = [...value];
-  if (!symbols.length) return 0;
-  const total = symbols.length;
-  let entropy = 0;
-  for (const [, frequency] of histogram(symbols)) {
-    const probability = frequency / total;
-    entropy -= probability * Math.log2(probability);
-  }
-  return entropy;
-}
-
-/** Min-entropy in bits per symbol: −log2(max count / n). */
-export function minEntropy(value: string): number {
-  const symbols = [...value];
-  if (!symbols.length) return 0;
-  const max = Math.max(...histogram(symbols).map(([, c]) => c));
-  return max === symbols.length ? 0 : -Math.log2(max / symbols.length);
-}
-
-const ALPHABETS: [Alphabet, RegExp][] = [
-  ['decimal', /^[0-9]+$/],
-  ['hex-lower', /^[0-9a-f]+$/],
-  ['hex-upper', /^[0-9A-F]+$/],
-  ['base32', /^[A-Z2-7]+=*$/],
-  ['alphanumeric', /^[A-Za-z0-9]+$/],
-  ['base64url', /^[A-Za-z0-9_-]+$/],
-  ['base64', /^[A-Za-z0-9+/]+=*$/],
-  ['printable-ascii', /^[\x20-\x7e]+$/],
-];
-
-/** The first named alphabet, in the order above, that contains every symbol. */
-export function alphabetOf(value: string): Alphabet {
-  if (!value) return 'empty';
-  return ALPHABETS.find(([, pattern]) => pattern.test(value))?.[0] ?? 'other';
-}
-
-type CharClass = 'upper' | 'lower' | 'digit' | 'symbol' | 'whitespace' | 'other';
-function charClass(symbol: string): CharClass {
-  if (/^[A-Z]$/.test(symbol)) return 'upper';
-  if (/^[a-z]$/.test(symbol)) return 'lower';
-  if (/^[0-9]$/.test(symbol)) return 'digit';
-  if (/^[\x21-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]$/.test(symbol)) return 'symbol';
-  if (/^[ \t\n\v\f\r]$/.test(symbol)) return 'whitespace';
-  return 'other';
-}
-
-/** Smallest period p with 1 ≤ p ≤ floor(n/2) and s[i] = s[i+p] for all i < n − p; 0 when none (KMP prefix function). */
-export function smallestPeriod(symbols: string[]): number {
-  const n = symbols.length;
-  if (n < 2) return 0;
-  const prefix = new Array<number>(n).fill(0);
-  for (let i = 1; i < n; i++) {
-    let k = prefix[i - 1];
-    while (k > 0 && symbols[i] !== symbols[k]) k = prefix[k - 1];
-    if (symbols[i] === symbols[k]) k++;
-    prefix[i] = k;
-  }
-  const p = n - prefix[n - 1];
-  return p <= Math.floor(n / 2) ? p : 0;
-}
-
-export function extractFeatures(value: string): CandidateFeatures {
-  const symbols = [...value];
-  const n = symbols.length;
-  const ratio = (count: number) => (n ? fixed(count / n) : 0);
-  const classes: Record<CharClass, number> = { upper: 0, lower: 0, digit: 0, symbol: 0, whitespace: 0, other: 0 };
-  for (const s of symbols) classes[charClass(s)]++;
-  const distinct = histogram(symbols).length;
-  const entropy = shannonEntropy(value);
-
-  let maxRun = n ? 1 : 0, run = 1;
-  let maxStep = n ? 1 : 0, step = 1, direction = 0;
-  for (let i = 1; i < n; i++) {
-    run = symbols[i] === symbols[i - 1] ? run + 1 : 1;
-    maxRun = Math.max(maxRun, run);
-    const delta = symbols[i].codePointAt(0)! - symbols[i - 1].codePointAt(0)!;
-    if ((delta === 1 || delta === -1) && delta === direction) step++;
-    else if (delta === 1 || delta === -1) { step = 2; direction = delta; }
-    else { step = 1; direction = 0; }
-    maxStep = Math.max(maxStep, step);
-  }
-
-  const bigrams = new Set<string>();
-  for (let i = 1; i < n; i++) bigrams.add(`${symbols[i - 1]}\u0000${symbols[i]}`);
-  const repeatedBigramRatio = n > 1 ? (n - 1 - bigrams.size) / (n - 1) : 0;
-
-  let maxAutocorrelation = 0;
-  for (let lag = 1; lag <= Math.min(Math.floor(n / 2), MAX_AUTOCORRELATION_LAG); lag++) {
-    let matches = 0;
-    for (let i = 0; i + lag < n; i++) if (symbols[i] === symbols[i + lag]) matches++;
-    maxAutocorrelation = Math.max(maxAutocorrelation, matches / (n - lag));
-  }
-
-  return {
-    lengthCodePoints: n,
-    lengthBytes: Buffer.byteLength(value),
-    distinctSymbols: distinct,
-    distinctRatioMicro: ratio(distinct),
-    shannonEntropyBitsMicro: fixed(entropy),
-    minEntropyBitsMicro: fixed(minEntropy(value)),
-    informationBitsMicro: fixed(entropy * n),
-    alphabet: alphabetOf(value),
-    upperRatioMicro: ratio(classes.upper),
-    lowerRatioMicro: ratio(classes.lower),
-    digitRatioMicro: ratio(classes.digit),
-    symbolRatioMicro: ratio(classes.symbol),
-    whitespaceRatioMicro: ratio(classes.whitespace),
-    otherRatioMicro: ratio(classes.other),
-    classesPresent: (['upper', 'lower', 'digit', 'symbol'] as const).filter(c => classes[c] > 0).length,
-    maxRunLength: maxRun,
-    maxMonotonicStepRun: maxStep,
-    repeatedBigramRatioMicro: fixed(repeatedBigramRatio),
-    smallestPeriod: smallestPeriod(symbols),
-    maxAutocorrelationMicro: fixed(maxAutocorrelation),
-  };
-}
 
 // ---------------------------------------------------------------------------
 // Context and negative evidence. Both read the candidate's own line only, with
@@ -444,7 +292,7 @@ export function categoryRows(input: CategoryInput): { rows: CandidateRow[]; summ
         mutationKind: f.mutationKind ?? null,
         contextClass: contextClassOf(f.content, chars.start, chars.end),
         negativeClass: negativeClassOf(f.content, chars.start, chars.end, value),
-        features: extractFeatures(value),
+        features: extractEvidenceFeatures(value),
       };
       rows.push(row);
       if (row.role !== 'none') values.push(value);
@@ -552,8 +400,8 @@ export function holdoutIdentifiers(root: string, names: string[]): string[] {
 
 /** SHA-256 of the canonical JSON of the dataset without `benchmark`, `datasetHash` and `manifestBinding`. */
 export function datasetHashOf(dataset: Omit<CandidateFeatureDataset, 'datasetHash' | 'manifestBinding' | 'benchmark'>): string {
-  const { schemaVersion, datasetType, visibility, holdoutAccess, extractor, corpora, rows } = dataset;
-  return sha256(canonicalJson({ schemaVersion, datasetType, visibility, holdoutAccess, extractor, corpora, rows }));
+  const { schemaVersion, datasetType, visibility, holdoutAccess, extractor, featureSchema, corpora, rows } = dataset;
+  return sha256(canonicalJson({ schemaVersion, datasetType, visibility, holdoutAccess, extractor, featureSchema, corpora, rows }));
 }
 
 export function buildDataset(
@@ -572,9 +420,10 @@ export function buildDataset(
     datasetType: DATASET_TYPE,
     visibility: 'maintainer-local' as const,
     holdoutAccess: 'none' as const,
-    extractor: {
-      version: FEATURE_EXTRACTION_VERSION, sourceHash: context.sourceHash, fixedPointScale: FIXED_POINT_SCALE,
-      contextWindow: CONTEXT_WINDOW, maxAutocorrelationLag: MAX_AUTOCORRELATION_LAG,
+    extractor: { version: FEATURE_EXTRACTION_VERSION, sourceHash: context.sourceHash, contextWindow: CONTEXT_WINDOW },
+    featureSchema: {
+      id: CORE_FEATURE_SCHEMA.id, repository: CORE_FEATURE_SCHEMA.repository, sourceRevision: CORE_FEATURE_SCHEMA.sourceRevision,
+      sources: CORE_FEATURE_SCHEMA.sources.map(source => ({ ...source })), maxAnalysedSymbols: MAX_ANALYSED_SYMBOLS, names: [...FEATURE_NAMES],
     },
     corpora,
     rows,

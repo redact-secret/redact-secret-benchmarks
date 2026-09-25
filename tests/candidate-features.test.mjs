@@ -6,10 +6,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv from 'ajv';
 import {
-  DEFAULT_OUTPUT, FEATURE_EXTRACTION_VERSION, alphabetOf, assertNoCandidateBytes, assertNoHoldout, buildDataset, contextClassOf,
-  datasetHashOf, extractFeatures, extractorSourceHash, holdoutIdentifiers, loadCategoryInputs, longestToken, minEntropy,
-  negativeClassOf, resolveNonPublicOutput, shannonEntropy, smallestPeriod,
+  DEFAULT_OUTPUT, FEATURE_EXTRACTION_VERSION, assertNoCandidateBytes, assertNoHoldout, buildDataset, contextClassOf,
+  datasetHashOf, extractorSourceHash, holdoutIdentifiers, loadCategoryInputs, longestToken, negativeClassOf, resolveNonPublicOutput,
 } from '../benchmarks/lib/candidate-features.ts';
+import { CORE_FEATURE_SCHEMA, FEATURE_NAMES, extractEvidenceFeatures, log2Q16, permille } from '../benchmarks/lib/evidence-features.ts';
 import { exclusionProblems } from '../scripts/check-feature-dataset-exclusion.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -17,72 +17,55 @@ const schema = JSON.parse(readFileSync(new URL('../schemas/candidate-features-v1
 const holdout = holdoutIdentifiers(root, readdirSync(path.join(root, 'holdout')));
 const build = () => buildDataset(loadCategoryInputs(root), { sourceHash: extractorSourceHash(root), commit: 'test', dirty: true, holdoutIdentifiers: holdout });
 const dataset = build();
-const micro = value => Math.round(value * 1_000_000);
 
 // Synthetic values only. None of these is, or resembles, an issued credential.
 const RANDOMISH = 'q7Vd2LmZ9xKp4TsW8nRb3YhJ6cFg1AeU';
 
-test('Shannon entropy mirrors redact-secret: bits per Unicode scalar value, log base 2', () => {
-  // The same cases as crates/secret-scan-core/src/entropy.rs.
-  assert.equal(shannonEntropy(''), 0);
-  assert.equal(shannonEntropy('aaaa'), 0);
-  assert.equal(shannonEntropy('ab'), 1);
-  assert.equal(shannonEntropy('abcd'), 2);
-  assert.equal(shannonEntropy('abcdefghijklmnop'), 4);
-  assert.equal(shannonEntropy('😀😃'), 1);
-  assert.equal(shannonEntropy('😀😀'), 0);
-  assert.equal(shannonEntropy('😀😃😀😃'), shannonEntropy('abab'));
-  assert.equal(shannonEntropy('aabbcc'), shannonEntropy('ccbbaa'));
-  assert.equal(shannonEntropy('aabc'), 1.5);
+test('log2_q16 and permille match the core reference values', () => {
+  assert.deepEqual([3, 5, 10, 62, 255].map(log2Q16), [103872, 152169, 217705, 390214, 523917]);
+  assert.equal(log2Q16(0), 0);
+  assert.equal(log2Q16(1), 0);
+  assert.equal(log2Q16(1 << 20), 20 << 16);
+  for (let x = 1; x <= 4096; x++) {
+    const exact = Math.log2(x) * 65536;
+    assert.ok(log2Q16(x) <= exact + 1e-6 && log2Q16(x) > exact - 2, `log2Q16(${x}) is within its documented bound`);
+  }
+  assert.equal(permille(2, 3), 666);
+  assert.equal(permille(5, 0), 0);
 });
 
-test('min-entropy and information bits', () => {
-  assert.equal(minEntropy(''), 0);
-  assert.equal(minEntropy('aaaa'), 0);
-  assert.equal(minEntropy('aabc'), 1);
-  assert.equal(minEntropy('abcd'), 2);
-  const f = extractFeatures('aabc');
-  assert.equal(f.shannonEntropyBitsMicro, 1_500_000);
-  assert.equal(f.minEntropyBitsMicro, 1_000_000);
-  assert.equal(f.informationBitsMicro, 6_000_000);
-  assert.equal(extractFeatures('😀😃').lengthBytes, 8);
-  assert.equal(extractFeatures('😀😃').lengthCodePoints, 2);
+// The eight golden vectors of redact-secret docs/specs/engine.md "Shadow evidence feature schema" (evidence-features/v1).
+const GOLDEN = [
+  ['', Array(27).fill(0).join(',')],
+  ['aaaaaaaaaaaaaaaa', '16,16,0,1,16,0,0,0,16,0,0,0,0,0,1,0,26,0,0,62,62,16,1000,933,1,1000,2'],
+  ['abcabcabcabcabcabc', '18,18,0,3,6,103872,103872,1869696,18,0,0,0,0,0,1,0,26,1000,337,166,70,1,0,823,3,1000,3'],
+  ['XXXX-XXXX-XXXX-XXXX', '19,19,0,2,16,41239,16248,783541,0,16,0,3,0,0,2,6,58,629,107,105,74,4,666,833,5,1000,5'],
+  ['Q7vK2mZp9LxR4tWb8NcY3hJd6FsG1eUa', '32,32,0,32,1,327680,327680,10485760,12,12,8,0,0,0,3,31,62,1000,839,1000,125,1,0,0,0,0,0'],
+  ['\u{1F600}a\u{1F603}b\u{1F600}a\u{1F603}b', '20,8,0,4,2,131072,131072,1048576,4,0,0,0,0,4,2,7,28,1000,416,500,31,1,0,428,4,1000,4'],
+  ['ab', '2,2,0,2,1,65536,65536,131072,2,0,0,0,0,0,1,0,26,1000,212,1000,7,1,0,0,0,0,0'],
+  ['aabc', '4,4,0,3,2,98304,65536,393216,4,0,0,0,0,0,1,0,26,946,319,750,15,2,333,0,0,0,0'],
+];
+
+test('the evidence-features/v1 vector reproduces the core golden vectors', () => {
+  assert.equal(CORE_FEATURE_SCHEMA.id, 'evidence-features/v1');
+  assert.equal(FEATURE_NAMES.length, 27);
+  for (const [input, expected] of GOLDEN) assert.equal(extractEvidenceFeatures(input).join(','), expected, JSON.stringify(input));
 });
 
-test('lexical features: alphabet, class ratios, classes present', () => {
-  assert.equal(alphabetOf(''), 'empty');
-  assert.equal(alphabetOf('0123'), 'decimal');
-  assert.equal(alphabetOf('deadbeef01'), 'hex-lower');
-  assert.equal(alphabetOf('DEADBEEF01'), 'hex-upper');
-  assert.equal(alphabetOf('MZXW6YTBOI======'), 'base32');
-  assert.equal(alphabetOf(RANDOMISH), 'alphanumeric');
-  assert.equal(alphabetOf('ab_cd-ef'), 'base64url');
-  assert.equal(alphabetOf('ab+cd/ef=='), 'base64');
-  assert.equal(alphabetOf('a b!c'), 'printable-ascii');
-  assert.equal(alphabetOf('añb'), 'other');
-  const f = extractFeatures('Ab1!');
-  assert.deepEqual([f.upperRatioMicro, f.lowerRatioMicro, f.digitRatioMicro, f.symbolRatioMicro, f.whitespaceRatioMicro, f.otherRatioMicro],
-    [250_000, 250_000, 250_000, 250_000, 0, 0]);
-  assert.equal(f.classesPresent, 4);
-  assert.equal(extractFeatures('a é').otherRatioMicro, micro(1 / 3));
-});
-
-test('repetition and periodicity indicators', () => {
-  assert.equal(smallestPeriod([...'abcabcabc']), 3);
-  assert.equal(smallestPeriod([...'abcabcab']), 3);
-  assert.equal(smallestPeriod([...'abcd']), 0);
-  assert.equal(smallestPeriod([...'aaaa']), 1);
-  const periodic = extractFeatures('abcabcabc');
-  assert.equal(periodic.maxAutocorrelationMicro, 1_000_000);
-  assert.equal(periodic.repeatedBigramRatioMicro, micro(5 / 8));
-  assert.equal(extractFeatures('xaaaay').maxRunLength, 4);
-  assert.equal(extractFeatures('zabcdefz').maxMonotonicStepRun, 6);
-  assert.equal(extractFeatures('987654').maxMonotonicStepRun, 6);
-  assert.equal(extractFeatures('abab').maxMonotonicStepRun, 2);
-  const random = extractFeatures(RANDOMISH);
-  assert.equal(random.smallestPeriod, 0);
-  assert.equal(random.maxRunLength, 1);
-  assert.equal(extractFeatures('').maxRunLength, 0);
+test('only the first 256 symbols are analysed; byte_len covers the whole value', () => {
+  const long = `${'ab'.repeat(128)}${RANDOMISH}`;
+  const v = extractEvidenceFeatures(long);
+  const named = Object.fromEntries(FEATURE_NAMES.map((name, i) => [name, v[i]]));
+  assert.equal(named.byte_len, long.length);
+  assert.equal(named.analysed_chars, 256);
+  assert.equal(named.truncated, 1);
+  assert.equal(named.length_permille, 1000);
+  assert.equal(named.distinct_symbols, 2, 'the tail past 256 symbols is invisible');
+  assert.equal(named.smallest_period, 2);
+  assert.deepEqual(extractEvidenceFeatures('ab'.repeat(128)).slice(1), v.slice(1).map((x, i) => (i === 1 ? 0 : x)));
+  const emoji = extractEvidenceFeatures('\u{1F600}'.repeat(300));
+  assert.equal(emoji[0], 1200);
+  assert.equal(emoji[1], 256);
 });
 
 const at = (content, value) => {
@@ -133,6 +116,9 @@ test('the dataset matches its versioned schema and is deterministic', () => {
   const again = build();
   assert.deepEqual(again, dataset);
   assert.equal(dataset.extractor.version, FEATURE_EXTRACTION_VERSION);
+  assert.equal(dataset.featureSchema.id, 'evidence-features/v1');
+  assert.deepEqual(dataset.featureSchema.names, [...FEATURE_NAMES]);
+  assert.equal(dataset.featureSchema.sourceRevision, CORE_FEATURE_SCHEMA.sourceRevision);
   assert.equal(dataset.datasetHash, datasetHashOf(dataset));
   assert.deepEqual(dataset.manifestBinding, {
     schemaVersion: 1, extractorVersion: FEATURE_EXTRACTION_VERSION, extractorSourceHash: dataset.extractor.sourceHash, datasetHash: dataset.datasetHash,
@@ -208,7 +194,8 @@ test('no row carries candidate bytes', () => {
         assert.ok(schema.definitions[key]?.enum?.includes(value) ?? schema.properties.rows.items.properties[key]?.enum?.includes(value), `${key} is not a closed vocabulary`);
       }
     }
-    for (const value of Object.values(r.features)) assert.ok(typeof value === 'number' || schema.definitions.features.properties.alphabet.enum.includes(value));
+    assert.equal(r.features.length, 27);
+    for (const value of r.features) assert.ok(Number.isInteger(value) && value >= 0);
   }
   assert.throws(() => assertNoCandidateBytes({ rows: [{ note: `x${RANDOMISH}` }] }, [RANDOMISH]), /refusing/);
   assert.throws(() => assertNoCandidateBytes({ [RANDOMISH]: 1 }, [RANDOMISH]), /refusing/);

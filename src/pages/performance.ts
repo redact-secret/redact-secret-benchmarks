@@ -31,6 +31,7 @@ export function performancePage(): string {
   <section class="section prose"><h2 class="h2-compact">Derivation</h2><p>Derived mechanically from one complete, ${n(DATA.derivation.repetitions)}-repetition, release-build run (never hand-picked): timing ceilings at the observed ${e(DATA.derivation.percentile)}, doubled and rounded up; throughput floors at half the observed minimum, rounded down; memory caps at 2.5x the observed maximum, rounded up to the nearest mebibyte.</p><p class="small">${e(DATA.derivation.margin)}</p></section>
   <section class="section"><h2 class="h2-compact">Baseline provenance</h2><div class="tbl"><table><tbody>
     <tr><th scope="row">Source commit</th><td><code>${e(DATA.baseline.sourceCommit)}</code></td></tr>
+    <tr><th scope="row">Latest accepted commit</th><td><code>${e(DATA.baseline.verifiedCommit)}</code> — <code>${e(DATA.baseline.verificationPath)}</code></td></tr>
     <tr><th scope="row">Accuracy corpus</th><td>version ${e(DATA.baseline.accuracyCorpusVersion)}, <code>${e(DATA.baseline.accuracyCorpusHash)}</code></td></tr>
     <tr><th scope="row">Workload profiles</th><td>version ${e(DATA.baseline.workloadProfilesVersion)}, <code>${e(DATA.baseline.workloadProfilesHash)}</code></td></tr>
     <tr><th scope="row">Raw evidence</th><td><code>${e(DATA.baseline.summaryPath)}</code> — see <code>evidence/603/README.md</code></td></tr>

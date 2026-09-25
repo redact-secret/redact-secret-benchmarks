@@ -29,7 +29,7 @@ async function main() {
     inventoryRedactSecretRevision: inventory.redactSecretRevision,
     inventoryRedactSecretVersion: inventory.redactSecretVersion,
     packageVersion: packageJson.dependencies['@redact-secret/core'],
-    performanceCriteriaSourceCommit: performanceCriteria.baseline.sourceCommit,
+    performanceCriteriaVerifiedCommit: performanceCriteria.baseline.verifiedCommit,
   };
 
   const failures = checkPinConsistency(facts);

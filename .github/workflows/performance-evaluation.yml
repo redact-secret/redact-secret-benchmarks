@@ -23,6 +23,16 @@ name: Performance evaluation
 # ratio thresholds' noise term is derived from. The runner's CPU model is
 # recorded in every run's evidence.
 #
+# The baseline side's build outputs are cached by commit (#307): the key is the
+# baseline commit, the toolchain versions, the runner OS/arch and the hash of
+# the build and cache scripts. A restored build is verified file by file
+# against the sha256 manifest saved with it, and the paired evidence records
+# whether the baseline came from the cache, with the key and the manifest
+# digest. An A/A run builds once and reuses that build for both sides. The
+# cache is written only by this workflow, which runs only on workflow_dispatch
+# in this repository: no pull request or fork run can write a cache entry it
+# restores.
+#
 # This does not check out core's own acceptance-criteria*.json (core is
 # retiring that ownership) and does not publish anything or gate a release.
 on:
@@ -142,21 +152,75 @@ jobs:
             npm --prefix "$dir/bindings/node" ci --ignore-scripts
           done
 
-      - name: Build core's native, browser, JavaScript, CLI, and Python artifacts (candidate and baseline)
+      - name: Install the build tools
         run: |
           set -euo pipefail
           cargo install wasm-bindgen-cli --version "$WASM_BINDGEN_VERSION" --locked
           python -m pip install 'maturin>=1.10,<2'
-          for dir in core-repo core-baseline; do
-            (
-              cd "$dir"
-              npm --prefix bindings/node run build
-              npm run js:build
-              npm run wasm:build
-              cargo build --release --locked -p redact-secret-cli
-              maturin build --release --locked -m bindings/python/Cargo.toml -o dist
-            )
-          done
+
+      - name: Compute the baseline build cache key (#307)
+        id: build-cache
+        env:
+          BASELINE: ${{ steps.pin.outputs.baseline }}
+          REVISION: ${{ steps.pin.outputs.revision }}
+        run: |
+          set -euo pipefail
+          toolchain="$(
+            rustc -Vv
+            cargo -V
+            wasm-bindgen --version
+            maturin --version
+            node --version
+            python --version
+            echo "$RUNNER_OS/$RUNNER_ARCH/$ImageOS"
+            sha256sum benchmarks-repo/scripts/build-core.sh benchmarks-repo/scripts/core-build-cache.mjs | cut -d' ' -f1
+          )"
+          printf '%s\n' "$toolchain"
+          digest="$(printf '%s' "$toolchain" | sha256sum | cut -c1-16)"
+          aa=false
+          if [ "$BASELINE" = "$REVISION" ]; then aa=true; fi
+          {
+            echo "key=paired-baseline-build-v1-$RUNNER_OS-$RUNNER_ARCH-$BASELINE-$digest"
+            echo "aa=$aa"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Restore the baseline build from the cache
+        id: baseline-cache
+        if: steps.build-cache.outputs.aa != 'true'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: baseline-build-cache
+          key: ${{ steps.build-cache.outputs.key }}
+
+      - name: Build core's native, browser, JavaScript, CLI, and Python artifacts (candidate)
+        run: bash benchmarks-repo/scripts/build-core.sh core-repo
+
+      - name: Provide the baseline build (cached, built, or shared with an A/A candidate), verified against its manifest
+        env:
+          AA: ${{ steps.build-cache.outputs.aa }}
+          HIT: ${{ steps.baseline-cache.outputs.cache-hit }}
+          KEY: ${{ steps.build-cache.outputs.key }}
+        run: |
+          set -euo pipefail
+          if [ "$AA" = true ]; then
+            source=shared-with-candidate
+            node benchmarks-repo/scripts/core-build-cache.mjs collect --core core-repo --out baseline-build-cache
+          elif [ "$HIT" = true ]; then
+            source=cache
+          else
+            source=built
+            bash benchmarks-repo/scripts/build-core.sh core-baseline
+            node benchmarks-repo/scripts/core-build-cache.mjs collect --core core-baseline --out baseline-build-cache
+          fi
+          node benchmarks-repo/scripts/core-build-cache.mjs restore --cache baseline-build-cache --core core-baseline \
+            --source "$source" --key "$KEY" --out "$RUNNER_TEMP/baseline-build.json"
+
+      - name: Save the baseline build to the cache
+        if: steps.build-cache.outputs.aa != 'true' && steps.baseline-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: baseline-build-cache
+          key: ${{ steps.build-cache.outputs.key }}
 
       - name: Install each side's Python wheel without an index or source fallback
         run: |
@@ -198,6 +262,7 @@ jobs:
             --dir ../performance-output/paired-raw \
             --baseline-revision "$BASELINE" --candidate-revision "$REVISION" \
             --runner ../performance-output/runner.json \
+            --baseline-build "$RUNNER_TEMP/baseline-build.json" \
             --out ../performance-output/paired.json
 
       - name: Check the assessment result for schema drift against the pinned contract

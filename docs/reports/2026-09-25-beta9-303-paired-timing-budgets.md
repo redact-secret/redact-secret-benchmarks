@@ -38,8 +38,10 @@ comparison across jobs carries it.
 
 - `performance-evaluation.yml` checks out and builds core twice in one job:
   the candidate (default: the pin manifest's revision) and the paired baseline
-  (default: the budgets' baseline commit). It builds twice even when both are
-  the same commit, so an A/A run also carries build-to-build variation.
+  (default: the budgets' baseline commit). The six A/A runs below built it
+  twice even though both sides were the same commit, so they also carry
+  build-to-build variation. Since #307 the baseline side's build is cached by
+  commit, and an A/A run builds once for both sides; see the spec.
 - `scripts/paired-performance.mjs run` runs `scripts/assessment-all.mjs` in
   each checkout in counterbalanced order:
   `baseline candidate candidate baseline ...`, six rounds per side.
@@ -159,4 +161,6 @@ npm run performance:budgets:derive && npm run performance:budgets:check && npm r
 - Each historical pair was measured once. Older candidates fail the pinned
   acceptance-criteria step (accuracy corpus identity) after the paired
   measurement, which does not affect timing.
-- The workflow now builds core twice and runs about twice as long.
+- As measured here, the workflow built core twice and ran about twice as long.
+  #307 caches the baseline side's build by commit, so a run builds core once
+  after the cache's first fill.

@@ -16,7 +16,7 @@
  *       --out-dir <dir> [--rounds 6] [--runs 2] [--python .venv/bin/python]
  *       Runs `node scripts/assessment-all.mjs` in each checkout, interleaved.
  *   reduce --dir <run out-dir> --baseline-revision <sha> --candidate-revision <sha>
- *          [--runner <runner.json>] --out <paired.json>
+ *          [--runner <runner.json>] [--baseline-build <record.json>] --out <paired.json>
  *       Reduces the interleaved invocations into one paired evidence file:
  *       per row, every baseline and candidate sample, in round order.
  *   collect --runs <manifest.json> --out <file>
@@ -123,6 +123,8 @@ function reduce(args) {
     rounds, runsPerInvocation, samplesPerSide: expected,
     order: invocationRecords.map(r => r.side),
     runner: args.runner ? readJson(args.runner) : null,
+    // #307: where the baseline side's build came from (cache, built, or shared with an A/A candidate), its cache key and manifest digest.
+    baselineBuild: args['baseline-build'] ? readJson(args['baseline-build']) : null,
     profile: { ...profile, sameJob: 'true' },
     detection,
     invocations: invocationRecords,

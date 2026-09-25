@@ -1,0 +1,274 @@
+{
+  "schema": "registry-consumer-check-v1",
+  "train": "2026.09.25",
+  "npm": "11.4.1",
+  "node": "v22.16.0",
+  "consumers": {
+    "mcp": {
+      "install": {
+        "exit": 0
+      },
+      "resolution": {
+        "ok": true,
+        "problems": [],
+        "packages": [
+          {
+            "path": "node_modules/@redact-secret/adapter",
+            "version": "0.1.1",
+            "resolved": "file:<rc-tarballs>/redact-secret-adapter-0.1.1.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/adapter-ai-context",
+            "version": "0.1.0-alpha",
+            "resolved": "file:<rc-tarballs>/redact-secret-adapter-ai-context-0.1.0-alpha.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/adapter-mcp",
+            "version": "0.1.0-alpha",
+            "resolved": "file:<rc-tarballs>/redact-secret-adapter-mcp-0.1.0-alpha.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/core",
+            "version": "0.1.0-beta.8",
+            "resolved": "file:<registry-core>/redact-secret-core-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-darwin-arm64",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-arm64/-/node-darwin-arm64-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-darwin-x64",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-x64/-/node-darwin-x64-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-linux-arm64-gnu",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-gnu/-/node-linux-arm64-gnu-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-linux-arm64-musl",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-musl/-/node-linux-arm64-musl-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-linux-x64-gnu",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-gnu/-/node-linux-x64-gnu-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-linux-x64-musl",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-musl/-/node-linux-x64-musl-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-win32-arm64-msvc",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-arm64-msvc/-/node-win32-arm64-msvc-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-win32-x64-msvc",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-x64-msvc/-/node-win32-x64-msvc-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/wasm",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/wasm/-/wasm-0.1.0-beta.8.tgz"
+          }
+        ],
+        "edges": [
+          {
+            "from": "@redact-secret/adapter@0.1.1",
+            "field": "peerDependencies",
+            "dep": "@redact-secret/core",
+            "range": "^0.1.0-beta.6",
+            "resolvedTo": "0.1.0-beta.8"
+          },
+          {
+            "from": "@redact-secret/adapter-ai-context@0.1.0-alpha",
+            "field": "dependencies",
+            "dep": "@redact-secret/adapter",
+            "range": "^0.1.1",
+            "resolvedTo": "0.1.1"
+          },
+          {
+            "from": "@redact-secret/adapter-ai-context@0.1.0-alpha",
+            "field": "peerDependencies",
+            "dep": "@redact-secret/core",
+            "range": "^0.1.0-beta.6",
+            "resolvedTo": "0.1.0-beta.8"
+          },
+          {
+            "from": "@redact-secret/adapter-mcp@0.1.0-alpha",
+            "field": "dependencies",
+            "dep": "@redact-secret/adapter-ai-context",
+            "range": "^0.1.0-alpha",
+            "resolvedTo": "0.1.0-alpha"
+          },
+          {
+            "from": "@redact-secret/adapter-mcp@0.1.0-alpha",
+            "field": "peerDependencies",
+            "dep": "@redact-secret/core",
+            "range": "^0.1.0-beta.6",
+            "resolvedTo": "0.1.0-beta.8"
+          }
+        ]
+      },
+      "examples": {
+        "adapter-ai-context README example": {
+          "exit": 0,
+          "leak": false,
+          "expectedOutput": true
+        },
+        "adapter-mcp README example": {
+          "exit": 0,
+          "leak": false,
+          "expectedOutput": true
+        },
+        "adapter README example (masking callback)": {
+          "exit": 0,
+          "leak": false,
+          "expectedOutput": true
+        },
+        "adapter README example (injected API)": {
+          "exit": 0,
+          "leak": false,
+          "expectedOutput": true
+        },
+        "walkStrict importable from the installed @redact-secret/adapter": {
+          "exit": 0,
+          "leak": false,
+          "expectedOutput": true
+        }
+      }
+    },
+    "pino-otel": {
+      "install": {
+        "exit": 0
+      },
+      "resolution": {
+        "ok": true,
+        "problems": [],
+        "packages": [
+          {
+            "path": "node_modules/@redact-secret/adapter",
+            "version": "0.1.1",
+            "resolved": "file:<rc-tarballs>/redact-secret-adapter-0.1.1.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/adapter-otel",
+            "version": "0.1.1",
+            "resolved": "file:<rc-tarballs>/redact-secret-adapter-otel-0.1.1.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/adapter-pino",
+            "version": "0.1.1",
+            "resolved": "file:<rc-tarballs>/redact-secret-adapter-pino-0.1.1.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/core",
+            "version": "0.1.0-beta.8",
+            "resolved": "file:<registry-core>/redact-secret-core-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-darwin-arm64",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-arm64/-/node-darwin-arm64-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-darwin-x64",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-darwin-x64/-/node-darwin-x64-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-linux-arm64-gnu",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-gnu/-/node-linux-arm64-gnu-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-linux-arm64-musl",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-arm64-musl/-/node-linux-arm64-musl-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-linux-x64-gnu",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-gnu/-/node-linux-x64-gnu-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-linux-x64-musl",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-linux-x64-musl/-/node-linux-x64-musl-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-win32-arm64-msvc",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-arm64-msvc/-/node-win32-arm64-msvc-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/node-win32-x64-msvc",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/node-win32-x64-msvc/-/node-win32-x64-msvc-0.1.0-beta.8.tgz"
+          },
+          {
+            "path": "node_modules/@redact-secret/wasm",
+            "version": "0.1.0-beta.8",
+            "resolved": "https://registry.npmjs.org/@redact-secret/wasm/-/wasm-0.1.0-beta.8.tgz"
+          }
+        ],
+        "edges": [
+          {
+            "from": "@redact-secret/adapter@0.1.1",
+            "field": "peerDependencies",
+            "dep": "@redact-secret/core",
+            "range": "^0.1.0-beta.6",
+            "resolvedTo": "0.1.0-beta.8"
+          },
+          {
+            "from": "@redact-secret/adapter-otel@0.1.1",
+            "field": "dependencies",
+            "dep": "@redact-secret/adapter",
+            "range": "^0.1.1",
+            "resolvedTo": "0.1.1"
+          },
+          {
+            "from": "@redact-secret/adapter-otel@0.1.1",
+            "field": "peerDependencies",
+            "dep": "@redact-secret/core",
+            "range": "^0.1.0-beta.6",
+            "resolvedTo": "0.1.0-beta.8"
+          },
+          {
+            "from": "@redact-secret/adapter-pino@0.1.1",
+            "field": "dependencies",
+            "dep": "@redact-secret/adapter",
+            "range": "^0.1.1",
+            "resolvedTo": "0.1.1"
+          },
+          {
+            "from": "@redact-secret/adapter-pino@0.1.1",
+            "field": "peerDependencies",
+            "dep": "@redact-secret/core",
+            "range": "^0.1.0-beta.6",
+            "resolvedTo": "0.1.0-beta.8"
+          }
+        ]
+      },
+      "examples": {
+        "adapter-pino README example (+ child binding, mixin)": {
+          "exit": 0,
+          "leak": false,
+          "expectedOutput": true
+        },
+        "adapter-otel README example (+ span name, attribute, event, status)": {
+          "exit": 0,
+          "leak": false,
+          "expectedOutput": true
+        }
+      }
+    }
+  },
+  "pass": true
+}

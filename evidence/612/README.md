@@ -72,3 +72,7 @@ exited 0.
 None of them carries a synthetic value or a fragment of one. The runner
 refuses to write such a file, and `tests/mcp-qualification.test.mjs`
 re-checks the committed copies.
+
+## Later runs
+
+- [`release-2026.09.25/`](release-2026.09.25/README.md): the same qualification on the exact tarballs of adapters release train `2026.09.25` (`@redact-secret/adapter` 0.1.1, `adapter-ai-context` and `adapter-mcp` 0.1.0-alpha) against the published core `0.1.0-beta.8`, plus a registry-shaped consumer check. PASS.

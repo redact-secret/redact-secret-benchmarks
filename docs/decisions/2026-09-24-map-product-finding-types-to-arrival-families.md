@@ -10,6 +10,8 @@ decided_at: 2026-09-24
 
 Status: **accepted** (2026-09-24, #251; the legacy Pinecone section, #253).
 Narrows: [`2026-09-24-settle-arrival-classification-by-owning-detector.md`](2026-09-24-settle-arrival-classification-by-owning-detector.md).
+Extended by: [`2026-09-24-score-arrival-families-by-finding-type.md`](2026-09-24-score-arrival-families-by-finding-type.md)
+(#730): a mapped arrival family is now scored under its own id.
 
 ## Context
 
@@ -69,9 +71,10 @@ detector (redact-secret `docs/reference/detection.md`, generated from
    ([`2026-09-24-settle-peer-coarser-classification-disagreements.md`](2026-09-24-settle-peer-coarser-classification-disagreements.md)),
    because the label is then one of the row's targets.
 
-The mapping labels findings only. It does not make an arrival id a registry id,
-and `eval:classify` still gives arrival ids no support status
-(`docs/specs/beta8-evidence.md`).
+The mapping labels findings only. It does not make an arrival id a registry id.
+When this was decided `eval:classify` gave arrival ids no support status; since
+[`2026-09-24-score-arrival-families-by-finding-type.md`](2026-09-24-score-arrival-families-by-finding-type.md)
+(#730) every mapped family is scored under its own id.
 
 ### The legacy Pinecone key (#253)
 

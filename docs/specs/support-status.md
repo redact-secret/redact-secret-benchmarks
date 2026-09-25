@@ -193,9 +193,10 @@ import { contracts } from '../lib/assessment.ts';
 ```
 
 A3 (`benchmarks/classify-support.ts`, `npm run eval:classify`) builds one
-`FamilySupportEvidence` per **registered detector** — `Object.keys(contracts)`,
+`FamilySupportEvidence` per **registered detector** — `registryContractIds`,
 exactly `benchmarks/detectors.json`'s ids (42 when #504 was filed, 46 as of
-2026-09-21) — not per
+2026-09-21) — plus each Beta.8 arrival family the product types inside a shared
+detector (`scoredArrivalIds`, #730, [`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md)), not per
 `taxonomy.families[]` entry: the taxonomy's provider:credential-name units are
 finer-grained (79 as of 2026-09-21, several per detector) and are the unit A8's support matrix
 displays, via `familiesForDetector`, not the unit this evidence attaches to.

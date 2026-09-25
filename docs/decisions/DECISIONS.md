@@ -42,3 +42,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Stop asserting provider-undecided format properties](2026-09-24-stop-asserting-provider-undecided-format-properties.md) (amends the corroboration decision)
 - [Settle arrival-family classification rows labelled by the owning shared detector](2026-09-24-settle-arrival-classification-by-owning-detector.md) (amends the peer-coarser decision)
 - [Label arrival families typed inside a shared detector by the product's finding type](2026-09-24-map-product-finding-types-to-arrival-families.md) (narrows the entry above)
+- [Score arrival families the product types inside a shared detector](2026-09-24-score-arrival-families-by-finding-type.md) (amends the beta8 evidence spec; builds on the entry above)

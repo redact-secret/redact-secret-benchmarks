@@ -45,8 +45,11 @@ A fixture targets one of two kinds of family:
   catalog and coverage pages never show them as product detectors.
   `loadCases` adds the arrival id to each case's `targets`, which lets the
   evaluation engine, `arrival:check`, and the review queue measure the family.
-  `eval:classify` skips arrival ids because a support status describes a
-  product detector.
+  `eval:classify` skips an arrival id, because a support status describes what
+  the product claims, unless the family has a recorded finding-type mapping
+  (below): then the product's findings carry the arrival id and the family is
+  scored like a registry family
+  ([`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md), #730).
 
 An arrival id never equals a registry id.
 
@@ -109,8 +112,34 @@ A coarser type keeps the detector id. The published 0.1.0-beta.7 reports
 findings still read `stripe-token`/`slack-token` and still show up as a
 classification disagreement. `notion-token`, `pinecone-api-key` and
 `mailgun-api-key` give the arrival shape the same type as their registry shape,
-so their findings keep the detector id too. The mapping labels findings only:
-it gives an arrival id no support status (`eval:classify` still skips it).
+so their findings keep the detector id too.
+
+### Scoring a mapped arrival family (#730)
+
+An arrival family with a row in the table above is scored like a registry
+family ([`2026-09-24-score-arrival-families-by-finding-type.md`](../decisions/2026-09-24-score-arrival-families-by-finding-type.md)).
+It amends the rule that arrival ids get no status:
+
+- `eval:classify` classifies every registry id plus `scoredArrivalIds`
+  (`benchmarks/lib/assessment.ts`, from `scoredArrivalFamilies` in
+  `scanners/families.mjs`), each from its own contract, its own profile and the
+  ledger rows that target it. No evidence is borrowed from the shared detector.
+- The family's taxonomy entry maps to the arrival id (`github:fine-grained-personal-access-token`
+  → `github-fine-grained-pat`, `stripe:webhook-signing-secret` →
+  `stripe-webhook-signing-secret`, `slack:app-level-token` →
+  `slack-app-level-token`, `slack:user-token` → `slack-user-token`), so the
+  matrix shows the measured status, not `unsupported`.
+- The tier rules are the registry's and follow the family's contract tier: T1
+  can reach documented stable, T2 needs its own
+  `benchmarks/support/empirical-observations.json` record to reach empirical
+  stable, T3 stays provisional, T0 is pending.
+- The id stays an arrival id: it is not in `benchmarks/detectors.json`, has no
+  coverage page and no `detector-coverage` minimum, and graduates as above if
+  the product registry gains a detector for it.
+- Every other arrival family (`notion-integration-token`,
+  `pinecone-api-key-legacy` and `mailgun-api-key-triplet`, whose owning
+  detectors give them the same type as the registry shape) stays an unscored
+  arrival id.
 
 Twins are scoped to their declared family. When a product finding on an
 arrival family's twin is attributed to a *different* known family (for

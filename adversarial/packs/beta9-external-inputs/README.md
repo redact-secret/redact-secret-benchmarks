@@ -71,3 +71,35 @@ nothing else. They say nothing about overall accuracy.
 Use this pack for evaluation only, not for tuning. It is public, so it cannot
 act as a protected holdout (#256), and nobody should pick detector features,
 weights or thresholds by fitting to it.
+
+## Known gaps
+
+Every redact-secret failure in `first-run.json` (21 misses, 4 partial, 7
+flagged benign inputs) and the 5 `must-redact` fixtures whose finding only
+warns is a record in
+[`benchmarks/known-gaps.json`](../../../benchmarks/known-gaps.json), keyed
+`beta9-external-inputs--<fixture id>` with the pack's expectations digest as
+its corpus hash. One product issue backs each root cause:
+
+| Record | Product issue | Status | Fixtures |
+| --- | --- | --- | ---: |
+| `product-815` | [assignment forms: escaped JSON quotes, `:=`, `@"..."`, braces in the value](https://github.com/redact-secret/redact-secret/issues/815) | fixed | 4 |
+| `product-816` | [URL query, fragment and form-body parameters](https://github.com/redact-secret/redact-secret/issues/816) | fixed | 7 |
+| `product-817` | [references and identifiers flagged under credential names](https://github.com/redact-secret/redact-secret/issues/817) | fixed | 5 |
+| `product-818` | [`Proxy-Authorization`, mid-line Basic, header-anchored Bearer floor](https://github.com/redact-secret/redact-secret/issues/818) | fixed | 3 |
+| `product-819` | [RFC 8959 `secret-token:` URIs](https://github.com/redact-secret/redact-secret/issues/819) | fixed | 3 |
+| `product-820` | [http(s)/ftp URL userinfo passwords](https://github.com/redact-secret/redact-secret/issues/820) | fixed | 1 |
+| `product-821` | [JWK secret members](https://github.com/redact-secret/redact-secret/issues/821) | fixed | 1 |
+| `product-822` | [policy: RFC display line breaks, percent-encoded query in JSON](https://github.com/redact-secret/redact-secret/issues/822) | policy-decision | 3 |
+| `product-823` | [policy: reversed comparison, C++ constructor, `db_pass`](https://github.com/redact-secret/redact-secret/issues/823) | policy-decision | 3 |
+| `product-824` | [policy: `warn` on short literals in benign code](https://github.com/redact-secret/redact-secret/issues/824) | policy-decision | 2 |
+| `product-825` | [policy: short values warn instead of redact](https://github.com/redact-secret/redact-secret/issues/825) | policy-decision | 5 |
+
+`product-815` to `product-821` are `fixed`, each by the redact-secret merge
+commit named in its `fix.commit`. On that code every fixture in them reports
+its expected range. A maintainer confirmed the four policy records. The
+`product-823` disposition also notes that its `db_pass` fixture is fixed by
+redact-secret#838; the other two fixtures in that record stay out of
+contract. Reaching `verified` needs a product regression record for each
+gap, and the pin manifest has listed pack fixtures only since #310. The first
+run stays frozen; fixed candidates are measured by a separate rerun.

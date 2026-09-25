@@ -236,9 +236,17 @@ export function metricsFromOperational(evidence: OperationalEvidence): Metric[] 
   ];
 }
 
+/**
+ * Output schemas the adapter-overhead dimension reads: the adapters' own
+ * harness, and this repository's black-box MCP harness (#281), whose rows
+ * have the same shape (modes host / adapter-identity / adapter-core and the
+ * derived traversal) under the `mcp-javascript` language.
+ */
+export const ADAPTER_OVERHEAD_SCHEMAS: readonly string[] = ['redact-secret-adapters/overhead-v1', 'redact-secret-benchmarks/mcp-overhead-v1'];
+
 export interface AdapterOverheadOutput {
   readonly schema: string;
-  readonly language: 'javascript' | 'python';
+  readonly language: 'javascript' | 'python' | 'mcp-javascript';
   readonly workloads: { readonly digest: string };
   readonly environment: { readonly platform: string; readonly arch: string; readonly cpuModel: string | null; readonly runtime: string };
   readonly method: { readonly quick: boolean; readonly repetitions: number };
@@ -271,7 +279,7 @@ export function adapterProfileId(output: AdapterOverheadOutput): string {
 export function metricsFromAdapterOverhead(outputs: readonly AdapterOverheadOutput[]): { metrics: Metric[]; profiles: Record<string, string> } {
   const groups = new Map<string, AdapterOverheadOutput[]>();
   for (const output of outputs) {
-    if (output.schema !== 'redact-secret-adapters/overhead-v1') throw new Error('regression-budgets:adapter-overhead-schema');
+    if (!ADAPTER_OVERHEAD_SCHEMAS.includes(output.schema)) throw new Error('regression-budgets:adapter-overhead-schema');
     const profile = adapterProfileId(output);
     groups.set(profile, [...(groups.get(profile) ?? []), output]);
   }
@@ -281,10 +289,14 @@ export function metricsFromAdapterOverhead(outputs: readonly AdapterOverheadOutp
     profiles[group[0]!.language] = profile;
     profiles[`${group[0]!.language}:workloadDigest`] = group[0]!.workloads.digest;
     profiles[`${group[0]!.language}:quick`] = String(group.some(output => output.method.quick));
-    const repetitions = group.reduce((sum, output) => sum + output.method.repetitions, 0);
-    for (const first of group[0]!.results) {
-      const rows = group.map(output => output.results.find(r => r.host === first.host && r.profileId === first.profileId))
-        .filter(row => row !== undefined);
+    // Every (host, workload) row any process measured, not only the first
+    // process's: the MCP harness measures each SDK endpoint in its own process.
+    const seen = new Map<string, AdapterOverheadOutput['results'][number]>();
+    for (const output of group) for (const row of output.results) if (!seen.has(`${row.host}\0${row.profileId}`)) seen.set(`${row.host}\0${row.profileId}`, row);
+    for (const first of seen.values()) {
+      const measured = group.filter(output => output.results.some(r => r.host === first.host && r.profileId === first.profileId));
+      const rows = measured.map(output => output.results.find(r => r.host === first.host && r.profileId === first.profileId)!);
+      const repetitions = measured.reduce((sum, output) => sum + output.method.repetitions, 0);
       const key = `adapter/${first.host}/${first.profileId}`;
       metrics.push({ id: `${key}/traversal`, dimension: 'adapter-overhead', profile, unit: 'microseconds-per-event',
         value: median(rows.map(row => row.derived.traversal)), samples: repetitions });

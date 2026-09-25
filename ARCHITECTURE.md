@@ -78,6 +78,9 @@ benchmarks/lib/evidence-classes.ts Public adversarial / protected holdout / main
 benchmarks/lib/tuning-manifest.ts Statistical scorer tuning manifests: corpus roles, holdout isolation, scoring identity, generated share, strata (#256; docs/specs/statistical-tuning.md)
 benchmarks/lib/candidate-features.ts Maintainer-local candidate-feature dataset for calibration: features, classes, holdout and publication guards (#254; docs/specs/candidate-features.md)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
+benchmarks/mcp-qualification.ts Black-box MCP adapter qualification: clean consumers per SDK endpoint, sink containment, overhead (#281; docs/specs/mcp-qualification.md)
+benchmarks/lib/mcp-qualification.ts Adapter tarball digests, the plaintext sink scan and per-case verdicts
+benchmarks/mcp-qualification/consumer/ Host, server and workload corpus copied into each clean consumer
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
 scripts/baseline.mjs           Save baselines and generate docs/generated/release-comparison.md
 benchmarks/lib/validate-structures.ts Offline key/JWT validation

@@ -61,6 +61,14 @@ absent, at a known byte range), what does each scanner report?
 The exact fixture schema, envelope/twin/tier authoring rules, and code style
 are in [CONVENTIONS.md](CONVENTIONS.md#ground-truth-schema-tool-agnostic).
 
+Separately from scanner ranges, `npm run mcp:qualify` qualifies an adapter
+boundary as a black box: it installs the exact MCP adapter and core
+tarballs into clean consumers, drives real MCP clients and servers at every
+declared SDK endpoint over stdio and Streamable HTTP, and checks that no
+synthetic value reaches the host's model context, log, store, audit trail or
+error text, and what that costs per call
+([spec](docs/specs/mcp-qualification.md), #281).
+
 ## Non-goals
 
 - This repository does not assert product output; it measures and records.

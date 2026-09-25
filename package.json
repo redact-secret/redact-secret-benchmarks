@@ -77,6 +77,8 @@
     "prefeatures:extract": "node --import tsx scripts/generate-fixtures.mjs --ensure",
     "features:extract": "node --import tsx benchmarks/candidate-features.ts",
     "features:check-public": "node scripts/check-feature-dataset-exclusion.mjs",
+    "blind:run": "node --import tsx benchmarks/blind.ts",
+    "blind:check-public": "node --import tsx scripts/check-blind-public.mjs",
     "calibration:run": "node --import tsx benchmarks/calibration-experiments.ts",
     "study:pii-readiness": "node --import tsx benchmarks/studies/pii-readiness.ts",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",

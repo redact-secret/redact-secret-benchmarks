@@ -81,6 +81,7 @@ benchmarks/lib/calibration-experiments.ts Shadow-scorer calibration experiments:
 benchmarks/lib/calibration-projection.mjs Closed public projection shape for calibration outcomes; used by the run and by features:check-public (#255)
 benchmarks/lib/scorer-promotion.ts Future-promotion contract for the scorer: hard constraints per question Q1-Q5, #289 evasion aggregate, evaluator (#257; docs/specs/scorer-promotion-gates.md)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
+benchmarks/blind/              Custodian-held blind evaluation: private root, freeze, one run per candidate, aggregate-only release (#142; docs/specs/blind-evaluation.md)
 benchmarks/mcp-qualification.ts Black-box MCP adapter qualification: clean consumers per SDK endpoint, sink containment, overhead (#281; docs/specs/mcp-qualification.md)
 benchmarks/lib/mcp-qualification.ts Adapter tarball digests, the plaintext sink scan and per-case verdicts
 benchmarks/mcp-qualification/consumer/ Host, server and workload corpus copied into each clean consumer

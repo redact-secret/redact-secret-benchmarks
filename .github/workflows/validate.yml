@@ -41,6 +41,8 @@ jobs:
           npm run adversarial:check
       - name: Statistical scorer tuning manifests keep protected holdout out of tuning (#256)
         run: npm run tuning:check
+      - name: The statistical scorer's future-promotion contract answers Q1-Q5 with hard constraints and no mixed score (#257)
+        run: npm run scorer-promotion:check
       - run: npm run build
       - name: No candidate-level feature vector or calibration boundary detail reaches public/ or the built site (#254, #255)
         run: npm run features:check-public

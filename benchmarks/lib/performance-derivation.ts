@@ -44,6 +44,14 @@ export interface DeriveCriteriaOptions {
   readonly fixedAt: string;
   readonly summaryPath: string;
   readonly environment: AcceptanceCriteria['environment'];
+  /**
+   * An ACCEPTED evaluation at a newer core commit against these same
+   * thresholds. It is not derived from the summary, so it is carried over
+   * rather than recomputed. Omitted, the derivation run verifies itself:
+   * `verifiedCommit` is the summary's commit and `verificationPath` its
+   * `acceptance.json` beside the summary.
+   */
+  readonly verification?: { readonly commit: string; readonly path: string };
 }
 
 /**
@@ -117,6 +125,8 @@ export function deriveCriteria(summary: CompleteAssessment, options: DeriveCrite
     baseline: {
       summaryPath: options.summaryPath,
       sourceCommit: summary.sourceCommit!,
+      verifiedCommit: options.verification?.commit ?? summary.sourceCommit!,
+      verificationPath: options.verification?.path ?? options.summaryPath.replace(/[^/]+$/, 'acceptance.json'),
       accuracyCorpusVersion: summary.accuracyCorpus.version,
       accuracyCorpusHash: summary.accuracyCorpus.hash,
       workloadProfilesVersion: summary.workloadProfiles.version,

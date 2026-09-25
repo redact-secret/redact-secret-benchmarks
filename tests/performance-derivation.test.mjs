@@ -140,3 +140,16 @@ test('deriveCriteria is indifferent to accuracy object key order across surfaces
   const summary = summaryOf([accuracyResult('rust-core'), reordered, performanceResult('rust-core', 'scale-logs-small-whole')]);
   assert.doesNotThrow(() => deriveCriteria(summary, options));
 });
+
+test('deriveCriteria verifies the derivation run itself unless a newer accepted run is carried over', () => {
+  const summary = summaryOf([accuracyResult('rust-core'), performanceResult('rust-core', 'scale-logs-small-whole')]);
+  const derived = deriveCriteria(summary, options);
+  assert.equal(derived.baseline.verifiedCommit, derived.baseline.sourceCommit);
+  assert.equal(derived.baseline.verificationPath, options.summaryPath.replace(/[^/]+$/, 'acceptance.json'));
+
+  const carried = deriveCriteria(summary, { ...options, verification: { commit: 'b'.repeat(40), path: 'evidence/603/verified/b/acceptance.json' } });
+  assert.equal(carried.baseline.sourceCommit, derived.baseline.sourceCommit);
+  assert.equal(carried.baseline.verifiedCommit, 'b'.repeat(40));
+  assert.equal(carried.baseline.verificationPath, 'evidence/603/verified/b/acceptance.json');
+  assert.deepEqual(carried.performance, derived.performance);
+});

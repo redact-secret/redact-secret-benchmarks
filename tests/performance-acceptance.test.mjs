@@ -6,7 +6,7 @@ function criteria(overrides = {}) {
   return {
     schemaVersion: '1', criteriaId: 'test-criteria', fixedAt: '2026-09-22',
     derivation: { repetitions: 5, percentile: 'p95', margin: 'test' },
-    baseline: { summaryPath: 'test.json', sourceCommit: 'a'.repeat(40), accuracyCorpusVersion: '3', accuracyCorpusHash: 'b'.repeat(64), workloadProfilesVersion: '1', workloadProfilesHash: 'c'.repeat(64) },
+    baseline: { summaryPath: 'test.json', sourceCommit: 'a'.repeat(40), verifiedCommit: 'a'.repeat(40), verificationPath: 'acceptance.json', accuracyCorpusVersion: '3', accuracyCorpusHash: 'b'.repeat(64), workloadProfilesVersion: '1', workloadProfilesHash: 'c'.repeat(64) },
     minimumRepetitions: 5,
     environment: { id: 'test-env', osPrefixes: ['linux-'], cpus: ['x86_64'], runtimePrefixes: { 'rust-core': ['rustc-'], python: ['cpython-'], node: ['node-'], 'browser-wasm': ['chromium-'], cli: ['rustc '] } },
     accuracy: { truePositives: 21, falsePositives: 1, falseNegatives: 5, policyMismatches: 0 },
@@ -52,6 +52,13 @@ function passingSummary() {
 
 test('validateAcceptanceCriteria rejects a non-40-hex source commit', () => {
   assert.throws(() => validateAcceptanceCriteria(criteria({ baseline: { ...criteria().baseline, sourceCommit: 'not-a-sha' } })), /invalid-metadata/);
+});
+
+test('validateAcceptanceCriteria rejects a missing or non-40-hex verified commit', () => {
+  const { verifiedCommit, ...withoutVerified } = criteria().baseline;
+  assert.equal(verifiedCommit.length, 40);
+  assert.throws(() => validateAcceptanceCriteria(criteria({ baseline: withoutVerified })), /invalid-metadata/);
+  assert.throws(() => validateAcceptanceCriteria(criteria({ baseline: { ...criteria().baseline, verifiedCommit: 'not-a-sha' } })), /invalid-metadata/);
 });
 
 test('validateAcceptanceCriteria rejects duplicate surface:profileId criteria', () => {

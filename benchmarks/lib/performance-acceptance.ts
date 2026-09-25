@@ -31,7 +31,17 @@ export interface AcceptanceCriteria {
   };
   readonly baseline: {
     readonly summaryPath: string;
+    /** The core commit the thresholds were derived from. */
     readonly sourceCommit: string;
+    /**
+     * The core commit of the latest ACCEPTED evaluation against these
+     * unchanged thresholds (decision-decouple-pin-freshness-from-pin-consistency).
+     * Equal to `sourceCommit` right after a derivation; an accepted run at a
+     * newer pin advances only this field.
+     */
+    readonly verifiedCommit: string;
+    /** The committed ACCEPTED `acceptance.json` for `verifiedCommit`. */
+    readonly verificationPath: string;
     readonly accuracyCorpusVersion: string;
     readonly accuracyCorpusHash: string;
     readonly workloadProfilesVersion: string;
@@ -82,6 +92,8 @@ export function validateAcceptanceCriteria(value: AcceptanceCriteria): Acceptanc
     value.schemaVersion !== '1' || value.criteriaId.length === 0 ||
     !/^\d{4}-\d{2}-\d{2}$/.test(value.fixedAt) ||
     !/^[0-9a-f]{40}$/.test(value.baseline.sourceCommit) ||
+    !/^[0-9a-f]{40}$/.test(value.baseline.verifiedCommit) ||
+    typeof value.baseline.verificationPath !== 'string' || value.baseline.verificationPath.length === 0 ||
     !/^[0-9a-f]{64}$/.test(value.baseline.accuracyCorpusHash) ||
     !/^[0-9a-f]{64}$/.test(value.baseline.workloadProfilesHash) ||
     !Number.isSafeInteger(value.minimumRepetitions) || value.minimumRepetitions < 2 ||

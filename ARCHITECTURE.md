@@ -77,6 +77,8 @@ benchmarks/lib/adversarial-intake.ts External adversarial intake: lifecycle, syn
 benchmarks/lib/evidence-classes.ts Public adversarial / protected holdout / maintainer regression queries and independence wording
 benchmarks/lib/tuning-manifest.ts Statistical scorer tuning manifests: corpus roles, holdout isolation, scoring identity, generated share, strata (#256; docs/specs/statistical-tuning.md)
 benchmarks/lib/candidate-features.ts Maintainer-local candidate-feature dataset for calibration: features, classes, holdout and publication guards (#254; docs/specs/candidate-features.md)
+benchmarks/lib/calibration-experiments.ts Shadow-scorer calibration experiments: grouped/halving/lookup/logistic models, band sweeps, selection, manifest draft (#255; docs/specs/calibration-experiments.md)
+benchmarks/lib/calibration-projection.mjs Closed public projection shape for calibration outcomes; used by the run and by features:check-public (#255)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
 scripts/baseline.mjs           Save baselines and generate docs/generated/release-comparison.md
@@ -266,6 +268,17 @@ is never projected to the site; `npm run features:check-public` fails CI if
 one reaches `public/` or `dist/`. Its `manifestBinding` is the
 `featureDataset` block a tuning manifest records. Formulas and the boundary
 are in [docs/specs/candidate-features.md](docs/specs/candidate-features.md).
+
+`npm run calibration:run` reads that dataset and compares candidate evidence
+models for the product's shadow scorer (#255): grouped scores under the
+contract's halving rule and caps, capped-sum and max-within-group variants,
+a flat linear baseline, a 2-D entropy × length lookup, and a floating-point
+logistic reference. It fits ramps and band thresholds on development rows,
+evaluates on regression rows, selects one conformant configuration for
+redact-secret#770, and emits a #256 tuning-manifest draft. Weights, caps,
+thresholds and per-configuration results stay in `results-output/`; only an
+aggregate projection passes the public whitelist
+([docs/specs/calibration-experiments.md](docs/specs/calibration-experiments.md)).
 
 ## Accounting (engine v1.1)
 

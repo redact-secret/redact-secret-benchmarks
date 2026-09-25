@@ -42,7 +42,7 @@ jobs:
       - name: Statistical scorer tuning manifests keep protected holdout out of tuning (#256)
         run: npm run tuning:check
       - run: npm run build
-      - name: No candidate-level feature vector reaches public/ or the built site (#254)
+      - name: No candidate-level feature vector or calibration boundary detail reaches public/ or the built site (#254, #255)
         run: npm run features:check-public
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check

@@ -277,6 +277,7 @@
           "partition",
           "tuningEligible",
           "origin",
+          "originBasis",
           "kind",
           "tier",
           "role",
@@ -313,6 +314,13 @@
           },
           "origin": {
             "$ref": "#/definitions/origin"
+          },
+          "originBasis": {
+            "enum": [
+              "authored-corpus",
+              "generator-literal",
+              "generator-computed"
+            ]
           },
           "kind": {
             "enum": [

@@ -30,7 +30,7 @@
  * The measurement-v4 scorer is not touched: nothing here runs a scanner.
  */
 import { createHash } from 'node:crypto';
-import { readFileSync, realpathSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 import type { Fixture, Kind, Tier } from '../types.ts';
 import { canonicalJson } from './adversarial-intake.ts';
@@ -38,7 +38,7 @@ import { CORE_FEATURE_SCHEMA, FEATURE_NAMES, MAX_ANALYSED_SYMBOLS, extractEviden
 
 export const CANDIDATE_FEATURES_SCHEMA_VERSION = 1;
 /** Bump on any change to a feature formula, class vocabulary, candidate rule or row field. */
-export const FEATURE_EXTRACTION_VERSION = 'candidate-features/1';
+export const FEATURE_EXTRACTION_VERSION = 'candidate-features/2';
 /** Bounded local context, in Unicode scalar values, read before a candidate on its own line. */
 export const CONTEXT_WINDOW = 64;
 export const DATASET_TYPE = 'candidate-features' as const;
@@ -54,6 +54,14 @@ export type NegativeClass =
   | 'mask' | 'placeholder-vocabulary' | 'dotted-reference' | 'none';
 export type Partition = 'development' | 'regression';
 export type Origin = 'generated' | 'authored';
+/**
+ * Why a row has its origin (docs/specs/candidate-features.md §2):
+ * `authored-corpus`, a corpus outside fixtures/generated/; `generator-literal`,
+ * a generated corpus whose candidate value is written verbatim in a generator's
+ * source, so a person typed it; `generator-computed`, a generated corpus whose
+ * value the generator computed (a seeded body, a mutation or a concatenation).
+ */
+export type OriginBasis = 'authored-corpus' | 'generator-literal' | 'generator-computed';
 export type CandidateSource = 'expected-span' | 'control-longest-token';
 
 export interface CandidateRow {
@@ -65,6 +73,7 @@ export interface CandidateRow {
   /** Only development rows may be selected for tuning (docs/specs/statistical-tuning.md §1). */
   tuningEligible: boolean;
   origin: Origin;
+  originBasis: OriginBasis;
   kind: Kind;
   tier: Tier;
   /** `secret` or `companion` for an expected span; `none` for a control's candidate. */
@@ -240,10 +249,48 @@ export interface CategoryInput {
   fixtures: Fixture[];
   /** `fixture-detectors.json` targets keyed by fixture id. */
   targets: Record<string, string[]>;
+  /**
+   * For a generated corpus: whether a candidate value is written verbatim in
+   * the generator sources. Absent for an authored corpus.
+   */
+  isGeneratorLiteral?: (value: string) => boolean;
 }
 
 /** Corpus-level origin: a corpus a benchmark generator writes (under fixtures/generated/) is `generated`. */
 export const originOf = (corpusPath: string): Origin => (corpusPath.startsWith('fixtures/generated/') ? 'generated' : 'authored');
+
+/** Where the benchmark generators live; their source text is what `generator-literal` is checked against. */
+export const GENERATOR_SOURCE_ROOT = 'fixtures/generated';
+
+/**
+ * Per-row origin. A row of an authored corpus is authored. A row of a
+ * generated corpus is authored only when its whole candidate value appears
+ * verbatim in a generator's source (as written, or with JSON string escapes),
+ * because then a person typed it; any value the generator computed, including
+ * a one-character mutation of a seeded body, stays generated. The rule errs
+ * towards `generated`, which is the direction the generated-share cap guards.
+ */
+export function rowOrigin(corpusOrigin: Origin, value: string, isGeneratorLiteral?: (value: string) => boolean): { origin: Origin; originBasis: OriginBasis } {
+  if (corpusOrigin === 'authored') return { origin: 'authored', originBasis: 'authored-corpus' };
+  return value.length > 0 && isGeneratorLiteral?.(value)
+    ? { origin: 'authored', originBasis: 'generator-literal' }
+    : { origin: 'generated', originBasis: 'generator-computed' };
+}
+
+/** Reads every generator module under fixtures/generated/ and returns the verbatim-literal test. */
+export function generatorLiteralTest(root: string): (value: string) => boolean {
+  const texts: string[] = [];
+  const walk = (directory: string) => {
+    for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const file = path.join(directory, entry.name);
+      if (entry.isDirectory()) walk(file);
+      else if (/\.(mjs|js|ts)$/.test(entry.name)) texts.push(readFileSync(file, 'utf8'));
+    }
+  };
+  if (existsSync(path.join(root, GENERATOR_SOURCE_ROOT))) walk(path.join(root, GENERATOR_SOURCE_ROOT));
+  const source = texts.join('\n');
+  return (value: string) => source.includes(value) || source.includes(JSON.stringify(value).slice(1, -1));
+}
 
 function byteSlice(content: string, start: number, end: number) {
   return Buffer.from(content).subarray(start, end).toString();
@@ -271,13 +318,15 @@ export function categoryRows(input: CategoryInput): { rows: CandidateRow[]; summ
       const value = byteSlice(f.content, c.start, c.end);
       const chars = characterRange(f.content, c.start, c.end);
       const family = f.assessment.contract ?? 'uncontracted';
+      const provenance = rowOrigin(origin, value, input.isGeneratorLiteral);
       const row: CandidateRow = {
         id: `${input.id}--${f.id}#${index}`,
         category: input.id,
         fixtureId: f.id,
         partition: input.partition,
         tuningEligible: input.partition === 'development',
-        origin,
+        origin: provenance.origin,
+        originBasis: provenance.originBasis,
         kind: f.assessment.kind,
         tier: f.assessment.tier,
         role: c.role,
@@ -296,9 +345,9 @@ export function categoryRows(input: CategoryInput): { rows: CandidateRow[]; summ
       };
       rows.push(row);
       if (row.role !== 'none') values.push(value);
-      summary.rows[origin]++;
+      summary.rows[row.origin]++;
       const counts = (summary.families[family] ??= { generated: 0, authored: 0 });
-      counts[origin]++;
+      counts[row.origin]++;
       summary.contexts[row.contextClass] = (summary.contexts[row.contextClass] ?? 0) + 1;
     });
   }
@@ -367,6 +416,7 @@ export function loadCategoryInputs(root: string): CategoryInput[] {
   const realStorage = directories.map(p => path.join(realpathSync(root), p) + path.sep);
   const inStorage = (file: string, roots = storage) => roots.some(directory => file.startsWith(directory));
   const inputs: CategoryInput[] = [];
+  const isGeneratorLiteral = generatorLiteralTest(root);
   for (const partition of ['development', 'regression'] as const) {
     const manifest = readJson(path.join(root, `corpora/${partition}/manifest.json`));
     if (manifest.schemaVersion !== 1 || manifest.visibility !== partition || !Array.isArray(manifest.categories)) throw new Error(`Invalid ${partition} corpus manifest`);
@@ -383,6 +433,7 @@ export function loadCategoryInputs(root: string): CategoryInput[] {
         reviewStatus: typeof corpus.reviewStatus === 'string' ? corpus.reviewStatus : null,
         fixtures: corpus.fixtures,
         targets: Object.fromEntries(Object.entries(targets).filter(([k]) => k.startsWith(prefix)).map(([k, v]) => [k.slice(prefix.length), v])),
+        ...(originOf(category.corpus) === 'generated' ? { isGeneratorLiteral } : {}),
       });
     }
   }

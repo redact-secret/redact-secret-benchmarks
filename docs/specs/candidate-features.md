@@ -65,12 +65,25 @@ fixture's `assessment`, `role` from its span, and `contract`, `contextAxis`,
 detectors plus arrival targets, sorted. No feature value ever changes any of
 these fields.
 
-`origin` is corpus-level: a corpus under `fixtures/generated/` is
-`generated`, anything else is `authored`. It is what a tuning manifest's
-generated-share cap counts (statistical tuning §5). A per-row refinement
-(for example, an authored placeholder inside a generated corpus) is deferred.
-Today nearly every row is `generated`, so a tuning manifest built on this
-dataset needs a reviewed `generatedShare.override` or more authored rows.
+`origin` is what a tuning manifest's generated-share cap counts
+(statistical tuning §5), and `originBasis` says why (`candidate-features/2`,
+#255):
+
+- `authored-corpus`: the corpus is outside `fixtures/generated/`; the row is
+  `authored`.
+- `generator-literal`: the corpus is generated, but the whole candidate
+  value appears verbatim (as written, or with JSON string escapes) in a
+  generator module under `fixtures/generated/`. A person typed it, so the
+  row is `authored`. This is how a placeholder, a reference or a word in
+  prose inside a generated corpus is counted.
+- `generator-computed`: anything the generator computed, including a
+  seeded body, a concatenation and a one-character mutation of a seeded
+  body. The row is `generated`.
+
+The rule errs towards `generated`, the direction the cap guards. Most
+tuning rows remain generated, so a tuning manifest built on this dataset
+still needs a reviewed `generatedShare.override` or more authored rows
+([calibration experiments](calibration-experiments.md) §7).
 
 ## 3. Feature definitions
 
@@ -192,7 +205,8 @@ starts with `EXAMPLE` and continues with random-looking material is `none`.
 The dataset (`schemaVersion: 1`, `datasetType: "candidate-features"`,
 `visibility: "maintainer-local"`) records:
 
-- `extractor.version`: `candidate-features/1`. Any change to the core
+- `extractor.version`: `candidate-features/2` (`/2` added the per-row
+  `originBasis`). Any change to the core
   feature schema it follows, a class vocabulary, the candidate rule or a row
   field bumps it.
 - `extractor.sourceHash`: SHA-256 over the canonical JSON of

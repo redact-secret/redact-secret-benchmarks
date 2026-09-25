@@ -45,3 +45,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Score arrival families the product types inside a shared detector](2026-09-24-score-arrival-families-by-finding-type.md) (amends the beta8 evidence spec; builds on the entry above)
 - [Protect holdout from statistical scorer tuning with a tuning manifest](2026-09-25-protect-holdout-from-statistical-scorer-tuning.md)
 - [Classify a pack the project assembles from external inputs as maintainer regression](2026-09-25-classify-project-assembled-external-inputs-as-maintainer-regression.md) (proposed; applies the adversarial intake decision to #140)
+- [Introduce reviewed performance-regression budgets derived from recorded variance](2026-09-25-introduce-reviewed-performance-regression-budgets.md)

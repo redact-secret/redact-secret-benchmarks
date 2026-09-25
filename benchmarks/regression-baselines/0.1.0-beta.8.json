@@ -1,0 +1,894 @@
+{
+  "schemaVersion": "1",
+  "id": "0.1.0-beta.8",
+  "productVersion": "0.1.0-beta.8",
+  "sourceCommit": "3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+  "takenAt": "2026-09-25",
+  "sources": {
+    "performanceSummary": {
+      "path": "evidence/603/summary.json",
+      "sha256": "aeb93a0e8c95da46e793533018ef6bfc45dd905d3dc7e08c0933a85e05a44119",
+      "repetitions": 5
+    },
+    "operationalEvidence": {
+      "path": "benchmarks/operational-evidence.json",
+      "sha256": "96ac83bf991b32a6402be2b85898adb23afb7e15270726cf47585d22e53ddbe7",
+      "measuredAt": "2026-09-25"
+    },
+    "adapterOverhead": {
+      "path": "benchmarks/regression-evidence/adapter-overhead-darwin-arm64.json",
+      "sha256": "8c42ddf2f5cd3b1181e01355ee2e3e8348e8f608793ed1d470f3019ade01dc53",
+      "adaptersRepository": "redact-secret/redact-secret-adapters",
+      "adapterSourceCommit": "27fc04f690d50d90977c594a95e13774126d7eae",
+      "adapterSourceNote": "The measured packages/*/src and python/redact_secret_adapters trees are identical to adapters develop at this commit; the harness itself came from the #11 branch.",
+      "harnessCommit": "099c07a0c306cfb35949a76348136869ddd6b411",
+      "harnessNote": "Merged redact-secret-adapters#11 commit (PR #22, merge 1480ca6); its tree 1d9990e is identical to the local work commit dca9cc3 that was measured.",
+      "core": {
+        "javascript": "@redact-secret/core@0.1.0-beta.8",
+        "python": "redact-secret==0.1.0b8"
+      },
+      "processesPerLanguage": 5,
+      "command": "node scripts/measure-overhead.mjs --out js-N.json; python scripts/measure-overhead.py --out py-N.json (defaults: 15 repetitions x 400 events, 200 warm-up events per mode), alternating, N=1..5"
+    }
+  },
+  "profiles": {
+    "latency": {
+      "os": "linux",
+      "cpu": "x86_64",
+      "rustBuildProfile": "release",
+      "workloadProfilesHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+      "status": "complete"
+    },
+    "adapter-overhead": {
+      "javascript": "darwin-arm64|Apple M4|node-22",
+      "javascript:workloadDigest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243",
+      "javascript:quick": "false",
+      "python": "darwin-arm64|Apple M4|cpython-3.14",
+      "python:workloadDigest": "0a00b415c375082d45b261b8c6e3a126fa3ea7fca74d31525fef2fd12273b243",
+      "python:quick": "false"
+    }
+  },
+  "metrics": {
+    "latency/rust-core/scale-logs-small-whole/processing-p95": {
+      "id": "latency/rust-core/scale-logs-small-whole/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 18.380934,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 16.047090999999998
+      }
+    },
+    "initialization/rust-core/scale-logs-small-whole/initialization-p95": {
+      "id": "initialization/rust-core/scale-logs-small-whole/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 0.028283,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 0.014577
+      }
+    },
+    "memory/rust-core/scale-logs-small-whole/processRss": {
+      "id": "memory/rust-core/scale-logs-small-whole/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 3911680,
+      "samples": 5
+    },
+    "latency/rust-core/scale-logs-medium-fixed4096/processing-p95": {
+      "id": "latency/rust-core/scale-logs-medium-fixed4096/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 79.303971,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 78.75741699999999
+      }
+    },
+    "initialization/rust-core/scale-logs-medium-fixed4096/initialization-p95": {
+      "id": "initialization/rust-core/scale-logs-medium-fixed4096/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 0.027922000000000002,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 0.013305
+      }
+    },
+    "memory/rust-core/scale-logs-medium-fixed4096/processRss": {
+      "id": "memory/rust-core/scale-logs-medium-fixed4096/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 3870720,
+      "samples": 5
+    },
+    "latency/python/scale-logs-small-whole/processing-p95": {
+      "id": "latency/python/scale-logs-small-whole/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 15.89261,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 15.617435
+      }
+    },
+    "initialization/python/scale-logs-small-whole/initialization-p95": {
+      "id": "initialization/python/scale-logs-small-whole/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 0.970198,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 0.958055
+      }
+    },
+    "memory/python/scale-logs-small-whole/pythonHeap": {
+      "id": "memory/python/scale-logs-small-whole/pythonHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 75205,
+      "samples": 5
+    },
+    "memory/python/scale-logs-small-whole/processRss": {
+      "id": "memory/python/scale-logs-small-whole/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 21610496,
+      "samples": 5
+    },
+    "latency/python/scale-logs-medium-fixed4096/processing-p95": {
+      "id": "latency/python/scale-logs-medium-fixed4096/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 81.351337,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 80.06104
+      }
+    },
+    "initialization/python/scale-logs-medium-fixed4096/initialization-p95": {
+      "id": "initialization/python/scale-logs-medium-fixed4096/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 1.026253,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 0.991528
+      }
+    },
+    "memory/python/scale-logs-medium-fixed4096/pythonHeap": {
+      "id": "memory/python/scale-logs-medium-fixed4096/pythonHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 537604,
+      "samples": 5
+    },
+    "memory/python/scale-logs-medium-fixed4096/processRss": {
+      "id": "memory/python/scale-logs-medium-fixed4096/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 21368832,
+      "samples": 5
+    },
+    "latency/node/scale-logs-small-whole/processing-p95": {
+      "id": "latency/node/scale-logs-small-whole/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 15.847566,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 15.743731000000011
+      }
+    },
+    "initialization/node/scale-logs-small-whole/initialization-p95": {
+      "id": "initialization/node/scale-logs-small-whole/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 6.092246000000003,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 5.3946380000000005
+      }
+    },
+    "memory/node/scale-logs-small-whole/nodeHeap": {
+      "id": "memory/node/scale-logs-small-whole/nodeHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 7470936,
+      "samples": 5
+    },
+    "memory/node/scale-logs-small-whole/nodeRss": {
+      "id": "memory/node/scale-logs-small-whole/nodeRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 68087808,
+      "samples": 5
+    },
+    "memory/node/scale-logs-small-whole/nodeExternal": {
+      "id": "memory/node/scale-logs-small-whole/nodeExternal",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 2316568,
+      "samples": 5
+    },
+    "latency/node/scale-logs-medium-fixed4096/processing-p95": {
+      "id": "latency/node/scale-logs-medium-fixed4096/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 90.48937000000001,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 88.977217
+      }
+    },
+    "initialization/node/scale-logs-medium-fixed4096/initialization-p95": {
+      "id": "initialization/node/scale-logs-medium-fixed4096/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 6.395963999999992,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 5.534631000000019
+      }
+    },
+    "memory/node/scale-logs-medium-fixed4096/nodeHeap": {
+      "id": "memory/node/scale-logs-medium-fixed4096/nodeHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 21724840,
+      "samples": 5
+    },
+    "memory/node/scale-logs-medium-fixed4096/nodeRss": {
+      "id": "memory/node/scale-logs-medium-fixed4096/nodeRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 97259520,
+      "samples": 5
+    },
+    "memory/node/scale-logs-medium-fixed4096/nodeExternal": {
+      "id": "memory/node/scale-logs-medium-fixed4096/nodeExternal",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 2348439,
+      "samples": 5
+    },
+    "latency/browser-wasm/scale-logs-small-whole/processing-p95": {
+      "id": "latency/browser-wasm/scale-logs-small-whole/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 35.29999999998836,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 23.20000000001164
+      }
+    },
+    "initialization/browser-wasm/scale-logs-small-whole/initialization-p95": {
+      "id": "initialization/browser-wasm/scale-logs-small-whole/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 13.099999999976717,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 9
+      }
+    },
+    "memory/browser-wasm/scale-logs-small-whole/browserJsHeap": {
+      "id": "memory/browser-wasm/scale-logs-small-whole/browserJsHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 10000000,
+      "samples": 5
+    },
+    "latency/browser-wasm/scale-logs-medium-fixed4096/processing-p95": {
+      "id": "latency/browser-wasm/scale-logs-medium-fixed4096/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 115.5,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 106
+      }
+    },
+    "initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-p95": {
+      "id": "initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 17.399999999965075,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 15.699999999953434
+      }
+    },
+    "memory/browser-wasm/scale-logs-medium-fixed4096/browserJsHeap": {
+      "id": "memory/browser-wasm/scale-logs-medium-fixed4096/browserJsHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 39600000,
+      "samples": 5
+    },
+    "latency/cli/scale-logs-small-whole/processing-p95": {
+      "id": "latency/cli/scale-logs-small-whole/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 23.399737000000016,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 23.105126
+      }
+    },
+    "initialization/cli/scale-logs-small-whole/initialization-p95": {
+      "id": "initialization/cli/scale-logs-small-whole/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 2.6162920000000014,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 2.6013849999999934
+      }
+    },
+    "memory/cli/scale-logs-small-whole/processRss": {
+      "id": "memory/cli/scale-logs-small-whole/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 3244032,
+      "samples": 5
+    },
+    "latency/cli/scale-logs-medium-fixed4096/processing-p95": {
+      "id": "latency/cli/scale-logs-medium-fixed4096/processing-p95",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 85.56273599999997,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "processing median",
+        "value": 83.735657
+      }
+    },
+    "initialization/cli/scale-logs-medium-fixed4096/initialization-p95": {
+      "id": "initialization/cli/scale-logs-medium-fixed4096/initialization-p95",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "milliseconds",
+      "value": 2.8320870000000014,
+      "samples": 5,
+      "corroboration": {
+        "statistic": "initialization median",
+        "value": 2.707644000000002
+      }
+    },
+    "memory/cli/scale-logs-medium-fixed4096/processRss": {
+      "id": "memory/cli/scale-logs-medium-fixed4096/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "value": 3284992,
+      "samples": 5
+    },
+    "size/wasm/full/gzip": {
+      "id": "size/wasm/full/gzip",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 137639,
+      "samples": 1,
+      "role": "default"
+    },
+    "size/wasm/common/gzip": {
+      "id": "size/wasm/common/gzip",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 100058,
+      "samples": 1,
+      "role": "optional"
+    },
+    "size/browser-bundle/quickstart/gzip": {
+      "id": "size/browser-bundle/quickstart/gzip",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 144501,
+      "samples": 1,
+      "role": "default"
+    },
+    "size/npm/core/packed": {
+      "id": "size/npm/core/packed",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 39461,
+      "samples": 1
+    },
+    "size/npm/wasm/packed": {
+      "id": "size/npm/wasm/packed",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 254413,
+      "samples": 1
+    },
+    "size/npm/node-darwin-arm64/packed": {
+      "id": "size/npm/node-darwin-arm64/packed",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 424514,
+      "samples": 1
+    },
+    "size/node-addon/aarch64-apple-darwin": {
+      "id": "size/node-addon/aarch64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 1004128,
+      "samples": 1
+    },
+    "size/node-addon/aarch64-pc-windows-msvc": {
+      "id": "size/node-addon/aarch64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 709120,
+      "samples": 1
+    },
+    "size/node-addon/aarch64-unknown-linux-gnu": {
+      "id": "size/node-addon/aarch64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 1149600,
+      "samples": 1
+    },
+    "size/node-addon/aarch64-unknown-linux-musl": {
+      "id": "size/node-addon/aarch64-unknown-linux-musl",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 1148696,
+      "samples": 1
+    },
+    "size/node-addon/x86_64-apple-darwin": {
+      "id": "size/node-addon/x86_64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 1046848,
+      "samples": 1
+    },
+    "size/node-addon/x86_64-pc-windows-msvc": {
+      "id": "size/node-addon/x86_64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 783872,
+      "samples": 1
+    },
+    "size/node-addon/x86_64-unknown-linux-gnu": {
+      "id": "size/node-addon/x86_64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 1121416,
+      "samples": 1
+    },
+    "size/node-addon/x86_64-unknown-linux-musl": {
+      "id": "size/node-addon/x86_64-unknown-linux-musl",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 1126864,
+      "samples": 1
+    },
+    "size/python-wheel/aarch64-apple-darwin": {
+      "id": "size/python-wheel/aarch64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 443493,
+      "samples": 1
+    },
+    "size/python-wheel/aarch64-pc-windows-msvc": {
+      "id": "size/python-wheel/aarch64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 340669,
+      "samples": 1
+    },
+    "size/python-wheel/aarch64-unknown-linux-gnu": {
+      "id": "size/python-wheel/aarch64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 474269,
+      "samples": 1
+    },
+    "size/python-wheel/aarch64-unknown-linux-musl": {
+      "id": "size/python-wheel/aarch64-unknown-linux-musl",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 653409,
+      "samples": 1
+    },
+    "size/python-wheel/x86_64-apple-darwin": {
+      "id": "size/python-wheel/x86_64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 454825,
+      "samples": 1
+    },
+    "size/python-wheel/x86_64-pc-windows-msvc": {
+      "id": "size/python-wheel/x86_64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 356875,
+      "samples": 1
+    },
+    "size/python-wheel/x86_64-unknown-linux-gnu": {
+      "id": "size/python-wheel/x86_64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 482525,
+      "samples": 1
+    },
+    "size/python-wheel/x86_64-unknown-linux-musl": {
+      "id": "size/python-wheel/x86_64-unknown-linux-musl",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 695123,
+      "samples": 1
+    },
+    "size/cli/aarch64-apple-darwin": {
+      "id": "size/cli/aarch64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 762560,
+      "samples": 1
+    },
+    "size/cli/aarch64-pc-windows-msvc": {
+      "id": "size/cli/aarch64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 496640,
+      "samples": 1
+    },
+    "size/cli/aarch64-unknown-linux-gnu": {
+      "id": "size/cli/aarch64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 863848,
+      "samples": 1
+    },
+    "size/cli/x86_64-apple-darwin": {
+      "id": "size/cli/x86_64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 798416,
+      "samples": 1
+    },
+    "size/cli/x86_64-pc-windows-msvc": {
+      "id": "size/cli/x86_64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 547328,
+      "samples": 1
+    },
+    "size/cli/x86_64-unknown-linux-gnu": {
+      "id": "size/cli/x86_64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "value": 868280,
+      "samples": 1
+    },
+    "adapter/pino/log-flat/traversal": {
+      "id": "adapter/pino/log-flat/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "value": 1.494,
+      "samples": 75
+    },
+    "adapter/pino/log-flat/scanner-calls": {
+      "id": "adapter/pino/log-flat/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "value": 9,
+      "samples": 5
+    },
+    "adapter/pino/log-flat/scanned-code-units": {
+      "id": "adapter/pino/log-flat/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "value": 367.063,
+      "samples": 5
+    },
+    "adapter/pino-streamwrite/log-flat/traversal": {
+      "id": "adapter/pino-streamwrite/log-flat/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "value": 3.7,
+      "samples": 75
+    },
+    "adapter/pino-streamwrite/log-flat/scanner-calls": {
+      "id": "adapter/pino-streamwrite/log-flat/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "value": 18,
+      "samples": 5
+    },
+    "adapter/pino-streamwrite/log-flat/scanned-code-units": {
+      "id": "adapter/pino-streamwrite/log-flat/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "value": 734.125,
+      "samples": 5
+    },
+    "adapter/pino/log-nested/traversal": {
+      "id": "adapter/pino/log-nested/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "value": 3.136,
+      "samples": 75
+    },
+    "adapter/pino/log-nested/scanner-calls": {
+      "id": "adapter/pino/log-nested/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "value": 27,
+      "samples": 5
+    },
+    "adapter/pino/log-nested/scanned-code-units": {
+      "id": "adapter/pino/log-nested/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "value": 1077.125,
+      "samples": 5
+    },
+    "adapter/pino-streamwrite/log-nested/traversal": {
+      "id": "adapter/pino-streamwrite/log-nested/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "value": 8.518,
+      "samples": 75
+    },
+    "adapter/pino-streamwrite/log-nested/scanner-calls": {
+      "id": "adapter/pino-streamwrite/log-nested/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "value": 54,
+      "samples": 5
+    },
+    "adapter/pino-streamwrite/log-nested/scanned-code-units": {
+      "id": "adapter/pino-streamwrite/log-nested/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "value": 2154.25,
+      "samples": 5
+    },
+    "adapter/otel-js/span-attributes/traversal": {
+      "id": "adapter/otel-js/span-attributes/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "value": 1.122,
+      "samples": 75
+    },
+    "adapter/otel-js/span-attributes/scanner-calls": {
+      "id": "adapter/otel-js/span-attributes/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "value": 43,
+      "samples": 5
+    },
+    "adapter/otel-js/span-attributes/scanned-code-units": {
+      "id": "adapter/otel-js/span-attributes/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "value": 3060.438,
+      "samples": 5
+    },
+    "adapter/mask-js/mask-payload/traversal": {
+      "id": "adapter/mask-js/mask-payload/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "value": 4.291,
+      "samples": 75
+    },
+    "adapter/mask-js/mask-payload/scanner-calls": {
+      "id": "adapter/mask-js/mask-payload/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "value": 22,
+      "samples": 5
+    },
+    "adapter/mask-js/mask-payload/scanned-code-units": {
+      "id": "adapter/mask-js/mask-payload/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "value": 3024.547,
+      "samples": 5
+    },
+    "adapter/python-logging/log-flat/traversal": {
+      "id": "adapter/python-logging/log-flat/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "microseconds-per-event",
+      "value": 4.026,
+      "samples": 75
+    },
+    "adapter/python-logging/log-flat/scanner-calls": {
+      "id": "adapter/python-logging/log-flat/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "value": 9,
+      "samples": 5
+    },
+    "adapter/python-logging/log-flat/scanned-code-units": {
+      "id": "adapter/python-logging/log-flat/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "value": 367.062,
+      "samples": 5
+    },
+    "adapter/python-logging/log-nested/traversal": {
+      "id": "adapter/python-logging/log-nested/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "microseconds-per-event",
+      "value": 11.718,
+      "samples": 75
+    },
+    "adapter/python-logging/log-nested/scanner-calls": {
+      "id": "adapter/python-logging/log-nested/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "value": 27,
+      "samples": 5
+    },
+    "adapter/python-logging/log-nested/scanned-code-units": {
+      "id": "adapter/python-logging/log-nested/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "value": 1077.125,
+      "samples": 5
+    },
+    "adapter/otel-python/span-attributes/traversal": {
+      "id": "adapter/otel-python/span-attributes/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "microseconds-per-event",
+      "value": 18.643,
+      "samples": 75
+    },
+    "adapter/otel-python/span-attributes/scanner-calls": {
+      "id": "adapter/otel-python/span-attributes/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "value": 43,
+      "samples": 5
+    },
+    "adapter/otel-python/span-attributes/scanned-code-units": {
+      "id": "adapter/otel-python/span-attributes/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "value": 3060.438,
+      "samples": 5
+    },
+    "adapter/mask-python/mask-payload/traversal": {
+      "id": "adapter/mask-python/mask-payload/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "microseconds-per-event",
+      "value": 13.147,
+      "samples": 75
+    },
+    "adapter/mask-python/mask-payload/scanner-calls": {
+      "id": "adapter/mask-python/mask-payload/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "value": 22,
+      "samples": 5
+    },
+    "adapter/mask-python/mask-payload/scanned-code-units": {
+      "id": "adapter/mask-python/mask-payload/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "value": 3024.547,
+      "samples": 5
+    }
+  },
+  "detection": {
+    "truePositives": 21,
+    "falsePositives": 1,
+    "falseNegatives": 5,
+    "policyMismatches": 0
+  }
+}

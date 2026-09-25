@@ -1,0 +1,1312 @@
+{
+  "schema": "redact-secret-benchmarks/ci-dispersion-v1",
+  "issue": 143,
+  "description": "Every committed release-build performance summary (evidence/603/summary.json across its git history), reduced to per-row within-run dispersion and memory maxima. Each run is a different product commit, so cross-run differences mix noise with real change; within-run dispersion is five fresh-process samples on one GitHub-hosted Linux x86_64 runner.",
+  "source": "git show <benchmarksCommit>:evidence/603/summary.json",
+  "runs": [
+    {
+      "benchmarksCommit": "50d47f5f6f5b69b0633fa02e116c07c910270954",
+      "productCommit": "944341903d5b85686a056d3218f4c33110d7d57b",
+      "repetitions": 5,
+      "rows": {
+        "rust-core/scale-logs-small-whole": {
+          "processing": {
+            "p95": 27.007543,
+            "median": 26.791891000000003,
+            "dispersion": 0.008049151887039141
+          },
+          "initialization": {
+            "p95": 0.019126,
+            "median": 0.007044,
+            "dispersion": 1.7152186257808064
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3739648
+          }
+        },
+        "rust-core/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 125.68791100000001,
+            "median": 123.266649,
+            "dispersion": 0.019642474421447176
+          },
+          "initialization": {
+            "p95": 0.017683,
+            "median": 0.007795000000000001,
+            "dispersion": 1.268505452212957
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3747840
+          }
+        },
+        "python/scale-logs-small-whole": {
+          "processing": {
+            "p95": 27.499768,
+            "median": 24.564706,
+            "dispersion": 0.1194828873587983
+          },
+          "initialization": {
+            "p95": 0.832936,
+            "median": 0.82436,
+            "dispersion": 0.010403221893347636
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21442560
+          }
+        },
+        "python/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 115.543756,
+            "median": 113.019231,
+            "dispersion": 0.02233712774067631
+          },
+          "initialization": {
+            "p95": 0.853734,
+            "median": 0.850989,
+            "dispersion": 0.003225658616033744
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537596,
+            "processRss": 21123072
+          }
+        },
+        "node/scale-logs-small-whole": {
+          "processing": {
+            "p95": 23.426551000000003,
+            "median": 23.14348199999999,
+            "dispersion": 0.012231046304960191
+          },
+          "initialization": {
+            "p95": 2.254962000000006,
+            "median": 2.235405,
+            "dispersion": 0.008748750226471813
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7071368,
+            "nodeRss": 66678784,
+            "nodeExternal": 2289931
+          }
+        },
+        "node/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 107.03277100000003,
+            "median": 106.033454,
+            "dispersion": 0.009424544446133165
+          },
+          "initialization": {
+            "p95": 2.412786000000011,
+            "median": 2.357732999999996,
+            "dispersion": 0.023349972197876268
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21666160,
+            "nodeRss": 93982720,
+            "nodeExternal": 2321715
+          }
+        },
+        "browser-wasm/scale-logs-small-whole": {
+          "processing": {
+            "p95": 41.20000000001164,
+            "median": 27.39999999999418,
+            "dispersion": 0.5036496350372406
+          },
+          "initialization": {
+            "p95": 10.700000000011642,
+            "median": 8.89999999999418,
+            "dispersion": 0.20224719101333033
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        "browser-wasm/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 123.09999999997672,
+            "median": 122.10000000000582,
+            "dispersion": 0.008190008189769449
+          },
+          "initialization": {
+            "p95": 14.199999999982538,
+            "median": 13.89999999999418,
+            "dispersion": 0.021582733812121058
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        "cli/scale-logs-small-whole": {
+          "processing": {
+            "p95": 34.449126000000035,
+            "median": 33.80589500000002,
+            "dispersion": 0.019027184459988744
+          },
+          "initialization": {
+            "p95": 2.1946390000000093,
+            "median": 1.9600810000000024,
+            "dispersion": 0.11966750353684708
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3100672
+          }
+        },
+        "cli/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 127.47920899999997,
+            "median": 126.05836599999998,
+            "dispersion": 0.011271310624476838
+          },
+          "initialization": {
+            "p95": 2.2328800000000086,
+            "median": 1.9780040000000554,
+            "dispersion": 0.12885514892788197
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3166208
+          }
+        }
+      }
+    },
+    {
+      "benchmarksCommit": "c0c156fba672821f646262d732c1c2c4a97b986f",
+      "productCommit": "079095e766e4a71e2b7e29413ed17be37bb3315d",
+      "repetitions": 5,
+      "rows": {
+        "rust-core/scale-logs-small-whole": {
+          "processing": {
+            "p95": 26.989392000000002,
+            "median": 26.371301,
+            "dispersion": 0.023438016956387697
+          },
+          "initialization": {
+            "p95": 0.021342,
+            "median": 0.0069310000000000005,
+            "dispersion": 2.079209349300245
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3846144
+          }
+        },
+        "rust-core/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 126.598133,
+            "median": 125.964208,
+            "dispersion": 0.005032580366003625
+          },
+          "initialization": {
+            "p95": 0.019038,
+            "median": 0.0069500000000000004,
+            "dispersion": 1.739280575539568
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3780608
+          }
+        },
+        "python/scale-logs-small-whole": {
+          "processing": {
+            "p95": 24.257319,
+            "median": 23.62731,
+            "dispersion": 0.026664440429316594
+          },
+          "initialization": {
+            "p95": 0.801802,
+            "median": 0.741764,
+            "dispersion": 0.08093949018825408
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21454848
+          }
+        },
+        "python/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 135.506363,
+            "median": 114.719052,
+            "dispersion": 0.18120190707294181
+          },
+          "initialization": {
+            "p95": 0.844946,
+            "median": 0.787352,
+            "dispersion": 0.07314898546012438
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21270528
+          }
+        },
+        "node/scale-logs-small-whole": {
+          "processing": {
+            "p95": 23.230976000000013,
+            "median": 22.869973,
+            "dispersion": 0.015785020821843965
+          },
+          "initialization": {
+            "p95": 4.777837999999996,
+            "median": 4.3784980000000004,
+            "dispersion": 0.09120479214561583
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7470536,
+            "nodeRss": 65794048,
+            "nodeExternal": 2316123
+          }
+        },
+        "node/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 117.37867399999999,
+            "median": 113.62309500000003,
+            "dispersion": 0.033052954595189865
+          },
+          "initialization": {
+            "p95": 4.960307,
+            "median": 4.876393000000007,
+            "dispersion": 0.017208211069122736
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21722384,
+            "nodeRss": 94932992,
+            "nodeExternal": 2347998
+          }
+        },
+        "browser-wasm/scale-logs-small-whole": {
+          "processing": {
+            "p95": 29.899999999965075,
+            "median": 28.099999999976717,
+            "dispersion": 0.06405693950141811
+          },
+          "initialization": {
+            "p95": 10,
+            "median": 8.299999999988358,
+            "dispersion": 0.2048192771101236
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        "browser-wasm/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 121.79999999998836,
+            "median": 121.5,
+            "dispersion": 0.002469135802373401
+          },
+          "initialization": {
+            "p95": 12.600000000034925,
+            "median": 11.400000000023283,
+            "dispersion": 0.10526315789554297
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        "cli/scale-logs-small-whole": {
+          "processing": {
+            "p95": 42.22219899999999,
+            "median": 32.74145299999998,
+            "dispersion": 0.2895639970529107
+          },
+          "initialization": {
+            "p95": 2.813369999999999,
+            "median": 1.9564269999999908,
+            "dispersion": 0.4380142985145943
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3244032
+          }
+        },
+        "cli/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 125.03346899999997,
+            "median": 124.40202699999998,
+            "dispersion": 0.005075817615094014
+          },
+          "initialization": {
+            "p95": 2.1236229999999523,
+            "median": 2.092477000000031,
+            "dispersion": 0.014884751421363696
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3317760
+          }
+        }
+      }
+    },
+    {
+      "benchmarksCommit": "41afd0b2c7c43ea4ff0c46778673a90ae5a889a2",
+      "productCommit": "41fc36603ef0a25aeb1992aca2fbfad2e2f37aa1",
+      "repetitions": 5,
+      "rows": {
+        "rust-core/scale-logs-small-whole": {
+          "processing": {
+            "p95": 19.018422,
+            "median": 18.989599,
+            "dispersion": 0.0015178308925851702
+          },
+          "initialization": {
+            "p95": 0.016555,
+            "median": 0.005788000000000001,
+            "dispersion": 1.86022805805114
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3854336
+          }
+        },
+        "rust-core/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 82.309673,
+            "median": 81.859115,
+            "dispersion": 0.005504066346185166
+          },
+          "initialization": {
+            "p95": 0.018137,
+            "median": 0.0059889999999999995,
+            "dispersion": 2.0283853731841712
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3964928
+          }
+        },
+        "python/scale-logs-small-whole": {
+          "processing": {
+            "p95": 17.906993,
+            "median": 17.60846,
+            "dispersion": 0.016953952815862428
+          },
+          "initialization": {
+            "p95": 0.57365,
+            "median": 0.567541,
+            "dispersion": 0.010763980047256538
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21442560
+          }
+        },
+        "python/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 89.080396,
+            "median": 77.656212,
+            "dispersion": 0.14711230055877556
+          },
+          "initialization": {
+            "p95": 0.623854,
+            "median": 0.607089,
+            "dispersion": 0.027615390824080155
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21286912
+          }
+        },
+        "node/scale-logs-small-whole": {
+          "processing": {
+            "p95": 20.05687900000001,
+            "median": 19.359335,
+            "dispersion": 0.03603140293816942
+          },
+          "initialization": {
+            "p95": 4.2059599999999975,
+            "median": 3.676585000000003,
+            "dispersion": 0.14398551917064184
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7405848,
+            "nodeRss": 70074368,
+            "nodeExternal": 2316568
+          }
+        },
+        "node/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 91.20869800000003,
+            "median": 88.84620000000001,
+            "dispersion": 0.0265908727666464
+          },
+          "initialization": {
+            "p95": 4.3737680000000125,
+            "median": 4.334019999999981,
+            "dispersion": 0.009171162108165598
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21701712,
+            "nodeRss": 94965760,
+            "nodeExternal": 2348236
+          }
+        },
+        "browser-wasm/scale-logs-small-whole": {
+          "processing": {
+            "p95": 22.29999999998836,
+            "median": 22,
+            "dispersion": 0.013636363635834536
+          },
+          "initialization": {
+            "p95": 14,
+            "median": 5.100000000034925,
+            "dispersion": 1.745098039196888
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        "browser-wasm/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 102.10000000003492,
+            "median": 98.79999999998836,
+            "dispersion": 0.033400809717074376
+          },
+          "initialization": {
+            "p95": 10.5,
+            "median": 10.099999999976717,
+            "dispersion": 0.03960396039843617
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        "cli/scale-logs-small-whole": {
+          "processing": {
+            "p95": 22.247591,
+            "median": 21.431652000000014,
+            "dispersion": 0.03807168014859452
+          },
+          "initialization": {
+            "p95": 1.622995000000003,
+            "median": 1.467193999999978,
+            "dispersion": 0.10618977449473443
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3325952
+          }
+        },
+        "cli/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 81.78717900000001,
+            "median": 80.099288,
+            "dispersion": 0.021072484439562222
+          },
+          "initialization": {
+            "p95": 1.9440309999999954,
+            "median": 1.6589789999999311,
+            "dispersion": 0.17182375424889407
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3321856
+          }
+        }
+      }
+    },
+    {
+      "benchmarksCommit": "f32473f5a5643be67a5e96d224dd86faab458213",
+      "productCommit": "15fce66e7c2d45003d7c6e31a341e5bc875a7326",
+      "repetitions": 5,
+      "rows": {
+        "rust-core/scale-logs-small-whole": {
+          "processing": {
+            "p95": 14.387782999999999,
+            "median": 14.379477999999999,
+            "dispersion": 0.0005775592132064578
+          },
+          "initialization": {
+            "p95": 0.021429,
+            "median": 0.009538000000000001,
+            "dispersion": 1.2466974208429438
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3768320
+          }
+        },
+        "rust-core/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 68.871434,
+            "median": 68.376484,
+            "dispersion": 0.00723859975017116
+          },
+          "initialization": {
+            "p95": 0.021891,
+            "median": 0.01063,
+            "dispersion": 1.0593603010348072
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3735552
+          }
+        },
+        "python/scale-logs-small-whole": {
+          "processing": {
+            "p95": 14.538285,
+            "median": 14.318827,
+            "dispersion": 0.015326534778302703
+          },
+          "initialization": {
+            "p95": 0.939196,
+            "median": 0.921483,
+            "dispersion": 0.019222275397375643
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21512192
+          }
+        },
+        "python/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 69.475909,
+            "median": 68.906761,
+            "dispersion": 0.008259682964927073
+          },
+          "initialization": {
+            "p95": 0.975002,
+            "median": 0.94136,
+            "dispersion": 0.03573765615704949
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21286912
+          }
+        },
+        "node/scale-logs-small-whole": {
+          "processing": {
+            "p95": 14.603887,
+            "median": 14.386293000000009,
+            "dispersion": 0.015125091641049693
+          },
+          "initialization": {
+            "p95": 5.886623,
+            "median": 5.2931389999999965,
+            "dispersion": 0.11212325994084127
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7470792,
+            "nodeRss": 67788800,
+            "nodeExternal": 2316568
+          }
+        },
+        "node/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 77.39709299999998,
+            "median": 75.867389,
+            "dispersion": 0.02016286602403028
+          },
+          "initialization": {
+            "p95": 6.00643500000001,
+            "median": 5.950331000000006,
+            "dispersion": 0.00942871917545518
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21730072,
+            "nodeRss": 95629312,
+            "nodeExternal": 2348317
+          }
+        },
+        "browser-wasm/scale-logs-small-whole": {
+          "processing": {
+            "p95": 25.800000000017462,
+            "median": 18.89999999999418,
+            "dispersion": 0.3650793650807094
+          },
+          "initialization": {
+            "p95": 17.89999999999418,
+            "median": 9.199999999982538,
+            "dispersion": 0.9456521739161037
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        "browser-wasm/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 87.39999999999418,
+            "median": 85.89999999999418,
+            "dispersion": 0.017462165308499422
+          },
+          "initialization": {
+            "p95": 16.79999999998836,
+            "median": 15.199999999982538,
+            "dispersion": 0.10526315789524077
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        "cli/scale-logs-small-whole": {
+          "processing": {
+            "p95": 23.363432999999986,
+            "median": 20.666258,
+            "dispersion": 0.13051104849266792
+          },
+          "initialization": {
+            "p95": 2.686489999999992,
+            "median": 2.5637370000000033,
+            "dispersion": 0.04788049632235625
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3219456
+          }
+        },
+        "cli/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 81.39497,
+            "median": 75.840733,
+            "dispersion": 0.07323553953519935
+          },
+          "initialization": {
+            "p95": 2.764870999999971,
+            "median": 2.7106300000000374,
+            "dispersion": 0.020010477269097215
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3223552
+          }
+        }
+      }
+    },
+    {
+      "benchmarksCommit": "67cf1b07b3aa325e765eb24dc58f08f197829a26",
+      "productCommit": "fdca511d5a161202deebfd5906b17d7218ef9b2c",
+      "repetitions": 5,
+      "rows": {
+        "rust-core/scale-logs-small-whole": {
+          "processing": {
+            "p95": 9.008795,
+            "median": 8.390026,
+            "dispersion": 0.07375054618424293
+          },
+          "initialization": {
+            "p95": 0.019848,
+            "median": 0.008768,
+            "dispersion": 1.2636861313868617
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3895296
+          }
+        },
+        "rust-core/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 43.554065,
+            "median": 43.145206,
+            "dispersion": 0.009476348310864413
+          },
+          "initialization": {
+            "p95": 0.016793,
+            "median": 0.007551,
+            "dispersion": 1.2239438484968876
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3866624
+          }
+        },
+        "python/scale-logs-small-whole": {
+          "processing": {
+            "p95": 9.177388,
+            "median": 8.820303,
+            "dispersion": 0.040484436872520346
+          },
+          "initialization": {
+            "p95": 0.617996,
+            "median": 0.603942,
+            "dispersion": 0.023270446499829456
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21450752
+          }
+        },
+        "python/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 44.949518,
+            "median": 43.662128,
+            "dispersion": 0.029485278408784676
+          },
+          "initialization": {
+            "p95": 0.707793,
+            "median": 0.670681,
+            "dispersion": 0.055334801492811
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21286912
+          }
+        },
+        "node/scale-logs-small-whole": {
+          "processing": {
+            "p95": 9.722729000000001,
+            "median": 8.964586999999995,
+            "dispersion": 0.08457076717533196
+          },
+          "initialization": {
+            "p95": 4.288857,
+            "median": 3.9766209999999944,
+            "dispersion": 0.07851791759888771
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7563720,
+            "nodeRss": 67448832,
+            "nodeExternal": 2316568
+          }
+        },
+        "node/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 52.38368,
+            "median": 51.03884700000003,
+            "dispersion": 0.026349204165994733
+          },
+          "initialization": {
+            "p95": 4.793255999999985,
+            "median": 4.349195000000009,
+            "dispersion": 0.10210188322206193
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21701360,
+            "nodeRss": 94896128,
+            "nodeExternal": 2348326
+          }
+        },
+        "browser-wasm/scale-logs-small-whole": {
+          "processing": {
+            "p95": 15.70000000006985,
+            "median": 13.600000000093132,
+            "dispersion": 0.1544117647031129
+          },
+          "initialization": {
+            "p95": 8.099999999976717,
+            "median": 6,
+            "dispersion": 0.3499999999961194
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        "browser-wasm/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 60.90000000002328,
+            "median": 60.300000000046566,
+            "dispersion": 0.009950248755825175
+          },
+          "initialization": {
+            "p95": 12,
+            "median": 11.5,
+            "dispersion": 0.04347826086956519
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        "cli/scale-logs-small-whole": {
+          "processing": {
+            "p95": 12.843874,
+            "median": 12.64152900000002,
+            "dispersion": 0.016006370748346876
+          },
+          "initialization": {
+            "p95": 1.7953970000000083,
+            "median": 1.5969980000000135,
+            "dispersion": 0.12423246616463723
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3276800
+          }
+        },
+        "cli/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 45.65577099999996,
+            "median": 44.455455,
+            "dispersion": 0.027000420983205764
+          },
+          "initialization": {
+            "p95": 1.7540480000000116,
+            "median": 1.619211,
+            "dispersion": 0.08327327321764222
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3350528
+          }
+        }
+      }
+    },
+    {
+      "benchmarksCommit": "89b576138747740f09e85772c654ec7a3275a26c",
+      "productCommit": "2b98027bbf38d63f07b75129fe2864ef32ed4732",
+      "repetitions": 5,
+      "rows": {
+        "rust-core/scale-logs-small-whole": {
+          "processing": {
+            "p95": 11.950878,
+            "median": 11.909129,
+            "dispersion": 0.003505630008710181
+          },
+          "initialization": {
+            "p95": 0.024819,
+            "median": 0.011735,
+            "dispersion": 1.1149552620366423
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3899392
+          }
+        },
+        "rust-core/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 60.389026,
+            "median": 59.844693,
+            "dispersion": 0.009095760588161195
+          },
+          "initialization": {
+            "p95": 0.02099,
+            "median": 0.010569,
+            "dispersion": 0.9859967830447536
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3895296
+          }
+        },
+        "python/scale-logs-small-whole": {
+          "processing": {
+            "p95": 11.752622,
+            "median": 11.622847,
+            "dispersion": 0.011165508760461185
+          },
+          "initialization": {
+            "p95": 0.884706,
+            "median": 0.840448,
+            "dispersion": 0.052660009899482274
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21516288
+          }
+        },
+        "python/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 58.128738,
+            "median": 57.75522,
+            "dispersion": 0.0064672595827701684
+          },
+          "initialization": {
+            "p95": 0.90757,
+            "median": 0.894145,
+            "dispersion": 0.01501434331120799
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21303296
+          }
+        },
+        "node/scale-logs-small-whole": {
+          "processing": {
+            "p95": 12.575372999999999,
+            "median": 11.869118,
+            "dispersion": 0.05950357895169622
+          },
+          "initialization": {
+            "p95": 6.340756999999996,
+            "median": 6.016075999999998,
+            "dispersion": 0.053968899329064124
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7402840,
+            "nodeRss": 70201344,
+            "nodeExternal": 2316568
+          }
+        },
+        "node/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 71.53671400000002,
+            "median": 70.01041700000002,
+            "dispersion": 0.021800998557114815
+          },
+          "initialization": {
+            "p95": 6.254257999999993,
+            "median": 6.14989300000002,
+            "dispersion": 0.01697021395331144
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21703896,
+            "nodeRss": 95305728,
+            "nodeExternal": 2348344
+          }
+        },
+        "browser-wasm/scale-logs-small-whole": {
+          "processing": {
+            "p95": 25.800000000046566,
+            "median": 21.099999999976717,
+            "dispersion": 0.222748815169433
+          },
+          "initialization": {
+            "p95": 11,
+            "median": 8.800000000046566,
+            "dispersion": 0.2499999999933855
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        "browser-wasm/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 82.70000000006985,
+            "median": 81.70000000006985,
+            "dispersion": 0.012239902080772858
+          },
+          "initialization": {
+            "p95": 15.599999999976717,
+            "median": 14.5,
+            "dispersion": 0.07586206896391157
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        "cli/scale-logs-small-whole": {
+          "processing": {
+            "p95": 17.68699699999999,
+            "median": 17.604452999999978,
+            "dispersion": 0.004688813676858583
+          },
+          "initialization": {
+            "p95": 2.143530999999996,
+            "median": 1.981427999999994,
+            "dispersion": 0.08181119879198362
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3346432
+          }
+        },
+        "cli/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 63.66073300000005,
+            "median": 63.32094900000004,
+            "dispersion": 0.005366059816949598
+          },
+          "initialization": {
+            "p95": 2.3305719999999894,
+            "median": 2.214601000000002,
+            "dispersion": 0.0523665436798717
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3321856
+          }
+        }
+      }
+    },
+    {
+      "benchmarksCommit": "047638a1845e742e454a59d30af3d09829aa8313",
+      "productCommit": "f2082ab6fe1d0fc8cc703e371e9203bc4ff68f6b",
+      "repetitions": 5,
+      "rows": {
+        "rust-core/scale-logs-small-whole": {
+          "processing": {
+            "p95": 15.272590000000001,
+            "median": 15.040607,
+            "dispersion": 0.015423779106787494
+          },
+          "initialization": {
+            "p95": 0.028503,
+            "median": 0.01102,
+            "dispersion": 1.5864791288566242
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3788800
+          }
+        },
+        "rust-core/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 75.589225,
+            "median": 75.14746099999999,
+            "dispersion": 0.005878628420992182
+          },
+          "initialization": {
+            "p95": 0.028753,
+            "median": 0.013675999999999999,
+            "dispersion": 1.1024422345715124
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3727360
+          }
+        },
+        "python/scale-logs-small-whole": {
+          "processing": {
+            "p95": 15.2941,
+            "median": 15.231152,
+            "dispersion": 0.004132845631111826
+          },
+          "initialization": {
+            "p95": 0.897013,
+            "median": 0.889538,
+            "dispersion": 0.008403238535059643
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21516288
+          }
+        },
+        "python/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 76.934735,
+            "median": 75.996094,
+            "dispersion": 0.01235117425903498
+          },
+          "initialization": {
+            "p95": 0.931457,
+            "median": 0.926478,
+            "dispersion": 0.0053741157372326764
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21282816
+          }
+        },
+        "node/scale-logs-small-whole": {
+          "processing": {
+            "p95": 15.512297000000004,
+            "median": 15.10344400000001,
+            "dispersion": 0.02707018346279111
+          },
+          "initialization": {
+            "p95": 5.805004000000011,
+            "median": 5.726497999999992,
+            "dispersion": 0.013709251273643863
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7470816,
+            "nodeRss": 68177920,
+            "nodeExternal": 2316568
+          }
+        },
+        "node/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 86.99860000000001,
+            "median": 82.46455500000002,
+            "dispersion": 0.05498174336840833
+          },
+          "initialization": {
+            "p95": 6.088954000000001,
+            "median": 5.248577000000012,
+            "dispersion": 0.1601152083698092
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21730152,
+            "nodeRss": 95678464,
+            "nodeExternal": 2348335
+          }
+        },
+        "browser-wasm/scale-logs-small-whole": {
+          "processing": {
+            "p95": 24.29999999998836,
+            "median": 18.5,
+            "dispersion": 0.31351351351288415
+          },
+          "initialization": {
+            "p95": 10.600000000034925,
+            "median": 8.099999999976717,
+            "dispersion": 0.30864197531671533
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        "browser-wasm/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 102.10000000003492,
+            "median": 100.5,
+            "dispersion": 0.015920398010297765
+          },
+          "initialization": {
+            "p95": 15.700000000011642,
+            "median": 15,
+            "dispersion": 0.04666666666744268
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        "cli/scale-logs-small-whole": {
+          "processing": {
+            "p95": 22.135778000000016,
+            "median": 21.699735000000004,
+            "dispersion": 0.020094392857793464
+          },
+          "initialization": {
+            "p95": 2.4546670000000006,
+            "median": 2.254784000000001,
+            "dispersion": 0.08864840268513507
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3227648
+          }
+        },
+        "cli/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 79.59136899999999,
+            "median": 79.569497,
+            "dispersion": 0.00027487920402458066
+          },
+          "initialization": {
+            "p95": 2.5421210000000087,
+            "median": 2.53424600000001,
+            "dispersion": 0.0031074331379030706
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3252224
+          }
+        }
+      }
+    },
+    {
+      "benchmarksCommit": "a20a345644ffe970a442f302219a06c5532d12f4",
+      "productCommit": "3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+      "repetitions": 5,
+      "rows": {
+        "rust-core/scale-logs-small-whole": {
+          "processing": {
+            "p95": 18.380934,
+            "median": 16.047090999999998,
+            "dispersion": 0.14543713873125053
+          },
+          "initialization": {
+            "p95": 0.028283,
+            "median": 0.014577,
+            "dispersion": 0.9402483364203882
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3911680
+          }
+        },
+        "rust-core/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 79.303971,
+            "median": 78.75741699999999,
+            "dispersion": 0.0069397146430032475
+          },
+          "initialization": {
+            "p95": 0.027922000000000002,
+            "median": 0.013305,
+            "dispersion": 1.0986095452837281
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3870720
+          }
+        },
+        "python/scale-logs-small-whole": {
+          "processing": {
+            "p95": 15.89261,
+            "median": 15.617435,
+            "dispersion": 0.01761973076884904
+          },
+          "initialization": {
+            "p95": 0.970198,
+            "median": 0.958055,
+            "dispersion": 0.012674637677377643
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21610496
+          }
+        },
+        "python/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 81.351337,
+            "median": 80.06104,
+            "dispersion": 0.016116415674840123
+          },
+          "initialization": {
+            "p95": 1.026253,
+            "median": 0.991528,
+            "dispersion": 0.03502170387523118
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21368832
+          }
+        },
+        "node/scale-logs-small-whole": {
+          "processing": {
+            "p95": 15.847566,
+            "median": 15.743731000000011,
+            "dispersion": 0.006595323560850241
+          },
+          "initialization": {
+            "p95": 6.092246000000003,
+            "median": 5.3946380000000005,
+            "dispersion": 0.12931507174346124
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7470936,
+            "nodeRss": 68087808,
+            "nodeExternal": 2316568
+          }
+        },
+        "node/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 90.48937000000001,
+            "median": 88.977217,
+            "dispersion": 0.016994833632524298
+          },
+          "initialization": {
+            "p95": 6.395963999999992,
+            "median": 5.534631000000019,
+            "dispersion": 0.15562609323005816
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21724840,
+            "nodeRss": 97259520,
+            "nodeExternal": 2348439
+          }
+        },
+        "browser-wasm/scale-logs-small-whole": {
+          "processing": {
+            "p95": 35.29999999998836,
+            "median": 23.20000000001164,
+            "dispersion": 0.5215517241366658
+          },
+          "initialization": {
+            "p95": 13.099999999976717,
+            "median": 9,
+            "dispersion": 0.45555555555296845
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        "browser-wasm/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 115.5,
+            "median": 106,
+            "dispersion": 0.08962264150943389
+          },
+          "initialization": {
+            "p95": 17.399999999965075,
+            "median": 15.699999999953434,
+            "dispersion": 0.10828025477813275
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        "cli/scale-logs-small-whole": {
+          "processing": {
+            "p95": 23.399737000000016,
+            "median": 23.105126,
+            "dispersion": 0.012750893459746448
+          },
+          "initialization": {
+            "p95": 2.6162920000000014,
+            "median": 2.6013849999999934,
+            "dispersion": 0.00573040899367383
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3244032
+          }
+        },
+        "cli/scale-logs-medium-fixed4096": {
+          "processing": {
+            "p95": 85.56273599999997,
+            "median": 83.735657,
+            "dispersion": 0.021819605475836612
+          },
+          "initialization": {
+            "p95": 2.8320870000000014,
+            "median": 2.707644000000002,
+            "dispersion": 0.045959882466084734
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3284992
+          }
+        }
+      }
+    }
+  ]
+}

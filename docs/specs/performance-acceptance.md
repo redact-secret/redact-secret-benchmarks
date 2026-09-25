@@ -165,3 +165,11 @@ first actually exercised, end to end, by
 - a minimal browser bundle.
 
 The acceptance verdict is a separate section. Artifact sizes carry no threshold. To regenerate, use `scripts/collect-operational-evidence.mjs`; its header lists the inputs. The report is `docs/reports/2026-09-25-beta8-141-operational-evidence.md`, and the site shows the data under `/performance#operational-evidence`.
+
+## Regression budgets (#143)
+
+The criteria above judge a run in absolute terms. Change over time is judged
+separately by the reviewed regression budgets in
+[`regression-budgets.md`](regression-budgets.md). They compare a fresh summary
+with the frozen `0.1.0-beta.8` baseline, per dimension, and
+`performance-evaluation.yml` runs them right after the acceptance step.

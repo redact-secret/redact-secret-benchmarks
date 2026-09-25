@@ -205,6 +205,14 @@
     {
       "id": "pinecone",
       "name": "Pinecone"
+    },
+    {
+      "id": "travis-ci",
+      "name": "Travis CI"
+    },
+    {
+      "id": "neon",
+      "name": "Neon"
     }
   ],
   "families": [
@@ -1049,6 +1057,19 @@
       "note": "redact-secret#310 (product PR #668) landed on the product main after 0.1.0-beta.6; the pinned published package predates it. The provider page documents only the header, so the grammar is tool-corroborated (T2)."
     },
     {
+      "id": "postman:collection-access-key",
+      "provider": "postman",
+      "name": "Collection access key",
+      "description": "PMAT- followed by 26 characters; a read-only key for one collection's JSON, shared through the collection URL's access_key parameter.",
+      "detectors": [
+        "postman-collection-access-key"
+      ],
+      "sources": [
+        "https://learning.postman.com/docs/collaborating-in-postman/sharing/"
+      ],
+      "note": "Registry detector postman-collection-access-key since redact-secret#700 (#773, registry pinned at 3144bb3), authored under #259. Postman documents the credential but no shape; the 26-character uppercase alphanumeric body follows GitLab's rule (T2)."
+    },
+    {
       "id": "netlify:personal-access-token",
       "provider": "netlify",
       "name": "Personal access token",
@@ -1141,13 +1162,14 @@
     {
       "id": "mailgun:legacy-signing-key-triplet",
       "provider": "mailgun",
-      "name": "Legacy 32-8-8 hex signing key",
-      "description": "Dash-segmented 32-8-8 hex triplet both pinned tools call a signing key; absent from Mailgun's current API reference.",
+      "name": "Prefix-less 32-8-8 hex key triplet",
+      "description": "Dash-segmented 32-8-8 lowercase hex triplet that both pinned tools match and three sources describe as the newer private API key; recognized only beside a same-line mailgun keyword.",
       "detectors": [],
       "sources": [
-        "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+        "https://github.com/trufflesecurity/trufflehog/issues/3870"
       ],
-      "note": "Known unsupported legacy variant per redact-secret#314 (product PR #680); not fixtured because the provider no longer documents it."
+      "note": "Beta.8 context-gated arrival family mailgun-api-key-triplet (#259). Since redact-secret#701 (#773, registry pinned at 3144bb3) the product mailgun-api-key detector also reports this shape under mailgun_api_key, inside the shared detector. It is no longer treated as a superseded legacy signing key: no issued key has been observed and the role is recorded uncertainty."
     },
     {
       "id": "okta:api-token",
@@ -1320,6 +1342,32 @@
         "https://gitlab.com/gitlab-org/gitlab/-/raw/master/lib/authn/token_field/generator/routable_token.rb"
       ],
       "note": "Registry detector gitlab-runner-authentication-token since redact-secret#730 (registry pinned at f2082ab); graduated from a Beta.8 arrival family (#212, research #230), contract in benchmarks/lib/beta8/212.ts. glrtr-, instance-prefixed and unversioned routable variants are not claimed. gitlab-token contract covers glpat- only."
+    },
+    {
+      "id": "travis-ci:api-token",
+      "provider": "travis-ci",
+      "name": "API token",
+      "description": "22-character alphanumeric API token sent in an Authorization: token header; recognized only beside a same-line travis keyword.",
+      "detectors": [
+        "travisci-api-token"
+      ],
+      "sources": [
+        "https://developer.travis-ci.com/authentication"
+      ],
+      "note": "Registry detector travisci-api-token since redact-secret#523 (#773, registry pinned at 3144bb3), authored under #259. Travis CI states no shape; the 22-character grammar is tool-corroborated (gitleaks travisci-access-token, trufflehog travisci)."
+    },
+    {
+      "id": "neon:api-key",
+      "provider": "neon",
+      "name": "API key",
+      "description": "napi_-prefixed API key (personal, organization or project-scoped); the 64-character alphanumeric body floor is tool-corroborated.",
+      "detectors": [
+        "neon-api-key"
+      ],
+      "sources": [
+        "https://neon.com/docs/changelog/2025-01-31"
+      ],
+      "note": "Registry detector neon-api-key since redact-secret#524 (#773, registry pinned at 3144bb3), authored under #259. The napi_ prefix is provider-documented; the body floor rests on betterleaks and mask-go (T2). Legacy unprefixed keys are not covered."
     }
   ]
 }

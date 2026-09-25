@@ -148,9 +148,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // they move must-redact/T2 -> must-redact/T0 as unscored history (-3 files/-3 spans here, +3 below).
   // Beta.8 #208/#210 graduation (registry pin dad7868): six new registry detectors each carry one
   // detector-coverage shape positive in three contexts (+18 files/+18 spans); the #212 graduation
-  // (registry pin f2082ab) adds four more families the same way (+12/+12).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 419);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 425);
+  // (registry pin f2082ab) adds four more families the same way (+12/+12). The #259 re-pin (3144bb3)
+  // adds neon-api-key and postman-collection-access-key (+6/+6); travisci-api-token is context-gated
+  // and its coverage positive scores as policy.
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 425);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 431);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -163,7 +165,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // 22 + _ + 8 grammar, so its three shape-1 positives (40 alphanumeric, no inner _)
   // move from must-redact/T0 to retained legacy policy/T3; #213 regenerates them in the
   // documented layout, so they leave policy/T3 again (-3).
-  assert.deepEqual(tally['policy/T3'], { files: 205, spans: 205 });
+  // #259 (registry pin 3144bb3): travisci-api-token's keyword-gated coverage positive in its
+  // three detector-coverage contexts (+3).
+  assert.deepEqual(tally['policy/T3'], { files: 208, spans: 208 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -216,8 +220,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   assert.equal(tally['must-not-flag/T0'].files, 11);
   // Beta.8 #208/#210 graduation: 30 new independent detector-coverage controls (prefix-only,
   // short-body, mask, reference and label-prose or public-id for each of six new registry detectors);
-  // the #212 graduation adds 20 more for four further registry detectors.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 468);
+  // the #212 graduation adds 20 more for four further registry detectors, and the #259 re-pin
+  // (3144bb3) 15 more for travisci-api-token, neon-api-key and postman-collection-access-key.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 483);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

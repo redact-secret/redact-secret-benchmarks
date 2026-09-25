@@ -73,6 +73,14 @@ families graduated this way at the product pin dad7868 (redact-secret#727,
 #728), and four #212 families (Perplexity, Fireworks AI, Pinecone `pcsk_`,
 GitLab runner authentication token) at f2082ab (redact-secret#730).
 
+#259 skipped the arrival stage: redact-secret#773 had merged before its
+evidence was authored, so the registry was pinned to 3144bb3 in the same
+change, and `travisci-api-token`, `neon-api-key` and
+`postman-collection-access-key` were authored directly as registry families
+in 259.ts's `registryContracts`. The prefix-less Mailgun key triplet, which the
+product reports inside the shared `mailgun-api-key` detector, is the #259
+context-gated arrival family `mailgun-api-key-triplet`.
+
 A family the product only types inside a shared detector stays an arrival
 family, because its id is not a registry id: `slack-user-token` and
 `slack-app-level-token` (inside `slack-token`), `stripe-webhook-signing-secret`

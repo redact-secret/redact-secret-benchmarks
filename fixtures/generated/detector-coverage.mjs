@@ -871,6 +871,31 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("gitlab-runner-authentication-token", "mask", [`glrt-${"*".repeat(20)}`]);
   add("gitlab-runner-authentication-token", "reference", ["CI_RUNNER_TOKEN=${CI_RUNNER_TOKEN}\n"]);
   add("gitlab-runner-authentication-token", "label-prose", ["Documentation mentions a GitLab runner authentication token (glrt- prefix) without embedding the token value."]);
+  // Registry detectors since the 3144bb3 re-pin (redact-secret#773). Full
+  // evidence lives in the beta8-259 corpus and benchmarks/lib/beta8/259.ts;
+  // these are the registry-wide minimum. travisci-api-token is context-gated,
+  // so its positive carries a same-line travis key.
+  const travisToken = `${synthetic("coverage:travis-ci:api-token:head", 10, AI_ALNUM)}7${synthetic("coverage:travis-ci:api-token:tail", 10, AI_ALNUM)}q`;
+  positive("travisci-api-token", "token-shape", ["TRAVIS_API_TOKEN=", { secret: travisToken }]);
+  add("travisci-api-token", "missing-keyword", [travisToken]);
+  add("travisci-api-token", "short-token", [`TRAVIS_API_TOKEN=${travisToken.slice(0, 21)}`]);
+  add("travisci-api-token", "mask", [`TRAVIS_API_TOKEN=${"*".repeat(22)}`]);
+  add("travisci-api-token", "reference", ["TRAVIS_API_TOKEN=${TRAVIS_API_TOKEN}\n"]);
+  add("travisci-api-token", "label-prose", ["Documentation mentions a Travis CI API token without embedding the token value."]);
+  const neonKey = `napi_${synthetic("coverage:neon:api-key:body", 64, AI_ALNUM)}`;
+  positive("neon-api-key", "key-shape", [{ secret: neonKey }]);
+  add("neon-api-key", "prefix-only", ["napi_"]);
+  add("neon-api-key", "short-body", [neonKey.slice(0, 40)]);
+  add("neon-api-key", "mask", [`napi_${"*".repeat(64)}`]);
+  add("neon-api-key", "reference", ["NEON_API_KEY=${NEON_API_KEY}\n"]);
+  add("neon-api-key", "label-prose", ["Documentation mentions a Neon API key (napi_ prefix) without embedding the key value."]);
+  const collectionKey = `PMAT-${synthetic("coverage:postman:collection-access-key:body", 26, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")}`;
+  positive("postman-collection-access-key", "key-shape", [{ secret: collectionKey }]);
+  add("postman-collection-access-key", "prefix-only", ["PMAT-"]);
+  add("postman-collection-access-key", "short-body", [collectionKey.slice(0, 20)]);
+  add("postman-collection-access-key", "mask", [`PMAT-${"*".repeat(26)}`]);
+  add("postman-collection-access-key", "reference", ["POSTMAN_COLLECTION_ACCESS_KEY=${POSTMAN_COLLECTION_ACCESS_KEY}\n"]);
+  add("postman-collection-access-key", "label-prose", ["Documentation mentions a Postman collection access key (PMAT- prefix) without embedding the key value."]);
 
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains

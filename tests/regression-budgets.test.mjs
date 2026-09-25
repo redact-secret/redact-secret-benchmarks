@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 
 import {
   allowedChange, candidateFromSnapshot, ceilToFivePercent, deriveTriggers, evaluateBudgets, exitCodeFor, historyProblems,
-  ledgerProblems, metricsFromAdapterOverhead, metricsFromOperational, RULES, sha256OfText,
+  ledgerProblems, metricsFromAdapterOverhead, metricsFromOperational, metricsFromPaired, pairedRatios, ratioDeviation, roundOrder, RULES, sha256OfText,
 } from '../benchmarks/lib/regression-budgets.ts';
 
 const readJson = file => JSON.parse(readFileSync(file, 'utf8'));
@@ -31,9 +31,8 @@ function snapshot(id, sourceCommit, overrides = {}) {
 }
 
 const NOISE = {
-  ciDispersion: { processing: { 'node/p': 0.05 }, initialization: { 'node/p': 0.2 } },
+  paired: { processing: { p95: { 'node/p': 0.05 }, median: { 'node/p': 0.04 } }, initialization: { p95: { 'node/p': 0.2 }, median: { 'node/p': 0.16 } } },
   ciMemorySpread: { 'node/p/nodeRss': 0.03 },
-  rerunMedianSpread: { processing: 0.04, initialization: 0.16 },
   rerunMemorySpread: 0.02,
   adapterTraversal: { 'pino/log-flat': { spread: 0.1, standardDeviation: 0.05 } },
 };
@@ -47,10 +46,17 @@ function withValues(base, values) {
   return metrics;
 }
 
+/** A same-job paired latency ratio metric; the in-job baseline is 100 ms unless given. */
+function ratio(p95, median, extra = {}) {
+  return { id: 'latency/node/p/processing-ratio', dimension: 'latency', profile: 'linux-x64-release', unit: 'ratio', value: median, samples: 12,
+    pairedBaseline: 90, tail: { statistic: 'processing p95 ratio', value: p95, pairedBaseline: 100 }, ...extra };
+}
+const PAIRED_PROFILE = { ...LATENCY_PROFILE, sameJob: 'true', baselineRevision: COMMIT_A, cpuModel: 'test CPU' };
+
 function candidate(metrics, sourceCommit = COMMIT_B) {
   return {
-    sourceCommit, sources: ['test'], metrics,
-    profiles: { latency: LATENCY_PROFILE, memory: LATENCY_PROFILE, size: {}, 'adapter-overhead': { javascript: 'darwin-arm64|M|node-22', 'javascript:workloadDigest': 'd', 'javascript:quick': 'false' } },
+    sourceCommit, sources: ['test'], metrics: { 'latency/node/p/processing-ratio': ratio(1, 1), ...metrics },
+    profiles: { latency: PAIRED_PROFILE, memory: LATENCY_PROFILE, size: {}, 'adapter-overhead': { javascript: 'darwin-arm64|M|node-22', 'javascript:workloadDigest': 'd', 'javascript:quick': 'false' } },
   };
 }
 
@@ -73,12 +79,27 @@ test('every trigger states profile, metric, direction, threshold and minimum sam
   }
 });
 
-test('latency: p95 threshold is the largest of the 15% floor, the row dispersion and twice the rerun spread; the median corroborates at 10%', () => {
-  const trigger = byId('latency/node/p/processing-p95');
-  assert.deepEqual(trigger.threshold, { relative: 0.15, absoluteFloor: 1 });
-  assert.deepEqual(trigger.corroboration.threshold, { relative: 0.1, absoluteFloor: 1 });
-  const wide = deriveTriggers(baseline, { ...NOISE, ciDispersion: { ...NOISE.ciDispersion, processing: { 'node/p': 0.49 } } });
-  assert.equal(wide.find(t => t.id === trigger.id).threshold.relative, 0.5);
+test('latency is a paired median ratio judged at the larger of 10% and twice the row\'s A/A deviation; the p95 ratio is the tail check at 15%', () => {
+  assert.equal(byId('latency/node/p/processing-p95'), undefined);
+  const trigger = byId('latency/node/p/processing-ratio');
+  assert.equal(trigger.unit, 'ratio');
+  assert.equal(trigger.baselineValue, 1);
+  assert.equal(trigger.pairedFloorMilliseconds, 1);
+  assert.equal(trigger.minimumSamples, 10);
+  assert.deepEqual(trigger.threshold, { relative: 0.1, absoluteFloor: 0 });
+  assert.deepEqual(trigger.tail.threshold, { relative: 0.15, absoluteFloor: 0 });
+  assert.equal(trigger.corroboration, undefined);
+  const wide = deriveTriggers(baseline, { ...NOISE, paired: { ...NOISE.paired, processing: { p95: { 'node/p': 0.24 }, median: { 'node/p': 0.07 } } } });
+  assert.equal(wide.find(t => t.id === trigger.id).tail.threshold.relative, 0.5);
+  assert.equal(wide.find(t => t.id === trigger.id).threshold.relative, 0.15);
+  assert.throws(() => deriveTriggers(baseline, { ...NOISE, paired: { ...NOISE.paired, processing: { p95: {}, median: {} } } }), /no-paired-noise/);
+});
+
+test('a millisecond floor is scaled by the in-job baseline: a large ratio on a tiny timing stays within budget', () => {
+  const tiny = ratio(1.3, 1.3, { pairedBaseline: 2, tail: { statistic: 'processing p95 ratio', value: 1.3, pairedBaseline: 2 } });
+  const report = evaluateBudgets(budgets, baseline, candidate({ 'latency/node/p/processing-ratio': tiny }), []);
+  assert.equal(verdictOf(report, 'latency/node/p/processing-ratio'), 'within-budget');
+  assert.equal(report.triggers.find(t => t.id === 'latency/node/p/processing-ratio').allowedChange, 0.5);
 });
 
 test('memory, size and adapter triggers follow their rules', () => {
@@ -93,7 +114,7 @@ test('memory, size and adapter triggers follow their rules', () => {
 });
 
 test('a change inside every budget is accepted, and every dimension is counted separately', () => {
-  const report = evaluateBudgets(budgets, baseline, candidate(withValues(baseline, { 'latency/node/p/processing-p95': 110, 'size/wasm/full/gzip': 104_000 })), []);
+  const report = evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, { 'size/wasm/full/gzip': 104_000 }), 'latency/node/p/processing-ratio': ratio(1.1, 1.05) }), []);
   assert.equal(report.status, 'accepted');
   assert.equal(exitCodeFor(report), 0);
   assert.equal(report.dimensions.latency['within-budget'], 1);
@@ -103,30 +124,25 @@ test('a change inside every budget is accepted, and every dimension is counted s
   assert.ok(!('score' in report));
 });
 
-test('a corroborated p95 breach is a regression and exits 1', () => {
-  const report = evaluateBudgets(budgets, baseline, candidate(withValues(baseline, {
-    'latency/node/p/processing-p95': { value: 130, corroboration: { statistic: 'processing median', value: 110 } },
-  })), []);
-  assert.equal(verdictOf(report, 'latency/node/p/processing-p95'), 'regression');
+test('a median ratio breach is a regression and exits 1, whatever the tail does', () => {
+  assert.equal(verdictOf(evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, {}), 'latency/node/p/processing-ratio': ratio(1.05, 1.12) }), []),
+    'latency/node/p/processing-ratio'), 'regression');
+  const report = evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, {}), 'latency/node/p/processing-ratio': ratio(1.3, 1.12) }), []);
+  assert.equal(verdictOf(report, 'latency/node/p/processing-ratio'), 'regression');
   assert.equal(report.status, 'regression');
   assert.equal(exitCodeFor(report), 1);
 });
 
-test('a p95 breach the median does not corroborate is tail-only: invalid measurement, rerun, exit 2', () => {
-  const report = evaluateBudgets(budgets, baseline, candidate(withValues(baseline, {
-    'latency/node/p/processing-p95': { value: 130, corroboration: { statistic: 'processing median', value: 92 } },
-  })), []);
-  const result = report.triggers.find(t => t.id === 'latency/node/p/processing-p95');
+test('a p95 ratio breach with the median ratio inside is tail-only: invalid measurement, rerun, exit 2', () => {
+  const report = evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, {}), 'latency/node/p/processing-ratio': ratio(1.3, 0.98) }), []);
+  const result = report.triggers.find(t => t.id === 'latency/node/p/processing-ratio');
   assert.equal(result.verdict, 'invalid-measurement');
   assert.match(result.reason, /tail-only/);
   assert.equal(exitCodeFor(report), 2);
 });
 
 test('a measured regression outranks an invalid measurement elsewhere in the report', () => {
-  const report = evaluateBudgets(budgets, baseline, candidate(withValues(baseline, {
-    'latency/node/p/processing-p95': { value: 130, corroboration: { statistic: 'processing median', value: 92 } },
-    'size/wasm/full/gzip': 120_000,
-  })), []);
+  const report = evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, { 'size/wasm/full/gzip': 120_000 }), 'latency/node/p/processing-ratio': ratio(1.3, 0.98) }), []);
   assert.equal(report.status, 'regression');
 });
 
@@ -160,8 +176,21 @@ test('growth in an optional profile is its own row and never folded into the def
 
 test('a wrong profile, a missing metric, or too few samples is an invalid measurement, not a regression', () => {
   const wrongProfile = candidate(withValues(baseline, {}));
-  wrongProfile.profiles.latency = { ...LATENCY_PROFILE, os: 'darwin' };
-  assert.equal(verdictOf(evaluateBudgets(budgets, baseline, wrongProfile, []), 'latency/node/p/processing-p95'), 'invalid-measurement');
+  wrongProfile.profiles.latency = { ...PAIRED_PROFILE, os: 'darwin' };
+  assert.equal(verdictOf(evaluateBudgets(budgets, baseline, wrongProfile, []), 'latency/node/p/processing-ratio'), 'invalid-measurement');
+
+  const acrossJobs = candidate(withValues(baseline, {}));
+  acrossJobs.profiles.latency = LATENCY_PROFILE;
+  const acrossReport = evaluateBudgets(budgets, baseline, acrossJobs, []);
+  assert.equal(verdictOf(acrossReport, 'latency/node/p/processing-ratio'), 'invalid-measurement');
+  assert.match(acrossReport.triggers.find(t => t.id === 'latency/node/p/processing-ratio').reason, /same-job paired run/);
+
+  const otherBaseline = candidate(withValues(baseline, {}));
+  otherBaseline.profiles.latency = { ...PAIRED_PROFILE, baselineRevision: COMMIT_B };
+  assert.match(evaluateBudgets(budgets, baseline, otherBaseline, []).triggers.find(t => t.id === 'latency/node/p/processing-ratio').reason, /not the budgets' baseline commit/);
+
+  const thinPaired = candidate({ ...withValues(baseline, {}), 'latency/node/p/processing-ratio': ratio(1, 1, { samples: 6 }) });
+  assert.equal(verdictOf(evaluateBudgets(budgets, baseline, thinPaired, []), 'latency/node/p/processing-ratio'), 'invalid-measurement');
 
   const missing = withValues(baseline, {});
   delete missing['memory/node/p/nodeRss'];
@@ -179,8 +208,41 @@ test('a dimension with no candidate source is not evaluated, and does not fail t
   const sizeOnly = candidate(withValues(baseline, {}));
   sizeOnly.profiles = { size: {} };
   const report = evaluateBudgets(budgets, baseline, sizeOnly, []);
-  assert.equal(verdictOf(report, 'latency/node/p/processing-p95'), 'not-evaluated');
+  assert.equal(verdictOf(report, 'latency/node/p/processing-ratio'), 'not-evaluated');
   assert.equal(report.status, 'accepted');
+});
+
+test('absolute timings across jobs are informational: reported, never judged', () => {
+  const absolute = candidate(withValues(baseline, { 'latency/node/p/processing-p95': 400 }));
+  absolute.profiles = { memory: LATENCY_PROFILE };
+  const report = evaluateBudgets(budgets, baseline, absolute, []);
+  assert.equal(report.status, 'accepted');
+  assert.equal(verdictOf(report, 'latency/node/p/processing-ratio'), 'not-evaluated');
+  const row = report.informational.find(r => r.id === 'latency/node/p/processing-p95');
+  assert.equal(row.relativeChange, 3);
+  assert.ok(!report.triggers.some(t => t.id === 'latency/node/p/processing-p95'));
+});
+
+test('paired ratios are recomputed from interleaved samples, and rounds are counterbalanced', () => {
+  const r = pairedRatios([10, 10, 11, 10, 12], [15, 15, 16, 15, 18]);
+  assert.equal(r.median, 1.5);
+  assert.equal(r.p95, 1.5);
+  assert.equal(r.baselineMedian, 10);
+  assert.equal(ratioDeviation(0.8), 0.25);
+  assert.equal(ratioDeviation(1.25), 0.25);
+  assert.deepEqual(roundOrder(4).map(o => o.side[0]).join(''), 'bccbbccb');
+  const { metrics, profile } = metricsFromPaired({
+    baseline: { revision: COMMIT_A }, candidate: { revision: COMMIT_B }, aa: false, samplesPerSide: 5,
+    runner: { cpuModel: 'Test CPU' }, profile: LATENCY_PROFILE, ratios: 'ignored',
+    rows: { 'node/p': { baseline: { processing: [10, 10, 11, 10, 12], initialization: [1, 1, 1, 1, 1] },
+      candidate: { processing: [15, 15, 16, 15, 18], initialization: [1, 1, 1, 1, 1] } } },
+  });
+  assert.deepEqual(metrics.map(m => m.id), ['latency/node/p/processing-ratio', 'initialization/node/p/initialization-ratio']);
+  assert.equal(metrics[0].value, 1.5);
+  assert.equal(metrics[0].tail.value, 1.5);
+  assert.equal(profile.sameJob, 'true');
+  assert.equal(profile.baselineRevision, COMMIT_A);
+  assert.equal(profile.cpuModel, 'Test CPU');
 });
 
 test('adapter scanner calls are deterministic: any increase is a trigger', () => {
@@ -265,8 +327,70 @@ test('the committed budgets cover every dimension from the committed baseline, a
   assert.deepEqual(ledgerProblems(ledger, new Set(committed.triggers.map(t => t.id))), []);
   assert.deepEqual(historyProblems(committed, file => readFileSync(file, 'utf8'), ledger), []);
   const current = readJson(committed.baselines.at(-1).file);
-  for (const trigger of committed.triggers) assert.equal(trigger.baselineValue, current.metrics[trigger.id].value, trigger.id);
+  for (const trigger of committed.triggers) {
+    if (trigger.unit === 'ratio') {
+      assert.equal(trigger.baselineValue, 1, trigger.id);
+      const source = trigger.id.replace(/\/(processing|initialization)-ratio$/, '/$1-p95');
+      assert.ok(current.metrics[source], `${trigger.id} derives from ${source}`);
+    } else assert.equal(trigger.baselineValue, current.metrics[trigger.id].value, trigger.id);
+  }
   // The baseline accepts itself: the frozen measurement is inside every budget.
   const self = evaluateBudgets(committed, current, candidateFromSnapshot(current), ledger);
   assert.equal(self.status, 'accepted');
+});
+
+test('runner-reruns reduces same-pin performance runs and rejects a different pin', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { mkdtempSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const path = await import('node:path');
+  const dir = mkdtempSync(path.join(tmpdir(), 'runner-reruns-'));
+  const summary = readJson('evidence/603/summary.json');
+  const entry = (runId, file) => ({ runId, url: `https://example.invalid/${runId}`, runner: { label: 'ubuntu-latest' },
+    artifact: { digest: 'sha256:0' }, completedAt: `2026-09-25T00:0${runId}:00Z`, summary: file });
+  const manifest = path.join(dir, 'manifest.json');
+  const out = path.join(dir, 'out.json');
+  const run = () => execFileSync(process.execPath, ['--import', 'tsx', 'scripts/regression-budgets.mjs', 'runner-reruns', '--runs', manifest, '--out', out], { stdio: 'pipe' });
+
+  writeFileSync(manifest, JSON.stringify({ runs: [entry(1, 'evidence/603/summary.json'), entry(2, 'evidence/603/summary.json')], limitations: [] }));
+  run();
+  const study = readJson(out);
+  assert.equal(study.sourceCommit, summary.sourceCommit);
+  assert.equal(study.method.runs, 2);
+  assert.equal(study.runs[0].summarySha256, sha256OfText(readFileSync('evidence/603/summary.json', 'utf8')));
+  assert.ok(study.series.length > 0 && study.series.every(s => s.runs.length === 2));
+  assert.equal(study.series[0].runs[0].processing.median, study.series[0].runs[1].processing.median);
+
+  const other = path.join(dir, 'other.json');
+  writeFileSync(other, JSON.stringify({ ...summary, sourceCommit: COMMIT_B }));
+  writeFileSync(manifest, JSON.stringify({ runs: [entry(1, 'evidence/603/summary.json'), entry(2, other)], limitations: [] }));
+  assert.throws(run, /different pinned commit/);
+});
+
+test('paired-performance reduces interleaved invocations into one paired evidence file and rejects a wrong revision', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { mkdirSync, mkdtempSync, writeFileSync, copyFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const path = await import('node:path');
+  const dir = mkdtempSync(path.join(tmpdir(), 'paired-'));
+  const summary = readJson('evidence/603/summary.json');
+  const order = roundOrder(2);
+  order.forEach((entry, i) => {
+    mkdirSync(path.join(dir, `${i}-${entry.side}`));
+    copyFileSync('evidence/603/summary.json', path.join(dir, `${i}-${entry.side}`, 'summary.json'));
+  });
+  writeFileSync(path.join(dir, 'invocations.json'), JSON.stringify({ rounds: 2, runsPerInvocation: summary.repetitions,
+    invocations: order.map((entry, i) => ({ ...entry, output: `${i}-${entry.side}`, durationMs: 1 })) }));
+  writeFileSync(path.join(dir, 'runner.json'), JSON.stringify({ cpuModel: 'Test CPU', logicalCpus: 4 }));
+  const out = path.join(dir, 'paired.json');
+  const reduce = revision => execFileSync(process.execPath, ['--import', 'tsx', 'scripts/paired-performance.mjs', 'reduce', '--dir', dir,
+    '--baseline-revision', summary.sourceCommit, '--candidate-revision', revision, '--runner', path.join(dir, 'runner.json'), '--out', out], { stdio: 'pipe' });
+  reduce(summary.sourceCommit);
+  const paired = readJson(out);
+  assert.equal(paired.aa, true);
+  assert.equal(paired.samplesPerSide, 2 * summary.repetitions);
+  assert.deepEqual(paired.order, ['baseline', 'candidate', 'candidate', 'baseline']);
+  assert.equal(paired.runner.cpuModel, 'Test CPU');
+  for (const row of Object.values(paired.rows)) assert.equal(row.ratios.processing.median, 1);
+  assert.throws(() => reduce(COMMIT_B), /expected/);
 });

@@ -11,6 +11,11 @@
  *   invalid-measurement   the candidate cannot be judged (wrong profile, too few samples,
  *                         missing metric, or a tail-only change) and must be rerun
  *
+ * Latency and initialization are judged on same-job paired ratios (#303):
+ * the candidate/baseline ratio of samples measured interleaved on one runner,
+ * because a hosted runner's machine class varies between jobs. Absolute
+ * timings compared across jobs are reported as informational only.
+ *
  * Dimensions (latency, initialization, memory, size, adapter-overhead) are
  * judged and reported separately and never combined into one score.
  * Detection is reported alongside, never budgeted: a detection change is the
@@ -39,7 +44,11 @@ export interface Metric {
   readonly value: number;
   readonly samples: number;
   /** The robust statistic a tail-sensitive trigger must be corroborated by. */
-  readonly corroboration?: { readonly statistic: string; readonly value: number };
+  readonly corroboration?: { readonly statistic: string; readonly value: number; readonly pairedBaseline?: number };
+  /** Paired ratios only: the in-job baseline statistic, in milliseconds, that a trigger's millisecond floor is scaled by. */
+  readonly pairedBaseline?: number;
+  /** Paired ratios only: the tail statistic (p95 ratio) that routes a tail-only change to a rerun. */
+  readonly tail?: { readonly statistic: string; readonly value: number; readonly pairedBaseline: number };
   /** Size only: whether the artifact ships in the default bundle or only in an optional module/profile. */
   readonly role?: 'default' | 'optional';
 }
@@ -74,6 +83,17 @@ export interface Trigger {
   readonly baselineValue: number;
   readonly threshold: Threshold;
   readonly corroboration?: { readonly statistic: string; readonly baselineValue: number; readonly threshold: Threshold };
+  /**
+   * Paired ratio triggers only: a floor in milliseconds. The ratio must also
+   * rise by more than this floor divided by the in-job baseline statistic.
+   */
+  readonly pairedFloorMilliseconds?: number;
+  /**
+   * Paired ratio triggers only: when the judged median ratio stays inside its
+   * budget but the p95 ratio breaches this threshold, the change is tail-only
+   * and the verdict is invalid-measurement (rerun), never within-budget.
+   */
+  readonly tail?: { readonly statistic: string; readonly threshold: Threshold };
   readonly minimumSamples: number;
   readonly role?: 'default' | 'optional';
   readonly derivation: string;
@@ -128,6 +148,14 @@ export interface TriggerResult {
   readonly acceptedBy?: string;
 }
 
+export interface InformationalTiming {
+  readonly id: string;
+  readonly baseline: number;
+  readonly candidate: number;
+  readonly unit: string;
+  readonly relativeChange: number;
+}
+
 export interface BudgetReport {
   readonly schemaVersion: '1';
   readonly budgetsId: string;
@@ -136,6 +164,8 @@ export interface BudgetReport {
   readonly status: 'accepted' | 'regression' | 'invalid-measurement';
   readonly dimensions: Record<Dimension, Record<Verdict, number>>;
   readonly triggers: readonly TriggerResult[];
+  /** Absolute timings compared with the frozen snapshot across jobs: reported, never judged (#303). */
+  readonly informational?: readonly InformationalTiming[];
   readonly detection: { readonly baseline: Record<string, number> | null; readonly candidate: Record<string, number> | null };
 }
 
@@ -150,7 +180,105 @@ function median(values: readonly number[]): number {
   return sorted[Math.ceil(0.5 * sorted.length) - 1]!;
 }
 
+/** Nearest-rank p95, as core's summaries compute it. */
+function p95(values: readonly number[]): number {
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.ceil(0.95 * sorted.length) - 1]!;
+}
+
+/** A B B A A B B A ...: each side runs first in half the rounds, so drift over the job cancels out. */
+export function roundOrder(rounds: number): { side: 'baseline' | 'candidate'; round: number }[] {
+  const order: { side: 'baseline' | 'candidate'; round: number }[] = [];
+  for (let round = 0; round < rounds; round += 1) {
+    const sides = round % 2 === 0 ? (['baseline', 'candidate'] as const) : (['candidate', 'baseline'] as const);
+    for (const side of sides) order.push({ side, round });
+  }
+  return order;
+}
+
+export interface PairedRatio {
+  /** candidate p95 / baseline p95 over all interleaved samples of each side. */
+  readonly p95: number;
+  /** candidate median / baseline median. */
+  readonly median: number;
+  /** The in-job baseline statistics, in milliseconds, that absolute floors are scaled by. */
+  readonly baselineP95: number;
+  readonly baselineMedian: number;
+  readonly samples: number;
+}
+
+/** Candidate/baseline ratios of the nearest-rank p95 and median, from samples measured in one job. */
+export function pairedRatios(baseline: readonly number[], candidate: readonly number[]): PairedRatio {
+  if (baseline.length === 0 || candidate.length === 0) throw new Error('regression-budgets:paired-ratio-without-samples');
+  return {
+    p95: p95(candidate) / p95(baseline),
+    median: median(candidate) / median(baseline),
+    baselineP95: p95(baseline),
+    baselineMedian: median(baseline),
+    samples: Math.min(baseline.length, candidate.length),
+  };
+}
+
 export const LATENCY_PROFILE = 'linux-x64-release';
+
+/** One same-job paired run: `redact-secret-benchmarks/paired-performance-v1`, written by scripts/paired-performance.mjs. */
+export interface PairedEvidence {
+  readonly baseline: { readonly revision: string };
+  readonly candidate: { readonly revision: string };
+  readonly aa: boolean;
+  readonly samplesPerSide: number;
+  readonly runner: { readonly cpuModel: string | null; readonly logicalCpus?: number } | null;
+  readonly profile: Record<string, string>;
+  readonly rows: Record<string, {
+    readonly baseline: { readonly processing: readonly number[]; readonly initialization: readonly number[] };
+    readonly candidate: { readonly processing: readonly number[]; readonly initialization: readonly number[] };
+  }>;
+}
+
+/**
+ * Paired latency and initialization ratio metrics from one same-job run. The
+ * ratios are recomputed from the samples, never read from stored values. The
+ * profile carries the in-job baseline revision, which must be the budgets'
+ * baseline commit for the ratio to mean anything.
+ */
+export function metricsFromPaired(evidence: PairedEvidence): { metrics: Metric[]; profile: Record<string, string> } {
+  const metrics: Metric[] = [];
+  for (const [row, sides] of Object.entries(evidence.rows).sort(([a], [b]) => a.localeCompare(b))) {
+    for (const [dimension, statistic, suffix] of [['latency', 'processing', 'processing-ratio'], ['initialization', 'initialization', 'initialization-ratio']] as const) {
+      const ratio = pairedRatios(sides.baseline[statistic], sides.candidate[statistic]);
+      metrics.push({
+        id: `${dimension}/${row}/${suffix}`, dimension, profile: LATENCY_PROFILE, unit: 'ratio',
+        value: ratio.median, samples: ratio.samples, pairedBaseline: ratio.baselineMedian,
+        tail: { statistic: `${statistic} p95 ratio`, value: ratio.p95, pairedBaseline: ratio.baselineP95 },
+      });
+    }
+  }
+  return {
+    metrics,
+    profile: { ...evidence.profile, sameJob: 'true', baselineRevision: evidence.baseline.revision, cpuModel: evidence.runner?.cpuModel ?? 'unrecorded' },
+  };
+}
+
+/** How far a paired ratio sits from 1 in either direction: max(r, 1/r) - 1. */
+export function ratioDeviation(ratio: number): number {
+  return Math.max(ratio, 1 / ratio) - 1;
+}
+
+/**
+ * Absolute timings of a candidate compared with the frozen snapshot. Across
+ * jobs these mix the product change with the runner's machine class, so they
+ * are reported, never judged.
+ */
+export function informationalTiming(baseline: Snapshot, metrics: Record<string, Metric>): InformationalTiming[] {
+  return Object.values(metrics)
+    .filter(metric => (metric.dimension === 'latency' || metric.dimension === 'initialization') && metric.unit === 'milliseconds')
+    .flatMap(metric => {
+      const before = baseline.metrics[metric.id];
+      if (before === undefined || before.value === 0) return [];
+      return [{ id: metric.id, baseline: before.value, candidate: metric.value, unit: metric.unit, relativeChange: metric.value / before.value - 1 }];
+    })
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
 
 /** Latency, initialization, memory, and detection from one core `CompleteAssessment` summary. */
 export function metricsFromSummary(summary: CompleteAssessment): { metrics: Metric[]; profile: Record<string, string>; detection: Record<string, number> | null } {
@@ -318,13 +446,18 @@ export function ceilToFivePercent(fraction: number): number {
   return Math.ceil(Math.round(fraction * 10_000) / 500) * 5 / 100;
 }
 
+export interface PairedNoise {
+  /** Largest A/A p95 ratio deviation, max(r, 1/r) - 1, over the A/A runs, per `surface/profileId`. */
+  readonly p95: Record<string, number>;
+  /** Largest A/A median ratio deviation over the A/A runs, per `surface/profileId`. */
+  readonly median: Record<string, number>;
+}
+
 export interface NoiseInputs {
-  /** Max over the committed Linux release-build runs of (p95/median − 1), per `surface/profileId`, per statistic. */
-  readonly ciDispersion: { readonly processing: Record<string, number>; readonly initialization: Record<string, number> };
+  /** Same-job A/A paired-ratio noise on the official Linux runner (#303), per statistic. */
+  readonly paired: { readonly processing: PairedNoise; readonly initialization: PairedNoise };
   /** Max over the committed Linux runs of (max/min − 1) of each memory metric, per metric id suffix `surface/profileId/category`. */
   readonly ciMemorySpread: Record<string, number>;
-  /** Same-artifact rerun spread of the median, max over surfaces and profiles, per statistic. */
-  readonly rerunMedianSpread: { readonly processing: number; readonly initialization: number };
   /** Same-artifact rerun spread of each memory category, max over surfaces and profiles. */
   readonly rerunMemorySpread: number;
   /** Between-process spread and absolute standard deviation of adapter traversal, per `host/profileId`. */
@@ -333,8 +466,8 @@ export interface NoiseInputs {
 
 /** The policy constants the derivation applies; recorded in the budgets file verbatim. */
 export const RULES = {
-  latency: 'processing p95 must rise by more than ceil5%(max(15%, the row\'s largest CI within-run p95/median dispersion, 2 x the largest same-artifact rerun spread of the median)) and 1 ms; the processing median must corroborate it by rising more than ceil5%(max(10%, 2 x that rerun spread)) and 1 ms, else the change is tail-only and the verdict is invalid-measurement (rerun); at least 5 samples',
-  initialization: 'initialization p95 must rise by more than ceil5%(max(50%, the row\'s largest CI dispersion, 2 x the largest rerun spread of the initialization median)) and 2 ms; the initialization median must corroborate it by more than ceil5%(max(25%, 2 x that rerun spread)) and 2 ms; at least 5 samples',
+  latency: 'judged on the same-job paired ratio (candidate/baseline, both measured interleaved on one runner): a regression is a processing median ratio above 1 + ceil5%(max(10%, 2 x the row\'s largest A/A median ratio deviation)) that also rises by more than 1 ms of the in-job baseline median; if the median stays inside but the p95 ratio exceeds 1 + ceil5%(max(15%, 2 x the row\'s largest A/A p95 ratio deviation)) and 1 ms, the change is tail-only and the verdict is invalid-measurement (rerun); the in-job baseline must be the budgets\' baseline commit; at least 10 samples per side; absolute timings across jobs are informational',
+  initialization: 'judged on the same-job paired ratio, like latency: a regression is an initialization median ratio above 1 + ceil5%(max(25%, 2 x the row\'s largest A/A median ratio deviation)) that also rises by more than 2 ms; a p95 ratio above 1 + ceil5%(max(50%, 2 x the row\'s largest A/A p95 ratio deviation)) and 2 ms with the median inside is tail-only (invalid-measurement, rerun); at least 10 samples per side',
   memory: 'the largest observed sample must rise by more than ceil5%(max(10%, 2 x the larger of the CI cross-run spread and the rerun spread)) and 1 MiB; at least 5 samples',
   size: 'sizes are deterministic (16 bytes observed between two platforms\' builds of one wasm), so the threshold is review policy anchored to release history: 5% (the median of the last releases\' 4.0-10.3% per-release growth), with floors of 4 KiB for compressed WebAssembly and bundles, 4 KiB for npm tarballs, and 16 KiB for native addons, wheels and CLI binaries; the default bundle and optional profiles are separate triggers',
   'adapter-overhead': 'traversal (host+adapter over a finds-nothing scanner, minus host) must rise by more than ceil5%(max(15%, 2 x its between-process spread)) and ceil(3 x its between-process standard deviation, at least 0.5 microseconds); scanner calls and scanned code units per event are deterministic and trigger on any increase; the candidate must match the baseline profile (platform, arch, CPU model, runtime line, workload digest) and have at least 15 repetitions',
@@ -350,36 +483,40 @@ function rowKey(id: string): string {
   return id.split('/').slice(1, 3).join('/');
 }
 
-export function deriveTriggers(snapshot: Snapshot, noise: NoiseInputs): Trigger[] {
+export function deriveTriggers(snapshot: Snapshot, noiseInputs: NoiseInputs): Trigger[] {
   const triggers: Trigger[] = [];
   for (const metric of Object.values(snapshot.metrics).sort((a, b) => a.id.localeCompare(b.id))) {
     const base = { id: metric.id, dimension: metric.dimension, profile: metric.profile, unit: metric.unit, direction: 'increase' as const,
       baselineValue: metric.value, ...(metric.role ? { role: metric.role } : {}) };
     if (metric.dimension === 'latency' || metric.dimension === 'initialization') {
+      // The snapshot keeps the absolute p95 (informational); the trigger is its paired ratio.
       const latency = metric.dimension === 'latency';
       const statistic = latency ? 'processing' : 'initialization';
-      const rerun = noise.rerunMedianSpread[statistic];
-      const dispersion = noise.ciDispersion[statistic][rowKey(metric.id)];
-      if (dispersion === undefined) throw new Error(`regression-budgets:no-ci-dispersion:${metric.id}`);
-      const floor = latency ? 1 : 2;
+      const row = rowKey(metric.id);
+      const noise = noiseInputs.paired[statistic];
+      const p95Noise = noise.p95[row];
+      const medianNoise = noise.median[row];
+      if (p95Noise === undefined || medianNoise === undefined) throw new Error(`regression-budgets:no-paired-noise:${metric.id}`);
       triggers.push({
-        ...base,
-        metric: `${statistic} p95 over fresh-process samples (nearest rank)`,
-        threshold: { relative: ceilToFivePercent(Math.max(latency ? 0.15 : 0.5, dispersion, 2 * rerun)), absoluteFloor: floor },
-        corroboration: {
-          statistic: `${statistic} median`, baselineValue: metric.corroboration!.value,
-          threshold: { relative: ceilToFivePercent(Math.max(latency ? 0.10 : 0.25, 2 * rerun)), absoluteFloor: floor },
+        id: `${metric.dimension}/${row}/${statistic}-ratio`, dimension: metric.dimension, profile: metric.profile, unit: 'ratio', direction: 'increase',
+        baselineValue: 1,
+        metric: `${statistic} median, candidate/baseline ratio over interleaved same-job samples (nearest rank)`,
+        threshold: { relative: ceilToFivePercent(Math.max(latency ? 0.10 : 0.25, 2 * medianNoise)), absoluteFloor: 0 },
+        tail: {
+          statistic: `${statistic} p95 ratio`,
+          threshold: { relative: ceilToFivePercent(Math.max(latency ? 0.15 : 0.5, 2 * p95Noise)), absoluteFloor: 0 },
         },
-        minimumSamples: 5,
-        derivation: `CI within-run p95/median dispersion ${(dispersion * 100).toFixed(1)}%; same-artifact rerun median spread ${(rerun * 100).toFixed(1)}%`,
+        pairedFloorMilliseconds: latency ? 1 : 2,
+        minimumSamples: 10,
+        derivation: `largest A/A paired median ratio deviation ${(medianNoise * 100).toFixed(1)}%, p95 ratio deviation ${(p95Noise * 100).toFixed(1)}% for this row`,
       });
     } else if (metric.dimension === 'memory') {
-      const ci = noise.ciMemorySpread[metric.id.slice('memory/'.length)] ?? 0;
-      const spread = Math.max(ci, noise.rerunMemorySpread);
+      const ci = noiseInputs.ciMemorySpread[metric.id.slice('memory/'.length)] ?? 0;
+      const spread = Math.max(ci, noiseInputs.rerunMemorySpread);
       triggers.push({
         ...base, metric: 'largest observed sample', minimumSamples: 5,
         threshold: { relative: ceilToFivePercent(Math.max(0.10, 2 * spread)), absoluteFloor: MEBIBYTE },
-        derivation: `CI cross-run spread ${(ci * 100).toFixed(1)}%; same-artifact rerun spread ${(noise.rerunMemorySpread * 100).toFixed(1)}%`,
+        derivation: `CI cross-run spread ${(ci * 100).toFixed(1)}%; same-artifact rerun spread ${(noiseInputs.rerunMemorySpread * 100).toFixed(1)}%`,
       });
     } else if (metric.dimension === 'size') {
       triggers.push({ ...base, metric: 'artifact bytes', minimumSamples: 1, threshold: sizeThreshold(metric.id),
@@ -391,7 +528,7 @@ export function deriveTriggers(snapshot: Snapshot, noise: NoiseInputs): Trigger[
           minimumSamples: 1, threshold: { relative: 0, absoluteFloor: 0 }, derivation: 'deterministic count: any increase is a trigger' });
       } else {
         const key = metric.id.split('/').slice(1, 3).join('/');
-        const observed = noise.adapterTraversal[key];
+        const observed = noiseInputs.adapterTraversal[key];
         if (observed === undefined) throw new Error(`regression-budgets:no-adapter-noise:${metric.id}`);
         triggers.push({
           ...base, metric: 'adapter traversal, median over processes of per-process median difference', minimumSamples: 15,
@@ -448,6 +585,10 @@ function profileProblem(dimension: Dimension, baseline: Snapshot, candidate: Can
     for (const key of ['os', 'cpu', 'rustBuildProfile', 'workloadProfilesHash', 'status']) {
       if (got[key] !== want[key]) return `profile ${key} is ${got[key]}, baseline ${want[key]}`;
     }
+    if (dimension !== 'memory') {
+      if (got.sameJob !== 'true') return 'timing is judged only on a same-job paired run (--paired); absolute timings across jobs are informational';
+      if (got.baselineRevision !== baseline.sourceCommit) return `the paired run measured baseline ${got.baselineRevision}, not the budgets' baseline commit ${baseline.sourceCommit}`;
+    }
     return null;
   }
   if (dimension === 'adapter-overhead') {
@@ -468,8 +609,12 @@ export function evaluateBudgets(
   const results: TriggerResult[] = [];
   for (const trigger of budgets.triggers) {
     const baselineMetric = baseline.metrics[trigger.id];
-    const baselineValue = baselineMetric?.value ?? trigger.baselineValue;
-    const allowed = allowedChange(baselineValue, trigger.threshold);
+    // A paired ratio trigger's baseline is 1: the in-job baseline, not a stored value.
+    const baselineValue = trigger.pairedFloorMilliseconds !== undefined ? trigger.baselineValue : baselineMetric?.value ?? trigger.baselineValue;
+    const floorAsRatio = (inJob: number | undefined) =>
+      trigger.pairedFloorMilliseconds === undefined || inJob === undefined || inJob <= 0 ? 0 : trigger.pairedFloorMilliseconds / inJob;
+    const measuredMetric = candidate.metrics[trigger.id];
+    const allowed = Math.max(allowedChange(baselineValue, trigger.threshold), floorAsRatio(measuredMetric?.pairedBaseline));
     const common = { id: trigger.id, dimension: trigger.dimension, profile: trigger.profile, baseline: baselineValue, unit: trigger.unit,
       allowedChange: allowed, ...(trigger.role ? { role: trigger.role } : {}) };
     const empty = { candidate: null, change: null, relativeChange: null };
@@ -487,14 +632,21 @@ export function evaluateBudgets(
     const change = metric.value - baselineValue;
     const measured = { candidate: metric.value, change, relativeChange: baselineValue === 0 ? null : change / baselineValue };
     if (change <= allowed) {
-      results.push({ ...common, ...measured, verdict: 'within-budget' });
+      const tail = trigger.tail !== undefined && metric.tail !== undefined &&
+        metric.tail.value - 1 > Math.max(allowedChange(1, trigger.tail.threshold), floorAsRatio(metric.tail.pairedBaseline));
+      results.push(tail
+        ? { ...common, ...measured, verdict: 'invalid-measurement',
+          reason: `${trigger.tail!.statistic} ${metric.tail!.value.toFixed(3)} breached while the median did not: tail-only, rerun before judging` }
+        : { ...common, ...measured, verdict: 'within-budget' });
       continue;
     }
     if (trigger.corroboration !== undefined) {
       const corroborating = metric.corroboration?.value;
-      const corroborationBaseline = baselineMetric?.corroboration?.value ?? trigger.corroboration.baselineValue;
+      const corroborationBaseline = trigger.pairedFloorMilliseconds !== undefined ? trigger.corroboration.baselineValue
+        : baselineMetric?.corroboration?.value ?? trigger.corroboration.baselineValue;
       const corroborated = corroborating !== undefined &&
-        corroborating - corroborationBaseline > allowedChange(corroborationBaseline, trigger.corroboration.threshold);
+        corroborating - corroborationBaseline > Math.max(allowedChange(corroborationBaseline, trigger.corroboration.threshold),
+          floorAsRatio(metric.corroboration?.pairedBaseline));
       if (!corroborated) {
         results.push({ ...common, ...measured, verdict: 'invalid-measurement',
           reason: `${trigger.corroboration.statistic} did not corroborate the change: tail-only, rerun before judging` });
@@ -513,10 +665,11 @@ export function evaluateBudgets(
   )])) as BudgetReport['dimensions'];
   const status = results.some(r => r.verdict === 'regression') ? 'regression'
     : results.some(r => r.verdict === 'invalid-measurement') ? 'invalid-measurement' : 'accepted';
+  const informational = informationalTiming(baseline, candidate.metrics);
   return {
     schemaVersion: '1', budgetsId: budgets.budgetsId, baselineId: baseline.id,
     candidate: { sourceCommit: candidate.sourceCommit, sources: candidate.sources },
-    status, dimensions, triggers: results,
+    status, dimensions, triggers: results, ...(informational.length > 0 ? { informational } : {}),
     detection: { baseline: baseline.detection ?? null, candidate: candidate.detection ?? null },
   };
 }
@@ -549,6 +702,12 @@ export function renderReportMarkdown(report: BudgetReport): string {
       `| \`${t.id}\`${t.role ? ` (${t.role})` : ''} | ${t.verdict} | ${t.baseline} | ${t.candidate ?? '—'} | ${pct(t.relativeChange)} | ${t.allowedChange.toFixed(3)} ${t.unit} | ${t.acceptedBy ?? t.reason ?? ''} |`),
     '',
   ];
+  if (report.informational && report.informational.length > 0) {
+    lines.push('## Absolute timing across jobs (informational, not judged)', '',
+      'These compare with the frozen snapshot measured in another job, possibly on another runner machine class; timing verdicts come from the same-job paired ratios above.', '',
+      '| Metric | Snapshot | This run | Change |', '| --- | ---: | ---: | ---: |',
+      ...report.informational.map(row => `| \`${row.id}\` | ${row.baseline.toFixed(3)} | ${row.candidate.toFixed(3)} | ${pct(row.relativeChange)} |`), '');
+  }
   if (report.detection.baseline || report.detection.candidate) {
     lines.push('## Detection (reported, not budgeted)', '', `Baseline ${JSON.stringify(report.detection.baseline)}; candidate ${JSON.stringify(report.detection.candidate)}.`, '');
   }
@@ -595,7 +754,8 @@ export function candidateFromSnapshot(snapshot: Snapshot): CandidateMeasurement 
   const profiles: Partial<Record<Dimension, Record<string, string>>> = {};
   const has = (dimension: Dimension) => Object.values(snapshot.metrics).some(metric => metric.dimension === dimension);
   for (const dimension of DIMENSIONS) {
-    if (!has(dimension)) continue;
+    // Timing between two baselines is judged by a same-job paired run of the two commits, not from stored absolutes.
+    if (!has(dimension) || dimension === 'latency' || dimension === 'initialization') continue;
     profiles[dimension] = dimension === 'size' ? {} : dimension === 'adapter-overhead'
       ? snapshot.profiles['adapter-overhead']! : snapshot.profiles.latency!;
   }

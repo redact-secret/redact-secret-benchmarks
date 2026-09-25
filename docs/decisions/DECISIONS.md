@@ -49,3 +49,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Qualify adapter boundaries black-box by sink containment](2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md)
 - [Gate future scorer promotion on hard constraints, not a mixed score](2026-09-25-gate-future-scorer-promotion-on-hard-constraints.md)
 - [Run the blind evaluation through an isolated custodian agent and release aggregates only](2026-09-25-run-blind-evaluation-through-an-isolated-custodian-agent.md)
+- [Judge timing regression budgets on same-job paired ratios](2026-09-25-judge-timing-budgets-on-same-job-paired-ratios.md) (amends the regression budgets decision for latency, initialization and the review condition)

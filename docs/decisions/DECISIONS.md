@@ -48,3 +48,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Introduce reviewed performance-regression budgets derived from recorded variance](2026-09-25-introduce-reviewed-performance-regression-budgets.md)
 - [Qualify adapter boundaries black-box by sink containment](2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md)
 - [Gate future scorer promotion on hard constraints, not a mixed score](2026-09-25-gate-future-scorer-promotion-on-hard-constraints.md)
+- [Run the blind evaluation through an isolated custodian agent and release aggregates only](2026-09-25-run-blind-evaluation-through-an-isolated-custodian-agent.md)

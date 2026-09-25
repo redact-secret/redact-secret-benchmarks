@@ -46,6 +46,8 @@ jobs:
       - run: npm run build
       - name: No candidate-level feature vector or calibration boundary detail reaches public/ or the built site (#254, #255)
         run: npm run features:check-public
+      - name: No custodian-held blind corpus, freeze or ledger is tracked or published, and every blind aggregate passes the release whitelist (#142)
+        run: npm run blind:check-public
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check
       - name: docs/generated/release-comparison.md matches baselines/*.json

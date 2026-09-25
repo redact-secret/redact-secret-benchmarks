@@ -111,6 +111,7 @@ pack over editing theirs.
 | `maintainer-regression` | `corpora/regression/manifest.json`, maintainer-affiliated packs, converted packs | never |
 | `public-adversarial` | accepted, `externally-authored` packs | no — call it "externally authored" |
 | `protected-holdout` | `holdout/*manifest.json` with `purpose: "protected"` (metadata only) | yes |
+| `custodian-blind` | aggregates released by an isolated custodian agent ([blind evaluation](../docs/specs/blind-evaluation.md)) | no — say "procedural separation, not organisational independence" |
 
 The public holdout conformance controls belong to no class; they qualify the
 engine, not the detectors. Classes are never merged into one count.

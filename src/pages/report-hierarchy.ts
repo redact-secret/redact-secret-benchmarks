@@ -1,7 +1,7 @@
 import { escapeHtml as e } from '../components';
 import type { Fixture } from '../catalog';
-import { taxonomy as defaultTaxonomy, type Family, type Taxonomy } from '../../benchmarks/support/taxonomy.ts';
-import type { Report, Row } from '../types';
+import { taxonomy as defaultTaxonomy, type Taxonomy } from '../../benchmarks/support/taxonomy.ts';
+import type { Report, Row, Scanner } from '../types';
 import { cellsForFixture, fixtureRowCells, fixtureSearch, rowClean, scannerColumns, type FixtureCell, type ScannerColumn } from './rows';
 
 export interface AxisCount { readable: number; overbroad: number; falseAlarm: number; notMeasured: number }
@@ -26,7 +26,7 @@ const addAxes = (rows: ReportLeaf[], scanner: number) => rows.reduce((sum, leaf)
   sum.falseAlarm += value.falseAlarm; sum.notMeasured += value.notMeasured;
   return sum;
 }, emptyAxis());
-const familyHref = (id: string) => `/coverage/${encodeURIComponent(id)}`;
+const familyHref = (id: string) => `/coverage/${id}`;
 
 /**
  * A display-only projection of the exact Report leaf set. It never re-scores a
@@ -169,12 +169,11 @@ export function bindReportHierarchy() {
   });
 }
 
-interface Observation { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest?: string; inputDigest?: string }
 /** #336-compatible annotation. Older reports have no observation field and
  * therefore render no freshness claim. */
 export function peerObservation(scannerId: string, reports: Report[]): string {
   const observations = reports.flatMap(report => {
-    const observation = (report.scanners.find(scanner => scanner.id === scannerId) as (typeof report.scanners[number] & { observation?: Observation }) | undefined)?.observation;
+    const observation: Scanner['observation'] = report.scanners.find(scanner => scanner.id === scannerId)?.observation;
     return observation ? [{ category: report.category, ...observation }] : [];
   });
   if (!observations.length) return '';
@@ -183,6 +182,6 @@ export function peerObservation(scannerId: string, reports: Report[]): string {
     const current = observations[0];
     return `<small>Observed fresh in run ${e(current.sourceRunId.slice(0, 10))} · ${e(current.observedAt)}</small>`;
   }
-  const distinct = [...new Map(snapshots.map(observation => [`${observation.sourceRunId}:${observation.snapshotDigest}:${observation.category}`, observation])).values()];
-  return `<details class="peer-observation" data-key="report:peer:${e(scannerId)}"><summary>Reused peer observations · ${distinct.length} ${distinct.length === 1 ? 'snapshot' : 'snapshots'}</summary><ul class="small">${distinct.map(observation => `<li>${e(observation.category)} · source run ${e(observation.sourceRunId)} · observed ${e(observation.observedAt)} · snapshot <code>${e(observation.snapshotDigest?.slice(0, 12) ?? '')}</code></li>`).join('')}</ul></details>`;
+  const distinct = [...new Map(snapshots.map(observation => [`${observation.sourceRunId}:${observation.snapshotDigest}:${observation.inputDigest}:${observation.category}`, observation])).values()];
+  return `<details class="report-peer-observation" data-key="report:peer:${e(scannerId)}"><summary>Reused peer observations · ${distinct.length} ${distinct.length === 1 ? 'snapshot' : 'snapshots'}</summary><ul class="small">${distinct.map(observation => `<li>${e(observation.category)} · source run ${e(observation.sourceRunId)} · observed ${e(observation.observedAt)} · snapshot <code>${e(observation.snapshotDigest?.slice(0, 12) ?? '')}</code> · input <code>${e(observation.inputDigest?.slice(0, 12) ?? '')}</code></li>`).join('')}</ul></details>`;
 }

@@ -180,13 +180,13 @@ td small, .chg small, .gate-row small { display: block; color: var(--ink-muted);
 .tree-family > .tree-expanded { background: var(--surface); }
 .tree-relations { margin-bottom: var(--space-1); }
 .tree-relations a + a { margin-left: var(--space-1); }
-.peer-observation summary { color: var(--ink-muted); font-weight: 400; }
-.peer-observation ul { margin: var(--space-1) 0 0; padding-left: var(--space-4); }
-@media (max-width: 1080px) {
+.report-peer-observation summary { color: var(--ink-muted); font-weight: 400; }
+.report-peer-observation ul { margin: var(--space-1) 0 0; padding-left: var(--space-4); }
+@media (max-width: 1079px) {
   .tree-provider > summary, .tree-family > summary { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .tree-stats { grid-template-columns: minmax(0, 1fr); }
 }
-@media (max-width: 760px) {
+@media (max-width: 759px) {
   .tree-provider > summary, .tree-family > summary { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
   .tree-provider > .tree-expanded { padding-left: var(--space-2); padding-right: 0; }
   .tree-family > summary { padding-left: var(--space-3); padding-right: var(--space-2); }

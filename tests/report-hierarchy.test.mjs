@@ -62,7 +62,7 @@ test('Report hierarchy tallies observational axes per scanner without treating u
   assert.match(html, /Peer<\/b> 0 readable\/missed · 0 too much · 0 false alarms · 2 not measured/, 'special bucket recounts its exact two unavailable peer leaves');
   assert.equal((html.match(/data-report-leaf/g) ?? []).length, fixtures.length);
   assert.match(html, /href="\/fixture\/suite--multi"/);
-  assert.match(html, /href="\/coverage\/one%3Aalpha"/);
+  assert.match(html, /href="\/coverage\/one:alpha"/);
   assert.match(html, /Families:.*Alpha.*Beta/, 'relationship links use taxonomy order, never source array order');
   assert.match(html, /Flagged ×2/);
 });
@@ -82,6 +82,7 @@ test('#336 peer provenance distinguishes reused snapshots from fresh observation
   assert.match(reused, /Reused peer observations/);
   assert.match(reused, /source run source-run-123/);
   assert.match(reused, /snapshot <code>aaaaaaaaaaaa/);
+  assert.match(reused, /input <code>bbbbbbbbbbbb/);
   assert.ok(!reused.includes('fresh'));
   const fresh = structuredClone(snapshot); fresh[0].scanners[0].observation = { source: 'fresh', observedAt: '2026-09-26T12:00:00.000Z', sourceRunId: 'current-run' };
   assert.match(peerObservation('peer', fresh), /Observed fresh in run current-ru/);

@@ -1,4 +1,4 @@
-import { categories, registry, fixtures, corpusHashes, baseline } from './catalog';
+import { categories, registry, fixtures, scenarios, corpusHashes, baseline } from './catalog';
 import { parseRoute, isAppPath, reportProblem } from './model.mjs';
 import { mountShell, renderPage, setBuildLine, type NavItem, type SearchTarget } from './shell';
 import { siteEnvOf, commitOf, envBanner, buildLine, type Provenance } from './provenance';
@@ -9,6 +9,7 @@ import { coveragePage, coverageViewOf, detectorPage, familyPage, bindInventory }
 import { supportMatrixProblem } from './support-model';
 import { suitePage } from './pages/suite';
 import { fixturePage } from './pages/fixture';
+import { scenarioPage } from './pages/scenario';
 import { howToRead } from './pages/how-to-read';
 import { bindRows } from './pages/rows';
 import { actionEmptyState } from './components';
@@ -35,12 +36,13 @@ const openKeys = new Set<string>();
 const targets = (): SearchTarget[] => [
   ...registry.detectors.map(d => ({ href: `/coverage/detectors/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
   ...categories.map(c => ({ href: `/suites/${c.id}`, label: c.title, hint: 'case suite' })),
+  ...scenarios.map(s => ({ href: `/scenarios/${s.id}`, label: s.title, hint: 'test scenario' })),
   ...fixtures.map(f => ({ href: `/fixture/${f.slug}`, label: f.slug, hint: 'fixture' })),
 ];
 const under = (...roots: string[]) => (path: string) => roots.some(root => path === root || path.startsWith(root + '/'));
 const NAV: NavItem[] = [
   { href: '/report', label: 'Report', short: 'Report', current: under('/report') },
-  { href: '/coverage', label: 'Coverage', short: 'Coverage', current: under('/coverage', '/suites', '/fixture') },
+  { href: '/coverage', label: 'Coverage', short: 'Coverage', current: under('/coverage', '/scenarios', '/suites', '/fixture') },
   { href: '/support', label: 'Support', short: 'Support', current: under('/support') },
   { href: '/performance', label: 'Performance', short: 'Perf', current: under('/performance') },
   { href: '/workbench', label: 'Workbench', short: 'Workbench', current: under('/workbench') },
@@ -144,7 +146,7 @@ async function refresh(force = false): Promise<void> {
   if (current.kind === 'support') return renderSupport(token, path, force);
 
   const fixture = current.kind === 'fixture' ? fixtures.find(f => f.slug === current.id) : undefined;
-  const label = current.kind === 'report' ? 'Report' : current.kind === 'coverage' || current.kind === 'coverage-family' || current.kind === 'coverage-detector' ? 'Coverage' : current.kind === 'suite' ? (categories.find(c => c.id === current.id)?.title ?? 'Suite') : (fixture?.id ?? 'Fixture');
+  const label = current.kind === 'report' ? 'Report' : current.kind === 'coverage' || current.kind === 'coverage-family' || current.kind === 'coverage-detector' ? 'Coverage' : current.kind === 'scenario' ? (scenarios.find(s => s.id === current.id)?.title ?? 'Scenario') : current.kind === 'suite' ? (categories.find(c => c.id === current.id)?.title ?? 'Suite') : (fixture?.id ?? 'Fixture');
   if (force) renderPage('<p role="status" class="small">Loading benchmark results…</p>', label);
   try {
     const needsMatrix = current.kind === 'coverage' || current.kind === 'coverage-family';
@@ -160,6 +162,7 @@ async function refresh(force = false): Promise<void> {
     else if (current.kind === 'coverage') body = coveragePage(fixtures, coverageViewOf(location.search), data, matrix, matrixProblem, location.search);
     else if (current.kind === 'coverage-family') body = familyPage(data, fixtures, current.id, matrix, matrixProblem);
     else if (current.kind === 'coverage-detector') body = detectorPage(data, fixtures, current.id);
+    else if (current.kind === 'scenario') body = scenarioPage(fixtures, current.id);
     else if (current.kind === 'suite') body = suitePage(data, fixtures, current.id);
     else if (fixture) { const loaded = data.loaded.find(l => l.category.id === fixture.category); body = fixturePage(fixture, loaded?.report, loaded?.problem); }
     else body = `<div class="page-head"><div><h1>No such fixture</h1></div></div>${actionEmptyState({ title: 'No fixture has this slug', body: 'A slug is <code>suite--fixture-id</code>. Search for it, or <a href="/coverage">open the coverage list</a>.' })}`;

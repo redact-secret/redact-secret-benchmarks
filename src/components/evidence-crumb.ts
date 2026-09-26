@@ -1,9 +1,9 @@
 import { escapeHtml } from './html';
 
 /**
- * EvidenceCrumb: detector › suite › fixture › case › assertion. Every part but
- * the current one is a bookmarkable link, so the bytes are never more than two
- * clicks away.
+ * EvidenceCrumb: the bookmarkable evidence hierarchy for the current page.
+ * Every part but the current one is a link, so canonical fixture bytes remain
+ * reachable from provider/family, scenario, and development-history views.
  */
 export interface CrumbPart { label: string; href?: string }
 

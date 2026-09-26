@@ -337,6 +337,16 @@ td small, .chg small, .gate-row small { display: block; color: var(--ink-muted);
 .crumb { font: var(--text-small); color: var(--ink-muted); margin-bottom: var(--space-3); }
 .crumb ol { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); list-style: none; margin: 0; padding: 0; }
 .crumb li + li::before { content: "/"; margin-right: var(--space-2); color: var(--ink-muted); }
+.fixture-scope { margin: calc(var(--space-2) * -1) 0 var(--space-4); font: var(--text-small); }
+.fixture-scope p { margin: 0; }
+.fixture-scope ul { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-6); margin: var(--space-1) 0 0; padding-left: var(--space-6); }
+.fixture-projections { display: grid; grid-template-columns: calc(var(--space-16) * 2) minmax(0, 1fr); gap: var(--space-2) var(--space-4); margin: calc(var(--space-4) * -1) 0 var(--space-6); font: var(--text-small); }
+.fixture-projections dt { color: var(--ink-muted); }
+.fixture-projections dd { margin: 0; min-width: 0; overflow-wrap: break-word; }
+@media (max-width: 720px) {
+  .fixture-projections { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .fixture-projections dd + dt { margin-top: var(--space-2); }
+}
 
 /* ---------- ActionEmptyState and commands ---------- */
 .empty-state { border: var(--hairline) dashed var(--ink-muted); padding: var(--space-6); display: grid; gap: var(--space-3); max-width: calc(var(--space-16) * 9); }

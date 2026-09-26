@@ -23,12 +23,12 @@ await mkdir(output, { recursive: true });
 
 const percent = v => `${(v * 100).toFixed(1)}%`;
 const fixture = 'milestone-6-closed--issue-255-postgres-literal';
-const ROUTES = ['/report', '/report?level=T2', '/report?level=T3', '/coverage', '/coverage?show=thin', '/coverage?show=inventory', '/coverage/detectors/github-token', '/coverage/github:classic-personal-access-token', '/support', '/support?status=unsupported', '/suites/accuracy', `/fixture/${fixture}`,
+const ROUTES = ['/report', '/report?level=T2', '/report?level=T3', '/coverage', '/coverage?show=thin', '/coverage?show=inventory', '/coverage/detectors/github-token', '/coverage/github:classic-personal-access-token', '/scenarios/context-and-encoding', '/support', '/support?status=unsupported', '/suites/accuracy', `/fixture/${fixture}`,
   '/workbench', '/workbench/review/lexical-invalid-alphabet', '/workbench/review/t0-fixtures', '/workbench/changes', '/workbench/changes?corpus=expanded', '/workbench/qualification',
   ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/workbench/method/${m}`), '/how-to-read'];
 const LEGACY = { '/': '/report', '/benchmark': '/report', '/benchmark/github-token': '/coverage/detectors/github-token', '/benchmark/accuracy': '/suites/accuracy', '/coverage/github-token': '/coverage/detectors/github-token', '/coverage-gaps': '/coverage', '/evaluation': '/workbench', '/pending': '/workbench/review/t0-fixtures',
   '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation', '/evaluation/method/twin': '/workbench/method/twin', '/evaluation/detector/github-token': '/coverage/detectors/github-token', '/methodology': '/how-to-read', '/#/github-token': '/coverage/detectors/github-token' };
-const KEYBOARD = ['/report', '/coverage', `/fixture/${fixture}`, '/workbench', '/workbench/changes', '/how-to-read'];
+const KEYBOARD = ['/report', '/coverage', '/scenarios/context-and-encoding', `/fixture/${fixture}`, '/workbench', '/workbench/changes', '/how-to-read'];
 
 const browser = await chromium.launch({ headless: true, channel: 'chrome' });
 const errors = [], routes = [], contrast = [], keyboard = [];

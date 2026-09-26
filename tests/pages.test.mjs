@@ -12,10 +12,12 @@ const categories = (await read('benchmarks/categories.json')).filter(category =>
 const registry = await read('benchmarks/detectors.json');
 const assignments = await read('benchmarks/fixture-detectors.json');
 const fixtureIndex = await read('benchmarks/fixture-index.json');
+const scenarios = (await read('benchmarks/scenarios.json')).scenarios;
+const taxonomy = await read('benchmarks/support/taxonomy.json');
 const corpora = Object.fromEntries(await Promise.all(categories.map(async c => [c.id, await read(c.corpus)])));
-const semantics = new Map(fixtureIndex.fixtures.map(entry => [entry.slug, entry]));
+const semanticBySlug = new Map(fixtureIndex.fixtures.map(entry => [entry.slug, entry]));
 const fixtures = buildCatalog(categories, corpora, assignments, registry.detectors).map(fixture => {
-  const semantic = semantics.get(fixture.slug);
+  const semantic = semanticBySlug.get(fixture.slug);
   assert.ok(semantic, fixture.slug);
   return { ...fixture, familyIds: semantic.familyIds, scenarioIds: semantic.scenarioIds, ...('unscopedReason' in semantic ? { unscopedReason: semantic.unscopedReason } : {}), provenance: semantic.provenance };
 });
@@ -148,6 +150,9 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   assert.equal((html.match(/<u style="left:/g) ?? []).length, counts.length, 'a minDenominator line on every bar');
   for (const d of registry.detectors) assert.ok(html.includes(`href="/coverage/detectors/${d.id}"`), d.id);
   for (const c of categories) assert.ok(html.includes(`href="/suites/${c.id}"`), c.id);
+  for (const scenario of scenarios) assert.ok(html.includes(`href="/scenarios/${scenario.id}"`), scenario.id);
+  assert.ok(text(html).includes('Test scenarios') && text(html).includes('Development history'));
+  assert.ok(text(html).includes('Membership overlaps'));
   assert.equal((coveragePage(fixtures, 'thin').match(/class="cov-row" role="row"/g) ?? []).length, atMinimum);
   // #36: the twin figure separates discriminated / not discriminated / un-probeable.
   const { twinProbe } = await load('/benchmarks/lib/twin-probe.ts');
@@ -167,6 +172,64 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   for (const [key, g] of Object.entries(groups)) if (g.leakedSpanRate?.bound != null) assert.ok(text(page).includes(`at most ${percent(g.leakedSpanRate.bound)}`), key);
   assert.ok(page.includes('Pending review') === Boolean(groups['pending/T0']));
   assert.ok(detectorPage(data, fixtures, 'nope').includes('No such detector'));
+});
+
+test('Scenario navigation projects canonical fixtures and preserves family and development-history relations', async () => {
+  const { scenarioPage } = await load('/src/pages/scenario.ts');
+  for (const scenario of scenarios) {
+    const selected = fixtures.filter(fixture => fixture.scenarioIds.includes(scenario.id));
+    const html = scenarioPage(fixtures, scenario.id);
+    assert.match(html, /<p class="eyebrow">TEST SCENARIO<\/p>/);
+    assert.ok(text(html).includes('does not change fixture bytes, accounting, source suites, or execution provenance'));
+    for (const fixture of selected) {
+      assert.equal((html.match(new RegExp(`href="/fixture/${fixture.slug}"`, 'g')) ?? []).length, 1, `${scenario.id}: ${fixture.slug}`);
+      assert.ok(html.includes(`href="/suites/${fixture.provenance.categoryId}"`), fixture.slug);
+      for (const familyId of fixture.familyIds) assert.ok(html.includes(`href="/coverage/${familyId}"`), `${fixture.slug}: ${familyId}`);
+      if (!fixture.familyIds.length) assert.ok(html.includes(fixture.unscopedReason), fixture.slug);
+    }
+  }
+  assert.ok(scenarioPage(fixtures, 'not-registered').includes('No such test scenario'));
+  const emptyFixtures = fixtures.map(fixture => ({ ...fixture, scenarioIds: fixture.scenarioIds.filter(id => id !== scenarios[0].id) }));
+  assert.ok(scenarioPage(emptyFixtures, scenarios[0].id).includes('No fixtures are assigned to this scenario'));
+});
+
+test('Fixture navigation uses provider-family breadcrumbs, all multi-family links, and explicit unscoped reasons', async () => {
+  const { fixturePage } = await load('/src/pages/fixture.ts');
+  const single = fixtures.find(fixture => fixture.slug === 'accuracy--aws-id');
+  const multi = fixtures.find(fixture => fixture.familyIds.length > 1);
+  const unscoped = fixtures.find(fixture => fixture.slug === 'accuracy--ordinary-text');
+  assert.ok(single && multi && unscoped);
+  const singleHtml = fixturePage(single, undefined), family = taxonomy.families.find(item => item.id === single.familyIds[0]);
+  const provider = taxonomy.providers.find(item => item.id === family.provider);
+  assert.ok(singleHtml.indexOf(provider.name) < singleHtml.indexOf(family.name) && singleHtml.indexOf(family.name) < singleHtml.indexOf(`aria-current="page">${single.id}`));
+  assert.ok(singleHtml.includes(`href="/coverage/${family.id}"`));
+  const multiHtml = fixturePage(multi, undefined);
+  assert.ok(multiHtml.includes('aria-label="Fixture family relationships"'));
+  for (const familyId of multi.familyIds) assert.equal((multiHtml.match(new RegExp(`href="/coverage/${familyId}"`, 'g')) ?? []).length, 1, familyId);
+  const unscopedHtml = fixturePage(unscoped, undefined);
+  assert.ok(text(unscopedHtml).includes('Unscoped fixture'));
+  assert.ok(unscopedHtml.includes(unscoped.unscopedReason));
+  for (const fixture of [single, multi, unscoped]) {
+    const html = fixturePage(fixture, undefined);
+    for (const scenarioId of fixture.scenarioIds) assert.ok(html.includes(`href="/scenarios/${scenarioId}"`), `${fixture.slug}: ${scenarioId}`);
+    assert.ok(html.includes(`href="/suites/${fixture.provenance.categoryId}"`), fixture.slug);
+  }
+});
+
+test('Representative provider, global, multi-family, and regression fixtures remain canonically reachable', async () => {
+  const { scenarioPage } = await load('/src/pages/scenario.ts');
+  const representatives = [
+    fixtures.find(fixture => fixture.slug === 'accuracy--aws-id'),
+    fixtures.find(fixture => fixture.slug === 'accuracy--github-token'),
+    fixtures.find(fixture => fixture.familyIds.some(id => id.startsWith('sendgrid:'))),
+    fixtures.find(fixture => fixture.slug === 'accuracy--ordinary-text'),
+    fixtures.find(fixture => fixture.familyIds.length > 1),
+    fixtures.find(fixture => fixture.category.startsWith('beta8-')),
+  ];
+  for (const fixture of representatives) {
+    assert.ok(fixture, 'representative fixture exists');
+    for (const scenarioId of fixture.scenarioIds) assert.ok(scenarioPage(fixtures, scenarioId).includes(`href="/fixture/${fixture.slug}"`), fixture.slug);
+  }
 });
 
 test('Evidence: every fixture renders its bytes, its expectation and a way to reproduce it', async () => {
@@ -212,6 +275,8 @@ test('Suite and How to read: published groups untouched; every caveat lives in o
   const { howToRead } = await load('/src/pages/how-to-read.ts');
   const html = suitePage(data, fixtures, 'accuracy');
   assert.ok(html.includes('/fixture/accuracy--github-token') && html.includes('Run provenance') && html.includes('draft'));
+  assert.ok(html.includes('href="/coverage#development-history">Development history</a>'));
+  assert.ok(text(html).includes('source suite preserves fixture adoption and execution provenance'));
   const group = reports.find(r => r.category === 'accuracy').scanners[0].groups;
   for (const [key, g] of Object.entries(group)) if (g.leakedSpanRate?.bound != null) assert.ok(text(html).includes(`at most ${percent(g.leakedSpanRate.bound)}`), key);
   assert.ok(suitePage(data, fixtures, 'nope').includes('No such suite'));

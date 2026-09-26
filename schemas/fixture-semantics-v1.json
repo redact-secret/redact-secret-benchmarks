@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benchmarks.redactsecret.dev/schemas/fixture-semantics-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "reviewedAt", "fixtures"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "reviewedAt": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "fixtures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slug", "familyIds", "scenarioIds"],
+        "properties": {
+          "slug": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" },
+          "familyIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+          "scenarioIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+          "unscopedReason": { "type": "string", "minLength": 1 }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "familyIds": { "type": "array", "maxItems": 0 } } },
+            "then": { "properties": { "unscopedReason": { "type": "string", "minLength": 1 } }, "required": ["unscopedReason"] },
+            "else": { "not": { "required": ["unscopedReason"] } }
+          }
+        ]
+      }
+    }
+  }
+}

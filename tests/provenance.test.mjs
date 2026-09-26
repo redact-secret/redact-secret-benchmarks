@@ -84,6 +84,6 @@ test('the production deployment summary records all immutable release handoff id
   for (const identity of ['published product version', 'product release source SHA', 'benchmark snapshot SHA', 'corpus manifest hash'])
     assert.ok(step.includes(`- ${identity}:`), identity);
   assert.match(step, /\.pins\.packageVersion benchmarks\/pin-manifest\.json/);
-  assert.match(step, /\.pins\.sourceRevision benchmarks\/pin-manifest\.json/);
+  assert.match(step, /\.pins\.releaseSourceRevision benchmarks\/pin-manifest\.json/);
   assert.match(step, /\.revision benchmarks\/pin-manifest\.json/);
 });

@@ -47,12 +47,14 @@ test('committed pin manifest is schema-correct, matches live pin sources, and ca
   const assignments = await read('benchmarks/fixture-detectors.json');
 
   assert.deepEqual(Object.keys(manifest).sort(), ['corpusHashes', 'fixtureIds', 'pins', 'revision', 'schemaVersion']);
-  assert.deepEqual(Object.keys(manifest.pins).sort(), ['packageVersion', 'redactSecretRevision', 'redactSecretVersion', 'sourceRevision']);
+  assert.deepEqual(Object.keys(manifest.pins).sort(), ['packageVersion', 'redactSecretRevision', 'redactSecretVersion', 'releaseSourceRevision', 'sourceRevision']);
   assert.equal(manifest.schemaVersion, 1);
   assert.match(manifest.revision, /^[a-f0-9]{40}$/);
 
   assert.equal(manifest.pins.sourceRevision, registry.sourceRevision);
   assert.equal(manifest.pins.redactSecretRevision, inventory.redactSecretRevision);
+  assert.equal(manifest.pins.releaseSourceRevision, inventory.redactSecretReleaseRevision);
+  assert.match(manifest.pins.releaseSourceRevision, /^[a-f0-9]{40}$/);
   assert.equal(manifest.pins.redactSecretVersion, inventory.redactSecretVersion);
   assert.equal(manifest.pins.packageVersion, packageJson.dependencies['@redact-secret/core']);
 

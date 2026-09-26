@@ -9,18 +9,20 @@ the fixed candidate `ecf4db1` is within budget on all 28 size triggers and on
 latency, initialization and memory. The merged `main` commit, `6b124ac`, also
 carries the unrelated detector changes redact-secret#831–#839. There the
 `aarch64-unknown-linux-gnu` CLI breaches once, at +7.7%. That breach is a
-64 KiB segment-alignment step, with 1.7% real growth, and it is **open for a
-maintainer decision**. Adapter overhead is an **invalid measurement**: the
-workstation was loaded, and the deterministic adapter counts are unchanged.
+64 KiB segment-alignment step, with 1.7% real growth, and the maintainer
+recorded it as an **accepted tradeoff** for that commit, linked to the
+detection gains of #831–#838. Adapter overhead is an **invalid measurement**:
+the workstation was loaded, and the deterministic adapter counts are
+unchanged.
 
 This applies the reviewed budgets of
 [#143](https://github.com/redact-secret/redact-secret-benchmarks/issues/143)
 ([`docs/specs/regression-budgets.md`](../../docs/specs/regression-budgets.md),
 with timing judged on same-job paired ratios since #303/#306). The baseline
 is `0.1.0-beta.8`, source `3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c`. No
-baseline was replaced and no tradeoff was recorded in
-`benchmarks/accepted-regressions.json`. Each measurement is kept below
-next to its decision. The product-side judgement (cross-runtime determinism,
+baseline was replaced. `benchmarks/accepted-regressions.json` gains exactly
+one entry, `beta9-cli-aarch64-linux-gnu-detector-pack`, which covers the one
+`6b124ac` trigger. Each measurement is kept below next to its decision. The product-side judgement (cross-runtime determinism,
 parity and worst cases) is redact-secret `docs/audits/evidence/772/`.
 
 ## Source revisions
@@ -54,7 +56,7 @@ the product itself:
 | latency | 10/10 within | 10/10 within | 10/10 within | within-budget |
 | initialization | 10/10 within | 10/10 within | 10/10 within | within-budget |
 | memory | 16/16 within | 16/16 within | 16/16 within | within-budget |
-| size | **8 regressions**, 20 within | 28/28 within | 27 within, **1 regression** | A: regression requiring a fix, fixed in redact-secret#830. C: open, see below |
+| size | **8 regressions**, 20 within | 28/28 within | 27 within, 1 breach, recorded as an **accepted tradeoff** | A: regression requiring a fix, fixed in redact-secret#830. C: accepted tradeoff, see below |
 | adapter overhead | not measured | tool: 28 within, 2 traversal regressions | not measured | invalid measurement, see below |
 
 ### Latency and initialization
@@ -115,15 +117,42 @@ second segment's file offset moved from `0x995e8` to `0xa9490`, so the file
 grew by one alignment step. The x86_64 Linux CLI, aligned to 4 KiB, grew
 1.5%.
 
-The budget's rules make this a `regression` until a maintainer either
-records an accepted tradeoff linked to those detector changes' benefit, or
-decides the trigger should measure loadable bytes instead of file bytes. It
-is left open here, not accepted.
+**Decision for C: accepted tradeoff** (maintainer, 2026-09-25). The ledger
+entry `beta9-cli-aarch64-linux-gnu-detector-pack` in
+[`benchmarks/accepted-regressions.json`](../../benchmarks/accepted-regressions.json)
+accepts exactly this trigger, against exactly `0.1.0-beta.8`, for exactly
+`6b124ac`.
+
+- **Original measurement.** It is kept in the entry: 863,848 → 930,576
+  bytes.
+- **Rationale.** Loadable code grew +1.7%; the rest is the 64 KiB
+  segment-alignment step.
+- **Benefit.** The detection gains linked there:
+  - #831: escaped-JSON, `:=`, Objective-C and brace-bearing assignments;
+  - #832: URL query, fragment and form-body credentials;
+  - #833: fewer placeholder and reference false positives;
+  - #834: `Proxy-Authorization`, mid-line Basic/Token and short Bearer;
+  - #835: RFC 8959 `secret-token:` URIs;
+  - #836: http(s) and ftp(s) userinfo passwords;
+  - #837: JSON Web Key secret members;
+  - #838: `db_pass`.
+
+The budget definition is unchanged, so another breach of this trigger by a
+later candidate is judged again.
+
+Both reports are kept side by side:
+
+- [`6b124ac/regression-budgets.md`](6b124ac/regression-budgets.md) is the
+  report before the decision: status `regression`, with the breach.
+- [`6b124ac/regression-budgets-accepted.md`](6b124ac/regression-budgets-accepted.md)
+  is the same measurement re-evaluated with the ledger entry: status
+  `accepted`, and the trigger `accepted-tradeoff`, with its values
+  unchanged.
 
 Under
 [`scorer-promotion-contract.json`](../../benchmarks/scorer-promotion-contract.json)
-gate `q5-size-budget`, the merged commit's `size` outcome is therefore
-`regression` until that decision is made.
+gate `q5-size-budget`, the merged commit's `size` outcome is
+`accepted-tradeoff`, which the gate allows.
 
 ### Adapter overhead (invalid measurement)
 
@@ -156,7 +185,10 @@ The other 28 triggers were within budget.
   workload: scanner calls per event and scanned code units per event. These
   are what would reveal double scanning.
 
-A clean adapter verdict needs a rerun on an idle Apple M4.
+A clean adapter verdict needs a rerun on the Apple M4 with the 1-minute
+load average near the baseline's, about 4, for the whole series. A retry
+was checked at 20:34 local time on 2026-09-25, and the load was 15.9, so
+the rerun was not attempted.
 
 ## Reproduce
 
@@ -193,5 +225,6 @@ Each of `d4bab4e/`, `ecf4db1/` and `6b124ac/` holds:
   the measured value and the verdict on every trigger;
 - `operational-evidence.json`: the #141-shaped size and timing inputs.
 
-`adapter/` holds the candidate adapter series, its budget report, and the
-host-load log.
+`6b124ac/` also holds `regression-budgets-accepted.json` and `.md`, the same
+measurement re-evaluated after the tradeoff was recorded. `adapter/` holds
+the candidate adapter series, its budget report, and the host-load log.

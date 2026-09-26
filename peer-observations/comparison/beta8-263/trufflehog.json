@@ -1,0 +1,325 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-263",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "95413f67fa190e58d01c51963465f48ca3ba396aad07b6e895d7c4baa0cff9b7",
+    "fixtureCount": 104,
+    "fixturesDigest": "ccf02279aecb48890c8be54f3d9401c6b660304c74d2e043ffc14c725b33d46c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/gitlab-runner-authentication-token-prefix-letter-twin.sh",
+      "start": 87,
+      "end": 107,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-twin-base-register.sh",
+      "start": 87,
+      "end": 107,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-twin-base-toml.toml",
+      "start": 85,
+      "end": 105,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/groq-api-key-compose-env.yml",
+      "start": 97,
+      "end": 153,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-curl-models.sh",
+      "start": 69,
+      "end": 125,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-secrets-list.txt",
+      "start": 43,
+      "end": 99,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-startup-log.log",
+      "start": 49,
+      "end": 105,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-toml-provider.toml",
+      "start": 72,
+      "end": 128,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-twin-base-dotenv.env",
+      "start": 20,
+      "end": 76,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-twin-base-python.py",
+      "start": 46,
+      "end": 102,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/langfuse-secret-key-twin-base-dotenv.env",
+      "start": 83,
+      "end": 125,
+      "family": "langfuse-secret-key"
+    },
+    {
+      "path": "cases/langfuse-secret-key-version-nibble-twin.env",
+      "start": 83,
+      "end": 125,
+      "family": "langfuse-secret-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-export-pat.sh",
+      "start": 25,
+      "end": 76,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-langgraph-cli.sh",
+      "start": 27,
+      "end": 78,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-op-read.txt",
+      "start": 48,
+      "end": 99,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-runbook.md",
+      "start": 51,
+      "end": 102,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-twin-base-ci.yml",
+      "start": 26,
+      "end": 77,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-twin-base-dotenv.env",
+      "start": 41,
+      "end": 92,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-twin-base-json.json",
+      "start": 35,
+      "end": 86,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-compose-env.yml",
+      "start": 58,
+      "end": 132,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-error-log.log",
+      "start": 37,
+      "end": 111,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-json-config.json",
+      "start": 44,
+      "end": 119,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-secret-print.txt",
+      "start": 49,
+      "end": 123,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-dotenv.env",
+      "start": 17,
+      "end": 91,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-export.sh",
+      "start": 25,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-python.py",
+      "start": 54,
+      "end": 128,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/travisci-api-token-context-1-twin.yml",
+      "start": 38,
+      "end": 60,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-2-twin.env",
+      "start": 15,
+      "end": 37,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-8-twin.sh",
+      "start": 25,
+      "end": 47,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-1.yml",
+      "start": 38,
+      "end": 60,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-2.env",
+      "start": 13,
+      "end": 35,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-3.sh",
+      "start": 27,
+      "end": 49,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-4.sh",
+      "start": 62,
+      "end": 84,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-5.json",
+      "start": 28,
+      "end": 50,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-6.py",
+      "start": 19,
+      "end": 41,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-7.log",
+      "start": 23,
+      "end": 45,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-8.sh",
+      "start": 24,
+      "end": 46,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/xai-api-key-curl-chat.sh",
+      "start": 68,
+      "end": 152,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-json-profile.json",
+      "start": 36,
+      "end": 120,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-k8s-secret.yml",
+      "start": 84,
+      "end": 168,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-retry-log.log",
+      "start": 34,
+      "end": 118,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-twin-base-dotenv.env",
+      "start": 12,
+      "end": 96,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-twin-base-ts.ts",
+      "start": 97,
+      "end": 181,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-vault-read.txt",
+      "start": 41,
+      "end": 125,
+      "family": "xai-api-key"
+    }
+  ],
+  "digest": "c4b31db2729acc2a41ecfdcbb66ca00c35c100a2f3b84ea28f5a92a1570477ba"
+}

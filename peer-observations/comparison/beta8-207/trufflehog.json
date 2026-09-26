@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-207",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "d9fded21fc86d5a25e28eaccda38171896d14a77625824081cea0014d7e9cbb3",
+    "fixtureCount": 348,
+    "fixturesDigest": "98af6014722e2354960a0975d5152420d05875a48102d57129e92796b9bf87af",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/atlassian-api-token-acli-login.sh",
+      "start": 5,
+      "end": 197
+    },
+    {
+      "path": "cases/atlassian-api-token-curl-basic.sh",
+      "start": 32,
+      "end": 224
+    },
+    {
+      "path": "cases/atlassian-api-token-debug-log.log",
+      "start": 79,
+      "end": 271
+    },
+    {
+      "path": "cases/atlassian-api-token-floor-length-json-twin.json",
+      "start": 62,
+      "end": 86
+    },
+    {
+      "path": "cases/atlassian-api-token-jira-client.py",
+      "start": 102,
+      "end": 294
+    },
+    {
+      "path": "cases/atlassian-api-token-python-client-yaml.yml",
+      "start": 109,
+      "end": 301
+    },
+    {
+      "path": "cases/atlassian-api-token-settings-json.json",
+      "start": 62,
+      "end": 86
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-app-url-path-public-id.log",
+      "start": 32,
+      "end": 68
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-app-uuid-json-public-id.json",
+      "start": 19,
+      "end": 55
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-auth-token-output.txt",
+      "start": 20,
+      "end": 56
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-authorizations-list-public-id.txt",
+      "start": 48,
+      "end": 84
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-compose-env.yml",
+      "start": 61,
+      "end": 97
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-action.yml",
+      "start": 88,
+      "end": 124
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-log.log",
+      "start": 52,
+      "end": 88
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-env.env",
+      "start": 15,
+      "end": 51
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-export.sh",
+      "start": 22,
+      "end": 58
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-git-remote-context-twin.sh",
+      "start": 22,
+      "end": 87
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-git-remote.sh",
+      "start": 22,
+      "end": 82
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-handoff-note.md",
+      "start": 37,
+      "end": 73
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-inline-env.sh",
+      "start": 15,
+      "end": 51
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-oauth-client-id-public-id.env",
+      "start": 16,
+      "end": 52
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api.sh",
+      "start": 62,
+      "end": 98
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-release-id-public-id.env",
+      "start": 18,
+      "end": 54
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-router-request-id-public-id.log",
+      "start": 112,
+      "end": 148
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-terraform-provider.tf",
+      "start": 31,
+      "end": 67
+    },
+    {
+      "path": "cases/sentry-user-auth-token-actions-env.yml",
+      "start": 26,
+      "end": 97
+    },
+    {
+      "path": "cases/sentry-user-auth-token-api-curl.sh",
+      "start": 65,
+      "end": 136
+    },
+    {
+      "path": "cases/sentry-user-auth-token-compose-env.yml",
+      "start": 64,
+      "end": 135
+    },
+    {
+      "path": "cases/sentry-user-auth-token-dash-delimiter-twin.env",
+      "start": 25,
+      "end": 89
+    },
+    {
+      "path": "cases/sentry-user-auth-token-env.env",
+      "start": 18,
+      "end": 89
+    },
+    {
+      "path": "cases/sentry-user-auth-token-script-constant.py",
+      "start": 16,
+      "end": 87
+    },
+    {
+      "path": "cases/sentry-user-auth-token-sentry-cli.sh",
+      "start": 24,
+      "end": 95
+    },
+    {
+      "path": "cases/sentry-user-auth-token-sentryclirc.ini",
+      "start": 38,
+      "end": 109
+    },
+    {
+      "path": "cases/telegram-bot-token-actions-env.yml",
+      "start": 23,
+      "end": 69
+    },
+    {
+      "path": "cases/telegram-bot-token-bot-yaml.yml",
+      "start": 23,
+      "end": 69
+    },
+    {
+      "path": "cases/telegram-bot-token-env.env",
+      "start": 19,
+      "end": 65
+    },
+    {
+      "path": "cases/twilio-api-key-secret-curl-basic.sh",
+      "start": 56,
+      "end": 90
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 33,
+      "end": 67
+    },
+    {
+      "path": "cases/twilio-auth-token-curl-basic.sh",
+      "start": 56,
+      "end": 90
+    },
+    {
+      "path": "cases/twilio-auth-token-curl-basic.sh",
+      "start": 108,
+      "end": 142
+    }
+  ],
+  "digest": "2503d4f46fdc45169e13c80c54dfb9cf187d50a83fb9151d124df2ca8c4212a7"
+}

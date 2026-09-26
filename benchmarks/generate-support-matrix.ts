@@ -37,6 +37,7 @@ async function main() {
       ...(statusReport.product ? { product: statusReport.product } : {}),
       // The released package a published-mode run measured, when the report records it.
       ...(statusReport.publishedPackage ? { publishedPackage: statusReport.publishedPackage } : {}),
+      scannerObservations: statusReport.scannerObservations,
     },
     providerCount: taxonomy.providers.length,
     familyCount: families.length,

@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "58a2495b2e6796b10927365f1ac9ac495e7c00c4eaa9c3ee5504f2ed9f2d2583",
+    "fixtureCount": 33,
+    "fixturesDigest": "bc037ae36e2cf2ec4f170d7fa4371c4d903ae12b1f9956bce4652f07a2c35a5a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-access-key-boto3-client.py",
+      "start": 76,
+      "end": 96,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 152,
+      "end": 172,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/digitalocean-token-doctl-auth-init.sh",
+      "start": 51,
+      "end": 122
+    },
+    {
+      "path": "cases/digitalocean-token-env-access-token.env",
+      "start": 26,
+      "end": 97
+    },
+    {
+      "path": "cases/digitalocean-token-oauth-bearer-header.http",
+      "start": 74,
+      "end": 145
+    },
+    {
+      "path": "cases/linear-token-env-api-key.env",
+      "start": 15,
+      "end": 63
+    },
+    {
+      "path": "cases/linear-token-graphql-authorization-header.http",
+      "start": 90,
+      "end": 138
+    },
+    {
+      "path": "cases/linear-token-linear-client-ts.ts",
+      "start": 88,
+      "end": 136
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 204,
+      "end": 244
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-az-ad-sp-create-for-rbac.txt",
+      "start": 158,
+      "end": 198
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-az-login-service-principal.sh",
+      "start": 136,
+      "end": 176
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-client-secret-credential-csharp.cs",
+      "start": 138,
+      "end": 178
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-compose-environment.yml",
+      "start": 225,
+      "end": 265
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-env-client-secret.env",
+      "start": 126,
+      "end": 166
+    },
+    {
+      "path": "cases/npm-token-npmrc-auth-token.npmrc",
+      "start": 70,
+      "end": 110,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/npm-token-publish-workflow-env.yml",
+      "start": 94,
+      "end": 134,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/slack-token-bearer-header.http",
+      "start": 120,
+      "end": 175,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-bolt-app-python.py",
+      "start": 50,
+      "end": 105,
+      "family": "slack-token"
+    }
+  ],
+  "digest": "f331c54399c842dfff676ac3389a69c5f5a279a4c539eb047b0f35c7c41fd613"
+}

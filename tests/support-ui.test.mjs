@@ -35,7 +35,8 @@ function matrixOf(statusFor) {
   const stableDistribution = { documented: families.filter(f => f.status === 'stable').length, empirical: 0 };
   return {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
-    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T09:00:00.000Z', runId: 'abcdef1234', revision: 'f'.repeat(40), dirty: false, criteriaSchemaVersion: 1 },
+    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T09:00:00.000Z', runId: 'abcdef1234', revision: 'f'.repeat(40), dirty: false, criteriaSchemaVersion: 1,
+      scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T09:00:00.000Z', sourceRunId: 'abcdef1234' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };
 }

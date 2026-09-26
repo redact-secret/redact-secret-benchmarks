@@ -1,0 +1,449 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/common-formats",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "4f2a4eef91141a70fc686d140cfe7d7540aaf850543b24a3010473fef68b11fa",
+    "fixtureCount": 150,
+    "fixturesDigest": "bd05f9404fade65b98156c7fd3c4c1916398750c19f95fc7265b491d1d86d433",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-token-api03-admin-prefix-plain-twin.txt",
+      "start": 0,
+      "end": 110,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-admin-prefix-unicode-crlf-twin.txt",
+      "start": 24,
+      "end": 134,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-plain.txt",
+      "start": 0,
+      "end": 108,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-unicode-crlf.txt",
+      "start": 24,
+      "end": 132,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/aws-access-key-pair-plain.txt",
+      "start": 18,
+      "end": 38,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-access-key-pair-plain.txt",
+      "start": 61,
+      "end": 101,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-access-key-pair-unicode-crlf.txt",
+      "start": 42,
+      "end": 62,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-access-key-pair-unicode-crlf.txt",
+      "start": 85,
+      "end": 125,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/cloudflare-token-user-plain.txt",
+      "start": 0,
+      "end": 53
+    },
+    {
+      "path": "cases/cloudflare-token-user-unicode-crlf.txt",
+      "start": 24,
+      "end": 77
+    },
+    {
+      "path": "cases/digitalocean-token-doo-plain.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-doo-unicode-crlf.txt",
+      "start": 24,
+      "end": 95
+    },
+    {
+      "path": "cases/digitalocean-token-dop-plain.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-dop-unicode-crlf.txt",
+      "start": 24,
+      "end": 95
+    },
+    {
+      "path": "cases/digitalocean-token-dor-plain.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-dor-unicode-crlf.txt",
+      "start": 24,
+      "end": 95
+    },
+    {
+      "path": "cases/docker-token-oat-plain.txt",
+      "start": 0,
+      "end": 41
+    },
+    {
+      "path": "cases/docker-token-oat-unicode-crlf.txt",
+      "start": 24,
+      "end": 65
+    },
+    {
+      "path": "cases/docker-token-pat-plain.txt",
+      "start": 0,
+      "end": 36
+    },
+    {
+      "path": "cases/docker-token-pat-unicode-crlf.txt",
+      "start": 24,
+      "end": 60
+    },
+    {
+      "path": "cases/github-token-gho-plain.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-gho-unicode-crlf.txt",
+      "start": 24,
+      "end": 64,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghp-plain.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghp-prefix-plain-twin.txt",
+      "start": 0,
+      "end": 47,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghp-prefix-unicode-crlf-twin.txt",
+      "start": 24,
+      "end": 71,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghp-unicode-crlf.txt",
+      "start": 24,
+      "end": 64,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghr-plain.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghr-unicode-crlf.txt",
+      "start": 24,
+      "end": 64,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghs-plain.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghs-unicode-crlf.txt",
+      "start": 24,
+      "end": 64,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghu-plain.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-ghu-unicode-crlf.txt",
+      "start": 24,
+      "end": 64,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/gitlab-token-pat-plain.txt",
+      "start": 0,
+      "end": 26,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-token-pat-unicode-crlf.txt",
+      "start": 24,
+      "end": 50,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/huggingface-token-user-plain.txt",
+      "start": 0,
+      "end": 37
+    },
+    {
+      "path": "cases/huggingface-token-user-unicode-crlf.txt",
+      "start": 24,
+      "end": 61
+    },
+    {
+      "path": "cases/jwt-eddsa-plain.txt",
+      "start": 0,
+      "end": 244,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-eddsa-unicode-crlf.txt",
+      "start": 24,
+      "end": 268,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/linear-token-api-plain.txt",
+      "start": 0,
+      "end": 48
+    },
+    {
+      "path": "cases/linear-token-api-unicode-crlf.txt",
+      "start": 24,
+      "end": 72
+    },
+    {
+      "path": "cases/npm-token-access-plain.txt",
+      "start": 0,
+      "end": 40
+    },
+    {
+      "path": "cases/npm-token-access-unicode-crlf.txt",
+      "start": 24,
+      "end": 64
+    },
+    {
+      "path": "cases/openai-token-legacy-plain.txt",
+      "start": 0,
+      "end": 51,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-legacy-unicode-crlf.txt",
+      "start": 24,
+      "end": 75,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-proj-plain-twin.txt",
+      "start": 0,
+      "end": 163,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-proj-plain.txt",
+      "start": 0,
+      "end": 164,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-proj-unicode-crlf-twin.txt",
+      "start": 24,
+      "end": 187,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-proj-unicode-crlf.txt",
+      "start": 24,
+      "end": 188,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-svcacct-plain-twin.txt",
+      "start": 0,
+      "end": 166,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-svcacct-plain.txt",
+      "start": 0,
+      "end": 167,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-svcacct-unicode-crlf-twin.txt",
+      "start": 24,
+      "end": 190,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-svcacct-unicode-crlf.txt",
+      "start": 24,
+      "end": 191,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/sendgrid-token-segmented-length-plain-twin.txt",
+      "start": 0,
+      "end": 68,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/sendgrid-token-segmented-length-unicode-crlf-twin.txt",
+      "start": 24,
+      "end": 92,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/sendgrid-token-segmented-plain.txt",
+      "start": 0,
+      "end": 69,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/sendgrid-token-segmented-unicode-crlf.txt",
+      "start": 24,
+      "end": 93,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/shopify-token-shpat-plain.txt",
+      "start": 0,
+      "end": 38,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/shopify-token-shpat-unicode-crlf.txt",
+      "start": 24,
+      "end": 62,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/shopify-token-shppa-plain.txt",
+      "start": 0,
+      "end": 38,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/shopify-token-shppa-unicode-crlf.txt",
+      "start": 24,
+      "end": 62,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/slack-token-bot-plain-twin.txt",
+      "start": 0,
+      "end": 54,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-bot-plain.txt",
+      "start": 0,
+      "end": 55,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-bot-unicode-crlf-twin.txt",
+      "start": 24,
+      "end": 78,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-bot-unicode-crlf.txt",
+      "start": 24,
+      "end": 79,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/stripe-token-live-plain.txt",
+      "start": 0,
+      "end": 40,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-live-unicode-crlf.txt",
+      "start": 24,
+      "end": 64,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/vault-token-service-plain.txt",
+      "start": 0,
+      "end": 104
+    },
+    {
+      "path": "cases/vault-token-service-unicode-crlf.txt",
+      "start": 24,
+      "end": 128
+    }
+  ],
+  "digest": "28dfc6cb6a9b8f6c332fabab6fc4ad7cfbfe030974fcc01cc985afaa9c56c0b2"
+}

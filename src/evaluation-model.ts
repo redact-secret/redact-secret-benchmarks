@@ -77,7 +77,9 @@ export function evaluationProblem(value: unknown, corpusHashes?: Record<string, 
     if (!r.runId || !Number.isFinite(Date.parse(r.startedAt)) || !Number.isFinite(Date.parse(r.finishedAt)) || Date.parse(r.finishedAt) < Date.parse(r.startedAt)) throw Error();
     if (!r.cases.length || new Set(r.cases.map(c => c.id)).size !== r.cases.length || !r.scanners.length) throw Error();
     const scannerIds = new Set(r.scanners.map(s => s.id));
-    if (scannerIds.size !== r.scanners.length || r.scanners.some(s => !['complete','unavailable','error','unsupported','unstable'].includes(s.status))) throw Error();
+    if (scannerIds.size !== r.scanners.length || r.scanners.some(s => !['complete','unavailable','error','unsupported','unstable'].includes(s.status) ||
+      !Number.isFinite(Date.parse(s.observation?.observedAt)) || !s.observation?.sourceRunId ||
+      (s.observation.source === 'snapshot') !== Boolean(s.observation.snapshotDigest && s.observation.inputDigest))) throw Error();
     for (const c of r.cases) {
       if (!METHODS.slice(0, 5).includes(c.method) || !/^[a-z0-9-]+$/.test(c.id) || !/^[a-z0-9-]+--[a-z0-9-]+$/.test(c.sourceSlug) || !Array.isArray(c.targets)) throw Error();
       const variants = new Map(c.variants.map(v => [v.id, v]));

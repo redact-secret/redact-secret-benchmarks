@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-212",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "2688a67f804eadc32c46fd22202cda9f7b0a384d7412988bcc306663e4ab792b",
+    "fixtureCount": 168,
+    "fixturesDigest": "532f8cfe2a0a4a06f42428e6ee4a1952e5dd4c19098277624d057b6cdd1c66a3",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/pinecone-api-key-actions-env.yml",
+      "start": 76,
+      "end": 151,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-api-key-header.sh",
+      "start": 50,
+      "end": 124,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-dotenv.env",
+      "start": 17,
+      "end": 91,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-export.sh",
+      "start": 25,
+      "end": 100,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-n8n-credential.json",
+      "start": 80,
+      "end": 154,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-pc-config.sh",
+      "start": 22,
+      "end": 97,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-python-client.py",
+      "start": 54,
+      "end": 129,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-ts-client.ts",
+      "start": 92,
+      "end": 166,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/slack-user-token-audit-env.yml",
+      "start": 76,
+      "end": 152,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-bearer-curl.sh",
+      "start": 66,
+      "end": 138,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-dotenv.env",
+      "start": 17,
+      "end": 93,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-legacy-query-token.txt",
+      "start": 48,
+      "end": 124,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-legacy-short-secret.sh",
+      "start": 77,
+      "end": 128,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-missing-secret-twin.yml",
+      "start": 76,
+      "end": 119,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-oauth-v2-access.json",
+      "start": 132,
+      "end": 211,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-python-webclient.py",
+      "start": 59,
+      "end": 135,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-slack-login.sh",
+      "start": 20,
+      "end": 95,
+      "family": "slack-token"
+    }
+  ],
+  "digest": "32ef7e28ea6399fc8aaef8a25904be00ce98dbc9497192629231585e4976ab7b"
+}

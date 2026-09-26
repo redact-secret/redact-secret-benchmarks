@@ -89,7 +89,9 @@
     "study:pii-readiness": "node --import tsx benchmarks/studies/pii-readiness.ts",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",
     "observations:capture": "node --import tsx scripts/capture-empirical-observation.ts",
-    "peers:provision": "node scripts/provision-peers.mjs"
+    "peers:provision": "node scripts/provision-peers.mjs",
+    "peers:snapshots:refresh": "npm run bench -- --strict --refresh-peer-snapshots && npm run eval:classify -- --refresh-peer-snapshots",
+    "peers:snapshots:live": "npm run bench -- --strict --live-peers && npm run eval:classify -- --live-peers"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",

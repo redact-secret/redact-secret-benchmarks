@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "44b66a8eb0e11f775a1b446a600df2c38d53c3e972344edafd6297eb541aea9b",
+    "fixtureCount": 98,
+    "fixturesDigest": "d800951366a1bc6394fabd71a33aa940149f985f9cb717aa99c3cf03678dbf5f",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/google-api-key-curl-generate-content.sh",
+      "start": 30,
+      "end": 69
+    },
+    {
+      "path": "cases/google-api-key-env-maps-key.env",
+      "start": 20,
+      "end": 59
+    },
+    {
+      "path": "cases/google-api-key-github-actions-places.yml",
+      "start": 75,
+      "end": 114
+    },
+    {
+      "path": "cases/google-api-key-k8s-secret-stringdata.yml",
+      "start": 98,
+      "end": 137
+    },
+    {
+      "path": "cases/google-api-key-shell-export-gemini.sh",
+      "start": 22,
+      "end": 61
+    },
+    {
+      "path": "cases/grafana-service-account-token-http-api-bearer.http",
+      "start": 84,
+      "end": 137,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/grafana-service-account-token-python-requests-client.py",
+      "start": 82,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/jwt-api-bearer-header.http",
+      "start": 65,
+      "end": 376,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/jwt-debug-request-log.log",
+      "start": 91,
+      "end": 399,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-env-id-token.env",
+      "start": 17,
+      "end": 322,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-kubectl-create-token.txt",
+      "start": 63,
+      "end": 392,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-token-response-json.json",
+      "start": 21,
+      "end": 328,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-websocket-query-token.txt",
+      "start": 54,
+      "end": 329,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/netlify-token-api-bearer-header.http",
+      "start": 64,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/netlify-token-github-actions-deploy.yml",
+      "start": 78,
+      "end": 118,
+      "family": "netlify-token"
+    },
+    {
+      "path": "cases/netlify-token-js-api-client.js",
+      "start": 70,
+      "end": 110,
+      "family": "netlify-token"
+    },
+    {
+      "path": "cases/netlify-token-netlify-deploy-auth-flag.sh",
+      "start": 86,
+      "end": 126,
+      "family": "netlify-token"
+    },
+    {
+      "path": "cases/new-relic-user-api-key-env-api-key.env",
+      "start": 47,
+      "end": 79
+    },
+    {
+      "path": "cases/new-relic-user-api-key-gitlab-ci-variables.yml",
+      "start": 67,
+      "end": 99
+    },
+    {
+      "path": "cases/new-relic-user-api-key-nerdgraph-api-key-header.http",
+      "start": 86,
+      "end": 118
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 59,
+      "end": 91
+    },
+    {
+      "path": "cases/new-relic-user-api-key-python-nerdgraph-client.py",
+      "start": 104,
+      "end": 136
+    },
+    {
+      "path": "cases/new-relic-user-api-key-terraform-provider.tf",
+      "start": 61,
+      "end": 93
+    },
+    {
+      "path": "cases/notion-token-compose-env.yml",
+      "start": 119,
+      "end": 169
+    },
+    {
+      "path": "cases/notion-token-curl-bearer.sh",
+      "start": 61,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-token-debug-client-log.log",
+      "start": 69,
+      "end": 119
+    },
+    {
+      "path": "cases/notion-token-mcp-server-env.json",
+      "start": 145,
+      "end": 195
+    },
+    {
+      "path": "cases/notion-token-shell-export-token.sh",
+      "start": 20,
+      "end": 70
+    },
+    {
+      "path": "cases/supabase-management-token-management-api-bearer.http",
+      "start": 64,
+      "end": 115,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/supabase-management-token-ts-management-client.ts",
+      "start": 95,
+      "end": 146,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/terraform-cloud-token-api-v2-bearer.http",
+      "start": 128,
+      "end": 225,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vault-token-env-vault-token.env",
+      "start": 122,
+      "end": 217,
+      "family": "vault-token"
+    },
+    {
+      "path": "cases/vault-token-vault-login.sh",
+      "start": 121,
+      "end": 216,
+      "family": "vault-token"
+    },
+    {
+      "path": "cases/vault-token-x-vault-token-header.http",
+      "start": 153,
+      "end": 317,
+      "family": "vault-token"
+    }
+  ],
+  "digest": "b844001b2a267ff601407f129f3baf6492b2267693e3b8598ac30df3791bb456"
+}

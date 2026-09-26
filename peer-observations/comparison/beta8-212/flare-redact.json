@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-212",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "2688a67f804eadc32c46fd22202cda9f7b0a384d7412988bcc306663e4ab792b",
+    "fixtureCount": 168,
+    "fixturesDigest": "532f8cfe2a0a4a06f42428e6ee4a1952e5dd4c19098277624d057b6cdd1c66a3",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/fireworks-ai-api-key-bearer-curl.sh",
+      "start": 79,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-letter-prefix-twin.sh",
+      "start": 79,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-actions-env.yml",
+      "start": 80,
+      "end": 133,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-bearer-curl.sh",
+      "start": 67,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-cli-credentials.json",
+      "start": 16,
+      "end": 69,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-dotenv.env",
+      "start": 19,
+      "end": 72,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-long-body-twin.sh",
+      "start": 67,
+      "end": 128,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-mcp-config.json",
+      "start": 123,
+      "end": 183,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-pplx-export.sh",
+      "start": 67,
+      "end": 120,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-python-client.py",
+      "start": 64,
+      "end": 117,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-revoke-payload.txt",
+      "start": 40,
+      "end": 93,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-short-body-twin.env",
+      "start": 19,
+      "end": 71,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/slack-user-token-audit-env.yml",
+      "start": 76,
+      "end": 120,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-bearer-curl.sh",
+      "start": 59,
+      "end": 138,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-user-token-docs-placeholder-placeholder.env",
+      "start": 17,
+      "end": 37,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-dotenv.env",
+      "start": 17,
+      "end": 61,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-dotted-sections-twin.json",
+      "start": 132,
+      "end": 150,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-legacy-query-token.txt",
+      "start": 48,
+      "end": 92,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-legacy-short-secret.sh",
+      "start": 77,
+      "end": 128,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-masked-sections-placeholder.env",
+      "start": 17,
+      "end": 61,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-missing-secret-twin.yml",
+      "start": 76,
+      "end": 119,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-oauth-v2-access.json",
+      "start": 132,
+      "end": 179,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-python-webclient.py",
+      "start": 59,
+      "end": 103,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-slack-login.sh",
+      "start": 20,
+      "end": 63,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-underscore-delimiter-twin.sh",
+      "start": 59,
+      "end": 138,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "08089765401cac14dd8b8a9ed7ed8a834d443274a23e0d94f4a28c9b15dbab08"
+}

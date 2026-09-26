@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "28e77558adb6c54a79c144ea2762043f541f28b0ffb7dc894b9044c22061e354",
+    "fixtureCount": 59,
+    "fixturesDigest": "99afb6e5fc6feac3feceb505fb0a21e6f0cd09705d4562085a7e44cb0c6b374c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/cloudflare-token-terraform-provider.tf",
+      "start": 39,
+      "end": 92
+    },
+    {
+      "path": "cases/cloudflare-token-verify-bearer-header.http",
+      "start": 90,
+      "end": 143
+    },
+    {
+      "path": "cases/cloudflare-token-wrangler-action.yml",
+      "start": 166,
+      "end": 219
+    },
+    {
+      "path": "cases/datadog-api-key-actions-env.yml",
+      "start": 81,
+      "end": 113
+    },
+    {
+      "path": "cases/datadog-api-key-datadog-ci-inline.sh",
+      "start": 18,
+      "end": 50
+    },
+    {
+      "path": "cases/datadog-api-key-dd-api-key-header.http",
+      "start": 96,
+      "end": 128
+    },
+    {
+      "path": "cases/datadog-api-key-docker-run-agent.sh",
+      "start": 48,
+      "end": 80
+    },
+    {
+      "path": "cases/datadog-api-key-export-dd-api-key.sh",
+      "start": 46,
+      "end": 78
+    },
+    {
+      "path": "cases/gitlab-token-glab-auth-login.sh",
+      "start": 48,
+      "end": 74,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-token-private-token-header.http",
+      "start": 82,
+      "end": 108,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-token-private-token-query.sh",
+      "start": 84,
+      "end": 110,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/huggingface-token-actions-sync-to-hub.yml",
+      "start": 73,
+      "end": 110
+    },
+    {
+      "path": "cases/huggingface-token-hf-auth-login.sh",
+      "start": 24,
+      "end": 61
+    },
+    {
+      "path": "cases/huggingface-token-hf-token-env.env",
+      "start": 9,
+      "end": 46
+    },
+    {
+      "path": "cases/huggingface-token-inference-bearer-header.http",
+      "start": 85,
+      "end": 122
+    },
+    {
+      "path": "cases/huggingface-token-inference-client.py",
+      "start": 96,
+      "end": 133
+    },
+    {
+      "path": "cases/huggingface-token-stored-tokens-ini.ini",
+      "start": 24,
+      "end": 61
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 88,
+      "end": 261
+    },
+    {
+      "path": "cases/pypi-token-noxfile-publish.py",
+      "start": 138,
+      "end": 311
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 77,
+      "end": 250
+    },
+    {
+      "path": "cases/pypi-token-twine-env.env",
+      "start": 40,
+      "end": 213
+    },
+    {
+      "path": "cases/pypi-token-twine-upload-flag.sh",
+      "start": 47,
+      "end": 220
+    },
+    {
+      "path": "cases/pypi-token-uv-publish-token.sh",
+      "start": 24,
+      "end": 197
+    },
+    {
+      "path": "cases/shopify-token-admin-env.env",
+      "start": 84,
+      "end": 122,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/shopify-token-admin-graphql-header.http",
+      "start": 143,
+      "end": 181,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/shopify-token-private-app-client.js",
+      "start": 122,
+      "end": 160,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/stripe-token-ruby-api-key.rb",
+      "start": 36,
+      "end": 76,
+      "family": "stripe-token"
+    }
+  ],
+  "digest": "837075fd93b6e4fec943affd9e2727740eb50c65732f067ff36952778a82ea55"
+}

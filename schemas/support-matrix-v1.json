@@ -10,7 +10,7 @@
     "sourceReport": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion"],
+      "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "scannerObservations"],
       "properties": {
         "schemaVersion": { "const": 1 },
         "generatedAt": { "type": "string" },
@@ -18,6 +18,26 @@
         "revision": { "type": "string" },
         "dirty": { "type": ["boolean", "null"] },
         "criteriaSchemaVersion": { "const": 1 },
+        "scannerObservations": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source", "observedAt", "sourceRunId"],
+            "properties": {
+              "source": { "enum": ["fresh", "snapshot"] },
+              "observedAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" },
+              "sourceRunId": { "type": "string", "minLength": 1 },
+              "snapshotDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "inputDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+            },
+            "allOf": [{
+              "if": { "properties": { "source": { "const": "snapshot" } }, "required": ["source"] },
+              "then": { "properties": { "snapshotDigest": true, "inputDigest": true }, "required": ["snapshotDigest", "inputDigest"] }
+            }]
+          }
+        },
         "publishedPackage": {
           "description": "Published mode only: the released package the pinned redact-secret entry loaded. Absent on a candidate run, which carries product instead.",
           "type": "object",

@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "97b85a8334831b45bf77c9f870c7b04abaa139a4932781a0cba85457f9a9ae38",
+    "fixtureCount": 149,
+    "fixturesDigest": "b2d227f4f41f4466d24aa9d2d70e73a87c08e0bbad5008aaa03af7a5969242f0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/atlassian-api-token-bitbucket-remote.sh",
+      "start": 26,
+      "end": 254,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-actions-env.yml",
+      "start": 150,
+      "end": 188,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-cli-env-prefix.sh",
+      "start": 19,
+      "end": 55,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-databrickscfg.cfg",
+      "start": 77,
+      "end": 113,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-env.env",
+      "start": 84,
+      "end": 120,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-jdbc-url.properties",
+      "start": 208,
+      "end": 244,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-rest-bearer.http",
+      "start": 100,
+      "end": 143,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-sdk-workspace-client.py",
+      "start": 130,
+      "end": 166,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-shell-export.sh",
+      "start": 98,
+      "end": 134,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-terraform-provider.tf",
+      "start": 98,
+      "end": 134,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-tokens-create-json.txt",
+      "start": 216,
+      "end": 252,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-alphabet-twin.sh",
+      "start": 69,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-curl-bearer.sh",
+      "start": 69,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-token-actions-env.yml",
+      "start": 73,
+      "end": 124,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-alphabet-twin.json",
+      "start": 93,
+      "end": 133,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-mcp-server-env.json",
+      "start": 93,
+      "end": 163,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-prefix-twin.http",
+      "start": 95,
+      "end": 266,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-token-raw-request.http",
+      "start": 95,
+      "end": 266,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-token-shell-export.sh",
+      "start": 22,
+      "end": 67,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/postman-api-key-actions-env.yml",
+      "start": 78,
+      "end": 142,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-apikey-query.sh",
+      "start": 54,
+      "end": 118,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-axios-client.js",
+      "start": 95,
+      "end": 159,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-compose-env.yml",
+      "start": 69,
+      "end": 133,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-debug-log.log",
+      "start": 97,
+      "end": 161,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-env.env",
+      "start": 16,
+      "end": 80,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-newman-env-json.json",
+      "start": 74,
+      "end": 138,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-postman-login.sh",
+      "start": 31,
+      "end": 95,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-raw-request.http",
+      "start": 62,
+      "end": 126,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-settings-json.json",
+      "start": 22,
+      "end": 86,
+      "family": "postman-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-shell-export.sh",
+      "start": 23,
+      "end": 87,
+      "family": "postman-api-key"
+    }
+  ],
+  "digest": "ed12d8fd2d0fe4a20fe66984e4f89a5894faf030d30211612f55653ebbfab28c"
+}

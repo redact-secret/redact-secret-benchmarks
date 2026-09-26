@@ -24,7 +24,7 @@ function fullStatusReport() {
   });
   return {
     schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'test-run', revision: 'abc123', dirty: false,
-    criteriaSchemaVersion: 1, families,
+    criteriaSchemaVersion: 1, scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'test-run' } }, families,
   };
 }
 
@@ -102,7 +102,8 @@ test('a synthetic full matrix satisfies its schema', () => {
   const { distribution, stableDistribution, families } = buildSupportMatrix(fullStatusReport());
   const matrix = {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
-    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'test-run', revision: 'abc123', dirty: false, criteriaSchemaVersion: 1 },
+    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'test-run', revision: 'abc123', dirty: false, criteriaSchemaVersion: 1,
+      scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'test-run' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };
   assert.ok(validate(matrix), JSON.stringify(validate.errors));

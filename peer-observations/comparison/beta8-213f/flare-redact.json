@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "9d395b1e54cd000f91ac6a6b4d145f8269c1d3913c93166ae4ff597c732ad401",
+    "fixtureCount": 18,
+    "fixturesDigest": "965a67b2aaff4e645befb4509406a4d14b6ca992f953d054125f8a6ef0d5f697",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/databricks-personal-access-token-compose-env.yml",
+      "start": 134,
+      "end": 170,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-curl-token-user.sh",
+      "start": 17,
+      "end": 53,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-debug-log.log",
+      "start": 78,
+      "end": 114,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-gitlab-ci-variables.yml",
+      "start": 131,
+      "end": 167,
+      "family": "databricks-personal-access-token"
+    },
+    {
+      "path": "cases/openai-token-compose-env.yml",
+      "start": 66,
+      "end": 117,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-compose-short-twin.yml",
+      "start": 66,
+      "end": 116,
+      "family": "openai-token"
+    }
+  ],
+  "digest": "702ff7114310cfc708caf9e795f57be375301d5a88335a737e226d3c105111e3"
+}

@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-209",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "76c6305eab77e5233e0009b75fd1a2235fae3a486572214df24e7c509f365cd2",
+    "fixtureCount": 68,
+    "fixturesDigest": "c489551cde4c96bde02c17acc5fe65d66112053d7d226af98a178759568b44f3",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-token-env-api-key.env",
+      "start": 18,
+      "end": 126,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-mcp-server-env.json",
+      "start": 132,
+      "end": 240,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-python-client.py",
+      "start": 56,
+      "end": 164,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-x-api-key-header.http",
+      "start": 62,
+      "end": 170,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-cli-api-key-create-json-checksum-prefix-included-twin.txt",
+      "start": 69,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-cli-api-key-create-json-checksum-prefix-included-twin.txt",
+      "start": 101,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-cli-api-key-create-json.txt",
+      "start": 69,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-cli-api-key-create-json.txt",
+      "start": 101,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-env-cloud-secret-checksum-twin.env",
+      "start": 24,
+      "end": 40
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-env-cloud-secret-checksum-twin.env",
+      "start": 68,
+      "end": 132,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-env-cloud-secret.env",
+      "start": 24,
+      "end": 40
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-env-cloud-secret.env",
+      "start": 68,
+      "end": 132,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-kafka-client-properties-checksum-byte-order-twin.properties",
+      "start": 157,
+      "end": 221,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-kafka-client-properties.properties",
+      "start": 157,
+      "end": 221,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-secrets-manager-json-alphabet-twin.json",
+      "start": 15,
+      "end": 31,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-secrets-manager-json.json",
+      "start": 15,
+      "end": 31,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-secrets-manager-json.json",
+      "start": 50,
+      "end": 114,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-api-key-firebase-web-config.js",
+      "start": 36,
+      "end": 75
+    },
+    {
+      "path": "cases/google-api-key-geocode-query-length-twin.txt",
+      "start": 88,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-api-key-geocode-query.txt",
+      "start": 88,
+      "end": 127
+    },
+    {
+      "path": "cases/google-api-key-goog-api-key-header-prefix-case-twin.http",
+      "start": 111,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-api-key-goog-api-key-header.http",
+      "start": 111,
+      "end": 150
+    },
+    {
+      "path": "cases/google-api-key-google-services-json-prefix-twin.json",
+      "start": 106,
+      "end": 145,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-api-key-google-services-json.json",
+      "start": 106,
+      "end": 145
+    },
+    {
+      "path": "cases/heroku-api-key-bearer-header-g2.http",
+      "start": 112,
+      "end": 177
+    },
+    {
+      "path": "cases/heroku-api-key-env-g1-length-twin.env",
+      "start": 15,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/heroku-api-key-env-g1.env",
+      "start": 15,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/heroku-api-key-netrc-g2.netrc",
+      "start": 58,
+      "end": 123
+    },
+    {
+      "path": "cases/heroku-api-key-netrc-g2.netrc",
+      "start": 182,
+      "end": 247
+    },
+    {
+      "path": "cases/notion-token-env-api-key-length-twin.env",
+      "start": 15,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-env-api-key.env",
+      "start": 15,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-github-actions-env.yml",
+      "start": 70,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-sdk-client-prefix-case-twin.js",
+      "start": 79,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-sdk-client.js",
+      "start": 79,
+      "end": 129,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "0e9e326c65c4130d8c9c322f9bfd4f5071565b2ed13270e4bda55a97c4e5c31c"
+}

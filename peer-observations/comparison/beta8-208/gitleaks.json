@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-208",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "fa534b350bf9b85bd409603dc9de8ba52a81da3ff35c5b0d19664b43a9c0eba4",
+    "fixtureCount": 96,
+    "fixturesDigest": "a2b691d9bee1b203ec760e5b6e5862b93a540435933c276869561efc487afe90",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/groq-api-key-bearer-header.sh",
+      "start": 79,
+      "end": 135
+    },
+    {
+      "path": "cases/groq-api-key-bearer-long-body-twin.sh",
+      "start": 79,
+      "end": 136
+    },
+    {
+      "path": "cases/groq-api-key-chat-paste.md",
+      "start": 61,
+      "end": 117,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-env-short-body-twin.env",
+      "start": 13,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-env.env",
+      "start": 13,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-export.sh",
+      "start": 20,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-openai-compatible.ts",
+      "start": 69,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-printenv-glued-twin.txt",
+      "start": 36,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-printenv.txt",
+      "start": 36,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-python-dash-body-twin.py",
+      "start": 46,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-python-sdk.py",
+      "start": 46,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-settings-hyphen-prefix-twin.json",
+      "start": 41,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-settings-json.json",
+      "start": 41,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-bearer-header.sh",
+      "start": 77,
+      "end": 150
+    },
+    {
+      "path": "cases/openrouter-api-key-bearer-long-body-twin.sh",
+      "start": 77,
+      "end": 151
+    },
+    {
+      "path": "cases/openrouter-api-key-compose-half-body-twin.yml",
+      "start": 97,
+      "end": 138,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-compose.yml",
+      "start": 97,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-create-key-response.json",
+      "start": 103,
+      "end": 176,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-env-short-body-twin.env",
+      "start": 19,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-env.env",
+      "start": 19,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-export.sh",
+      "start": 27,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-openai-compatible.py",
+      "start": 102,
+      "end": 175,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-openai-non-hex-body-twin.py",
+      "start": 102,
+      "end": 175,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-openrouter-sdk.ts",
+      "start": 92,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-printenv-glued-twin.txt",
+      "start": 48,
+      "end": 122,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-printenv.txt",
+      "start": 48,
+      "end": 121,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-sdk-wrong-prefix-twin.ts",
+      "start": 92,
+      "end": 162,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-actions-literal.yml",
+      "start": 129,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-bearer-header.sh",
+      "start": 71,
+      "end": 111
+    },
+    {
+      "path": "cases/replicate-api-token-bearer-long-body-twin.sh",
+      "start": 71,
+      "end": 112
+    },
+    {
+      "path": "cases/replicate-api-token-env-short-body-twin.env",
+      "start": 32,
+      "end": 71,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-env.env",
+      "start": 32,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-mcp-config.json",
+      "start": 141,
+      "end": 181,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-mcp-hyphen-prefix-twin.json",
+      "start": 141,
+      "end": 181,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-printenv-glued-twin.txt",
+      "start": 51,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-printenv.txt",
+      "start": 51,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-python-dot-body-twin.py",
+      "start": 55,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-python-sdk.py",
+      "start": 55,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-bearer-header.sh",
+      "start": 68,
+      "end": 152
+    },
+    {
+      "path": "cases/xai-api-key-bearer-long-body-twin.sh",
+      "start": 68,
+      "end": 153
+    },
+    {
+      "path": "cases/xai-api-key-env-grep-glued-twin.txt",
+      "start": 29,
+      "end": 114,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-env-grep.txt",
+      "start": 29,
+      "end": 113,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-env-short-body-twin.env",
+      "start": 12,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-env.env",
+      "start": 12,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-export.sh",
+      "start": 20,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-litellm-config.yaml",
+      "start": 99,
+      "end": 183,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-litellm-half-body-twin.yaml",
+      "start": 99,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-vercel-ai.ts",
+      "start": 75,
+      "end": 159,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-vercel-underscore-prefix-twin.ts",
+      "start": 75,
+      "end": 159,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "155d9b6e3a71ba107948bb1b8d4067e581cb565090b83a93d965cb1899cee43f"
+}

@@ -82,7 +82,7 @@ test('UTF-8 highlighting round-trips every input including BOM, Unicode, CRLF an
 const source = fixtures.filter(f => f.category === 'accuracy');
 const runId = '2026-09-17T12:00:00.000Z-0a0b0c';
 const accounting = JSON.parse(await readFile(new URL('../qualification/suite-v1.json', import.meta.url))).accounting;
-const report = {schemaVersion:5,accountingVersion:'1.1',accounting,runId,category:'accuracy',corpusHash:'hash',lockHash:'lock',matching:'v4',generatedAt:'2026-09-17T12:00:01.000Z',reviewStatus:'draft',scanners:[{id:'test',name:'Test scanner',mode:'offline',version:'1',status:'complete',...scoreReport(corpora.accuracy.fixtures, [], accounting)}]};
+const report = {schemaVersion:5,accountingVersion:'1.1',accounting,runId,category:'accuracy',corpusHash:'hash',lockHash:'lock',matching:'v4',generatedAt:'2026-09-17T12:00:01.000Z',reviewStatus:'draft',scanners:[{id:'test',name:'Test scanner',mode:'offline',version:'1',status:'complete',observation:{source:'fresh',observedAt:'2026-09-17T12:00:00.000Z',sourceRunId:runId},...scoreReport(corpora.accuracy.fixtures, [], accounting)}]};
 test('reports require a run id, matching bytes, fixture identity and recomputable outcomes before joining', () => {
   assert.equal(reportProblem(report,'accuracy','hash',fixtures),null);
   assert.match(reportProblem({...report,schemaVersion:4},'accuracy','hash',fixtures),/Legacy/);

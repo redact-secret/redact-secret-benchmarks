@@ -63,6 +63,7 @@ export interface SupportStatusReport {
   product?: SupportProduct | null;
   /** Published mode: the released package the run loaded (#213). */
   publishedPackage?: { packageName: string; version: string };
+  scannerObservations: Record<string, { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest?: string; inputDigest?: string }>;
   families: SupportStatusFamilyResult[];
 }
 

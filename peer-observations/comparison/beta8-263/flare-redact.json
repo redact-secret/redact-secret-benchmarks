@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-263",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "95413f67fa190e58d01c51963465f48ca3ba396aad07b6e895d7c4baa0cff9b7",
+    "fixtureCount": 104,
+    "fixturesDigest": "ccf02279aecb48890c8be54f3d9401c6b660304c74d2e043ffc14c725b33d46c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/groq-api-key-compose-env.yml",
+      "start": 97,
+      "end": 153,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-curl-models.sh",
+      "start": 62,
+      "end": 125,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/groq-api-key-secrets-list.txt",
+      "start": 43,
+      "end": 99,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-short-body-twin.env",
+      "start": 20,
+      "end": 75,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-startup-log.log",
+      "start": 49,
+      "end": 105,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-toml-provider.toml",
+      "start": 72,
+      "end": 128,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-twin-base-dotenv.env",
+      "start": 20,
+      "end": 76,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-twin-base-python.py",
+      "start": 46,
+      "end": 102,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/langfuse-secret-key-curl-basic.sh",
+      "start": 51,
+      "end": 93,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-export.sh",
+      "start": 27,
+      "end": 69,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-handover-note.md",
+      "start": 45,
+      "end": 87,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-long-last-group-twin.yml",
+      "start": 28,
+      "end": 71,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-secret-get.txt",
+      "start": 61,
+      "end": 103,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-twin-base-ci.yml",
+      "start": 28,
+      "end": 70,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-twin-base-dotenv.env",
+      "start": 83,
+      "end": 125,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-twin-base-python.py",
+      "start": 63,
+      "end": 105,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-variant-nibble-twin.py",
+      "start": 63,
+      "end": 105,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-version-nibble-twin.env",
+      "start": 83,
+      "end": 125,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/neon-api-key-dash-in-body-twin.http",
+      "start": 69,
+      "end": 145,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/neon-api-key-twin-base-header.http",
+      "start": 69,
+      "end": 145,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-chat-message.md",
+      "start": 31,
+      "end": 84,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-compose-env.yml",
+      "start": 63,
+      "end": 116,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-curl-chat.sh",
+      "start": 67,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-debug-log.log",
+      "start": 24,
+      "end": 77,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-secret-print.txt",
+      "start": 26,
+      "end": 79,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-short-body-twin.env",
+      "start": 19,
+      "end": 71,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-twin-base-dotenv.env",
+      "start": 19,
+      "end": 72,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-twin-base-python.py",
+      "start": 52,
+      "end": 105,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-curl-chat.sh",
+      "start": 61,
+      "end": 152,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xai-api-key-json-profile.json",
+      "start": 36,
+      "end": 120,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-k8s-secret.yml",
+      "start": 84,
+      "end": 168,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-retry-log.log",
+      "start": 34,
+      "end": 118,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-short-body-twin.env",
+      "start": 12,
+      "end": 95,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-twin-base-dotenv.env",
+      "start": 12,
+      "end": 96,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-twin-base-ts.ts",
+      "start": 97,
+      "end": 181,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-vault-read.txt",
+      "start": 41,
+      "end": 125,
+      "family": "xai-api-key"
+    }
+  ],
+  "digest": "ef45900a45911a983c27e607f9869394e60f2548ce88fbbe89d3cb9c021e3424"
+}

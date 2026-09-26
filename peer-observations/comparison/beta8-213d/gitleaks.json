@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "97b85a8334831b45bf77c9f870c7b04abaa139a4932781a0cba85457f9a9ae38",
+    "fixtureCount": 149,
+    "fixturesDigest": "b2d227f4f41f4466d24aa9d2d70e73a87c08e0bbad5008aaa03af7a5969242f0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/atlassian-api-token-airflow-connection.json",
+      "start": 131,
+      "end": 323
+    },
+    {
+      "path": "cases/atlassian-api-token-netrc.netrc",
+      "start": 83,
+      "end": 275
+    },
+    {
+      "path": "cases/atlassian-api-token-op-item-get.txt",
+      "start": 60,
+      "end": 252
+    },
+    {
+      "path": "cases/atlassian-api-token-shell-export.sh",
+      "start": 22,
+      "end": 214
+    },
+    {
+      "path": "cases/databricks-personal-access-token-actions-env.yml",
+      "start": 150,
+      "end": 188
+    },
+    {
+      "path": "cases/databricks-personal-access-token-cli-env-prefix.sh",
+      "start": 19,
+      "end": 55
+    },
+    {
+      "path": "cases/databricks-personal-access-token-databrickscfg.cfg",
+      "start": 77,
+      "end": 113
+    },
+    {
+      "path": "cases/databricks-personal-access-token-env.env",
+      "start": 84,
+      "end": 120
+    },
+    {
+      "path": "cases/databricks-personal-access-token-jdbc-url.properties",
+      "start": 208,
+      "end": 244
+    },
+    {
+      "path": "cases/databricks-personal-access-token-rest-bearer.http",
+      "start": 107,
+      "end": 143
+    },
+    {
+      "path": "cases/databricks-personal-access-token-sdk-workspace-client.py",
+      "start": 130,
+      "end": 166
+    },
+    {
+      "path": "cases/databricks-personal-access-token-shell-export.sh",
+      "start": 98,
+      "end": 134
+    },
+    {
+      "path": "cases/databricks-personal-access-token-terraform-provider.tf",
+      "start": 98,
+      "end": 134
+    },
+    {
+      "path": "cases/databricks-personal-access-token-tokens-create-json.txt",
+      "start": 216,
+      "end": 252
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-actions-env.yml",
+      "start": 80,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-alphabet-twin.json",
+      "start": 22,
+      "end": 62
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-compose-env.yml",
+      "start": 66,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-curl-validate.sh",
+      "start": 107,
+      "end": 147,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-dashed-uuid-near-miss.env",
+      "start": 19,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-long-twin.tfvars",
+      "start": 19,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-settings-json.json",
+      "start": 22,
+      "end": 62
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-shell-export.sh",
+      "start": 26,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-short-twin.yml",
+      "start": 66,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-tfvars.tfvars",
+      "start": 19,
+      "end": 59
+    },
+    {
+      "path": "cases/mailchimp-api-key-actions-env.yml",
+      "start": 81,
+      "end": 118
+    },
+    {
+      "path": "cases/mailchimp-api-key-alphabet-twin.sh",
+      "start": 76,
+      "end": 113
+    },
+    {
+      "path": "cases/mailchimp-api-key-client-log.log",
+      "start": 56,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-compose-env.yml",
+      "start": 67,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-curl-bearer.sh",
+      "start": 76,
+      "end": 113
+    },
+    {
+      "path": "cases/mailchimp-api-key-curl-user.sh",
+      "start": 58,
+      "end": 107
+    },
+    {
+      "path": "cases/mailchimp-api-key-env.env",
+      "start": 18,
+      "end": 54,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-marketing-client.js",
+      "start": 31,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-separator-twin.log",
+      "start": 56,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-settings-json.json",
+      "start": 24,
+      "end": 61
+    },
+    {
+      "path": "cases/mailchimp-api-key-shell-export.sh",
+      "start": 25,
+      "end": 62
+    },
+    {
+      "path": "cases/mailchimp-api-key-short-body-suffix-near-miss.env",
+      "start": 18,
+      "end": 46,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-tfvars.tfvars",
+      "start": 21,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-actions-env.yml",
+      "start": 75,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-anymail-settings.py",
+      "start": 31,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-curl-user.sh",
+      "start": 15,
+      "end": 57
+    },
+    {
+      "path": "cases/mailgun-api-key-debug-log.log",
+      "start": 59,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-docs-template-placeholder.sh",
+      "start": 15,
+      "end": 33
+    },
+    {
+      "path": "cases/mailgun-api-key-env.env",
+      "start": 50,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 69,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-node-client.js",
+      "start": 51,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-settings-json.json",
+      "start": 22,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-shell-export.sh",
+      "start": 23,
+      "end": 59,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-short-body-near-miss.env",
+      "start": 16,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/okta-api-token-actions-env.yml",
+      "start": 77,
+      "end": 119
+    },
+    {
+      "path": "cases/okta-api-token-compose-env.yml",
+      "start": 68,
+      "end": 110
+    },
+    {
+      "path": "cases/okta-api-token-env.env",
+      "start": 58,
+      "end": 100
+    },
+    {
+      "path": "cases/okta-api-token-node-client.js",
+      "start": 82,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/okta-api-token-settings-json.json",
+      "start": 21,
+      "end": 63
+    },
+    {
+      "path": "cases/okta-api-token-shell-export.sh",
+      "start": 25,
+      "end": 67
+    },
+    {
+      "path": "cases/okta-api-token-tfvars.tfvars",
+      "start": 18,
+      "end": 60
+    },
+    {
+      "path": "cases/openai-token-actions-env.yml",
+      "start": 73,
+      "end": 124,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-env.env",
+      "start": 15,
+      "end": 179,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-mcp-server-env.json",
+      "start": 93,
+      "end": 257,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-python-client.py",
+      "start": 52,
+      "end": 219,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-raw-request.http",
+      "start": 102,
+      "end": 266,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-shell-export.sh",
+      "start": 22,
+      "end": 186,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/postman-api-key-actions-env.yml",
+      "start": 78,
+      "end": 142
+    },
+    {
+      "path": "cases/postman-api-key-apikey-query.sh",
+      "start": 54,
+      "end": 118
+    },
+    {
+      "path": "cases/postman-api-key-axios-client.js",
+      "start": 95,
+      "end": 159
+    },
+    {
+      "path": "cases/postman-api-key-compose-env.yml",
+      "start": 69,
+      "end": 133
+    },
+    {
+      "path": "cases/postman-api-key-debug-log.log",
+      "start": 97,
+      "end": 161
+    },
+    {
+      "path": "cases/postman-api-key-env.env",
+      "start": 16,
+      "end": 80
+    },
+    {
+      "path": "cases/postman-api-key-newman-env-json.json",
+      "start": 74,
+      "end": 138
+    },
+    {
+      "path": "cases/postman-api-key-postman-login.sh",
+      "start": 31,
+      "end": 95
+    },
+    {
+      "path": "cases/postman-api-key-raw-request.http",
+      "start": 62,
+      "end": 126
+    },
+    {
+      "path": "cases/postman-api-key-settings-json.json",
+      "start": 22,
+      "end": 86
+    },
+    {
+      "path": "cases/postman-api-key-shell-export.sh",
+      "start": 23,
+      "end": 87
+    },
+    {
+      "path": "cases/postman-api-key-short-key-near-miss.env",
+      "start": 16,
+      "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/supabase-token-shell-export.sh",
+      "start": 88,
+      "end": 129,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "08297c6ba3b331a44eec6d27b26fa6394d0e8370a7bfd8be9f79d296147ea6d3"
+}

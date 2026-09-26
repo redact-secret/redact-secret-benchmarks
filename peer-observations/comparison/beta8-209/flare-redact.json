@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-209",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "76c6305eab77e5233e0009b75fd1a2235fae3a486572214df24e7c509f365cd2",
+    "fixtureCount": 68,
+    "fixturesDigest": "c489551cde4c96bde02c17acc5fe65d66112053d7d226af98a178759568b44f3",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-token-env-api-key.env",
+      "start": 18,
+      "end": 126,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-mcp-server-env.json",
+      "start": 132,
+      "end": 240,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-python-client.py",
+      "start": 56,
+      "end": 164,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-x-api-key-header.http",
+      "start": 62,
+      "end": 170,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/azure-devops-personal-access-token-git-remote-url-length-twin.txt",
+      "start": 10,
+      "end": 116,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/azure-devops-personal-access-token-git-remote-url.txt",
+      "start": 10,
+      "end": 115,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/google-api-key-firebase-web-config.js",
+      "start": 36,
+      "end": 75
+    },
+    {
+      "path": "cases/google-api-key-geocode-query.txt",
+      "start": 88,
+      "end": 127
+    },
+    {
+      "path": "cases/google-api-key-goog-api-key-header.http",
+      "start": 111,
+      "end": 150
+    },
+    {
+      "path": "cases/google-api-key-google-services-json.json",
+      "start": 106,
+      "end": 145
+    },
+    {
+      "path": "cases/heroku-api-key-bearer-header-g2-prefix-case-twin.http",
+      "start": 105,
+      "end": 177,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/heroku-api-key-bearer-header-g2.http",
+      "start": 105,
+      "end": 177,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-token-bearer-header-separator-twin.http",
+      "start": 62,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-token-bearer-header.http",
+      "start": 62,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-token-env-api-key.env",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/notion-token-github-actions-env.yml",
+      "start": 70,
+      "end": 120
+    },
+    {
+      "path": "cases/notion-token-sdk-client.js",
+      "start": 79,
+      "end": 129
+    }
+  ],
+  "digest": "02ef2c56e1cb60ef67d52c846992472a1dc56a590301c241f6004088ed9a4bca"
+}

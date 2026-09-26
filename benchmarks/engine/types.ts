@@ -45,11 +45,14 @@ export interface Scanner {
   version(directory: string): Promise<string>;
   scan(directory: string, fixtures: Pick<Fixture, 'id' | 'path' | 'content'>[]): Promise<Finding[]>;
 }
+export type ObservationProvenance =
+  | { source: 'fresh'; observedAt: string; sourceRunId: string }
+  | { source: 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest: string; inputDigest: string };
 export type Observation = { id: string; version: string | null; mode: string; configuration?: Record<string, unknown>; configurationHash?: string } & (
-  { status: 'complete'; findings: Finding[]; durationMs: number; replays: Replays } |
-  { status: 'unsupported' | 'unavailable' | 'error'; message: string; findings?: never } |
+  { status: 'complete'; findings: Finding[]; durationMs: number; replays: Replays; observation?: ObservationProvenance } |
+  { status: 'unsupported' | 'unavailable' | 'error'; message: string; findings?: never; observation?: ObservationProvenance } |
   // Replays disagreed (v1.1 §8): never a pass, never re-rolled, and no findings are retained.
-  { status: 'unstable'; message: string; findings: []; replays: Replays }
+  { status: 'unstable'; message: string; findings: []; replays: Replays; observation?: ObservationProvenance }
 );
 export interface Replays { count: number; agreed: boolean; divergentPaths?: string[] }
 // `not-measured` (v1.1 §4): the scanner never observed this variant. It consumes denominator and never resolves.

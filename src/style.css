@@ -247,6 +247,7 @@ td small, .chg small, .gate-row small { display: block; color: var(--ink-muted);
 .family-row > summary { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4); align-items: center; padding: var(--space-3) var(--space-2); }
 .family-row code, .fixture-links code, .family-row .mono { overflow-wrap: break-word; word-break: normal; }
 .family-detail { background: var(--line); border-left: var(--rule-strong) solid var(--ink); padding: var(--space-4); display: grid; gap: var(--space-6); }
+.family-detail a { color: var(--ink); text-decoration: underline; }
 .family-block { min-width: 0; }
 .family-block h3 { margin-bottom: var(--space-2); }
 .family-status { display: grid; gap: var(--space-1); align-items: start; justify-items: start; }

@@ -72,6 +72,16 @@ test('legacy migration stays unverifiable, observed updates touch only carried i
   assert.equal(historical[b.id].resolutionEvidence.kind, 'historical-adjudication');
 });
 
+test('publication may retain known observations while unknown current ids force the browser lock', () => {
+  const id = 'a'.repeat(64), unknown = 'b'.repeat(64);
+  const source = { schemaVersion: 2, entries: { [id]: { status: 'open', firstSeenRun: 'first', note: 'Needs review. Class: t0-pending-fixture.' } } };
+  const occurrence = { id, caseId: 'case-a', sourceSlug: 'accuracy--aws-id', variant: 'baseline' };
+  assert.throws(() => observeReviewEntries(source, [occurrence, { ...occurrence, id: unknown }], 'run-2', '2026-09-26T00:00:00Z'), /absent from the ledger/);
+  const published = observeReviewEntries(source, [occurrence, { ...occurrence, id: unknown }], 'run-2', '2026-09-26T00:00:00Z', { unknown: 'ignore' });
+  assert.equal(published.entries[id].lastSeenRun, 'run-2');
+  assert.equal(Object.hasOwn(published.entries, unknown), false);
+});
+
 test('published occurrence provenance is bound to the exact public evaluation', () => {
   const evaluation = { runId: 'run-now', finishedAt: '2026-09-26T12:00:00.000Z', reviews: [{ id: 'a'.repeat(64), caseId: 'case-a', variant: 'original' }], cases: [{ id: 'case-a', sourceSlug: 'suite--fixture' }] };
   const source = { schemaVersion: 2, entries: { ['a'.repeat(64)]: { status: 'open', firstSeenRun: 'first', note: 'Why. Class: t0-pending-fixture.' } } };

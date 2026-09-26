@@ -75,14 +75,24 @@ export function reviewLedgerProblem(value: unknown): string | null {
 }
 
 /** Update only entries actually carried by the validated discovery run. */
-export function observeReviewEntries(ledger: ReviewLedger, occurrences: Iterable<ReviewOccurrence>, runId: string, observedAt: string): ReviewLedger {
+export function observeReviewEntries(
+  ledger: ReviewLedger,
+  occurrences: Iterable<ReviewOccurrence>,
+  runId: string,
+  observedAt: string,
+  options: { unknown?: 'reject' | 'ignore' } = {},
+): ReviewLedger {
   const problem = reviewLedgerProblem(ledger);
   if (problem) throw new Error(problem);
   if (!run(runId) || !date(observedAt)) throw new Error('Invalid review observation provenance');
   const rows = [...occurrences];
   const observed = new Map(rows.map(({ id, ...evidence }) => [id, evidence]));
   if (observed.size !== rows.length) throw new Error('Duplicate review occurrence');
-  for (const id of observed.keys()) if (!Object.hasOwn(ledger.entries, id)) throw new Error(`Observed review entry is absent from the ledger: ${id.slice(0, 12)}`);
+  for (const id of observed.keys()) {
+    if (Object.hasOwn(ledger.entries, id)) continue;
+    if (options.unknown === 'ignore') observed.delete(id);
+    else throw new Error(`Observed review entry is absent from the ledger: ${id.slice(0, 12)}`);
+  }
   const entries = Object.fromEntries(Object.entries(ledger.entries).map(([id, entry]) => [id, observed.has(id) ? { ...entry, lastSeenRun: runId, lastSeenAt: observedAt, lastSeenEvidence: observed.get(id) } : entry]));
   return { schemaVersion: 2, observationRun: { runId, observedAt }, entries };
 }

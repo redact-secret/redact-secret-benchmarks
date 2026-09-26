@@ -161,7 +161,11 @@ test('the resources/read corpus is synthetic, pins the contract\'s fixed errors,
 test('resources/read verdicts check the delivered response, audit shape, wire error and cache, and separate a host responsibility from a leak', () => {
   const secret = W.SECRETS.aws;
   const dir = recordDir({
-    'model-context.jsonl': [], 'host-log.jsonl': [], 'store.jsonl': [], 'audit.jsonl': [], 'error-text.jsonl': [],
+    'model-context.jsonl': [{ case: 'resource-control', value: secret }],
+    'host-log.jsonl': [{ case: 'resource-control', value: secret }],
+    'store.jsonl': [{ case: 'resource-control', value: secret }],
+    'audit.jsonl': [{ case: 'resource-control', value: secret }],
+    'error-text.jsonl': [{ case: 'resource-control', value: secret }],
     'response-cache.jsonl': [{ case: 'cached', value: { method: 'resources/read', value: `{"text":"${secret}"}` } }, { case: 'uncached-leak', value: { value: secret } }],
   });
   try {
@@ -194,9 +198,15 @@ test('resources/read verdicts check the delivered response, audit shape, wire er
     assert.deepEqual(cancelled.checks.filter(c => !c.passed).map(c => c.name), ['server-sent-nothing']);
     const wire = verdict(row('clean', { expect: { outcome: 'read_error' }, observed: { outcome: 'read_error' }, deliveredFixed: 'resourceReadError', wireError: 'other' }), { id: 'w', wireError: 'blocked' }, scan);
     assert.deepEqual(wire.checks.filter(c => !c.passed).map(c => c.name), ['server-sent-exact-fixed-blocked-error']);
-    const summary = summarizeCell([ok, cached, verdict(row('uncached-leak'), undefined, scan), verdict({ id: 't', area: 'text', expect: { outcome: 'ok' }, observed: { outcome: 'ok' } }, undefined, scan)]);
-    assert.equal(summary.cases, 4);
-    assert.deepEqual(summary.resources, { cases: 3, controlsDetected: 0, leaks: 1, knownFalseNegatives: 0, deliveredByPolicy: 0, deviations: 0, hostResponsibility: 1 });
+    const resourceControl = verdict({
+      id: 'resource-control', area: 'control', surface: 'resources/read', control: true,
+      expect: { outcome: 'unprotected' }, observed: { outcome: 'unprotected' },
+    }, undefined, scan);
+    assert.equal(resourceControl.surface, 'resources/read');
+    assert.equal(resourceControl.containment, 'control-detected');
+    const summary = summarizeCell([ok, cached, verdict(row('uncached-leak'), undefined, scan), resourceControl, verdict({ id: 't', area: 'text', expect: { outcome: 'ok' }, observed: { outcome: 'ok' } }, undefined, scan)]);
+    assert.equal(summary.cases, 5);
+    assert.deepEqual(summary.resources, { cases: 4, controlsDetected: 1, leaks: 1, knownFalseNegatives: 0, deliveredByPolicy: 0, deviations: 0, hostResponsibility: 1 });
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -248,14 +258,17 @@ test(`the committed MCP evidence in ${dir} is a complete, clean, schema-valid ru
     assert.equal(cell.status, 'complete');
     assert.equal(cell.summary.controlsDetected, controls, `${cell.node} ${cell.transport}`);
     if (controls === 2) {
-      // #321: the resources/read control is flagged in its own right. Its row carries no `surface`, so the
-      // runner at 75c1a2b counts it in the cell total, not in `summary.resources`; check the row itself.
       const control = cell.cases.find(v => v.id === 'resource-control-unprotected-host');
       assert.equal(control?.containment, 'control-detected', `${cell.node} ${cell.transport}`);
-      assert.deepEqual([cell.summary.resources.leaks, cell.summary.resources.deviations], [0, 0]);
+      assert.equal(control?.surface, 'resources/read', `${cell.node} ${cell.transport}`);
+      assert.deepEqual(
+        [cell.summary.resources.controlsDetected, cell.summary.resources.leaks, cell.summary.resources.deviations],
+        [1, 0, 0],
+      );
     }
   }
   assert.deepEqual([report.summary.leaks, report.summary.deviations, report.summary.processOutputLeaks], [0, 0, 0]);
+  if (controls === 2) assert.equal(report.summary.resourceControlsDetected, 24);
   for (const file of ['mcp-qualification.json', 'mcp-qualification.md', 'mcp-overhead-series.json', 'README.md']) {
     assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join(dir, file), 'utf8'), W.allSecrets()), file);
   }
@@ -298,8 +311,8 @@ test('the #321 final evidence pins the public post-#36 adapter packages', () => 
     ],
   );
   assert.deepEqual(
-    [report.summary.cells, report.summary.completeCells, report.summary.caseRuns, report.summary.resourceCaseRuns],
-    [24, 24, 3048, 1440],
+    [report.summary.cells, report.summary.completeCells, report.summary.caseRuns, report.summary.resourceCaseRuns, report.summary.resourceControlsDetected],
+    [24, 24, 3048, 1464, 24],
   );
   assert.deepEqual(pin.packages, report.artifacts.adapters.packages.map(({ name, version, contentDigest }) => ({ name, version, contentDigest })));
   assert.doesNotThrow(() => assertNoPlaintext(pinText, W.allSecrets()));

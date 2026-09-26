@@ -209,7 +209,7 @@ try {
   // 6. Empty states: what is missing, the next command, no apology.
   page = await open({ viewport: { width: 360, height: 740 } });
   let resultCase = 0;
-  const results = async handler => { await page.unroute('**/results/*.json').catch(() => {}); await page.route('**/results/*.json', handler); await page.goto(`${origin}/report?qa=${++resultCase}`, { waitUntil: 'networkidle' }); await ready(page); return (await page.locator('#main').innerText()).replace(/\s+/g, ' '); };
+  const results = async handler => { await page.context().close(); page = await open({ viewport: { width: 360, height: 740 } }); await page.route('**/results/*.json', handler); await page.goto(`${origin}/report?qa=${++resultCase}`, { waitUntil: 'networkidle' }); await ready(page); return (await page.locator('#main').innerText()).replace(/\s+/g, ' '); };
   let text = await results(r => r.fulfill({ status: 404, body: '' }));
   assert.ok(text.includes('No benchmark results for this checkout') && text.includes('npm run bench'), text);
   await page.screenshot({ path: `${output}/empty-no-results-360.png`, fullPage: true });
@@ -218,7 +218,10 @@ try {
     const file = new URL(r.request().url()).pathname.split('/').pop().replace('.json', '');
     const body = await json(`public/results/${file}.json`).catch(() => null);
     if (!body) return r.fulfill({ status: 404, body: '' });
-    if (file === first.id || file === second.id) body.runId = '2020-01-01T00:00:00.000Z-000000';
+    if (file === first.id || file === second.id) {
+      body.runId = '2020-01-01T00:00:00.000Z-000000';
+      for (const scanner of body.scanners) if (scanner.observation?.source === 'fresh') scanner.observation.sourceRunId = body.runId;
+    }
     if (file === 'summary') {
       body.categories = body.categories.filter(c => c !== first.id && c !== second.id);
       for (const category of [first.id, second.id]) for (const scanner of (await json(`public/results/${category}.json`)).scanners.filter(s => s.status === 'complete'))

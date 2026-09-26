@@ -104,6 +104,20 @@ regression from then on. Correcting a typo in a rationale is not material.
 When a submitted expectation looks wrong, prefer asking the author for a new
 pack over editing theirs.
 
+### Adjudicating an expectation without editing it
+
+A submitted expectation can be sound as authored yet describe something
+other than the product's raw-input contract, such as a figure whose line
+breaks a standard inserted for display. An optional `adjudication.json` beside
+the intake records that per fixture (`raw-input-contract`,
+`presentation-only-example` or `downstream-normalization-scenario`), with a
+rationale and sources. It must repeat each fixture's submitted action and
+ranges exactly and name the frozen expectations digest and first-run SHA-256,
+so it can never carry a changed expectation; `adversarial:check` enforces
+that. First-run counts are not rewritten: an adjudicated fixture stays a
+historical submitted-range miss, reported separately from product-contract
+gaps. See `benchmarks/lib/adversarial-adjudication.ts` and #322.
+
 ## Evidence classes and wording
 
 | Class | Source | May be called independent |

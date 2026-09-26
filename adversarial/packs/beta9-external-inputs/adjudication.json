@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "beta9-external-inputs-adjudication-1",
+  "packId": "beta9-external-inputs",
+  "decidedAt": "2026-09-26",
+  "issue": "https://github.com/redact-secret/redact-secret-benchmarks/issues/322",
+  "expectationsDigest": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+  "firstRunSha256": "67adb3d11dfa04460ed9ed7916c8578120807d77685d27355277481b5af9f3a0",
+  "contract": "The product's raw-input contract: detectors read the submitted bytes as given, without joining display-wrapped lines or percent-decoding before parsing (redact-secret#822). Line handling is per detector: the contextual assignment and jwt grammars stay on one line, while the PEM private-key detector spans lines by design.",
+  "note": "This record adjudicates submitted expectations; it does not change them. intake.json, its expectations digest and first-run.json stay as frozen at the first run, so the first-run counts are unchanged. A fixture adjudicated outside the raw-input contract stays a historical submitted-range miss and is not counted as a product-contract gap.",
+  "fixtures": [
+    {
+      "fixtureId": "rfc7519-jwt-display-breaks",
+      "submittedAction": "must-redact",
+      "submittedExpected": [
+        {
+          "start": 0,
+          "end": 184
+        }
+      ],
+      "adjudication": "presentation-only-example",
+      "inRawInputContract": false,
+      "rationale": "RFC 7519 section 3.1 prints the example JWT with line breaks that the RFC says are for display purposes only. As submitted, the bytes are not a compact JWT: newlines surround both dots and split the payload. The jwt grammar requires adjacent header.payload.signature bytes, and contextual-detection.md states that jwt cannot span a line terminator. The single 0-184 range describes the token the figure represents, not a credential present in these bytes as raw input. Not a product false negative under the raw-input contract.",
+      "evidence": [
+        "https://www.rfc-editor.org/rfc/rfc7519#section-3.1",
+        "https://github.com/redact-secret/redact-secret/blob/0af4cb83b571baa86d27a678a351ece2ebc1f3cb/crates/secret-scan-core/src/detectors/jwt.rs#L60-L90",
+        "https://github.com/redact-secret/redact-secret/blob/0af4cb83b571baa86d27a678a351ece2ebc1f3cb/docs/specs/contextual-detection.md#L43",
+        "https://github.com/redact-secret/redact-secret/issues/822"
+      ]
+    },
+    {
+      "fixtureId": "rfc7515-jwk-k-display-break",
+      "submittedAction": "must-redact",
+      "submittedExpected": [
+        {
+          "start": 20,
+          "end": 113
+        }
+      ],
+      "adjudication": "presentation-only-example",
+      "inRawInputContract": false,
+      "rationale": "RFC 7515 appendix A.1.1 prints the symmetric JWK with a line break and indentation inside the \"k\" string value, and states that line breaks within values are for display purposes only. As submitted, the snippet is not valid JSON (a JSON string cannot contain a raw newline). The same-line JWK member rule added for redact-secret#821 does not claim this representation; the single-line form of the same key (composed-jwk-k-single-line) is in contract and is verified under product-821. Not a product false negative under the raw-input contract.",
+      "evidence": [
+        "https://www.rfc-editor.org/rfc/rfc7515#appendix-A.1.1",
+        "https://www.rfc-editor.org/rfc/rfc8259#section-7",
+        "https://github.com/redact-secret/redact-secret/blob/0af4cb83b571baa86d27a678a351ece2ebc1f3cb/docs/specs/contextual-detection.md#L30",
+        "https://github.com/redact-secret/redact-secret/issues/821",
+        "https://github.com/redact-secret/redact-secret/issues/822"
+      ]
+    },
+    {
+      "fixtureId": "composed-percent-encoded-url-in-json",
+      "submittedAction": "must-redact",
+      "submittedExpected": [
+        {
+          "start": 64,
+          "end": 79
+        }
+      ],
+      "adjudication": "downstream-normalization-scenario",
+      "inRawInputContract": false,
+      "rationale": "The query is access_token%3D<token>%26p%3Dq: both delimiters are percent-encoded. The WHATWG application/x-www-form-urlencoded parser splits on literal & and = before percent-decoding each name and value, so the query has one parameter whose name is access_token=<token>&p=q and whose value is empty; URL.searchParams.get('access_token') returns null. Only an application that decodes the whole URL before parsing it produces an access_token parameter. That is a real but separate downstream transform with its own threat model, not ordinary URL parsing, so this is not a confirmed access_token false negative under the raw-input contract. The token-like bytes are still present and are not declared safe for every consumer; modelling decode-before-parse needs its own scenario with a declared transform order and original-byte range mapping.",
+      "evidence": [
+        "https://url.spec.whatwg.org/#concept-urlencoded-parser",
+        "https://www.rfc-editor.org/rfc/rfc3986#section-2.4",
+        "https://www.rfc-editor.org/rfc/rfc6750#section-2.3",
+        "https://github.com/redact-secret/redact-secret/issues/822"
+      ]
+    }
+  ],
+  "supersedes": {
+    "record": "product-822",
+    "field": "disposition",
+    "source": "https://github.com/redact-secret/redact-secret-benchmarks/blob/54dc7bac6497546d7064f996dc1865816e0d7322/benchmarks/known-gaps.json",
+    "value": {
+      "reason": "Maintainer decision (keep current policy): detectors never span a line terminator, an engine invariant that keeps whole-input and incremental scans in agreement; the RFC 7519/7515 figures break their values for display only, so the single-range expectation across those breaks is too strict. The percent-encoded query inside JSON is a real but out-of-contract false negative: the engine does not decode transport encodings before detection. Revisit only with a decoding or line-join decision record.",
+      "evidence": [
+        "https://github.com/redact-secret/redact-secret/issues/822#issuecomment-5840078456"
+      ]
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { HoldoutManifest } from '../../holdout/types.ts';
 import { fileDigest, validateIntake, type IntakeRecord } from './adversarial-intake.ts';
+import { adjudicationProblems, type Adjudication } from './adversarial-adjudication.ts';
 import { independenceClaims, type EvidenceSources } from './evidence-classes.ts';
 
 export const PACK_DIRECTORIES = ['adversarial/packs', 'adversarial/samples'] as const;
@@ -16,6 +17,8 @@ export interface LoadedPack {
   path: string;
   record: IntakeRecord;
   firstRunBytes: string | null;
+  /** `adjudication.json`, when the pack's submitted expectations have been adjudicated (#322). */
+  adjudication: Adjudication | null;
 }
 
 export function loadPacks(root: string): LoadedPack[] {
@@ -27,7 +30,12 @@ export function loadPacks(root: string): LoadedPack[] {
       const path = `${parent}/${entry.name}`;
       const record = JSON.parse(readFileSync(join(root, path, 'intake.json'), 'utf8')) as IntakeRecord;
       const firstRunPath = join(root, path, 'first-run.json');
-      packs.push({ path, record, firstRunBytes: existsSync(firstRunPath) ? readFileSync(firstRunPath, 'utf8') : null });
+      const adjudicationPath = join(root, path, 'adjudication.json');
+      packs.push({
+        path, record,
+        firstRunBytes: existsSync(firstRunPath) ? readFileSync(firstRunPath, 'utf8') : null,
+        adjudication: existsSync(adjudicationPath) ? JSON.parse(readFileSync(adjudicationPath, 'utf8')) as Adjudication : null,
+      });
     }
   }
   return packs;
@@ -46,6 +54,10 @@ export function packProblems(packs: readonly LoadedPack[]): string[] {
       problems.push(`${pack.path}: sample must be true exactly for packs under adversarial/samples/`);
     }
     problems.push(...validateIntake(pack.record, pack.firstRunBytes).map(problem => `${pack.path}: ${problem}`));
+    if (pack.adjudication) {
+      const firstRun = pack.firstRunBytes == null ? null : fileDigest(pack.firstRunBytes);
+      problems.push(...adjudicationProblems(pack.adjudication, pack.record, firstRun).map(problem => `${pack.path}: ${problem}`));
+    }
   }
   return problems;
 }

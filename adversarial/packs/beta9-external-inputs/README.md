@@ -31,6 +31,8 @@ submission is still open for #140.
 | `sources.json` | Provenance for each fixture: source, pinned upstream revision, license, `verbatim` or `composed`, and the #140 category. |
 | `build-intake.mjs` | The authoring tool. Credential parts are marked in the text and converted to UTF-8 byte ranges. It never imports a scanner. It refuses to rewrite an intake that has moved past `submitted`. |
 | `first-run.json` | The frozen first run (added at `frozen-first-run`). |
+| `adjudication.json` | Per-fixture adjudication of submitted expectations against the product's raw-input contract (#322). It never changes an expectation. |
+| `reruns/` | Fixed-candidate reruns (`npm run adversarial:rerun`), one file per candidate and benchmark commit. |
 
 ## Sources and licenses
 
@@ -90,7 +92,7 @@ its corpus hash. One product issue backs each root cause:
 | `product-819` | [RFC 8959 `secret-token:` URIs](https://github.com/redact-secret/redact-secret/issues/819) | verified | 3 |
 | `product-820` | [http(s)/ftp URL userinfo passwords](https://github.com/redact-secret/redact-secret/issues/820) | verified | 1 |
 | `product-821` | [JWK secret members](https://github.com/redact-secret/redact-secret/issues/821) | verified | 1 |
-| `product-822` | [policy: RFC display line breaks, percent-encoded query in JSON](https://github.com/redact-secret/redact-secret/issues/822) | policy-decision | 3 |
+| `product-822` | [policy: submitted-range misses outside the raw-input contract (RFC display-wrapped JWT/JWK, percent-encoded URL)](https://github.com/redact-secret/redact-secret/issues/822) | policy-decision | 3 |
 | `product-823` | [policy: reversed comparison, C++ constructor, `db_pass`](https://github.com/redact-secret/redact-secret/issues/823) | policy-decision | 3 |
 | `product-824` | [policy: `warn` on short literals in benign code](https://github.com/redact-secret/redact-secret/issues/824) | policy-decision | 2 |
 | `product-825` | [policy: short values warn instead of redact](https://github.com/redact-secret/redact-secret/issues/825) | policy-decision | 5 |
@@ -108,3 +110,24 @@ four policy records. The `product-823` disposition also notes that its
 `db_pass` fixture is fixed by redact-secret#838; the other two fixtures in
 that record stay out of contract. The first run stays frozen; fixed
 candidates are measured by a separate rerun under `reruns/`.
+
+### Adjudicated expectations (#322)
+
+The first run scored every fixture against its submitted expectation, and
+those counts stay as recorded: redact-secret missed 21 and partially covered
+4 of the 38 `must-redact` ranges. [`adjudication.json`](adjudication.json)
+then decides, fixture by fixture, whether a submitted expectation describes
+the product's raw-input contract. Three do not, so they remain historical
+submitted-range misses but are not product-contract gaps:
+
+| Fixture | Adjudication | Why |
+| --- | --- | --- |
+| `rfc7519-jwt-display-breaks` | presentation-only example | RFC 7519 §3.1 breaks the token for display only; the bytes are not a compact JWT, and the `jwt` grammar does not join lines. |
+| `rfc7515-jwk-k-display-break` | presentation-only example | RFC 7515 A.1.1 breaks the `k` value for display only; the bytes are not valid JSON. The single-line form is in contract (`product-821`, verified). |
+| `composed-percent-encoded-url-in-json` | downstream-normalization scenario | `=` and `&` are percent-encoded, and the WHATWG parser splits on literal delimiters before decoding, so there is no `access_token` parameter. Only decoding the whole URL before parsing creates one; that consumer is tracked as its own scenario in #325. |
+
+Of the 21 first-run misses, 18 are therefore misses under the raw-input
+contract and 3 are not. Line handling is per detector, not a global rule:
+the PEM private-key detector spans lines by design. The expectations,
+their digest and `first-run.json` are unchanged; a changed expectation would
+be a material maintainer edit with its own rerun.

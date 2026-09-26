@@ -38,7 +38,7 @@ const open = async (options = {}) => {
   page.on('pageerror', e => errors.push(e.message));
   return page;
 };
-const ready = async page => { await page.locator('#main h1').first().waitFor({ timeout: 30000 }); await page.evaluate(() => document.fonts.ready); };
+const ready = async page => { await page.locator('#main h1').first().waitFor({ timeout: 30000 }); await page.locator('[data-provenance-ready="true"]').waitFor({ timeout: 30000 }); await page.evaluate(() => document.fonts.ready); };
 const name = route => route.replace(/^\//, '').replace(/[/?=&]/g, '_') || 'root';
 
 /** Rendered contrast of every text node against the first opaque background behind it. Large text needs 3:1, the rest 4.5:1. */

@@ -9,7 +9,7 @@ import { orderedFamilies, providerName, statusesOf, SUPPORT_STATUSES, type Suppo
 
 const registryIds = new Set(registry.detectors.map(d => d.id));
 /** A registry detector links to its coverage page; a scored arrival family (#730) has none, so it is named, not linked. */
-const scoredIdLink = (id: string) => registryIds.has(id) ? `<a href="/coverage/${e(id)}">${e(id)}</a>` : `<span class="mono">${e(id)}</span> <small class="muted">arrival family</small>`;
+const scoredIdLink = (id: string) => registryIds.has(id) ? `<a href="/coverage/detectors/${e(id)}">${e(id)}</a>` : `<span class="mono">${e(id)}</span> <small class="muted">arrival family</small>`;
 
 /**
  * Support status per provider x credential family (issue #50, A9). Every
@@ -94,7 +94,7 @@ function legend(matrix: SupportMatrixFile): string {
     <p class="small">Each status below is decided from evidence by <code>classifyFamilySupport</code> and carried into the matrix verbatim; none of it is typed into this page. A family's status moves when its evidence moves.</p>
     ${statusesOf(matrix).map(status => {
       const copy = SUPPORT_STATUS_COPY[status];
-      return `<div class="chg" data-support-status="${e(status)}">${statusMark(copy.kind, copy.word)}<span>${e(copy.meaning)}<small>${e(copy.rationale)}</small></span><span class="d">${families(matrix.distribution[status])}</span></div>`;
+      return `<span id="status-${e(status)}"></span><div class="chg" data-support-status="${e(status)}">${statusMark(copy.kind, copy.word)}<span>${e(copy.meaning)}<small>${e(copy.rationale)}</small></span><span class="d">${families(matrix.distribution[status])}</span></div>`;
     }).join('')}
     <div style="margin-top:var(--space-4)">${floors()}</div></section>`;
 }
@@ -119,19 +119,6 @@ function fixtureProfileLine(entry: SupportMatrixEntry): string {
   const title = fixtureProfiles.profiles[p.target]?.title ?? p.target;
   const debt = p.debt.length ? p.debt.map(d => `${e(CELL_LABEL[d.cell])} ${n(d.actual)} of ${n(d.required)}`).join(' · ') : 'none';
   return `<b>Fixture profile</b> ${e(title)}${p.explicit ? ' (claimed)' : ''} · ${n(c.totalFixtures)} fixtures = ${n(c.positiveCases)} positive/context + ${n(c.benignControls)} benign + ${n(c.twinPairs)} twin pairs · axes: ${n(c.positiveContextAxes)} positive-context, ${n(c.controlAxes)} control, ${n(c.confusionAxes)} confusion · <b>remaining debt</b> ${debt}`;
-}
-
-/** Every detector's cells and debt in one table, largest debt first. The debt is reported; whether it gates is each profile's own `enforcement`. */
-function fixtureDebt(matrix: SupportMatrixFile): string {
-  const seen = new Set<string>();
-  const rows = matrix.families.filter(entry => entry.profileCoverage && entry.detectors.length && !seen.has(entry.detectors[0]) && seen.add(entry.detectors[0]))
-    .map(entry => ({ id: entry.detectors[0], p: entry.profileCoverage! }))
-    .sort((a, b) => b.p.debt.reduce((t, d) => t + d.shortfall, 0) - a.p.debt.reduce((t, d) => t + d.shortfall, 0) || a.id.localeCompare(b.id));
-  if (!rows.length) return '';
-  const cells = (p: SupportMatrixEntry['profileCoverage'] & object) => `${n(p.cells.totalFixtures)} · ${n(p.cells.positiveCases)} · ${n(p.cells.benignControls)} · ${n(p.cells.twinPairs)}`;
-  return `<section class="section" id="fixture-profiles"><h2 class="h2-compact">Fixture profile coverage debt</h2>
-    <p class="small">Each family is measured against the fixture profile it claims (a T1 provider-documented family: <b>${e(fixtureProfiles.profiles['stable-documented'].title)}</b>; otherwise <b>${e(fixtureProfiles.profiles['arrival-provisional'].title)}</b>), cell by cell, so a large total cannot hide an empty cell. Cells: total · positive/context · non-twin benign · twin pairs. Meeting a profile's cells is not qualifying for it. Wilson bounds elsewhere on this site are corpus-relative, never population error probabilities. Generated from the corpus in <code>docs/generated/fixture-profile-coverage.md</code>; criteria in <code>benchmarks/support/fixture-profiles.json</code> (version ${n(fixtureProfiles.profilesVersion)}).</p>
-    <div class="tbl wide"><table><thead><tr><th scope="col">Detector</th><th scope="col">Target profile</th><th scope="col">Cells</th><th scope="col" class="num">Positive-context axes</th><th scope="col" class="num">Control axes</th><th scope="col" class="num">Confusion axes</th><th scope="col">Remaining debt</th></tr></thead><tbody>${rows.map(({ id, p }) => `<tr data-fixture-profile="${e(p.target)}"><td>${scoredIdLink(id)}</td><td>${e(fixtureProfiles.profiles[p.target]?.title ?? p.target)}</td><td>${cells(p)}</td><td class="num">${n(p.cells.positiveContextAxes)}</td><td class="num">${n(p.cells.controlAxes)}</td><td class="num">${n(p.cells.confusionAxes)}</td><td><small>${p.debt.length ? p.debt.map(d => `${e(CELL_LABEL[d.cell])} ${n(d.actual)}/${n(d.required)}`).join(' · ') : 'none'}</small></td></tr>`).join('')}</tbody></table></div></section>`;
 }
 
 /** Tier, provider source, corroboration, twin coverage and unresolved items — the evidence a status was decided from. */
@@ -160,18 +147,6 @@ function evidence(entry: SupportMatrixEntry): string {
   return `<details data-key="support:${e(entry.family)}"><summary><small>Evidence</small></summary><ul class="small">${lines.map(line => `<li>${line}</li>`).join('')}</ul></details>`;
 }
 
-function familyRow(entry: SupportMatrixEntry): string {
-  const copy = SUPPORT_STATUS_COPY[entry.status];
-  const statusWord = entry.status === 'stable' && entry.qualificationProfile === 'empirical' ? 'Stable · Empirically qualified' : copy.word;
-  const reasons = entry.reason ? entry.reason.split(' | ') : [];
-  return `<tr data-support-status="${e(entry.status)}" data-family="${e(entry.family)}">
-    <td>${e(providerName(entry.provider))}</td>
-    <td>${e(entry.familyName)}<small class="mono">${e(entry.family)}</small></td>
-    <td>${statusMark(copy.kind, statusWord)}<small>${e(copy.short)}</small></td>
-    <td>${reasons.length ? `<ul class="small">${reasons.map(reason => `<li>${e(reason)}</li>`).join('')}</ul>` : '<small>No unmet floor is recorded.</small>'}</td>
-    <td>${evidence(entry)}</td></tr>`;
-}
-
 export function supportPage(matrix: SupportMatrixFile | null, problem: string | null, filter: SupportFilter = 'all'): string {
   const head = (meta: string) => `<div class="page-head"><div><h1>Support status by family</h1><div class="meta">${meta}</div></div>${matrix ? filterBar(matrix, filter) : ''}</div>`;
   if (!matrix) {
@@ -197,12 +172,16 @@ export function supportPage(matrix: SupportMatrixFile | null, problem: string | 
     <span>Revision <code>${e(source.revision.slice(0, 12))}</code></span>
     ${source.dirty === null ? `<span>${statusMark('not-measured', 'Working tree not recorded')}</span>` : source.dirty ? `<span>${statusMark('review', 'Uncommitted changes in the run')}</span>` : ''}`;
   const shown = orderedFamilies(matrix, filter);
-  const table = shown.length
-    ? `<div class="tbl wide"><table><thead><tr><th scope="col">Provider</th><th scope="col">Credential family</th><th scope="col">Status</th><th scope="col">Why this status</th><th scope="col">Evidence</th></tr></thead><tbody>${shown.map(familyRow).join('')}</tbody></table></div>`
+  const familyEvidence = shown.length
+    ? `<div class="support-family-links">${shown.map(entry => {
+      const copy = SUPPORT_STATUS_COPY[entry.status], reasons = entry.reason ? entry.reason.split(' | ') : [];
+      const statusWord = entry.status === 'stable' && entry.qualificationProfile === 'empirical' ? 'Stable · Empirically qualified' : copy.word;
+      return `<article data-support-status="${e(entry.status)}" data-family="${e(entry.family)}"><div><a href="/coverage/${e(entry.family)}"><b>${e(entry.familyName)}</b></a><small>${e(providerName(entry.provider))} · <code>${e(entry.family)}</code></small></div><div>${statusMark(copy.kind, statusWord)}<small>${reasons.length ? reasons.map(e).join(' · ') : 'No unmet floor is recorded.'}</small></div>${evidence(entry)}</article>`;
+    }).join('')}</div>`
     : `<p class="small">No family carries this status in the published matrix.</p>`;
   return `${head(meta)}
     <p class="prose small" style="margin-bottom:var(--space-4)">Every provider × credential family in the taxonomy is listed, including the ones nothing here detects: an unsupported family is visible with its recorded reason rather than left out. This repository measures and records — a status is the output of the published profile run against evidence, not a claim about the product.</p>
     ${legend(matrix)}
-    <section class="section"><h2 class="h2-compact">Families</h2><p class="small">${n(shown.length)} of ${families(matrix.familyCount)}${filter === 'all' ? '' : `, filtered to ${e(SUPPORT_STATUS_COPY[filter].word)}`}. Open a family's evidence to see the tier, the provider source it was read from, and the twin coverage behind its status.</p>${table}</section>
-    ${fixtureDebt(matrix)}`;
+    <section class="section"><h2 class="h2-compact">Classification evidence and reasons</h2><p class="small">${n(shown.length)} of ${families(matrix.familyCount)}${filter === 'all' ? '' : `, filtered to ${e(SUPPORT_STATUS_COPY[filter].word)}`}. Each family links to its fixture evidence in Coverage. Support keeps the recorded reason, evidence basis, provenance, and qualification floors; Coverage owns fixture-profile cells and debt.</p>${familyEvidence}</section>
+    <p class="small" style="margin-top:var(--space-6)">Meeting fixture-profile cells is not equivalent to passing Stable qualification. <a href="/coverage">Inspect profile cells and remaining debt in Coverage.</a></p>`;
 }

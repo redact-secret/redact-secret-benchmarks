@@ -1,6 +1,7 @@
 import type { Fixture, Finding, Range, ScoredRow } from '../types.ts';
 import type { describeCase, describeVariant } from './reporting.ts';
 import type { variant } from './model.ts';
+import type { ReviewLedger } from './review-ledger.ts';
 
 export interface Registry<T> { register(entry: T): Registry<T>; get(id: string): T; values(): T[] }
 export interface CaseSeed {
@@ -44,11 +45,14 @@ export interface Scanner {
   version(directory: string): Promise<string>;
   scan(directory: string, fixtures: Pick<Fixture, 'id' | 'path' | 'content'>[]): Promise<Finding[]>;
 }
+export type ObservationProvenance =
+  | { source: 'fresh'; observedAt: string; sourceRunId: string }
+  | { source: 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest: string; inputDigest: string };
 export type Observation = { id: string; version: string | null; mode: string; configuration?: Record<string, unknown>; configurationHash?: string } & (
-  { status: 'complete'; findings: Finding[]; durationMs: number; replays: Replays } |
-  { status: 'unsupported' | 'unavailable' | 'error'; message: string; findings?: never } |
+  { status: 'complete'; findings: Finding[]; durationMs: number; replays: Replays; observation?: ObservationProvenance } |
+  { status: 'unsupported' | 'unavailable' | 'error'; message: string; findings?: never; observation?: ObservationProvenance } |
   // Replays disagreed (v1.1 §8): never a pass, never re-rolled, and no findings are retained.
-  { status: 'unstable'; message: string; findings: []; replays: Replays }
+  { status: 'unstable'; message: string; findings: []; replays: Replays; observation?: ObservationProvenance }
 );
 export interface Replays { count: number; agreed: boolean; divergentPaths?: string[] }
 // `not-measured` (v1.1 §4): the scanner never observed this variant. It consumes denominator and never resolves.
@@ -75,4 +79,4 @@ export interface Method {
 }
 export type CaseResult = ReturnType<typeof describeCase> & MethodResult & { variants: ReturnType<typeof describeVariant>[]; generation: GenerationAttempt[] };
 export type Summary = Record<string, Record<AssertionStatus, number>>;
-export interface ReviewLedger { schemaVersion: 1; entries: Record<string, { status: 'open' | 'resolved' | 'not-assertable'; firstSeenRun: string; resolvedRun?: string; note: string }> }
+export type { ReviewLedger };

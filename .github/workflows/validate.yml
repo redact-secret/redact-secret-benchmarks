@@ -16,6 +16,8 @@ jobs:
           python-version: '3.12'
       - run: npm ci
       - run: npm run fixtures:check
+      - name: Fixture semantic index is complete, reviewed, and current (#340)
+        run: npm run fixture-index:check
       - run: npm test
       - name: Validate published engine qualification evidence
         run: npm run eval:validate -- docs/specs/qualification/engine-v1.json
@@ -35,6 +37,8 @@ jobs:
         run: npm run performance:budgets:check
       - name: No not-assertable ledger entry lacks a checked-in ADR decision (#63)
         run: npm run ledger:decisions:check
+      - name: Review ledger provenance and decision categories are valid (#341)
+        run: npm run ledger:provenance:check
       - name: External adversarial packs satisfy the intake contract, first runs are immutable, and no project-authored evidence is called independent (#139)
         run: |
           git fetch --no-tags --depth=1 origin main:refs/remotes/origin/main || true
@@ -84,20 +88,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Provision checksum-pinned Gitleaks and TruffleHog (versions from qualification/suite-v1.json, digests from scanners/peer-checksums.json)
-        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
-      - name: Verify the resolved peers are the pinned ones
-        run: |
-          set -euo pipefail
-          [ "$(command -v gitleaks)" = "$RUNNER_TEMP/scanner-bin/gitleaks" ]
-          [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
-      - name: Real-binary integration tests for all external adapters
-        run: npm run test:integration
-      - name: Every review-queue id resolves against the ledger, or is deliberately open (#98)
-        run: npm run queue:check
-      - name: Support classification runs against the pinned peers
+      # Ordinary validation intentionally has no peer binaries on PATH. Both
+      # commands must fail closed unless every committed observation matches
+      # the current corpus, semantic index, pin, adapter and snapshot schema.
+      - name: Support classification reuses validated peer observations
         run: npm run eval:classify
-      - name: Run the full four-scanner comparison
+      - name: Every review-queue id resolves against the ledger, using the same validated observations (#98)
+        run: npm run queue:check
+      - name: Run the comparison with a fresh product and validated peer observations
         run: npm run bench -- --strict
       - name: Record which redact-secret artifact was measured
         if: always()
@@ -105,7 +103,7 @@ jobs:
           {
             echo "### Four-scanner comparison"
             echo "- redact-secret: published npm package \`@redact-secret/core@$(node -p "require('./package.json').dependencies['@redact-secret/core']")\`, not a candidate build of the product's \`main\`"
-            echo "- gitleaks \`$(node -p "require('./qualification/suite-v1.json').scanners.gitleaks")\` and trufflehog \`$(node -p "require('./qualification/suite-v1.json').scanners.trufflehog")\` (checksum-verified against scanners/peer-checksums.json; digests in the provisioning summary above) - flare-redact \`$(node -p "require('./package.json').dependencies['flare-redact']")\`"
+            echo "- peers: validated normalized snapshots (source run, observed time, input identity and digest retained in every row); no peer binary provisioned or executed"
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload the four-scanner comparison results
         if: always()

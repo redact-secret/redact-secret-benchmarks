@@ -20,6 +20,8 @@ import { scoreReport } from './lib/reporting.ts';
 import { validateStructures } from './lib/validate-structures.ts';
 import { ACCOUNTING_VERSION, validateAccounting } from './lib/accounting.ts';
 import { summarizeRun } from './lib/run-summary.ts';
+import { inputIdentity, makeSnapshot, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity, snapshotObservation,
+  snapshotPath, writeSnapshot } from './lib/peer-observations.ts';
 
 export const MATCHING = "Per-span outcome lattice over UTF-8 [start, end). Envelope-relative coverage. Identical findings deduplicated. No cross-tier aggregation; no precision, recall or F1. T0 observations unscored. AWS RawV2 secret components and Shopify composite token mapped from scanner output, never ground truth.";
 
@@ -39,19 +41,24 @@ for (const a of args) {
   if (match) candidateOptions[match[1] as (typeof CANDIDATE_KEYS)[number]] = match[2];
 }
 const candidateCount = Object.keys(candidateOptions).length;
+const refreshPeerSnapshots = args.includes('--refresh-peer-snapshots');
+const livePeers = args.includes('--live-peers');
 if (
-  args.some((a) => a !== "--strict" && !a.startsWith("--category=") && !/^--candidate-(package|node-package|wasm-package|source-commit)=./.test(a)) ||
+  args.some((a) => !["--strict", '--refresh-peer-snapshots', '--live-peers'].includes(a) && !a.startsWith("--category=") && !/^--candidate-(package|node-package|wasm-package|source-commit)=./.test(a)) ||
+  (refreshPeerSnapshots && livePeers) ||
   (requested && !registry.some((c) => c.id === requested)) ||
   (candidateCount !== 0 && candidateCount !== CANDIDATE_KEYS.length) ||
   args.filter((a) => a.startsWith("--candidate-")).length !== candidateCount ||
   (candidateCount && !/^[a-f0-9]{40}$/.test(candidateOptions["candidate-source-commit"]!))
 ) {
-  console.error("Usage: npm run bench -- [--category=accuracy] [--strict] [--candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> --candidate-source-commit=<40-hex>]");
+  console.error("Usage: npm run bench -- [--category=accuracy] [--strict] [--refresh-peer-snapshots|--live-peers] [--candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> --candidate-source-commit=<40-hex>]");
   process.exit(1);
 }
 validateContracts();
 // Floors and interval parameters are suite configuration, covered by suiteHash, never a code edit.
-const accounting = validateAccounting(JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8')).accounting);
+const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));
+const accounting = validateAccounting(suite.accounting);
+const semanticIndex = await semanticIndexIdentity(root);
 const shown = (rate: Published | 'insufficient-coverage' | undefined, digits = 3) => (rate == null ? '—' : typeof rate === 'string' ? rate : `${rate.point.toFixed(digits)}${rate.bound == null ? '' : ` (${rate.direction === 'upper' ? '≤' : '≥'} ${rate.bound.toFixed(digits)})`}`);
 const installation = candidateCount ? await installCandidate({
   core: path.resolve(candidateOptions["candidate-package"]!),
@@ -90,6 +97,7 @@ const write = async (name: string, report: unknown) => {
 };
 let failed = false;
 const scannerVersions: Record<string, string> = {};
+const scannerObservations: Record<string, { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest?: string; inputDigest?: string }> = {};
 const categories = [];
 const published: unknown[] = [];
 for (const category of registry.filter(
@@ -117,7 +125,24 @@ for (const category of registry.filter(
       const base = { id: scanner.id, name: scanner.name, mode: scanner.mode };
       let version = null;
       try {
+        const isPeer = scanner.id !== 'redact-secret';
+        const input = inputIdentity({ surface: `comparison/${category.id}`, suite: observationSuiteIdentity(suite), corpus,
+          fixtures: corpus.fixtures, semanticIndex });
+        const expectedPeer = isPeer ? await repositoryPeerIdentity(scanner, root) : null;
+        if (isPeer && !refreshPeerSnapshots && !livePeers) {
+          const snapshot = await readSnapshot(snapshotPath(root, `comparison/${category.id}`, scanner.id), { input, peer: expectedPeer! });
+          const observation = snapshotObservation(snapshot);
+          if (observation.status !== 'complete') throw new Error('Validated peer snapshot is incomplete');
+          version = observation.version;
+          scannerVersions[scanner.id] = version!;
+          scannerObservations[`${category.id}/${scanner.id}`] = observation.observation!;
+          results.push({ ...base, version, status: 'complete', durationMs: 0, replays: observation.replays,
+            observation: observation.observation, ...handlers[category.kind].score(corpus.fixtures, observation.findings, accounting) });
+          console.log(`${category.id} / ${scanner.name}: reused ${snapshot.digest}`);
+          continue;
+        }
         version = await scanner.version(scratch);
+        if (expectedPeer && version !== expectedPeer.version) throw new Error(`peer-version-mismatch:${scanner.id}`);
         scannerVersions[scanner.id] = version;
         const start = performance.now();
         const findings = await scanner.scan(scratch, corpus.fixtures);
@@ -125,14 +150,21 @@ for (const category of registry.filter(
         const tuples = (list: typeof findings) => list.map((f: { path: string; start: number; end: number }) => `${f.path}:${f.start}:${f.end}`).sort().join('\n');
         for (let replay = 1; replay < accounting.replays; replay++)
           if (tuples(await scanner.scan(scratch, corpus.fixtures)) !== tuples(findings)) throw new Error('unstable');
+        const observation = { source: 'fresh' as const, observedAt: startedAt, sourceRunId: runId };
         results.push({
           ...base,
           version,
           status: "complete",
           durationMs: Math.round((performance.now() - start) * 100) / 100,
           replays: { count: accounting.replays, agreed: true },
+          observation,
           ...handlers[category.kind].score(corpus.fixtures, findings, accounting),
         });
+        scannerObservations[`${category.id}/${scanner.id}`] = observation;
+        if (isPeer && refreshPeerSnapshots) await writeSnapshot(snapshotPath(root, `comparison/${category.id}`, scanner.id), makeSnapshot({
+          observedAt: startedAt, sourceRun: { runId, benchmarkRevision: revision }, input, peer: expectedPeer!,
+          replayCount: accounting.replays, findings,
+        }));
         console.log(`${category.id} / ${scanner.name}: complete`);
       } catch (error) {
         const unavailable = error instanceof Error && error.message === "unavailable";
@@ -211,6 +243,7 @@ await write("run", {
   categories,
   partial: categories.length !== registry.length,
   scannerVersions,
+  scannerObservations,
   ...(candidate ? { candidate } : {}),
   lockHash,
   revision,

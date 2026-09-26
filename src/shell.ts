@@ -104,7 +104,7 @@ export function mountShell(app: HTMLElement, shellOptions: ShellOptions) {
 /** Replaces the footer's build statement once the published results that complete it have loaded. */
 export function setBuildLine(html: string) {
   const line = document.querySelector<HTMLElement>('#site-build');
-  if (line) line.innerHTML = html;
+  if (line) { line.innerHTML = html; line.dataset.provenanceReady = 'true'; }
 }
 
 export function renderPage(content: string, label: string) {

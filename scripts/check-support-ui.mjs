@@ -19,6 +19,7 @@ import path from 'node:path';
 import { supportPage, SUPPORT_STATUS_COPY } from '../src/pages/support.ts';
 import { supportMatrixProblem } from '../src/support-model.ts';
 import { taxonomy } from '../benchmarks/support/taxonomy.ts';
+import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const read = async file => JSON.parse(await readFile(path.join(root, file), 'utf8'));
@@ -29,6 +30,11 @@ const rendered = html => new Set([...html.matchAll(/data-support-status="([^"]*)
 
 /** A matrix in which every family carries one status, built from the checked-in taxonomy. */
 function probeMatrix(status, vocabulary) {
+  const profileCoverage = {
+    profilesVersion: 1, claimed: 'stable-documented', explicit: false, target: 'stable-documented', cellsMet: ['arrival-provisional', 'stable-documented'],
+    cells: { totalFixtures: 24, positiveCases: 6, benignControls: 8, twinPairs: 5, positiveContextAxes: 4, controlAxes: 4, confusionAxes: 4, positiveContextAxisIds: ['env'], controlAxisIds: ['ordinary-prose'], confusionAxisIds: ['near-miss'] },
+    requiredCells: { totalFixtures: 24, positiveCases: 6, benignControls: 8, twinPairs: 5, positiveContextAxes: 4, controlAxes: 4 }, requiredButEmptyAxisIds: [], debt: [],
+  };
   const families = taxonomy.families.map(family => ({
     provider: family.provider, family: family.id, familyName: family.name, status,
     evidenceTier: 'T1', providerSource: { url: 'https://example.invalid/format', observedAt: '2026-09-20', formatVersion: 'probe', covers: 'probe' },
@@ -37,13 +43,16 @@ function probeMatrix(status, vocabulary) {
     unresolvedCriticalItems: { metamorphic: 0, mutation: 0, differential: 0 },
     empiricalEvidence: { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 0, corroborationOwners: 0, corroborationClasses: [], contradictions: 0, boundedContradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true },
     fixtureProfile: { positiveCases: 6, positiveAxes: 4, benignCases: 8, controlAxes: 4, twinPairs: 5, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 4 },
+    profileCoverage,
     detectors: ['probe-detector'], reason: status === 'stable' ? null : `probe: ${status}`,
   }));
   const distribution = Object.fromEntries(vocabulary.map(key => [key, key === status ? families.length : 0]));
   const stableDistribution = { documented: status === 'stable' ? families.length : 0, empirical: 0 };
   return {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
-    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'probe-run', revision: '0'.repeat(40), dirty: false, criteriaSchemaVersion: 1 },
+    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'probe-run', revision: '0'.repeat(40), dirty: false, criteriaSchemaVersion: 1,
+      fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
+      scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'probe-run' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };
 }
@@ -81,13 +90,13 @@ export async function checkSupportUi() {
     if (invalid) { problems.push(`The ${status} probe matrix is not a valid artifact (${invalid}); the gate cannot be trusted until it is`); continue; }
     const shown = rendered(supportPage(matrix, null, 'all'));
     for (const value of shown) if (!Object.hasOwn(matrix.distribution, value)) problems.push(`Rendering a ${status} matrix shows "${value}", a status that matrix does not carry`);
-    const rows = [...supportPage(matrix, null, 'all').matchAll(/<tr data-support-status="([^"]*)"/g)].map(match => match[1]);
+    const rows = [...supportPage(matrix, null, 'all').matchAll(/<article data-support-status="([^"]*)"/g)].map(match => match[1]);
     if (rows.length !== matrix.families.length) problems.push(`Rendering a ${status} matrix lists ${rows.length} families of ${matrix.families.length}: every family stays visible, whatever its status`);
     for (const value of new Set(rows)) if (value !== status) problems.push(`Rendering a ${status} matrix lists a family as "${value}"`);
   }
 
   const files = await uiFilesRenderingStatuses();
-  const expected = ['src/pages/support.ts'];
+  const expected = ['src/pages/coverage.ts', 'src/pages/support.ts'];
   for (const file of files) if (!expected.includes(file)) problems.push(`${file} renders support statuses; this gate only sees ${expected.join(', ')}`);
   for (const file of expected) if (!files.includes(file)) problems.push(`${file} no longer marks rendered statuses with data-support-status, so this gate cannot see them`);
 

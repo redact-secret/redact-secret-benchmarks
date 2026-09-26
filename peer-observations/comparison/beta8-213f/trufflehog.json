@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "9d395b1e54cd000f91ac6a6b4d145f8269c1d3913c93166ae4ff597c732ad401",
+    "fixtureCount": 18,
+    "fixturesDigest": "965a67b2aaff4e645befb4509406a4d14b6ca992f953d054125f8a6ef0d5f697",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/databricks-personal-access-token-compose-env.yml",
+      "start": 134,
+      "end": 170
+    },
+    {
+      "path": "cases/databricks-personal-access-token-curl-token-user.sh",
+      "start": 17,
+      "end": 53
+    },
+    {
+      "path": "cases/databricks-personal-access-token-gitlab-ci-variables.yml",
+      "start": 131,
+      "end": 167
+    },
+    {
+      "path": "cases/mailchimp-api-key-long-twin.sh",
+      "start": 64,
+      "end": 100
+    },
+    {
+      "path": "cases/mailchimp-api-key-sha1-width-twin.sh",
+      "start": 71,
+      "end": 107
+    },
+    {
+      "path": "cases/mailchimp-api-key-v1-apikey-query.sh",
+      "start": 63,
+      "end": 99
+    },
+    {
+      "path": "cases/mailgun-api-key-compose-env.yml",
+      "start": 105,
+      "end": 141
+    },
+    {
+      "path": "cases/openai-token-compose-env.yml",
+      "start": 66,
+      "end": 117,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-compose-short-twin.yml",
+      "start": 66,
+      "end": 116,
+      "family": "openai-token"
+    }
+  ],
+  "digest": "e96ee4400bec5443c4b700833dbc7a937133362cb79b6ce221916bd03c4fbc14"
+}

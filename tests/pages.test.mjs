@@ -11,8 +11,16 @@ const read = async path => JSON.parse(await readFile(new URL('../' + path, impor
 const categories = (await read('benchmarks/categories.json')).filter(category => !category.calibrationOnly);
 const registry = await read('benchmarks/detectors.json');
 const assignments = await read('benchmarks/fixture-detectors.json');
+const fixtureIndex = await read('benchmarks/fixture-index.json');
+const scenarios = (await read('benchmarks/scenarios.json')).scenarios;
+const taxonomy = await read('benchmarks/support/taxonomy.json');
 const corpora = Object.fromEntries(await Promise.all(categories.map(async c => [c.id, await read(c.corpus)])));
-const fixtures = buildCatalog(categories, corpora, assignments, registry.detectors);
+const semanticBySlug = new Map(fixtureIndex.fixtures.map(entry => [entry.slug, entry]));
+const fixtures = buildCatalog(categories, corpora, assignments, registry.detectors).map(fixture => {
+  const semantic = semanticBySlug.get(fixture.slug);
+  assert.ok(semantic, fixture.slug);
+  return { ...fixture, familyIds: semantic.familyIds, scenarioIds: semantic.scenarioIds, ...('unscopedReason' in semantic ? { unscopedReason: semantic.unscopedReason } : {}), provenance: semantic.provenance };
+});
 const accounting = (await read('qualification/suite-v1.json')).accounting;
 const runId = '2026-09-19T12:00:00.000Z-0a0b0c';
 const percent = v => `${(v * 100).toFixed(1)}%`;
@@ -83,12 +91,35 @@ test('Report: a run that measured an unreleased candidate names it in the eyebro
 
 test('Report: reference scanners are muted rows in run order with no rank, and an absent scanner is Not measured, not zero', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
-  const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('data-rows'));
+  const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('id="rows"'));
   assert.ok(peers.indexOf('silent') < peers.indexOf('absent'), 'run order, never sorted by result');
   assert.ok(!/\b(rank|winner|best|worst|#1|leader|score)\b/i.test(text(peers).replace('Not a ranking', '')));
   assert.match(peers, /absent[\s\S]*data-status="not-measured">Not measured/);
   assert.ok(text(html).includes('absent was not found on PATH'), 'scanner-unavailable empty state');
   assert.ok(!text(peers).includes('redact-secret'), 'the product is not a row in the reference table');
+});
+
+test('Report: provider/family projection preserves the exact selected leaf set once', async () => {
+  const { reportPage } = await load('/src/pages/report.ts');
+  for (const level of ['T1', 'T2', 'T3']) {
+    const policy = level === 'T3';
+    const selected = fixtures.filter(f => f.assessment.tier === level && (policy ? f.assessment.kind !== 'must-redact' : f.assessment.kind !== 'policy'));
+    const html = reportPage(data, level, fixtures);
+    assert.match(html, /data-report-tree/, html.slice(-800));
+    const slugs = [...html.matchAll(/data-slug="([^"]+)"/g)].map(match => match[1]);
+    assert.deepEqual(slugs.sort(), selected.map(fixture => fixture.slug).sort(), `${level}: grouping neither drops nor duplicates leaves`);
+    assert.equal(new Set(slugs).size, slugs.length, `${level}: one display bucket per fixture`);
+    assert.equal((html.match(/class="fig"/g) ?? []).length, 3, `${level}: hierarchy never changes the three answers`);
+  }
+  for (const slug of ['accuracy--aws-id', 'common-formats--github-token-ghp-plain', 'sendgrid-regressions--base62-bare', 'accuracy--ordinary-text', 'sendgrid-regressions--base62-bearer', 'beta8-213d--databricks-personal-access-token-env']) {
+    const fixture = fixtures.find(entry => entry.slug === slug);
+    assert.ok(fixture, slug);
+    if (fixture.assessment.tier === 'T0') continue;
+    assert.match(reportPage(data, fixture.assessment.tier, fixtures), new RegExp(`data-slug="${slug}"`), slug);
+  }
+  const t1 = reportPage(data, 'T1', fixtures);
+  assert.ok(t1.includes('Global / multi-family'));
+  assert.match(t1, /sendgrid-regressions--base62-bearer[\s\S]*Families:/);
 });
 
 test('Report: the three empty states name what is missing and the next command', async () => {
@@ -117,8 +148,11 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   assert.ok(text(html).includes(`${atMinimum} at the minimum sample size`));
   assert.equal((html.match(/At minimum/g) ?? []).length, counts.filter(d => d.fixtures === accounting.minDenominator).length);
   assert.equal((html.match(/<u style="left:/g) ?? []).length, counts.length, 'a minDenominator line on every bar');
-  for (const d of registry.detectors) assert.ok(html.includes(`href="/coverage/${d.id}"`), d.id);
+  for (const d of registry.detectors) assert.ok(html.includes(`href="/coverage/detectors/${d.id}"`), d.id);
   for (const c of categories) assert.ok(html.includes(`href="/suites/${c.id}"`), c.id);
+  for (const scenario of scenarios) assert.ok(html.includes(`href="/scenarios/${scenario.id}"`), scenario.id);
+  assert.ok(text(html).includes('Test scenarios') && text(html).includes('Development history'));
+  assert.ok(text(html).includes('Membership overlaps'));
   assert.equal((coveragePage(fixtures, 'thin').match(/class="cov-row" role="row"/g) ?? []).length, atMinimum);
   // #36: the twin figure separates discriminated / not discriminated / un-probeable.
   const { twinProbe } = await load('/benchmarks/lib/twin-probe.ts');
@@ -138,6 +172,64 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   for (const [key, g] of Object.entries(groups)) if (g.leakedSpanRate?.bound != null) assert.ok(text(page).includes(`at most ${percent(g.leakedSpanRate.bound)}`), key);
   assert.ok(page.includes('Pending review') === Boolean(groups['pending/T0']));
   assert.ok(detectorPage(data, fixtures, 'nope').includes('No such detector'));
+});
+
+test('Scenario navigation projects canonical fixtures and preserves family and development-history relations', async () => {
+  const { scenarioPage } = await load('/src/pages/scenario.ts');
+  for (const scenario of scenarios) {
+    const selected = fixtures.filter(fixture => fixture.scenarioIds.includes(scenario.id));
+    const html = scenarioPage(fixtures, scenario.id);
+    assert.match(html, /<p class="eyebrow">TEST SCENARIO<\/p>/);
+    assert.ok(text(html).includes('does not change fixture bytes, accounting, source suites, or execution provenance'));
+    for (const fixture of selected) {
+      assert.equal((html.match(new RegExp(`href="/fixture/${fixture.slug}"`, 'g')) ?? []).length, 1, `${scenario.id}: ${fixture.slug}`);
+      assert.ok(html.includes(`href="/suites/${fixture.provenance.categoryId}"`), fixture.slug);
+      for (const familyId of fixture.familyIds) assert.ok(html.includes(`href="/coverage/${familyId}"`), `${fixture.slug}: ${familyId}`);
+      if (!fixture.familyIds.length) assert.ok(html.includes(fixture.unscopedReason), fixture.slug);
+    }
+  }
+  assert.ok(scenarioPage(fixtures, 'not-registered').includes('No such test scenario'));
+  const emptyFixtures = fixtures.map(fixture => ({ ...fixture, scenarioIds: fixture.scenarioIds.filter(id => id !== scenarios[0].id) }));
+  assert.ok(scenarioPage(emptyFixtures, scenarios[0].id).includes('No fixtures are assigned to this scenario'));
+});
+
+test('Fixture navigation uses provider-family breadcrumbs, all multi-family links, and explicit unscoped reasons', async () => {
+  const { fixturePage } = await load('/src/pages/fixture.ts');
+  const single = fixtures.find(fixture => fixture.slug === 'accuracy--aws-id');
+  const multi = fixtures.find(fixture => fixture.familyIds.length > 1);
+  const unscoped = fixtures.find(fixture => fixture.slug === 'accuracy--ordinary-text');
+  assert.ok(single && multi && unscoped);
+  const singleHtml = fixturePage(single, undefined), family = taxonomy.families.find(item => item.id === single.familyIds[0]);
+  const provider = taxonomy.providers.find(item => item.id === family.provider);
+  assert.ok(singleHtml.indexOf(provider.name) < singleHtml.indexOf(family.name) && singleHtml.indexOf(family.name) < singleHtml.indexOf(`aria-current="page">${single.id}`));
+  assert.ok(singleHtml.includes(`href="/coverage/${family.id}"`));
+  const multiHtml = fixturePage(multi, undefined);
+  assert.ok(multiHtml.includes('aria-label="Fixture family relationships"'));
+  for (const familyId of multi.familyIds) assert.equal((multiHtml.match(new RegExp(`href="/coverage/${familyId}"`, 'g')) ?? []).length, 1, familyId);
+  const unscopedHtml = fixturePage(unscoped, undefined);
+  assert.ok(text(unscopedHtml).includes('Unscoped fixture'));
+  assert.ok(unscopedHtml.includes(unscoped.unscopedReason));
+  for (const fixture of [single, multi, unscoped]) {
+    const html = fixturePage(fixture, undefined);
+    for (const scenarioId of fixture.scenarioIds) assert.ok(html.includes(`href="/scenarios/${scenarioId}"`), `${fixture.slug}: ${scenarioId}`);
+    assert.ok(html.includes(`href="/suites/${fixture.provenance.categoryId}"`), fixture.slug);
+  }
+});
+
+test('Representative provider, global, multi-family, and regression fixtures remain canonically reachable', async () => {
+  const { scenarioPage } = await load('/src/pages/scenario.ts');
+  const representatives = [
+    fixtures.find(fixture => fixture.slug === 'accuracy--aws-id'),
+    fixtures.find(fixture => fixture.slug === 'accuracy--github-token'),
+    fixtures.find(fixture => fixture.familyIds.some(id => id.startsWith('sendgrid:'))),
+    fixtures.find(fixture => fixture.slug === 'accuracy--ordinary-text'),
+    fixtures.find(fixture => fixture.familyIds.length > 1),
+    fixtures.find(fixture => fixture.category.startsWith('beta8-')),
+  ];
+  for (const fixture of representatives) {
+    assert.ok(fixture, 'representative fixture exists');
+    for (const scenarioId of fixture.scenarioIds) assert.ok(scenarioPage(fixtures, scenarioId).includes(`href="/fixture/${fixture.slug}"`), fixture.slug);
+  }
 });
 
 test('Evidence: every fixture renders its bytes, its expectation and a way to reproduce it', async () => {
@@ -183,6 +275,8 @@ test('Suite and How to read: published groups untouched; every caveat lives in o
   const { howToRead } = await load('/src/pages/how-to-read.ts');
   const html = suitePage(data, fixtures, 'accuracy');
   assert.ok(html.includes('/fixture/accuracy--github-token') && html.includes('Run provenance') && html.includes('draft'));
+  assert.ok(html.includes('href="/coverage#development-history">Development history</a>'));
+  assert.ok(text(html).includes('source suite preserves fixture adoption and execution provenance'));
   const group = reports.find(r => r.category === 'accuracy').scanners[0].groups;
   for (const [key, g] of Object.entries(group)) if (g.leakedSpanRate?.bound != null) assert.ok(text(html).includes(`at most ${percent(g.leakedSpanRate.bound)}`), key);
   assert.ok(suitePage(data, fixtures, 'nope').includes('No such suite'));

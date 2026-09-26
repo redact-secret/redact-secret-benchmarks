@@ -180,17 +180,6 @@ jobs:
         if: env.TARGET == 'staging'
         run: node scripts/qualified-candidate.mjs verify --dir "$RUNNER_TEMP/qualified" --packed "$RUNNER_TEMP/candidate"
 
-      # Same provisioning as validate.yml: the published numbers must come from
-      # the binaries CI verifies, never from an unchecked download.
-      - name: Provision checksum-pinned Gitleaks and TruffleHog (versions from qualification/suite-v1.json, digests from scanners/peer-checksums.json)
-        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
-
-      - name: Verify the resolved peers are the pinned ones
-        run: |
-          set -euo pipefail
-          [ "$(command -v gitleaks)" = "$RUNNER_TEMP/scanner-bin/gitleaks" ]
-          [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
-
       # --strict: a scanner that is unavailable fails the run instead of being
       # published as an "unavailable" row. Staging (#201) measures redact-secret
       # from the qualified main candidate, so its Report shows how that
@@ -214,6 +203,19 @@ jobs:
             npm run bench -- --strict
           fi
 
+      # Qualification still executes its distinct holdout lifecycle live. The
+      # four-scanner comparison above has already consumed snapshots and cannot
+      # accidentally fall back to these binaries.
+      - name: Provision checksum-pinned peers for qualification only
+        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
+
+      - name: Verify the qualification peers, including TruffleHog 3.97.4
+        run: |
+          set -euo pipefail
+          [ "$(command -v gitleaks)" = "$RUNNER_TEMP/scanner-bin/gitleaks" ]
+          [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
+          [ "$(trufflehog --version | awk '{print $2}')" = "3.97.4" ]
+
       # Both environments (#213): the Workbench Qualification checklist reads its
       # three engine floors (scanners complete, resolved rate, ledger rows for every
       # entry) from a qualification run published inside evaluation-v1.json.
@@ -233,7 +235,16 @@ jobs:
             test -s "$qualification" || { echo "::error::eval:qualify wrote no qualification report"; exit 1; }
             echo "::warning::qualification is $(jq -r .status "$qualification"): $(jq -r '.accounting.reasons | join(", ")' "$qualification")"
           fi
-          npm run eval:publish -- --qualification="$qualification"
+          # Carry only validated last-observation fields from the currently published
+          # environment. Decisions and notes always come from this checkout's ledger.
+          history=results-output/review-ledger-history.json
+          origin="https://$([ "$TARGET" = production ] && echo benchmarks.redactsecret.dev || echo staging.benchmarks.redactsecret.dev)"
+          if curl --fail --silent --show-error "$origin/results/review-ledger-v2.json" --output "$history"; then
+            npm run eval:publish -- --qualification="$qualification" --ledger-history="$history"
+          else
+            echo "::notice::No prior review observation artifact; legacy entries remain cannot-verify until observed."
+            npm run eval:publish -- --qualification="$qualification"
+          fi
 
       # Writes public/results/candidate-evidence-v1.json (reportType "candidate",
       # supportClaims false) beside, never into, evaluation-v1.json; the page shows

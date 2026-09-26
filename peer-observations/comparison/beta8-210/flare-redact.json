@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-210",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "b492e4b278038ea8051bd18e56de4104fc486922b03c7d22a575d5e8be4f178c",
+    "fixtureCount": 48,
+    "fixturesDigest": "bc784b0a0d59f7b56893392ff5a05e8e8766c5d3c83a5038705ad9fba068cee0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/langfuse-secret-key-compose-init.yml",
+      "start": 243,
+      "end": 285,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-curl-basic-auth.sh",
+      "start": 55,
+      "end": 97,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-dotenv.env",
+      "start": 90,
+      "end": 132,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-error-log-team-settings.log",
+      "start": 202,
+      "end": 244,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-gateway-bearer.http",
+      "start": 86,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-litellm-config.yml",
+      "start": 193,
+      "end": 235,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-no-hyphens-twin.txt",
+      "start": 150,
+      "end": 188,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-python-client.py",
+      "start": 129,
+      "end": 171,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-short-last-group-twin.txt",
+      "start": 193,
+      "end": 234,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-typescript-client.ts",
+      "start": 150,
+      "end": 192,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-variant-nibble-twin.txt",
+      "start": 55,
+      "end": 97,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-version-nibble-twin.txt",
+      "start": 129,
+      "end": 171,
+      "family": "openai-token"
+    }
+  ],
+  "digest": "3640238bdcb9876ee981b9b063d8677402bff577bfee6564c1fb8c49aa7c27a2"
+}

@@ -10,9 +10,9 @@
  * ids that #63's D2 sweep never saw — this gate is #98's "the next fixture
  * batch does not silently recreate this backlog" guard.
  *
- * Needs the pinned peer scanners on PATH (gitleaks, trufflehog): the queue
- * is peer-comparison output, so this runs in the scanner-comparison CI job
- * (.github/workflows/validate.yml), not the scanner-less validate job.
+ * Uses the same validated suite-development peer snapshots as support
+ * classification. Adapter/pin/corpus drift fails closed before the queue is
+ * checked; only redact-secret executes during ordinary validation.
  *
  * Run: npm run queue:check
  */
@@ -20,11 +20,13 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
-import { assertPinnedPeers } from '../scanners/pins.mjs';
 import { createMethods } from '../benchmarks/methods/index.ts';
 import { createOperators } from '../benchmarks/operators/index.ts';
 import { loadCases } from '../benchmarks/engine/cases.ts';
 import { runEvaluation } from '../benchmarks/engine/runner.ts';
+import { evaluationInputs } from '../benchmarks/engine/execution.ts';
+import { inputIdentity, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity,
+  snapshotObservation, snapshotPath } from '../benchmarks/lib/peer-observations.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 
@@ -32,11 +34,17 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 export async function checkReviewQueueCoverage() {
   const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));
   const ledger = JSON.parse(await readFile(path.join(root, 'benchmarks/review-ledger.json'), 'utf8'));
-  await assertPinnedPeers(available, suite, root);
   const scanners = available.filter(s => Object.hasOwn(suite.scanners, s.id));
   const operators = createOperators(), methods = createMethods();
   const cases = (await loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
-  const report = await runEvaluation({ cases, methods, operators, scanners, ledger });
+  const fixtures = evaluationInputs(cases, methods, operators).fixtures;
+  const input = inputIdentity({ surface: 'evaluation/suite-development', suite: observationSuiteIdentity(suite),
+    corpus: cases.map(c => ({ id: c.id, sourceHash: c.provenance.sourceHash, seed: c.provenance.seed })), fixtures,
+    semanticIndex: await semanticIndexIdentity(root) });
+  const peers = scanners.filter(s => s.id !== 'redact-secret');
+  const reusedObservations = await Promise.all(peers.map(async peer => snapshotObservation(await readSnapshot(
+    snapshotPath(root, 'evaluation/suite-development', peer.id), { input, peer: await repositoryPeerIdentity(peer, root) }))));
+  const report = await runEvaluation({ cases, methods, operators, scanners: scanners.filter(s => s.id === 'redact-secret'), reusedObservations, ledger });
   const unknown = report.reviewQueue.filter(q => !Object.hasOwn(ledger.entries, q.id));
   return unknown.map(q => `${q.id.slice(0, 12)}: ${q.method} review-queue entry targeting [${q.targets.join(', ')}] (case ${q.caseId}) has no benchmarks/review-ledger.json row — resolve it, mark it not-assertable under a decided operator class, or record it open with a reason`);
 }

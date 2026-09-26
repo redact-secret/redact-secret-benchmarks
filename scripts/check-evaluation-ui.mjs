@@ -23,12 +23,12 @@ await mkdir(output, { recursive: true });
 
 const percent = v => `${(v * 100).toFixed(1)}%`;
 const fixture = 'milestone-6-closed--issue-255-postgres-literal';
-const ROUTES = ['/report', '/report?level=T2', '/report?level=T3', '/coverage', '/coverage?show=thin', '/coverage?show=inventory', '/coverage/github-token', '/support', '/support?status=unsupported', '/suites/accuracy', `/fixture/${fixture}`,
+const ROUTES = ['/report', '/report?level=T2', '/report?level=T3', '/coverage', '/coverage?show=thin', '/coverage?show=inventory', '/coverage/detectors/github-token', '/coverage/github:classic-personal-access-token', '/scenarios/context-and-encoding', '/support', '/support?status=unsupported', '/suites/accuracy', `/fixture/${fixture}`,
   '/workbench', '/workbench/review/lexical-invalid-alphabet', '/workbench/review/t0-fixtures', '/workbench/changes', '/workbench/changes?corpus=expanded', '/workbench/qualification',
   ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/workbench/method/${m}`), '/how-to-read'];
-const LEGACY = { '/': '/report', '/benchmark': '/report', '/benchmark/github-token': '/coverage/github-token', '/benchmark/accuracy': '/suites/accuracy', '/coverage-gaps': '/coverage', '/evaluation': '/workbench', '/pending': '/workbench/review/t0-fixtures',
-  '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation', '/evaluation/method/twin': '/workbench/method/twin', '/evaluation/detector/github-token': '/coverage/github-token', '/methodology': '/how-to-read', '/#/github-token': '/coverage/github-token' };
-const KEYBOARD = ['/report', '/coverage', `/fixture/${fixture}`, '/workbench', '/workbench/changes', '/how-to-read'];
+const LEGACY = { '/': '/report', '/benchmark': '/report', '/benchmark/github-token': '/coverage/detectors/github-token', '/benchmark/accuracy': '/suites/accuracy', '/coverage/github-token': '/coverage/detectors/github-token', '/coverage-gaps': '/coverage', '/evaluation': '/workbench', '/pending': '/workbench/review/t0-fixtures',
+  '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation', '/evaluation/method/twin': '/workbench/method/twin', '/evaluation/detector/github-token': '/coverage/detectors/github-token', '/methodology': '/how-to-read', '/#/github-token': '/coverage/detectors/github-token' };
+const KEYBOARD = ['/report', '/coverage', '/scenarios/context-and-encoding', `/fixture/${fixture}`, '/workbench', '/workbench/changes', '/how-to-read'];
 
 const browser = await chromium.launch({ headless: true, channel: 'chrome' });
 const errors = [], routes = [], contrast = [], keyboard = [];
@@ -38,7 +38,7 @@ const open = async (options = {}) => {
   page.on('pageerror', e => errors.push(e.message));
   return page;
 };
-const ready = async page => { await page.locator('#main h1').first().waitFor({ timeout: 30000 }); await page.evaluate(() => document.fonts.ready); };
+const ready = async page => { await page.locator('#main h1').first().waitFor({ timeout: 30000 }); await page.locator('[data-provenance-ready="true"]').waitFor({ timeout: 30000 }); await page.evaluate(() => document.fonts.ready); };
 const name = route => route.replace(/^\//, '').replace(/[/?=&]/g, '_') || 'root';
 
 /** Rendered contrast of every text node against the first opaque background behind it. Large text needs 3:1, the rest 4.5:1. */
@@ -82,8 +82,22 @@ try {
   assert.equal(await page.locator('#main .banner, #main .notice').count(), 0, 'no page-level disclaimer banner');
   await page.locator('.fig .v a').first().click();
   assert.match(page.url(), /#rows$/, 'a figure leads to the rows behind it');
+  const reportLeaves = page.locator('[data-report-leaf]');
+  await reportLeaves.first().waitFor({ state: 'attached', timeout: 30000 });
+  const leafCount = await reportLeaves.count();
+  const leafSlugs = await reportLeaves.evaluateAll(rows => rows.map(row => row.dataset.slug));
+  assert.equal(new Set(leafSlugs).size, leafCount, 'every report fixture has exactly one display bucket');
+  await page.locator('[data-tree-signal]').selectOption('all');
+  await page.locator('[data-tree-filter]').fill('Amazon Web Services');
+  assert.ok(await page.locator('[data-tree-provider]:visible').count() > 0, 'provider search keeps matching branches');
+  assert.equal(await page.locator('[data-tree-provider]:visible:not([open])').count(), 0, 'search exposes matching provider branches');
+  assert.match(await page.locator('[data-tree-status]').innerText(), /of .* fixtures in this selection/);
+  await page.locator('[data-tree-filter]').fill('no-such-report-fixture');
+  assert.ok(await page.locator('[data-tree-empty]').isVisible(), 'a no-match selection has an explicit empty state');
+  await page.locator('[data-tree-filter]').fill('');
+  await page.locator('[data-tree-signal]').selectOption('signal');
 
-  await page.goto(origin + '/coverage'); await ready(page);
+  await page.goto(origin + '/coverage?show=detectors'); await ready(page);
   assert.equal(await page.locator('.cov-row:not(.cov-head)').count(), registry.detectors.length);
   assert.equal(await page.locator('.cov-row .bar u').count(), registry.detectors.length, 'minimum sample size drawn on every bar');
   assert.equal(await page.locator('aside').count(), 0, 'the detector sidebar is gone');
@@ -92,12 +106,21 @@ try {
   const open_ = Object.values(ledger.entries).filter(e => e.status === 'open').length;
   assert.ok((await page.locator('#main').innerText()).includes(`${open_.toLocaleString('en-US')} open of ${Object.keys(ledger.entries).length.toLocaleString('en-US')}`));
   assert.equal(await page.locator('.health > *').count(), 5);
-  const queue = await page.locator('.wb table tbody tr td.num').allInnerTexts();
+  const queue = await page.locator('.decision-card > b').allInnerTexts();
   assert.equal(queue.reduce((n, v) => n + Number(v.replace(/,/g, '')), 0), open_, 'queue groups add up to the ledger');
   assert.ok(queue.length <= 12, 'groups, not rows');
 
-  await page.goto(origin + '/workbench/review/lexical-invalid-alphabet'); await ready(page);
-  JSON.parse(await page.locator('#ledger-snippet').innerText());
+  const currentCategory = await page.locator('.decision-card').evaluateAll(cards => cards.map(card => ({ href: card.getAttribute('href'), count: Number(card.querySelector('b')?.textContent?.replace(/,/g, '')) })).find(card => card.count > 0 && !card.href.endsWith('/release-historical'))?.href);
+  if (currentCategory) {
+    await page.goto(origin + currentCategory); await ready(page);
+    assert.ok(await page.locator('button[data-copy]').count() > 0, 'a reproduced entry has a copy path');
+    JSON.parse(await page.locator('pre.snippet').first().innerText());
+  } else {
+    assert.ok((await page.locator('#main').innerText()).includes('Resolution is locked:'), 'an unverifiable published queue locks all current decision paths');
+  }
+  await page.goto(origin + '/workbench/review/release-historical'); await ready(page);
+  assert.equal(await page.locator('button[data-copy]').count(), 0, 'historical entries without adjudication have no copy path');
+  assert.equal(await page.locator('pre.snippet').count(), 0, 'historical entries expose no selectable draft');
   await page.goto(origin + '/workbench/method/holdout'); await ready(page);
   assert.equal(await page.locator('#main a[href^="/fixture/"]').count(), 0, 'holdout has no fixture drill-down');
   await page.goto(origin + '/workbench/method/mutation'); await ready(page);
@@ -123,10 +146,27 @@ try {
   await page.keyboard.press('/'); await page.keyboard.type('github tok');
   await page.locator('#global-search-list a').first().waitFor();
   await page.keyboard.press('Enter'); await ready(page);
-  assert.equal(new URL(page.url()).pathname, '/coverage/github-token');
+  assert.equal(new URL(page.url()).pathname, '/coverage/detectors/github-token');
   await page.locator('#global-search').fill(fixture.split('--')[1]); await page.keyboard.press('Enter'); await ready(page);
   assert.equal(new URL(page.url()).pathname, `/fixture/${fixture}`);
   await page.context().close();
+
+  // 4a. Report hierarchy breakpoints from the spec: two-column summaries at
+  // 1080, compact nested rails at 760, and scrolling contained by the table.
+  for (const width of [1080, 760]) {
+    page = await open({ viewport: { width, height: 900 } });
+    await page.goto(origin + '/report'); await ready(page);
+    await page.locator('[data-tree-signal]').selectOption('all');
+    await page.locator('[data-tree-filter]').fill('SendGrid');
+    const provider = page.locator('[data-tree-provider]:visible').first();
+    assert.ok(await provider.isVisible(), `report provider visible at ${width}`);
+    const family = provider.locator('[data-tree-family]:visible').first();
+    if (!(await family.getAttribute('open'))) await family.locator(':scope > summary').click();
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `report page overflow at ${width}`);
+    if (width === 760) assert.ok(await family.locator('.tbl').first().evaluate(table => table.scrollWidth > table.clientWidth), 'wide outcome table scrolls inside its region at 760px');
+    await page.screenshot({ path: `${output}/report-hierarchy-${width}.png`, fullPage: true });
+    await page.context().close();
+  }
 
   // 4. Desktop 1280 and mobile 360, light and dark: overflow, screenshots, rendered contrast.
   for (const theme of ['light', 'dark']) for (const width of [1280, 360]) {
@@ -168,7 +208,8 @@ try {
 
   // 6. Empty states: what is missing, the next command, no apology.
   page = await open({ viewport: { width: 360, height: 740 } });
-  const results = async handler => { await page.unroute('**/results/*.json').catch(() => {}); await page.route('**/results/*.json', handler); await page.goto(origin + '/report'); await ready(page); return (await page.locator('#main').innerText()).replace(/\s+/g, ' '); };
+  let resultCase = 0;
+  const results = async handler => { await page.context().close(); page = await open({ viewport: { width: 360, height: 740 } }); await page.route('**/results/*.json', handler); await page.goto(`${origin}/report?qa=${++resultCase}`, { waitUntil: 'networkidle' }); await ready(page); return (await page.locator('#main').innerText()).replace(/\s+/g, ' '); };
   let text = await results(r => r.fulfill({ status: 404, body: '' }));
   assert.ok(text.includes('No benchmark results for this checkout') && text.includes('npm run bench'), text);
   await page.screenshot({ path: `${output}/empty-no-results-360.png`, fullPage: true });
@@ -177,8 +218,16 @@ try {
     const file = new URL(r.request().url()).pathname.split('/').pop().replace('.json', '');
     const body = await json(`public/results/${file}.json`).catch(() => null);
     if (!body) return r.fulfill({ status: 404, body: '' });
-    if (file === first.id || file === second.id) body.runId = '2020-01-01T00:00:00.000Z-000000';
-    if (file === 'summary') body.categories = body.categories.filter(c => c !== first.id && c !== second.id);
+    if (file === first.id || file === second.id) {
+      body.runId = '2020-01-01T00:00:00.000Z-000000';
+      for (const scanner of body.scanners) if (scanner.observation?.source === 'fresh') scanner.observation.sourceRunId = body.runId;
+    }
+    if (file === 'summary') {
+      body.categories = body.categories.filter(c => c !== first.id && c !== second.id);
+      for (const category of [first.id, second.id]) for (const scanner of (await json(`public/results/${category}.json`)).scanners.filter(s => s.status === 'complete'))
+        for (const [key, group] of Object.entries(scanner.groups)) for (const field of ['files', 'spans', 'leakedSpans', 'flaggedFiles'])
+          if (typeof body.overall[scanner.id]?.[key]?.[field] === 'number') body.overall[scanner.id][key][field] -= Number(group[field] ?? 0);
+    }
     return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
   });
   assert.ok(text.includes('2 suites are from an older run') && text.includes(first.id) && text.includes('left out of every total'), text.slice(0, 400));
@@ -199,7 +248,7 @@ try {
 
   assert.deepEqual(errors, []);
   const lowest = contrast.reduce((a, b) => (a.lowest < b.lowest ? a : b));
-  await writeFile(`${output}/checks.json`, JSON.stringify({ origin, routes, legacyRedirects: LEGACY, viewports: [1280, 360], themes: ['light', 'dark'], contrast: { lowest, textNodesMeasured: contrast.reduce((n, c) => n + c.measured, 0), byPage: contrast }, keyboard, errors }, null, 2));
+  await writeFile(`${output}/checks.json`, JSON.stringify({ origin, routes, legacyRedirects: LEGACY, viewports: [1280, 1080, 760, 360], themes: ['light', 'dark'], contrast: { lowest, textNodesMeasured: contrast.reduce((n, c) => n + c.measured, 0), byPage: contrast }, keyboard, errors }, null, 2));
   console.log(`Browser QA passed: ${routes.length} routes reloaded, ${Object.keys(LEGACY).length} legacy redirects, 1280 and 360 in light and dark with no page overflow.`);
   console.log(`Rendered contrast: ${contrast.reduce((n, c) => n + c.measured, 0)} text nodes measured, lowest ${lowest.lowest}:1 (${lowest.route}, ${lowest.theme}, ${lowest.width}).`);
   console.log(`Keyboard: ${keyboard.map(k => `${k.route} ${k.reached}/${k.tabStops}`).join(', ')}; every stop shows a focus ring. Empty states: 3. Screenshots: ${output}`);

@@ -57,7 +57,7 @@ test('every pre-redesign evaluation route forwards to Workbench on direct naviga
     assert.equal(route.kind, 'redirect', path);
     assert.equal(parseRoute(route.to).kind, 'workbench', path);
   }
-  assert.equal(parseRoute('/evaluation/detector/github-token').to, '/coverage/github-token');
+  assert.equal(parseRoute('/evaluation/detector/github-token').to, '/coverage/detectors/github-token');
   assert.equal(parseRoute('/evaluation/unknown').kind, 'missing');
 });
 
@@ -86,7 +86,7 @@ test('rendered Workbench method, review and holdout views retain the evidence bo
     const r = published();
     const ledger = JSON.parse(await readFile('benchmarks/review-ledger.json','utf8'));
     const data = { loaded: [], hashes: {} };
-    const home = workbenchPage({ data, evaluation: r, evaluationProblem: null, classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
+    const home = workbenchPage({ data, evaluation: r, evaluationProblem: null, reviewLedgerProblem: 'No published review provenance', classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
     for (const method of ['twin','benign','metamorphic','mutation','differential','holdout']) assert.ok(home.includes(`/workbench/method/${method}`), method);
     assert.ok(home.includes('never ground truth'));
     assert.ok(!home.includes('/evaluation'), 'no link points at a pre-redesign path');
@@ -97,9 +97,9 @@ test('rendered Workbench method, review and holdout views retain the evidence bo
     assert.ok(methodPage(r,'mutation').includes('Operator evidence'), 'operator evidence moved in with the method that generates variants');
     assert.ok(methodPage(r,'differential').includes('not ground truth or votes'));
     assert.ok(methodPage(r,'differential').includes('Human review evidence'));
-    const missing = workbenchPage({ data, evaluation: null, evaluationProblem: 'Stale evaluation: fixture corpus changed', classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
+    const missing = workbenchPage({ data, evaluation: null, evaluationProblem: 'Stale evaluation: fixture corpus changed', reviewLedgerProblem: 'Stale evaluation: fixture corpus changed', classes: reviewClasses(ledger), changes: { data, fixtures: [] } });
     assert.ok(missing.includes('Stale evaluation') && missing.includes('npm run eval:publish'));
-    assert.ok(missing.includes('Review queue') && missing.includes('T0 fixtures'), 'the queue reads the ledger, so it survives a missing report');
+    assert.ok(missing.includes('Review queue') && missing.includes('Release or historical follow-up'), 'the ledger remains visible but resolution is locked without a report');
     assert.ok(!missing.includes('lexical.invalid-alphabet'), 'a class settled not-assertable carries no open entries, so it drops out of the open queue');
     assert.ok(methodPage(r,'holdout').includes('No qualification aggregate published'));
     r.qualification = JSON.parse(await readFile('docs/specs/qualification/engine-v1.json','utf8'));

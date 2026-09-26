@@ -1,12 +1,15 @@
-import { categories, registry, fixtures, corpusHashes, baseline } from './catalog';
+import { categories, registry, fixtures, scenarios, corpusHashes, baseline } from './catalog';
 import { parseRoute, isAppPath, reportProblem } from './model.mjs';
 import { mountShell, renderPage, setBuildLine, type NavItem, type SearchTarget } from './shell';
 import { siteEnvOf, commitOf, envBanner, buildLine, type Provenance } from './provenance';
 import { summaryProblem, PRODUCT, type BenchData, type RunSummary } from './pages/data';
 import { reportPage, levelOf } from './pages/report';
-import { coveragePage, coverageViewOf, detectorPage, bindInventory } from './pages/coverage';
+import { bindReportHierarchy } from './pages/report-hierarchy';
+import { coveragePage, coverageViewOf, detectorPage, familyPage, bindInventory } from './pages/coverage';
+import { supportMatrixProblem } from './support-model';
 import { suitePage } from './pages/suite';
 import { fixturePage } from './pages/fixture';
+import { scenarioPage } from './pages/scenario';
 import { howToRead } from './pages/how-to-read';
 import { bindRows } from './pages/rows';
 import { actionEmptyState } from './components';
@@ -31,14 +34,15 @@ const openKeys = new Set<string>();
 
 /** One search for what the sidebar's per-detector links used to do: detectors, suites and fixture slugs. */
 const targets = (): SearchTarget[] => [
-  ...registry.detectors.map(d => ({ href: `/coverage/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
+  ...registry.detectors.map(d => ({ href: `/coverage/detectors/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
   ...categories.map(c => ({ href: `/suites/${c.id}`, label: c.title, hint: 'case suite' })),
+  ...scenarios.map(s => ({ href: `/scenarios/${s.id}`, label: s.title, hint: 'test scenario' })),
   ...fixtures.map(f => ({ href: `/fixture/${f.slug}`, label: f.slug, hint: 'fixture' })),
 ];
 const under = (...roots: string[]) => (path: string) => roots.some(root => path === root || path.startsWith(root + '/'));
 const NAV: NavItem[] = [
   { href: '/report', label: 'Report', short: 'Report', current: under('/report') },
-  { href: '/coverage', label: 'Coverage', short: 'Coverage', current: under('/coverage', '/suites', '/fixture') },
+  { href: '/coverage', label: 'Coverage', short: 'Coverage', current: under('/coverage', '/scenarios', '/suites', '/fixture') },
   { href: '/support', label: 'Support', short: 'Support', current: under('/support') },
   { href: '/performance', label: 'Performance', short: 'Perf', current: under('/performance') },
   { href: '/workbench', label: 'Workbench', short: 'Workbench', current: under('/workbench') },
@@ -88,24 +92,26 @@ async function text(url: string): Promise<string> {
 
 async function renderWorkbench(current: ReturnType<typeof route>, token: number, path: string, force: boolean) {
   if (force) renderPage('<p role="status" class="small">Loading Workbench evidence…</p>', 'Workbench');
-  const [{ workbenchPage }, { reviewPage, bindCopy }, { changesPage }, { qualificationPage }, { methodPage, bindExplorer }, { reviewClasses, evaluationProblem, candidateProblem }, { default: ledger }] = await Promise.all([
+  const [{ workbenchPage }, { reviewPage, bindCopy }, { changesPage }, { qualificationPage }, { methodPage, bindExplorer }, { reviewClasses, evaluationProblem, candidateProblem, reviewLedgerPublicationProblem }, { default: sourceLedger }] = await Promise.all([
     import('./pages/workbench/index'), import('./pages/workbench/review'), import('./pages/workbench/changes'), import('./pages/workbench/qualification'), import('./pages/workbench/method'), import('./evaluation-model'), import('../benchmarks/review-ledger.json'),
   ]);
   const needsEvaluation = current.view !== 'changes';
-  const [data, evaluationText, candidateText] = await Promise.all([loadBench(), needsEvaluation ? text('/results/evaluation-v1.json') : '', text('/results/candidate-evidence-v1.json')]);
+  const [data, evaluationText, reviewLedgerText, candidateText] = await Promise.all([loadBench(), needsEvaluation ? text('/results/evaluation-v1.json') : '', needsEvaluation ? text('/results/review-ledger-v2.json') : '', text('/results/candidate-evidence-v1.json')]);
   if (token !== request || path !== location.pathname) return;
-  const payload = JSON.stringify([path, location.search, data.signature, evaluationText.length, evaluationText.slice(0, 400), candidateText]);
+  const payload = JSON.stringify([path, location.search, data.signature, evaluationText.length, evaluationText.slice(0, 400), reviewLedgerText.length, reviewLedgerText.slice(0, 200), candidateText]);
   if (!force && payload === lastPayload) return;
   lastPayload = payload;
   let evaluation: EvaluationReport | null = null, problem: string | null = needsEvaluation ? 'No evaluation report published' : null;
   if (evaluationText) { try { const parsed = JSON.parse(evaluationText); problem = evaluationProblem(parsed, await hashes); if (!problem) evaluation = parsed; } catch { problem = 'Evaluation report is unreadable'; } }
+  let ledger = sourceLedger as unknown as ReviewLedgerFile, ledgerProblem: string | null = evaluation ? 'No published review provenance' : (problem ?? 'No validated evaluation report');
+  if (evaluation && reviewLedgerText) { try { const parsed = JSON.parse(reviewLedgerText) as ReviewLedgerFile; ledgerProblem = reviewLedgerPublicationProblem(parsed, ledger, evaluation); if (!ledgerProblem) ledger = parsed; } catch { ledgerProblem = 'Published review provenance is unreadable'; } }
   let candidate: CandidateReport | undefined, candidateIssue: string | undefined;
   if (candidateText) { try { const parsed = JSON.parse(candidateText); candidateIssue = candidateProblem(parsed) ?? undefined; if (!candidateIssue) candidate = parsed; } catch { candidateIssue = 'Candidate evidence is unreadable'; } }
-  const classes = reviewClasses(ledger as unknown as ReviewLedgerFile);
+  const classes = reviewClasses(ledger);
   const changes = { data, baseline, candidate, candidateProblem: candidateIssue, site: SITE.env, fixtures };
-  const home = () => workbenchPage({ data, evaluation, evaluationProblem: problem, classes, changes });
+  const home = () => workbenchPage({ data, evaluation, evaluationProblem: problem, reviewLedgerProblem: ledgerProblem, classes, changes });
   const labels: Record<string, string> = { overview: 'Workbench', review: 'Review queue', changes: 'Changes', qualification: 'Qualification', method: current.id };
-  const body = current.view === 'review' ? reviewPage(classes, current.id, evaluation)
+  const body = current.view === 'review' ? reviewPage(classes, current.id, evaluation, ledgerProblem)
     : current.view === 'changes' ? changesPage(changes, new URLSearchParams(location.search).get('corpus') === 'expanded' ? 'expanded-corpus' : 'fixed-corpus')
     : current.view === 'qualification' ? qualificationPage(data, evaluation)
     : current.view === 'method' && evaluation ? methodPage(evaluation, current.id)
@@ -117,7 +123,7 @@ async function renderWorkbench(current: ReturnType<typeof route>, token: number,
 /** The support matrix is a generated artifact like the evaluation report: read, re-validated, then rendered. No status is held in the app. */
 async function renderSupport(token: number, path: string, force: boolean) {
   if (force) renderPage('<p role="status" class="small">Loading support matrix…</p>', 'Support');
-  const [{ supportPage, supportFilterOf }, { supportMatrixProblem }] = await Promise.all([import('./pages/support'), import('./support-model')]);
+  const { supportPage, supportFilterOf } = await import('./pages/support');
   const body = await text('/results/support-matrix-v1.json');
   if (token !== request || path !== location.pathname) return;
   const payload = JSON.stringify([path, location.search, body]);
@@ -140,22 +146,28 @@ async function refresh(force = false): Promise<void> {
   if (current.kind === 'support') return renderSupport(token, path, force);
 
   const fixture = current.kind === 'fixture' ? fixtures.find(f => f.slug === current.id) : undefined;
-  const label = current.kind === 'report' ? 'Report' : current.kind === 'coverage' ? (registry.detectors.find(d => d.id === current.id)?.title ?? 'Coverage') : current.kind === 'suite' ? (categories.find(c => c.id === current.id)?.title ?? 'Suite') : (fixture?.id ?? 'Fixture');
+  const label = current.kind === 'report' ? 'Report' : current.kind === 'coverage' || current.kind === 'coverage-family' || current.kind === 'coverage-detector' ? 'Coverage' : current.kind === 'scenario' ? (scenarios.find(s => s.id === current.id)?.title ?? 'Scenario') : current.kind === 'suite' ? (categories.find(c => c.id === current.id)?.title ?? 'Suite') : (fixture?.id ?? 'Fixture');
   if (force) renderPage('<p role="status" class="small">Loading benchmark results…</p>', label);
   try {
-    const data = await loadBench();
+    const needsMatrix = current.kind === 'coverage' || current.kind === 'coverage-family';
+    const [data, matrixText] = await Promise.all([loadBench(), needsMatrix ? text('/results/support-matrix-v1.json') : Promise.resolve('')]);
     if (token !== request || path !== location.pathname) return;
-    const payload = JSON.stringify([path, location.search, data.signature]);
+    const payload = JSON.stringify([path, location.search, data.signature, matrixText]);
     if (!force && payload === lastPayload) return;
     lastPayload = payload;
+    let matrix: SupportMatrixFile | null = null, matrixProblem: string | null = needsMatrix ? 'No support matrix published' : null;
+    if (matrixText) { try { const parsed = JSON.parse(matrixText); matrixProblem = supportMatrixProblem(parsed); if (!matrixProblem) matrix = parsed; } catch { matrixProblem = 'Support matrix is unreadable'; } }
     let body: string;
     if (current.kind === 'report') body = reportPage(data, levelOf(location.search), fixtures);
-    else if (current.kind === 'coverage') body = current.id ? detectorPage(data, fixtures, current.id) : coveragePage(fixtures, coverageViewOf(location.search), data);
+    else if (current.kind === 'coverage') body = coveragePage(fixtures, coverageViewOf(location.search), data, matrix, matrixProblem, location.search);
+    else if (current.kind === 'coverage-family') body = familyPage(data, fixtures, current.id, matrix, matrixProblem);
+    else if (current.kind === 'coverage-detector') body = detectorPage(data, fixtures, current.id);
+    else if (current.kind === 'scenario') body = scenarioPage(fixtures, current.id);
     else if (current.kind === 'suite') body = suitePage(data, fixtures, current.id);
     else if (fixture) { const loaded = data.loaded.find(l => l.category.id === fixture.category); body = fixturePage(fixture, loaded?.report, loaded?.problem); }
     else body = `<div class="page-head"><div><h1>No such fixture</h1></div></div>${actionEmptyState({ title: 'No fixture has this slug', body: 'A slug is <code>suite--fixture-id</code>. Search for it, or <a href="/coverage">open the coverage list</a>.' })}`;
     renderPage(body, label);
-    restoreDetails(); bindRows(); bindInventory();
+    restoreDetails(); bindRows(); bindReportHierarchy(); bindInventory();
     if (downloadUrl) { URL.revokeObjectURL(downloadUrl); downloadUrl = ''; }
     const download = document.querySelector<HTMLAnchorElement>('#download-fixture');
     if (download && fixture) {

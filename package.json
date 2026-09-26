@@ -28,6 +28,8 @@
     "compare": "npm run fixtures:check && npm test && npm run test:integration && npm run bench -- --strict",
     "fixtures:generate": "node --import tsx scripts/generate-fixtures.mjs",
     "fixtures:check": "node --import tsx scripts/generate-fixtures.mjs --check && node --import tsx scripts/check-fixture-storage.mjs",
+    "fixture-index:generate": "node --import tsx scripts/generate-fixture-index.mjs",
+    "fixture-index:check": "node --import tsx scripts/generate-fixture-index.mjs --check",
     "test:coverage": "node --import tsx --experimental-test-coverage --test-coverage-include='benchmarks/**/*.ts' --test-coverage-include='scanners/**' --test tests/*.test.mjs tests/integration/*.test.mjs",
     "detectors:refresh": "python3 scripts/refresh-detector-inventory.py",
     "detectors:check": "python3 scripts/refresh-detector-inventory.py --check",
@@ -55,6 +57,7 @@
     "beta8:profiles": "node --import tsx scripts/report-beta8-profiles.mjs",
     "decisions:validate": "node scripts/validate-decisions.mjs",
     "ledger:decisions:check": "node scripts/check-ledger-decisions.mjs",
+    "ledger:provenance:check": "node --import tsx scripts/check-review-ledger.mjs",
     "queue:check": "node --import tsx scripts/check-review-queue-coverage.mjs",
     "eval:candidate": "node --import tsx benchmarks/candidate.ts",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
@@ -86,7 +89,9 @@
     "study:pii-readiness": "node --import tsx benchmarks/studies/pii-readiness.ts",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",
     "observations:capture": "node --import tsx scripts/capture-empirical-observation.ts",
-    "peers:provision": "node scripts/provision-peers.mjs"
+    "peers:provision": "node scripts/provision-peers.mjs",
+    "peers:snapshots:refresh": "npm run bench -- --strict --refresh-peer-snapshots && npm run eval:classify -- --refresh-peer-snapshots",
+    "peers:snapshots:live": "npm run bench -- --strict --live-peers && npm run eval:classify -- --live-peers"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",

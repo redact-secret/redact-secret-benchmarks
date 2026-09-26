@@ -1,0 +1,83 @@
+name: Refresh peer observation snapshots
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Provision checksum-pinned peer binaries
+        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
+      - name: Verify exact peer binaries and TruffleHog 3.97.4
+        run: |
+          set -euo pipefail
+          [ "$(command -v gitleaks)" = "$RUNNER_TEMP/scanner-bin/gitleaks" ]
+          [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
+          [ "$(gitleaks version)" = "$(node -p "require('./qualification/suite-v1.json').scanners.gitleaks")" ]
+          [ "$(trufflehog --version | awk '{print $2}')" = "3.97.4" ]
+      - name: Exercise external adapters against real pinned binaries
+        run: npm run test:integration
+      - name: Refresh every comparison and suite-development snapshot
+        id: refresh
+        run: |
+          set -euo pipefail
+          started=$SECONDS
+          npm run peers:snapshots:refresh
+          elapsed=$((SECONDS - started))
+          echo "elapsed=$elapsed" >> "$GITHUB_OUTPUT"
+      - name: Verify the review ledger against the refreshed observations
+        run: npm run queue:check
+      - name: Refuse refresh side effects outside the snapshot store
+        run: |
+          set -euo pipefail
+          unexpected=$(git diff --name-only -- . ':(exclude)peer-observations/**')
+          test -z "$unexpected" || { echo "::error::refresh changed non-snapshot files: $unexpected"; exit 1; }
+      - name: Record reviewable timing, execution count and diff
+        run: |
+          {
+            echo "### Peer snapshot refresh"
+            echo
+            echo "- wall time: ${{ steps.refresh.outputs.elapsed }} seconds"
+            echo "- peer executions: 150 comparison + 4 suite-development stability executions"
+            echo "- product executions: 50 comparison + 2 suite-development stability executions"
+            echo "- TruffleHog: 3.97.4"
+            echo
+            echo '```text'
+            git diff --stat -- peer-observations
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          git diff --binary -- peer-observations > "$RUNNER_TEMP/peer-snapshot-refresh.patch"
+      - name: Upload refreshed snapshots and reviewable diff
+        uses: actions/upload-artifact@v4
+        with:
+          name: peer-observation-refresh
+          path: |
+            peer-observations/
+            ${{ runner.temp }}/peer-snapshot-refresh.patch
+          retention-days: 30
+
+  live-reproduction:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Provision checksum-pinned peer binaries
+        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
+      - name: Enforce TruffleHog 3.97.4 before live evaluation
+        run: '[ "$(trufflehog --version | awk ''{print $2}'')" = "3.97.4" ]'
+      - name: Full live reproduction without mutating snapshots
+        run: npm run peers:snapshots:live

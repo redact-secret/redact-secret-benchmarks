@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-207",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "d9fded21fc86d5a25e28eaccda38171896d14a77625824081cea0014d7e9cbb3",
+    "fixtureCount": 348,
+    "fixturesDigest": "98af6014722e2354960a0975d5152420d05875a48102d57129e92796b9bf87af",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/bearer-token-client-yaml.yml",
+      "start": 79,
+      "end": 126,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-curl.sh",
+      "start": 61,
+      "end": 108,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-fetch.js",
+      "start": 46,
+      "end": 93,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-har-entry.json",
+      "start": 61,
+      "end": 108,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-httpie-verbose.txt",
+      "start": 50,
+      "end": 97,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-raw-request.http",
+      "start": 64,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-request-log.log",
+      "start": 69,
+      "end": 116,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-runbook.md",
+      "start": 31,
+      "end": 78,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-workflow-step.yml",
+      "start": 42,
+      "end": 89,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-your-access-token-placeholder.sh",
+      "start": 24,
+      "end": 48,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-schema-registry-url-context-twin.properties",
+      "start": 20,
+      "end": 110,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-schema-registry-url.properties",
+      "start": 20,
+      "end": 110,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/discord-bot-token-actions-env.yml",
+      "start": 26,
+      "end": 85
+    },
+    {
+      "path": "cases/discord-bot-token-config-json.json",
+      "start": 31,
+      "end": 101
+    },
+    {
+      "path": "cases/discord-bot-token-short-hmac-json-twin.json",
+      "start": 31,
+      "end": 100
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api-context-twin.sh",
+      "start": 60,
+      "end": 103,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api.sh",
+      "start": 55,
+      "end": 98,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sentry-org-auth-token-dsn-public-id.env",
+      "start": 11,
+      "end": 87
+    },
+    {
+      "path": "cases/sentry-user-auth-token-api-curl.sh",
+      "start": 58,
+      "end": 136,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sentry-user-auth-token-dsn-public-id.env",
+      "start": 11,
+      "end": 87
+    },
+    {
+      "path": "cases/sentry-user-auth-token-prefix-twin.sh",
+      "start": 58,
+      "end": 136,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/telegram-bot-token-actions-env.yml",
+      "start": 23,
+      "end": 69
+    },
+    {
+      "path": "cases/telegram-bot-token-bot-yaml.yml",
+      "start": 23,
+      "end": 69
+    },
+    {
+      "path": "cases/telegram-bot-token-botfather-reply.txt",
+      "start": 78,
+      "end": 123
+    },
+    {
+      "path": "cases/telegram-bot-token-compose-env.yml",
+      "start": 52,
+      "end": 98
+    },
+    {
+      "path": "cases/telegram-bot-token-env.env",
+      "start": 19,
+      "end": 65
+    },
+    {
+      "path": "cases/telegram-bot-token-ptb-builder.py",
+      "start": 43,
+      "end": 88
+    },
+    {
+      "path": "cases/twilio-api-key-secret-account-sid-public-id.env",
+      "start": 19,
+      "end": 53
+    },
+    {
+      "path": "cases/twilio-api-key-secret-api-key-sid-public-id.env",
+      "start": 15,
+      "end": 49
+    },
+    {
+      "path": "cases/twilio-api-key-secret-client-sk.py",
+      "start": 17,
+      "end": 51
+    },
+    {
+      "path": "cases/twilio-api-key-secret-curl-basic.sh",
+      "start": 56,
+      "end": 90
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 33,
+      "end": 67
+    },
+    {
+      "path": "cases/twilio-api-key-secret-wrong-companion-near-miss.txt",
+      "start": 20,
+      "end": 54
+    },
+    {
+      "path": "cases/twilio-api-key-secret-wrong-companion-near-miss.txt",
+      "start": 55,
+      "end": 89
+    },
+    {
+      "path": "cases/twilio-auth-token-account-sid-public-id.env",
+      "start": 19,
+      "end": 53
+    },
+    {
+      "path": "cases/twilio-auth-token-client-sid.py",
+      "start": 17,
+      "end": 51
+    },
+    {
+      "path": "cases/twilio-auth-token-curl-basic.sh",
+      "start": 56,
+      "end": 90
+    },
+    {
+      "path": "cases/twilio-auth-token-curl-basic.sh",
+      "start": 108,
+      "end": 142
+    }
+  ],
+  "digest": "14f4d20a3d69ede8125f02d92730b2317e73daccbf0590e919e307bb2bf9b840"
+}

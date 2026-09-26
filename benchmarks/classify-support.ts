@@ -12,15 +12,20 @@ import { createOperators } from './operators/index.ts';
 import { loadCases } from './engine/cases.ts';
 import type { ReviewLedger, Scanner } from './engine/types.ts';
 import { runEvaluation } from './engine/runner.ts';
+import { evaluationInputs } from './engine/execution.ts';
+import { inputIdentity, makeSnapshot, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity, snapshotObservation,
+  snapshotPath, writeSnapshot } from './lib/peer-observations.ts';
 import { contracts, scoredContractIds } from './lib/assessment.ts';
 import { classifyFamilySupport, statusCriteria, type SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
 import { familyEvidence } from './support/evidence.ts';
 import { fixtureProfileReport, fixtureProfiles } from './support/profiles.ts';
+import fixtureIndex from './fixture-index.json';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const CANDIDATE_KEYS = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit'] as const;
 const usage = 'Usage: npm run eval:classify -- [--output=results-output/support-status.json] '
+  + '[--refresh-peer-snapshots|--live-peers] '
   + '[--candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> --candidate-source-commit=<40-hex>]';
 const sha256File = async (file: string) => createHash('sha256').update(await readFile(file)).digest('hex');
 
@@ -29,9 +34,10 @@ async function main() {
   for (const arg of process.argv.slice(2)) {
     const match = /^--(output|candidate-package|candidate-node-package|candidate-wasm-package|candidate-source-commit)=(.+)$/.exec(arg);
     const key = match?.[1] ?? arg.slice(2);
-    if (!match || key in options) throw new Error(usage);
-    options[key] = match[2];
+    if ((!match && !['refresh-peer-snapshots', 'live-peers'].includes(key)) || key in options) throw new Error(usage);
+    options[key] = match?.[2] ?? true;
   }
+  if (options['refresh-peer-snapshots'] && options['live-peers']) throw new Error(usage);
   const candidatePresent = CANDIDATE_KEYS.filter(key => key in options);
   if (candidatePresent.length !== 0 && candidatePresent.length !== CANDIDATE_KEYS.length) throw new Error(usage);
   const useCandidate = candidatePresent.length === CANDIDATE_KEYS.length;
@@ -40,7 +46,7 @@ async function main() {
   const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));
   const ledger: ReviewLedger = JSON.parse(await readFile(path.join(root, 'benchmarks/review-ledger.json'), 'utf8'));
   // A classification is a claim: refuse before evaluating, and before writing anything, unless every peer is the pinned version.
-  await assertPinnedPeers(available, suite, root);
+  if (options['refresh-peer-snapshots'] || options['live-peers']) await assertPinnedPeers(available, suite, root);
 
   let installation: Awaited<ReturnType<typeof installCandidate>> | undefined;
   let product: { sourceCommit: string; packageName: string; declaredVersion: string; artifacts: { role: string; sha256: string }[] } | null = null;
@@ -83,8 +89,28 @@ async function main() {
       revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
       dirty = Boolean(execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim());
     } catch {}
+    const surface = 'evaluation/suite-development';
+    const fixtures = evaluationInputs(cases, methods, operators).fixtures;
+    const semanticIndex = await semanticIndexIdentity(root);
+    const input = inputIdentity({ surface, suite: observationSuiteIdentity(suite),
+      corpus: cases.map(c => ({ id: c.id, sourceHash: c.provenance.sourceHash, seed: c.provenance.seed })), fixtures, semanticIndex });
+    const productScanners = scanners.filter((s: Scanner) => s.id === 'redact-secret');
+    const peers = scanners.filter((s: Scanner) => s.id !== 'redact-secret');
+    const expectedPeers = new Map(await Promise.all(peers.map(async peer => [peer.id, await repositoryPeerIdentity(peer, root)] as const)));
+    const reuse = !options['refresh-peer-snapshots'] && !options['live-peers'];
+    const reusedObservations = reuse ? await Promise.all(peers.map(async peer => snapshotObservation(await readSnapshot(
+      snapshotPath(root, surface, peer.id), { input, peer: expectedPeers.get(peer.id)! })))) : [];
+    const executing = reuse ? productScanners : scanners;
     console.log(`Running every registered family's evidence through the profile: ${cases.length} cases with ${scanners.map((s: { id: string }) => s.id).join(', ')}…`);
-    const report = await runEvaluation({ cases, methods, operators, scanners, ledger, onProgress: console.log });
+    const report = await runEvaluation({ cases, methods, operators, scanners: executing, reusedObservations, ledger, onProgress: console.log,
+      ...(options['refresh-peer-snapshots'] ? { captureObservations: async (_fixtures, observations) => {
+        for (const observation of observations.filter(o => o.id !== 'redact-secret')) {
+          if (observation.status !== 'complete') throw new Error(`Cannot snapshot incomplete peer ${observation.id}`);
+          await writeSnapshot(snapshotPath(root, surface, observation.id), makeSnapshot({ observedAt: observation.observation?.observedAt ?? new Date().toISOString(),
+            sourceRun: { runId: observation.observation?.sourceRunId ?? 'refresh', benchmarkRevision: revision }, input,
+            peer: expectedPeers.get(observation.id)!, replayCount: observation.replays.count, findings: observation.findings }));
+        }
+      } } : {}) });
     // The unit is a registered detector (issue #504's "42" at filing time; the count follows
     // `detectors.json`, 46 as of 2026-09-21), not a taxonomy sub-family, plus the arrival
     // families the product types inside a shared detector (`scoredArrivalIds`, #730): their
@@ -116,11 +142,14 @@ async function main() {
     const output = {
       schemaVersion: 1, generatedAt: new Date().toISOString(), runId: report.runId,
       revision, dirty, criteriaSchemaVersion: statusCriteria.schemaVersion, fixtureProfilesVersion: fixtureProfiles.profilesVersion,
+      fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
       // Null except on a candidate run: default behaviour (and its output shape
       // for every other field) is unchanged from before candidate support existed.
       product,
       ...(publishedPackage ? { publishedPackage } : {}),
-      scanners: scanners.map((s: { id: string }) => s.id), caseCount: report.caseCount, variantCount: report.variantCount,
+      scanners: scanners.map((s: { id: string }) => s.id),
+      scannerObservations: Object.fromEntries(report.scanners.map(s => [s.id, s.observation])),
+      caseCount: report.caseCount, variantCount: report.variantCount,
       familyCount: families.length, distribution, stableDistribution, families: results,
     };
     const target = path.resolve(root, typeof options.output === 'string' ? options.output : 'results-output/support-status.json');

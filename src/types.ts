@@ -49,6 +49,7 @@ export interface Scanner {
   message?: string;
   replays?: { count: number; agreed: boolean };
   durationMs?: number;
+  observation?: { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest?: string; inputDigest?: string };
   rows?: Row[];
   groups?: Record<string, Group>;
 }
@@ -83,6 +84,7 @@ export interface Report {
 export interface Run {
   schemaVersion: number; runId: string; startedAt: string; finishedAt: string; categories: string[]; partial: boolean;
   scannerVersions: Record<string, string>; lockHash: string; revision: string; dirty: boolean | null;
+  scannerObservations?: Record<string, { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest?: string; inputDigest?: string }>;
   /** Staging only (#201): the unreleased redact-secret build this run measured instead of the released package. */
   candidate?: { sourceCommit: string; packageName: string; declaredVersion: string };
 }

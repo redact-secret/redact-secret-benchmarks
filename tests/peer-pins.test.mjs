@@ -50,15 +50,14 @@ test('peers outside the suite are ignored', async () => {
   assert.deepEqual(await peerVersionProblems([peer('other', '0.0.1')], suite, '.'), []);
 });
 
-test('queue:check exits non-zero and reports no coverage when a peer is not the pinned version', async () => {
+test('ordinary queue:check consumes validated snapshots and never executes a peer found on PATH', async () => {
   const bin = await mkdtemp(path.join(tmpdir(), 'peer-pins-'));
   try {
     const fake = path.join(bin, 'trufflehog');
     await writeFile(fake, '#!/bin/sh\necho "trufflehog 3.97.9"\n', { mode: 0o755 });
     const result = await promisify(execFile)('node', ['--import', 'tsx', 'scripts/check-review-queue-coverage.mjs'],
-      { cwd: new URL('..', import.meta.url).pathname, env: { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` } }).catch(e => e);
-    assert.equal(result.code, 1);
-    assert.match(result.stderr, /trufflehog is 3\.97\.9; qualification\/suite-v1\.json pins 3\.97\.4/);
-    assert.doesNotMatch(result.stdout, /coverage gate passed/);
+      { cwd: new URL('..', import.meta.url).pathname, env: { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` } });
+    assert.match(result.stdout, /coverage gate passed/);
+    assert.doesNotMatch(result.stderr, /3\.97\.9|qualification\/suite-v1\.json/);
   } finally { await rm(bin, { recursive: true, force: true }); }
 });

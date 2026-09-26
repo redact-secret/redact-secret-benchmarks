@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benchmarks.redactsecret.dev/schemas/fixture-index-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "identity", "truth", "sources", "fixtures"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "identity": { "$ref": "#/$defs/identity" },
+    "truth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "fields"],
+      "properties": {
+        "source": { "const": "category-corpora" },
+        "fields": { "const": ["content", "expected", "assessment.kind", "assessment.tier", "assessment.sources"] }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewedMetadata", "scenarios", "taxonomy"],
+      "properties": {
+        "reviewedMetadata": { "$ref": "#/$defs/digest" },
+        "scenarios": { "$ref": "#/$defs/digest" },
+        "taxonomy": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slug", "source", "familyIds", "scenarioIds", "provenance"],
+        "properties": {
+          "slug": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["categoryId", "fixtureId", "corpus", "path"],
+            "properties": {
+              "categoryId": { "type": "string" },
+              "fixtureId": { "type": "string" },
+              "corpus": { "type": "string" },
+              "path": { "type": "string" }
+            }
+          },
+          "familyIds": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+          "scenarioIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+          "unscopedReason": { "type": "string", "minLength": 1 },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["categoryId"],
+            "properties": {
+              "categoryId": { "type": "string" },
+              "issue": { "type": "integer", "minimum": 1 },
+              "milestone": { "type": "string" },
+              "release": { "type": "string" }
+            }
+          },
+          "relations": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": { "twinOf": { "type": "string" } }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "digest"],
+      "properties": {
+        "algorithm": { "const": "sha256" },
+        "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "algorithm", "digest", "fixtureCount"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "algorithm": { "const": "sha256" },
+        "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "fixtureCount": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

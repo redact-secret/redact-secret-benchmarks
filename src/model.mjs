@@ -46,9 +46,9 @@ function legacyRoute(path, suites) {
   let match = new RegExp(`^/evaluation/method/(${ID})$`).exec(path);
   if (match) return redirect(`/workbench/method/${match[1]}`);
   match = new RegExp(`^/evaluation/detector/(${ID})$`).exec(path);
-  if (match) return redirect(`/coverage/${match[1]}`);
+  if (match) return redirect(`/coverage/detectors/${match[1]}`);
   match = new RegExp(`^/benchmark/(${ID})$`).exec(path);
-  if (match) return redirect(suites.includes(match[1]) ? `/suites/${match[1]}` : `/coverage/${match[1]}`);
+  if (match) return redirect(suites.includes(match[1]) ? `/suites/${match[1]}` : `/coverage/detectors/${match[1]}`);
   return null;
 }
 
@@ -66,8 +66,14 @@ export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
   if (path === '/support') return at('support');
   if (path === '/performance') return at('performance');
   if (path === '/how-to-read') return at('how-to-read');
-  const match = new RegExp(`^/(coverage|suites|fixture)/(${ID})$`).exec(path);
-  if (match) return at(match[1] === 'suites' ? 'suite' : match[1], match[2]);
+  let match = new RegExp(`^/coverage/detectors/(${ID})$`).exec(path);
+  if (match) return at('coverage-detector', match[1]);
+  match = new RegExp(`^/coverage/(${ID}):(${ID})$`).exec(path);
+  if (match) return at('coverage-family', `${match[1]}:${match[2]}`);
+  match = new RegExp(`^/coverage/(${ID})$`).exec(path);
+  if (match) return redirect(`/coverage/detectors/${match[1]}`);
+  match = new RegExp(`^/(scenarios|suites|fixture)/(${ID})$`).exec(path);
+  if (match) return at(match[1] === 'suites' ? 'suite' : match[1] === 'scenarios' ? 'scenario' : 'fixture', match[2]);
   const workbench = new RegExp(`^/workbench(?:/(changes|qualification)|/(review|method)/(${ID}))?$`).exec(path);
   if (workbench) {
     if (publicOnly) return MISSING();
@@ -105,6 +111,11 @@ export function reportProblem(report, category, hash, fixtures) {
   const source = fixtures.filter(f => f.category === category);
   for (const scanner of report.scanners) {
     if (scanner.status !== 'complete') continue;
+    const observation = scanner.observation;
+    if (!observation || !['fresh', 'snapshot'].includes(observation.source) || !Number.isFinite(Date.parse(observation.observedAt)) || !observation.sourceRunId ||
+      (observation.source === 'fresh' && observation.sourceRunId !== report.runId) ||
+      (observation.source === 'snapshot' && (![observation.snapshotDigest, observation.inputDigest].every(v => /^[a-f0-9]{64}$/.test(v)))))
+      return 'Invalid scanner observation provenance';
     if (FORBIDDEN.some(k => scanner[k] != null)) return 'Scanner-wide totals are not allowed';
     if (!Array.isArray(scanner.rows) || scanner.rows.length !== source.length || new Set(scanner.rows.map(r => r.id)).size !== source.length) return 'Invalid report rows';
     for (const f of source) {

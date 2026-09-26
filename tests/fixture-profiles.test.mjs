@@ -168,6 +168,15 @@ test('profileClaim: explicit wins, T1 provider-documented and T2 with an empiric
   assert.deepEqual(fixtureProfileReport({ profile: null, explicit: false }, cellsAt('arrival-provisional')).cellsMet, ['arrival-provisional', 'stable-documented']);
 });
 
+test('published profile coverage carries target requirements and required empty axis identifiers', () => {
+  const cells = { ...cellsAt('arrival-provisional'), controlAxes: 0, controlAxisIds: [] };
+  const report = fixtureProfileReport({ profile: null, explicit: false }, cells);
+  assert.deepEqual(report.requiredCells, fixtureProfiles.profiles['arrival-provisional'].cells);
+  assert.ok(report.requiredButEmptyAxisIds.includes('controlAxes'));
+  assert.deepEqual(report.cells.positiveContextAxisIds, cells.positiveContextAxisIds, 'tested axis ids remain in the published report');
+  assert.ok(report.debt.some(item => item.cell === 'controlAxes'));
+});
+
 test('generated coverage report and the spec criteria table are current (CI drift gate)', async () => {
   const report = buildFixtureProfileCoverage(await loadCases(createOperators()));
   assert.equal(await read('docs/generated/fixture-profile-coverage.json'), JSON.stringify(report, null, 2) + '\n');

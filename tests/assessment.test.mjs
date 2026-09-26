@@ -384,7 +384,7 @@ test('reports export per-group metrics only and the client re-verifies every row
   assert.equal(pending.actual.length, 1);
   assert.equal(pending.spanOutcomes, undefined);
   const fixtures = selected.map(f => ({ ...f, category: 'mixed', slug: `mixed--${f.id}` }));
-  const report = { schemaVersion: 5, accountingVersion: '1.1', accounting: lax, runId: '2026-09-17T00:00:00.000Z-abc123', category: 'mixed', corpusHash: 'hash', lockHash: 'lock', matching: 'v4', scanners: [{ id: 'test', name: 'Test', mode: 'offline', version: '1', status: 'complete', ...result }] };
+  const report = { schemaVersion: 5, accountingVersion: '1.1', accounting: lax, runId: '2026-09-17T00:00:00.000Z-abc123', category: 'mixed', corpusHash: 'hash', lockHash: 'lock', matching: 'v4', scanners: [{ id: 'test', name: 'Test', mode: 'offline', version: '1', status: 'complete', observation: { source: 'fresh', observedAt: '2026-09-17T00:00:00.000Z', sourceRunId: '2026-09-17T00:00:00.000Z-abc123' }, ...result }] };
   assert.equal(reportProblem(report, 'mixed', 'hash', fixtures), null);
   const { summaries, stale } = summarize(fixtures, [report]);
   assert.deepEqual(stale, []);

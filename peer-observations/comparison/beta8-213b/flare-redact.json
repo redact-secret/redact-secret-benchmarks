@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "28e77558adb6c54a79c144ea2762043f541f28b0ffb7dc894b9044c22061e354",
+    "fixtureCount": 59,
+    "fixturesDigest": "99afb6e5fc6feac3feceb505fb0a21e6f0cd09705d4562085a7e44cb0c6b374c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/cloudflare-token-verify-bearer-header.http",
+      "start": 83,
+      "end": 143,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/gitlab-token-glab-auth-login.sh",
+      "start": 48,
+      "end": 74,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-token-private-token-header.http",
+      "start": 82,
+      "end": 108,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-token-private-token-query.sh",
+      "start": 84,
+      "end": 110,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-cloud-api-bearer.http",
+      "start": 61,
+      "end": 136,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/huggingface-token-actions-sync-to-hub.yml",
+      "start": 73,
+      "end": 110,
+      "family": "huggingface-token"
+    },
+    {
+      "path": "cases/huggingface-token-actions-sync-to-hub.yml",
+      "start": 144,
+      "end": 170,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/huggingface-token-hf-auth-login.sh",
+      "start": 24,
+      "end": 61,
+      "family": "huggingface-token"
+    },
+    {
+      "path": "cases/huggingface-token-hf-token-env.env",
+      "start": 9,
+      "end": 46,
+      "family": "huggingface-token"
+    },
+    {
+      "path": "cases/huggingface-token-inference-bearer-header.http",
+      "start": 78,
+      "end": 122,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/huggingface-token-inference-client.py",
+      "start": 96,
+      "end": 133,
+      "family": "huggingface-token"
+    },
+    {
+      "path": "cases/huggingface-token-stored-tokens-ini.ini",
+      "start": 24,
+      "end": 61,
+      "family": "huggingface-token"
+    },
+    {
+      "path": "cases/private-key-k8s-tls-secret.yaml",
+      "start": 111,
+      "end": 237,
+      "family": "private-key"
+    },
+    {
+      "path": "cases/private-key-openssl-genpkey-stdout.txt",
+      "start": 37,
+      "end": 155,
+      "family": "private-key"
+    },
+    {
+      "path": "cases/private-key-python-signing-key-literal.py",
+      "start": 80,
+      "end": 198,
+      "family": "private-key"
+    },
+    {
+      "path": "cases/shopify-token-admin-env.env",
+      "start": 84,
+      "end": 122,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/shopify-token-admin-graphql-header.http",
+      "start": 143,
+      "end": 181,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/shopify-token-private-app-client.js",
+      "start": 122,
+      "end": 160,
+      "family": "shopify-token"
+    },
+    {
+      "path": "cases/stripe-token-curl-basic-user.sh",
+      "start": 46,
+      "end": 86,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-ruby-api-key.rb",
+      "start": 36,
+      "end": 76,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-stripe-cli-config.toml",
+      "start": 93,
+      "end": 133,
+      "family": "stripe-token"
+    }
+  ],
+  "digest": "6f5173d5ced6c31cd3a9c58a44bb640cef347a3a26d887051db981c92c3d08e0"
+}

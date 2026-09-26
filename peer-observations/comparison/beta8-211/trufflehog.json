@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-211",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "a131425aac1b9bf3504c62f7e860737842e522d72c14325ae2e920afd7f78251",
+    "fixtureCount": 97,
+    "fixturesDigest": "31a9aa3c60712ebbed2cb0bb051ce964dd8432b75e93e433a118a65f63e7a597",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/github-fine-grained-pat-actions-env.yml",
+      "start": 101,
+      "end": 194,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-bearer-header.http",
+      "start": 94,
+      "end": 187,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-compose-renovate.yml",
+      "start": 125,
+      "end": 218,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-composer-auth-json.json",
+      "start": 41,
+      "end": 134,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-dotenv-gh-token.env",
+      "start": 94,
+      "end": 187,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-export-github-pat.sh",
+      "start": 18,
+      "end": 111,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-gh-auth-login.sh",
+      "start": 8,
+      "end": 101,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-remote-userinfo.gitconfig",
+      "start": 41,
+      "end": 134,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-octokit-debug-log.log",
+      "start": 111,
+      "end": 204,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-terraform-provider-alphabet-twin.tf",
+      "start": 48,
+      "end": 111,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-terraform-provider.tf",
+      "start": 48,
+      "end": 141,
+      "family": "github-token"
+    }
+  ],
+  "digest": "259ebb632f133da6bb8dac26f10c485c2d902bb2b879572fd7affc7edba688fe"
+}

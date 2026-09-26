@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "44b66a8eb0e11f775a1b446a600df2c38d53c3e972344edafd6297eb541aea9b",
+    "fixtureCount": 98,
+    "fixturesDigest": "d800951366a1bc6394fabd71a33aa940149f985f9cb717aa99c3cf03678dbf5f",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/azure-devops-personal-access-token-self-hosted-agent-compose.yml",
+      "start": 162,
+      "end": 246,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/azure-devops-personal-access-token-terraform-provider.tf",
+      "start": 110,
+      "end": 194,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-curl-basic-auth.sh",
+      "start": 10,
+      "end": 93
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 87,
+      "end": 103
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 138,
+      "end": 202,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-k8s-secret-stringdata.yml",
+      "start": 147,
+      "end": 211,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-python-producer-config.py",
+      "start": 265,
+      "end": 329,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-shell-export-secret.sh",
+      "start": 31,
+      "end": 47
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-shell-export-secret.sh",
+      "start": 82,
+      "end": 146,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-api-key-curl-generate-content.sh",
+      "start": 30,
+      "end": 69
+    },
+    {
+      "path": "cases/google-api-key-curl-generate-content.sh",
+      "start": 30,
+      "end": 69
+    },
+    {
+      "path": "cases/google-api-key-env-maps-key.env",
+      "start": 20,
+      "end": 59
+    },
+    {
+      "path": "cases/google-api-key-github-actions-places.yml",
+      "start": 75,
+      "end": 114
+    },
+    {
+      "path": "cases/google-api-key-k8s-secret-stringdata.yml",
+      "start": 98,
+      "end": 137
+    },
+    {
+      "path": "cases/google-api-key-shell-export-gemini.sh",
+      "start": 22,
+      "end": 61
+    },
+    {
+      "path": "cases/grafana-service-account-token-compose-renderer-env.yml",
+      "start": 178,
+      "end": 224
+    },
+    {
+      "path": "cases/grafana-service-account-token-env-service-account-token.env",
+      "start": 75,
+      "end": 121
+    },
+    {
+      "path": "cases/grafana-service-account-token-github-actions-dashboards.yml",
+      "start": 84,
+      "end": 130
+    },
+    {
+      "path": "cases/grafana-service-account-token-http-api-bearer.http",
+      "start": 91,
+      "end": 137
+    },
+    {
+      "path": "cases/grafana-service-account-token-python-requests-client.py",
+      "start": 89,
+      "end": 135
+    },
+    {
+      "path": "cases/grafana-service-account-token-terraform-provider.tf",
+      "start": 75,
+      "end": 121
+    },
+    {
+      "path": "cases/heroku-api-key-compose-env.yml",
+      "start": 117,
+      "end": 182
+    },
+    {
+      "path": "cases/heroku-api-key-github-actions-deploy.yml",
+      "start": 74,
+      "end": 139
+    },
+    {
+      "path": "cases/heroku-api-key-python-heroku3-client.py",
+      "start": 41,
+      "end": 106
+    },
+    {
+      "path": "cases/heroku-api-key-shell-export-api-key.sh",
+      "start": 22,
+      "end": 87
+    },
+    {
+      "path": "cases/heroku-api-key-terraform-provider.tf",
+      "start": 63,
+      "end": 128
+    },
+    {
+      "path": "cases/jwt-api-bearer-header.http",
+      "start": 72,
+      "end": 376,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-debug-request-log.log",
+      "start": 91,
+      "end": 399,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-env-id-token.env",
+      "start": 17,
+      "end": 322,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-kubectl-create-token.txt",
+      "start": 63,
+      "end": 392,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-token-digest-audit-encoded-value.log",
+      "start": 65,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/jwt-token-response-json.json",
+      "start": 21,
+      "end": 328,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-websocket-query-token.txt",
+      "start": 54,
+      "end": 329,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/netlify-token-github-actions-deploy.yml",
+      "start": 78,
+      "end": 118
+    },
+    {
+      "path": "cases/new-relic-license-key-config-checksum-encoded-value.log",
+      "start": 20,
+      "end": 84
+    },
+    {
+      "path": "cases/new-relic-license-key-env-license-key.env",
+      "start": 54,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-license-key-helm-bundle-values.yml",
+      "start": 43,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-license-key-log-api-license-header.http",
+      "start": 95,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-license-key-newrelic-js-config.js",
+      "start": 79,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-license-key-newrelic-yml.yml",
+      "start": 42,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-license-key-shell-export-license.sh",
+      "start": 29,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-user-api-key-env-api-key.env",
+      "start": 47,
+      "end": 79
+    },
+    {
+      "path": "cases/new-relic-user-api-key-gitlab-ci-variables.yml",
+      "start": 67,
+      "end": 99
+    },
+    {
+      "path": "cases/new-relic-user-api-key-nerdgraph-api-key-header.http",
+      "start": 86,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-user-api-key-python-nerdgraph-client.py",
+      "start": 104,
+      "end": 136,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-user-api-key-terraform-provider.tf",
+      "start": 61,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-compose-env.yml",
+      "start": 119,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-curl-bearer.sh",
+      "start": 68,
+      "end": 118
+    },
+    {
+      "path": "cases/notion-token-debug-client-log.log",
+      "start": 69,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-mcp-server-env.json",
+      "start": 145,
+      "end": 195,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-shell-export-token.sh",
+      "start": 20,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pulumi-access-token-env-access-token.env",
+      "start": 20,
+      "end": 64
+    },
+    {
+      "path": "cases/pulumi-access-token-github-actions-preview.yml",
+      "start": 208,
+      "end": 252
+    },
+    {
+      "path": "cases/pulumi-access-token-rest-api-token-header.http",
+      "start": 105,
+      "end": 149
+    },
+    {
+      "path": "cases/supabase-management-token-env-access-token.env",
+      "start": 22,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/supabase-management-token-github-actions-db-push.yml",
+      "start": 82,
+      "end": 126,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/supabase-management-token-terraform-provider-v0.tf",
+      "start": 40,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/terraform-cloud-token-api-v2-bearer.http",
+      "start": 135,
+      "end": 225
+    },
+    {
+      "path": "cases/terraform-cloud-token-credentials-tfrc-json.json",
+      "start": 63,
+      "end": 153
+    },
+    {
+      "path": "cases/terraform-cloud-token-env-tf-token-host.env",
+      "start": 26,
+      "end": 116
+    },
+    {
+      "path": "cases/vault-token-env-vault-token.env",
+      "start": 122,
+      "end": 217
+    },
+    {
+      "path": "cases/vault-token-vault-login.sh",
+      "start": 121,
+      "end": 216
+    },
+    {
+      "path": "cases/vault-token-x-vault-token-header.http",
+      "start": 153,
+      "end": 317
+    }
+  ],
+  "digest": "608c81d2bdf169dcdc0d68ede9b7adc2d1ada3bc2d94410dd6f253e7e97df469"
+}

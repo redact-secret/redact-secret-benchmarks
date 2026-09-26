@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/sendgrid-regressions",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "eb92618394cedcb9e0b344d553a9e1189fa10336ed9b7e535c965d535854d5f2",
+    "fixtureCount": 49,
+    "fixturesDigest": "5fd7b89da489322da6a958e2d5555e971c35de2d2f8c84a45709228b144326dc",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/base62-bare-twin.txt",
+      "start": 0,
+      "end": 68,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-bare.txt",
+      "start": 0,
+      "end": 69,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-bearer-twin.txt",
+      "start": 15,
+      "end": 90,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/base62-bearer.txt",
+      "start": 15,
+      "end": 91,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/base62-crlf-twin.txt",
+      "start": 30,
+      "end": 98,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-crlf.txt",
+      "start": 30,
+      "end": 99,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-env-key-twin.txt",
+      "start": 17,
+      "end": 85,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-env-key.txt",
+      "start": 17,
+      "end": 86,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-env-token-twin.txt",
+      "start": 15,
+      "end": 83,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-env-token.txt",
+      "start": 15,
+      "end": 84,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-generic-key-twin.txt",
+      "start": 8,
+      "end": 76,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-generic-key.txt",
+      "start": 8,
+      "end": 77,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-json-twin.txt",
+      "start": 19,
+      "end": 87,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-json.txt",
+      "start": 19,
+      "end": 88,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-markdown-twin.txt",
+      "start": 22,
+      "end": 90,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-markdown.txt",
+      "start": 22,
+      "end": 91,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-quoted-env-twin.txt",
+      "start": 16,
+      "end": 84,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-quoted-env.txt",
+      "start": 16,
+      "end": 85,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-unicode-twin.txt",
+      "start": 27,
+      "end": 95,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/base62-unicode.txt",
+      "start": 27,
+      "end": 96,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/short-id.txt",
+      "start": 0,
+      "end": 68,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/short-secret.txt",
+      "start": 0,
+      "end": 68,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-bare.txt",
+      "start": 0,
+      "end": 68,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-bearer.txt",
+      "start": 15,
+      "end": 91,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trailing-dash-crlf.txt",
+      "start": 30,
+      "end": 98,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-env-key.txt",
+      "start": 17,
+      "end": 85,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-env-token.txt",
+      "start": 15,
+      "end": 83,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-generic-key.txt",
+      "start": 8,
+      "end": 76,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-json.txt",
+      "start": 19,
+      "end": 87,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-markdown.txt",
+      "start": 22,
+      "end": 90,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-quoted-env.txt",
+      "start": 16,
+      "end": 84,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/trailing-dash-unicode.txt",
+      "start": 27,
+      "end": 95,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-bare-twin.txt",
+      "start": 0,
+      "end": 68,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-bare.txt",
+      "start": 0,
+      "end": 69,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-bearer.txt",
+      "start": 15,
+      "end": 91,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/url-safe-crlf.txt",
+      "start": 30,
+      "end": 99,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-env-key.txt",
+      "start": 17,
+      "end": 86,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-env-token.txt",
+      "start": 15,
+      "end": 84,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-generic-key.txt",
+      "start": 8,
+      "end": 77,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-json.txt",
+      "start": 19,
+      "end": 88,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-markdown.txt",
+      "start": 22,
+      "end": 91,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-quoted-env.txt",
+      "start": 16,
+      "end": 85,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/url-safe-unicode.txt",
+      "start": 27,
+      "end": 96,
+      "family": "sendgrid-token"
+    }
+  ],
+  "digest": "5ac8a12b5806f65b1983ec80b9a319657a80cc53aa44da849fc867b7fb52b560"
+}

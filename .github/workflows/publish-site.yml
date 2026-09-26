@@ -352,7 +352,7 @@ jobs:
               echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"
             else
               echo "- published product version: \`$(jq -r .pins.packageVersion benchmarks/pin-manifest.json)\`"
-              echo "- product release source SHA: \`$(jq -r .pins.sourceRevision benchmarks/pin-manifest.json)\`"
+              echo "- product release source SHA: \`$(jq -r .pins.releaseSourceRevision benchmarks/pin-manifest.json)\`"
               echo "- benchmark snapshot SHA: \`${{ github.sha }}\`"
               echo "- corpus manifest hash: \`$(jq -r .revision benchmarks/pin-manifest.json)\`"
             fi

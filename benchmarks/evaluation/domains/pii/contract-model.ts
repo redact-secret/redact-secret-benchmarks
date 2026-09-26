@@ -42,11 +42,13 @@ export function piiVariant(c: PiiCase, id = 'authored', input = c.input, contrac
   options: { candidate?: PiiCase['candidate']; operator?: string; operatorVersion?: number; typeEffect?: PiiVariant['transformation']['expectationEffect']['type'];
     sensitivityEffect?: PiiVariant['transformation']['expectationEffect']['sensitivity']; evidence?: Record<string, unknown> } = {}): PiiVariant {
   validatePiiCase(c);
+  const candidate = { ...(options.candidate ?? c.candidate) };
+  validatePiiCase({ ...structuredClone(c), input: structuredClone(input), contract: structuredClone(contract), candidate });
   const transformation = { method: c.method, methodVersion: 1, operator: options.operator ?? 'authored', operatorVersion: options.operatorVersion ?? 1,
     expectationEffect: { type: options.typeEffect ?? 'preserve', sensitivity: options.sensitivityEffect ?? 'preserve' } };
   const base = generatedVariant({ caseId: c.id, id, fixture: structuredClone(input), strategy, transformation,
     seed: c.provenance.seed, sourceHash: c.provenance.sourceHash, identity: hash });
-  return { ...base, contract: structuredClone(contract), candidate: { ...(options.candidate ?? c.candidate) }, ...(options.evidence ? { evidence: options.evidence } : {}) };
+  return { ...base, contract: structuredClone(contract), candidate, ...(options.evidence ? { evidence: structuredClone(options.evidence) } : {}) };
 }
 
 const overlaps = (a: { start: number; end: number }, b: { start: number; end: number }) => a.start < b.end && b.start < a.end;

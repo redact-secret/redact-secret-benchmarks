@@ -61,6 +61,7 @@ test('validator invalid negatives remain distinct from benign semantic controls'
   const evidence = Object.fromEntries(artifact.results.map(result => [result.id, result.evidence]));
   assert.equal(evidence['checksum-valid'].validation.kind, 'validator');
   assert.equal(evidence['checksum-valid'].validation.state, 'valid');
+  assert.deepEqual(Object.keys(evidence['checksum-valid'].validation).sort(), ['kind', 'state', 'validator', 'validatorVersion']);
   assert.equal(evidence['checksum-invalid'].validation.state, 'invalid');
   assert.equal(evidence['benign-documentation'].control.kind, 'semantic-control');
   assert.equal(evidence['benign-documentation'].control.controlClass, 'documentation');
@@ -86,6 +87,7 @@ test('context, collision, and mutation methods produce domain-owned non-vacuous 
   assert.equal(collisionResult.outcomes[0].typeIdentity.state, 'wrong-jurisdiction');
   const mutationResult = artifact.results.find(result => result.id === 'mutation-run');
   assert.equal(mutationResult.evidence.mutation.expectation.type, 'invalid');
+  assert.deepEqual(Object.keys(mutationResult.evidence.mutation).sort(), ['expectation', 'kind', 'operator', 'operatorVersion']);
   assert.equal(mutationResult.variants[0].transformation.expectationEffect.type, 'invalidate');
   assert.equal(mutationResult.outcomes[0].typeIdentity.state, 'invalid-correct');
 });
@@ -118,4 +120,40 @@ test('replay stability includes normalized PII sensitivity and jurisdiction fiel
   assert.equal(artifact.scanners[0].status, 'unstable');
   assert.equal(artifact.typeIdentity['not-measured'], 1);
   assert.equal(artifact.sensitivityContext['not-measured'], 1);
+});
+
+test('hostile validator hooks cannot inject fields or out-of-enum states', async () => {
+  const hostile = [
+    { id: 'extra-validator', version: 1, validate() { return { state: 'valid', rawValue: 'RAW-VALIDATOR-SENTINEL' }; }, method: 'type-validation' },
+    { id: 'enum-validator', version: 1, validate() { return { state: 'maybe-sensitive' }; }, method: 'reference-differential' },
+  ];
+  for (const entry of hostile) {
+    const validators = piiDomain.createValidators([entry]);
+    const c = piiCase(`${entry.id}-case`, entry.method, 'SYNTHETIC-0000', entry.method === 'type-validation'
+      ? { contract: { typeExpectation: { validator: entry.id } } }
+      : { contract: { referenceEvidence: { id: entry.id, version: 1 } } });
+    await assert.rejects(() => piiDomain.execute({ cases: [c], methods: piiDomain.createMethods(validators), scanners: [scanner] }), error => {
+      assert.match(error.message, /Invalid PII validator observation/);
+      assert.doesNotMatch(error.message, /RAW-VALIDATOR-SENTINEL|maybe-sensitive/);
+      return true;
+    });
+  }
+});
+
+test('hostile operator hooks cannot inject raw fields or invalid domain expectations', async () => {
+  const hostile = [
+    { id: 'extra-operator', version: 1, apply(c) { return { input: { ...c.input, rawValue: 'RAW-OPERATOR-SENTINEL' },
+      candidate: { ...c.candidate }, expectation: { type: 'invalid', sensitivity: 'sensitive' } }; } },
+    { id: 'enum-operator', version: 1, apply(c) { return { input: { ...c.input }, candidate: { ...c.candidate },
+      expectation: { type: 'invalid', sensitivity: 'credential-secret' } }; } },
+  ];
+  for (const entry of hostile) {
+    const operators = piiDomain.createOperators([entry]);
+    const c = piiCase(`${entry.id}-case`, 'mutation', 'SYNTHETIC-0000', { metadata: { operator: entry.id } });
+    await assert.rejects(() => piiDomain.execute({ cases: [c], methods: piiDomain.createMethods(undefined, operators), scanners: [scanner] }), error => {
+      assert.match(error.message, /Invalid PII operator result/);
+      assert.doesNotMatch(error.message, /RAW-OPERATOR-SENTINEL|credential-secret/);
+      return true;
+    });
+  }
 });

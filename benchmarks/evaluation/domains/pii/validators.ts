@@ -1,5 +1,13 @@
 import { createRegistry, type Registry } from '../../substrate/registry.ts';
-import type { PiiValidator } from './types.ts';
+import type { PiiValidationState, PiiValidator } from './types.ts';
+
+/** Validator hooks are untrusted: admit one exact enum and reconstruct it. */
+export function observePiiValidator(validator: PiiValidator, value: string): { state: PiiValidationState } {
+  const raw: unknown = validator.validate(value);
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw) || Object.keys(raw).length !== 1 || !Object.hasOwn(raw, 'state') ||
+      !['valid', 'invalid', 'unavailable'].includes(String((raw as { state?: unknown }).state))) throw new Error('Invalid PII validator observation');
+  return { state: (raw as { state: PiiValidationState }).state };
+}
 
 const syntheticChecksum: PiiValidator = {
   id: 'synthetic-mod10', version: 1,

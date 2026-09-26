@@ -1,6 +1,7 @@
 import type { Registry } from '../../../substrate/registry.ts';
 import { piiVariant, validatePiiCase } from '../contract-model.ts';
 import type { PiiMethod, PiiValidator } from '../types.ts';
+import { observePiiValidator } from '../validators.ts';
 import { candidateValue, evaluatePiiVariants } from './common.ts';
 
 export const referenceDifferential = (validators: Registry<PiiValidator>): PiiMethod => ({
@@ -14,13 +15,16 @@ export const referenceDifferential = (validators: Registry<PiiValidator>): PiiMe
   generate(c) {
     this.validateCase(c);
     const validator = validators.get(c.contract.referenceEvidence!.id);
-    const observation = validator.validate(candidateValue(c.input.content, c.candidate));
+    const observation = observePiiValidator(validator, candidateValue(c.input.content, c.candidate));
     return [piiVariant(c, 'reference', c.input, c.contract, observation.state === 'unavailable' ? 'review-required' : 'authored',
       { evidence: { kind: 'reference-observation', reference: validator.id, referenceVersion: validator.version,
         state: observation.state, role: 'observation-not-truth' } })];
   },
   evaluate(context) {
-    const result = evaluatePiiVariants(context), observation = context.variants[0].evidence!;
+    const result = evaluatePiiVariants(context), raw = context.variants[0].evidence!, observation = {
+      kind: 'reference-observation', reference: String(raw.reference), referenceVersion: Number(raw.referenceVersion),
+      state: String(raw.state), role: 'observation-not-truth',
+    };
     const disagrees = observation.state === 'unavailable' || observation.state !== context.case.contract.typeExpectation.state;
     if (observation.state === 'unavailable') for (const outcome of result.outcomes) outcome.typeIdentity = {
       axis: 'type-identity', status: 'not-measured', state: 'not-measured', reason: 'Independent reference evidence was unavailable.',

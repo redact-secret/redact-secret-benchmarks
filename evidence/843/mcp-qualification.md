@@ -1,8 +1,8 @@
 # MCP adapter black-box qualification (#321: tools/call and resources/read)
 
-**Result.** complete: 3048 case runs over 24/24 cells (1440 of them resources/read); **0 leaks**, 0 process-output leaks, 0 contract deviations, 96 known false negatives (documented exclusions), 120 deliveries by an explicit or default warn/allow policy, 12 documented host-responsibility observations (the 2.x response cache); the unprotected controls (tools/call and resources/read) were flagged in 24/24 cells.
+**Result.** complete: 3048 case runs over 24/24 cells (1464 of them resources/read); **0 leaks**, 0 process-output leaks, 0 contract deviations, 96 known false negatives (documented exclusions), 120 deliveries by an explicit or default warn/allow policy, 12 documented host-responsibility observations (the 2.x response cache); the unprotected controls (tools/call and resources/read) were flagged in 24/24 cells.
 
-resources/read alone: 1440 case runs, **0 leaks**, 0 deviations, 24 known false negatives, control flagged in 0/24 cells.
+resources/read alone: 1464 case runs, **0 leaks**, 0 deviations, 24 known false negatives, control flagged in 24/24 cells.
 
 ## Identity
 
@@ -123,7 +123,6 @@ Containment is what the leak scan found across the model context, host log, stor
 | `audit-callbacks-throw` | audit | contained | 24/24 | — | — |
 | `cancel-race-sweep` | cancellation | contained | 24/24 | — | — |
 | `downstream-failure-after-sanitization` | failure | contained | 24/24 | — | — |
-| `resource-control-unprotected-host` | control | control-detected | 24/24 | — | model-context, host-log, store, audit, error-text |
 | `control-unprotected-host` | control | control-detected | 24/24 | — | model-context, host-log, store, audit, error-text |
 | `server-crash-mid-call` | failure | contained | 24/24 | — | — |
 
@@ -189,6 +188,7 @@ Containment is what the leak scan found across the model context, host log, stor
 | `resource-cancel-race-sweep` | resource-cancellation | contained | 24/24 | — | — |
 | `resource-abort-while-read-rejects` | resource-cancellation | contained | 24/24 | — | — |
 | `resource-audit-and-telemetry` | resource-audit | contained | 24/24 | — | — |
+| `resource-control-unprotected-host` | control | control-detected | 24/24 | — | model-context, host-log, store, audit, error-text |
 | `resource-server-crash-mid-read` | resource-failure | contained | 24/24 | — | — |
 | `resource-cache-ttl-stores-raw-before-boundary` | resource-cache | host-responsibility | 12/12 | — | response-cache |
 | `resource-cache-bypass-stores-nothing` | resource-cache | contained | 12/12 | — | — |

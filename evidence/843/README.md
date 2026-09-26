@@ -68,7 +68,7 @@ No scanner comparison is involved. The only detector is the published core above
   - low-level `Server` handlers and `McpServer.registerResource` with fixed and template URIs, raw and wrapped with `wrapResourceReadHandler`;
   - the `resource` finding label and input-free `{stage:"resource",...}` audit records on every case, and audit callbacks that throw.
 - **Negative controls:** `control-unprotected-host` (tools/call) and `resource-control-unprotected-host` (resources/read) were each flagged in all five host sinks in 24/24 cells.
-  The runner at `75c1a2b` counts the resources/read control in each cell's total (`controlsDetected: 2`) but not in the cell's `resources` summary, because that case row carries no `surface`. So `summary.resourceControlsDetected` reads 0, and `mcp-qualification.md` says "control flagged in 0/24 cells" on its resources/read line. That is a counting bug in the summary, not a missed control: the case table shows `resource-control-unprotected-host` as `control-detected` in 24/24. Tracked in [#328](https://github.com/redact-secret/redact-secret-benchmarks/issues/328); it does not change any verdict.
+  [#328](https://github.com/redact-secret/redact-secret-benchmarks/issues/328) corrected the derived resources/read summary from the committed case verdicts: it now records `resourceControlsDetected: 24` and says "control flagged in 24/24 cells." The correction preserves every verdict, sink observation and security result; no measurement was rerun.
 - **Known false negatives:** 96: `split-across-blocks`, `split-across-fields`, `split-across-calls` and `resource-split-across-entries` in each cell. All are documented exclusions, unmeasured by design. A split across two `resources/read` calls is not run.
 - **Delivered by policy:** 120, the explicit warn/allow cases on both surfaces.
 - **Host responsibility:** 12, `resource-cache-ttl-stores-raw-before-boundary` in the 12 cells on 2.x. When the server sends `ttlMs`, the 2.x `Client` stores the raw result in its `responseCacheStore` before the boundary runs. The contract names that store as the host's responsibility, and `resource-cache-bypass-stores-nothing` shows that `cacheMode: "bypass"` keeps it empty. Every other 2.x read used `cacheMode: "bypass"`.
@@ -132,7 +132,7 @@ the checkout. It took 82 minutes and exited 0.
 ## Files
 
 - `mcp-qualification.json`: the full report (`schemas/mcp-qualification-v1.json`). It holds identities, every cell, every case verdict with its checks and the sinks it touched, and both operational profiles (`operational.overhead` for tools/call, `operational.resources` for resources/read). Its "Core candidate" row in `mcp-qualification.md` is the published core; the runner's label predates published-core runs.
-- `mcp-qualification.md`: the runner's own summary of that report. Its resources/read "control flagged in 0/24" line is the counting bug described above.
+- `mcp-qualification.md`: the runner's own summary of that report, regenerated under #328 so the resources/read control agrees with its 24/24 case rows.
 - `mcp-overhead-series.json`: the tools/call per-process overhead outputs, readable by `npm run performance:budgets:evaluate -- --adapter <file>`. The resources/read rows are not in it, by design.
 - `adapters-e087cb2-pin.json`: the pin the runner verified against.
 

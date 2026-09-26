@@ -62,11 +62,11 @@ binaries were official darwin-arm64 downloads verified against nodejs.org's
 2.1.0. The complete cell and case tables are in
 [`mcp-qualification.md`](mcp-qualification.md).
 
-The `resources/read` subset has zero leaks and zero deviations. Its summary
-field says zero resource controls because the harness commit predates #328's
-summary-count correction; the `resource-control-unprotected-host` case itself
-is `control-detected` in all 24 cells and the committed test checks those rows
-directly.
+The `resources/read` subset has zero leaks and zero deviations. #328 regenerated
+the derived summary from the committed case verdicts, so it now records the
+`resource-control-unprotected-host` control as detected in all 24 cells. The
+correction preserves every verdict, sink observation and security result; no
+measurement was rerun.
 
 Operational measurements used five fresh processes per SDK/transport and 20
 in-process samples on Node.js 22.16.0. No MCP regression budget exists, so these

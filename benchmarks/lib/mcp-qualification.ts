@@ -299,7 +299,8 @@ export function verdict(row: HostCaseRow, declaration: CaseDeclaration | undefin
   if (row.control) {
     const everySink = HOST_SINKS.every(sink => sinks.includes(sink));
     return {
-      id: row.id, area: row.area, expected: row.expect, observed: row.observed, containment: everySink ? 'control-detected' : 'control-missed',
+      id: row.id, area: row.area, ...(row.surface ? { surface: row.surface } : {}), expected: row.expect, observed: row.observed,
+      containment: everySink ? 'control-detected' : 'control-missed',
       sinks, checks: [{ name: 'leak-scan-flags-every-host-sink', passed: everySink }], conforms: everySink,
     };
   }

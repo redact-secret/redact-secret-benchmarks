@@ -164,7 +164,7 @@ test('candidate evidence is contract-checked before Changes may read it', () => 
   assert.match(candidateProblem({ reportType: 'candidate', results: [{ fixtureId: 'x', secret: 'leak' }] }), /Invalid/);
 });
 
-test('floors show met or not plus the actual value, and absent evidence is Not measured, never Met', () => {
+test('floors show met, watch or not-met plus the actual value, and absent evidence is Not measured, never Met', () => {
   const none = qualificationGates(suite.accounting, null, null);
   assert.equal(none.length, 6);
   assert.ok(none.every(g => g.status === 'not-measured'));
@@ -177,7 +177,11 @@ test('floors show met or not plus the actual value, and absent evidence is Not m
   assert.deepEqual([get('twin-coverage').status, get('twin-coverage').value], ['met', '0.534 ≥ 0.5']);
   // The evidence says why it is incomplete; the page repeats that, it does not decide it.
   assert.deepEqual(evidence.accounting.reasons, ['unreviewed-queue']);
-  assert.equal(qualificationGates(suite.accounting, qualified, null).find(g => g.id === 'ledger').status, 'met', 'the checked-in run has no open or missing ledger rows');
+  assert.deepEqual(
+    qualificationGates(suite.accounting, qualified, null).find(g => g.id === 'ledger'),
+    { id: 'ledger', label: 'Ledger rows for every entry', status: 'watch', value: '5,965 · 12 open', detail: 'open is a valid state' },
+    'the checked-in run keeps acknowledged beta.9 observations visible without treating them as unknown',
+  );
   assert.equal(get('ledger').status, 'not-met');
   assert.match(get('ledger').detail, new RegExp(`${evidence.accounting.review.unknown} queue entries have no ledger row`));
   assert.equal(get('resolved-rate').status, 'met');

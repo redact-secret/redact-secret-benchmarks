@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "reportType": "blind-aggregate",
+  "evidenceClass": "custodian-blind",
+  "independence": {
+    "level": "custodian-held-blind",
+    "achieved": "procedural-separation",
+    "organisationalIndependence": false,
+    "statement": "Custodian-held blind fixtures, authored and held by an isolated custodian agent session that product-implementing agents and the orchestrator never saw. The same human operates the custodian and the maintainer roles, so this run achieves procedural separation, not organisational independence."
+  },
+  "runId": "95310b97-5b2e-4838-a297-5f95009388f1",
+  "startedAt": "2026-09-26T13:35:11.159Z",
+  "finishedAt": "2026-09-26T13:35:12.884Z",
+  "status": "complete",
+  "candidate": {
+    "sourceCommit": "09e1d7f85cd2ada9f387cc5c9beef3b29023d17d",
+    "packageName": "@redact-secret/core",
+    "declaredVersion": "0.1.0-beta.9",
+    "artifactSha256": "51fc3d78f24ed5c13d7460c25627476e1751a71c511ce51bd1fe6cfd69047664",
+    "artifacts": [
+      {
+        "role": "node",
+        "sha256": "26815f44fcc4ecb859c991f63ec17167bebbadc0b28842dd4ab2fa1a1b9ac77d"
+      },
+      {
+        "role": "package",
+        "sha256": "51fc3d78f24ed5c13d7460c25627476e1751a71c511ce51bd1fe6cfd69047664"
+      },
+      {
+        "role": "wasm",
+        "sha256": "9784a4bddbb0cd5bffb290b57a5d6fe9df4642b7148abe0713c978ffcb7c2375"
+      }
+    ],
+    "configurationHash": "3b0dc27d40a3b27194676ebb4a3ce2d0ca7417700ba7b6d695106007c1d77d8e"
+  },
+  "benchmark": {
+    "sourceCommit": "90332d55e0a1f4f8002ed55a30eb7951bdf25bbb",
+    "lockfileSha256": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b"
+  },
+  "environment": {
+    "node": "v22.16.0",
+    "os": "darwin",
+    "arch": "arm64"
+  },
+  "freeze": {
+    "freezeId": "9b9e439f-83f8-46e7-aa7e-48461b82b68d",
+    "frozenAt": "2026-09-26T13:35:10.476Z",
+    "freezeHash": "40760602018263460f86c200d9d3cb9af614768be2d87a2d2d81cb1710982791"
+  },
+  "corpus": {
+    "epoch": "beta9-e2",
+    "commitment": "1559d720585eca1ad58e9d7fe8a2b9c9bb57b371cf5a8cdc05fc6fbd06286dda",
+    "fixtures": 32
+  },
+  "replays": 2,
+  "measurability": {
+    "fixtures": 32,
+    "measurable": 32,
+    "share": 1,
+    "withheld": 0,
+    "withheldReasons": {
+      "unstable-across-replays": 0,
+      "scan-error": 0
+    }
+  },
+  "instability": {
+    "count": 0,
+    "of": 32,
+    "value": 0,
+    "interval": [
+      0,
+      0.1072
+    ]
+  },
+  "leakage": {
+    "fixtures": 20,
+    "spans": 20,
+    "leakedSpans": {
+      "count": 3,
+      "of": 20,
+      "value": 0.15,
+      "interval": [
+        0.0524,
+        0.3604
+      ]
+    },
+    "outcomes": {
+      "EXACT": 17,
+      "COVERED": 0,
+      "OVERBROAD": 0,
+      "PARTIAL": 1,
+      "MISS": 2
+    }
+  },
+  "falseAlarms": {
+    "controls": 12,
+    "flaggedControls": {
+      "count": 1,
+      "of": 12,
+      "value": 0.0833,
+      "interval": [
+        0.0149,
+        0.3539
+      ]
+    }
+  },
+  "strata": {
+    "status": "none",
+    "minimumFixtures": 5,
+    "rows": []
+  },
+  "uncertainty": {
+    "method": "wilson-score",
+    "confidence": 0.95,
+    "scope": "Intervals treat the custodian corpus as a sample of authored cases. The fixtures are authored, not drawn from real traffic, so no interval estimates a real-world rate."
+  },
+  "failures": []
+}

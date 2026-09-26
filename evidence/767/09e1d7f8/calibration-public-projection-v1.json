@@ -1,0 +1,2069 @@
+{
+  "schemaVersion": 1,
+  "datasetType": "calibration-public-projection",
+  "visibility": "public-aggregate",
+  "holdoutAccess": "none",
+  "notice": "Aggregate shadow-scorer outcomes for one selected configuration. The evidence score is ordinal and never a probability; weights, caps, thresholds and per-candidate values are maintainer-local. Nothing here changes product thresholds or enforcement.",
+  "experimentVersion": "calibration-experiments/1",
+  "aggregationContractVersion": "grouped-halving/1",
+  "contractDecision": "decision-freeze-the-shadow-evidence-score-and-confidence-contract",
+  "selectionSourceHash": "23683daf5738b9cf3de583ade589f06677cfb2bcf581bff38e889b1eddae9509",
+  "scoringIdentity": "838aa57db8e2331c8540a42da823ffda8802d681952f4dc7af20e6001c5693a2",
+  "featureDataset": {
+    "extractorVersion": "candidate-features/2",
+    "extractorSourceHash": "d943c854b79eefdfb5573e30ace6d8fd67f5be9e1ebefc2b9ee9e9d73d05833f",
+    "datasetHash": "4ea0a82f61b719b4611f8e7e2caafd01edda5b5dfa7c2691bffd6ac17d0e199c",
+    "featureSchema": "evidence-features/v1"
+  },
+  "benchmark": {
+    "commit": "90332d55e0a1f4f8002ed55a30eb7951bdf25bbb",
+    "dirty": false
+  },
+  "generatedShare": {
+    "tuningShare": 0,
+    "overrideApplied": false
+  },
+  "partitions": {
+    "development": {
+      "operatingPoints": {
+        "low": {
+          "rows": 186,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 64,
+          "policy": 21,
+          "controls": 101,
+          "leakedSpanRate": 0.015625,
+          "policyLeakedSpanRate": 0.14285714285714285,
+          "falseAlarmRate": 0.039603960396039604,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.045021645021645025,
+          "twins": {
+            "pairs": 4,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "medium": {
+          "rows": 186,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 64,
+          "policy": 21,
+          "controls": 101,
+          "leakedSpanRate": 0.015625,
+          "policyLeakedSpanRate": 0.14285714285714285,
+          "falseAlarmRate": 0.039603960396039604,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.045021645021645025,
+          "twins": {
+            "pairs": 4,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "high": {
+          "rows": 186,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 64,
+          "policy": 21,
+          "controls": 101,
+          "leakedSpanRate": 0.03125,
+          "policyLeakedSpanRate": 0.3333333333333333,
+          "falseAlarmRate": 0.039603960396039604,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.045021645021645025,
+          "twins": {
+            "pairs": 4,
+            "discriminated": 0,
+            "rate": 0
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "operatingPoints": {
+        "low": {
+          "rows": 2919,
+          "measurableShare": 0.9972593353888318,
+          "unresolved": {
+            "companion-role": 2,
+            "truncated": 6
+          },
+          "mustRedact": 899,
+          "policy": 339,
+          "controls": 1673,
+          "leakedSpanRate": 0.3759733036707453,
+          "policyLeakedSpanRate": 0.3392330383480826,
+          "falseAlarmRate": 0.24686192468619247,
+          "independentFalseAlarmRate": 0.11088709677419355,
+          "collateralRatio": 0.37313569068438635,
+          "twins": {
+            "pairs": 681,
+            "discriminated": 103,
+            "rate": 0.1512481644640235
+          }
+        },
+        "medium": {
+          "rows": 2919,
+          "measurableShare": 0.9972593353888318,
+          "unresolved": {
+            "companion-role": 2,
+            "truncated": 6
+          },
+          "mustRedact": 899,
+          "policy": 339,
+          "controls": 1673,
+          "leakedSpanRate": 0.3759733036707453,
+          "policyLeakedSpanRate": 0.3392330383480826,
+          "falseAlarmRate": 0.24686192468619247,
+          "independentFalseAlarmRate": 0.11088709677419355,
+          "collateralRatio": 0.37313569068438635,
+          "twins": {
+            "pairs": 681,
+            "discriminated": 103,
+            "rate": 0.1512481644640235
+          }
+        },
+        "high": {
+          "rows": 2919,
+          "measurableShare": 0.9972593353888318,
+          "unresolved": {
+            "companion-role": 2,
+            "truncated": 6
+          },
+          "mustRedact": 899,
+          "policy": 339,
+          "controls": 1673,
+          "leakedSpanRate": 0.3759733036707453,
+          "policyLeakedSpanRate": 0.3893805309734513,
+          "falseAlarmRate": 0.22115959354453077,
+          "independentFalseAlarmRate": 0.06754032258064516,
+          "collateralRatio": 0.3458989758849194,
+          "twins": {
+            "pairs": 681,
+            "discriminated": 102,
+            "rate": 0.14977973568281938
+          }
+        }
+      }
+    }
+  },
+  "authoredOnly": {
+    "development": {
+      "rows": 186,
+      "measurableShare": 1,
+      "unresolved": {
+        "companion-role": 0,
+        "truncated": 0
+      },
+      "mustRedact": 64,
+      "policy": 21,
+      "controls": 101,
+      "leakedSpanRate": 0.015625,
+      "policyLeakedSpanRate": 0.14285714285714285,
+      "falseAlarmRate": 0.039603960396039604,
+      "independentFalseAlarmRate": 0,
+      "collateralRatio": 0.045021645021645025,
+      "twins": {
+        "pairs": 4,
+        "discriminated": 0,
+        "rate": 0
+      }
+    },
+    "evaluation": {
+      "rows": 628,
+      "measurableShare": 1,
+      "unresolved": {
+        "companion-role": 0,
+        "truncated": 0
+      },
+      "mustRedact": 0,
+      "policy": 8,
+      "controls": 620,
+      "leakedSpanRate": 0,
+      "policyLeakedSpanRate": 0.125,
+      "falseAlarmRate": 0.09193548387096774,
+      "independentFalseAlarmRate": 0.09421487603305785,
+      "collateralRatio": 0,
+      "twins": {
+        "pairs": 0,
+        "discriminated": 0,
+        "rate": 0
+      }
+    }
+  },
+  "strata": {
+    "development": {
+      "family": {
+        "github-token": {
+          "rows": 8,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 4,
+          "policy": 0,
+          "controls": 4,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 1,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.975,
+          "twins": {
+            "pairs": 4,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "uncontracted": {
+          "rows": 27,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 5,
+          "controls": 22,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 0,
+            "discriminated": 0,
+            "rate": 0
+          }
+        }
+      },
+      "context": {
+        "bare": {
+          "rows": 91,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 0,
+          "controls": 91,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 0,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "credential-name": {
+          "rows": 83,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 63,
+          "policy": 16,
+          "controls": 4,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 1,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.046263345195729534,
+          "twins": {
+            "pairs": 4,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "other-name": {
+          "rows": 10,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 1,
+          "policy": 3,
+          "controls": 6,
+          "leakedSpanRate": 1,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 0,
+            "discriminated": 0,
+            "rate": 0
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "family": {
+        "anthropic-token": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 6,
+          "policy": 3,
+          "controls": 15,
+          "leakedSpanRate": 0.3333333333333333,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0.06666666666666667,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.16666666666666666,
+          "twins": {
+            "pairs": 7,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "atlassian-api-token": {
+          "rows": 45,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 27,
+          "leakedSpanRate": 0.5,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.2222222222222222,
+          "independentFalseAlarmRate": 0.10526315789473684,
+          "collateralRatio": 0.2412280701754386,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "aws-access-key": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 4,
+          "policy": 8,
+          "controls": 12,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.75,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "azure-devops-personal-access-token": {
+          "rows": 29,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 9,
+          "policy": 3,
+          "controls": 17,
+          "leakedSpanRate": 0.6666666666666666,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 1,
+            "rate": 0.1111111111111111
+          }
+        },
+        "bearer-token": {
+          "rows": 44,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 13,
+          "controls": 31,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.07692307692307693,
+          "falseAlarmRate": 0.12903225806451613,
+          "independentFalseAlarmRate": 0.05555555555555555,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 13,
+            "discriminated": 9,
+            "rate": 0.6923076923076923
+          }
+        },
+        "cloudflare-token": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 8,
+          "policy": 0,
+          "controls": 16,
+          "leakedSpanRate": 0.625,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "confluent-cloud-api-secret": {
+          "rows": 32,
+          "measurableShare": 0.9375,
+          "unresolved": {
+            "companion-role": 2,
+            "truncated": 0
+          },
+          "mustRedact": 13,
+          "policy": 0,
+          "controls": 17,
+          "leakedSpanRate": 0.38461538461538464,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.17647058823529413,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.23076923076923078,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "confluent-cloud-api-secret-legacy": {
+          "rows": 48,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 14,
+          "controls": 34,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.42857142857142855,
+          "falseAlarmRate": 0.29411764705882354,
+          "independentFalseAlarmRate": 0.05263157894736842,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 15,
+            "discriminated": 1,
+            "rate": 0.06666666666666667
+          }
+        },
+        "connection-string": {
+          "rows": 32,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 15,
+          "controls": 17,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 15,
+            "discriminated": 15,
+            "rate": 1
+          }
+        },
+        "databricks-personal-access-token": {
+          "rows": 40,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 16,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.1875,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 3,
+            "rate": 0.3333333333333333
+          }
+        },
+        "datadog-api-key": {
+          "rows": 36,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 17,
+          "controls": 19,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.058823529411764705,
+          "falseAlarmRate": 0.631578947368421,
+          "independentFalseAlarmRate": 0.125,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 11,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "datadog-application-key": {
+          "rows": 29,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 12,
+          "policy": 0,
+          "controls": 17,
+          "leakedSpanRate": 0.08333333333333333,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.5882352941176471,
+          "independentFalseAlarmRate": 0.25,
+          "collateralRatio": 0.7854166666666667,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "datadog-application-key-legacy": {
+          "rows": 52,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 22,
+          "controls": 30,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.3333333333333333,
+          "independentFalseAlarmRate": 0.2857142857142857,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 16,
+            "discriminated": 10,
+            "rate": 0.625
+          }
+        },
+        "digitalocean-token": {
+          "rows": 40,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 22,
+          "policy": 0,
+          "controls": 18,
+          "leakedSpanRate": 0.8181818181818182,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "discord-bot-token": {
+          "rows": 47,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 24,
+          "policy": 0,
+          "controls": 23,
+          "leakedSpanRate": 0.5,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.30434782608695654,
+          "independentFalseAlarmRate": 0.2,
+          "collateralRatio": 0.2672634271099744,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "docker-token": {
+          "rows": 40,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 16,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 1,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 16,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "firebase-server-key": {
+          "rows": 45,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 27,
+          "leakedSpanRate": 0.3333333333333333,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.037037037037037035,
+          "independentFalseAlarmRate": 0.05263157894736842,
+          "collateralRatio": 0.03179824561403509,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 5,
+            "rate": 0.625
+          }
+        },
+        "fireworks-ai-api-key": {
+          "rows": 32,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 11,
+          "policy": 0,
+          "controls": 21,
+          "leakedSpanRate": 0.2727272727272727,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.19047619047619047,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.356401384083045,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 1,
+            "rate": 0.2
+          }
+        },
+        "generic-token": {
+          "rows": 23,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 12,
+          "controls": 11,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.09090909090909091,
+          "independentFalseAlarmRate": 0.5,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 9,
+            "rate": 1
+          }
+        },
+        "github-fine-grained-pat": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 10,
+          "policy": 0,
+          "controls": 14,
+          "leakedSpanRate": 0.3,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.2857142857142857,
+          "independentFalseAlarmRate": 0.1111111111111111,
+          "collateralRatio": 0.34623655913978496,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 1,
+            "rate": 0.2
+          }
+        },
+        "github-token": {
+          "rows": 107,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 63,
+          "policy": 0,
+          "controls": 44,
+          "leakedSpanRate": 0.4444444444444444,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.5681818181818182,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.3869047619047619,
+          "twins": {
+            "pairs": 38,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "gitlab-runner-authentication-token": {
+          "rows": 43,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 19,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.2631578947368421,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.3333333333333333,
+          "independentFalseAlarmRate": 0.0625,
+          "collateralRatio": 0.5072046109510087,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 1,
+            "rate": 0.125
+          }
+        },
+        "gitlab-token": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 11,
+          "policy": 0,
+          "controls": 13,
+          "leakedSpanRate": 0.45454545454545453,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.23076923076923078,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.26223776223776224,
+          "twins": {
+            "pairs": 7,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "google-api-key": {
+          "rows": 29,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 12,
+          "policy": 0,
+          "controls": 17,
+          "leakedSpanRate": 0.25,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.11764705882352941,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.16666666666666666,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 1,
+            "rate": 0.1111111111111111
+          }
+        },
+        "grafana-cloud-access-policy-token": {
+          "rows": 36,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 17,
+          "policy": 0,
+          "controls": 19,
+          "leakedSpanRate": 0.17647058823529413,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.42105263157894735,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.3850267379679144,
+          "twins": {
+            "pairs": 11,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "grafana-service-account-token": {
+          "rows": 36,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 17,
+          "policy": 0,
+          "controls": 19,
+          "leakedSpanRate": 0.17647058823529413,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.42105263157894735,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.47058823529411764,
+          "twins": {
+            "pairs": 11,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "groq-api-key": {
+          "rows": 41,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 19,
+          "policy": 0,
+          "controls": 22,
+          "leakedSpanRate": 0.3157894736842105,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.45454545454545453,
+          "independentFalseAlarmRate": 0.21428571428571427,
+          "collateralRatio": 0.450187969924812,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "heroku-api-key": {
+          "rows": 30,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 13,
+          "policy": 0,
+          "controls": 17,
+          "leakedSpanRate": 0.46153846153846156,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.17647058823529413,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.18318695106649938,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "heroku-api-key-legacy": {
+          "rows": 49,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 16,
+          "controls": 33,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.3125,
+          "falseAlarmRate": 0.42424242424242425,
+          "independentFalseAlarmRate": 0.25,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 13,
+            "discriminated": 1,
+            "rate": 0.07692307692307693
+          }
+        },
+        "huggingface-token": {
+          "rows": 26,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 11,
+          "policy": 0,
+          "controls": 15,
+          "leakedSpanRate": 0.45454545454545453,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 7,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "jwt": {
+          "rows": 26,
+          "measurableShare": 0.7692307692307693,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 6
+          },
+          "mustRedact": 2,
+          "policy": 3,
+          "controls": 15,
+          "leakedSpanRate": 1,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0.06666666666666667,
+          "independentFalseAlarmRate": 0.125,
+          "collateralRatio": 0.13114754098360656,
+          "twins": {
+            "pairs": 7,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "langfuse-secret-key": {
+          "rows": 42,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.3888888888888889,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.4166666666666667,
+          "independentFalseAlarmRate": 0.1875,
+          "collateralRatio": 0.5568783068783069,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "langsmith-api-key": {
+          "rows": 42,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.2777777777777778,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.3333333333333333,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.4422657952069717,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "linear-token": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 8,
+          "policy": 0,
+          "controls": 16,
+          "leakedSpanRate": 0.625,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "mailchimp-api-key": {
+          "rows": 41,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 19,
+          "policy": 0,
+          "controls": 22,
+          "leakedSpanRate": 0.10526315789473684,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.45454545454545453,
+          "independentFalseAlarmRate": 0.2857142857142857,
+          "collateralRatio": 0.49711815561959655,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 2,
+            "rate": 0.25
+          }
+        },
+        "mailgun-api-key": {
+          "rows": 40,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 16,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.0625,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.5416666666666666,
+          "independentFalseAlarmRate": 0.3125,
+          "collateralRatio": 0.8888888888888888,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "mailgun-api-key-triplet": {
+          "rows": 50,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 12,
+          "controls": 38,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.16666666666666666,
+          "falseAlarmRate": 0.4473684210526316,
+          "independentFalseAlarmRate": 0.3333333333333333,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 14,
+            "discriminated": 3,
+            "rate": 0.21428571428571427
+          }
+        },
+        "microsoft-entra-client-secret": {
+          "rows": 45,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 20,
+          "policy": 0,
+          "controls": 25,
+          "leakedSpanRate": 0.35,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.32,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.4173027989821883,
+          "twins": {
+            "pairs": 17,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "neon-api-key": {
+          "rows": 42,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.3333333333333333,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.3333333333333333,
+          "independentFalseAlarmRate": 0.0625,
+          "collateralRatio": 0.4057971014492754,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "netlify-token": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 10,
+          "policy": 0,
+          "controls": 14,
+          "leakedSpanRate": 0.4,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "new-relic-license-key": {
+          "rows": 29,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 9,
+          "policy": 3,
+          "controls": 17,
+          "leakedSpanRate": 0.3333333333333333,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "new-relic-user-api-key": {
+          "rows": 36,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 17,
+          "policy": 0,
+          "controls": 19,
+          "leakedSpanRate": 0.17647058823529413,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.42105263157894735,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.47058823529411764,
+          "twins": {
+            "pairs": 11,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "notion-integration-token": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 10,
+          "policy": 0,
+          "controls": 14,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.5,
+          "independentFalseAlarmRate": 0.2222222222222222,
+          "collateralRatio": 0.622,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "notion-token": {
+          "rows": 29,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 12,
+          "policy": 0,
+          "controls": 17,
+          "leakedSpanRate": 0.25,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.17647058823529413,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.25166666666666665,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "npm-token": {
+          "rows": 22,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 10,
+          "policy": 0,
+          "controls": 12,
+          "leakedSpanRate": 0.5,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "okta-api-token": {
+          "rows": 40,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 16,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.375,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.16666666666666666,
+          "independentFalseAlarmRate": 0.06666666666666667,
+          "collateralRatio": 0.27976190476190477,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "openai-token": {
+          "rows": 45,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 13,
+          "policy": 9,
+          "controls": 23,
+          "leakedSpanRate": 0.46153846153846156,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0.17391304347826086,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.2539964476021314,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "openrouter-api-key": {
+          "rows": 32,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 12,
+          "policy": 0,
+          "controls": 20,
+          "leakedSpanRate": 0.3333333333333333,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.4,
+          "independentFalseAlarmRate": 0.14285714285714285,
+          "collateralRatio": 0.5068493150684932,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "otpauth-uri": {
+          "rows": 17,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 6,
+          "controls": 11,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.6363636363636364,
+          "independentFalseAlarmRate": 0.2,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "perplexity-api-key": {
+          "rows": 41,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 23,
+          "leakedSpanRate": 0.2777777777777778,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.391304347826087,
+          "independentFalseAlarmRate": 0.06666666666666667,
+          "collateralRatio": 0.46540880503144655,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "pinecone-api-key": {
+          "rows": 42,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.3333333333333333,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.375,
+          "independentFalseAlarmRate": 0.0625,
+          "collateralRatio": 0.45,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "pinecone-api-key-legacy": {
+          "rows": 48,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 12,
+          "controls": 36,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.08333333333333333,
+          "independentFalseAlarmRate": 0.125,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 12,
+            "discriminated": 12,
+            "rate": 1
+          }
+        },
+        "postman-api-key": {
+          "rows": 40,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 14,
+          "policy": 0,
+          "controls": 26,
+          "leakedSpanRate": 0.2857142857142857,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.07692307692307693,
+          "independentFalseAlarmRate": 0.11764705882352941,
+          "collateralRatio": 0.10379464285714286,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "postman-collection-access-key": {
+          "rows": 42,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 24,
+          "leakedSpanRate": 0.2222222222222222,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.16666666666666666,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.22401433691756273,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 4,
+            "rate": 0.5
+          }
+        },
+        "private-key": {
+          "rows": 35,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 2,
+          "policy": 21,
+          "controls": 12,
+          "leakedSpanRate": 1,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "pulumi-access-token": {
+          "rows": 26,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 12,
+          "policy": 0,
+          "controls": 14,
+          "leakedSpanRate": 0.75,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "pypi-token": {
+          "rows": 26,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 9,
+          "policy": 0,
+          "controls": 17,
+          "leakedSpanRate": 0.4444444444444444,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.058823529411764705,
+          "independentFalseAlarmRate": 0.125,
+          "collateralRatio": 0.023121387283236993,
+          "twins": {
+            "pairs": 9,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "replicate-api-token": {
+          "rows": 32,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 12,
+          "policy": 0,
+          "controls": 20,
+          "leakedSpanRate": 0.4166666666666667,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.3,
+          "independentFalseAlarmRate": 0.07142857142857142,
+          "collateralRatio": 0.5020833333333333,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "sendgrid-token": {
+          "rows": 67,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 38,
+          "policy": 0,
+          "controls": 29,
+          "leakedSpanRate": 0.21052631578947367,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.41379310344827586,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.3112128146453089,
+          "twins": {
+            "pairs": 18,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "sentry-org-auth-token": {
+          "rows": 40,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 22,
+          "leakedSpanRate": 0.16666666666666666,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.5,
+          "independentFalseAlarmRate": 0.21428571428571427,
+          "collateralRatio": 0.6919347730277655,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "sentry-user-auth-token": {
+          "rows": 40,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 22,
+          "leakedSpanRate": 0.16666666666666666,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.45454545454545453,
+          "independentFalseAlarmRate": 0.14285714285714285,
+          "collateralRatio": 0.528169014084507,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "shopify-token": {
+          "rows": 27,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 4,
+          "policy": 9,
+          "controls": 14,
+          "leakedSpanRate": 1,
+          "policyLeakedSpanRate": 0.6666666666666666,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "slack-app-level-token": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 10,
+          "policy": 0,
+          "controls": 14,
+          "leakedSpanRate": 0.2,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.35714285714285715,
+          "independentFalseAlarmRate": 0.1111111111111111,
+          "collateralRatio": 0.41237113402061853,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "slack-token": {
+          "rows": 42,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 10,
+          "policy": 15,
+          "controls": 17,
+          "leakedSpanRate": 0.5,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "slack-user-token": {
+          "rows": 24,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 8,
+          "policy": 0,
+          "controls": 16,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.4375,
+          "independentFalseAlarmRate": 0.18181818181818182,
+          "collateralRatio": 0.7607573149741824,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "stripe-token": {
+          "rows": 33,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 19,
+          "policy": 0,
+          "controls": 14,
+          "leakedSpanRate": 0.8947368421052632,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.07142857142857142,
+          "independentFalseAlarmRate": 0.125,
+          "collateralRatio": 0.05263157894736842,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "stripe-webhook-signing-secret": {
+          "rows": 26,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 11,
+          "controls": 15,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.45454545454545453,
+          "falseAlarmRate": 0.4,
+          "independentFalseAlarmRate": 0.2,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "supabase-management-token": {
+          "rows": 26,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 12,
+          "policy": 0,
+          "controls": 14,
+          "leakedSpanRate": 0.5833333333333334,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "supabase-token": {
+          "rows": 30,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 11,
+          "policy": 0,
+          "controls": 19,
+          "leakedSpanRate": 0.45454545454545453,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.15789473684210525,
+          "independentFalseAlarmRate": 0.07142857142857142,
+          "collateralRatio": 0.30598669623059865,
+          "twins": {
+            "pairs": 5,
+            "discriminated": 1,
+            "rate": 0.2
+          }
+        },
+        "telegram-bot-token": {
+          "rows": 41,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 18,
+          "policy": 0,
+          "controls": 23,
+          "leakedSpanRate": 0.3333333333333333,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.043478260869565216,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0.05541871921182266,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 5,
+            "rate": 0.625
+          }
+        },
+        "terraform-cloud-token": {
+          "rows": 26,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 12,
+          "policy": 0,
+          "controls": 14,
+          "leakedSpanRate": 0.75,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "travisci-api-token": {
+          "rows": 48,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 19,
+          "controls": 29,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.15789473684210525,
+          "falseAlarmRate": 0.3103448275862069,
+          "independentFalseAlarmRate": 0.125,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 13,
+            "discriminated": 5,
+            "rate": 0.38461538461538464
+          }
+        },
+        "twilio-api-key-secret": {
+          "rows": 49,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 23,
+          "controls": 26,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.2608695652173913,
+          "falseAlarmRate": 0.15384615384615385,
+          "independentFalseAlarmRate": 0.1875,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 10,
+            "discriminated": 7,
+            "rate": 0.7
+          }
+        },
+        "twilio-auth-token": {
+          "rows": 49,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 22,
+          "controls": 27,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.2727272727272727,
+          "falseAlarmRate": 0.14814814814814814,
+          "independentFalseAlarmRate": 0.11764705882352941,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 10,
+            "discriminated": 6,
+            "rate": 0.6
+          }
+        },
+        "uncontracted": {
+          "rows": 140,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 39,
+          "controls": 101,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.02564102564102564,
+          "falseAlarmRate": 0.25742574257425743,
+          "independentFalseAlarmRate": 0.25742574257425743,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 0,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "vault-token": {
+          "rows": 28,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 2,
+          "policy": 12,
+          "controls": 14,
+          "leakedSpanRate": 1,
+          "policyLeakedSpanRate": 0.8333333333333334,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 6,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "vercel-token": {
+          "rows": 5,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 0,
+          "policy": 0,
+          "controls": 5,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 0,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "xai-api-key": {
+          "rows": 41,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 19,
+          "policy": 0,
+          "controls": 22,
+          "leakedSpanRate": 0.3157894736842105,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.45454545454545453,
+          "independentFalseAlarmRate": 0.14285714285714285,
+          "collateralRatio": 0.4298245614035088,
+          "twins": {
+            "pairs": 8,
+            "discriminated": 0,
+            "rate": 0
+          }
+        }
+      },
+      "context": {
+        "authorization-header": {
+          "rows": 83,
+          "measurableShare": 0.9879518072289156,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 1
+          },
+          "mustRedact": 45,
+          "policy": 15,
+          "controls": 22,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0.9545454545454546,
+          "independentFalseAlarmRate": 0.6666666666666666,
+          "collateralRatio": 0.46987522281639926,
+          "twins": {
+            "pairs": 19,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "bare": {
+          "rows": 1212,
+          "measurableShare": 0.9991749174917491,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 1
+          },
+          "mustRedact": 252,
+          "policy": 85,
+          "controls": 874,
+          "leakedSpanRate": 1,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 217,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "credential-name": {
+          "rows": 1101,
+          "measurableShare": 0.9945504087193461,
+          "unresolved": {
+            "companion-role": 2,
+            "truncated": 4
+          },
+          "mustRedact": 513,
+          "policy": 184,
+          "controls": 398,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0.005434782608695652,
+          "falseAlarmRate": 0.9849246231155779,
+          "independentFalseAlarmRate": 0.9473684210526315,
+          "collateralRatio": 0.622258379433778,
+          "twins": {
+            "pairs": 284,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "other-name": {
+          "rows": 494,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 86,
+          "policy": 29,
+          "controls": 379,
+          "leakedSpanRate": 1,
+          "policyLeakedSpanRate": 1,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 52,
+            "discriminated": 0,
+            "rate": 0
+          }
+        },
+        "url-userinfo": {
+          "rows": 29,
+          "measurableShare": 1,
+          "unresolved": {
+            "companion-role": 0,
+            "truncated": 0
+          },
+          "mustRedact": 3,
+          "policy": 26,
+          "controls": 0,
+          "leakedSpanRate": 0,
+          "policyLeakedSpanRate": 0,
+          "falseAlarmRate": 0,
+          "independentFalseAlarmRate": 0,
+          "collateralRatio": 0,
+          "twins": {
+            "pairs": 0,
+            "discriminated": 0,
+            "rate": 0
+          }
+        }
+      }
+    }
+  },
+  "suppressedStrata": 76
+}

@@ -84,7 +84,7 @@ benchmarks/lib/score-evasion.ts Score-evasion and negative-evidence abuse: deter
 benchmarks/score-evasion.ts   Runs the variants through the product's shadow evaluation path and plain CLI scan; detail stays in results-output/ (#289)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
 benchmarks/blind/              Custodian-held blind evaluation: private root, freeze, one run per candidate, aggregate-only release (#142; docs/specs/blind-evaluation.md)
-benchmarks/mcp-qualification.ts Black-box MCP adapter qualification: clean consumers per SDK endpoint, sink containment, overhead (#281; docs/specs/mcp-qualification.md)
+benchmarks/mcp-qualification.ts Black-box MCP adapter qualification: clean consumers per SDK endpoint, sink containment, overhead, for tools/call (#281) and resources/read (#321; docs/specs/mcp-qualification.md)
 benchmarks/lib/mcp-qualification.ts Adapter tarball digests, the plaintext sink scan and per-case verdicts
 benchmarks/mcp-qualification/consumer/ Host, server and workload corpus copied into each clean consumer
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point

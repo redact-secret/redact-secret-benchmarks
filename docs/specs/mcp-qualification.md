@@ -1,10 +1,15 @@
 # Black-box MCP adapter qualification
 
-Issue: [#281](https://github.com/redact-secret/redact-secret-benchmarks/issues/281).
+Issues: [#281](https://github.com/redact-secret/redact-secret-benchmarks/issues/281)
+(`tools/call`) and [#321](https://github.com/redact-secret/redact-secret-benchmarks/issues/321)
+(`resources/read`).
 Decision: [`2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md`](../decisions/2026-09-25-qualify-adapter-boundaries-black-box-by-sink-containment.md).
 Contract under test: redact-secret's
 [MCP boundary contract](https://github.com/redact-secret/redact-secret/blob/main/docs/reference/mcp-boundary.md)
-(redact-secret#612). Adapter: `@redact-secret/adapter-mcp` and
+(redact-secret#612), its
+[`resources/read` specialization](https://github.com/redact-secret/redact-secret/blob/main/docs/reference/mcp-resources-read.md)
+(redact-secret#843), and the key-aware `sanitizeValue` both rest on
+(redact-secret#842). Adapter: `@redact-secret/adapter-mcp` and
 `@redact-secret/adapter-ai-context` (redact-secret-adapters#13).
 
 Runner: `benchmarks/mcp-qualification.ts` (`npm run mcp:qualify`). Pure
@@ -86,6 +91,49 @@ from adapter output):
   and a downstream model failure that echoes the context into its error;
 - documented exclusions: a secret split across blocks, fields or calls.
 
+### `resources/read` (#321)
+
+The same host reads resources at the contract's placement,
+`sanitizeResourceRead(({ signal }) => client.readResource({ uri }, { signal }))`,
+and writes only `toReadResourceResponse(outcome)` to its sinks. On the 2.x
+Client every read passes `cacheMode: "bypass"`, so each one reaches the
+server and the boundary. Servers: the low-level `Server` with its own
+`resources/read` handler (`test://resource/<case>`, `test://raw/*`,
+`test://wrapped/*`) and `McpServer.registerResource` with a fixed URI and a
+URI template, each raw and through `wrapResourceReadHandler`. Case areas,
+the list #843 posted on #321:
+
+1. provider tokens, a private-key block finding and multibyte text in entry `text`;
+2. JSON and configuration documents that stay text, with `"password":"..."` redacted in place by key context;
+3. key-identified `_meta` leaves (result and entry, nested in an array) redacted in place, and a
+   sibling-key-only value that blocks as `policy` under a block policy and is delivered by the
+   default `warn`;
+4. several entries with benign siblings delivered unchanged, and a split across entries (a documented exclusion);
+5. tokens in `uri`, `mimeType`, entry and result `_meta`, an object key, and unknown entry and result fields;
+6. `blob` blocked by default, and passed unchanged under `binaryContent: "pass"` with every other field
+   still scanned; an entry with both `text` and `blob`, and a non-string `blob`;
+7. a 60 KB benign text, a secret at the end of a text just under `maxInputBytes`, a text over it
+   (`limit_exceeded` / `INPUT_LIMIT_EXCEEDED`), and depth and node limits that are crossed only when
+   counted from the result root;
+8. cancellation: before the read (never invoked), during a raw and a wrapped slow read (the server
+   must send nothing, checked on its wire output), a race sweep at eight timings, and a signal that
+   fires while the read rejects (`aborted`, not `read_error`);
+9. the exact fixed errors with no `data` (at the host, and on a wrapped server's wire), and server
+   errors whose message, `data` or echoed URI carries a secret, which must become `read_error`
+   without their text reaching any sink; malformed results the SDK rejects;
+10. the audit record (`stage: "resource"`, only `stage`, `outcome`, `reason`, `code`, `reason` only for
+    `blocked`) and the `resource` finding label, checked on every case, plus one exact case.
+
+Where an SDK parses a result before the boundary (it drops or rejects what
+its schema does not allow), the case scores what the host received and names
+each fail-closed alternative in `acceptAlso`. The observed outcome per SDK is
+in the report. The 2.x-only response-cache cases hand the Client a recording
+`responseCacheStore`: under `cacheMode: "use"` a result the server marks
+cacheable (`ttlMs`) must reach the store raw, and a second read is served
+from it and still sanitized; under `"bypass"` nothing is stored. The store
+is the `response-cache` sink, before the boundary: plaintext there is
+`host-responsibility`, a documented host duty, never scored as contained.
+
 ## Sinks and verdicts
 
 The host appends, per case, everything it writes to five sinks: the model
@@ -100,7 +148,8 @@ and also scans the host process's stdout and stderr and the server's stderr.
 | `contained` | no sink carried plaintext |
 | `leak` | a host sink (or a wrapped server's wire output or handler input) carried plaintext the contract says it must not. This is a failure of the claim |
 | `known-false-negative` | plaintext reached a sink through a documented exclusion (a split across blocks, fields or calls). Recorded, not scored against the claim |
-| `delivered-by-policy` | the host configured `warn` or `allow`, which deliver unchanged by contract |
+| `delivered-by-policy` | the host configured `warn` or `allow`, or the core's default is `warn`, which deliver unchanged by contract |
+| `host-responsibility` | plaintext only in the 2.x Client's `responseCacheStore`, which the contract places before the boundary, in a case that declares it |
 | `control-detected` / `control-missed` | the negative control: an unprotected host writes the raw result to all five sinks, which the scan must flag. A miss makes the whole cell's "no leak" meaningless and fails the run |
 
 Independently, each case's checks compare the observed outcome and reason,
@@ -110,6 +159,16 @@ unchanged, every stream partition equal to the whole result) with the
 contract. A failed check is a **deviation**. Leaks and deviations are counted
 separately and never combined into a score. The run exits nonzero on any
 leak, deviation, process-output leak or incomplete cell.
+
+A `resources/read` case also fails a check when the delivered response is
+not the outcome's (the sanitized result, the exact fixed blocked or read
+error with no `data`, or nothing when aborted), when its audit record or
+finding label is not the input-free `resource` shape, when a key-identified
+leaf is not redacted at its own position with everything else unchanged,
+when a cancelled read got a server response, or when a wrapped server's wire
+error is not the exact fixed error. Each cell carries a `resources` summary
+beside its totals, and two controls (one per surface) that must both be
+flagged.
 
 The report carries outcomes, counts, check names and sink names only. The
 runner refuses to write a report or Markdown summary that contains any
@@ -139,6 +198,20 @@ separate processes:
   of the core against `import` + `createMcpBoundary()` + one benign call;
 - **package size**: packed, unpacked and file count of every tarball, #141's
   definitions.
+
+**`resources/read`**, in its own processes and reported apart
+(`operational.resources`): per-read latency over each SDK endpoint and
+transport, and in process, for text resources of 1, 8, 32 and 60 KiB, a JSON
+config document, a result with 300 keyed `_meta` leaves, and 200 entries.
+In process a fourth mode, `leaf-pass`, runs the AI-context `sanitizeValue` of
+the result alone on the real core, so `backstop = adapter-core - leaf-pass`
+is the key-context backstop's second scan plus the resource shape pass. The
+backstop's own scanner calls and code units are counted through the public
+injection API (the whole read's count minus the leaf pass's). Throughput is
+the result's JSON size over the protected median. Retained heap after 500
+protected reads of the 60 KiB profile and peak RSS, as for tool calls. The
+resource rows are not in the `--overhead-out` series, which stays the
+`tools/call` series #143 reads.
 
 The overhead rows are written in the `redact-secret-benchmarks/mcp-overhead-v1`
 output shape inside an `adapter-overhead-series-v1` series (`--overhead-out`),

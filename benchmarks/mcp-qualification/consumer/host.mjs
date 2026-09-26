@@ -5,18 +5,21 @@
  *
  *   node host.mjs containment <v1|v2> <stdio|http> <record-dir>
  *   node --expose-gc host.mjs overhead <v1|v2> <stdio|http> <record-dir> [--quick]
+ *   node --expose-gc host.mjs resource-overhead <v1|v2> <stdio|http> <record-dir> [--quick]
  *   node host.mjs init <core|adapter>
  *
  * The host is the contract's authoritative placement: it receives a
  * `CallToolResult` from a real MCP client and, only through the boundary,
  * writes it to its log, its store, its audit trail and the model context.
+ * For `resources/read` (#321) it does the same with a `ReadResourceResult`
+ * through `sanitizeResourceRead` and `toReadResourceResponse`.
  * Each of those sinks is appended, per case, to <record-dir>, and the parent
  * process scans them for synthetic plaintext. `result.json` in the same
  * directory carries outcomes and counts only: nothing derived from a value.
  */
 
 import { spawn } from 'node:child_process';
-import { appendFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { Readable } from 'node:stream';
@@ -49,7 +52,7 @@ const adapterMcp = await import('@redact-secret/adapter-mcp');
 const aiContext = await import('@redact-secret/adapter-ai-context');
 const coreModule = await import('@redact-secret/core');
 await coreModule.initialize();
-const { createMcpBoundary, createMcpBoundaryWith, toCallToolResult } = adapterMcp;
+const { createMcpBoundary, createMcpBoundaryWith, toCallToolResult, toReadResourceResponse } = adapterMcp;
 
 const REQUEST_TIMEOUT_MS = 5000;
 
@@ -58,10 +61,13 @@ const REQUEST_TIMEOUT_MS = 5000;
 // ---------------------------------------------------------------------------
 
 let current = 'setup';
+// Every mode keeps the host's audit trail, as #281's overhead method does: the protected modes include its appends.
 const sink = (name, value) => appendFileSync(join(recordDir, `${name}.jsonl`), `${JSON.stringify({ case: current, value })}\n`, { mode: 0o600 });
 const hostLog = message => sink('host-log', message);
-const onAudit = record => sink('audit', { kind: 'crossing', record });
-const onFinding = (finding, context) => sink('audit', { kind: 'finding', finding, context });
+/** This case's audit records, kept in memory too, so the host can check their shape without reading a value. */
+let caseAudit = { crossings: [], findings: [] };
+const onAudit = record => { caseAudit.crossings.push(record); sink('audit', { kind: 'crossing', record }); };
+const onFinding = (finding, context) => { caseAudit.findings.push({ finding, context }); sink('audit', { kind: 'finding', finding, context }); };
 
 /** Everything a host does with a delivered result; the only door is `toCallToolResult`. */
 function deliver(name, outcome) {
@@ -127,7 +133,7 @@ async function clientModules() {
   return { Client, StdioClientTransport, StreamableHTTPClientTransport };
 }
 
-const serverArgs = kind => [join(here, 'server.mjs'), line, transportKind, kind, recordDir, mode === 'overhead' ? 'off' : 'on'];
+const serverArgs = kind => [join(here, 'server.mjs'), line, transportKind, kind, recordDir, mode === 'overhead' || mode === 'resource-overhead' ? 'off' : 'on'];
 
 async function startHttpServer(kind) {
   const child = spawn(process.execPath, serverArgs(kind), { stdio: ['ignore', 'pipe', 'pipe'] });
@@ -147,9 +153,9 @@ async function startHttpServer(kind) {
 
 let negotiatedProtocol = null;
 
-async function connect(kind = 'low-level') {
+async function connect(kind = 'low-level', { responseCacheStore } = {}) {
   const { Client, StdioClientTransport, StreamableHTTPClientTransport } = await clientModules();
-  const client = new Client({ name: 'redact-secret-benchmarks-host', version: '0.0.0' });
+  const client = new Client({ name: 'redact-secret-benchmarks-host', version: '0.0.0' }, responseCacheStore ? { responseCacheStore } : undefined);
   let transport;
   let child = null;
   if (transportKind === 'stdio') {
@@ -169,6 +175,15 @@ async function connect(kind = 'low-level') {
       const options = { signal, timeout: REQUEST_TIMEOUT_MS };
       return line === 'v1' ? client.callTool(params, undefined, options) : client.callTool(params, options);
     },
+    /**
+     * `client.readResource` of this line. The 2.x Client reads with
+     * `cacheMode: "bypass"` unless a case asks otherwise, so every read
+     * reaches the server and the boundary (#321).
+     */
+    readResource(uri, signal, { cacheMode = 'bypass' } = {}) {
+      const options = { signal, timeout: REQUEST_TIMEOUT_MS };
+      return line === 'v1' ? client.readResource({ uri }, options) : client.readResource({ uri }, { ...options, cacheMode });
+    },
     async stats() {
       const result = await this.callTool({ name: 'stats' });
       return JSON.parse(result.content[0].text);
@@ -185,6 +200,8 @@ async function connect(kind = 'low-level') {
 // ---------------------------------------------------------------------------
 
 const hostBoundary = await createMcpBoundary({ ...W.LIMITS, onFinding, onAudit });
+/** The same host, opted into `binaryContent: "pass"` (the resource blob case). */
+const passBoundary = await createMcpBoundary({ ...W.LIMITS, binaryContent: 'pass', onFinding, onAudit });
 
 function policyBoundary(kind) {
   if (kind === 'throwing-callbacks') {
@@ -251,12 +268,13 @@ async function hostCall(connection, name, { boundary = hostBoundary, signal, hos
 
 async function runCase(testCase, body) {
   current = testCase.id;
+  caseAudit = { crossings: [], findings: [] };
   try {
     const row = await body();
     push({ id: testCase.id, area: testCase.area, expect: testCase.expect, ...(testCase.exclusion ? { exclusion: testCase.exclusion } : {}), ...(testCase.policyDelivers ? { policyDelivers: true } : {}), ...row });
   } catch (error) {
     recordError(error);
-    push({ id: testCase.id, area: testCase.area, expect: testCase.expect, observed: { outcome: 'threw' }, threw: true });
+    push({ id: testCase.id, area: testCase.area, expect: testCase.expect, ...(testCase.surface ? { surface: testCase.surface } : {}), observed: { outcome: 'threw' }, threw: true });
   }
 }
 
@@ -327,6 +345,7 @@ async function containment() {
 
   await hostSideStreams();
   await policyCases(low);
+  await resourceCases(low, high);
 
   // Control: an unprotected host writes the raw result to every sink. The leak
   // scan must flag all five, or its "no leak" elsewhere means nothing.
@@ -351,6 +370,273 @@ async function containment() {
       const safe = deliver(c.tool, outcome);
       return { observed: observed(outcome), delivered: safe !== null, deliveredFixed: fixedKind(safe) };
     });
+    await connection.close();
+  }
+  for (const c of W.RESOURCE_READ_CASES.filter(r => r.last)) {
+    const connection = await connect('low-level');
+    await runResourceCase(c, async () => {
+      const outcome = await hostBoundary.sanitizeResourceRead(({ signal }) => connection.readResource(c.uri, signal));
+      return resourceRow(outcome, deliverResource(c.id, outcome));
+    });
+    await connection.close();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// resources/read containment (#321)
+// ---------------------------------------------------------------------------
+
+/** Everything a host does with a read; the only door is `toReadResourceResponse`. The host never logs its own URI. */
+function deliverResource(label, outcome) {
+  hostLog(`resource ${label} outcome=${outcome.outcome}${outcome.reason ? ` reason=${outcome.reason}` : ''}${outcome.code ? ` code=${outcome.code}` : ''}`);
+  const response = toReadResourceResponse(outcome);
+  if (response === null) return null;
+  if ('error' in response) {
+    hostLog(`resource ${label} error ${JSON.stringify(response.error)}`);
+    sink('error-text', [{ string: String(response.error.message), message: response.error.message, code: response.error.code, data: response.error.data ?? null }]);
+    return response;
+  }
+  hostLog(`resource ${label} result ${JSON.stringify(response.result)}`);
+  sink('store', { role: 'resource', content: response.result });
+  const text = (response.result.contents ?? []).map(e => (typeof e?.text === 'string' ? e.text : `[binary ${e?.mimeType ?? 'resource'}]`)).join('\n');
+  sink('model-context', [{ role: 'user', content: 'read the resource' }, { role: 'resource', content: text, meta: response.result._meta ?? null }]);
+  return response;
+}
+
+/** Deep equality that ignores object key order: the SDKs' result schemas re-emit keys in their own order. */
+function sorted(value) {
+  if (Array.isArray(value)) return value.map(sorted);
+  if (value !== null && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map(k => [k, sorted(value[k])]));
+  return value;
+}
+const same = (a, b) => JSON.stringify(sorted(a)) === JSON.stringify(sorted(b));
+
+function responseKind(response) {
+  if (response === null) return null;
+  if ('result' in response) return 'result';
+  if (same(response.error, W.FIXED_RESOURCE.blocked)) return 'resourceBlocked';
+  if (same(response.error, W.FIXED_RESOURCE.readError)) return 'resourceReadError';
+  return 'otherError';
+}
+
+const EXPECTED_KIND = { ok: 'result', blocked: 'resourceBlocked', read_error: 'resourceReadError', aborted: null };
+
+function resourceRow(outcome, response) {
+  const kind = responseKind(response);
+  return {
+    observed: observed(outcome), delivered: response !== null, deliveredFixed: kind,
+    responseMatchesOutcome: kind === EXPECTED_KIND[outcome.outcome] && (response === null || !('error' in response) || !('data' in response.error)),
+    ...(outcome.outcome === 'ok' ? { findings: outcome.findings.length } : {}),
+  };
+}
+
+/** The contract's audit shape (mcp-resources-read.md#audit-metadata), checked on this case's records. */
+function auditShape() {
+  const fields = new Set(W.RESOURCE_AUDIT_FIELDS);
+  const safe = new Set(W.SAFE_FINDING_FIELDS);
+  const crossingsOk = caseAudit.crossings.every(r => r.stage === 'resource'
+    && Object.keys(r).every(k => fields.has(k))
+    && (r.reason !== undefined) === (r.outcome === 'blocked'));
+  const findingsOk = caseAudit.findings.every(({ finding, context }) => context?.boundary === W.RESOURCE_LABEL && Object.keys(finding).every(k => safe.has(k)));
+  return { crossings: caseAudit.crossings.length, findings: caseAudit.findings.length, auditConforms: crossingsOk, labelConforms: findingsOk };
+}
+
+async function runResourceCase(testCase, body, { audit = true } = {}) {
+  await runCase({ ...testCase, surface: 'resources/read' }, async () => {
+    const row = await body();
+    return { surface: 'resources/read', ...row, ...(audit ? { audit: auditShape() } : {}) };
+  });
+}
+
+/** The value at `path` in a delivered result; a `text` segment followed by more segments parses that text as JSON. */
+function at(value, path) {
+  let node = value;
+  for (let i = 0; i < path.length; i += 1) {
+    if (node === null || node === undefined) return undefined;
+    node = node[path[i]];
+    if (path[i] === 'text' && i < path.length - 1 && typeof node === 'string') {
+      try { node = JSON.parse(node); } catch { return undefined; }
+    }
+  }
+  return node;
+}
+
+function put(value, path, replacement) {
+  if (path.length === 1) { value[path[0]] = replacement; return value; }
+  const [head, ...rest] = path;
+  if (head === 'text' && typeof value[head] === 'string') {
+    value[head] = JSON.stringify(put(JSON.parse(value[head]), rest, replacement));
+    return value;
+  }
+  put(value[head], rest, replacement);
+  return value;
+}
+
+const PLACEHOLDER = /^<[A-Z][A-Z0-9_]*>$/;
+
+/** Key-identified leaves became placeholders at their own position, and nothing else changed. */
+function inPlace(sent, delivered, paths) {
+  const placeholders = paths.every(p => typeof at(delivered, p) === 'string' && PLACEHOLDER.test(at(delivered, p)));
+  let expected = structuredClone(sent);
+  for (const p of paths) expected = put(expected, p, at(delivered, p));
+  return placeholders && same(expected, delivered);
+}
+
+function wireRecords(tool) {
+  let text = '';
+  try { text = readFileSync(join(recordDir, 'wire.jsonl'), 'utf8'); } catch { return []; }
+  return text.split('\n').filter(Boolean).map(l => JSON.parse(l)).filter(r => r.tool === tool && r.message?.id !== undefined && (r.message.result !== undefined || r.message.error !== undefined));
+}
+
+async function resourceCases(low, high) {
+  const readVia = (connection, uri, boundary = hostBoundary, options = {}) => boundary.sanitizeResourceRead(({ signal }) => connection.readResource(uri, signal), options);
+
+  for (const c of W.RESOURCE_CASES) {
+    await runResourceCase(c, async () => {
+      const boundary = c.policy ? await policyBoundary(c.policy) : c.binaryContent === 'pass' ? passBoundary : hostBoundary;
+      const outcome = await readVia(low, `test://resource/${c.id}`, boundary);
+      const row = resourceRow(outcome, deliverResource(c.id, outcome));
+      if (outcome.outcome === 'ok') {
+        const sent = c.result();
+        const value = outcome.value;
+        if (c.benign) row.benignUnchanged = same(value, sent);
+        if (c.inPlace) row.keyRedactedInPlace = inPlace(sent, value, c.inPlace);
+        if (c.textStaysText) row.textStaysText = typeof value.contents?.[0]?.text === 'string';
+        if (c.benignEntries) row.benignUnchanged = c.benignEntries.every(i => same(value.contents[i], sent.contents[i]));
+        if (c.blobUnchanged) row.blobUnchanged = c.blobUnchanged.every(i => value.contents[i]?.blob === sent.contents[i].blob);
+      }
+      return row;
+    }, { audit: c.policy !== 'throwing-callbacks' });
+  }
+
+  for (const c of W.RESOURCE_READ_CASES.filter(r => !r.last && (r.lines === undefined || r.lines.includes(line)))) {
+    const connection = c.server === 'mcp-server' ? high : low;
+    const uri = typeof c.uri === 'function' ? c.uri() : c.uri;
+    await runResourceCase(c, async () => {
+      if (c.cache) return cacheCase(c, uri);
+      if (c.race) return raceSweep(connection, uri);
+      if (c.local === 'abort-then-reject') {
+        const controller = new AbortController();
+        const outcome = await hostBoundary.sanitizeResourceRead(async () => { controller.abort(); throw new Error(W.throwMessage()); }, { signal: controller.signal });
+        return resourceRow(outcome, deliverResource(c.id, outcome));
+      }
+      const controller = new AbortController();
+      if (c.preAborted) controller.abort();
+      let invoked = 0;
+      const tool = `resource:${uri}`;
+      const responsesBefore = wireRecords(tool).length;
+      if (c.abortAfterMs !== undefined) setTimeout(() => controller.abort(), c.abortAfterMs);
+      const started = performance.now();
+      const outcome = await hostBoundary.sanitizeResourceRead(({ signal }) => { invoked += 1; return connection.readResource(uri, signal); }, { signal: controller.signal });
+      const elapsedMs = performance.now() - started;
+      const row = resourceRow(outcome, deliverResource(c.id, outcome));
+      if (c.preAborted) row.invoked = invoked > 0;
+      if (c.abortAfterMs !== undefined) {
+        row.settledAfterAbortMs = Math.round(elapsedMs - c.abortAfterMs);
+        // Give the server time to answer, if it (wrongly) would.
+        await new Promise(r => setTimeout(r, 400));
+        row.serverResponded = wireRecords(tool).length > responsesBefore;
+      }
+      if (c.wireError) {
+        const errors = wireRecords(tool).slice(responsesBefore).map(r => r.message.error).filter(Boolean);
+        const last = errors.at(-1);
+        row.wireError = last === undefined ? null : same(last, W.FIXED_RESOURCE[c.wireError]) ? c.wireError : 'other';
+      }
+      if (c.auditExact) {
+        row.auditExact = caseAudit.crossings.length === 1 && same(caseAudit.crossings[0], { stage: 'resource', outcome: 'ok' })
+          && caseAudit.findings.length >= 1;
+      }
+      if (outcome.outcome === 'ok' && c.inPlace) {
+        row.keyRedactedInPlace = inPlace(W.rawResource('config', uri), outcome.value, c.inPlace);
+      }
+      if (outcome.outcome === 'ok' && c.textStaysText) row.textStaysText = typeof outcome.value.contents?.[0]?.text === 'string';
+      return row;
+    });
+  }
+
+  // Control: an unprotected host writes the raw read to every sink; the scan must flag all five.
+  await runCase(W.RESOURCE_CONTROL_CASE, async () => {
+    const raw = await low.readResource('test://resource/resource-text-provider-tokens');
+    sink('model-context', raw);
+    hostLog(`raw ${JSON.stringify(raw)}`);
+    sink('store', raw);
+    sink('audit', raw);
+    sink('error-text', [{ message: JSON.stringify(raw) }]);
+    return { surface: 'resources/read', observed: { outcome: 'unprotected' }, control: true };
+  });
+}
+
+async function raceSweep(connection, uri) {
+  const timings = ['pre-aborted', 'microtask', 'immediate', 'timeout-0', 'timeout-1', 'timeout-2', 'timeout-4', 'timeout-8'];
+  const outcomes = {};
+  let unexpected = 0;
+  let deliveredOnAbort = 0;
+  let delivered = 0;
+  for (let round = 0; round < 5; round += 1) {
+    for (const timing of timings) {
+      const controller = new AbortController();
+      if (timing === 'pre-aborted') controller.abort();
+      else if (timing === 'microtask') queueMicrotask(() => controller.abort());
+      else if (timing === 'immediate') setImmediate(() => controller.abort());
+      else setTimeout(() => controller.abort(), Number(timing.split('-')[1]));
+      const outcome = await hostBoundary.sanitizeResourceRead(({ signal }) => connection.readResource(uri, signal), { signal: controller.signal });
+      outcomes[outcome.outcome] = (outcomes[outcome.outcome] ?? 0) + 1;
+      if (outcome.outcome !== 'ok' && outcome.outcome !== 'aborted') unexpected += 1;
+      const response = deliverResource('race', outcome);
+      if (response !== null) delivered += 1;
+      if (outcome.outcome === 'aborted' && response !== null) deliveredOnAbort += 1;
+    }
+  }
+  return {
+    observed: { outcome: unexpected === 0 && deliveredOnAbort === 0 ? 'ok-or-aborted' : 'unexpected' },
+    runs: 5 * timings.length, outcomes, delivered: delivered > 0, deliveredFixed: null, deliveredOnAbort,
+  };
+}
+
+/**
+ * The 2.x Client's responseCacheStore sits before the boundary: a
+ * recording store stands in for a host's persistent one. Under
+ * `cacheMode: "use"` a result the server marks cacheable (`ttlMs`) is
+ * stored raw and a second read is served from the store; both reads still
+ * pass through the boundary. Under `"bypass"` nothing is stored.
+ */
+async function cacheCase(c, uri) {
+  let storeWrites = 0;
+  let stamp = 0;
+  const entries = new Map();
+  const keyOf = key => JSON.stringify([key.method, key.params ?? '', key.partition ?? '']);
+  const responseCacheStore = {
+    get: key => entries.get(keyOf(key)),
+    set: (key, entry) => {
+      stamp += 1;
+      // The Client also caches tools/list for its own use; only resources/read writes are counted.
+      if (key.method === 'resources/read') storeWrites += 1;
+      sink('response-cache', { method: key.method, value: entry.value });
+      entries.set(keyOf(key), { ...entry, stamp });
+      return stamp;
+    },
+    delete: key => { entries.delete(keyOf(key)); },
+    evict: method => { for (const k of [...entries.keys()]) if (JSON.parse(k)[0] === method) entries.delete(k); },
+    clear: () => entries.clear(),
+  };
+  const connection = await connect('low-level', { responseCacheStore });
+  try {
+    const before = await connection.stats();
+    const writesBefore = storeWrites;
+    const outcomes = [];
+    let delivered = 0;
+    for (let i = 0; i < 2; i += 1) {
+      const outcome = await hostBoundary.sanitizeResourceRead(({ signal }) => connection.readResource(uri, signal, { cacheMode: c.cache }));
+      outcomes.push(outcome.outcome);
+      if (deliverResource(c.id, outcome) !== null) delivered += 1;
+    }
+    const after = await connection.stats();
+    return {
+      observed: { outcome: outcomes.every(o => o === 'ok') ? 'ok' : outcomes.join(',') }, delivered: delivered > 0, deliveredFixed: null,
+      cache: { mode: c.cache, storeWrites: storeWrites - writesBefore, serverReads: after.cacheableReads - before.cacheableReads },
+      ...(c.hostResponsibility ? { hostResponsibility: true } : {}),
+    };
+  } finally {
     await connection.close();
   }
 }
@@ -707,6 +993,95 @@ async function overhead() {
 }
 
 // ---------------------------------------------------------------------------
+// resources/read operational profile (#321), apart from tools/call
+// ---------------------------------------------------------------------------
+
+function deliverResourceInMemory(response) {
+  if (response === null) return 0;
+  const log = JSON.stringify(response);
+  const text = ('result' in response ? response.result.contents ?? [] : []).map(e => (typeof e?.text === 'string' ? e.text : '')).join('\n');
+  return log.length + text.length;
+}
+
+async function resourceOverhead() {
+  const quick = flags.includes('--quick');
+  const repetitions = quick ? 3 : 15;
+  const sized = events => {
+    const n = quick ? Math.max(2, Math.ceil(events / 10)) : events;
+    return { repetitions, events: n, warmup: Math.ceil(n / 2) };
+  };
+  const inProcess = transportKind === 'stdio';
+  const identity = injectedBoundary(identityCore());
+  // The AI-context leaf pass alone, on the real core: what the key-context backstop adds is the rest.
+  const leafPass = await aiContext.createAiContextBoundary(W.LIMITS);
+  const connection = await connect('low-level');
+  const rows = [];
+  const hostName = `mcp-sdk-${Object.values(identityOut.sdk)[0]}-${transportKind}`;
+  for (const profile of W.RESOURCE_OVERHEAD_PROFILES) {
+    const whole = { calls: 0, codeUnits: 0 };
+    const counted = injectedBoundary(countingCore(whole)).sanitizeResourceResult(profile.result());
+    if (counted.outcome !== 'ok') throw new Error(`resource overhead profile ${profile.id} is not ok: ${counted.outcome}`);
+    const leaf = { calls: 0, codeUnits: 0 };
+    const leafOnly = aiContext.createAiContextBoundaryWith(countingCore(leaf), W.LIMITS).sanitizeValue(profile.result(), { boundary: 'resource' });
+    if (leafOnly.outcome !== 'ok') throw new Error(`resource overhead profile ${profile.id} leaf pass is not ok: ${leafOnly.outcome}`);
+    const scans = {
+      scannerCallsPerEvent: whole.calls, scannedCodeUnitsPerEvent: whole.codeUnits,
+      backstopScannerCallsPerEvent: whole.calls - leaf.calls, backstopScannedCodeUnitsPerEvent: whole.codeUnits - leaf.codeUnits,
+    };
+    const uri = `test://overhead/${profile.id}`;
+    const read = () => connection.readResource(uri);
+    const bytes = JSON.stringify(await read()).length;
+    const transportModes = await measureModes({
+      host: async () => deliverResourceInMemory({ result: await read() }),
+      'adapter-identity': async () => deliverResourceInMemory(toReadResourceResponse(await identity.sanitizeResourceRead(read))),
+      'adapter-core': async () => deliverResourceInMemory(toReadResourceResponse(await hostBoundary.sanitizeResourceRead(read))),
+    }, sized(profile.events));
+    rows.push({ host: hostName, profileId: profile.id, resultBytes: bytes, ...scans, modes: transportModes, derived: derived(transportModes) });
+
+    if (!inProcess) continue;
+    const parsed = await read();
+    const inProcessModes = await measureModes({
+      host: async () => deliverResourceInMemory({ result: parsed }),
+      'adapter-identity': async () => deliverResourceInMemory(toReadResourceResponse(identity.sanitizeResourceResult(parsed))),
+      'leaf-pass': async () => { const o = leafPass.sanitizeValue(parsed, { boundary: 'resource' }); return deliverResourceInMemory(o.outcome === 'ok' ? { result: o.value } : null); },
+      'adapter-core': async () => deliverResourceInMemory(toReadResourceResponse(hostBoundary.sanitizeResourceResult(parsed))),
+    }, sized(profile.inProcessEvents));
+    const d = derived(inProcessModes);
+    const round = v => Math.round(v * 1000) / 1000;
+    rows.push({
+      host: 'mcp-in-process', profileId: profile.id, resultBytes: bytes, ...scans, modes: inProcessModes,
+      derived: {
+        ...d,
+        backstop: round(inProcessModes['adapter-core'].median - inProcessModes['leaf-pass'].median),
+        throughputMiBPerSecond: inProcessModes['adapter-core'].median > 0 ? round(bytes / 1048576 / (inProcessModes['adapter-core'].median / 1e6)) : null,
+      },
+    });
+  }
+
+  let memory = null;
+  if (typeof globalThis.gc === 'function' && inProcess) {
+    const large = await connection.readResource('test://overhead/resource-text-60k');
+    const retained = async (fn, n) => {
+      globalThis.gc(); globalThis.gc();
+      const before = process.memoryUsage().heapUsed;
+      for (let i = 0; i < n; i += 1) await fn();
+      globalThis.gc(); globalThis.gc();
+      return process.memoryUsage().heapUsed - before;
+    };
+    const n = quick ? 50 : 500;
+    memory = {
+      profileId: 'resource-text-60k', reads: n, unit: 'bytes',
+      retainedHeapHost: await retained(async () => deliverResourceInMemory({ result: large }), n),
+      retainedHeapAdapterCore: await retained(async () => deliverResourceInMemory(toReadResourceResponse(hostBoundary.sanitizeResourceResult(large))), n),
+      maxRssBytes: process.resourceUsage().maxRSS * 1024,
+    };
+  }
+  await connection.close();
+  const perProfile = Object.fromEntries(W.RESOURCE_OVERHEAD_PROFILES.map(p => [p.id, { transport: sized(p.events), inProcess: sized(p.inProcessEvents) }]));
+  return { method: { repetitions, perProfile, quick, order: 'modes interleaved within each repetition, rotated by one position per repetition', clock: 'process.hrtime.bigint', percentile: 'nearest-rank', cacheMode: line === 'v2' ? 'bypass' : null }, results: rows, memory };
+}
+
+// ---------------------------------------------------------------------------
 
 const identityOut = {
   runtime: `node-${process.versions.node}`,
@@ -724,6 +1099,9 @@ if (mode === 'containment') {
   writeFileSync(join(recordDir, 'result.json'), JSON.stringify({ ...identityOut, protocolVersion: negotiatedProtocol, cases: results }), { mode: 0o600 });
 } else if (mode === 'overhead') {
   const measured = await overhead();
+  writeFileSync(join(recordDir, 'result.json'), JSON.stringify({ ...identityOut, protocolVersion: negotiatedProtocol, ...measured }), { mode: 0o600 });
+} else if (mode === 'resource-overhead') {
+  const measured = await resourceOverhead();
   writeFileSync(join(recordDir, 'result.json'), JSON.stringify({ ...identityOut, protocolVersion: negotiatedProtocol, ...measured }), { mode: 0o600 });
 } else {
   throw new Error(`unknown mode ${mode}`);

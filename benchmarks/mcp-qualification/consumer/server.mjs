@@ -5,7 +5,11 @@
  * Raw tools (`result:<case>`, `throw`, `crash`, `slow`, `half`, `echo-args`)
  * return what a misbehaving or compromised tool would: the host is the
  * authoritative boundary. `wrapped-*` tools use the adapter's server-side
- * wrappers, the contract's preventive placement. Over HTTP the process prints
+ * wrappers, the contract's preventive placement. Resources (#321) follow the
+ * same split: `test://resource/<case>` and `test://raw/*` are served raw,
+ * `test://wrapped/*` (low-level) and `test://mcp/wrapped/*` (McpServer
+ * `registerResource`, fixed and template URIs) through
+ * `wrapResourceReadHandler`. Over HTTP the process prints
  * `LISTENING <port>` on stdout; over stdio stdout carries only protocol
  * messages.
  *
@@ -21,7 +25,9 @@ import { join } from 'node:path';
 
 import { createMcpBoundary } from '@redact-secret/adapter-mcp';
 
-import { LIMITS, OVERHEAD_PROFILES, RESULT_CASES, halfOfSecret, throwMessage, wrappedStreamChunks } from './workloads.mjs';
+import {
+  LIMITS, OVERHEAD_PROFILES, RESOURCE_CASES, RESOURCE_OVERHEAD_PROFILES, RESULT_CASES, halfOfSecret, rawResource, throwMessage, wrappedStreamChunks,
+} from './workloads.mjs';
 
 const [line, transportKind, kind, recordDir, recording = 'on'] = process.argv.slice(2);
 // The overhead run turns recording off: it would otherwise time the server's own file writes.
@@ -38,21 +44,24 @@ async function loadLine() {
       Server, McpServer,
       onListTools: (s, h) => s.setRequestHandler(types.ListToolsRequestSchema, h),
       onCallTool: (s, h) => s.setRequestHandler(types.CallToolRequestSchema, h),
+      onReadResource: (s, h) => s.setRequestHandler(types.ReadResourceRequestSchema, h),
+      ResourceTemplate: (await import('@modelcontextprotocol/sdk/server/mcp.js')).ResourceTemplate,
       signalOf: extra => extra?.signal,
     };
   }
-  const { Server, McpServer } = await import('@modelcontextprotocol/server');
+  const { Server, McpServer, ResourceTemplate } = await import('@modelcontextprotocol/server');
   return {
-    Server, McpServer,
+    Server, McpServer, ResourceTemplate,
     onListTools: (s, h) => s.setRequestHandler('tools/list', h),
     onCallTool: (s, h) => s.setRequestHandler('tools/call', h),
+    onReadResource: (s, h) => s.setRequestHandler('resources/read', h),
     signalOf: ctx => ctx?.mcpReq?.signal ?? ctx?.signal,
   };
 }
 
 const INFO = { name: 'redact-secret-benchmarks-mcp-qualification', version: '0.0.0' };
 let lastTool = null;
-const stats = { echoCalls: 0, wrappedArgsCalls: 0, streamPulled: 0, streamClosed: 0, slowCancelled: 0 };
+const stats = { echoCalls: 0, wrappedArgsCalls: 0, streamPulled: 0, streamClosed: 0, slowCancelled: 0, resourceReads: 0, cacheableReads: 0, slowReads: 0, slowReadsCancelled: 0 };
 
 function waitForAbort(signal) {
   return new Promise(resolve => {
@@ -125,10 +134,44 @@ async function buildLowLevel(sdk) {
   })));
   handlers.set('stats', () => ({ content: [{ type: 'text', text: JSON.stringify(stats) }] }));
 
-  const server = new sdk.Server(INFO, { capabilities: { tools: {} } });
+  // resources/read (#321).
+  const resources = new Map();
+  for (const c of RESOURCE_CASES) resources.set(`test://resource/${c.id}`, () => c.result());
+  for (const p of RESOURCE_OVERHEAD_PROFILES) {
+    const cached = p.result();
+    resources.set(`test://overhead/${p.id}`, () => cached);
+  }
+  resources.set('test://raw/throw', () => { throw new Error(throwMessage()); });
+  resources.set('test://raw/throw-with-data', () => {
+    const error = new Error(throwMessage());
+    error.code = -32002;
+    error.data = { detail: throwMessage() };
+    throw error;
+  });
+  resources.set('test://raw/crash', () => { setTimeout(() => process.exit(3), 5); return new Promise(() => {}); });
+  const slowRead = async (request, extra) => {
+    stats.slowReads += 1;
+    const signal = sdk.signalOf(extra);
+    await Promise.race([waitForAbort(signal), new Promise(r => setTimeout(r, 5000))]);
+    if (signal?.aborted) stats.slowReadsCancelled += 1;
+    return rawResource('slow-late', request.params.uri);
+  };
+  resources.set('test://raw/slow', slowRead);
+  resources.set('test://raw/cacheable', request => { stats.cacheableReads += 1; return rawResource('cacheable', request.params.uri); });
+  resources.set('test://wrapped/result', mcp.wrapResourceReadHandler(request => rawResource('env', request.params.uri)));
+  resources.set('test://wrapped/blocked', mcp.wrapResourceReadHandler(request => rawResource('key', request.params.uri)));
+  resources.set('test://wrapped/throw', mcp.wrapResourceReadHandler(() => { throw new Error(throwMessage()); }));
+  resources.set('test://wrapped/slow', mcp.wrapResourceReadHandler(slowRead));
+
+  const server = new sdk.Server(INFO, { capabilities: { tools: {}, resources: {} } });
+  sdk.onReadResource(server, (request, extra) => {
+    stats.resourceReads += 1;
+    const handler = resources.get(request.params.uri);
+    if (handler === undefined) throw new Error('unknown resource');
+    return handler(request, extra);
+  });
   sdk.onListTools(server, () => ({ tools: [...handlers.keys()].map(name => ({ name, inputSchema: { type: 'object' } })) }));
   sdk.onCallTool(server, (request, extra) => {
-    lastTool = request.params.name;
     const handler = handlers.get(request.params.name);
     if (handler === undefined) return { content: [{ type: 'text', text: 'unknown tool' }], isError: true };
     return handler(request.params.arguments, extra);
@@ -137,9 +180,18 @@ async function buildLowLevel(sdk) {
 }
 
 async function buildHighLevel(sdk) {
+  const mcp = await createMcpBoundary(LIMITS);
   const server = new sdk.McpServer(INFO);
-  server.registerTool('throw', { description: 'an unwrapped handler that throws' }, () => { lastTool = 'throw'; throw new Error(throwMessage()); });
+  server.registerTool('throw', { description: 'an unwrapped handler that throws' }, () => { throw new Error(throwMessage()); });
   server.registerTool('stats', { description: 'server observations' }, () => ({ content: [{ type: 'text', text: JSON.stringify(stats) }] }));
+  // registerResource with a fixed URI and a URI template, unwrapped (the host is the boundary) and wrapped (preventive).
+  const template = pattern => new sdk.ResourceTemplate(pattern, { list: undefined });
+  server.registerResource('env', 'test://mcp/env', { mimeType: 'text/plain' }, uri => rawResource('env', uri.href));
+  server.registerResource('config', template('test://mcp/config/{name}'), { mimeType: 'application/json' }, uri => rawResource('config', uri.href));
+  server.registerResource('throw', 'test://mcp/throw', {}, () => { throw new Error(throwMessage()); });
+  server.registerResource('wrapped-env', 'test://mcp/wrapped/env', { mimeType: 'text/plain' }, mcp.wrapResourceReadHandler(uri => rawResource('env', uri.href)));
+  server.registerResource('wrapped-key', template('test://mcp/wrapped/key/{name}'), { mimeType: 'text/plain' }, mcp.wrapResourceReadHandler(uri => rawResource('key', uri.href)));
+  server.registerResource('wrapped-throw', 'test://mcp/wrapped/throw', {}, mcp.wrapResourceReadHandler(() => { throw new Error(throwMessage()); }));
   return server;
 }
 
@@ -147,9 +199,24 @@ function tapWire(transport) {
   if (recording === 'off') return;
   const send = transport.send.bind(transport);
   transport.send = (message, options) => {
-    // Calls are sequential, so the tool most recently called owns this message.
+    // Calls are sequential, so the tool or resource most recently requested owns this message.
     record('wire.jsonl', { tool: lastTool, message });
     return send(message, options);
+  };
+}
+
+/**
+ * Attributes wire output at the moment a request arrives, before any
+ * handler runs, so a response the SDK sends without calling one (a
+ * not-found resource) is never attributed to the previous request.
+ */
+function tapIncoming(transport) {
+  const receive = transport.onmessage;
+  transport.onmessage = (message, extra) => {
+    if (message?.method === 'tools/call') lastTool = message.params?.name ?? null;
+    else if (message?.method === 'resources/read') lastTool = `resource:${message.params?.uri}`;
+    else if (typeof message?.method === 'string' && message.id !== undefined) lastTool = null;
+    return receive?.(message, extra);
   };
 }
 
@@ -201,6 +268,7 @@ async function serveHttp(server) {
   }
   tapWire(transport);
   await server.connect(transport);
+  tapIncoming(transport);
   const http = createServer((req, res) => {
     handle(req, res).catch(() => {
       if (!res.headersSent) res.writeHead(500);
@@ -220,6 +288,7 @@ if (transportKind === 'stdio') {
   const transport = new StdioServerTransport();
   tapWire(transport);
   await server.connect(transport);
+  tapIncoming(transport);
 } else {
   await serveHttp(server);
 }

@@ -1,5 +1,6 @@
 /**
- * Black-box MCP adapter boundary and operational qualification (#281).
+ * Black-box MCP adapter boundary and operational qualification (#281), for
+ * `tools/call` and, since #321, `resources/read`.
  *
  *   npm run mcp:qualify -- \
  *     --core-package <core.tgz> --core-node-package <node-<platform>.tgz> --core-wasm-package <wasm.tgz> \
@@ -14,7 +15,8 @@
  * through the adversarial workload corpus. It then scans every sink the host
  * wrote for synthetic plaintext, measures the per-call overhead against an
  * unprotected host, initialization and package size, and writes one report.
- * It never imports an adapter's source or a private API. Spec:
+ * It never imports an adapter's source or a private API. The resources/read
+ * operational profile is measured and reported apart from tools/call. Spec:
  * docs/specs/mcp-qualification.md.
  */
 
@@ -182,9 +184,11 @@ async function installConsumer(endpoint: typeof ENDPOINTS[number]): Promise<Cons
 // Containment
 // ---------------------------------------------------------------------------
 
-const declarations: Record<string, CaseDeclaration> = Object.fromEntries(
-  [...W.RESULT_CASES, ...W.TOOL_CASES, ...W.STREAM_CASES, ...W.POLICY_CASES, W.CONTROL_CASE].map(c => [c.id, c as CaseDeclaration]),
-);
+const declarations: Record<string, CaseDeclaration> = Object.fromEntries([
+  ...[...W.RESULT_CASES, ...W.TOOL_CASES, ...W.STREAM_CASES, ...W.POLICY_CASES, W.CONTROL_CASE, ...W.RESOURCE_CASES, W.RESOURCE_CONTROL_CASE].map(c => [c.id, c as CaseDeclaration]),
+  // A resource read's wire output is attributed to `resource:<uri>` by the server.
+  ...W.RESOURCE_READ_CASES.map(c => [c.id, { ...c, ...(typeof c.uri === 'string' ? { tool: `resource:${c.uri}` } : {}) } as CaseDeclaration]),
+]);
 const secrets = W.allSecrets();
 
 interface HostRun { readonly code: number | null; readonly stdout: string; readonly stderr: string }
@@ -232,7 +236,7 @@ async function containmentCell(consumer: Consumer, node: string, transport: stri
     const scan = scanRecordDir(recordDir, secrets);
     processOutput.serverStderr = scan.serverStderr.fragment;
     const verdicts = output.cases.map(row => verdict(row, declarations[row.id], scan));
-    const missing = W.ALL_CASE_IDS.filter(id => !output.cases.some(row => row.id === id));
+    const missing = W.caseIdsFor(consumer.endpoint.line).filter(id => !output.cases.some(row => row.id === id));
     if (missing.length > 0) return { ...base, protocolVersion: output.protocolVersion, status: 'failed', failure: `cases not run: ${missing.join(', ')}`, processOutput };
     return { ...base, sdk: output.sdk, protocolVersion: output.protocolVersion, status: 'complete', summary: summarizeCell(verdicts), processOutput, cases: verdicts };
   } finally {
@@ -244,12 +248,12 @@ async function containmentCell(consumer: Consumer, node: string, transport: stri
 // Operational cost
 // ---------------------------------------------------------------------------
 
-async function overheadRun(consumer: Consumer, node: string, transport: string) {
+async function overheadRun(consumer: Consumer, node: string, transport: string, mode: 'overhead' | 'resource-overhead' = 'overhead') {
   const recordDir = mkdtempSync(path.join(os.tmpdir(), '281-mcp-overhead-'));
   try {
-    const run = await runHost(node, consumer.root, ['--expose-gc', 'host.mjs', 'overhead', consumer.endpoint.line, transport, recordDir, ...(quick ? ['--quick'] : [])], 1_800_000);
+    const run = await runHost(node, consumer.root, ['--expose-gc', 'host.mjs', mode, consumer.endpoint.line, transport, recordDir, ...(quick ? ['--quick'] : [])], 1_800_000);
     const result = readResult(recordDir);
-    if (run.code !== 0 || result === null) throw new Error(`mcp-qualification: overhead host exited ${run.code}`);
+    if (run.code !== 0 || result === null) throw new Error(`mcp-qualification: ${mode} host exited ${run.code}: ${run.stderr.slice(-400)}`);
     return result as { runtime: string; platform: string; arch: string; method: Record<string, unknown> & { repetitions: number }; results: Record<string, unknown>[]; memory: unknown };
   } finally {
     rmSync(recordDir, { recursive: true, force: true });
@@ -287,6 +291,7 @@ const startedAt = new Date().toISOString();
 const consumers: Consumer[] = [];
 const cells: Cell[] = [];
 const overheadOutputs: Record<string, unknown>[] = [];
+const resourceOutputs: Record<string, unknown>[] = [];
 let init: Awaited<ReturnType<typeof initTimes>> | null = null;
 const overheadNode = nodes.find(n => execFileSync(n, ['--version'], { encoding: 'utf8' }).startsWith('v22.')) ?? nodes[0]!;
 const workloadDigest = hash(JSON.stringify(W.OVERHEAD_PROFILES.map(p => ({ id: p.id, result: p.result() }))) + JSON.stringify(W.OVERHEAD_STREAM_PROFILE.chunks()));
@@ -320,6 +325,18 @@ try {
         console.error(`mcp-qualification: overhead ${endpoint.line}@${Object.values(endpoint.packages)[0]} ${transport} process ${p + 1}/${overheadProcesses} done`);
       }
     }
+    // resources/read, in its own processes (#321).
+    for (const transport of transports) {
+      for (let p = 0; p < overheadProcesses; p += 1) {
+        const measured = await overheadRun(consumer, overheadNode, transport, 'resource-overhead');
+        resourceOutputs.push({
+          surface: 'resources/read', measuredAt: new Date().toISOString(),
+          environment: { runtime: measured.runtime, platform: measured.platform, arch: measured.arch, packages: consumer.installed, transport, process: p + 1 },
+          method: { ...measured.method, processes: 1 }, results: measured.results, memory: measured.memory,
+        });
+        console.error(`mcp-qualification: resource overhead ${endpoint.line}@${Object.values(endpoint.packages)[0]} ${transport} process ${p + 1}/${overheadProcesses} done`);
+      }
+    }
     if (endpoint.line === 'v1' && endpoint.endpoint === 'highest') init = await initTimes(consumer, overheadNode);
   }
 } finally {
@@ -349,19 +366,53 @@ const overheadSummary = [...aggregate.values()].map(rows => {
   };
 });
 
+// The same aggregation for resources/read, with the backstop's share and throughput.
+type ResourceRow = Row & { resultBytes: number; backstopScannerCallsPerEvent: number; backstopScannedCodeUnitsPerEvent: number; derived: Row['derived'] & { backstop?: number; throughputMiBPerSecond?: number | null } };
+const resourceAggregate = new Map<string, ResourceRow[]>();
+for (const output of resourceOutputs) for (const row of output.results as ResourceRow[]) {
+  const key = `${row.host}\0${row.profileId}`;
+  resourceAggregate.set(key, [...(resourceAggregate.get(key) ?? []), row]);
+}
+const resourceSummary = [...resourceAggregate.values()].map(rows => {
+  const first = rows[0]!;
+  const med = (pick: (r: ResourceRow) => number) => round(median(rows.map(pick)));
+  const host = med(r => r.modes.host!.median);
+  const core = med(r => r.modes['adapter-core']!.median);
+  const inProcess = first.host === 'mcp-in-process';
+  return {
+    host: first.host, profileId: first.profileId, processes: rows.length, resultBytes: first.resultBytes,
+    scannerCallsPerEvent: first.scannerCallsPerEvent, scannedCodeUnitsPerEvent: first.scannedCodeUnitsPerEvent,
+    backstopScannerCallsPerEvent: first.backstopScannerCallsPerEvent, backstopScannedCodeUnitsPerEvent: first.backstopScannedCodeUnitsPerEvent,
+    unprotectedMedian: host, protectedMedian: core, protectedP95: med(r => r.modes['adapter-core']!.p95),
+    adapterOverhead: med(r => r.derived.adapterOverhead), traversal: med(r => r.derived.traversal), coreScan: med(r => r.derived.coreScan),
+    ...(inProcess ? { leafPassMedian: med(r => r.modes['leaf-pass']!.median), backstop: med(r => r.derived.backstop ?? 0), throughputMiBPerSecond: med(r => r.derived.throughputMiBPerSecond ?? 0) } : {}),
+    relativeOverhead: host > 0 ? round((core - host) / host) : null,
+    unit: 'microseconds-per-read',
+  };
+});
+
 const complete = cells.length === ENDPOINTS.length * nodes.length * transports.length && cells.every(c => c.status === 'complete');
 const totals = cells.reduce((acc, cell) => {
   if (cell.summary) {
     acc.leaks += cell.summary.leaks; acc.deviations += cell.summary.deviations;
     acc.knownFalseNegatives += cell.summary.knownFalseNegatives; acc.deliveredByPolicy += cell.summary.deliveredByPolicy; acc.caseRuns += cell.summary.cases;
+    acc.hostResponsibility += cell.summary.hostResponsibility ?? 0;
+    const r = cell.summary.resources;
+    if (r) {
+      acc.resourceCaseRuns += r.cases; acc.resourceLeaks += r.leaks; acc.resourceDeviations += r.deviations;
+      acc.resourceKnownFalseNegatives += r.knownFalseNegatives; acc.resourceControlsDetected += r.controlsDetected;
+    }
   }
   if (cell.processOutput?.hostStdout || cell.processOutput?.hostStderr) acc.processOutputLeaks += 1;
   return acc;
-}, { caseRuns: 0, leaks: 0, deviations: 0, knownFalseNegatives: 0, deliveredByPolicy: 0, processOutputLeaks: 0 });
+}, {
+  caseRuns: 0, leaks: 0, deviations: 0, knownFalseNegatives: 0, deliveredByPolicy: 0, processOutputLeaks: 0, hostResponsibility: 0,
+  resourceCaseRuns: 0, resourceLeaks: 0, resourceDeviations: 0, resourceKnownFalseNegatives: 0, resourceControlsDetected: 0,
+});
 
 const report = {
   schema: REPORT_SCHEMA,
-  issue: 281,
+  issue: 321,
   status: complete ? 'complete' : 'incomplete',
   quick,
   startedAt,
@@ -370,6 +421,9 @@ const report = {
   contract: {
     reference: `https://github.com/redact-secret/redact-secret/blob/${contractCommit}/docs/reference/mcp-boundary.md`,
     decision: `https://github.com/redact-secret/redact-secret/blob/${contractCommit}/docs/decisions/2026-09-25-define-the-supported-mcp-redaction-boundary.md`,
+    resourcesReference: `https://github.com/redact-secret/redact-secret/blob/${contractCommit}/docs/reference/mcp-resources-read.md`,
+    resourcesDecision: `https://github.com/redact-secret/redact-secret/blob/${contractCommit}/docs/decisions/2026-09-25-define-the-supported-mcp-resources-read-boundary.md`,
+    keyAwareDecision: `https://github.com/redact-secret/redact-secret/blob/${contractCommit}/docs/decisions/2026-09-25-define-key-aware-sanitize-value.md`,
   },
   artifacts: {
     core: {
@@ -387,7 +441,8 @@ const report = {
   },
   host: { os: `${os.platform()}-${os.release()}`, arch: os.arch(), cpuModel: os.cpus()[0]?.model ?? null, logicalCpus: os.cpus().length, totalMemoryBytes: os.totalmem(), driverRuntime: `node-${process.versions.node}` },
   configuration: {
-    limits: W.LIMITS, binaryContent: 'block (the default)', policy: 'the core default, except in the policy-* cases', placement: 'host (authoritative); server-wrapped cases also exercise the preventive server placement',
+    limits: W.LIMITS, binaryContent: 'block (the default), except resource cases that opt into pass', policy: 'the core default, except in the policy-* and block-policy cases', placement: 'host (authoritative); server-wrapped cases also exercise the preventive server placement',
+    resourceReads: '2.x Client reads use cacheMode "bypass", except the two response-cache cases; low-level Server resources/read handler and McpServer.registerResource with fixed and template URIs',
     corpus: { file: 'benchmarks/mcp-qualification/consumer/workloads.mjs', sha256: sha256File(path.join(consumerSource, 'workloads.mjs')), cases: W.ALL_CASE_IDS.length },
   },
   summary: { cells: cells.length, completeCells: cells.filter(c => c.status === 'complete').length, ...totals },
@@ -397,12 +452,19 @@ const report = {
     overhead: { runtime: overheadNode === process.execPath ? `node-${process.versions.node}` : execFileSync(overheadNode, ['--version'], { encoding: 'utf8' }).trim(), summary: overheadSummary, series: { schema: SERIES_SCHEMA, issue: 281, outputs: overheadOutputs } },
     initialization: init,
     packages: 'see artifacts: packedBytes, unpackedBytes and files per tarball, #141 definitions',
+    resources: {
+      note: 'resources/read (#321), measured in its own processes and reported apart from tools/call. leaf-pass is the AI-context sanitizeValue of the result alone on the real core; backstop = adapter-core - leaf-pass, the key-context backstop second scan plus the resource shape pass. No budget exists.',
+      runtime: overheadNode === process.execPath ? `node-${process.versions.node}` : execFileSync(overheadNode, ['--version'], { encoding: 'utf8' }).trim(),
+      summary: resourceSummary, outputs: resourceOutputs,
+    },
   },
   notMeasured: [
     'bundle contribution: adapter-mcp is a Node.js server-side package that loads the native core; no browser bundle applies',
     'a core that fails to initialize: requires breaking the installed core, which is adapter-internal lifecycle already qualified by redact-secret-adapters#13',
     'the Python mcp SDK, other language SDKs, HTTP+SSE, experimental.tasks: outside the supported range',
-    'MCP messages other than tools/call: outside the contract',
+    'MCP messages other than tools/call and resources/read (resources/list, resources/templates/list, subscriptions and update notifications, prompts/get, sampling, elicitation, completion, logging): outside the contracts',
+    'a secret split across two resources/read calls: a documented exclusion, not run; the split across two contents entries is run and counted as a known false negative',
+    'a persistent or shared 2.x responseCacheStore: outside the claim by contract; the response-cache cases show the store receives the raw result before the boundary, which makes it a documented host responsibility',
   ],
 };
 
@@ -420,5 +482,5 @@ if (markdownOut) {
   assertNoPlaintext(markdown, secrets);
   writeFileSync(markdownOut, markdown);
 }
-console.error(`mcp-qualification: ${report.status}; ${totals.caseRuns} case runs over ${cells.length} cells; leaks ${totals.leaks}, deviations ${totals.deviations}, known false negatives ${totals.knownFalseNegatives}, process-output leaks ${totals.processOutputLeaks}`);
+console.error(`mcp-qualification: ${report.status}; ${totals.caseRuns} case runs over ${cells.length} cells (${totals.resourceCaseRuns} resources/read); leaks ${totals.leaks}, deviations ${totals.deviations}, known false negatives ${totals.knownFalseNegatives}, host responsibility ${totals.hostResponsibility}, process-output leaks ${totals.processOutputLeaks}`);
 process.exit(complete && totals.leaks === 0 && totals.processOutputLeaks === 0 && totals.deviations === 0 ? 0 : 1);

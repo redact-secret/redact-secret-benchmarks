@@ -94,7 +94,7 @@ function observationsFor(selected: Fixture[], data?: BenchData): ScannerObservat
     });
     const rows = scanners.flatMap(item => item.rows);
     const scanner = scanners[0]?.scanner;
-    const provenance = [...new Map(scanners.flatMap(item => item.scanner.observation ? [[JSON.stringify(item.scanner.observation), item.scanner.observation] as const] : []).values())];
+    const provenance = [...new Map(scanners.flatMap(item => item.scanner.observation ? [[JSON.stringify(item.scanner.observation), item.scanner.observation] as const] : [])).values()];
     const provenanceInvalid = scanners.some(({ report, scanner: item }) => {
       const observation = item.observation;
       if (!observation || !['fresh', 'snapshot'].includes(observation.source) || !Number.isFinite(Date.parse(observation.observedAt)) || !observation.sourceRunId) return true;

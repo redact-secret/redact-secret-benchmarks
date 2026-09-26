@@ -4,7 +4,7 @@ import { platform, arch } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanners } from '../scanners/index.mjs';
-import { resolveEvaluationDomain } from './evaluation/domains/registry.ts';
+import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
 import { hash } from './engine/model.ts';
 import { runEvaluation, exitCode } from './engine/runner.ts';
 
@@ -18,7 +18,7 @@ for (const arg of args) {
   options[key] = match?.[2] ?? true;
 }
 if (options.help) { console.log(usage); process.exit(0); }
-const credentialDomain = resolveEvaluationDomain(String(options.domain ?? 'credential'));
+const credentialDomain = resolveCredentialDomain(String(options.domain ?? 'credential'));
 const methods = credentialDomain.createMethods(), operators = credentialDomain.createOperators();
 let cases = await credentialDomain.loadCases(operators);
 const select = (value: string | boolean | undefined, available: string[], label: string) => {

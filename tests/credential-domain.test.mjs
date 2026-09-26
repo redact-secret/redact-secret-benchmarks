@@ -34,7 +34,7 @@ test('credential evaluator has one explicit internal identity and composition ro
 });
 
 test('the keyed domain registry validates names without CLI semantic branches', () => {
-  assert.deepEqual(evaluationDomainIds(), ['credential']);
+  assert.deepEqual(evaluationDomainIds(), ['credential', 'pii']);
   assert.equal(resolveEvaluationDomain('credential'), credentialDomain);
   assert.throws(() => resolveEvaluationDomain('pii-not-registered'), /Unknown evaluation domain/);
 });
@@ -99,7 +99,7 @@ test('legacy module paths are re-export shims and production entrypoints select 
     assert.match(source, /credentialDomain/, file);
     assert.doesNotMatch(source, /from ['"][^'"]*(?:benchmarks\/)?(?:methods|operators|engine\/cases)(?:\/|\.ts)/, file);
   }
-  assert.match(await text('benchmarks/holdout.ts'), /resolveEvaluationDomain/);
+  assert.match(await text('benchmarks/holdout.ts'), /resolve(?:Evaluation|Credential)Domain/);
 });
 
 test('the #276 move leaves accounting and serialized report versions untouched', async () => {

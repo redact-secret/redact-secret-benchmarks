@@ -1,7 +1,7 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { resolveEvaluationDomain } from './evaluation/domains/registry.ts';
+import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
 import { runEvaluation } from './engine/runner.ts';
 import { hash } from './engine/model.ts';
 import { runtimeProvenance, repositoryRoot } from './engine/provenance.ts';
@@ -21,7 +21,7 @@ async function main() {
     if ((!match && arg !== '--require-milestone-closed') || key in options) throw new Error('Invalid qualification arguments');
     options[key] = match?.[2] ?? true;
   }
-  const credentialDomain = resolveEvaluationDomain(String(options.domain ?? 'credential'));
+  const credentialDomain = resolveCredentialDomain(String(options.domain ?? 'credential'));
   const suite = JSON.parse(await readFile(path.join(repositoryRoot, 'qualification/suite-v1.json'), 'utf8'));
   const milestone = JSON.parse(await readFile(path.join(repositoryRoot, 'qualification/milestone-status.json'), 'utf8'));
   if (options['require-milestone-closed'] && (milestone.status !== 'closed' || milestone.openPrerequisites.length)) {

@@ -96,7 +96,7 @@ try {
   await page.locator('[data-tree-filter]').fill('');
   await page.locator('[data-tree-signal]').selectOption('signal');
 
-  await page.goto(origin + '/coverage'); await ready(page);
+  await page.goto(origin + '/coverage?show=detectors'); await ready(page);
   assert.equal(await page.locator('.cov-row:not(.cov-head)').count(), registry.detectors.length);
   assert.equal(await page.locator('.cov-row .bar u').count(), registry.detectors.length, 'minimum sample size drawn on every bar');
   assert.equal(await page.locator('aside').count(), 0, 'the detector sidebar is gone');
@@ -105,15 +105,18 @@ try {
   const open_ = Object.values(ledger.entries).filter(e => e.status === 'open').length;
   assert.ok((await page.locator('#main').innerText()).includes(`${open_.toLocaleString('en-US')} open of ${Object.keys(ledger.entries).length.toLocaleString('en-US')}`));
   assert.equal(await page.locator('.health > *').count(), 5);
-  const queue = await page.locator('.wb table tbody tr td.num').allInnerTexts();
+  const queue = await page.locator('.decision-card > b').allInnerTexts();
   assert.equal(queue.reduce((n, v) => n + Number(v.replace(/,/g, '')), 0), open_, 'queue groups add up to the ledger');
   assert.ok(queue.length <= 12, 'groups, not rows');
 
   const currentCategory = await page.locator('.decision-card').evaluateAll(cards => cards.map(card => ({ href: card.getAttribute('href'), count: Number(card.querySelector('b')?.textContent?.replace(/,/g, '')) })).find(card => card.count > 0 && !card.href.endsWith('/release-historical'))?.href);
-  assert.ok(currentCategory, 'at least one current decision category is reachable');
-  await page.goto(origin + currentCategory); await ready(page);
-  assert.ok(await page.locator('button[data-copy]').count() > 0, 'a reproduced entry has a copy path');
-  JSON.parse(await page.locator('pre.snippet').first().innerText());
+  if (currentCategory) {
+    await page.goto(origin + currentCategory); await ready(page);
+    assert.ok(await page.locator('button[data-copy]').count() > 0, 'a reproduced entry has a copy path');
+    JSON.parse(await page.locator('pre.snippet').first().innerText());
+  } else {
+    assert.ok((await page.locator('#main').innerText()).includes('Resolution is locked:'), 'an unverifiable published queue locks all current decision paths');
+  }
   await page.goto(origin + '/workbench/review/release-historical'); await ready(page);
   assert.equal(await page.locator('button[data-copy]').count(), 0, 'historical entries without adjudication have no copy path');
   assert.equal(await page.locator('pre.snippet').count(), 0, 'historical entries expose no selectable draft');

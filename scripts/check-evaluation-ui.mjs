@@ -219,7 +219,12 @@ try {
     const body = await json(`public/results/${file}.json`).catch(() => null);
     if (!body) return r.fulfill({ status: 404, body: '' });
     if (file === first.id || file === second.id) body.runId = '2020-01-01T00:00:00.000Z-000000';
-    if (file === 'summary') body.categories = body.categories.filter(c => c !== first.id && c !== second.id);
+    if (file === 'summary') {
+      body.categories = body.categories.filter(c => c !== first.id && c !== second.id);
+      for (const category of [first.id, second.id]) for (const scanner of (await json(`public/results/${category}.json`)).scanners.filter(s => s.status === 'complete'))
+        for (const [key, group] of Object.entries(scanner.groups)) for (const field of ['files', 'spans', 'leakedSpans', 'flaggedFiles'])
+          if (typeof body.overall[scanner.id]?.[key]?.[field] === 'number') body.overall[scanner.id][key][field] -= Number(group[field] ?? 0);
+    }
     return r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
   });
   assert.ok(text.includes('2 suites are from an older run') && text.includes(first.id) && text.includes('left out of every total'), text.slice(0, 400));

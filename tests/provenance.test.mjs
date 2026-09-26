@@ -53,7 +53,7 @@ test('staging measures the corpus against the qualified candidate; production ag
   const staging = step.slice(step.indexOf('if [ "$TARGET" = staging ]'), step.indexOf('else'));
   for (const flag of ['--candidate-package="$CORE_PACKAGE"', '--candidate-node-package="$NODE_PACKAGE"', '--candidate-wasm-package="$WASM_PACKAGE"', '--candidate-source-commit="$PRODUCT_COMMIT"']) assert.ok(staging.includes(flag), flag);
   assert.match(step.slice(step.indexOf('else')), /else\n\s+npm run bench -- --strict\n\s+fi/, 'production runs bench with no candidate flag');
-  const evaluation = workflow.slice(workflow.indexOf('- name: Produce the evaluation and qualification reports the site reads'), workflow.indexOf('- name: Measure the redact-secret main commit as candidate evidence'));
+  const evaluation = workflow.slice(workflow.indexOf('- name: Produce the evaluation and qualification reports the site reads'), workflow.indexOf('- name: Measure the qualified redact-secret commit as candidate evidence'));
   assert.ok(!evaluation.includes('if:'), 'both environments publish evaluation and qualification evidence (#213)');
   assert.match(evaluation, /\n\s+npm run eval\n/, 'evaluation-v1.json keeps measuring the released package');
   assert.match(evaluation, /\n\s+if ! npm run eval:qualify; then\n/, 'eval:qualify runs with the suite pins, no candidate flag');
@@ -76,4 +76,14 @@ test('the publish workflow hands the environment and commit to the site build', 
   assert.match(step, /VITE_SITE_ENV: \$\{\{ env\.TARGET \}\}/);
   assert.match(step, /VITE_BUILD_COMMIT: \$\{\{ github\.sha \}\}/);
   assert.match(step, /run: npm run build/);
+});
+
+test('the production deployment summary records all immutable release handoff identities', async () => {
+  const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
+  const step = workflow.slice(workflow.indexOf('- name: Record what was published'));
+  for (const identity of ['published product version', 'product release source SHA', 'benchmark snapshot SHA', 'corpus manifest hash'])
+    assert.ok(step.includes(`- ${identity}:`), identity);
+  assert.match(step, /\.pins\.packageVersion benchmarks\/pin-manifest\.json/);
+  assert.match(step, /\.pins\.sourceRevision benchmarks\/pin-manifest\.json/);
+  assert.match(step, /\.revision benchmarks\/pin-manifest\.json/);
 });

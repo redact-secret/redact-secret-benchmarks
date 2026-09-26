@@ -10,7 +10,7 @@ const options = Object.fromEntries(process.argv.slice(2).map(arg => {
 }));
 const raw = JSON.parse(await readFile(options.input ?? 'results-output/evaluation.json', 'utf8'));
 const cases = await loadCases(createOperators());
-const categories = JSON.parse(await readFile('benchmarks/categories.json', 'utf8'));
+const categories = JSON.parse(await readFile('benchmarks/categories.json', 'utf8')).filter((category: { calibrationOnly?: boolean }) => !category.calibrationOnly);
 const hashes = Object.fromEntries(await Promise.all(categories.map(async (c: { id: string; corpus: string }) => [c.id, hash(await readFile(c.corpus))])));
 const qualification = options.qualification ? JSON.parse(await readFile(options.qualification, 'utf8')) : null;
 const report = publicEvaluation(raw, cases, hashes, qualification);

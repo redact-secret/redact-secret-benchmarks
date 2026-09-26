@@ -1,0 +1,617 @@
+{
+  "$id": "urn:redact-secret:blind-aggregate:1",
+  "title": "Custodian-held blind evaluation aggregate (#142)",
+  "description": "The only output a blind run may release. A whitelist: no field may carry a fixture id, path, text, range, seed or per-fixture verdict, and there is no overall score.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "reportType",
+    "evidenceClass",
+    "independence",
+    "runId",
+    "startedAt",
+    "finishedAt",
+    "status",
+    "candidate",
+    "benchmark",
+    "environment",
+    "freeze",
+    "corpus",
+    "replays",
+    "measurability",
+    "instability",
+    "leakage",
+    "falseAlarms",
+    "strata",
+    "uncertainty",
+    "failures"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "reportType": {
+      "const": "blind-aggregate"
+    },
+    "evidenceClass": {
+      "const": "custodian-blind"
+    },
+    "independence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "achieved",
+        "organisationalIndependence",
+        "statement"
+      ],
+      "properties": {
+        "level": {
+          "const": "custodian-held-blind"
+        },
+        "achieved": {
+          "const": "procedural-separation"
+        },
+        "organisationalIndependence": {
+          "const": false
+        },
+        "statement": {
+          "const": "Custodian-held blind fixtures, authored and held by an isolated custodian agent session that product-implementing agents and the orchestrator never saw. The same human operates the custodian and the maintainer roles, so this run achieves procedural separation, not organisational independence."
+        }
+      }
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+    },
+    "startedAt": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+    },
+    "finishedAt": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "incomplete"
+      ]
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceCommit",
+        "packageName",
+        "declaredVersion",
+        "artifactSha256",
+        "artifacts",
+        "configurationHash"
+      ],
+      "properties": {
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "packageName": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9@/._+-]{1,80}$"
+        },
+        "declaredVersion": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9@/._+-]{1,80}$"
+        },
+        "artifactSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "artifacts": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "role",
+              "sha256"
+            ],
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": [
+                  "package",
+                  "node",
+                  "wasm"
+                ]
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        "configurationHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceCommit",
+        "lockfileSha256"
+      ],
+      "properties": {
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "lockfileSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node",
+        "os",
+        "arch"
+      ],
+      "properties": {
+        "node": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9@/._+-]{1,80}$"
+        },
+        "os": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9@/._+-]{1,80}$"
+        },
+        "arch": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9@/._+-]{1,80}$"
+        }
+      }
+    },
+    "freeze": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "freezeId",
+        "frozenAt",
+        "freezeHash"
+      ],
+      "properties": {
+        "freezeId": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+        },
+        "frozenAt": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+        },
+        "freezeHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "corpus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "epoch",
+        "commitment",
+        "fixtures"
+      ],
+      "properties": {
+        "epoch": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+        },
+        "commitment": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "fixtures": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "replays": {
+      "type": "integer",
+      "minimum": 2,
+      "maximum": 10
+    },
+    "measurability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixtures",
+        "measurable",
+        "share",
+        "withheld",
+        "withheldReasons"
+      ],
+      "properties": {
+        "fixtures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "measurable": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "share": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          ]
+        },
+        "withheld": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "withheldReasons": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "unstable-across-replays",
+            "scan-error"
+          ],
+          "properties": {
+            "unstable-across-replays": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "scan-error": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "instability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count",
+        "of",
+        "value",
+        "interval"
+      ],
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "of": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          ]
+        },
+        "interval": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          ]
+        }
+      }
+    },
+    "leakage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixtures",
+        "spans",
+        "leakedSpans",
+        "outcomes"
+      ],
+      "properties": {
+        "fixtures": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "spans": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "leakedSpans": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "count",
+            "of",
+            "value",
+            "interval"
+          ],
+          "properties": {
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "of": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              ]
+            },
+            "interval": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "outcomes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "EXACT",
+            "COVERED",
+            "OVERBROAD",
+            "PARTIAL",
+            "MISS"
+          ],
+          "properties": {
+            "EXACT": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "COVERED": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "OVERBROAD": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "PARTIAL": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "MISS": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "falseAlarms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "controls",
+        "flaggedControls"
+      ],
+      "properties": {
+        "controls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "flaggedControls": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "count",
+            "of",
+            "value",
+            "interval"
+          ],
+          "properties": {
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "of": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              ]
+            },
+            "interval": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "strata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "minimumFixtures",
+        "rows"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "released",
+            "suppressed",
+            "none"
+          ]
+        },
+        "minimumFixtures": {
+          "type": "integer",
+          "minimum": 5
+        },
+        "rows": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "fixtures",
+              "spans",
+              "leakedSpans",
+              "controls",
+              "flaggedControls"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+              },
+              "fixtures": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "spans": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "leakedSpans": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "controls": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "flaggedControls": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "confidence",
+        "scope"
+      ],
+      "properties": {
+        "method": {
+          "const": "wilson-score"
+        },
+        "confidence": {
+          "const": 0.95
+        },
+        "scope": {
+          "const": "Intervals treat the custodian corpus as a sample of authored cases. The fixtures are authored, not drawn from real traffic, so no interval estimates a real-world rate."
+        }
+      }
+    },
+    "failures": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "phase",
+          "code"
+        ],
+        "properties": {
+          "phase": {
+            "enum": [
+              "freeze",
+              "identity",
+              "installation",
+              "initialization",
+              "scan",
+              "validation"
+            ]
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{1,79}$"
+          }
+        }
+      }
+    }
+  }
+}

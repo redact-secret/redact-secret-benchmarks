@@ -5,7 +5,8 @@ export interface PinFacts {
   inventoryRedactSecretRevision: string;
   inventoryRedactSecretVersion: string;
   packageVersion: string;
-  performanceCriteriaSourceCommit: string;
+  /** `performance-criteria.json` `baseline.verifiedCommit`: the latest ACCEPTED evaluation against the unchanged thresholds. */
+  performanceCriteriaVerifiedCommit: string;
 }
 
 export interface AncestryFacts {
@@ -28,8 +29,8 @@ export function checkPinConsistency(facts: PinFacts): string[] {
   if (facts.inventoryRedactSecretVersion !== facts.packageVersion) {
     failures.push(`detector-inventory.json redactSecretVersion (${facts.inventoryRedactSecretVersion}) does not match package.json @redact-secret/core version (${facts.packageVersion})`);
   }
-  if (facts.performanceCriteriaSourceCommit !== facts.inventoryRedactSecretRevision) {
-    failures.push(`benchmarks/performance-criteria.json baseline.sourceCommit (${facts.performanceCriteriaSourceCommit}) does not match detector-inventory.json redactSecretRevision (${facts.inventoryRedactSecretRevision}) -- #150: the evaluated core revision must match the current pin manifest`);
+  if (facts.performanceCriteriaVerifiedCommit !== facts.inventoryRedactSecretRevision) {
+    failures.push(`benchmarks/performance-criteria.json baseline.verifiedCommit (${facts.performanceCriteriaVerifiedCommit}) does not match detector-inventory.json redactSecretRevision (${facts.inventoryRedactSecretRevision}) -- #150: the pinned core revision needs an ACCEPTED performance evaluation`);
   }
   return failures;
 }

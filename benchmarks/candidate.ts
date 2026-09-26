@@ -89,7 +89,8 @@ async function main() {
   let rulesetInfo: { sha256: string; byteLength: number } | null = null;
   try {
     if (options['expected-artifact-sha256'] && options['expected-artifact-sha256'] !== artifactSha256) throw new Error('artifact-identity-mismatch');
-    const registry: Category[] = JSON.parse(await readFile(path.join(root, 'benchmarks/categories.json'), 'utf8'));
+    const registry: Category[] = JSON.parse(await readFile(path.join(root, 'benchmarks/categories.json'), 'utf8'))
+      .filter((category: Category & { calibrationOnly?: boolean }) => !category.calibrationOnly);
     const assignments: Record<string, string[]> = JSON.parse(await readFile(path.join(root, 'benchmarks/fixture-detectors.json'), 'utf8'));
     // The newest saved release, the same comparison point the Workbench reads (src/catalog.ts).
     const baselineName = newestBaselineName(await readdir(path.join(root, 'baselines')));

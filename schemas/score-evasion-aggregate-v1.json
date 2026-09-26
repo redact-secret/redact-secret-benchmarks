@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/redact-secret/redact-secret-benchmarks/schemas/score-evasion-aggregate-v1.json",
+  "title": "Score-evasion and negative-evidence abuse aggregate v1",
+  "description": "The only publishable shape of the #289 adversarial score-evasion evaluation, and the input the #257 promotion contract reads for question 4. Counts per attack class and in total, invariant verdicts, identities and hashes. It never carries a variant, a mutation recipe or parameter, a per-candidate score, band or contribution, or any scorer weight or cut-off; benchmarks/lib/scorer-promotion.ts (evasionAggregateProblems) rejects any key outside this closed shape. An attack class with fewer than 5 variants is not published. Rules: docs/specs/scorer-promotion-gates.md section 5.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "reportType", "visibility", "mode", "holdoutAccess", "identity", "benchmark", "operatorSetHash", "totals", "attackClasses", "invariants"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "reportType": { "const": "score-evasion-aggregate" },
+    "visibility": { "const": "public-aggregate" },
+    "mode": {
+      "enum": ["shadow", "promotion-candidate"],
+      "description": "shadow: the beta.9 scorer is shadow-only, so candidate and legacy enforcement outcomes are equal by contract. promotion-candidate: the scorer sets Confidence and action for the scored specificities; only this mode answers promotion question 4."
+    },
+    "holdoutAccess": { "const": "none" },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceRevision", "candidateArtifactHash", "scoringArtifactRevision", "modelFingerprint", "scoringArtifactSha256", "tuningManifestHash", "scoringIdentity"],
+      "properties": {
+        "sourceRevision": { "$ref": "#/definitions/commit" },
+        "candidateArtifactHash": { "$ref": "#/definitions/sha256" },
+        "scoringArtifactRevision": { "type": "integer", "minimum": 1 },
+        "modelFingerprint": { "$ref": "#/definitions/sha256" },
+        "scoringArtifactSha256": { "$ref": "#/definitions/sha256" },
+        "tuningManifestHash": { "anyOf": [{ "$ref": "#/definitions/sha256" }, { "type": "null" }] },
+        "scoringIdentity": { "anyOf": [{ "$ref": "#/definitions/sha256" }, { "type": "null" }] }
+      }
+    },
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "dirty"],
+      "properties": {
+        "commit": { "$ref": "#/definitions/commit" },
+        "dirty": { "const": false }
+      }
+    },
+    "operatorSetHash": {
+      "$ref": "#/definitions/sha256",
+      "description": "SHA-256 of the deterministic mutation operator set and its seeds, so a rerun is reproducible without publishing the operators."
+    },
+    "totals": { "$ref": "#/definitions/counts" },
+    "attackClasses": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+      "additionalProperties": { "$ref": "#/definitions/counts" }
+    },
+    "invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protectedSpecificityNeverWeakened", "negativeEvidenceFullGrammarOnly", "noStatisticalPositiveToNonFinding", "shadowNonEnforcing"],
+      "properties": {
+        "protectedSpecificityNeverWeakened": { "type": "boolean" },
+        "negativeEvidenceFullGrammarOnly": { "type": "boolean" },
+        "noStatisticalPositiveToNonFinding": { "type": "boolean" },
+        "shadowNonEnforcing": {
+          "type": ["boolean", "null"],
+          "description": "In shadow mode: the scorer changed no enforcement outcome of any variant. Null in promotion-candidate mode, where the scorer is meant to act."
+        }
+      }
+    }
+  },
+  "definitions": {
+    "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "count": { "type": "integer", "minimum": 0 },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variants", "unresolved", "unstable", "detectionPreserved", "legacyDetectionPreserved", "leakedSpans", "legacyLeakedSpans", "leakedOnlyUnderCandidate", "controls", "falseAlarms", "legacyFalseAlarms", "mustRedactBytes", "collateralBytes", "legacyCollateralBytes", "negativeEvidenceApplied", "negativeEvidenceOnPartialMatch"],
+      "description": "Counts over the variants of one attack class (or all of them). variants = unresolved + unstable + controls + resolved must-redact variants, and every resolved must-redact variant is either preserved or leaked: detectionPreserved + leakedSpans = legacyDetectionPreserved + legacyLeakedSpans. falseAlarms counts flagged control variants. legacy* are the same frozen candidate's deterministic-path outcome; leakedOnlyUnderCandidate counts variants leaked by the candidate path and redacted by the legacy path.",
+      "properties": {
+        "variants": { "$ref": "#/definitions/count" },
+        "unresolved": { "$ref": "#/definitions/count" },
+        "unstable": { "$ref": "#/definitions/count" },
+        "detectionPreserved": { "$ref": "#/definitions/count" },
+        "legacyDetectionPreserved": { "$ref": "#/definitions/count" },
+        "leakedSpans": { "$ref": "#/definitions/count" },
+        "legacyLeakedSpans": { "$ref": "#/definitions/count" },
+        "leakedOnlyUnderCandidate": { "$ref": "#/definitions/count" },
+        "controls": { "$ref": "#/definitions/count" },
+        "falseAlarms": { "$ref": "#/definitions/count" },
+        "legacyFalseAlarms": { "$ref": "#/definitions/count" },
+        "mustRedactBytes": { "$ref": "#/definitions/count" },
+        "collateralBytes": { "$ref": "#/definitions/count" },
+        "legacyCollateralBytes": { "$ref": "#/definitions/count" },
+        "negativeEvidenceApplied": { "$ref": "#/definitions/count" },
+        "negativeEvidenceOnPartialMatch": { "$ref": "#/definitions/count" }
+      }
+    }
+  }
+}

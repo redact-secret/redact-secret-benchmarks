@@ -16,7 +16,7 @@ const origin = process.env.UI_BASE_URL ?? 'http://localhost:4173';
 const json = async path => JSON.parse(await readFile(path, 'utf8'));
 const summary = await json('public/results/summary.json');
 const ledger = await json('benchmarks/review-ledger.json');
-const categories = await json('benchmarks/categories.json');
+const categories = (await json('benchmarks/categories.json')).filter(category => !category.calibrationOnly);
 const registry = await json('benchmarks/detectors.json');
 const output = 'results-output/ui-verification';
 await mkdir(output, { recursive: true });

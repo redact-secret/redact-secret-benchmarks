@@ -1,0 +1,3676 @@
+{
+  "schemaVersion": 2,
+  "reviewStatus": "reviewed — each static positive satisfies its family contract and each negative is a whole-value environment reference",
+  "provenance": "Independently authored, never-issued synthetic values for shadow-scorer calibration. No value was copied from a generated corpus or provider-issued credential. Verification must remain disabled.",
+  "fixtures": [
+    {
+      "id": "anthropic-token-positive",
+      "path": "anthropic-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ANTHROPIC_TOKEN=\u0073k-ant-api03-Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-BetAA\n",
+      "expected": [
+        {
+          "start": 16,
+          "end": 124,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "anthropic-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "anthropic-token",
+        "sources": [
+          "https://platform.claude.com/docs/en/manage-claude/compliance-api-access",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/anthropic/anthropic.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "anthropic-token-negative",
+      "path": "anthropic-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ANTHROPIC_TOKEN=${ANTHROPIC_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "anthropic-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "anthropic-token",
+        "sources": [
+          "https://platform.claude.com/docs/en/manage-claude/compliance-api-access",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/anthropic/anthropic.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "atlassian-api-token-positive",
+      "path": "atlassian-api-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ATLASSIAN_API_TOKEN=\u0041TATReview_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Revie\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 124,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "atlassian-api-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "atlassian-api-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "atlassian-api-token-negative",
+      "path": "atlassian-api-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ATLASSIAN_API_TOKEN=${ATLASSIAN_API_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "atlassian-api-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "atlassian-api-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "aws-access-key-positive",
+      "path": "aws-access-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_ACCESS_KEY=\u0041KIAREVIEWBETA7REVIE\nAWS_SECRET_ACCESS_KEY=\u0052eview+Alpha7/Beta9Review+Alpha7/Beta9Re\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 35,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        },
+        {
+          "start": 58,
+          "end": 98,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "aws-access-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; liveness is not claimed.",
+        "contract": "aws-access-key",
+        "sources": [
+          "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/aws/access_keys/accesskey.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "aws-access-key-negative",
+      "path": "aws-access-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_ACCESS_KEY=${AWS_ACCESS_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "aws-access-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "aws-access-key",
+        "sources": [
+          "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/aws/access_keys/accesskey.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "azure-devops-personal-access-token-positive",
+      "path": "azure-devops-personal-access-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN=\u0052eviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAAZDORevi\n",
+      "expected": [
+        {
+          "start": 35,
+          "end": 119,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "azure-devops-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "azure-devops-personal-access-token",
+        "sources": [
+          "https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate#pat-format",
+          "https://learn.microsoft.com/en-us/purview/sit-defn-azure-devops-personal-access-token"
+        ]
+      }
+    },
+    {
+      "id": "azure-devops-personal-access-token-negative",
+      "path": "azure-devops-personal-access-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN=${AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "azure-devops-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "azure-devops-personal-access-token",
+        "sources": [
+          "https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate#pat-format",
+          "https://learn.microsoft.com/en-us/purview/sit-defn-azure-devops-personal-access-token"
+        ]
+      }
+    },
+    {
+      "id": "bearer-token-positive",
+      "path": "bearer-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "Authorization: Bearer \u0072eviewed-bearer-credential-alpha-7-beta-9\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 63,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "bearer-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "bearer-token",
+        "sources": [
+          "https://www.rfc-editor.org/rfc/rfc6750#section-2.1"
+        ]
+      }
+    },
+    {
+      "id": "bearer-token-negative",
+      "path": "bearer-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BEARER_TOKEN=${BEARER_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "bearer-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "bearer-token",
+        "sources": [
+          "https://www.rfc-editor.org/rfc/rfc6750#section-2.1"
+        ]
+      }
+    },
+    {
+      "id": "cloudflare-token-positive",
+      "path": "cloudflare-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CLOUDFLARE_TOKEN=\u0063fut_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta91a2b3c4d\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 70,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "cloudflare-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "cloudflare-token",
+        "sources": [
+          "https://developers.cloudflare.com/fundamentals/api/get-started/create-token/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/cloudflareapitoken/v2/cloudflareapitoken.go"
+        ]
+      }
+    },
+    {
+      "id": "cloudflare-token-negative",
+      "path": "cloudflare-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "cloudflare-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "cloudflare-token",
+        "sources": [
+          "https://developers.cloudflare.com/fundamentals/api/get-started/create-token/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/cloudflareapitoken/v2/cloudflareapitoken.go"
+        ]
+      }
+    },
+    {
+      "id": "confluent-cloud-api-secret-positive",
+      "path": "confluent-cloud-api-secret/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CONFLUENT_CLOUD_API_SECRET=\u0063fltReview+Alpha7/Beta9Review+Alpha7/Beta9Review+Alpha7/BeWMZQPg\n",
+      "expected": [
+        {
+          "start": 27,
+          "end": 91,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "confluent-cloud-api-secret"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "confluent-cloud-api-secret",
+        "sources": [
+          "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/confluent/confluent.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "confluent-cloud-api-secret-negative",
+      "path": "confluent-cloud-api-secret/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CONFLUENT_CLOUD_API_SECRET=${CONFLUENT_CLOUD_API_SECRET_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "confluent-cloud-api-secret"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "confluent-cloud-api-secret",
+        "sources": [
+          "https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/overview.html",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/confluent/confluent.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "confluent-cloud-api-secret-legacy-positive",
+      "path": "confluent-cloud-api-secret-legacy/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CONFLUENT_CLOUD_API_SECRET_LEGACY=\u0052eview+Alpha7/Beta9Review+Alpha7/Beta9Review+Alpha7/Beta9Review+\n",
+      "expected": [
+        {
+          "start": 34,
+          "end": 98,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "confluent-cloud-api-secret-legacy"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "confluent-cloud-api-secret-legacy",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/confluent/confluent.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "confluent-cloud-api-secret-legacy-negative",
+      "path": "confluent-cloud-api-secret-legacy/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CONFLUENT_CLOUD_API_SECRET_LEGACY=${CONFLUENT_CLOUD_API_SECRET_LEGACY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "confluent-cloud-api-secret-legacy"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "confluent-cloud-api-secret-legacy",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/confluent/confluent.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "connection-string-positive",
+      "path": "connection-string/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CONNECTION_STRING=\u0070ostgres://review_user:ReviewPass7@db.example.invalid/app\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 75,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "connection-string"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "connection-string",
+        "sources": [
+          "https://www.rfc-editor.org/rfc/rfc3986#section-3.2.1"
+        ]
+      }
+    },
+    {
+      "id": "connection-string-negative",
+      "path": "connection-string/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CONNECTION_STRING=${CONNECTION_STRING_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "connection-string"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "connection-string",
+        "sources": [
+          "https://www.rfc-editor.org/rfc/rfc3986#section-3.2.1"
+        ]
+      }
+    },
+    {
+      "id": "databricks-personal-access-token-positive",
+      "path": "databricks-personal-access-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DATABRICKS_PERSONAL_ACCESS_TOKEN=\u0064api1a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 33,
+          "end": 69,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "databricks-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "databricks-personal-access-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/databrickstoken/databrickstoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "databricks-personal-access-token-negative",
+      "path": "databricks-personal-access-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DATABRICKS_PERSONAL_ACCESS_TOKEN=${DATABRICKS_PERSONAL_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "databricks-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "databricks-personal-access-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/databrickstoken/databrickstoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "datadog-api-key-positive",
+      "path": "datadog-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DATADOG_API_KEY=\u0031a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 16,
+          "end": 48,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "datadog-api-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "datadog-api-key",
+        "sources": [
+          "https://docs.datadoghq.com/resources/json/full_spec_v1.json",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/datadogapikey/datadogapikey.go",
+          "https://github.com/DataDog/documentation/blob/2fa3c70e353a887edbbf57fe45aedbd3efd4419d/hugo/data/api/v1/full_spec.yaml#L571-L577"
+        ]
+      }
+    },
+    {
+      "id": "datadog-api-key-negative",
+      "path": "datadog-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DATADOG_API_KEY=${DATADOG_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "datadog-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "datadog-api-key",
+        "sources": [
+          "https://docs.datadoghq.com/resources/json/full_spec_v1.json",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/datadogapikey/datadogapikey.go",
+          "https://github.com/DataDog/documentation/blob/2fa3c70e353a887edbbf57fe45aedbd3efd4419d/hugo/data/api/v1/full_spec.yaml#L571-L577"
+        ]
+      }
+    },
+    {
+      "id": "datadog-application-key-positive",
+      "path": "datadog-application-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DATADOG_APPLICATION_KEY=\u0064dapp_ReviewAlpha7Beta9Gamma2ReviewAlpha\n",
+      "expected": [
+        {
+          "start": 24,
+          "end": 64,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "datadog-application-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "datadog-application-key",
+        "sources": [
+          "https://docs.datadoghq.com/account_management/personal-access-tokens/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/datadogtoken/datadogtoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/DataDog/datadog-agent/blob/main/pkg/privateactionrunner/util/keys.go#L16",
+          "https://github.com/DataDog/datadog-agent/blob/main/pkg/util/scrubber/default.go#L65-L70",
+          "https://github.com/DataDog/cloudformation-template/blob/master/aws_quickstart/datadog_agentless_saas.yaml",
+          "https://github.com/DataDog/terraform-module-datadog-agentless-scanner/blob/main/azure/arm/agentless-api-call.ps1#L12",
+          "https://docs.aws.amazon.com/secretsmanager/latest/userguide/mes-partner-DatadogApplicationKey.html"
+        ]
+      }
+    },
+    {
+      "id": "datadog-application-key-negative",
+      "path": "datadog-application-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DATADOG_APPLICATION_KEY=${DATADOG_APPLICATION_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "datadog-application-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "datadog-application-key",
+        "sources": [
+          "https://docs.datadoghq.com/account_management/personal-access-tokens/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/datadogtoken/datadogtoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/DataDog/datadog-agent/blob/main/pkg/privateactionrunner/util/keys.go#L16",
+          "https://github.com/DataDog/datadog-agent/blob/main/pkg/util/scrubber/default.go#L65-L70",
+          "https://github.com/DataDog/cloudformation-template/blob/master/aws_quickstart/datadog_agentless_saas.yaml",
+          "https://github.com/DataDog/terraform-module-datadog-agentless-scanner/blob/main/azure/arm/agentless-api-call.ps1#L12",
+          "https://docs.aws.amazon.com/secretsmanager/latest/userguide/mes-partner-DatadogApplicationKey.html"
+        ]
+      }
+    },
+    {
+      "id": "datadog-application-key-legacy-positive",
+      "path": "datadog-application-key-legacy/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DATADOG_APPLICATION_KEY_LEGACY=\u0031a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d\n",
+      "expected": [
+        {
+          "start": 31,
+          "end": 71,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "datadog-application-key-legacy"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "datadog-application-key-legacy",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/datadogtoken/datadogtoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "datadog-application-key-legacy-negative",
+      "path": "datadog-application-key-legacy/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DATADOG_APPLICATION_KEY_LEGACY=${DATADOG_APPLICATION_KEY_LEGACY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "datadog-application-key-legacy"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "datadog-application-key-legacy",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/datadogtoken/datadogtoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "digitalocean-token-positive",
+      "path": "digitalocean-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DIGITALOCEAN_TOKEN=\u0064op_v1_1a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 90,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "digitalocean-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "digitalocean-token",
+        "sources": [
+          "https://docs.digitalocean.com/release-notes/api/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/digitaloceanv2/digitaloceanv2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "digitalocean-token-negative",
+      "path": "digitalocean-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DIGITALOCEAN_TOKEN=${DIGITALOCEAN_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "digitalocean-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "digitalocean-token",
+        "sources": [
+          "https://docs.digitalocean.com/release-notes/api/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/digitaloceanv2/digitaloceanv2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "discord-bot-token-positive",
+      "path": "discord-bot-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DISCORD_BOT_TOKEN=\u004dTIzNDU2Nzg5MDEyMzQ1Njc4.Review.ReviewAlpha7Beta9Gamma2ReviewAlpha7Bet\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 88,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "discord-bot-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "discord-bot-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/discordbottoken/discordbottoken.go"
+        ]
+      }
+    },
+    {
+      "id": "discord-bot-token-negative",
+      "path": "discord-bot-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "discord-bot-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "discord-bot-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/discordbottoken/discordbottoken.go"
+        ]
+      }
+    },
+    {
+      "id": "docker-token-positive",
+      "path": "docker-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOCKER_TOKEN=\u0064ckr_pat_Review_Alpha7-Beta9Review_A\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 49,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "docker-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "docker-token",
+        "sources": [
+          "https://docs.docker.com/reference/api/ai-governance/api.yaml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/dockerhub/v2/dockerhub.go",
+          "https://docs.docker.com/reference/api/hub/latest.yaml"
+        ]
+      }
+    },
+    {
+      "id": "docker-token-negative",
+      "path": "docker-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOCKER_TOKEN=${DOCKER_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "docker-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "docker-token",
+        "sources": [
+          "https://docs.docker.com/reference/api/ai-governance/api.yaml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/dockerhub/v2/dockerhub.go",
+          "https://docs.docker.com/reference/api/hub/latest.yaml"
+        ]
+      }
+    },
+    {
+      "id": "firebase-server-key-positive",
+      "path": "firebase-server-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "FIREBASE_SERVER_KEY=\u0041AAAReview_:Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 172,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "firebase-server-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "firebase-server-key",
+        "sources": [
+          "https://github.com/projectdiscovery/nuclei-templates/blob/8cf94b93a389a47bef77b89f8c8915b2755018f0/http/exposures/tokens/firebase-fcm-server-key-disclosure.yaml"
+        ]
+      }
+    },
+    {
+      "id": "firebase-server-key-negative",
+      "path": "firebase-server-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "FIREBASE_SERVER_KEY=${FIREBASE_SERVER_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "firebase-server-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "firebase-server-key",
+        "sources": [
+          "https://github.com/projectdiscovery/nuclei-templates/blob/8cf94b93a389a47bef77b89f8c8915b2755018f0/http/exposures/tokens/firebase-fcm-server-key-disclosure.yaml"
+        ]
+      }
+    },
+    {
+      "id": "fireworks-ai-api-key-positive",
+      "path": "fireworks-ai-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "FIREWORKS_AI_API_KEY=\u0066w_ReviewAlpha7Beta9Gamma2R\n",
+      "expected": [
+        {
+          "start": 21,
+          "end": 48,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "fireworks-ai-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "fireworks-ai-api-key",
+        "sources": [
+          "https://docs.fireworks.ai/tools-sdks/python-client/the-tutorial",
+          "https://github.com/fw-ai/fireconnect",
+          "https://docs.fireworks.ai/firepass"
+        ]
+      }
+    },
+    {
+      "id": "fireworks-ai-api-key-negative",
+      "path": "fireworks-ai-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "FIREWORKS_AI_API_KEY=${FIREWORKS_AI_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "fireworks-ai-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "fireworks-ai-api-key",
+        "sources": [
+          "https://docs.fireworks.ai/tools-sdks/python-client/the-tutorial",
+          "https://github.com/fw-ai/fireconnect",
+          "https://docs.fireworks.ai/firepass"
+        ]
+      }
+    },
+    {
+      "id": "generic-token-positive",
+      "path": "generic-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GENERIC_TOKEN=\u0072eviewedSyntheticGenericTokenAlpha7Beta9\n",
+      "expected": [
+        {
+          "start": 14,
+          "end": 54,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "generic-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "generic-token",
+        "sources": []
+      }
+    },
+    {
+      "id": "generic-token-negative",
+      "path": "generic-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GENERIC_TOKEN=${GENERIC_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "generic-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "generic-token",
+        "sources": []
+      }
+    },
+    {
+      "id": "github-fine-grained-pat-positive",
+      "path": "github-fine-grained-pat/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GITHUB_FINE_GRAINED_PAT=\u0067ithub_pat_ReviewAlpha7Beta9Gamma_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7B\n",
+      "expected": [
+        {
+          "start": 24,
+          "end": 117,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "github-fine-grained-pat"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "github-fine-grained-pat",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/praetorian-inc/noseyparker/blob/main/crates/noseyparker/data/default/builtin/rules/github.yml",
+          "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-github/src/index.ts",
+          "https://github.com/orgs/community/discussions/36441",
+          "https://gist.github.com/magnetikonline/073afe7909ffdd6f10ef06a00bc3bc88",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/223"
+        ]
+      }
+    },
+    {
+      "id": "github-fine-grained-pat-negative",
+      "path": "github-fine-grained-pat/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GITHUB_FINE_GRAINED_PAT=${GITHUB_FINE_GRAINED_PAT_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "github-fine-grained-pat"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "github-fine-grained-pat",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/github/v2/github.go",
+          "https://github.com/praetorian-inc/noseyparker/blob/main/crates/noseyparker/data/default/builtin/rules/github.yml",
+          "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-github/src/index.ts",
+          "https://github.com/orgs/community/discussions/36441",
+          "https://gist.github.com/magnetikonline/073afe7909ffdd6f10ef06a00bc3bc88",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/223"
+        ]
+      }
+    },
+    {
+      "id": "gitlab-runner-authentication-token-positive",
+      "path": "gitlab-runner-authentication-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GITLAB_RUNNER_AUTHENTICATION_TOKEN=\u0067lrt-Review_Alpha7-Beta9R\n",
+      "expected": [
+        {
+          "start": 35,
+          "end": 60,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "gitlab-runner-authentication-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "gitlab-runner-authentication-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.gitlab.com/security/tokens/",
+          "https://docs.gitlab.com/ci/runners/new_creation_workflow/",
+          "https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules"
+        ]
+      }
+    },
+    {
+      "id": "gitlab-runner-authentication-token-negative",
+      "path": "gitlab-runner-authentication-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GITLAB_RUNNER_AUTHENTICATION_TOKEN=${GITLAB_RUNNER_AUTHENTICATION_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "gitlab-runner-authentication-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "gitlab-runner-authentication-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.gitlab.com/security/tokens/",
+          "https://docs.gitlab.com/ci/runners/new_creation_workflow/",
+          "https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules"
+        ]
+      }
+    },
+    {
+      "id": "gitlab-token-positive",
+      "path": "gitlab-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GITLAB_TOKEN=\u0067lpat-Review_Alpha7-Beta9R\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 39,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "gitlab-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "gitlab-token",
+        "sources": [
+          "https://docs.gitlab.com/security/tokens/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/gitlab/v2/gitlab_v2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "gitlab-token-negative",
+      "path": "gitlab-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GITLAB_TOKEN=${GITLAB_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "gitlab-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "gitlab-token",
+        "sources": [
+          "https://docs.gitlab.com/security/tokens/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/gitlab/v2/gitlab_v2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "google-api-key-positive",
+      "path": "google-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GOOGLE_API_KEY=\u0041IzaReview_Alpha7-Beta9Review_Alpha7-Be\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 54,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "google-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "google-api-key",
+        "sources": [
+          "https://docs.cloud.google.com/docs/authentication/api-keys",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "google-api-key-negative",
+      "path": "google-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GOOGLE_API_KEY=${GOOGLE_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "google-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "google-api-key",
+        "sources": [
+          "https://docs.cloud.google.com/docs/authentication/api-keys",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "grafana-cloud-access-policy-token-positive",
+      "path": "grafana-cloud-access-policy-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GRAFANA_CLOUD_ACCESS_POLICY_TOKEN=\u0067lc_Review+Alpha7/Beta9Review+Alpha7/Beta9Re\n",
+      "expected": [
+        {
+          "start": 34,
+          "end": 78,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "grafana-cloud-access-policy-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "grafana-cloud-access-policy-token",
+        "sources": [
+          "https://grafana.com/docs/grafana-cloud/observe-and-act/agent-observability/get-started/grafana-cloud/",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "grafana-cloud-access-policy-token-negative",
+      "path": "grafana-cloud-access-policy-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GRAFANA_CLOUD_ACCESS_POLICY_TOKEN=${GRAFANA_CLOUD_ACCESS_POLICY_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "grafana-cloud-access-policy-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "grafana-cloud-access-policy-token",
+        "sources": [
+          "https://grafana.com/docs/grafana-cloud/observe-and-act/agent-observability/get-started/grafana-cloud/",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "grafana-service-account-token-positive",
+      "path": "grafana-service-account-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GRAFANA_SERVICE_ACCOUNT_TOKEN=\u0067lsa_ReviewAlpha7Beta9Gamma2ReviewAlp_1a2b3c4d\n",
+      "expected": [
+        {
+          "start": 30,
+          "end": 76,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "grafana-service-account-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "grafana-service-account-token",
+        "sources": [
+          "https://grafana.com/blog/new-in-grafana-9-1-service-accounts-are-now-ga/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/grafanaserviceaccount/grafanaserviceaccount.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "grafana-service-account-token-negative",
+      "path": "grafana-service-account-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_SERVICE_ACCOUNT_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "grafana-service-account-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "grafana-service-account-token",
+        "sources": [
+          "https://grafana.com/blog/new-in-grafana-9-1-service-accounts-are-now-ga/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/grafanaserviceaccount/grafanaserviceaccount.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "groq-api-key-positive",
+      "path": "groq-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GROQ_API_KEY=\u0067sk_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2Review\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 69,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "groq-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "groq-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/groq/groq.go",
+          "https://console.groq.com/docs/production-readiness/security-onboarding",
+          "https://console.groq.com/docs/api-reference",
+          "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-groq"
+        ]
+      }
+    },
+    {
+      "id": "groq-api-key-negative",
+      "path": "groq-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GROQ_API_KEY=${GROQ_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "groq-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "groq-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/groq/groq.go",
+          "https://console.groq.com/docs/production-readiness/security-onboarding",
+          "https://console.groq.com/docs/api-reference",
+          "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-groq"
+        ]
+      }
+    },
+    {
+      "id": "heroku-api-key-positive",
+      "path": "heroku-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HEROKU_API_KEY=\u0048RKU-AAReview_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9R\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 80,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "heroku-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "heroku-api-key",
+        "sources": [
+          "https://devcenter.heroku.com/articles/oauth",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/heroku/v2/heroku.go"
+        ]
+      }
+    },
+    {
+      "id": "heroku-api-key-negative",
+      "path": "heroku-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HEROKU_API_KEY=${HEROKU_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "heroku-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "heroku-api-key",
+        "sources": [
+          "https://devcenter.heroku.com/articles/oauth",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/heroku/v2/heroku.go"
+        ]
+      }
+    },
+    {
+      "id": "heroku-api-key-legacy-positive",
+      "path": "heroku-api-key-legacy/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HEROKU_API_KEY_LEGACY=\u0031a2b3c4d-5e6f-7089-1a2b-3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 58,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "heroku-api-key-legacy"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "heroku-api-key-legacy",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/heroku/v1/heroku.go"
+        ]
+      }
+    },
+    {
+      "id": "heroku-api-key-legacy-negative",
+      "path": "heroku-api-key-legacy/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HEROKU_API_KEY_LEGACY=${HEROKU_API_KEY_LEGACY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "heroku-api-key-legacy"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "heroku-api-key-legacy",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/heroku/v1/heroku.go"
+        ]
+      }
+    },
+    {
+      "id": "huggingface-token-positive",
+      "path": "huggingface-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HUGGINGFACE_TOKEN=\u0068f_ReviewAlpha7Beta9Gamma2ReviewAlpha\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 55,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "huggingface-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "huggingface-token",
+        "sources": [
+          "https://huggingface.co/docs/huggingface.js/hub/modules",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/huggingface/huggingface.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://huggingface.co/.well-known/openapi.json"
+        ]
+      }
+    },
+    {
+      "id": "huggingface-token-negative",
+      "path": "huggingface-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "huggingface-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "huggingface-token",
+        "sources": [
+          "https://huggingface.co/docs/huggingface.js/hub/modules",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/huggingface/huggingface.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://huggingface.co/.well-known/openapi.json"
+        ]
+      }
+    },
+    {
+      "id": "jwt-positive",
+      "path": "jwt/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "JWT=\u0065yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZXZpZXdlZC1zeW50aGV0aWMifQ.UmV2aWV3ZWRBbHBoYTdCZXRhOQ\n",
+      "expected": [
+        {
+          "start": 4,
+          "end": 106,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "jwt"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "jwt",
+        "sources": [
+          "https://www.rfc-editor.org/rfc/rfc7519",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/jwt/jwt.go"
+        ]
+      }
+    },
+    {
+      "id": "jwt-negative",
+      "path": "jwt/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "JWT=${JWT_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "jwt"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "jwt",
+        "sources": [
+          "https://www.rfc-editor.org/rfc/rfc7519",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/jwt/jwt.go"
+        ]
+      }
+    },
+    {
+      "id": "langfuse-secret-key-positive",
+      "path": "langfuse-secret-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "LANGFUSE_SECRET_KEY=\u0073k-lf-1a2b3c4d-1a2b-41a2-81a2-1a2b3c4d5e6f\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 62,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "langfuse-secret-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "langfuse-secret-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/langfuse/langfuse.go",
+          "https://github.com/betterleaks/betterleaks/blob/main/config/betterleaks.toml",
+          "https://github.com/langfuse/langfuse/blob/dbf5107df264bfcb0613a29237143e78ce16ca8a/packages/shared/src/server/auth/apiKeys.ts",
+          "https://langfuse.com/docs/observability/sdk/overview",
+          "https://langfuse.com/docs/api-and-data-platform/features/public-api",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/221"
+        ]
+      }
+    },
+    {
+      "id": "langfuse-secret-key-negative",
+      "path": "langfuse-secret-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "langfuse-secret-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "langfuse-secret-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/langfuse/langfuse.go",
+          "https://github.com/betterleaks/betterleaks/blob/main/config/betterleaks.toml",
+          "https://github.com/langfuse/langfuse/blob/dbf5107df264bfcb0613a29237143e78ce16ca8a/packages/shared/src/server/auth/apiKeys.ts",
+          "https://langfuse.com/docs/observability/sdk/overview",
+          "https://langfuse.com/docs/api-and-data-platform/features/public-api",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/221"
+        ]
+      }
+    },
+    {
+      "id": "langsmith-api-key-positive",
+      "path": "langsmith-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "LANGSMITH_API_KEY=\u006csv2_pt_1a2b3c4d5e6f70891a2b3c4d5e6f7089_1a2b3c4d5e\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 69,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "langsmith-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "langsmith-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/langsmith/langsmith.go",
+          "https://github.com/praetorian-inc/titus/blob/main/pkg/rule/rules/langchain.yml",
+          "https://github.com/ghostsecurity/poltergeist/blob/main/pkg/rules/langsmith.yaml",
+          "https://docs.langchain.com/langsmith/create-account-api-key",
+          "https://api.smith.langchain.com/openapi.json",
+          "https://github.com/langchain-ai/langsmith-sdk/blob/main/js/src/anonymizer/index.ts",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/219"
+        ]
+      }
+    },
+    {
+      "id": "langsmith-api-key-negative",
+      "path": "langsmith-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "LANGSMITH_API_KEY=${LANGSMITH_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "langsmith-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "langsmith-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/langsmith/langsmith.go",
+          "https://github.com/praetorian-inc/titus/blob/main/pkg/rule/rules/langchain.yml",
+          "https://github.com/ghostsecurity/poltergeist/blob/main/pkg/rules/langsmith.yaml",
+          "https://docs.langchain.com/langsmith/create-account-api-key",
+          "https://api.smith.langchain.com/openapi.json",
+          "https://github.com/langchain-ai/langsmith-sdk/blob/main/js/src/anonymizer/index.ts",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/219"
+        ]
+      }
+    },
+    {
+      "id": "linear-token-positive",
+      "path": "linear-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "LINEAR_TOKEN=\u006cin_api_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 61,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "linear-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "linear-token",
+        "sources": [
+          "https://linear.app/changelog/2021-08-19-github-secret-scanning",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/linearapi/linearapi.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "linear-token-negative",
+      "path": "linear-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "LINEAR_TOKEN=${LINEAR_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "linear-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "linear-token",
+        "sources": [
+          "https://linear.app/changelog/2021-08-19-github-secret-scanning",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/linearapi/linearapi.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "mailchimp-api-key-positive",
+      "path": "mailchimp-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MAILCHIMP_API_KEY=\u0031a2b3c4d5e6f70891a2b3c4d5e6f7089-us7\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 54,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "mailchimp-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "mailchimp-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mailchimp/mailchimp.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "mailchimp-api-key-negative",
+      "path": "mailchimp-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MAILCHIMP_API_KEY=${MAILCHIMP_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "mailchimp-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "mailchimp-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mailchimp/mailchimp.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "mailgun-api-key-positive",
+      "path": "mailgun-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MAILGUN_API_KEY=\u006bey-1a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 16,
+          "end": 52,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "mailgun-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "mailgun-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mailgun/mailgun.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "mailgun-api-key-negative",
+      "path": "mailgun-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MAILGUN_API_KEY=${MAILGUN_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "mailgun-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "mailgun-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mailgun/mailgun.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "mailgun-api-key-triplet-positive",
+      "path": "mailgun-api-key-triplet/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MAILGUN_API_KEY_TRIPLET=\u0031a2b3c4d5e6f70891a2b3c4d5e6f7089-1a2b3c4d-1a2b3c4d\n",
+      "expected": [
+        {
+          "start": 24,
+          "end": 74,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "mailgun-api-key-triplet"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "mailgun-api-key-triplet",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mailgun/mailgun.go",
+          "https://github.com/trufflesecurity/trufflehog/issues/3870",
+          "https://github.com/mailgun/mailgun-go/issues/72",
+          "https://meta.discourse.org/t/current-mailgun-api-key-does-not-work/93661",
+          "https://meta.discourse.org/t/mailgun-secret-api-key-rejected/61852",
+          "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800612791"
+        ]
+      }
+    },
+    {
+      "id": "mailgun-api-key-triplet-negative",
+      "path": "mailgun-api-key-triplet/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MAILGUN_API_KEY_TRIPLET=${MAILGUN_API_KEY_TRIPLET_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "mailgun-api-key-triplet"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "mailgun-api-key-triplet",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mailgun/mailgun.go",
+          "https://github.com/trufflesecurity/trufflehog/issues/3870",
+          "https://github.com/mailgun/mailgun-go/issues/72",
+          "https://meta.discourse.org/t/current-mailgun-api-key-does-not-work/93661",
+          "https://meta.discourse.org/t/mailgun-secret-api-key-rejected/61852",
+          "https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5800612791"
+        ]
+      }
+    },
+    {
+      "id": "microsoft-entra-client-secret-positive",
+      "path": "microsoft-entra-client-secret/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MICROSOFT_ENTRA_CLIENT_SECRET=\u0041bC7Q~Review.Alpha7-Beta9_Review.Alpha\n",
+      "expected": [
+        {
+          "start": 30,
+          "end": 68,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "microsoft-entra-client-secret"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "microsoft-entra-client-secret",
+        "sources": [
+          "https://learn.microsoft.com/en-us/powershell/module/microsoft.graph.applications/add-mgapplicationpassword?view=graph-powershell-1.0",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/azure_entra/serviceprincipal/v2/spv2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "microsoft-entra-client-secret-negative",
+      "path": "microsoft-entra-client-secret/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MICROSOFT_ENTRA_CLIENT_SECRET=${MICROSOFT_ENTRA_CLIENT_SECRET_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "microsoft-entra-client-secret"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "microsoft-entra-client-secret",
+        "sources": [
+          "https://learn.microsoft.com/en-us/powershell/module/microsoft.graph.applications/add-mgapplicationpassword?view=graph-powershell-1.0",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/azure_entra/serviceprincipal/v2/spv2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "neon-api-key-positive",
+      "path": "neon-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NEON_API_KEY=\u006eapi_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9G\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 82,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "neon-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "neon-api-key",
+        "sources": [
+          "https://github.com/betterleaks/betterleaks/blob/6cf4f1a29160b68be7c6390599b9b773234e5a43/cmd/generate/config/rules/neon.go",
+          "https://github.com/koki-develop/mask-go/blob/3ff232051d4d224314b400d9e973c5a8c7d405d5/builtin_neon_api_key.go",
+          "https://github.com/neondatabase/website/blob/main/content/changelog/2025-01-31.md",
+          "https://neon.com/docs/manage/api-keys",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "neon-api-key-negative",
+      "path": "neon-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NEON_API_KEY=${NEON_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "neon-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "neon-api-key",
+        "sources": [
+          "https://github.com/betterleaks/betterleaks/blob/6cf4f1a29160b68be7c6390599b9b773234e5a43/cmd/generate/config/rules/neon.go",
+          "https://github.com/koki-develop/mask-go/blob/3ff232051d4d224314b400d9e973c5a8c7d405d5/builtin_neon_api_key.go",
+          "https://github.com/neondatabase/website/blob/main/content/changelog/2025-01-31.md",
+          "https://neon.com/docs/manage/api-keys",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "netlify-token-positive",
+      "path": "netlify-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NETLIFY_TOKEN=\u006efp_Review_Alpha7_Beta9Review_Alpha7_Bet\n",
+      "expected": [
+        {
+          "start": 14,
+          "end": 54,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "netlify-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "netlify-token",
+        "sources": [
+          "https://answers.netlify.com/t/change-to-the-netlify-authentication-token-format/106146",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/netlify/v2/netlify_v2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "netlify-token-negative",
+      "path": "netlify-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NETLIFY_TOKEN=${NETLIFY_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "netlify-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "netlify-token",
+        "sources": [
+          "https://answers.netlify.com/t/change-to-the-netlify-authentication-token-format/106146",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/netlify/v2/netlify_v2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "new-relic-license-key-positive",
+      "path": "new-relic-license-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NEW_RELIC_LICENSE_KEY=\u0031a2b3c4d5e6f70891a2b3c4d5e6f7089FFFFNRAL\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 62,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "new-relic-license-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "new-relic-license-key",
+        "sources": [
+          "https://docs.newrelic.com/docs/opentelemetry/integrations/ibm-mq/host/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/newreliclicensekey/newreliclicensekey.go",
+          "https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/",
+          "https://docs.newrelic.com/docs/ebpf/k8s-installation/",
+          "https://docs.newrelic.com/docs/ebpf/linux-installation/"
+        ]
+      }
+    },
+    {
+      "id": "new-relic-license-key-negative",
+      "path": "new-relic-license-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "new-relic-license-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "new-relic-license-key",
+        "sources": [
+          "https://docs.newrelic.com/docs/opentelemetry/integrations/ibm-mq/host/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/newreliclicensekey/newreliclicensekey.go",
+          "https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/",
+          "https://docs.newrelic.com/docs/ebpf/k8s-installation/",
+          "https://docs.newrelic.com/docs/ebpf/linux-installation/"
+        ]
+      }
+    },
+    {
+      "id": "new-relic-user-api-key-positive",
+      "path": "new-relic-user-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NEW_RELIC_USER_API_KEY=\u004eRAK-REVIEW7BETA9ALPHA2REVIEW7BE\n",
+      "expected": [
+        {
+          "start": 23,
+          "end": 55,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "new-relic-user-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "new-relic-user-api-key",
+        "sources": [
+          "https://docs.newrelic.com/docs/infrastructure-as-code/terraform/terraform-intro/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/newrelicuserkey/newrelicuserkey.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "new-relic-user-api-key-negative",
+      "path": "new-relic-user-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NEW_RELIC_USER_API_KEY=${NEW_RELIC_USER_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "new-relic-user-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "new-relic-user-api-key",
+        "sources": [
+          "https://docs.newrelic.com/docs/infrastructure-as-code/terraform/terraform-intro/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/newrelicuserkey/newrelicuserkey.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "notion-integration-token-positive",
+      "path": "notion-integration-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NOTION_INTEGRATION_TOKEN=\u006etn_27182818284ReviewAlpha7Beta9Gamma2ReviewAlpha7\n",
+      "expected": [
+        {
+          "start": 25,
+          "end": 75,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "notion-integration-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "notion-integration-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/secretlint/secretlint/tree/master/packages/%40secretlint/secretlint-rule-notion",
+          "https://developers.notion.com/guides/get-started/internal-integrations.md",
+          "https://github.com/makenotion/lore/blob/main/src/auth/token-prefix.ts",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/225"
+        ]
+      }
+    },
+    {
+      "id": "notion-integration-token-negative",
+      "path": "notion-integration-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NOTION_INTEGRATION_TOKEN=${NOTION_INTEGRATION_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "notion-integration-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "notion-integration-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/secretlint/secretlint/tree/master/packages/%40secretlint/secretlint-rule-notion",
+          "https://developers.notion.com/guides/get-started/internal-integrations.md",
+          "https://github.com/makenotion/lore/blob/main/src/auth/token-prefix.ts",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/225"
+        ]
+      }
+    },
+    {
+      "id": "notion-token-positive",
+      "path": "notion-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NOTION_TOKEN=\u0073ecret_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 63,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "notion-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "notion-token",
+        "sources": [
+          "https://developers.notion.com/page/changelog",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/notion/notion.go"
+        ]
+      }
+    },
+    {
+      "id": "notion-token-negative",
+      "path": "notion-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NOTION_TOKEN=${NOTION_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "notion-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "notion-token",
+        "sources": [
+          "https://developers.notion.com/page/changelog",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/notion/notion.go"
+        ]
+      }
+    },
+    {
+      "id": "npm-token-positive",
+      "path": "npm-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NPM_TOKEN=\u006epm_ReviewAlpha7Beta9Gamma2ReviewAlpha7B\n",
+      "expected": [
+        {
+          "start": 10,
+          "end": 50,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "npm-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "npm-token",
+        "sources": [
+          "https://github.blog/changelog/2021-09-23-npm-has-a-new-access-token-format/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/npmtokenv2/npmtokenv2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "npm-token-negative",
+      "path": "npm-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NPM_TOKEN=${NPM_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "npm-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "npm-token",
+        "sources": [
+          "https://github.blog/changelog/2021-09-23-npm-has-a-new-access-token-format/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/npmtokenv2/npmtokenv2.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "okta-api-token-positive",
+      "path": "okta-api-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OKTA_API_TOKEN=\u00300Review_Alpha7-Beta9Review_Alpha7-Beta9Re\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 57,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "okta-api-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "okta-api-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/okta/okta.go"
+        ]
+      }
+    },
+    {
+      "id": "okta-api-token-negative",
+      "path": "okta-api-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OKTA_API_TOKEN=${OKTA_API_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "okta-api-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "okta-api-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/okta/okta.go"
+        ]
+      }
+    },
+    {
+      "id": "openai-token-positive",
+      "path": "openai-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OPENAI_TOKEN=\u0073k-ReviewAlpha7Beta9GamT3BlbkFJReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 64,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "openai-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "openai-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openai/openai.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "openai-token-negative",
+      "path": "openai-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OPENAI_TOKEN=${OPENAI_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "openai-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "openai-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openai/openai.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "openrouter-api-key-positive",
+      "path": "openrouter-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OPENROUTER_API_KEY=\u0073k-or-v1-1a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 92,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "openrouter-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "openrouter-api-key",
+        "sources": [
+          "https://openrouter.ai/docs/guides/features/guardrails/secret-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openrouter/openrouter.go",
+          "https://openrouter.ai/docs/api/api-reference/api-keys/create-keys",
+          "https://openrouter.ai/docs/api_reference/authentication",
+          "https://openrouter.ai/docs/guides/overview/auth/management-api-keys"
+        ]
+      }
+    },
+    {
+      "id": "openrouter-api-key-negative",
+      "path": "openrouter-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OPENROUTER_API_KEY=${OPENROUTER_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "openrouter-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "openrouter-api-key",
+        "sources": [
+          "https://openrouter.ai/docs/guides/features/guardrails/secret-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openrouter/openrouter.go",
+          "https://openrouter.ai/docs/api/api-reference/api-keys/create-keys",
+          "https://openrouter.ai/docs/api_reference/authentication",
+          "https://openrouter.ai/docs/guides/overview/auth/management-api-keys"
+        ]
+      }
+    },
+    {
+      "id": "otpauth-uri-positive",
+      "path": "otpauth-uri/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OTPAUTH_URI=\u006ftpauth://totp/Example:reviewer?secret=JBSWY3DPEHPK3PXP&issuer=Example\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 82,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "otpauth-uri"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "otpauth-uri",
+        "sources": [
+          "https://github.com/google/google-authenticator/wiki/Key-Uri-Format"
+        ]
+      }
+    },
+    {
+      "id": "otpauth-uri-negative",
+      "path": "otpauth-uri/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OTPAUTH_URI=${OTPAUTH_URI_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "otpauth-uri"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "otpauth-uri",
+        "sources": [
+          "https://github.com/google/google-authenticator/wiki/Key-Uri-Format"
+        ]
+      }
+    },
+    {
+      "id": "perplexity-api-key-positive",
+      "path": "perplexity-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PERPLEXITY_API_KEY=\u0070plx-ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2Re\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 72,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "perplexity-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "perplexity-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "perplexity-api-key-negative",
+      "path": "perplexity-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "perplexity-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "perplexity-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "pinecone-api-key-positive",
+      "path": "pinecone-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PINECONE_API_KEY=\u0070csk_Review_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 92,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "pinecone-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "pinecone-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/pinecone/pinecone.go",
+          "https://docs.pinecone.io/reference/api/2026-04/admin/create_api_key"
+        ]
+      }
+    },
+    {
+      "id": "pinecone-api-key-negative",
+      "path": "pinecone-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PINECONE_API_KEY=${PINECONE_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "pinecone-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "pinecone-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/pinecone/pinecone.go",
+          "https://docs.pinecone.io/reference/api/2026-04/admin/create_api_key"
+        ]
+      }
+    },
+    {
+      "id": "pinecone-api-key-legacy-positive",
+      "path": "pinecone-api-key-legacy/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PINECONE_API_KEY_LEGACY=\u0052eviewAlpha7Beta9Gamma2ReviewAlpha7B\n",
+      "expected": [
+        {
+          "start": 24,
+          "end": 60,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "pinecone-api-key-legacy"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "pinecone-api-key-legacy",
+        "sources": []
+      }
+    },
+    {
+      "id": "pinecone-api-key-legacy-negative",
+      "path": "pinecone-api-key-legacy/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PINECONE_API_KEY_LEGACY=${PINECONE_API_KEY_LEGACY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "pinecone-api-key-legacy"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "pinecone-api-key-legacy",
+        "sources": []
+      }
+    },
+    {
+      "id": "postman-api-key-positive",
+      "path": "postman-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POSTMAN_API_KEY=\u0050MAK-1a2b3c4d5e6f70891a2b3c4d-1a2b3c4d5e6f70891a2b3c4d5e6f70891a\n",
+      "expected": [
+        {
+          "start": 16,
+          "end": 80,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "postman-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "postman-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/postman/postman.go"
+        ]
+      }
+    },
+    {
+      "id": "postman-api-key-negative",
+      "path": "postman-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POSTMAN_API_KEY=${POSTMAN_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "postman-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "postman-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/postman/postman.go"
+        ]
+      }
+    },
+    {
+      "id": "postman-collection-access-key-positive",
+      "path": "postman-collection-access-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POSTMAN_COLLECTION_ACCESS_KEY=\u0050MAT-REVIEW7BETA9ALPHA2REVIEW7B\n",
+      "expected": [
+        {
+          "start": 30,
+          "end": 61,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "postman-collection-access-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "postman-collection-access-key",
+        "sources": [
+          "https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/blob/e1c7e83815a7e55cc1514dd59d4e56459e39cbfb/rules/mit/postman/postman.toml",
+          "https://learning.postman.com/docs/collaborating-in-postman/sharing/",
+          "https://learning.postman.com/docs/developer/postman-api/authentication/",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "postman-collection-access-key-negative",
+      "path": "postman-collection-access-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POSTMAN_COLLECTION_ACCESS_KEY=${POSTMAN_COLLECTION_ACCESS_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "postman-collection-access-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "postman-collection-access-key",
+        "sources": [
+          "https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/blob/e1c7e83815a7e55cc1514dd59d4e56459e39cbfb/rules/mit/postman/postman.toml",
+          "https://learning.postman.com/docs/collaborating-in-postman/sharing/",
+          "https://learning.postman.com/docs/developer/postman-api/authentication/",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "private-key-positive",
+      "path": "private-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PRIVATE_KEY=-----\u0042EGIN PRIVATE KEY-----\nUkVWSUVXRURfU1lOVEhFVElDX0tFWV9OT1RfSVNTVUVE\n-----END PRIVATE KEY-----\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 110,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "private-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "private-key",
+        "sources": [
+          "https://www.rfc-editor.org/rfc/rfc7468",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/privatekey/privatekey.go"
+        ]
+      }
+    },
+    {
+      "id": "private-key-negative",
+      "path": "private-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PRIVATE_KEY=${PRIVATE_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "private-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "private-key",
+        "sources": [
+          "https://www.rfc-editor.org/rfc/rfc7468",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/privatekey/privatekey.go"
+        ]
+      }
+    },
+    {
+      "id": "pulumi-access-token-positive",
+      "path": "pulumi-access-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PULUMI_ACCESS_TOKEN=\u0070ul-1a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 64,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "pulumi-access-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "pulumi-access-token",
+        "sources": [
+          "https://www.pulumi.com/docs/reference/cloud-rest-api/access-tokens/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/pulumi/pulumi.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "pulumi-access-token-negative",
+      "path": "pulumi-access-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PULUMI_ACCESS_TOKEN=${PULUMI_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "pulumi-access-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "pulumi-access-token",
+        "sources": [
+          "https://www.pulumi.com/docs/reference/cloud-rest-api/access-tokens/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/pulumi/pulumi.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "pypi-token-positive",
+      "path": "pypi-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PYPI_TOKEN=\u0070ypi-Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Al\n",
+      "expected": [
+        {
+          "start": 11,
+          "end": 101,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "pypi-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "pypi-token",
+        "sources": [
+          "https://docs.pypi.org/api/secrets/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/pypi/pypi.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://pypi.org/help/#apitoken"
+        ]
+      }
+    },
+    {
+      "id": "pypi-token-negative",
+      "path": "pypi-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PYPI_TOKEN=${PYPI_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "pypi-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "pypi-token",
+        "sources": [
+          "https://docs.pypi.org/api/secrets/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/pypi/pypi.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://pypi.org/help/#apitoken"
+        ]
+      }
+    },
+    {
+      "id": "replicate-api-token-positive",
+      "path": "replicate-api-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "REPLICATE_API_TOKEN=\u00728_Review_Alpha7-Beta9Review_Alpha7-Beta\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 60,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "replicate-api-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "replicate-api-token",
+        "sources": [
+          "https://replicate.com/docs/topics/security/api-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/replicate/replicate.go",
+          "https://replicate.com/docs/reference/http",
+          "https://replicate.com/changelog/2024-04-03-bearer-tokens",
+          "https://github.com/replicate/replicate-python/blob/main/replicate/client.py"
+        ]
+      }
+    },
+    {
+      "id": "replicate-api-token-negative",
+      "path": "replicate-api-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "replicate-api-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "replicate-api-token",
+        "sources": [
+          "https://replicate.com/docs/topics/security/api-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/replicate/replicate.go",
+          "https://replicate.com/docs/reference/http",
+          "https://replicate.com/changelog/2024-04-03-bearer-tokens",
+          "https://github.com/replicate/replicate-python/blob/main/replicate/client.py"
+        ]
+      }
+    },
+    {
+      "id": "sendgrid-token-positive",
+      "path": "sendgrid-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SENDGRID_TOKEN=\u0053G.Review_Alpha7-Beta9Rev.Review_Alpha7-Beta9Review_Alpha7-Beta9Revie\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 84,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "sendgrid-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "sendgrid-token",
+        "sources": [
+          "https://support.sendgrid.com/hc/en-us/articles/44146758703387-Can-I-Use-a-Reduced-Shorter-API-Key-Size-in-SendGrid",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sendgrid/sendgrid.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "sendgrid-token-negative",
+      "path": "sendgrid-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SENDGRID_TOKEN=${SENDGRID_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "sendgrid-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "sendgrid-token",
+        "sources": [
+          "https://support.sendgrid.com/hc/en-us/articles/44146758703387-Can-I-Use-a-Reduced-Shorter-API-Key-Size-in-SendGrid",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sendgrid/sendgrid.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "sentry-org-auth-token-positive",
+      "path": "sentry-org-auth-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SENTRY_ORG_AUTH_TOKEN=\u0073ntrys_eyJReview+Alpha7/Beta9Review+Alpha7_Review+Alpha7/Beta9Review+Alpha7/Beta9Revie\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 108,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "sentry-org-auth-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "sentry-org-auth-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sentryorgtoken/sentryorgtoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "sentry-org-auth-token-negative",
+      "path": "sentry-org-auth-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SENTRY_ORG_AUTH_TOKEN=${SENTRY_ORG_AUTH_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "sentry-org-auth-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "sentry-org-auth-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sentryorgtoken/sentryorgtoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "sentry-user-auth-token-positive",
+      "path": "sentry-user-auth-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SENTRY_USER_AUTH_TOKEN=\u0073ntryu_1a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 23,
+          "end": 94,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "sentry-user-auth-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "sentry-user-auth-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "sentry-user-auth-token-negative",
+      "path": "sentry-user-auth-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SENTRY_USER_AUTH_TOKEN=${SENTRY_USER_AUTH_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "sentry-user-auth-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "sentry-user-auth-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "shopify-token-positive",
+      "path": "shopify-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "shop_domain=review-shop.myshopify.com\nSHOPIFY_TOKEN=\u0073hpat_1a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 52,
+          "end": 90,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "shopify-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "shopify-token",
+        "sources": [
+          "https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/shopify/shopify.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "shopify-token-negative",
+      "path": "shopify-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SHOPIFY_TOKEN=${SHOPIFY_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "shopify-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "shopify-token",
+        "sources": [
+          "https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/shopify/shopify.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "slack-app-level-token-positive",
+      "path": "slack-app-level-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SLACK_APP_LEVEL_TOKEN=\u0078app-271828182845-ReviewAlpha7-271828182845-ReviewAlpha7Beta9G\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 84,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "slack-app-level-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "slack-app-level-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/google/osv-scalibr/blob/main/veles/secrets/slacktoken/detector.go",
+          "https://docs.slack.dev/apis/events-api/using-socket-mode",
+          "https://github.com/slackapi/slack-cli",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/222"
+        ]
+      }
+    },
+    {
+      "id": "slack-app-level-token-negative",
+      "path": "slack-app-level-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SLACK_APP_LEVEL_TOKEN=${SLACK_APP_LEVEL_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "slack-app-level-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "slack-app-level-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/google/osv-scalibr/blob/main/veles/secrets/slacktoken/detector.go",
+          "https://docs.slack.dev/apis/events-api/using-socket-mode",
+          "https://github.com/slackapi/slack-cli",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/222"
+        ]
+      }
+    },
+    {
+      "id": "slack-token-positive",
+      "path": "slack-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SLACK_TOKEN=\u0078oxb-271828182845-271828182845-ReviewAlpha7Beta9Gamma2R\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 67,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "slack-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "slack-token",
+        "sources": [
+          "https://docs.slack.dev/authentication/tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/slack/slack.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "slack-token-negative",
+      "path": "slack-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SLACK_TOKEN=${SLACK_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "slack-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "slack-token",
+        "sources": [
+          "https://docs.slack.dev/authentication/tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/slack/slack.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "slack-user-token-positive",
+      "path": "slack-user-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SLACK_USER_TOKEN=\u0078oxp-271828182845-271828182845-271828182845-ReviewAlpha7Beta9Gamma2R\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 85,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "slack-user-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "slack-user-token",
+        "sources": [
+          "https://docs.slack.dev/authentication/tokens",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/slack/slack.go",
+          "https://docs.slack.dev/changelog/2016/08/23/token-lengthening",
+          "https://docs.slack.dev/authentication/using-token-rotation/"
+        ]
+      }
+    },
+    {
+      "id": "slack-user-token-negative",
+      "path": "slack-user-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SLACK_USER_TOKEN=${SLACK_USER_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "slack-user-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "slack-user-token",
+        "sources": [
+          "https://docs.slack.dev/authentication/tokens",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/slack/slack.go",
+          "https://docs.slack.dev/changelog/2016/08/23/token-lengthening",
+          "https://docs.slack.dev/authentication/using-token-rotation/"
+        ]
+      }
+    },
+    {
+      "id": "stripe-token-positive",
+      "path": "stripe-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "STRIPE_TOKEN=\u0073k_test_ReviewAlpha7Beta9Gamma2ReviewAlp\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 53,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "stripe-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "stripe-token",
+        "sources": [
+          "https://docs.stripe.com/keys",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/stripe/stripe.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "stripe-token-negative",
+      "path": "stripe-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "STRIPE_TOKEN=${STRIPE_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "stripe-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "stripe-token",
+        "sources": [
+          "https://docs.stripe.com/keys",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/stripe/stripe.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "stripe-webhook-signing-secret-positive",
+      "path": "stripe-webhook-signing-secret/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "STRIPE_WEBHOOK_SIGNING_SECRET=\u0077hsec_Review+Alpha7/Beta9Review+Alpha7/Beta9Re\n",
+      "expected": [
+        {
+          "start": 30,
+          "end": 76,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "stripe-webhook-signing-secret"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "stripe-webhook-signing-secret",
+        "sources": [
+          "https://docs.stripe.com/webhooks",
+          "https://docs.stripe.com/api/webhook_endpoints/object",
+          "https://docs.stripe.com/keys",
+          "https://docs.stripe.com/webhooks/signature",
+          "https://github.com/stripe/stripe-cli/blob/master/pkg/reporting/scrub.go",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/224"
+        ]
+      }
+    },
+    {
+      "id": "stripe-webhook-signing-secret-negative",
+      "path": "stripe-webhook-signing-secret/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "STRIPE_WEBHOOK_SIGNING_SECRET=${STRIPE_WEBHOOK_SIGNING_SECRET_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "stripe-webhook-signing-secret"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "stripe-webhook-signing-secret",
+        "sources": [
+          "https://docs.stripe.com/webhooks",
+          "https://docs.stripe.com/api/webhook_endpoints/object",
+          "https://docs.stripe.com/keys",
+          "https://docs.stripe.com/webhooks/signature",
+          "https://github.com/stripe/stripe-cli/blob/master/pkg/reporting/scrub.go",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/224"
+        ]
+      }
+    },
+    {
+      "id": "supabase-management-token-positive",
+      "path": "supabase-management-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SUPABASE_MANAGEMENT_TOKEN=\u0073bp_v0_review7beta9alpha2review7beta9alpha2revi\n",
+      "expected": [
+        {
+          "start": 26,
+          "end": 73,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "supabase-management-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "supabase-management-token",
+        "sources": [
+          "https://supabase.com/docs/guides/platform/personal-access-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/supabasetoken/supabasetoken.go"
+        ]
+      }
+    },
+    {
+      "id": "supabase-management-token-negative",
+      "path": "supabase-management-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SUPABASE_MANAGEMENT_TOKEN=${SUPABASE_MANAGEMENT_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "supabase-management-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "supabase-management-token",
+        "sources": [
+          "https://supabase.com/docs/guides/platform/personal-access-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/supabasetoken/supabasetoken.go"
+        ]
+      }
+    },
+    {
+      "id": "supabase-token-positive",
+      "path": "supabase-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SUPABASE_TOKEN=\u0073b_secret_Review_Alpha7-Beta9Rev_Review_7\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 56,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "supabase-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "supabase-token",
+        "sources": [
+          "https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys",
+          "https://supabase.com/docs/guides/api/api-keys",
+          "https://github.com/supabase/supabase/blob/master/docker/utils/add-new-auth-keys.sh"
+        ]
+      }
+    },
+    {
+      "id": "supabase-token-negative",
+      "path": "supabase-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SUPABASE_TOKEN=${SUPABASE_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "supabase-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "supabase-token",
+        "sources": [
+          "https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys",
+          "https://supabase.com/docs/guides/api/api-keys",
+          "https://github.com/supabase/supabase/blob/master/docker/utils/add-new-auth-keys.sh"
+        ]
+      }
+    },
+    {
+      "id": "telegram-bot-token-positive",
+      "path": "telegram-bot-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TELEGRAM_BOT_TOKEN=\u0032718281828:Review_Alpha7-Beta9Review_Alpha7-Bet\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 66,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "telegram-bot-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "telegram-bot-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/telegrambottoken/telegrambottoken.go"
+        ]
+      }
+    },
+    {
+      "id": "telegram-bot-token-negative",
+      "path": "telegram-bot-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "telegram-bot-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "telegram-bot-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/telegrambottoken/telegrambottoken.go"
+        ]
+      }
+    },
+    {
+      "id": "terraform-cloud-token-positive",
+      "path": "terraform-cloud-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TERRAFORM_CLOUD_TOKEN=\u0052eviewAlpha7Be.atlasv1.ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamm\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 112,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "terraform-cloud-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "terraform-cloud-token",
+        "sources": [
+          "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/user-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/terraformcloudpersonaltoken/terraformcloudpersonaltoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "terraform-cloud-token-negative",
+      "path": "terraform-cloud-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TERRAFORM_CLOUD_TOKEN=${TERRAFORM_CLOUD_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "terraform-cloud-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "terraform-cloud-token",
+        "sources": [
+          "https://developer.hashicorp.com/terraform/cloud-docs/api-docs/user-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/terraformcloudpersonaltoken/terraformcloudpersonaltoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "travisci-api-token-positive",
+      "path": "travisci-api-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TRAVISCI_API_TOKEN=\u0052eviewAlpha7Beta9Gamma\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 41,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "travisci-api-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "travisci-api-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/travisci/travisci.go",
+          "https://docs.travis-ci.com/user/triggering-builds/"
+        ]
+      }
+    },
+    {
+      "id": "travisci-api-token-negative",
+      "path": "travisci-api-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TRAVISCI_API_TOKEN=${TRAVISCI_API_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "travisci-api-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "travisci-api-token",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/travisci/travisci.go",
+          "https://docs.travis-ci.com/user/triggering-builds/"
+        ]
+      }
+    },
+    {
+      "id": "twilio-api-key-secret-positive",
+      "path": "twilio-api-key-secret/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TWILIO_API_KEY_SECRET=\u0052eviewAlpha7Beta9Gamma2ReviewAlp\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 54,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "twilio-api-key-secret"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "twilio-api-key-secret",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/twilioapikey/twilioapikey.go"
+        ]
+      }
+    },
+    {
+      "id": "twilio-api-key-secret-negative",
+      "path": "twilio-api-key-secret/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TWILIO_API_KEY_SECRET=${TWILIO_API_KEY_SECRET_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "twilio-api-key-secret"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "twilio-api-key-secret",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/twilioapikey/twilioapikey.go"
+        ]
+      }
+    },
+    {
+      "id": "twilio-auth-token-positive",
+      "path": "twilio-auth-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TWILIO_AUTH_TOKEN=\u0031a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 50,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "twilio-auth-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "twilio-auth-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/twilio/twilio.go"
+        ]
+      }
+    },
+    {
+      "id": "twilio-auth-token-negative",
+      "path": "twilio-auth-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "twilio-auth-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "twilio-auth-token",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/twilio/twilio.go"
+        ]
+      }
+    },
+    {
+      "id": "vault-token-positive",
+      "path": "vault-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "vault_endpoint=https://review.hashicorp.cloud\nVAULT_TOKEN=\u0068vs.Review_Alpha7-Beta9Review_Alpha7\n",
+      "expected": [
+        {
+          "start": 58,
+          "end": 94,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "vault-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "vault-token",
+        "sources": [
+          "https://developer.hashicorp.com/vault/docs/concepts/tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/hashicorpvault/hashicorpvaulttoken/hashicorpvaulttoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "vault-token-negative",
+      "path": "vault-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "VAULT_TOKEN=${VAULT_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "vault-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "vault-token",
+        "sources": [
+          "https://developer.hashicorp.com/vault/docs/concepts/tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/hashicorpvault/hashicorpvaulttoken/hashicorpvaulttoken.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
+        ]
+      }
+    },
+    {
+      "id": "xai-api-key-positive",
+      "path": "xai-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "XAI_API_KEY=\u0078ai-Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Revi\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 96,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "xai-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "xai-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/xai/xai.go",
+          "https://docs.x.ai/developers/rest-api-reference/management/auth",
+          "https://docs.x.ai/developers/quickstart",
+          "https://github.com/BerriAI/litellm/issues/9291"
+        ]
+      }
+    },
+    {
+      "id": "xai-api-key-negative",
+      "path": "xai-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "XAI_API_KEY=${XAI_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "xai-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "xai-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/xai/xai.go",
+          "https://docs.x.ai/developers/rest-api-reference/management/auth",
+          "https://docs.x.ai/developers/quickstart",
+          "https://github.com/BerriAI/litellm/issues/9291"
+        ]
+      }
+    }
+  ]
+}

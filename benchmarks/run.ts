@@ -27,7 +27,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const hash = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
 const registry: Category[] = JSON.parse(
   await readFile(path.join(root, "benchmarks/categories.json"), "utf8"),
-);
+).filter((category: Category & { calibrationOnly?: boolean }) => !category.calibrationOnly);
 const args = process.argv.slice(2);
 const requested = args.find((a) => a.startsWith("--category="))?.split("=")[1];
 // Staging (#201): the same four flags as eval:candidate/eval:classify swap only

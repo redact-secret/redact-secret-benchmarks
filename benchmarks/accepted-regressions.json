@@ -1,0 +1,46 @@
+[
+  {
+    "id": "beta9-cli-aarch64-linux-gnu-detector-pack",
+    "triggerId": "size/cli/aarch64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "6b124ac50803fe35aad99abbb2dbe89c32f5f284" },
+    "measured": { "baseline": 863848, "candidate": 930576, "unit": "bytes" },
+    "rationale": "The file grew 66,728 bytes (+7.7%) against the 5% trigger, but its loadable segments grew only 11,368 bytes (651,364 to 662,660 at the fixed #772 candidate ecf4db1 and at 6b124ac, 651,292 at beta.8): +1.7%, in line with every other target's growth from the same detector changes (x86_64 Linux CLI +1.5%, every addon and wheel under +2%). aarch64-unknown-linux-gnu aligns its loadable segments to 64 KiB, so that growth pushed the second segment's file offset from 0x995e8 to 0xa9490, one full alignment step, and the file size jumps by the step, not by the code. The growth is the beta.9 detector pack below, not the shadow scorer (#772 alone left this binary at beta.8's size). Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "The beta.9 pack-gap detector fixes redact-secret#831-#838: generic-token assignments in escaped JSON, Go :=, Objective-C literals and brace-bearing values (#831); credential parameters in URL query strings, fragments and form bodies (#832); fewer false positives from escaped placeholders, quoted references, concatenation seams and AWS ARNs (#833); Proxy-Authorization, mid-line Basic/Token and short header-anchored Bearer credentials (#834); RFC 8959 secret-token URIs (#835); passwords in http(s) and ftp(s) URL userinfo (#836); JSON Web Key secret members on a line carrying kty (#837); db_pass as a high-signal name (#838).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/831",
+        "https://github.com/redact-secret/redact-secret/pull/832",
+        "https://github.com/redact-secret/redact-secret/pull/833",
+        "https://github.com/redact-secret/redact-secret/pull/834",
+        "https://github.com/redact-secret/redact-secret/pull/835",
+        "https://github.com/redact-secret/redact-secret/pull/836",
+        "https://github.com/redact-secret/redact-secret/pull/837",
+        "https://github.com/redact-secret/redact-secret/pull/838"
+      ]
+    },
+    "decidedAt": "2026-09-25",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for redact-secret-benchmarks#143)"
+  },
+  {
+    "id": "beta9-rc-cli-aarch64-linux-gnu-detector-pack",
+    "triggerId": "size/cli/aarch64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "93ddf510a31563d58c7d4c202363ef65c4d92d55" },
+    "measured": { "baseline": 863848, "candidate": 930616, "unit": "bytes" },
+    "rationale": "The beta.9 RC remains in the same 64 KiB-aligned file-size step accepted for 6b124ac. Its file is 40 bytes larger (+0.0043%) than that candidate, while the executable load segment grows 8,624 bytes (+1.35%) and the writable load segment and second-segment offset are byte-identical. Every other changed shipped binary is within 0.33% of 6b124ac, exact-candidate conformance and cross-runtime determinism pass, and the paired latency, initialization and memory gates pass. This applies the existing candidate-bound review mechanism; it does not widen the 5% budget or transfer the prior acceptance implicitly.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The RC retains the beta.9 detector-pack gains from redact-secret#831-#838 and adds the reviewed MCP resources/read and key-aware sanitization boundary plus the recalibrated, still non-enforcing shadow scorer.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/831",
+        "https://github.com/redact-secret/redact-secret/issues/812",
+        "https://github.com/redact-secret/redact-secret/issues/810",
+        "https://github.com/redact-secret/redact-secret-benchmarks/issues/300"
+      ]
+    },
+    "decidedAt": "2026-09-26",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the beta.9 RC qualification)"
+  }
+]

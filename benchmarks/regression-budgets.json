@@ -1,0 +1,1629 @@
+{
+  "schemaVersion": "1",
+  "budgetsId": "regression-budgets-v1",
+  "reviewStatus": "reviewed",
+  "derivedAt": "2026-09-25",
+  "baseline": "0.1.0-beta.8",
+  "baselines": [
+    {
+      "id": "0.1.0-beta.8",
+      "file": "benchmarks/regression-baselines/0.1.0-beta.8.json",
+      "sha256": "d9876dfddd89facbcf1e93720be0c3c3dd2191c7910f7c8683c6003a985c393d",
+      "sourceCommit": "3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+      "promotedAt": "2026-09-25",
+      "supersedes": null
+    }
+  ],
+  "noise": {
+    "sources": {
+      "ciDispersion": "benchmarks/regression-evidence/ci-dispersion.json",
+      "rerun": "benchmarks/regression-evidence/rerun-noise-darwin-arm64.json",
+      "adapter": "benchmarks/regression-evidence/adapter-overhead-darwin-arm64.json",
+      "pairedAA": "benchmarks/regression-evidence/paired-aa-linux-x64.json"
+    },
+    "summary": {
+      "pairedAA": {
+        "runs": 6,
+        "cpuModels": [
+          "AMD EPYC 7763 64-Core Processor",
+          "AMD EPYC 9V45 96-Core Processor",
+          "AMD EPYC 9V74 80-Core Processor",
+          "INTEL(R) XEON(R) PLATINUM 8573C"
+        ],
+        "p95RatioDeviationMax": {
+          "processing": 0.4508,
+          "initialization": 2.0816
+        },
+        "medianRatioDeviationMax": {
+          "processing": 0.1472,
+          "initialization": 0.9427
+        }
+      },
+      "rerunMemorySpread": 0.0197,
+      "ciRuns": 8,
+      "adapterProcesses": 10
+    }
+  },
+  "rules": {
+    "latency": "judged on the same-job paired ratio (candidate/baseline, both measured interleaved on one runner): a regression is a processing median ratio above 1 + ceil5%(max(10%, 2 x the row's largest A/A median ratio deviation)) that also rises by more than 1 ms of the in-job baseline median; if the median stays inside but the p95 ratio exceeds 1 + ceil5%(max(15%, 2 x the row's largest A/A p95 ratio deviation)) and 1 ms, the change is tail-only and the verdict is invalid-measurement (rerun); the in-job baseline must be the budgets' baseline commit; at least 10 samples per side; absolute timings across jobs are informational",
+    "initialization": "judged on the same-job paired ratio, like latency: a regression is an initialization median ratio above 1 + ceil5%(max(25%, 2 x the row's largest A/A median ratio deviation)) that also rises by more than 2 ms; a p95 ratio above 1 + ceil5%(max(50%, 2 x the row's largest A/A p95 ratio deviation)) and 2 ms with the median inside is tail-only (invalid-measurement, rerun); at least 10 samples per side",
+    "memory": "the largest observed sample must rise by more than ceil5%(max(10%, 2 x the larger of the CI cross-run spread and the rerun spread)) and 1 MiB; at least 5 samples",
+    "size": "sizes are deterministic (16 bytes observed between two platforms' builds of one wasm), so the threshold is review policy anchored to release history: 5% (the median of the last releases' 4.0-10.3% per-release growth), with floors of 4 KiB for compressed WebAssembly and bundles, 4 KiB for npm tarballs, and 16 KiB for native addons, wheels and CLI binaries; the default bundle and optional profiles are separate triggers",
+    "adapter-overhead": "traversal (host+adapter over a finds-nothing scanner, minus host) must rise by more than ceil5%(max(15%, 2 x its between-process spread)) and ceil(3 x its between-process standard deviation, at least 0.5 microseconds); scanner calls and scanned code units per event are deterministic and trigger on any increase; the candidate must match the baseline profile (platform, arch, CPU model, runtime line, workload digest) and have at least 15 repetitions"
+  },
+  "triggers": [
+    {
+      "id": "adapter/mask-js/mask-payload/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 3024.547,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/mask-payload/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 22,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/mask-payload/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 4.291,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 2.2%, standard deviation 0.038 microseconds"
+    },
+    {
+      "id": "adapter/mask-python/mask-payload/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 3024.547,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/mask-payload/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 22,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/mask-payload/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 13.147,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 2.0%, standard deviation 0.108 microseconds"
+    },
+    {
+      "id": "adapter/otel-js/span-attributes/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 3060.438,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/otel-js/span-attributes/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 43,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/otel-js/span-attributes/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 1.122,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 5.75,
+        "absoluteFloor": 3.5
+      },
+      "derivation": "between-process spread 286.6%, standard deviation 1.157 microseconds"
+    },
+    {
+      "id": "adapter/otel-python/span-attributes/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 3060.438,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/otel-python/span-attributes/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 43,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/otel-python/span-attributes/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 18.643,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 2.3%, standard deviation 0.165 microseconds"
+    },
+    {
+      "id": "adapter/pino-streamwrite/log-flat/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 734.125,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino-streamwrite/log-flat/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 18,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino-streamwrite/log-flat/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 3.7,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 4.9%, standard deviation 0.062 microseconds"
+    },
+    {
+      "id": "adapter/pino-streamwrite/log-nested/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 2154.25,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino-streamwrite/log-nested/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 54,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino-streamwrite/log-nested/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 8.518,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 3.8%, standard deviation 0.105 microseconds"
+    },
+    {
+      "id": "adapter/pino/log-flat/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 367.063,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino/log-flat/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 9,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino/log-flat/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 1.494,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 6.8%, standard deviation 0.045 microseconds"
+    },
+    {
+      "id": "adapter/pino/log-nested/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 1077.125,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino/log-nested/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 27,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino/log-nested/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 3.136,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 3.1%, standard deviation 0.034 microseconds"
+    },
+    {
+      "id": "adapter/python-logging/log-flat/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 367.062,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/python-logging/log-flat/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 9,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/python-logging/log-flat/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 4.026,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 3.4%, standard deviation 0.049 microseconds"
+    },
+    {
+      "id": "adapter/python-logging/log-nested/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 1077.125,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/python-logging/log-nested/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 27,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/python-logging/log-nested/traversal",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "microseconds-per-event",
+      "direction": "increase",
+      "baselineValue": 11.718,
+      "metric": "adapter traversal, median over processes of per-process median difference",
+      "minimumSamples": 15,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0.5
+      },
+      "derivation": "between-process spread 2.3%, standard deviation 0.095 microseconds"
+    },
+    {
+      "id": "initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 1.45,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 4.1%, p95 ratio deviation 72.2% for this row"
+    },
+    {
+      "id": "initialization/browser-wasm/scale-logs-small-whole/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 1.8,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 11.2%, p95 ratio deviation 89.0% for this row"
+    },
+    {
+      "id": "initialization/cli/scale-logs-medium-fixed4096/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 0.5,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 5.1%, p95 ratio deviation 8.7% for this row"
+    },
+    {
+      "id": "initialization/cli/scale-logs-small-whole/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 0.5,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 8.0%, p95 ratio deviation 6.4% for this row"
+    },
+    {
+      "id": "initialization/node/scale-logs-medium-fixed4096/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 2.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 3.2%, p95 ratio deviation 109.2% for this row"
+    },
+    {
+      "id": "initialization/node/scale-logs-small-whole/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 0.5,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 3.9%, p95 ratio deviation 7.1% for this row"
+    },
+    {
+      "id": "initialization/python/scale-logs-medium-fixed4096/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 0.5,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 2.1%, p95 ratio deviation 11.2% for this row"
+    },
+    {
+      "id": "initialization/python/scale-logs-small-whole/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 0.5,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 6.3%, p95 ratio deviation 3.4% for this row"
+    },
+    {
+      "id": "initialization/rust-core/scale-logs-medium-fixed4096/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.65,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 1.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 30.7%, p95 ratio deviation 57.6% for this row"
+    },
+    {
+      "id": "initialization/rust-core/scale-logs-small-whole/initialization-ratio",
+      "dimension": "initialization",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "initialization median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 1.9,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "initialization p95 ratio",
+        "threshold": {
+          "relative": 4.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 94.3%, p95 ratio deviation 208.2% for this row"
+    },
+    {
+      "id": "latency/browser-wasm/scale-logs-medium-fixed4096/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.35,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 1.3%, p95 ratio deviation 16.4% for this row"
+    },
+    {
+      "id": "latency/browser-wasm/scale-logs-small-whole/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.3,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.95,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 14.7%, p95 ratio deviation 45.1% for this row"
+    },
+    {
+      "id": "latency/cli/scale-logs-medium-fixed4096/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 1.1%, p95 ratio deviation 2.2% for this row"
+    },
+    {
+      "id": "latency/cli/scale-logs-small-whole/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.3,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 1.3%, p95 ratio deviation 13.7% for this row"
+    },
+    {
+      "id": "latency/node/scale-logs-medium-fixed4096/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 2.2%, p95 ratio deviation 2.2% for this row"
+    },
+    {
+      "id": "latency/node/scale-logs-small-whole/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.4,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 1.2%, p95 ratio deviation 19.1% for this row"
+    },
+    {
+      "id": "latency/python/scale-logs-medium-fixed4096/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.6,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 0.9%, p95 ratio deviation 28.3% for this row"
+    },
+    {
+      "id": "latency/python/scale-logs-small-whole/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 2.0%, p95 ratio deviation 6.6% for this row"
+    },
+    {
+      "id": "latency/rust-core/scale-logs-medium-fixed4096/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 2.6%, p95 ratio deviation 8.6% for this row"
+    },
+    {
+      "id": "latency/rust-core/scale-logs-small-whole/processing-ratio",
+      "dimension": "latency",
+      "profile": "linux-x64-release",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "processing median, candidate/baseline ratio over interleaved same-job samples (nearest rank)",
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "processing p95 ratio",
+        "threshold": {
+          "relative": 0.7,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "derivation": "largest A/A paired median ratio deviation 0.7%, p95 ratio deviation 32.7% for this row"
+    },
+    {
+      "id": "memory/browser-wasm/scale-logs-medium-fixed4096/browserJsHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 39600000,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 0.0%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/browser-wasm/scale-logs-small-whole/browserJsHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 10000000,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 0.0%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/cli/scale-logs-medium-fixed4096/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 3284992,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 5.8%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/cli/scale-logs-small-whole/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 3244032,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.2,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 7.9%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/node/scale-logs-medium-fixed4096/nodeExternal",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 2348439,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 1.2%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/node/scale-logs-medium-fixed4096/nodeHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 21724840,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 0.3%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/node/scale-logs-medium-fixed4096/nodeRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 97259520,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 3.5%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/node/scale-logs-small-whole/nodeExternal",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 2316568,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 1.2%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/node/scale-logs-small-whole/nodeHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 7470936,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 7.0%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/node/scale-logs-small-whole/nodeRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 68087808,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 6.7%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/python/scale-logs-medium-fixed4096/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 21368832,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 1.2%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/python/scale-logs-medium-fixed4096/pythonHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 537604,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 0.0%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/python/scale-logs-small-whole/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 21610496,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 0.8%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/python/scale-logs-small-whole/pythonHeap",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 75205,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 0.0%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/rust-core/scale-logs-medium-fixed4096/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 3870720,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 6.4%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "memory/rust-core/scale-logs-small-whole/processRss",
+      "dimension": "memory",
+      "profile": "linux-x64-release",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 3911680,
+      "metric": "largest observed sample",
+      "minimumSamples": 5,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1048576
+      },
+      "derivation": "CI cross-run spread 4.6%; same-artifact rerun spread 2.0%"
+    },
+    {
+      "id": "size/browser-bundle/quickstart/gzip",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 144501,
+      "role": "default",
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 4096
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/cli/aarch64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 762560,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/cli/aarch64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 496640,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/cli/aarch64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 863848,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/cli/x86_64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 798416,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/cli/x86_64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 547328,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/cli/x86_64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 868280,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/node-addon/aarch64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 1004128,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/node-addon/aarch64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 709120,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/node-addon/aarch64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 1149600,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/node-addon/aarch64-unknown-linux-musl",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 1148696,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/node-addon/x86_64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 1046848,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/node-addon/x86_64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 783872,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/node-addon/x86_64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 1121416,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/node-addon/x86_64-unknown-linux-musl",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 1126864,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/npm/core/packed",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 39461,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 4096
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/npm/node-darwin-arm64/packed",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 424514,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 4096
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/npm/wasm/packed",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 254413,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 4096
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/python-wheel/aarch64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 443493,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/python-wheel/aarch64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 340669,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/python-wheel/aarch64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 474269,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/python-wheel/aarch64-unknown-linux-musl",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 653409,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/python-wheel/x86_64-apple-darwin",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 454825,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/python-wheel/x86_64-pc-windows-msvc",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 356875,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/python-wheel/x86_64-unknown-linux-gnu",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 482525,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/python-wheel/x86_64-unknown-linux-musl",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 695123,
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 16384
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/wasm/common/gzip",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 100058,
+      "role": "optional",
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 4096
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    },
+    {
+      "id": "size/wasm/full/gzip",
+      "dimension": "size",
+      "profile": "release-artifacts",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 137639,
+      "role": "default",
+      "metric": "artifact bytes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.05,
+        "absoluteFloor": 4096
+      },
+      "derivation": "deterministic; release-history policy (see rules.size)"
+    }
+  ]
+}

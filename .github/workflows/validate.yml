@@ -31,13 +31,23 @@ jobs:
         run: npm run decisions:validate
       - name: Performance criteria are derived from the committed release-build evidence, and its schema pin has not drifted (#136)
         run: npm run performance:criteria:check && npm run performance:schema:check
+      - name: Regression budgets match their derivation, baselines are unchanged, and no breach was replaced away (#143)
+        run: npm run performance:budgets:check
       - name: No not-assertable ledger entry lacks a checked-in ADR decision (#63)
         run: npm run ledger:decisions:check
       - name: External adversarial packs satisfy the intake contract, first runs are immutable, and no project-authored evidence is called independent (#139)
         run: |
           git fetch --no-tags --depth=1 origin main:refs/remotes/origin/main || true
           npm run adversarial:check
+      - name: Statistical scorer tuning manifests keep protected holdout out of tuning (#256)
+        run: npm run tuning:check
+      - name: The statistical scorer's future-promotion contract answers Q1-Q5 with hard constraints and no mixed score (#257)
+        run: npm run scorer-promotion:check
       - run: npm run build
+      - name: No candidate-level feature vector or calibration boundary detail reaches public/ or the built site (#254, #255)
+        run: npm run features:check-public
+      - name: No custodian-held blind corpus, freeze or ledger is tracked or published, and every blind aggregate passes the release whitelist (#142)
+        run: npm run blind:check-public
       - name: Pin manifest reflects the current pins, corpus hashes, and fixture list
         run: npm run pins:manifest:check
       - name: docs/generated/release-comparison.md matches baselines/*.json

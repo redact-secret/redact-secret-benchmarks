@@ -22,10 +22,12 @@
     "baseline": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["summaryPath", "sourceCommit", "accuracyCorpusVersion", "accuracyCorpusHash", "workloadProfilesVersion", "workloadProfilesHash"],
+      "required": ["summaryPath", "sourceCommit", "verifiedCommit", "verificationPath", "accuracyCorpusVersion", "accuracyCorpusHash", "workloadProfilesVersion", "workloadProfilesHash"],
       "properties": {
         "summaryPath": { "type": "string", "minLength": 1 },
         "sourceCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "verifiedCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "verificationPath": { "type": "string", "minLength": 1 },
         "accuracyCorpusVersion": { "type": "string" },
         "accuracyCorpusHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
         "workloadProfilesVersion": { "type": "string" },

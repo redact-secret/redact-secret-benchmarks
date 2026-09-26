@@ -1,0 +1,1556 @@
+{
+  "schema": "redact-secret-benchmarks/regression-noise-v1",
+  "issue": 143,
+  "measuredAt": "2026-09-25T19:09:53Z",
+  "method": {
+    "protocol": "performance-evaluation.yml, dispatched repeatedly at one pinned core commit: each run checks the commit out, builds release artifacts, and runs core's bounded assessment (one fresh process per sample, one untimed warm-up pass, one timed pass)",
+    "samplesPerRun": 5,
+    "runs": 6,
+    "percentile": "nearest-rank p95 over each run's samples, as core's summaries compute it",
+    "spread": "maximum over minimum minus one, across runs",
+    "runsAreSequential": false,
+    "reducedBy": "node --import tsx scripts/regression-budgets.mjs runner-reruns"
+  },
+  "sourceCommit": "3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+  "artifacts": {
+    "build": "release artifacts built by each run from the pinned core commit (same source, rebuilt per run)"
+  },
+  "workloadProfiles": {
+    "hash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806"
+  },
+  "environment": {
+    "runner": "GitHub-hosted ubuntu-latest (official Linux x86_64 profile)",
+    "surfaces": {
+      "rust-core": {
+        "os": "linux-6.17.0-1022-azure",
+        "cpu": "x86_64",
+        "runtime": "rustc-1.98.1 (48a229cea 2026-09-01)",
+        "buildProfile": "release"
+      },
+      "python": {
+        "os": "linux-6.17.0-1022-azure",
+        "cpu": "x64",
+        "runtime": "cpython-3.12.14"
+      },
+      "node": {
+        "os": "linux-6.17.0-1022-azure",
+        "cpu": "x64",
+        "runtime": "node-22.23.2"
+      },
+      "browser-wasm": {
+        "os": "linux-6.17.0-1022-azure",
+        "cpu": "x64",
+        "runtime": "chromium-153.0.8010.12"
+      },
+      "cli": {
+        "os": "linux-6.17.0-1022-azure",
+        "cpu": "x64",
+        "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)"
+      }
+    }
+  },
+  "runs": [
+    {
+      "runId": 36078460497,
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36078460497",
+      "workflow": "performance-evaluation.yml",
+      "event": "workflow_dispatch",
+      "benchmarksRef": "beta8/core-closeout-arrival-families",
+      "benchmarksCommit": "282bb37716b293be33707e4d78589b6aae9d2224",
+      "startedAt": "2026-09-25T00:38:27Z",
+      "completedAt": "2026-09-25T00:42:47Z",
+      "runner": {
+        "label": "ubuntu-latest",
+        "name": "GitHub Actions 1000028901",
+        "group": "GitHub Actions",
+        "image": "ubuntu-24.04 20260920.314.1",
+        "azureRegion": "northcentralus"
+      },
+      "artifact": {
+        "id": 10840474616,
+        "name": "performance-evaluation-3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+        "digest": "sha256:0d51cef2231f16e7110d77787ea03a48ece71075e37c153f022664523619af94"
+      },
+      "summarySha256": "aeb93a0e8c95da46e793533018ef6bfc45dd905d3dc7e08c0933a85e05a44119"
+    },
+    {
+      "runId": 36177107404,
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177107404",
+      "workflow": "performance-evaluation.yml",
+      "event": "workflow_dispatch",
+      "benchmarksRef": "develop",
+      "benchmarksCommit": "cbe417e2c38309dc3b0b80e310fa666016ced0c4",
+      "startedAt": "2026-09-25T19:01:31Z",
+      "completedAt": "2026-09-25T19:05:26Z",
+      "runner": {
+        "label": "ubuntu-latest",
+        "name": "GitHub Actions 1000031279",
+        "group": "GitHub Actions",
+        "image": "ubuntu-24.04 20260920.314.1",
+        "azureRegion": "eastus2"
+      },
+      "artifact": {
+        "id": 10883280375,
+        "name": "performance-evaluation-3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+        "digest": "sha256:8066af91dfbad3b311dbdc416d7aa925eed37bdf4d0b315de988f6891dd83a0f"
+      },
+      "summarySha256": "262df90d51e42d77f08adfba27a591a46e736a0c9d2caa48edb26f448cd6bbbb"
+    },
+    {
+      "runId": 36177116881,
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177116881",
+      "workflow": "performance-evaluation.yml",
+      "event": "workflow_dispatch",
+      "benchmarksRef": "develop",
+      "benchmarksCommit": "cbe417e2c38309dc3b0b80e310fa666016ced0c4",
+      "startedAt": "2026-09-25T19:01:37Z",
+      "completedAt": "2026-09-25T19:06:16Z",
+      "runner": {
+        "label": "ubuntu-latest",
+        "name": "GitHub Actions 1000031280",
+        "group": "GitHub Actions",
+        "image": "ubuntu-24.04 20260920.314.1",
+        "azureRegion": "westus2"
+      },
+      "artifact": {
+        "id": 10882573453,
+        "name": "performance-evaluation-3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+        "digest": "sha256:8cf3cabe249a39168978d8f940a91fbf78a8558aa17c4698a70f73e387a5f029"
+      },
+      "summarySha256": "322718019287bca03102c28187fa633c8fdc60c718dd1ac970129cdff2e8e211"
+    },
+    {
+      "runId": 36177124781,
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177124781",
+      "workflow": "performance-evaluation.yml",
+      "event": "workflow_dispatch",
+      "benchmarksRef": "develop",
+      "benchmarksCommit": "cbe417e2c38309dc3b0b80e310fa666016ced0c4",
+      "startedAt": "2026-09-25T19:01:41Z",
+      "completedAt": "2026-09-25T19:05:45Z",
+      "runner": {
+        "label": "ubuntu-latest",
+        "name": "GitHub Actions 1000031281",
+        "group": "GitHub Actions",
+        "image": "ubuntu-24.04 20260920.314.1",
+        "azureRegion": "eastus"
+      },
+      "artifact": {
+        "id": 10882703438,
+        "name": "performance-evaluation-3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+        "digest": "sha256:a529c2a7f47f9d4db56e9ecc7c267e83e744a274bd0d1fbeb6ab7c0820ef15fa"
+      },
+      "summarySha256": "d91424b26f2cab14188340a79317c617f6eaa48edb1033082f941ae340e7afb5"
+    },
+    {
+      "runId": 36177797166,
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177797166",
+      "workflow": "performance-evaluation.yml",
+      "event": "workflow_dispatch",
+      "benchmarksRef": "develop",
+      "benchmarksCommit": "cbe417e2c38309dc3b0b80e310fa666016ced0c4",
+      "startedAt": "2026-09-25T19:08:10Z",
+      "completedAt": "2026-09-25T19:09:53Z",
+      "runner": {
+        "label": "ubuntu-latest",
+        "name": "GitHub Actions 1000031343",
+        "group": "GitHub Actions",
+        "image": "ubuntu-24.04 20260920.314.1",
+        "azureRegion": "eastus"
+      },
+      "artifact": {
+        "id": 10883365957,
+        "name": "performance-evaluation-3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+        "digest": "sha256:0c0915826e8446ead7ef33998337ab2bb4af613371ae96166ecdf6b7f4d527f0"
+      },
+      "summarySha256": "b336af8aa1d631199fe51bb28a24211b359cedee02e37ef2812a509c97a82ac2"
+    },
+    {
+      "runId": 36177805247,
+      "url": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36177805247",
+      "workflow": "performance-evaluation.yml",
+      "event": "workflow_dispatch",
+      "benchmarksRef": "develop",
+      "benchmarksCommit": "cbe417e2c38309dc3b0b80e310fa666016ced0c4",
+      "startedAt": "2026-09-25T19:08:15Z",
+      "completedAt": "2026-09-25T19:09:44Z",
+      "runner": {
+        "label": "ubuntu-latest",
+        "name": "GitHub Actions 1000031344",
+        "group": "GitHub Actions",
+        "image": "ubuntu-24.04 20260920.314.1",
+        "azureRegion": "centralus"
+      },
+      "artifact": {
+        "id": 10883221094,
+        "name": "performance-evaluation-3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+        "digest": "sha256:ea01d8ec8140c4192df5e84fa401fb975540bf50f50a6408703c0c5116988bc5"
+      },
+      "summarySha256": "47df19bb0e4a4896316aa9225806d58aeb73be379c6350d1abb61d456e832527"
+    }
+  ],
+  "series": [
+    {
+      "surface": "rust-core",
+      "profileId": "scale-logs-small-whole",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 0.028283,
+            "median": 0.014577
+          },
+          "processing": {
+            "p95": 18.380934,
+            "median": 16.047090999999998,
+            "samples": [
+              16.092025,
+              15.909293000000002,
+              16.047090999999998,
+              15.959246,
+              18.380934
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3911680
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 0.042074,
+            "median": 0.014261
+          },
+          "processing": {
+            "p95": 16.742732999999998,
+            "median": 16.524214,
+            "samples": [
+              16.605587,
+              16.524214,
+              16.132164,
+              16.370081000000003,
+              16.742732999999998
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3854336
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 0.030555999999999996,
+            "median": 0.012402999999999999
+          },
+          "processing": {
+            "p95": 16.700223,
+            "median": 16.539433,
+            "samples": [
+              16.700223,
+              16.456388,
+              16.507042,
+              16.539433,
+              16.608251
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3825664
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 0.027861999999999998,
+            "median": 0.011772
+          },
+          "processing": {
+            "p95": 15.867158,
+            "median": 15.825809999999999,
+            "samples": [
+              15.863572,
+              15.623821,
+              15.825809999999999,
+              15.822114000000001,
+              15.867158
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3842048
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 0.027701,
+            "median": 0.010145
+          },
+          "processing": {
+            "p95": 12.607709999999999,
+            "median": 12.551226,
+            "samples": [
+              12.551226,
+              12.485256999999999,
+              12.522934,
+              12.551816,
+              12.607709999999999
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 4001792
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 0.023135000000000003,
+            "median": 0.008532999999999999
+          },
+          "processing": {
+            "p95": 9.647069,
+            "median": 9.571676,
+            "samples": [
+              9.647069,
+              9.571676,
+              9.606078,
+              9.487019,
+              9.526098000000001
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 4022272
+          }
+        }
+      ]
+    },
+    {
+      "surface": "rust-core",
+      "profileId": "scale-logs-medium-fixed4096",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 0.027922000000000002,
+            "median": 0.013305
+          },
+          "processing": {
+            "p95": 79.303971,
+            "median": 78.75741699999999,
+            "samples": [
+              77.350579,
+              79.303971,
+              78.75741699999999,
+              78.808943,
+              78.600884
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3870720
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 0.036425,
+            "median": 0.014022
+          },
+          "processing": {
+            "p95": 81.359298,
+            "median": 80.664762,
+            "samples": [
+              79.108276,
+              80.587225,
+              80.664762,
+              81.359298,
+              81.18743
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3825664
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 0.029043999999999997,
+            "median": 0.013075
+          },
+          "processing": {
+            "p95": 79.06474800000001,
+            "median": 79.021872,
+            "samples": [
+              77.443437,
+              79.06474800000001,
+              79.021872,
+              79.05662199999999,
+              78.980521
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3809280
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 0.027892999999999998,
+            "median": 0.012053
+          },
+          "processing": {
+            "p95": 79.314881,
+            "median": 79.04951200000001,
+            "samples": [
+              77.333452,
+              79.00085,
+              79.04951200000001,
+              79.314881,
+              79.20384299999999
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3829760
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 0.028793,
+            "median": 0.010877
+          },
+          "processing": {
+            "p95": 60.845850999999996,
+            "median": 60.430194,
+            "samples": [
+              59.365662,
+              60.845850999999996,
+              60.390866,
+              60.430194,
+              60.800242999999995
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 4005888
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 0.021403000000000002,
+            "median": 0.008523
+          },
+          "processing": {
+            "p95": 43.220398,
+            "median": 43.04661,
+            "samples": [
+              41.714928,
+              43.123845,
+              43.04661,
+              43.027289,
+              43.220398
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3932160
+          }
+        }
+      ]
+    },
+    {
+      "surface": "python",
+      "profileId": "scale-logs-small-whole",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 0.970198,
+            "median": 0.958055
+          },
+          "processing": {
+            "p95": 15.89261,
+            "median": 15.617435,
+            "samples": [
+              15.632433,
+              15.617435,
+              15.89261,
+              15.580846,
+              15.593791
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21610496
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 0.970373,
+            "median": 0.949101
+          },
+          "processing": {
+            "p95": 16.410713,
+            "median": 16.376471,
+            "samples": [
+              16.210341,
+              16.410713,
+              16.395039,
+              16.266997,
+              16.376471
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21585920
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 0.918652,
+            "median": 0.855143
+          },
+          "processing": {
+            "p95": 15.700921,
+            "median": 15.632343,
+            "samples": [
+              15.323207,
+              15.608609,
+              15.700921,
+              15.645537,
+              15.632343
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21549056
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 0.893892,
+            "median": 0.878213
+          },
+          "processing": {
+            "p95": 15.720002,
+            "median": 15.530555,
+            "samples": [
+              15.530555,
+              15.598833,
+              15.720002,
+              15.393657,
+              15.477875
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21602304
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 0.983922,
+            "median": 0.756614
+          },
+          "processing": {
+            "p95": 12.572417,
+            "median": 12.46698,
+            "samples": [
+              12.440691,
+              12.572417,
+              12.538216,
+              12.391058,
+              12.46698
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21602304
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 0.577188,
+            "median": 0.533571
+          },
+          "processing": {
+            "p95": 9.947578,
+            "median": 9.763601,
+            "samples": [
+              9.801291,
+              9.750004,
+              9.636584,
+              9.763601,
+              9.947578
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 75205,
+            "processRss": 21594112
+          }
+        }
+      ]
+    },
+    {
+      "surface": "python",
+      "profileId": "scale-logs-medium-fixed4096",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 1.026253,
+            "median": 0.991528
+          },
+          "processing": {
+            "p95": 81.351337,
+            "median": 80.06104,
+            "samples": [
+              81.351337,
+              79.970899,
+              80.081488,
+              80.06104,
+              79.469992
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21368832
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 1.011986,
+            "median": 0.994268
+          },
+          "processing": {
+            "p95": 81.730237,
+            "median": 80.923611,
+            "samples": [
+              81.730237,
+              80.923611,
+              81.068059,
+              80.872495,
+              80.871924
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21385216
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 0.980667,
+            "median": 0.927778
+          },
+          "processing": {
+            "p95": 80.437415,
+            "median": 79.542928,
+            "samples": [
+              79.50668,
+              80.437415,
+              79.542928,
+              80.168553,
+              78.998684
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21372928
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 0.974554,
+            "median": 0.904863
+          },
+          "processing": {
+            "p95": 80.031801,
+            "median": 79.755501,
+            "samples": [
+              79.52153,
+              79.755501,
+              79.842504,
+              80.031801,
+              79.664689
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21368832
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 0.789082,
+            "median": 0.779187
+          },
+          "processing": {
+            "p95": 61.954959,
+            "median": 61.778797,
+            "samples": [
+              61.778797,
+              61.742353,
+              61.659961,
+              61.954959,
+              61.911153
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21286912
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 0.580633,
+            "median": 0.575165
+          },
+          "processing": {
+            "p95": 43.458556,
+            "median": 43.155972,
+            "samples": [
+              43.009642,
+              43.155972,
+              43.458556,
+              43.446729,
+              43.00155
+            ]
+          },
+          "memoryMaximumBytes": {
+            "pythonHeap": 537604,
+            "processRss": 21364736
+          }
+        }
+      ]
+    },
+    {
+      "surface": "node",
+      "profileId": "scale-logs-small-whole",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 6.092246000000003,
+            "median": 5.3946380000000005
+          },
+          "processing": {
+            "p95": 15.847566,
+            "median": 15.743731000000011,
+            "samples": [
+              15.717782999999997,
+              15.724905000000007,
+              15.847566,
+              15.758818999999988,
+              15.743731000000011
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7470936,
+            "nodeRss": 68087808,
+            "nodeExternal": 2316568
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 6.01751999999999,
+            "median": 5.511147000000008
+          },
+          "processing": {
+            "p95": 16.393039,
+            "median": 16.341841000000002,
+            "samples": [
+              16.367689999999996,
+              16.248960999999994,
+              16.282161000000002,
+              16.393039,
+              16.341841000000002
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7473880,
+            "nodeRss": 67907584,
+            "nodeExternal": 2316568
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 5.892999000000003,
+            "median": 5.655246000000005
+          },
+          "processing": {
+            "p95": 15.651359,
+            "median": 15.63365499999999,
+            "samples": [
+              15.305785,
+              15.640468999999996,
+              15.63365499999999,
+              15.651359,
+              15.506809000000004
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7470960,
+            "nodeRss": 68390912,
+            "nodeExternal": 2316568
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 5.633099999999999,
+            "median": 5.107281
+          },
+          "processing": {
+            "p95": 15.644699000000003,
+            "median": 15.506720000000001,
+            "samples": [
+              15.506720000000001,
+              15.644699000000003,
+              15.482804999999999,
+              15.493194000000003,
+              15.538068999999993
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7402960,
+            "nodeRss": 67375104,
+            "nodeExternal": 2316568
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 5.248827999999996,
+            "median": 4.396620999999996
+          },
+          "processing": {
+            "p95": 12.671584999999993,
+            "median": 12.57616200000001,
+            "samples": [
+              12.52546799999999,
+              12.671584999999993,
+              12.635411000000005,
+              12.57616200000001,
+              12.449785000000006
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7470960,
+            "nodeRss": 68243456,
+            "nodeExternal": 2316568
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 3.8147129999999976,
+            "median": 3.7778570000000045
+          },
+          "processing": {
+            "p95": 9.813046,
+            "median": 9.772074000000003,
+            "samples": [
+              9.772074000000003,
+              9.680587000000003,
+              9.813046,
+              9.807699,
+              9.750383
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 7470992,
+            "nodeRss": 67538944,
+            "nodeExternal": 2316568
+          }
+        }
+      ]
+    },
+    {
+      "surface": "node",
+      "profileId": "scale-logs-medium-fixed4096",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 6.395963999999992,
+            "median": 5.534631000000019
+          },
+          "processing": {
+            "p95": 90.48937000000001,
+            "median": 88.977217,
+            "samples": [
+              87.35921599999995,
+              90.48937000000001,
+              88.21405699999997,
+              88.977217,
+              89.05116600000002
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21724840,
+            "nodeRss": 97259520,
+            "nodeExternal": 2348439
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 6.294397000000004,
+            "median": 5.689865999999995
+          },
+          "processing": {
+            "p95": 90.27738999999997,
+            "median": 86.85099600000001,
+            "samples": [
+              86.85099600000001,
+              86.71620200000001,
+              87.22134399999999,
+              86.28077599999995,
+              90.27738999999997
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21729808,
+            "nodeRss": 95371264,
+            "nodeExternal": 2348313
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 5.991731999999985,
+            "median": 5.876357999999982
+          },
+          "processing": {
+            "p95": 87.838143,
+            "median": 85.75181499999997,
+            "samples": [
+              85.75181499999997,
+              86.51750199999998,
+              85.214044,
+              85.53599399999996,
+              87.838143
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21729304,
+            "nodeRss": 95883264,
+            "nodeExternal": 2348417
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 5.828336999999976,
+            "median": 5.132899000000009
+          },
+          "processing": {
+            "p95": 85.188964,
+            "median": 84.801826,
+            "samples": [
+              85.188964,
+              84.801826,
+              84.575941,
+              84.86729000000003,
+              84.525417
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21726768,
+            "nodeRss": 95690752,
+            "nodeExternal": 2348495
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 5.052196000000009,
+            "median": 4.963353999999981
+          },
+          "processing": {
+            "p95": 68.885434,
+            "median": 67.453427,
+            "samples": [
+              66.67408900000001,
+              67.453427,
+              66.97205200000002,
+              67.59446699999998,
+              68.885434
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21698624,
+            "nodeRss": 95404032,
+            "nodeExternal": 2348360
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 4.146271000000013,
+            "median": 4.116495999999998
+          },
+          "processing": {
+            "p95": 47.13560099999998,
+            "median": 46.430312999999984,
+            "samples": [
+              46.86590699999999,
+              46.41234499999999,
+              46.429304,
+              47.13560099999998,
+              46.430312999999984
+            ]
+          },
+          "memoryMaximumBytes": {
+            "nodeHeap": 21729416,
+            "nodeRss": 95100928,
+            "nodeExternal": 2348377
+          }
+        }
+      ]
+    },
+    {
+      "surface": "browser-wasm",
+      "profileId": "scale-logs-small-whole",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 13.099999999976717,
+            "median": 9
+          },
+          "processing": {
+            "p95": 35.29999999998836,
+            "median": 23.20000000001164,
+            "samples": [
+              35.29999999998836,
+              26,
+              23.20000000001164,
+              23,
+              22.199999999953434
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 14.800000000017462,
+            "median": 10
+          },
+          "processing": {
+            "p95": 33.69999999998254,
+            "median": 22.20000000001164,
+            "samples": [
+              33.69999999998254,
+              20.39999999999418,
+              22.20000000001164,
+              23,
+              21.800000000017462
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 14.5,
+            "median": 8.300000000046566
+          },
+          "processing": {
+            "p95": 23.900000000023283,
+            "median": 22.899999999965075,
+            "samples": [
+              23.79999999998836,
+              23.900000000023283,
+              22.899999999965075,
+              20.20000000001164,
+              19.600000000034925
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 13.900000000023283,
+            "median": 8.600000000034925
+          },
+          "processing": {
+            "p95": 34.399999999965075,
+            "median": 21.79999999998836,
+            "samples": [
+              34.399999999965075,
+              23.5,
+              21,
+              19.400000000023283,
+              21.79999999998836
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 12.099999999991269,
+            "median": 7.399999999994179
+          },
+          "processing": {
+            "p95": 28,
+            "median": 17.09999999999127,
+            "samples": [
+              28,
+              21.70000000001164,
+              17.09999999999127,
+              17.09999999999127,
+              17.09999999999127
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 10.099999999991269,
+            "median": 5.30000000000291
+          },
+          "processing": {
+            "p95": 18.5,
+            "median": 13.099999999991269,
+            "samples": [
+              18.5,
+              13,
+              12.599999999991269,
+              13.099999999991269,
+              14.5
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 10000000
+          }
+        }
+      ]
+    },
+    {
+      "surface": "browser-wasm",
+      "profileId": "scale-logs-medium-fixed4096",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 17.399999999965075,
+            "median": 15.699999999953434
+          },
+          "processing": {
+            "p95": 115.5,
+            "median": 106,
+            "samples": [
+              105.20000000001164,
+              115.5,
+              105.59999999997672,
+              108.10000000003492,
+              106
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 18,
+            "median": 15.699999999982538
+          },
+          "processing": {
+            "p95": 102.5,
+            "median": 101.39999999999418,
+            "samples": [
+              101.69999999998254,
+              101.39999999999418,
+              101.39999999999418,
+              102.5,
+              100.89999999999418
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 15.599999999976717,
+            "median": 14.5
+          },
+          "processing": {
+            "p95": 106.80000000004657,
+            "median": 104.5,
+            "samples": [
+              103.89999999996508,
+              104.19999999995343,
+              104.59999999997672,
+              106.80000000004657,
+              104.5
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 15.400000000023283,
+            "median": 14.700000000011642
+          },
+          "processing": {
+            "p95": 105.29999999998836,
+            "median": 104.60000000003492,
+            "samples": [
+              103.5,
+              104.60000000003492,
+              104.20000000001164,
+              105.20000000001164,
+              105.29999999998836
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 12.80000000000291,
+            "median": 11.89999999999418
+          },
+          "processing": {
+            "p95": 78.5,
+            "median": 78.30000000000291,
+            "samples": [
+              78.30000000000291,
+              77.80000000000291,
+              78.5,
+              78.40000000000873,
+              78.10000000000582
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 10.60000000000582,
+            "median": 9.900000000008731
+          },
+          "processing": {
+            "p95": 63.19999999999709,
+            "median": 61,
+            "samples": [
+              60.60000000000582,
+              63.19999999999709,
+              61,
+              60.70000000001164,
+              61.19999999999709
+            ]
+          },
+          "memoryMaximumBytes": {
+            "browserJsHeap": 39600000
+          }
+        }
+      ]
+    },
+    {
+      "surface": "cli",
+      "profileId": "scale-logs-small-whole",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 2.6162920000000014,
+            "median": 2.6013849999999934
+          },
+          "processing": {
+            "p95": 23.399737000000016,
+            "median": 23.105126,
+            "samples": [
+              23.105126,
+              22.883250000000004,
+              23.13798699999998,
+              23.093894999999975,
+              23.399737000000016
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3244032
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 2.4418210000000045,
+            "median": 2.403762999999998
+          },
+          "processing": {
+            "p95": 29.316483000000005,
+            "median": 23.092786999999987,
+            "samples": [
+              22.483938999999992,
+              26.175102999999993,
+              29.316483000000005,
+              22.430398000000025,
+              23.092786999999987
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3276800
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 2.2231920000000116,
+            "median": 2.065146999999996
+          },
+          "processing": {
+            "p95": 22.94586800000002,
+            "median": 22.578813999999994,
+            "samples": [
+              22.578813999999994,
+              22.754547000000002,
+              22.567183,
+              22.194278000000025,
+              22.94586800000002
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3272704
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 2.148132000000004,
+            "median": 2.064233999999999
+          },
+          "processing": {
+            "p95": 23.101742000000016,
+            "median": 22.755946999999992,
+            "samples": [
+              22.656008,
+              23.101742000000016,
+              22.755946999999992,
+              22.60611,
+              22.93575199999998
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3252224
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 1.9161859999999962,
+            "median": 1.820875000000001
+          },
+          "processing": {
+            "p95": 17.497512,
+            "median": 17.29875100000001,
+            "samples": [
+              17.013898000000005,
+              17.426572000000007,
+              17.258192000000008,
+              17.29875100000001,
+              17.497512
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3411968
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 1.5705600000000004,
+            "median": 1.4204050000000024
+          },
+          "processing": {
+            "p95": 12.450699000000014,
+            "median": 12.277693999999997,
+            "samples": [
+              12.231208000000002,
+              12.277693999999997,
+              12.288810999999995,
+              12.241286000000002,
+              12.450699000000014
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3371008
+          }
+        }
+      ]
+    },
+    {
+      "surface": "cli",
+      "profileId": "scale-logs-medium-fixed4096",
+      "runs": [
+        {
+          "runId": 36078460497,
+          "initialization": {
+            "p95": 2.8320870000000014,
+            "median": 2.707644000000002
+          },
+          "processing": {
+            "p95": 85.56273599999997,
+            "median": 83.735657,
+            "samples": [
+              83.735657,
+              83.064213,
+              82.95239900000001,
+              85.56273599999997,
+              84.62034399999993
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3284992
+          }
+        },
+        {
+          "runId": 36177107404,
+          "initialization": {
+            "p95": 2.5644549999999526,
+            "median": 2.5522569999999405
+          },
+          "processing": {
+            "p95": 82.53581699999995,
+            "median": 82.28918999999999,
+            "samples": [
+              82.28918999999999,
+              82.09557299999997,
+              81.88131600000003,
+              82.32091300000002,
+              82.53581699999995
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3260416
+          }
+        },
+        {
+          "runId": 36177116881,
+          "initialization": {
+            "p95": 2.4123440000000187,
+            "median": 2.2424879999999945
+          },
+          "processing": {
+            "p95": 82.99402899999995,
+            "median": 82.55148400000007,
+            "samples": [
+              82.857477,
+              82.29878399999998,
+              82.50928499999998,
+              82.55148400000007,
+              82.99402899999995
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3268608
+          }
+        },
+        {
+          "runId": 36177124781,
+          "initialization": {
+            "p95": 2.399876000000063,
+            "median": 2.1588729999999714
+          },
+          "processing": {
+            "p95": 83.211976,
+            "median": 82.912733,
+            "samples": [
+              83.211976,
+              82.912733,
+              82.47022100000004,
+              82.26114699999994,
+              82.97139400000003
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3305472
+          }
+        },
+        {
+          "runId": 36177797166,
+          "initialization": {
+            "p95": 1.9766159999999786,
+            "median": 1.9346940000000359
+          },
+          "processing": {
+            "p95": 64.406373,
+            "median": 62.88034700000003,
+            "samples": [
+              64.406373,
+              62.48987700000001,
+              62.716564000000005,
+              63.03353400000003,
+              62.88034700000003
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3403776
+          }
+        },
+        {
+          "runId": 36177805247,
+          "initialization": {
+            "p95": 1.557980999999998,
+            "median": 1.459782999999959
+          },
+          "processing": {
+            "p95": 44.660611,
+            "median": 44.01606700000002,
+            "samples": [
+              44.660611,
+              44.01606700000002,
+              43.761651,
+              44.17027300000001,
+              43.92794100000003
+            ]
+          },
+          "memoryMaximumBytes": {
+            "processRss": 3407872
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Each run rebuilds release artifacts from the one pinned source commit, so the spread includes build-to-build as well as runner-to-runner variation; that is the variation a real candidate run carries.",
+    "Run 36078460497 is the beta.8 baseline run, dispatched from benchmarks ref beta8/core-closeout-arrival-families; the other five were dispatched from develop. The core commit, workload profiles, repetitions, runner image (ubuntu-24.04 20260920.314.1) and per-surface OS kernel and runtimes are identical across all six.",
+    "The spread is dominated by runner hardware, not by rerun noise: runs 36078460497, 36177107404, 36177116881 and 36177124781 agree within 6.4% on every processing median, while 36177797166 measured about 22% and 36177805247 about 45% faster on every surface and profile at once. Region does not explain it (eastus hosted both a slow and a fast run), and the job log does not record the CPU model, so a run's hardware class cannot be identified from its evidence.",
+    "Not a derivation source: two times this spread (183% processing, 177% initialization) would set every latency and initialization threshold near 185% and erase both detector-expansion regressions the backtest flags. The budgets therefore stay proposed until timing is bound to an identified runner hardware class or measured paired within one job."
+  ]
+}

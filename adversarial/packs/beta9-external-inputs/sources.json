@@ -1,0 +1,735 @@
+{
+  "schemaVersion": 1,
+  "packId": "beta9-external-inputs",
+  "description": "Per-fixture provenance for beta9-external-inputs. issueCategory is the #140 category; verbatim excerpts drop only RFC figure indentation and add a final newline.",
+  "sources": {
+    "rfc6749": {
+      "title": "RFC 6749, The OAuth 2.0 Authorization Framework",
+      "url": "https://www.rfc-editor.org/rfc/rfc6749.txt",
+      "license": "IETF Trust Legal Provisions (code components: BSD-3-Clause)",
+      "authors": "D. Hardt, Ed. (IETF)"
+    },
+    "rfc6750": {
+      "title": "RFC 6750, OAuth 2.0 Bearer Token Usage",
+      "url": "https://www.rfc-editor.org/rfc/rfc6750.txt",
+      "license": "IETF Trust Legal Provisions (code components: BSD-3-Clause)",
+      "authors": "M. Jones, D. Hardt (IETF)"
+    },
+    "rfc7617": {
+      "title": "RFC 7617, The 'Basic' HTTP Authentication Scheme",
+      "url": "https://www.rfc-editor.org/rfc/rfc7617.txt",
+      "license": "IETF Trust Legal Provisions (code components: BSD-3-Clause)",
+      "authors": "J. Reschke (IETF)"
+    },
+    "rfc8959": {
+      "title": "RFC 8959, The 'secret-token' URI Scheme",
+      "url": "https://www.rfc-editor.org/rfc/rfc8959.txt",
+      "license": "IETF Trust Legal Provisions (code components: BSD-3-Clause)",
+      "authors": "M. Nottingham (IETF)"
+    },
+    "rfc7515": {
+      "title": "RFC 7515, JSON Web Signature (JWS)",
+      "url": "https://www.rfc-editor.org/rfc/rfc7515.txt",
+      "license": "IETF Trust Legal Provisions (code components: BSD-3-Clause)",
+      "authors": "M. Jones, J. Bradley, N. Sakimura (IETF)"
+    },
+    "rfc7519": {
+      "title": "RFC 7519, JSON Web Token (JWT)",
+      "url": "https://www.rfc-editor.org/rfc/rfc7519.txt",
+      "license": "IETF Trust Legal Provisions (code components: BSD-3-Clause)",
+      "authors": "M. Jones, J. Bradley, N. Sakimura (IETF)"
+    },
+    "rfc7636": {
+      "title": "RFC 7636, Proof Key for Code Exchange (PKCE)",
+      "url": "https://www.rfc-editor.org/rfc/rfc7636.txt",
+      "license": "IETF Trust Legal Provisions (code components: BSD-3-Clause)",
+      "authors": "N. Sakimura, Ed., J. Bradley, N. Agarwal (IETF)"
+    },
+    "rfc3986": {
+      "title": "RFC 3986, URI Generic Syntax",
+      "url": "https://www.rfc-editor.org/rfc/rfc3986.txt",
+      "license": "IETF Trust Legal Provisions (code components: BSD-3-Clause)",
+      "authors": "T. Berners-Lee, R. Fielding, L. Masinter (IETF)"
+    },
+    "detect-secrets": {
+      "title": "Yelp/detect-secrets test suite",
+      "url": "https://github.com/Yelp/detect-secrets/tree/5e141933554a0b74e7341841f318be21e895339c/tests",
+      "license": "Apache-2.0",
+      "authors": "Yelp, Inc. and detect-secrets contributors"
+    },
+    "noseyparker": {
+      "title": "praetorian-inc/noseyparker built-in rule examples",
+      "url": "https://github.com/praetorian-inc/noseyparker/tree/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules",
+      "license": "Apache-2.0",
+      "authors": "Praetorian Security, Inc. and Nosey Parker contributors"
+    },
+    "blns": {
+      "title": "The Big List of Naughty Strings",
+      "url": "https://github.com/minimaxir/big-list-of-naughty-strings/blob/db33ec7b1d5d9616a88c76394b7d0897bd0b97eb/blns.txt",
+      "license": "MIT",
+      "authors": "Max Woolf and contributors"
+    },
+    "trojan-source": {
+      "title": "Trojan Source proof-of-concept files",
+      "url": "https://github.com/nickboucher/trojan-source/tree/e3dc153fcf465f4a84424ea874ff39be29adb1f7/JavaScript",
+      "license": "MIT",
+      "authors": "Nicholas Boucher, Ross Anderson"
+    },
+    "aws-cli": {
+      "title": "aws/aws-cli command examples (iam create-access-key)",
+      "url": "https://github.com/aws/aws-cli/blob/4a54791df2da35778bca1325f71b1cb0b4ba770a/awscli/examples/iam/create-access-key.rst",
+      "license": "Apache-2.0",
+      "authors": "Amazon.com, Inc. or its affiliates"
+    }
+  },
+  "fixtures": [
+    {
+      "id": "rfc6750-query-access-token",
+      "issueCategory": "urls-and-query-strings",
+      "sources": [
+        "rfc6750"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc6750-get-request-line",
+      "issueCategory": "urls-and-query-strings",
+      "sources": [
+        "rfc6750"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc6749-implicit-fragment-display-break",
+      "issueCategory": "urls-and-query-strings",
+      "sources": [
+        "rfc6749"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc6749-authorization-code-location",
+      "issueCategory": "urls-and-query-strings",
+      "sources": [
+        "rfc6749"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc7636-code-challenge-query",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "rfc7636"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc7636-code-verifier",
+      "issueCategory": "urls-and-query-strings",
+      "sources": [
+        "rfc7636"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc3986-example-uris",
+      "issueCategory": "urls-and-query-strings",
+      "sources": [
+        "rfc3986"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "composed-userinfo-password-url",
+      "issueCategory": "urls-and-query-strings",
+      "sources": [
+        "rfc7617",
+        "rfc3986"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "rfc6749-refresh-request-body",
+      "issueCategory": "overlapping-credentials",
+      "sources": [
+        "rfc6749"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc6749-token-request-basic-and-code",
+      "issueCategory": "overlapping-credentials",
+      "sources": [
+        "rfc6749"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc6749-token-response-json",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "rfc6749"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc6750-token-response-json",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "rfc6750"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc7617-basic-aladdin",
+      "issueCategory": "overlapping-credentials",
+      "sources": [
+        "rfc7617"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc7617-basic-utf8-proxy",
+      "issueCategory": "overlapping-credentials",
+      "sources": [
+        "rfc7617"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc8959-secret-token-folded-bearer",
+      "issueCategory": "overlapping-credentials",
+      "sources": [
+        "rfc8959"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc8959-secret-token-prose",
+      "issueCategory": "placeholders-documentation-examples",
+      "sources": [
+        "rfc8959"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-jwt-in-bearer-header",
+      "issueCategory": "overlapping-credentials",
+      "sources": [
+        "rfc7519",
+        "rfc6750"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "rfc7519-jwt-display-breaks",
+      "issueCategory": "multiline-and-chunk-splits",
+      "sources": [
+        "rfc7519"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "rfc7515-jwk-k-display-break",
+      "issueCategory": "multiline-and-chunk-splits",
+      "sources": [
+        "rfc7515"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "composed-jwk-k-single-line",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "rfc7515"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "rfc7519-jose-header-only",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "rfc7519"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-json-string-in-json-log",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "rfc6749"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-yaml-block-scalar-json",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "rfc6750"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "np-html-escaped-placeholder",
+      "issueCategory": "placeholders-documentation-examples",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "composed-percent-encoded-url-in-json",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "rfc6750"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-curl-single-quoted-json",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "rfc6749"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "ds-keyword-quoted-spaces",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-keyword-template-chars-in-secret",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-keyword-go-short-assign",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-keyword-reversed-comparison",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-keyword-non-ascii-secret",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-cpp-string-constructor",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-objc-at-string",
+      "issueCategory": "nested-quoting-and-serialization",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-generic-password-dollar",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-generic-user-password-pair",
+      "issueCategory": "overlapping-credentials",
+      "sources": [
+        "noseyparker",
+        "rfc7617"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-template-dollar-brace",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-template-single-brace",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-template-angle",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-indirect-function-call",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-indirect-subscript",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-shell-command-substitution",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-export-variable-reference",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-echo-concatenated-reference",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-env-attribute-reference",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-puppet-empty-default",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-php-array-reference",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-java-getter-concatenation",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "blns-sql-injection",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "blns"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "blns-server-code-injection",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "blns"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "blns-unwanted-interpolation",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "blns"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "blns-jinja2-injection",
+      "issueCategory": "shell-env-template-sql-references",
+      "sources": [
+        "blns"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "awscli-create-access-key-example",
+      "issueCategory": "placeholders-documentation-examples",
+      "sources": [
+        "aws-cli"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-fake-in-value",
+      "issueCategory": "placeholders-documentation-examples",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-empty-values",
+      "issueCategory": "placeholders-documentation-examples",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-asterisk-mask",
+      "issueCategory": "placeholders-documentation-examples",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "np-hash-masked-password",
+      "issueCategory": "placeholders-documentation-examples",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-x-masked-password",
+      "issueCategory": "placeholders-documentation-examples",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-uuids",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-sequential-strings",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ds-id-assignments",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-iam-managed-policy-arn",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-css-selector",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-ui-labels",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-docs-redirect-map",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "np-html-attribute-access-key",
+      "issueCategory": "token-like-benign-identifiers",
+      "sources": [
+        "noseyparker"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ts-commenting-out-js",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "trojan-source"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ts-invisible-function-js",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "trojan-source"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "ts-stretched-string-js",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "trojan-source"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "blns-format-controls-and-bom",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "blns"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "blns-trick-unicode",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "blns"
+      ],
+      "excerpt": "verbatim"
+    },
+    {
+      "id": "composed-zero-width-inside-bearer",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "rfc6750",
+        "trojan-source"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-rlo-after-token",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "rfc6749",
+        "trojan-source"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-bom-crlf-basic",
+      "issueCategory": "invisible-and-formatting-characters",
+      "sources": [
+        "rfc7617",
+        "blns"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-secret-token-uppercase-scheme",
+      "issueCategory": "prefix-truncation-and-extension",
+      "sources": [
+        "rfc8959",
+        "rfc3986"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-secret-token-empty-body",
+      "issueCategory": "prefix-truncation-and-extension",
+      "sources": [
+        "rfc8959"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-extended-key-names-benign",
+      "issueCategory": "prefix-truncation-and-extension",
+      "sources": [
+        "rfc6749",
+        "rfc6750"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-prefixed-key-name-secret",
+      "issueCategory": "prefix-truncation-and-extension",
+      "sources": [
+        "rfc6750"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-basic-lowercase-scheme",
+      "issueCategory": "prefix-truncation-and-extension",
+      "sources": [
+        "rfc7617"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "ds-long-base64-data-uri",
+      "issueCategory": "bounded-oversized-inputs",
+      "sources": [
+        "detect-secrets"
+      ],
+      "excerpt": "composed"
+    },
+    {
+      "id": "composed-two-hundred-basic-headers",
+      "issueCategory": "bounded-high-finding-count",
+      "sources": [
+        "rfc7617"
+      ],
+      "excerpt": "composed"
+    }
+  ]
+}

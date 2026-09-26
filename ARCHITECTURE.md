@@ -75,7 +75,18 @@ benchmarks/lib/beta8/          Beta.8 per-issue contracts, arrival families and 
 benchmarks/lib/reporting.ts   Per (kind × tier) groups; no mixed overall score
 benchmarks/lib/adversarial-intake.ts External adversarial intake: lifecycle, synthetic-only, frozen expectations and first run, qualification
 benchmarks/lib/evidence-classes.ts Public adversarial / protected holdout / maintainer regression queries and independence wording
+benchmarks/lib/tuning-manifest.ts Statistical scorer tuning manifests: corpus roles, holdout isolation, scoring identity, generated share, strata (#256; docs/specs/statistical-tuning.md)
+benchmarks/lib/candidate-features.ts Maintainer-local candidate-feature dataset for calibration: features, classes, holdout and publication guards (#254; docs/specs/candidate-features.md)
+benchmarks/lib/calibration-experiments.ts Shadow-scorer calibration experiments: grouped/halving/lookup/logistic models, band sweeps, selection, manifest draft (#255; docs/specs/calibration-experiments.md)
+benchmarks/lib/calibration-projection.mjs Closed public projection shape for calibration outcomes; used by the run and by features:check-public (#255)
+benchmarks/lib/scorer-promotion.ts Future-promotion contract for the scorer: hard constraints per question Q1-Q5, #289 evasion aggregate, evaluator (#257; docs/specs/scorer-promotion-gates.md)
+benchmarks/lib/score-evasion.ts Score-evasion and negative-evidence abuse: deterministic operators per attack class, invariant checks, the #289 aggregate (docs/specs/score-evasion.md)
+benchmarks/score-evasion.ts   Runs the variants through the product's shadow evaluation path and plain CLI scan; detail stays in results-output/ (#289)
 adversarial/                  External adversarial packs, contributor guide, and the synthetic sample (#139)
+benchmarks/blind/              Custodian-held blind evaluation: private root, freeze, one run per candidate, aggregate-only release (#142; docs/specs/blind-evaluation.md)
+benchmarks/mcp-qualification.ts Black-box MCP adapter qualification: clean consumers per SDK endpoint, sink containment, overhead, for tools/call (#281) and resources/read (#321; docs/specs/mcp-qualification.md)
+benchmarks/lib/mcp-qualification.ts Adapter tarball digests, the plaintext sink scan and per-case verdicts
+benchmarks/mcp-qualification/consumer/ Host, server and workload corpus copied into each clean consumer
 baselines/<version>.json       (fixture, scanner) → outcome for a released comparison point
 scripts/baseline.mjs           Save baselines and generate docs/generated/release-comparison.md
 benchmarks/lib/validate-structures.ts Offline key/JWT validation
@@ -246,8 +257,48 @@ npm run eval:publish -- --qualification=results-output/qualification/engine-v1.j
 
 The default manifest uses repeatable public conformance controls. Protected holdout
 runs retain their existing custodian lifecycle and budgets; do not run them merely
-to refresh a UI. Qualification is separately dated aggregate evidence, and
+to refresh a UI, and never while tuning a statistical scorer: tuning reads development
+categories only, is recorded in a tuning manifest, and treats holdout as a final
+check on a frozen candidate ([statistical tuning](docs/specs/statistical-tuning.md)).
+Qualification is separately dated aggregate evidence, and
 `execution-qualified` describes infrastructure execution with `supportClaims: false`.
+
+## Candidate-feature dataset (maintainer-local)
+
+`npm run features:extract` derives one row of randomness, lexical, context
+and negative-evidence features per candidate value from reviewed development
+and regression fixtures, for offline calibration (#254). It reads no holdout,
+runs no scanner and leaves the measurement-v4 scorer unchanged. The output
+lands in `results-output/calibration/candidate-features-v1.json`, the only
+place it may be written. It carries no candidate bytes or value hashes and
+is never projected to the site; `npm run features:check-public` fails CI if
+one reaches `public/` or `dist/`. Its `manifestBinding` is the
+`featureDataset` block a tuning manifest records. Formulas and the boundary
+are in [docs/specs/candidate-features.md](docs/specs/candidate-features.md).
+
+`npm run calibration:run` reads that dataset and compares candidate evidence
+models for the product's shadow scorer (#255): grouped scores under the
+contract's halving rule and caps, capped-sum and max-within-group variants,
+a flat linear baseline, a 2-D entropy × length lookup, and a floating-point
+logistic reference. It fits ramps and band thresholds on the reviewed authored
+development partition, evaluates on held-out development and regression rows,
+selects one conformant configuration for redact-secret#770, and emits a #256
+tuning-manifest draft without a generated-share override. Weights, caps,
+thresholds and per-configuration results stay in `results-output/`; only an
+aggregate projection passes the public whitelist
+([docs/specs/calibration-experiments.md](docs/specs/calibration-experiments.md)).
+
+Beta.9 keeps that scorer shadow-only. What a later release must show before
+it may set `Confidence` or action is a versioned set of hard constraints,
+one verdict per question and never a mixed score, in
+`benchmarks/scorer-promotion-contract.json`, checked by `npm run
+scorer-promotion:check` ([docs/specs/scorer-promotion-gates.md](docs/specs/scorer-promotion-gates.md)).
+`npm run evasion:run` treats that scorer as attacker-known: it reshapes
+reviewed fixtures with deterministic operators for each attack class, runs
+them through the product's maintainer-local shadow evaluation path and a
+plain product scan, and publishes only the closed aggregate that question 4
+reads. Variants, scores, bands and the operators that moved a band stay in
+`results-output/` ([docs/specs/score-evasion.md](docs/specs/score-evasion.md)).
 
 ## Accounting (engine v1.1)
 

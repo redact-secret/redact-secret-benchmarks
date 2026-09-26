@@ -133,10 +133,38 @@ npm test  # benchmarks/lib/performance-derivation.ts and performance-acceptance.
 `deriveCriteria` would produce from `evidence/603/summary.json` — the same
 generate-then-check pattern `pins:manifest` / `pins:manifest:check` uses.
 `npm run pins:check` (also wired into `validate.yml`) separately fails if
-`benchmarks/performance-criteria.json`'s `baseline.sourceCommit` no longer
-matches the commit `benchmarks/pin-manifest.json` pins — recalibrating from
-one commit while the pin has already moved to another is exactly the drift
-#150 found (evaluated revision matching evidence, but not the current pin).
+`benchmarks/performance-criteria.json`'s `baseline.verifiedCommit` no longer
+matches the commit `benchmarks/pin-manifest.json` pins — a pin with no
+ACCEPTED evaluation behind it is exactly the drift #150 found (evaluated
+revision matching evidence, but not the current pin).
+
+## Re-pinning without recalibrating
+
+Per
+[`decision-decouple-pin-freshness-from-pin-consistency`](../decisions/2026-09-23-decouple-pin-freshness-from-pin-consistency.md),
+an ACCEPTED run at a new pin does not re-derive thresholds. `baseline.sourceCommit`
+stays the commit the thresholds were derived from; `baseline.verifiedCommit`
+and `baseline.verificationPath` name the latest ACCEPTED evaluation against
+them. To re-pin after a detector change:
+
+1. Dispatch `performance-evaluation.yml` with `candidate_revision` set to the
+   new product commit. Use it only if both the RC acceptance and the
+   regression budgets read ACCEPTED; a REJECTED run is never recalibrated
+   away.
+2. Freeze the run's `acceptance.json`/`.md`, `regression-budgets.json`/`.md`,
+   `paired.json`, `runner.json` and `summary.json` under
+   `evidence/603/verified-<short-commit>/`, and add a README section.
+3. Set `benchmarks/detectors.json` `sourceRevision` and
+   `benchmarks/detector-inventory.json` `redactSecretRevision` to the new
+   commit (after reviewing the product's `detectors/mod.rs` for registry
+   changes), then run
+   `npm run performance:criteria -- --verified-commit <sha> --verification-path evidence/603/verified-<short>/acceptance.json`
+   and `npm run pins:manifest`.
+
+`performance:criteria:check` refuses a `verificationPath` that is not an
+ACCEPTED evaluation of `verifiedCommit` under the same criteria id and fixed
+date. A recalibration (a new `--summary`) resets both fields to the
+derivation run.
 
 ## Running an evaluation
 
@@ -165,3 +193,11 @@ first actually exercised, end to end, by
 - a minimal browser bundle.
 
 The acceptance verdict is a separate section. Artifact sizes carry no threshold. To regenerate, use `scripts/collect-operational-evidence.mjs`; its header lists the inputs. The report is `docs/reports/2026-09-25-beta8-141-operational-evidence.md`, and the site shows the data under `/performance#operational-evidence`.
+
+## Regression budgets (#143)
+
+The criteria above judge a run in absolute terms. Change over time is judged
+separately by the reviewed regression budgets in
+[`regression-budgets.md`](regression-budgets.md). They compare a fresh summary
+with the frozen `0.1.0-beta.8` baseline, per dimension, and
+`performance-evaluation.yml` runs them right after the acceptance step.

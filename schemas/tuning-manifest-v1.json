@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/redact-secret/redact-secret-benchmarks/schemas/tuning-manifest-v1.json",
+  "title": "Statistical scorer tuning manifest v1",
+  "description": "Binds one proposed statistical scoring configuration to the candidate, benchmark revision, corpora, strata and scoring identity it was selected from (#256). Structural contract only; the corpus-role, holdout-isolation, generated-share, strata and identity rules are enforced by benchmarks/lib/tuning-manifest.ts. See docs/specs/statistical-tuning.md. A manifest carries hashes, counts and stratum names only: never fixture bytes, per-candidate feature vectors, scores, weights or thresholds.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "status", "createdAt", "product", "benchmark", "featureDataset", "selection", "scoring", "corpora", "holdoutAccess", "generatedShare", "strata"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "status": {
+      "enum": ["active", "superseded"],
+      "description": "An active manifest must match the current corpus hashes; a superseded one is kept unchanged for audit and is validated structurally only."
+    },
+    "supersededBy": { "$ref": "#/definitions/slug" },
+    "createdAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceRevision", "sourceHash", "lockHash", "candidateArtifactHash"],
+      "description": "The frozen product candidate the tuning ran against: the same identity fields the holdout lifecycle freezes.",
+      "properties": {
+        "sourceRevision": { "$ref": "#/definitions/commit" },
+        "sourceHash": { "$ref": "#/definitions/sha256" },
+        "lockHash": { "$ref": "#/definitions/sha256" },
+        "candidateArtifactHash": { "$ref": "#/definitions/sha256" }
+      }
+    },
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "dirty"],
+      "properties": {
+        "commit": { "$ref": "#/definitions/commit" },
+        "dirty": { "const": false, "description": "Tuning is reproducible only from a clean benchmark tree." }
+      }
+    },
+    "featureDataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "extractorVersion", "extractorSourceHash", "datasetHash"],
+      "description": "The maintainer-local candidate-feature dataset (#254) the row counts below were read from. Only its identity is recorded here.",
+      "properties": {
+        "schemaVersion": { "type": "integer", "minimum": 1 },
+        "extractorVersion": { "type": "string", "minLength": 1 },
+        "extractorSourceHash": { "$ref": "#/definitions/sha256" },
+        "datasetHash": { "$ref": "#/definitions/sha256" }
+      }
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "sourceHash", "seed"],
+      "description": "The deterministic procedure (redact-secret-benchmarks#255) that chose the configuration from the tuning rows. Rerunning it at the recorded revisions over the recorded dataset reproduces the scoring component hashes.",
+      "properties": {
+        "method": { "type": "string", "minLength": 1 },
+        "sourceHash": { "$ref": "#/definitions/sha256" },
+        "seed": { "type": "string", "minLength": 1, "description": "Fixed seed for any randomized step; 'none' when the procedure has none." }
+      }
+    },
+    "scoring": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contractDecision", "featureSchemaVersion", "featureSetHash", "aggregationContractVersion", "weightSetHash", "thresholdSetHash", "identity"],
+      "description": "Hashes of the proposed configuration, never its values. identity is SHA-256 over the canonical JSON of the six other fields; any change to one of them is a new identity.",
+      "properties": {
+        "contractDecision": { "const": "decision-freeze-the-shadow-evidence-score-and-confidence-contract" },
+        "featureSchemaVersion": { "type": "string", "minLength": 1 },
+        "featureSetHash": { "$ref": "#/definitions/sha256" },
+        "aggregationContractVersion": { "type": "string", "minLength": 1 },
+        "weightSetHash": { "$ref": "#/definitions/sha256" },
+        "thresholdSetHash": { "$ref": "#/definitions/sha256" },
+        "identity": { "$ref": "#/definitions/sha256" }
+      }
+    },
+    "corpora": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tuning", "evaluation"],
+      "properties": {
+        "tuning": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Development-corpus categories whose rows were used to select features, weights or thresholds.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["category", "corpusHash", "rows", "families", "contexts"],
+            "properties": {
+              "category": { "$ref": "#/definitions/slug" },
+              "corpusHash": { "$ref": "#/definitions/sha256" },
+              "rows": { "$ref": "#/definitions/originCounts" },
+              "families": { "type": "object", "minProperties": 1, "additionalProperties": { "$ref": "#/definitions/originCounts" } },
+              "contexts": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "integer", "minimum": 0 } }
+            }
+          }
+        },
+        "evaluation": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Evaluation-only sources: checked against, never fitted to. Protected holdout is never listed here.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source", "role"],
+            "properties": {
+              "source": { "type": "string", "pattern": "^(?:[a-z][a-z0-9]*(?:-[a-z0-9]+)*|adversarial:[a-z][a-z0-9]*(?:-[a-z0-9]+)*)$" },
+              "role": { "enum": ["regression", "development-evaluation", "adversarial"] },
+              "corpusHash": { "$ref": "#/definitions/sha256" }
+            }
+          }
+        }
+      }
+    },
+    "holdoutAccess": {
+      "const": "none",
+      "description": "Attests that no protected-holdout content, result or aggregate informed this configuration."
+    },
+    "generatedShare": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cap"],
+      "properties": {
+        "cap": { "type": "number", "exclusiveMinimum": 0, "maximum": 0.5, "description": "Largest allowed share of benchmark-generated rows, overall and in every family. 0.5 unless an override raises it." },
+        "override": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cap", "reason", "reviewedBy"],
+          "properties": {
+            "cap": { "type": "number", "exclusiveMinimum": 0.5, "maximum": 1 },
+            "reason": { "type": "string", "minLength": 20 },
+            "reviewedBy": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "strata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimensions"],
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["family", "context", "kind", "tier", "role"] },
+          "description": "Every tuning and evaluation report for this manifest is broken down by each listed dimension. family and context are required."
+        }
+      }
+    }
+  },
+  "definitions": {
+    "slug": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "originCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generated", "authored"],
+      "description": "generated: the credential-like body was produced by a benchmark generator. authored: written by a person or taken from a provider-documented example.",
+      "properties": {
+        "generated": { "type": "integer", "minimum": 0 },
+        "authored": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

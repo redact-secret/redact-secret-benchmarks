@@ -96,7 +96,8 @@ export const TRANSITIONS: Record<IntakeStatus, readonly IntakeStatus[]> = {
   'converted-to-maintainer-regression': [],
 };
 
-const AFTER_FIRST_RUN: readonly IntakeStatus[] = ['frozen-first-run', 'accepted', 'converted-to-maintainer-regression'];
+/** Statuses whose expectations are frozen: the first run has been recorded against them. */
+export const AFTER_FIRST_RUN: readonly IntakeStatus[] = ['frozen-first-run', 'accepted', 'converted-to-maintainer-regression'];
 
 const ajv = new Ajv({ strict: true, allErrors: true });
 const validIntakeShape = ajv.compile(intakeSchema);

@@ -4,8 +4,20 @@
  * documented margin rule (`benchmarks/lib/performance-derivation.ts`). This
  * repository owns this criteria file per redact-secret#603 (DS11) / #136.
  *
+ * `baseline.verifiedCommit` / `baseline.verificationPath` are not derived
+ * from the summary: an ACCEPTED evaluation at a newer pin advances them
+ * without re-deriving any threshold
+ * (docs/decisions/2026-09-23-decouple-pin-freshness-from-pin-consistency.md).
+ * They are carried over from the committed file while its `sourceCommit`
+ * still matches the summary, reset to the derivation run itself on a
+ * recalibration, and set explicitly with
+ * `--verified-commit <sha> --verification-path <acceptance.json>`. Either
+ * way the named acceptance.json must be an ACCEPTED evaluation of that exact
+ * commit under this criteria id and fixed date.
+ *
  * Usage:
  *   node --import tsx scripts/derive-performance-criteria.mjs --summary evidence/603/summary.json [--check]
+ *   node --import tsx scripts/derive-performance-criteria.mjs --verified-commit <sha> --verification-path <path>
  */
 import { readFile, writeFile } from 'node:fs/promises';
 import { deriveCriteria } from '../benchmarks/lib/performance-derivation.ts';
@@ -25,6 +37,21 @@ const summary = JSON.parse(await readFile(new URL(summaryPath, root), 'utf8'));
 const problem = completeAssessmentProblem(summary);
 if (problem) throw new Error(`Cannot derive criteria: ${problem}`);
 
+const target = new URL('../benchmarks/performance-criteria.json', import.meta.url);
+const current = await readFile(target, 'utf8').catch(error => {
+  if (error.code === 'ENOENT') return null;
+  throw error;
+});
+const committed = current === null ? null : JSON.parse(current);
+
+let verification;
+if (flag('--verified-commit') || flag('--verification-path')) {
+  verification = { commit: flag('--verified-commit'), path: flag('--verification-path') };
+  if (!verification.commit || !verification.path) throw new Error('Pass both --verified-commit and --verification-path.');
+} else if (committed?.baseline?.verifiedCommit && committed.baseline.sourceCommit === summary.sourceCommit) {
+  verification = { commit: committed.baseline.verifiedCommit, path: committed.baseline.verificationPath };
+}
+
 const criteria = deriveCriteria(summary, {
   criteriaId: 'rc-performance-resource-linux-x64-benchmarks-v1',
   fixedAt: '2026-09-23',
@@ -41,15 +68,22 @@ const criteria = deriveCriteria(summary, {
       cli: ['rustc '],
     },
   },
+  verification,
 });
 validateAcceptanceCriteria(criteria);
 
-const target = new URL('../benchmarks/performance-criteria.json', import.meta.url);
+const acceptance = JSON.parse(await readFile(new URL(criteria.baseline.verificationPath, root), 'utf8'));
+if (
+  acceptance.status !== 'accepted' ||
+  acceptance.sourceCommit !== criteria.baseline.verifiedCommit ||
+  acceptance.criteriaId !== criteria.criteriaId ||
+  acceptance.criteriaFixedAt !== criteria.fixedAt ||
+  (acceptance.failures ?? []).length !== 0
+) {
+  throw new Error(`${criteria.baseline.verificationPath} is not an ACCEPTED evaluation of ${criteria.baseline.verifiedCommit} against ${criteria.criteriaId} (fixed ${criteria.fixedAt}).`);
+}
+
 const serialized = `${JSON.stringify(criteria, null, 2)}\n`;
-const current = await readFile(target, 'utf8').catch(error => {
-  if (error.code === 'ENOENT') return null;
-  throw error;
-});
 
 if (args.includes('--check')) {
   if (current !== serialized) throw new Error('Performance criteria drift. Run `npm run performance:criteria` and commit benchmarks/performance-criteria.json.');

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
-import { ARTIFACTS, pickArtifacts, productShaInput, latestQualificationRun, qualifiedCandidate, selectQualificationRun, sha256, verifyPacked } from '../scripts/qualified-candidate.mjs';
+import { ARTIFACTS, pickArtifacts, productRefInput, productShaInput, qualificationRunIdInput, latestQualificationRun, qualifiedCandidate, selectQualificationRun, sha256, verifyPacked } from '../scripts/qualified-candidate.mjs';
 
 const SHA = 'de9080eb6e9e78fd5d60301ea477fdb32cbe91cb';
 const REPO = 'redact-secret/redact-secret';
@@ -15,14 +15,22 @@ test('PRODUCT_SHA is untrusted: empty means the newest qualified main commit, an
     assert.throws(() => productShaInput(bad), /40-character/, JSON.stringify(bad));
 });
 
+test('dispatch provenance accepts only main and a numeric run id', () => {
+  assert.equal(productRefInput('main'), 'main');
+  for (const ref of ['', 'develop', 'feature/x', 'rc/0.1.0-beta.8', 'refs/heads/main'])
+    assert.throws(() => productRefInput(ref), /must be main/);
+  assert.equal(qualificationRunIdInput('35938949409'), '35938949409');
+  for (const id of ['', '0', '-1', '1.5', 'abc']) assert.throws(() => qualificationRunIdInput(id), /numeric/);
+});
+
 const runOf = overrides => ({ id: 10, run_attempt: 1, head_sha: SHA, head_branch: 'main', event: 'push', status: 'completed', conclusion: 'success',
   head_repository: { full_name: REPO }, path: '.github/workflows/artifact-qualification.yml', ...overrides });
 
-test('only a successful main qualification run of exactly that commit is selected, newest first', () => {
-  assert.equal(selectQualificationRun([runOf({ id: 10 }), runOf({ id: 12 }), runOf({ id: 11 })], { sha: SHA, repository: REPO }).id, 12);
-  for (const reject of [{ conclusion: 'failure' }, { status: 'in_progress', conclusion: null }, { head_branch: 'rc/0.2' }, { event: 'pull_request' },
+test('only the named successful main qualification push is selected', () => {
+  assert.equal(selectQualificationRun([runOf({ id: 10 }), runOf({ id: 12 })], { sha: SHA, repository: REPO, productRef: 'main', runId: '12' }).id, 12);
+  for (const reject of [{ conclusion: 'failure' }, { status: 'in_progress', conclusion: null }, { head_branch: 'rc/0.1.0-beta.8' }, { event: 'workflow_dispatch' },
     { head_sha: 'f'.repeat(40) }, { head_repository: { full_name: 'someone/fork' } }, { path: '.github/workflows/ci.yml' }])
-    assert.equal(selectQualificationRun([runOf(reject)], { sha: SHA, repository: REPO }), null, JSON.stringify(reject));
+    assert.equal(selectQualificationRun([runOf(reject)], { sha: SHA, repository: REPO, productRef: 'main', runId: '10' }), null, JSON.stringify(reject));
 });
 
 test('without a requested commit, the newest successful main qualification run of any commit is selected', () => {
@@ -59,21 +67,22 @@ const inventoryOf = (overrides = {}, lane = {}) => ({
 });
 
 test('the inventory must attest this commit, main, this run, and a passing node lane', () => {
-  const qualified = qualifiedCandidate(inventoryOf(), { sha: SHA, runId: 35938949409 });
+  const qualified = qualifiedCandidate(inventoryOf(), { sha: SHA, runId: 35938949409, productRef: 'main' });
   assert.equal(qualified.packages.core.sha256, hex('core'));
   assert.equal(qualified.packages.node.file, 'redact-secret-node-linux-x64-gnu-0.1.0-beta.7.tgz');
   assert.equal(qualified.binaries['wasm-web-common'].sha256, hex('common'));
-  assert.throws(() => qualifiedCandidate(inventoryOf({ sourceCommit: 'f'.repeat(40) }), { sha: SHA, runId: 35938949409 }), /inventory is for/);
-  assert.throws(() => qualifiedCandidate(inventoryOf({ sourceRef: 'refs/pull/9/merge' }), { sha: SHA, runId: 35938949409 }), /not refs\/heads\/main/);
-  assert.throws(() => qualifiedCandidate(inventoryOf(), { sha: SHA, runId: 1 }), /names run 35938949409, not 1/);
-  assert.throws(() => qualifiedCandidate(inventoryOf({}, { results: { install: 'passed', artifact: 'failed' } }), { sha: SHA, runId: 35938949409 }), /did not pass: artifact/);
-  assert.throws(() => qualifiedCandidate(inventoryOf({}, { results: {} }), { sha: SHA, runId: 35938949409 }), /did not pass/);
-  assert.throws(() => qualifiedCandidate(inventoryOf({}, { packages: [] }), { sha: SHA, runId: 35938949409 }), /exactly one @redact-secret\/core/);
-  assert.throws(() => qualifiedCandidate(inventoryOf({}, { binaries: [] }), { sha: SHA, runId: 35938949409 }), /exactly one redact-secret\.linux-x64-gnu\.node/);
+  assert.throws(() => qualifiedCandidate(inventoryOf({ sourceCommit: 'f'.repeat(40) }), { sha: SHA, runId: 35938949409, productRef: 'main' }), /inventory is for/);
+  assert.throws(() => qualifiedCandidate(inventoryOf({ sourceRef: 'refs/pull/9/merge' }), { sha: SHA, runId: 35938949409, productRef: 'main' }), /not refs\/heads\/main/);
+  assert.throws(() => qualifiedCandidate(inventoryOf(), { sha: SHA, runId: 1, productRef: 'main' }), /names run 35938949409, not 1/);
+  assert.throws(() => qualifiedCandidate(inventoryOf({}, { results: { install: 'passed', artifact: 'failed' } }), { sha: SHA, runId: 35938949409, productRef: 'main' }), /did not pass: artifact/);
+  assert.throws(() => qualifiedCandidate(inventoryOf({}, { results: {} }), { sha: SHA, runId: 35938949409, productRef: 'main' }), /did not pass/);
+  assert.throws(() => qualifiedCandidate(inventoryOf({}, { packages: [] }), { sha: SHA, runId: 35938949409, productRef: 'main' }), /exactly one @redact-secret\/core/);
+  assert.throws(() => qualifiedCandidate(inventoryOf({ productVersion: '0.1.0-beta.8' }), { sha: SHA, runId: 35938949409, productRef: 'main' }), /tarball at 0\.1\.0-beta\.8/);
+  assert.throws(() => qualifiedCandidate(inventoryOf({}, { binaries: [] }), { sha: SHA, runId: 35938949409, productRef: 'main' }), /exactly one redact-secret\.linux-x64-gnu\.node/);
 });
 
 test('a repacked tarball that differs from the qualified bytes is refused', () => {
-  const qualified = qualifiedCandidate(inventoryOf(), { sha: SHA, runId: 35938949409 });
+  const qualified = qualifiedCandidate(inventoryOf(), { sha: SHA, runId: 35938949409, productRef: 'main' });
   const digests = Object.fromEntries(Object.entries(qualified.packages).map(([role, p]) => [path.join('/packed', p.file), hex(role)]));
   assert.deepEqual(Object.keys(verifyPacked(qualified, '/packed', file => digests[file])), ['core', 'node', 'wasm']);
   digests[path.join('/packed', qualified.packages.wasm.file)] = hex('tampered');

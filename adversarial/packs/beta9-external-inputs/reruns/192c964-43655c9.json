@@ -1,0 +1,1741 @@
+{
+  "schema": "redact-secret-benchmarks/adversarial-candidate-rerun-v1",
+  "runId": "317057bd-2c14-4e6a-a735-71b3f6e27b47",
+  "packId": "beta9-external-inputs",
+  "expectationsDigest": "25472f6cf07968d72a9f43eaf4ba63c1da1585644f99a05b65c964d1b21e1670",
+  "firstRunSha256": "67adb3d11dfa04460ed9ed7916c8578120807d77685d27355277481b5af9f3a0",
+  "startedAt": "2026-09-25T23:06:15Z",
+  "finishedAt": "2026-09-25T23:06:16Z",
+  "benchmark": {
+    "sourceCommit": "43655c91a6d1d2af4f7fd6488533e89d75cdf39a",
+    "dirty": false,
+    "lockfileSha256": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b"
+  },
+  "candidate": {
+    "sourceCommit": "192c9649deb88e342abc8071fb78e7b1d84ec475",
+    "productState": "clean",
+    "packageName": "@redact-secret/core",
+    "declaredVersion": "0.1.0-beta.8",
+    "version": "0.1.0-beta.8",
+    "artifacts": {
+      "core": {
+        "file": "redact-secret-core-0.1.0-beta.8.tgz",
+        "sha256": "b3c2c2cdc15b048b79fa33c6748b01baae6d2e1f588222059676001a2ff0af33"
+      },
+      "node": {
+        "file": "redact-secret-node-darwin-arm64-0.1.0-beta.8.tgz",
+        "sha256": "9cae94c11057a0a2754ff3909528b24818aeb35a4bbe3a5f9224ceeb3475d3d0"
+      },
+      "wasm": {
+        "file": "redact-secret-wasm-0.1.0-beta.8.tgz",
+        "sha256": "1f898601183b5f3204edc81386ea801c1815d11960c5740513fc941959ae5179"
+      }
+    }
+  },
+  "scanner": {
+    "id": "redact-secret-candidate",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "detectors": "default",
+      "runtime": "node",
+      "installation": "isolated-npm-tarballs-with-overrides"
+    }
+  },
+  "runtime": {
+    "node": "v22.16.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "command": "node --import tsx scripts/rerun-adversarial-candidate.mjs --pack=beta9-external-inputs --candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> --candidate-source-commit=192c9649deb88e342abc8071fb78e7b1d84ec475 --product-state=clean --out=<path.json>",
+  "status": "complete",
+  "summary": {
+    "fixtures": 80,
+    "scannerFailed": 0,
+    "meetsExpectation": {
+      "firstRun": 48,
+      "candidate": 73
+    },
+    "fixedSinceFirstRun": [
+      "rfc6750-query-access-token",
+      "rfc6750-get-request-line",
+      "rfc6749-implicit-fragment-display-break",
+      "rfc6749-authorization-code-location",
+      "rfc7636-code-verifier",
+      "composed-userinfo-password-url",
+      "rfc6749-refresh-request-body",
+      "rfc6749-token-request-basic-and-code",
+      "rfc7617-basic-utf8-proxy",
+      "rfc8959-secret-token-folded-bearer",
+      "rfc8959-secret-token-prose",
+      "composed-jwk-k-single-line",
+      "composed-json-string-in-json-log",
+      "np-html-escaped-placeholder",
+      "composed-curl-single-quoted-json",
+      "ds-keyword-template-chars-in-secret",
+      "ds-keyword-go-short-assign",
+      "ds-keyword-non-ascii-secret",
+      "ds-objc-at-string",
+      "np-echo-concatenated-reference",
+      "np-env-attribute-reference",
+      "np-java-getter-concatenation",
+      "np-iam-managed-policy-arn",
+      "composed-zero-width-inside-bearer",
+      "composed-secret-token-uppercase-scheme"
+    ],
+    "regressedSinceFirstRun": [],
+    "outcomes": {
+      "firstRun": {
+        "redacted": 13,
+        "overbroad": 0,
+        "partial": 4,
+        "missed": 21,
+        "clean": 35,
+        "flagged": 7,
+        "scanner-failed": 0
+      },
+      "candidate": {
+        "redacted": 33,
+        "overbroad": 0,
+        "partial": 0,
+        "missed": 5,
+        "clean": 40,
+        "flagged": 2,
+        "scanner-failed": 0
+      }
+    }
+  },
+  "results": [
+    {
+      "fixtureId": "rfc6750-query-access-token",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 49,
+          "end": 64
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc6750-get-request-line",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 27,
+          "end": 42
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc6749-implicit-fragment-display-break",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 64,
+          "end": 86
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc6749-authorization-code-location",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 64,
+          "end": 86
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc7636-code-challenge-query",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "rfc7636-code-verifier",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 14,
+          "end": 57
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc3986-example-uris",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "composed-userinfo-password-url",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 16,
+          "end": 29
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc6749-refresh-request-body",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 39,
+          "end": 61
+        },
+        {
+          "start": 98,
+          "end": 120
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc6749-token-request-basic-and-code",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 67,
+          "end": 95
+        },
+        {
+          "start": 180,
+          "end": 202
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "partial"
+    },
+    {
+      "fixtureId": "rfc6749-token-response-json",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 20,
+          "end": 42
+        },
+        {
+          "start": 111,
+          "end": 133
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "rfc6750-token-response-json",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 20,
+          "end": 35
+        },
+        {
+          "start": 103,
+          "end": 125
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "rfc7617-basic-aladdin",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 21,
+          "end": 49
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "rfc7617-basic-utf8-proxy",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 27,
+          "end": 43
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc8959-secret-token-folded-bearer",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 80,
+          "end": 135
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "partial"
+    },
+    {
+      "fixtureId": "rfc8959-secret-token-prose",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 16,
+          "end": 71
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "partial"
+    },
+    {
+      "fixtureId": "composed-jwt-in-bearer-header",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 70,
+          "end": 249
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "rfc7519-jwt-display-breaks",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [],
+      "outcome": "missed",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc7515-jwk-k-display-break",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [],
+      "outcome": "missed",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "composed-jwk-k-single-line",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 18,
+          "end": 104
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "rfc7519-jose-header-only",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "composed-json-string-in-json-log",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 45,
+          "end": 67
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "composed-yaml-block-scalar-json",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 36,
+          "end": 51
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "np-html-escaped-placeholder",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "flagged"
+    },
+    {
+      "fixtureId": "composed-percent-encoded-url-in-json",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [],
+      "outcome": "missed",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "composed-curl-single-quoted-json",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 30,
+          "end": 58
+        },
+        {
+          "start": 82,
+          "end": 104
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "partial"
+    },
+    {
+      "fixtureId": "ds-keyword-quoted-spaces",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 12,
+          "end": 40
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "ds-keyword-template-chars-in-secret",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 9,
+          "end": 48
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "ds-keyword-go-short-assign",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 11,
+          "end": 50
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "ds-keyword-reversed-comparison",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [],
+      "outcome": "missed",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "ds-keyword-non-ascii-secret",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 10,
+          "end": 23
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "ds-cpp-string-constructor",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [],
+      "outcome": "missed",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "ds-objc-at-string",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 13,
+          "end": 52
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "np-generic-password-dollar",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 12,
+          "end": 23
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "np-generic-user-password-pair",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 29,
+          "end": 40
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "ds-template-dollar-brace",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-template-single-brace",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-template-angle",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-indirect-function-call",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-indirect-subscript",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-shell-command-substitution",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-export-variable-reference",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-echo-concatenated-reference",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "flagged"
+    },
+    {
+      "fixtureId": "np-env-attribute-reference",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "flagged"
+    },
+    {
+      "fixtureId": "np-puppet-empty-default",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-php-array-reference",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-java-getter-concatenation",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "flagged"
+    },
+    {
+      "fixtureId": "blns-sql-injection",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "blns-server-code-injection",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "blns-unwanted-interpolation",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "blns-jinja2-injection",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "awscli-create-access-key-example",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-fake-in-value",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 12,
+          "end": 23
+        }
+      ],
+      "outcome": "flagged",
+      "firstRunOutcome": "flagged"
+    },
+    {
+      "fixtureId": "ds-empty-values",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-asterisk-mask",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-hash-masked-password",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-x-masked-password",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-uuids",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-sequential-strings",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ds-id-assignments",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-iam-managed-policy-arn",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "flagged"
+    },
+    {
+      "fixtureId": "np-css-selector",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 20,
+          "end": 33
+        }
+      ],
+      "outcome": "flagged",
+      "firstRunOutcome": "flagged"
+    },
+    {
+      "fixtureId": "np-ui-labels",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-docs-redirect-map",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "np-html-attribute-access-key",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ts-commenting-out-js",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ts-invisible-function-js",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "ts-stretched-string-js",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "blns-format-controls-and-bom",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "blns-trick-unicode",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "composed-zero-width-inside-bearer",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 22,
+          "end": 40
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "composed-rlo-after-token",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 13,
+          "end": 35
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "composed-bom-crlf-basic",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 24,
+          "end": 52
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "composed-secret-token-uppercase-scheme",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 8,
+          "end": 63
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "missed"
+    },
+    {
+      "fixtureId": "composed-secret-token-empty-body",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "composed-extended-key-names-benign",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "composed-prefixed-key-name-secret",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 15,
+          "end": 30
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "composed-basic-lowercase-scheme",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 21,
+          "end": 49
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    },
+    {
+      "fixtureId": "ds-long-base64-data-uri",
+      "action": "must-not-flag",
+      "status": "complete",
+      "findings": [],
+      "outcome": "clean",
+      "firstRunOutcome": "clean"
+    },
+    {
+      "fixtureId": "composed-two-hundred-basic-headers",
+      "action": "must-redact",
+      "status": "complete",
+      "findings": [
+        {
+          "start": 21,
+          "end": 49
+        },
+        {
+          "start": 71,
+          "end": 99
+        },
+        {
+          "start": 121,
+          "end": 149
+        },
+        {
+          "start": 171,
+          "end": 199
+        },
+        {
+          "start": 221,
+          "end": 249
+        },
+        {
+          "start": 271,
+          "end": 299
+        },
+        {
+          "start": 321,
+          "end": 349
+        },
+        {
+          "start": 371,
+          "end": 399
+        },
+        {
+          "start": 421,
+          "end": 449
+        },
+        {
+          "start": 471,
+          "end": 499
+        },
+        {
+          "start": 521,
+          "end": 549
+        },
+        {
+          "start": 571,
+          "end": 599
+        },
+        {
+          "start": 621,
+          "end": 649
+        },
+        {
+          "start": 671,
+          "end": 699
+        },
+        {
+          "start": 721,
+          "end": 749
+        },
+        {
+          "start": 771,
+          "end": 799
+        },
+        {
+          "start": 821,
+          "end": 849
+        },
+        {
+          "start": 871,
+          "end": 899
+        },
+        {
+          "start": 921,
+          "end": 949
+        },
+        {
+          "start": 971,
+          "end": 999
+        },
+        {
+          "start": 1021,
+          "end": 1049
+        },
+        {
+          "start": 1071,
+          "end": 1099
+        },
+        {
+          "start": 1121,
+          "end": 1149
+        },
+        {
+          "start": 1171,
+          "end": 1199
+        },
+        {
+          "start": 1221,
+          "end": 1249
+        },
+        {
+          "start": 1271,
+          "end": 1299
+        },
+        {
+          "start": 1321,
+          "end": 1349
+        },
+        {
+          "start": 1371,
+          "end": 1399
+        },
+        {
+          "start": 1421,
+          "end": 1449
+        },
+        {
+          "start": 1471,
+          "end": 1499
+        },
+        {
+          "start": 1521,
+          "end": 1549
+        },
+        {
+          "start": 1571,
+          "end": 1599
+        },
+        {
+          "start": 1621,
+          "end": 1649
+        },
+        {
+          "start": 1671,
+          "end": 1699
+        },
+        {
+          "start": 1721,
+          "end": 1749
+        },
+        {
+          "start": 1771,
+          "end": 1799
+        },
+        {
+          "start": 1821,
+          "end": 1849
+        },
+        {
+          "start": 1871,
+          "end": 1899
+        },
+        {
+          "start": 1921,
+          "end": 1949
+        },
+        {
+          "start": 1971,
+          "end": 1999
+        },
+        {
+          "start": 2021,
+          "end": 2049
+        },
+        {
+          "start": 2071,
+          "end": 2099
+        },
+        {
+          "start": 2121,
+          "end": 2149
+        },
+        {
+          "start": 2171,
+          "end": 2199
+        },
+        {
+          "start": 2221,
+          "end": 2249
+        },
+        {
+          "start": 2271,
+          "end": 2299
+        },
+        {
+          "start": 2321,
+          "end": 2349
+        },
+        {
+          "start": 2371,
+          "end": 2399
+        },
+        {
+          "start": 2421,
+          "end": 2449
+        },
+        {
+          "start": 2471,
+          "end": 2499
+        },
+        {
+          "start": 2521,
+          "end": 2549
+        },
+        {
+          "start": 2571,
+          "end": 2599
+        },
+        {
+          "start": 2621,
+          "end": 2649
+        },
+        {
+          "start": 2671,
+          "end": 2699
+        },
+        {
+          "start": 2721,
+          "end": 2749
+        },
+        {
+          "start": 2771,
+          "end": 2799
+        },
+        {
+          "start": 2821,
+          "end": 2849
+        },
+        {
+          "start": 2871,
+          "end": 2899
+        },
+        {
+          "start": 2921,
+          "end": 2949
+        },
+        {
+          "start": 2971,
+          "end": 2999
+        },
+        {
+          "start": 3021,
+          "end": 3049
+        },
+        {
+          "start": 3071,
+          "end": 3099
+        },
+        {
+          "start": 3121,
+          "end": 3149
+        },
+        {
+          "start": 3171,
+          "end": 3199
+        },
+        {
+          "start": 3221,
+          "end": 3249
+        },
+        {
+          "start": 3271,
+          "end": 3299
+        },
+        {
+          "start": 3321,
+          "end": 3349
+        },
+        {
+          "start": 3371,
+          "end": 3399
+        },
+        {
+          "start": 3421,
+          "end": 3449
+        },
+        {
+          "start": 3471,
+          "end": 3499
+        },
+        {
+          "start": 3521,
+          "end": 3549
+        },
+        {
+          "start": 3571,
+          "end": 3599
+        },
+        {
+          "start": 3621,
+          "end": 3649
+        },
+        {
+          "start": 3671,
+          "end": 3699
+        },
+        {
+          "start": 3721,
+          "end": 3749
+        },
+        {
+          "start": 3771,
+          "end": 3799
+        },
+        {
+          "start": 3821,
+          "end": 3849
+        },
+        {
+          "start": 3871,
+          "end": 3899
+        },
+        {
+          "start": 3921,
+          "end": 3949
+        },
+        {
+          "start": 3971,
+          "end": 3999
+        },
+        {
+          "start": 4021,
+          "end": 4049
+        },
+        {
+          "start": 4071,
+          "end": 4099
+        },
+        {
+          "start": 4121,
+          "end": 4149
+        },
+        {
+          "start": 4171,
+          "end": 4199
+        },
+        {
+          "start": 4221,
+          "end": 4249
+        },
+        {
+          "start": 4271,
+          "end": 4299
+        },
+        {
+          "start": 4321,
+          "end": 4349
+        },
+        {
+          "start": 4371,
+          "end": 4399
+        },
+        {
+          "start": 4421,
+          "end": 4449
+        },
+        {
+          "start": 4471,
+          "end": 4499
+        },
+        {
+          "start": 4521,
+          "end": 4549
+        },
+        {
+          "start": 4571,
+          "end": 4599
+        },
+        {
+          "start": 4621,
+          "end": 4649
+        },
+        {
+          "start": 4671,
+          "end": 4699
+        },
+        {
+          "start": 4721,
+          "end": 4749
+        },
+        {
+          "start": 4771,
+          "end": 4799
+        },
+        {
+          "start": 4821,
+          "end": 4849
+        },
+        {
+          "start": 4871,
+          "end": 4899
+        },
+        {
+          "start": 4921,
+          "end": 4949
+        },
+        {
+          "start": 4971,
+          "end": 4999
+        },
+        {
+          "start": 5021,
+          "end": 5049
+        },
+        {
+          "start": 5071,
+          "end": 5099
+        },
+        {
+          "start": 5121,
+          "end": 5149
+        },
+        {
+          "start": 5171,
+          "end": 5199
+        },
+        {
+          "start": 5221,
+          "end": 5249
+        },
+        {
+          "start": 5271,
+          "end": 5299
+        },
+        {
+          "start": 5321,
+          "end": 5349
+        },
+        {
+          "start": 5371,
+          "end": 5399
+        },
+        {
+          "start": 5421,
+          "end": 5449
+        },
+        {
+          "start": 5471,
+          "end": 5499
+        },
+        {
+          "start": 5521,
+          "end": 5549
+        },
+        {
+          "start": 5571,
+          "end": 5599
+        },
+        {
+          "start": 5621,
+          "end": 5649
+        },
+        {
+          "start": 5671,
+          "end": 5699
+        },
+        {
+          "start": 5721,
+          "end": 5749
+        },
+        {
+          "start": 5771,
+          "end": 5799
+        },
+        {
+          "start": 5821,
+          "end": 5849
+        },
+        {
+          "start": 5871,
+          "end": 5899
+        },
+        {
+          "start": 5921,
+          "end": 5949
+        },
+        {
+          "start": 5971,
+          "end": 5999
+        },
+        {
+          "start": 6021,
+          "end": 6049
+        },
+        {
+          "start": 6071,
+          "end": 6099
+        },
+        {
+          "start": 6121,
+          "end": 6149
+        },
+        {
+          "start": 6171,
+          "end": 6199
+        },
+        {
+          "start": 6221,
+          "end": 6249
+        },
+        {
+          "start": 6271,
+          "end": 6299
+        },
+        {
+          "start": 6321,
+          "end": 6349
+        },
+        {
+          "start": 6371,
+          "end": 6399
+        },
+        {
+          "start": 6421,
+          "end": 6449
+        },
+        {
+          "start": 6471,
+          "end": 6499
+        },
+        {
+          "start": 6521,
+          "end": 6549
+        },
+        {
+          "start": 6571,
+          "end": 6599
+        },
+        {
+          "start": 6621,
+          "end": 6649
+        },
+        {
+          "start": 6671,
+          "end": 6699
+        },
+        {
+          "start": 6721,
+          "end": 6749
+        },
+        {
+          "start": 6771,
+          "end": 6799
+        },
+        {
+          "start": 6821,
+          "end": 6849
+        },
+        {
+          "start": 6871,
+          "end": 6899
+        },
+        {
+          "start": 6921,
+          "end": 6949
+        },
+        {
+          "start": 6971,
+          "end": 6999
+        },
+        {
+          "start": 7021,
+          "end": 7049
+        },
+        {
+          "start": 7071,
+          "end": 7099
+        },
+        {
+          "start": 7121,
+          "end": 7149
+        },
+        {
+          "start": 7171,
+          "end": 7199
+        },
+        {
+          "start": 7221,
+          "end": 7249
+        },
+        {
+          "start": 7271,
+          "end": 7299
+        },
+        {
+          "start": 7321,
+          "end": 7349
+        },
+        {
+          "start": 7371,
+          "end": 7399
+        },
+        {
+          "start": 7421,
+          "end": 7449
+        },
+        {
+          "start": 7471,
+          "end": 7499
+        },
+        {
+          "start": 7521,
+          "end": 7549
+        },
+        {
+          "start": 7571,
+          "end": 7599
+        },
+        {
+          "start": 7621,
+          "end": 7649
+        },
+        {
+          "start": 7671,
+          "end": 7699
+        },
+        {
+          "start": 7721,
+          "end": 7749
+        },
+        {
+          "start": 7771,
+          "end": 7799
+        },
+        {
+          "start": 7821,
+          "end": 7849
+        },
+        {
+          "start": 7871,
+          "end": 7899
+        },
+        {
+          "start": 7921,
+          "end": 7949
+        },
+        {
+          "start": 7971,
+          "end": 7999
+        },
+        {
+          "start": 8021,
+          "end": 8049
+        },
+        {
+          "start": 8071,
+          "end": 8099
+        },
+        {
+          "start": 8121,
+          "end": 8149
+        },
+        {
+          "start": 8171,
+          "end": 8199
+        },
+        {
+          "start": 8221,
+          "end": 8249
+        },
+        {
+          "start": 8271,
+          "end": 8299
+        },
+        {
+          "start": 8321,
+          "end": 8349
+        },
+        {
+          "start": 8371,
+          "end": 8399
+        },
+        {
+          "start": 8421,
+          "end": 8449
+        },
+        {
+          "start": 8471,
+          "end": 8499
+        },
+        {
+          "start": 8521,
+          "end": 8549
+        },
+        {
+          "start": 8571,
+          "end": 8599
+        },
+        {
+          "start": 8621,
+          "end": 8649
+        },
+        {
+          "start": 8671,
+          "end": 8699
+        },
+        {
+          "start": 8721,
+          "end": 8749
+        },
+        {
+          "start": 8771,
+          "end": 8799
+        },
+        {
+          "start": 8821,
+          "end": 8849
+        },
+        {
+          "start": 8871,
+          "end": 8899
+        },
+        {
+          "start": 8921,
+          "end": 8949
+        },
+        {
+          "start": 8971,
+          "end": 8999
+        },
+        {
+          "start": 9021,
+          "end": 9049
+        },
+        {
+          "start": 9071,
+          "end": 9099
+        },
+        {
+          "start": 9121,
+          "end": 9149
+        },
+        {
+          "start": 9171,
+          "end": 9199
+        },
+        {
+          "start": 9221,
+          "end": 9249
+        },
+        {
+          "start": 9271,
+          "end": 9299
+        },
+        {
+          "start": 9321,
+          "end": 9349
+        },
+        {
+          "start": 9371,
+          "end": 9399
+        },
+        {
+          "start": 9421,
+          "end": 9449
+        },
+        {
+          "start": 9471,
+          "end": 9499
+        },
+        {
+          "start": 9521,
+          "end": 9549
+        },
+        {
+          "start": 9571,
+          "end": 9599
+        },
+        {
+          "start": 9621,
+          "end": 9649
+        },
+        {
+          "start": 9671,
+          "end": 9699
+        },
+        {
+          "start": 9721,
+          "end": 9749
+        },
+        {
+          "start": 9771,
+          "end": 9799
+        },
+        {
+          "start": 9821,
+          "end": 9849
+        },
+        {
+          "start": 9871,
+          "end": 9899
+        },
+        {
+          "start": 9921,
+          "end": 9949
+        },
+        {
+          "start": 9971,
+          "end": 9999
+        }
+      ],
+      "outcome": "redacted",
+      "firstRunOutcome": "redacted"
+    }
+  ]
+}

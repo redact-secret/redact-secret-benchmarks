@@ -9,7 +9,8 @@ export function buildCatalog(categories, corpora, assignments, detectors) {
   const known = new Set(detectors.map(d => d.id));
   if (known.size !== detectors.length || categories.some(c => known.has(c.id))) throw new Error('Detector and case IDs must be unique');
   if ([...detectors, ...categories].some(item => !/^[a-z0-9-]+$/.test(item.id))) throw new Error('IDs must be URL-safe');
-  const fixtures = categories.flatMap(category => corpora[category.id].fixtures.map(f => {
+  const publishedCategories = categories.filter(category => !category.calibrationOnly);
+  const fixtures = publishedCategories.flatMap(category => corpora[category.id].fixtures.map(f => {
     if (!/^[a-z0-9-]+$/.test(f.id)) throw new Error('Fixture IDs must be URL-safe');
     const slug = fixtureSlug(category.id, f.id);
     validateAssessment(f);

@@ -61,6 +61,14 @@ absent, at a known byte range), what does each scanner report?
 The exact fixture schema, envelope/twin/tier authoring rules, and code style
 are in [CONVENTIONS.md](CONVENTIONS.md#ground-truth-schema-tool-agnostic).
 
+Separately from scanner ranges, `npm run mcp:qualify` qualifies an adapter
+boundary as a black box: it installs the exact MCP adapter and core
+tarballs into clean consumers, drives real MCP clients and servers at every
+declared SDK endpoint over stdio and Streamable HTTP, and checks that no
+synthetic value reaches the host's model context, log, store, audit trail or
+error text, and what that costs per call, for `tools/call` and
+`resources/read` ([spec](docs/specs/mcp-qualification.md), #281, #321).
+
 ## Non-goals
 
 - This repository does not assert product output; it measures and records.
@@ -146,6 +154,10 @@ npm run test:redaction               # Published npm scan/redact parity over eve
 npm run fixtures:check               # Verify generated fixtures have not drifted
 npm run baseline -- --save 0.1.0-beta.8  # Store (fixture, scanner) → outcome from a complete run
 npm run baseline:report              # Regenerate docs/generated/release-comparison.md from baselines/
+npm run features:extract            # Maintainer-local candidate-feature dataset -> results-output/calibration/ (never published)
+npm run calibration:run             # Shadow-scorer calibration experiments over that dataset -> results-output/calibration/ (never published)
+npm run scorer-promotion:check      # Validate the future-promotion contract for the shadow scorer (#257)
+npm run evasion:run -- --product <clean redact-secret checkout>  # Score-evasion aggregate (#289); detail -> results-output/score-evasion/ (never published)
 npm run build                       # Type-check and build a static dashboard snapshot
 npm run preview                     # Preview that snapshot
 ```

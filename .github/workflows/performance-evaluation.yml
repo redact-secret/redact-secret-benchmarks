@@ -14,10 +14,42 @@ name: Performance evaluation
 # against this repository's pinned copy of that contract
 # (benchmarks/lib/performance-schema.ts), and fails fast on drift -- #150.
 #
+# Timing budgets are judged on same-job paired ratios (#303): the job also
+# builds the budgets' baseline revision next to the candidate and runs both
+# through core's assessment interleaved (A B B A ...) on this one runner, so a
+# change of runner machine class cancels out of the candidate/baseline ratio.
+# Dispatching with candidate_revision equal to baseline_revision is an A/A run:
+# the baseline built twice and measured against itself, which is what the
+# ratio thresholds' noise term is derived from. The runner's CPU model is
+# recorded in every run's evidence.
+#
+# The baseline side's build outputs are cached by commit (#307): the key is the
+# baseline commit, the toolchain versions, the runner OS/arch and the hash of
+# the build and cache scripts. A restored build is verified file by file
+# against the sha256 manifest saved with it, and the paired evidence records
+# whether the baseline came from the cache, with the key and the manifest
+# digest. An A/A run builds once and reuses that build for both sides. The
+# cache is written only by this workflow, which runs only on workflow_dispatch
+# in this repository: no pull request or fork run can write a cache entry it
+# restores.
+#
 # This does not check out core's own acceptance-criteria*.json (core is
 # retiring that ownership) and does not publish anything or gate a release.
 on:
   workflow_dispatch:
+    inputs:
+      baseline_revision:
+        description: Core commit to pair against (40 hex). Empty uses the regression budgets' current baseline commit.
+        required: false
+        default: ""
+      candidate_revision:
+        description: Core commit to evaluate (40 hex). Empty uses the pin manifest's revision. Equal to the baseline makes an A/A run.
+        required: false
+        default: ""
+      rounds:
+        description: Interleaved rounds per side (even), each one assessment invocation of two fresh-process samples.
+        required: false
+        default: "6"
 
 permissions: {}
 
@@ -25,7 +57,7 @@ jobs:
   evaluate:
     name: Evaluate the pinned core commit against benchmarks-owned criteria
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     permissions:
       contents: read
     env:
@@ -38,20 +70,45 @@ jobs:
           persist-credentials: false
           path: benchmarks-repo
 
-      - name: Read the pinned core commit
+      - name: Resolve the candidate and baseline core commits
         id: pin
+        env:
+          BASELINE_INPUT: ${{ inputs.baseline_revision }}
+          CANDIDATE_INPUT: ${{ inputs.candidate_revision }}
+          ROUNDS_INPUT: ${{ inputs.rounds }}
         run: |
           set -euo pipefail
-          revision="$(node -p "require('./benchmarks-repo/benchmarks/pin-manifest.json').pins.redactSecretRevision")"
-          echo "revision=$revision" >> "$GITHUB_OUTPUT"
+          candidate="${CANDIDATE_INPUT:-$(node -p "require('./benchmarks-repo/benchmarks/pin-manifest.json').pins.redactSecretRevision")}"
+          baseline="${BASELINE_INPUT:-$(node -p "const b = require('./benchmarks-repo/benchmarks/regression-budgets.json'); b.baselines.find(r => r.id === b.baseline).sourceCommit")}"
+          rounds="${ROUNDS_INPUT:-6}"
+          for value in "$candidate" "$baseline"; do
+            [[ "$value" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::core revisions must be 40-hex commits"; exit 1; }
+          done
+          if ! [[ "$rounds" =~ ^[0-9]+$ ]] || (( rounds < 2 || rounds % 2 != 0 || rounds > 20 )); then
+            echo "::error::rounds must be an even number from 2 through 20"
+            exit 1
+          fi
+          {
+            echo "revision=$candidate"
+            echo "baseline=$baseline"
+            echo "rounds=$rounds"
+          } >> "$GITHUB_OUTPUT"
 
-      - name: Check out core at the pinned commit
+      - name: Check out core at the candidate commit
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           repository: redact-secret/redact-secret
           ref: ${{ steps.pin.outputs.revision }}
           persist-credentials: false
           path: core-repo
+
+      - name: Check out core at the baseline commit, built separately even for an A/A run
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          repository: redact-secret/redact-secret
+          ref: ${{ steps.pin.outputs.baseline }}
+          persist-credentials: false
+          path: core-baseline
 
       - name: Set up Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
@@ -72,8 +129,10 @@ jobs:
       - name: Cache Cargo artifacts
         uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
         with:
-          workspaces: core-repo
-          key: performance-evaluation
+          workspaces: |
+            core-repo
+            core-baseline
+          key: performance-evaluation-paired
 
       - name: Install this repository's dependencies (for evaluation, not building core)
         working-directory: benchmarks-repo
@@ -81,39 +140,130 @@ jobs:
 
       - name: Check core's live schema for drift against the pinned contract before building anything
         working-directory: benchmarks-repo
-        run: node --import tsx scripts/check-performance-schema-drift.mjs --core-repo ../core-repo
-
-      - name: Install core's repository and addon dependencies
-        working-directory: core-repo
         run: |
-          npm ci --ignore-scripts
-          npm --prefix bindings/node ci --ignore-scripts
+          node --import tsx scripts/check-performance-schema-drift.mjs --core-repo ../core-repo
+          node --import tsx scripts/check-performance-schema-drift.mjs --core-repo ../core-baseline
 
-      - name: Build core's native, browser, JavaScript, CLI, and Python artifacts
-        working-directory: core-repo
+      - name: Install core's repository and addon dependencies (candidate and baseline)
         run: |
-          npm --prefix bindings/node run build
-          npm run js:build
+          set -euo pipefail
+          for dir in core-repo core-baseline; do
+            npm --prefix "$dir" ci --ignore-scripts
+            npm --prefix "$dir/bindings/node" ci --ignore-scripts
+          done
+
+      - name: Install the build tools
+        run: |
+          set -euo pipefail
           cargo install wasm-bindgen-cli --version "$WASM_BINDGEN_VERSION" --locked
-          npm run wasm:build
-          cargo build --release --locked -p redact-secret-cli
           python -m pip install 'maturin>=1.10,<2'
-          maturin build --release --locked -m bindings/python/Cargo.toml -o dist
 
-      - name: Install the candidate Python wheel without an index or source fallback
-        working-directory: core-repo
+      - name: Compute the baseline build cache key (#307)
+        id: build-cache
+        env:
+          BASELINE: ${{ steps.pin.outputs.baseline }}
+          REVISION: ${{ steps.pin.outputs.revision }}
         run: |
-          python -m venv .venv
-          .venv/bin/python -m pip install --no-index --no-deps --only-binary :all: \
-            --disable-pip-version-check dist/redact_secret-*.whl
+          set -euo pipefail
+          toolchain="$(
+            rustc -Vv
+            cargo -V
+            wasm-bindgen --version
+            maturin --version
+            node --version
+            python --version
+            echo "$RUNNER_OS/$RUNNER_ARCH/$ImageOS"
+            sha256sum benchmarks-repo/scripts/build-core.sh benchmarks-repo/scripts/core-build-cache.mjs | cut -d' ' -f1
+          )"
+          printf '%s\n' "$toolchain"
+          digest="$(printf '%s' "$toolchain" | sha256sum | cut -c1-16)"
+          aa=false
+          if [ "$BASELINE" = "$REVISION" ]; then aa=true; fi
+          {
+            echo "key=paired-baseline-build-v1-$RUNNER_OS-$RUNNER_ARCH-$BASELINE-$digest"
+            echo "aa=$aa"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Restore the baseline build from the cache
+        id: baseline-cache
+        if: steps.build-cache.outputs.aa != 'true'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: baseline-build-cache
+          key: ${{ steps.build-cache.outputs.key }}
+
+      - name: Build core's native, browser, JavaScript, CLI, and Python artifacts (candidate)
+        run: bash benchmarks-repo/scripts/build-core.sh core-repo
+
+      - name: Provide the baseline build (cached, built, or shared with an A/A candidate), verified against its manifest
+        env:
+          AA: ${{ steps.build-cache.outputs.aa }}
+          HIT: ${{ steps.baseline-cache.outputs.cache-hit }}
+          KEY: ${{ steps.build-cache.outputs.key }}
+        run: |
+          set -euo pipefail
+          if [ "$AA" = true ]; then
+            source=shared-with-candidate
+            node benchmarks-repo/scripts/core-build-cache.mjs collect --core core-repo --out baseline-build-cache
+          elif [ "$HIT" = true ]; then
+            source=cache
+          else
+            source=built
+            bash benchmarks-repo/scripts/build-core.sh core-baseline
+            node benchmarks-repo/scripts/core-build-cache.mjs collect --core core-baseline --out baseline-build-cache
+          fi
+          node benchmarks-repo/scripts/core-build-cache.mjs restore --cache baseline-build-cache --core core-baseline \
+            --source "$source" --key "$KEY" --out "$RUNNER_TEMP/baseline-build.json"
+
+      - name: Save the baseline build to the cache
+        if: steps.build-cache.outputs.aa != 'true' && steps.baseline-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: baseline-build-cache
+          key: ${{ steps.build-cache.outputs.key }}
+
+      - name: Install each side's Python wheel without an index or source fallback
+        run: |
+          set -euo pipefail
+          for dir in core-repo core-baseline; do
+            python -m venv "$dir/.venv"
+            "$dir/.venv/bin/python" -m pip install --no-index --no-deps --only-binary :all: \
+              --disable-pip-version-check "$dir"/dist/redact_secret-*.whl
+          done
 
       - name: Install Chromium
-        working-directory: core-repo
-        run: npx playwright install --with-deps chromium
+        run: |
+          set -euo pipefail
+          (cd core-repo && npx playwright install --with-deps chromium)
+          (cd core-baseline && npx playwright install chromium)
 
       - name: Run core's bounded cross-language assessment
         working-directory: core-repo
         run: npm run assessment:all -- --python .venv/bin/python --runs 5 --output-dir ../performance-output
+
+      - name: Record the runner's machine (after the assessment created performance-output/)
+        run: |
+          set -euo pipefail
+          model="$(lscpu | sed -n 's/^Model name:[[:space:]]*//p' | head -1)"
+          node benchmarks-repo/scripts/record-runner.mjs --cpu-model "$model" --out performance-output/runner.json
+
+      - name: Measure baseline and candidate interleaved on this runner (paired timing, #303)
+        working-directory: benchmarks-repo
+        env:
+          ROUNDS: ${{ steps.pin.outputs.rounds }}
+          BASELINE: ${{ steps.pin.outputs.baseline }}
+          REVISION: ${{ steps.pin.outputs.revision }}
+        run: |
+          set -euo pipefail
+          node --import tsx scripts/paired-performance.mjs run \
+            --baseline-dir ../core-baseline --candidate-dir ../core-repo \
+            --rounds "$ROUNDS" --runs 2 --out-dir ../performance-output/paired-raw
+          node --import tsx scripts/paired-performance.mjs reduce \
+            --dir ../performance-output/paired-raw \
+            --baseline-revision "$BASELINE" --candidate-revision "$REVISION" \
+            --runner ../performance-output/runner.json \
+            --baseline-build "$RUNNER_TEMP/baseline-build.json" \
+            --out ../performance-output/paired.json
 
       - name: Check the assessment result for schema drift against the pinned contract
         working-directory: benchmarks-repo
@@ -131,6 +281,36 @@ jobs:
       - name: Add acceptance results to the workflow summary
         if: always() && hashFiles('performance-output/acceptance.md') != ''
         run: sed -n '1,$p' performance-output/acceptance.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Judge the run against the reviewed regression budgets (#143)
+        # Exit 1 is a measured regression; exit 2 is a measurement that cannot
+        # be judged (wrong profile, too few samples, a tail-only change) and
+        # must be rerun. The two carry different annotations so a rerun is
+        # never mistaken for a regression, or the reverse.
+        if: always() && hashFiles('performance-output/summary.json') != ''
+        working-directory: benchmarks-repo
+        env:
+          REVISION: ${{ steps.pin.outputs.revision }}
+        run: |
+          set +e
+          paired=()
+          if [ -f ../performance-output/paired.json ]; then paired=(--paired ../performance-output/paired.json); fi
+          node --import tsx scripts/regression-budgets.mjs evaluate \
+            --summary ../performance-output/summary.json "${paired[@]}" \
+            --source-commit "$REVISION" \
+            --json-out ../performance-output/regression-budgets.json \
+            --markdown-out ../performance-output/regression-budgets.md
+          code=$?
+          case "$code" in
+            0) ;;
+            1) echo "::error title=Budget regression::a measured change breached a reviewed budget; fix it or record an accepted tradeoff" ;;
+            2) echo "::error title=Measurement invalid, rerun::the run cannot be judged against the budgets; rerun before deciding" ;;
+          esac
+          exit "$code"
+
+      - name: Add the budget verdict to the workflow summary
+        if: always() && hashFiles('performance-output/regression-budgets.md') != ''
+        run: sed -n '1,$p' performance-output/regression-budgets.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload raw samples, results, and the acceptance verdict
         if: always()

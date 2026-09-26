@@ -35,6 +35,7 @@ test('the redesign route table resolves, with or without a trailing slash', () =
   assert.deepEqual(resolve('/coverage/github-token'), { kind: 'redirect', id: '', view: '', to: '/coverage/detectors/github-token' });
   assert.deepEqual(resolve('/coverage/detectors/github-token/'), { kind: 'coverage-detector', id: 'github-token', view: '', to: '' });
   assert.deepEqual(resolve('/coverage/github:classic-personal-access-token'), { kind: 'coverage-family', id: 'github:classic-personal-access-token', view: '', to: '' });
+  assert.deepEqual(resolve('/scenarios/context-and-encoding'), { kind: 'scenario', id: 'context-and-encoding', view: '', to: '' });
   assert.deepEqual(resolve('/suites/accuracy'), { kind: 'suite', id: 'accuracy', view: '', to: '' });
   assert.deepEqual(resolve('/workbench'), { kind: 'workbench', id: '', view: 'overview', to: '' });
   assert.deepEqual(resolve('/workbench/review/lexical-invalid-alphabet'), { kind: 'workbench', id: 'lexical-invalid-alphabet', view: 'review', to: '' });
@@ -42,7 +43,7 @@ test('the redesign route table resolves, with or without a trailing slash', () =
   assert.equal(resolve('/workbench/qualification/').view, 'qualification');
   for (const method of ['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout']) assert.deepEqual(resolve(`/workbench/method/${method}`), { kind: 'workbench', id: method, view: 'method', to: '' });
   assert.equal(resolve('/how-to-read').kind, 'how-to-read');
-  for (const path of ['/fixture', '/coverage/a/b', '/coverage/%3Cscript%3E', '/support/github', '/performance/rust-core', '/workbench/method/unknown', '/workbench/review', '/suites', '/nope']) assert.equal(resolve(path).kind, 'missing', path);
+  for (const path of ['/fixture', '/coverage/a/b', '/coverage/%3Cscript%3E', '/scenarios', '/scenarios/a:b', '/support/github', '/performance/rust-core', '/workbench/method/unknown', '/workbench/review', '/suites', '/nope']) assert.equal(resolve(path).kind, 'missing', path);
 });
 test('no bookmark breaks: every pre-redesign path redirects to a page that resolves', () => {
   const legacy = {
@@ -66,6 +67,7 @@ test('the public-only allowlist drops Workbench and nothing else', () => {
   for (const path of ['/workbench', '/workbench/changes', '/workbench/method/twin', '/evaluation', '/pending']) assert.equal(open(path), 'missing', path);
   assert.equal(open('/report'), 'report');
   assert.equal(open('/coverage/detectors/github-token'), 'coverage-detector');
+  assert.equal(open('/scenarios/context-and-encoding'), 'scenario');
   assert.equal(open('/benchmark/accuracy'), 'redirect');
   assert.equal(open('/how-to-read'), 'how-to-read');
 });

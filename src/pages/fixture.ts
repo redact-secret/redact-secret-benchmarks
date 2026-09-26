@@ -5,8 +5,7 @@ import { baseline, categories, corpora, fixtures, registry, type Fixture } from 
 import { outcomeCode } from '../model.mjs';
 import type { Report } from '../types';
 import { kindTitle, rowMarks, tierTitle } from './rows';
-import { familyById } from '../../benchmarks/support/taxonomy.ts';
-import { providerName } from '../support-model';
+import { fixtureFamilyNavigation, fixtureProjectionLinks } from './exploration';
 
 const knownGaps = validateKnownGaps(rawKnownGaps as unknown as KnownGaps);
 // 'v0.1.0-beta.4' reads as 'Beta.4' beside an issue number.
@@ -25,10 +24,8 @@ export function fixturePage(f: Fixture, report: Report | undefined, problem?: st
   const bytes = new TextEncoder().encode(f.content);
   const secrets = f.expected.filter(s => (s.role ?? 'secret') === 'secret');
   const envelopes = f.expected.flatMap(s => (s.envelope ? [s.envelope] : []));
-  const family = familyById(f.familyIds?.[0] ?? '');
-  const detector = registry.detectors.find(d => d.id === f.detectors[0]);
-  const crumb = evidenceCrumb([{ label: 'Coverage', href: '/coverage' }, ...(family ? [{ label: providerName(family.provider), href: '/coverage' }, { label: family.name, href: `/coverage/${family.id}` }] : detector ? [{ label: detector.title, href: `/coverage/detectors/${detector.id}` }] : []), { label: category.title, href: `/suites/${f.category}` }, { label: f.id }]);
-  const head = `${crumb}<div class="page-head"><div><p class="eyebrow">${e(f.group.toUpperCase())}</p><h1 class="h1-evidence">${e(f.id)}</h1><div class="meta"><span>${e(kindTitle(a.kind))} · ${e(tierTitle(a.tier))}</span><span class="mono">${e(f.path)}</span><span>${bytes.length.toLocaleString('en-US')} UTF-8 bytes, [start, end)</span>${f.detectors.map(id => `<a href="/coverage/detectors/${e(id)}">${e(registry.detectors.find(d => d.id === id)?.title ?? id)}</a>`).join('')}</div></div></div>`;
+  const crumb = fixtureFamilyNavigation(f);
+  const head = `${crumb}<div class="page-head"><div><p class="eyebrow">${e(f.group.toUpperCase())}</p><h1 class="h1-evidence">${e(f.id)}</h1><div class="meta"><span>${e(kindTitle(a.kind))} · ${e(tierTitle(a.tier))}</span><span class="mono">${e(f.path)}</span><span>${bytes.length.toLocaleString('en-US')} UTF-8 bytes, [start, end)</span>${f.detectors.map(id => `<a href="/coverage/detectors/${e(id)}">${e(registry.detectors.find(d => d.id === id)?.title ?? id)}</a>`).join('')}</div></div></div>${fixtureProjectionLinks(f)}`;
 
   const scanners = (report?.scanners ?? []).map(scanner => {
     const row = scanner.status === 'complete' ? scanner.rows?.find(r => r.id === f.id) : undefined;

@@ -72,8 +72,8 @@ export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
   if (match) return at('coverage-family', `${match[1]}:${match[2]}`);
   match = new RegExp(`^/coverage/(${ID})$`).exec(path);
   if (match) return redirect(`/coverage/detectors/${match[1]}`);
-  match = new RegExp(`^/(suites|fixture)/(${ID})$`).exec(path);
-  if (match) return at(match[1] === 'suites' ? 'suite' : match[1], match[2]);
+  match = new RegExp(`^/(scenarios|suites|fixture)/(${ID})$`).exec(path);
+  if (match) return at(match[1] === 'suites' ? 'suite' : match[1] === 'scenarios' ? 'scenario' : 'fixture', match[2]);
   const workbench = new RegExp(`^/workbench(?:/(changes|qualification)|/(review|method)/(${ID}))?$`).exec(path);
   if (workbench) {
     if (publicOnly) return MISSING();

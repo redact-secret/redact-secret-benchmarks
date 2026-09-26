@@ -2,6 +2,7 @@ import allCategories from '../benchmarks/categories.json';
 import registry from '../benchmarks/detectors.json';
 import assignments from '../benchmarks/fixture-detectors.json';
 import generatedFixtureIndex from '../benchmarks/fixture-index.json';
+import scenarioRegistry from '../benchmarks/scenarios.json';
 import { buildCatalog } from './model.mjs';
 import { compareBaselineNames } from '../benchmarks/lib/baselines.ts';
 import type { Baseline, Kind, Span, Tier } from './types';
@@ -15,11 +16,13 @@ export interface Fixture {
   familyIds: string[]; scenarioIds: string[]; unscopedReason?: string;
   provenance: { categoryId: string; issue?: number; milestone?: string; release?: string };
 }
+export interface Scenario { id: string; title: string; description: string }
 const files = import.meta.glob('../fixtures/**/*.json', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 export const categories = allCategories.filter(category => !('calibrationOnly' in category && category.calibrationOnly));
 export const rawCorpora = Object.fromEntries(categories.map(c => [c.id, files[`../${c.corpus}`]]));
 export const corpora = Object.fromEntries(categories.map(c => [c.id, JSON.parse(rawCorpora[c.id])]));
 export const fixtureIndex = generatedFixtureIndex;
+export const scenarios = scenarioRegistry.scenarios as Scenario[];
 const semanticBySlug = new Map(fixtureIndex.fixtures.map(entry => [entry.slug, entry]));
 const catalogFixtures = buildCatalog(categories, corpora, assignments, registry.detectors);
 if (fixtureIndex.identity.fixtureCount !== catalogFixtures.length || semanticBySlug.size !== catalogFixtures.length) throw new Error('Fixture semantic index membership does not match the public catalog');

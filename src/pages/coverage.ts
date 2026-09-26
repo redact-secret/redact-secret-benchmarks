@@ -17,6 +17,7 @@ import { currentReports, groupsOf, hasResults, PRODUCT, type BenchData } from '.
 import { boundCell, compactFigure, isControl, isRedact, type Floors } from './figures';
 import { groupTitle, rowsTable, tierTitle } from './rows';
 import { runStates } from './states';
+import { explorationSections } from './exploration';
 
 export type CoverageView = 'providers' | 'detectors' | 'thin' | 'inventory' | 'all';
 export const coverageViewOf = (search: string): CoverageView => {
@@ -206,7 +207,7 @@ function providerCoverage(fixtures: Fixture[], data: BenchData | undefined, matr
 function detectorCoverage(fixtures: Fixture[], view: CoverageView, data?: BenchData): string {
   const counts = detectorCounts(fixtures), atMinimum = counts.filter(d => d.fixtures <= MIN), shown = view === 'thin' ? atMinimum : counts;
   const max = Math.max(MIN, ...counts.map(d => d.fixtures)), line = (MIN / max * 100).toFixed(2);
-  return `<p class="small" style="margin-bottom:var(--space-4)">The vertical line is the minimum sample size (${MIN}). Detector assignments overlap and are never summed as provider totals.</p><div class="cov-list" role="table" aria-label="Detectors by fixture count"><div class="cov-row cov-head" role="row"><span role="columnheader">DETECTOR</span><span class="n" role="columnheader">FIXTURES</span><span role="columnheader">SAMPLE SIZE</span><span role="columnheader"></span></div>${shown.map(d => `<div class="cov-row" role="row"><a role="cell" href="/coverage/detectors/${e(d.id)}">${e(d.title)}</a><span class="n" role="cell">${n(d.fixtures)}</span><span class="bar" role="cell" aria-label="${n(d.fixtures)} fixtures; minimum sample size ${MIN}"><i style="width:${(d.fixtures / max * 100).toFixed(2)}%"></i><u style="left:${line}%"></u></span><span class="flag" role="cell">${d.fixtures < MIN ? 'Below minimum' : d.fixtures === MIN ? 'At minimum' : ''}</span></div>`).join('')}</div>${view !== 'thin' ? twinProbeSection(data, fixtures) : ''}<section class="section"><h2 class="h2-compact">Development history</h2><p class="small">Suite routes remain the execution and introduction-history view for the same canonical fixtures.</p><div class="tbl"><table><thead><tr><th scope="col">Suite</th><th scope="col" class="num">Fixtures</th><th scope="col">Scope</th></tr></thead><tbody>${categories.map(category => `<tr><td><a href="/suites/${e(category.id)}">${e(category.title)}</a></td><td class="num">${n(fixtures.filter(fixture => fixture.category === category.id).length)}</td><td>${e(category.description)}</td></tr>`).join('')}</tbody></table></div></section>`;
+  return `<p class="small" style="margin-bottom:var(--space-4)">The vertical line is the minimum sample size (${MIN}). Detector assignments overlap and are never summed as provider totals.</p><div class="cov-list" role="table" aria-label="Detectors by fixture count"><div class="cov-row cov-head" role="row"><span role="columnheader">DETECTOR</span><span class="n" role="columnheader">FIXTURES</span><span role="columnheader">SAMPLE SIZE</span><span role="columnheader"></span></div>${shown.map(d => `<div class="cov-row" role="row"><a role="cell" href="/coverage/detectors/${e(d.id)}">${e(d.title)}</a><span class="n" role="cell">${n(d.fixtures)}</span><span class="bar" role="cell" aria-label="${n(d.fixtures)} fixtures; minimum sample size ${MIN}"><i style="width:${(d.fixtures / max * 100).toFixed(2)}%"></i><u style="left:${line}%"></u></span><span class="flag" role="cell">${d.fixtures < MIN ? 'Below minimum' : d.fixtures === MIN ? 'At minimum' : ''}</span></div>`).join('')}</div>${view !== 'thin' ? twinProbeSection(data, fixtures) : ''}${explorationSections(fixtures)}`;
 }
 
 export function coveragePage(fixtures: Fixture[], view: CoverageView, data?: BenchData, matrix?: SupportMatrixFile | null, problem: string | null = null, search = ''): string {
@@ -214,7 +215,7 @@ export function coveragePage(fixtures: Fixture[], view: CoverageView, data?: Ben
   const head = `<div class="page-head"><div><h1>Coverage evidence</h1><div class="meta"><span><b>${taxonomy.families.length}</b> credential families</span><span><b>${counts.length}</b> product detectors</span><span><b>${n(fixtures.length)}</b> canonical fixtures</span><span>These are different units and their denominators are never substituted.</span></div></div>${seg(view)}</div>`;
   if (view === 'inventory') return head + inventoryView(fixtures);
   if (view === 'detectors' || view === 'all' || view === 'thin') return head + `<p class="small">${atMinimum.length} at the minimum sample size or below.</p>` + detectorCoverage(fixtures, view, data);
-  return head + providerCoverage(fixtures, data, matrix, problem, search);
+  return head + providerCoverage(fixtures, data, matrix, problem, search) + explorationSections(fixtures);
 }
 
 export function familyPage(data: BenchData | undefined, fixtures: Fixture[], id: string, matrix?: SupportMatrixFile | null, problem: string | null = null): string {

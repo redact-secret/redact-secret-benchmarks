@@ -1,4 +1,5 @@
 import { credentialDomain } from './credential/contract.ts';
+import { piiDomain } from './pii/contract.ts';
 
 export interface EvaluationDomainDescriptor {
   domain: string; domainAccountingVersion: string;
@@ -8,7 +9,7 @@ export interface EvaluationDomainDescriptor {
 export const defineEvaluationDomains = <T extends Record<string, EvaluationDomainDescriptor>>(entries: T) => Object.freeze(entries);
 
 /** Closed keyed contract map. Adding a public entry point registers it once. */
-const domains = defineEvaluationDomains({ credential: credentialDomain });
+const domains = defineEvaluationDomains({ credential: credentialDomain, pii: piiDomain });
 export type EvaluationDomainContracts = typeof domains;
 export type EvaluationDomainId = keyof typeof domains;
 
@@ -20,3 +21,10 @@ export function resolveEvaluationDomain(id: string) {
 }
 
 export const evaluationDomainIds = (): EvaluationDomainId[] => Object.keys(domains).sort() as EvaluationDomainId[];
+
+/** Credential-shaped CLIs remain fail-closed until their public contracts become domain-aware. */
+export function resolveCredentialDomain(id: string) {
+  const domain = resolveEvaluationDomain(id);
+  if (domain.domain !== 'credential') throw new Error(`Credential entry point does not support domain: ${id}`);
+  return credentialDomain;
+}

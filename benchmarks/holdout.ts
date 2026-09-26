@@ -5,7 +5,7 @@ import { runtimeProvenance, repositoryRoot } from './engine/provenance.ts';
 import { runHoldout, contaminateHoldout } from '../holdout/lifecycle.ts';
 import { sealProtectedCorpus, HoldoutError } from '../holdout/storage.ts';
 import type { Candidate } from '../holdout/types.ts';
-import { resolveEvaluationDomain } from './evaluation/domains/registry.ts';
+import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
 
 async function main() {
   const [action, ...args] = process.argv.slice(2), options: Record<string, string> = {};
@@ -14,7 +14,7 @@ async function main() {
     if (!match || match[1] in options) throw new HoldoutError('invalid-arguments');
     options[match[1]] = match[2];
   }
-  const domain = resolveEvaluationDomain(options.domain ?? 'credential');
+  const domain = resolveCredentialDomain(options.domain ?? 'credential');
   const manifest = path.resolve(repositoryRoot, options.manifest ?? 'holdout/manifest.json');
   if (action === 'seal') {
     if (!options.source) throw new HoldoutError('source-required');

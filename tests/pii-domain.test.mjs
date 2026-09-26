@@ -4,9 +4,10 @@ import { mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { piiDomain } from '../benchmarks/evaluation/domains/pii/contract.ts';
-import { defineEvaluationDomains } from '../benchmarks/evaluation/domains/registry.ts';
+import { defineEvaluationDomains, evaluationDomainIds, resolveEvaluationDomain } from '../benchmarks/evaluation/domains/registry.ts';
 import { runHoldout } from '../holdout/lifecycle.ts';
 import { hash } from '../benchmarks/evaluation/substrate/hash.ts';
+import { rangeOutcome } from '../benchmarks/evaluation/domains/pii/contract-model.ts';
 
 const scanner = {
   id: 'pii-test-scanner', mode: 'candidate', capabilities: { ranges: true, classification: true },
@@ -17,7 +18,7 @@ const scanner = {
 
 test('schema-only PII runs through shared runtime with independent axes and no support claim', async () => {
   const artifact = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [scanner],
-    runId: '00000000-0000-4000-8000-000000000277', provenance: { sourceRevision: 'test-revision' } });
+    runId: '00000000-0000-4000-8000-000000000277', provenance: { sourceRevision: 'd'.repeat(64) } });
   assert.equal(artifact.domain, 'pii');
   assert.equal(artifact.evaluationProfile, 'pii-schema-v1');
   assert.equal(artifact.domainAccountingVersion, 'pii-observation-v1');
@@ -29,11 +30,13 @@ test('schema-only PII runs through shared runtime with independent axes and no s
   assert.equal(artifact.sensitivityContext['review-required'], 1);
   assert.equal(artifact.results[0].outcomes[0].typeIdentity.state, 'correct');
   assert.equal(artifact.results[0].outcomes[0].sensitivityContext.state, 'unresolved');
-  assert.equal(artifact.provenance.sourceRevision, 'test-revision');
+  assert.equal(artifact.provenance.sourceRevision, 'd'.repeat(64));
   assert.equal(artifact.scanners[0].observation.source, 'fresh');
   const serialized = JSON.stringify(artifact);
-  assert.doesNotMatch(serialized, /subject_id=|SYNTHETIC-PERSON-ID-001|RAW-SENTINEL-MUST-DROP/);
+  assert.doesNotMatch(serialized, /subject_id=|SYNTHETIC-PERSON-ID-001|RAW-SENTINEL-MUST-DROP|fixtureHash|contentHash|sourceHash|"seed":|"candidate":/);
   assert.doesNotMatch(serialized, /\btier\b|\bgate\b/);
+  await assert.rejects(() => piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [scanner],
+    provenance: { arbitrary: 'raw provenance' } }), /Invalid PII run provenance/);
 });
 
 test('unavailable or unclassified scanner evidence cannot pass either axis', async () => {
@@ -55,6 +58,7 @@ test('PII contract rejects invalid scope, authority source, profile, and visibil
     { ...base, visibility: 'public' },
     { ...base, contract: { ...base.contract, scope: { kind: 'regional' } } },
     { ...base, contract: { ...base.contract, authority: { ...base.contract.authority, kind: 'blog' } } },
+    { ...base, contract: { ...base.contract, authority: { ...base.contract.authority, locator: 'free text with a claim' } } },
     { ...base, contract: { ...base.contract, qualificationProfile: { id: 'credential-v1', version: 1 } } },
   ]) assert.throws(() => piiDomain.validateCase(invalid), /Invalid PII/);
 });
@@ -63,6 +67,18 @@ test('generic registry preserves PII domain identity without credential casts', 
   const registry = defineEvaluationDomains({ pii: piiDomain });
   assert.equal(registry.pii.domain, 'pii');
   assert.equal(registry.pii.createMethods().get('schema-only').id, 'schema-only');
+  assert.deepEqual(evaluationDomainIds(), ['credential', 'pii']);
+  assert.equal(resolveEvaluationDomain('pii'), piiDomain);
+});
+
+test('PII range outcomes distinguish exact, strict supersets, partial overlaps, and misses', () => {
+  const candidate = { start: 10, end: 20 };
+  assert.equal(rangeOutcome(candidate, { path: 'x', start: 10, end: 20 }), 'exact');
+  assert.equal(rangeOutcome(candidate, { path: 'x', start: 9, end: 21 }), 'overbroad');
+  assert.equal(rangeOutcome(candidate, { path: 'x', start: 12, end: 18 }), 'partial');
+  assert.equal(rangeOutcome(candidate, { path: 'x', start: 5, end: 12 }), 'partial');
+  assert.equal(rangeOutcome(candidate, { path: 'x', start: 20, end: 25 }), 'miss');
+  assert.equal(rangeOutcome(candidate), 'miss');
 });
 
 test('PII uses shared aggregate-only holdout lifecycle without exposing rows or values', async () => {
@@ -78,10 +94,18 @@ test('PII uses shared aggregate-only holdout lifecycle without exposing rows or 
   const candidate = { sourceHash: 'a'.repeat(64), lockHash: 'b'.repeat(64), candidateArtifactHash: 'c'.repeat(64) };
   const report = await runHoldout({ manifestFile, scanners: [scanner], candidate, verifyCandidate: async () => candidate,
     domain: piiDomain.holdout, runId: '00000000-0000-4000-8000-000000000278' });
-  assert.equal(report.status, 'complete');
+  assert.equal(report.status, 'incomplete');
   assert.equal(report.caseCount, 1);
-  assert.equal(report.scanners[0].assertions.pass, 1);
-  assert.equal(report.scanners[0].assertions['review-required'], 1);
+  assert.equal(report.domain, 'pii');
+  assert.equal(report.supportClaims, false);
+  assert.equal(report.scanners[0].axes.typeIdentity.pass, 1);
+  assert.equal(report.scanners[0].axes.sensitivityContext['review-required'], 1);
   const serialized = JSON.stringify(report);
   assert.doesNotMatch(serialized, /pii-public-control\.txt|SYNTHETIC-PERSON-ID|"content"|"start"|"end"/);
+  assert.throws(() => piiDomain.holdout.validateReport({ ...structuredClone(report), extra: true }), /Invalid PII holdout aggregate/);
+  assert.throws(() => piiDomain.holdout.validateReport({ ...structuredClone(report), status: 'complete' }), /Invalid PII holdout aggregate/);
+});
+
+test('PII holdout requires an explicit matching manifest identity', () => {
+  assert.throws(() => piiDomain.holdout.resolveManifestEvaluation({}), /manifest-evaluation-missing/);
 });

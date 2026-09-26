@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
 import { assertPinnedPeers } from '../scanners/pins.mjs';
 import { candidateConfiguration, installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
-import { resolveEvaluationDomain } from './evaluation/domains/registry.ts';
+import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
 import type { ReviewLedger, Scanner } from './engine/types.ts';
 import { runEvaluation } from './engine/runner.ts';
 import { evaluationInputs } from './engine/execution.ts';
@@ -34,7 +34,7 @@ async function main() {
     options[key] = match?.[2] ?? true;
   }
   if (options['refresh-peer-snapshots'] && options['live-peers']) throw new Error(usage);
-  const credentialDomain = resolveEvaluationDomain(String(options.domain ?? 'credential'));
+  const credentialDomain = resolveCredentialDomain(String(options.domain ?? 'credential'));
   const { contracts, scoredContractIds } = credentialDomain.assessment;
   const { classifyFamilySupport, statusCriteria, familyEvidence } = credentialDomain.qualification;
   const candidatePresent = CANDIDATE_KEYS.filter(key => key in options);

@@ -4,6 +4,8 @@ import type { PiiCase, PiiContract, PiiFinding, PiiOutcome, PiiRangeOutcome, Pii
 
 const slug = (value: unknown) => typeof value === 'string' && /^[a-z][a-z0-9-]{1,79}$/.test(value);
 const date = (value: unknown) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`));
+const locator = (value: unknown) => typeof value === 'string' && (/^https:\/\/[a-z0-9.-]+\/[a-zA-Z0-9._~!$&'()*+,;=:@\/-]+$/.test(value) ||
+  /^(?:urn|benchmark):[a-zA-Z0-9][a-zA-Z0-9._:-]{1,199}$/.test(value));
 
 export function validatePiiContract(contract: PiiContract) {
   if (!contract || !slug(contract.category) || !slug(contract.family) ||
@@ -12,7 +14,8 @@ export function validatePiiContract(contract: PiiContract) {
       !['required', 'optional', 'forbidden'].includes(contract.context?.obligation) ||
       !['sensitive', 'neutral', 'non-sensitive'].includes(contract.context?.class) || !slug(contract.context?.language) ||
       !['standard', 'public-authority', 'official-test-source'].includes(contract.authority?.kind) ||
-      typeof contract.authority?.reference !== 'string' || !contract.authority.reference || !date(contract.authority.observedAt) ||
+      !locator(contract.authority?.locator) || typeof contract.authority?.version !== 'string' || !/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,39}$/.test(contract.authority.version) ||
+      !['format', 'allocation', 'context', 'test-vector'].includes(contract.authority?.claim) || !date(contract.authority.observedAt) ||
       contract.qualificationProfile?.id !== 'pii-v1' || contract.qualificationProfile.version !== 1)
     throw new Error('Invalid PII contract');
   if (contract.scope?.kind === 'global') {
@@ -47,9 +50,8 @@ const overlaps = (a: { start: number; end: number }, b: { start: number; end: nu
 export function rangeOutcome(candidate: { start: number; end: number }, finding?: PiiFinding): PiiRangeOutcome {
   if (!finding) return 'miss';
   if (finding.start === candidate.start && finding.end === candidate.end) return 'exact';
-  if (finding.start <= candidate.start && finding.end >= candidate.end) return 'covered';
-  if (finding.start >= candidate.start && finding.end <= candidate.end) return 'partial';
-  return overlaps(candidate, finding) ? 'overbroad' : 'miss';
+  if (finding.start <= candidate.start && finding.end >= candidate.end) return 'overbroad';
+  return overlaps(candidate, finding) ? 'partial' : 'miss';
 }
 
 export function interpretPiiOutcome(variant: PiiVariant, scanner: { id: string; status: string; findings?: PiiFinding[] }): PiiOutcome {

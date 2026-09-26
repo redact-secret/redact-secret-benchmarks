@@ -16,11 +16,10 @@ export function loadPiiCases(): PiiCase[] {
       category: 'personal-identifier', family: 'synthetic-person-id', scope: { kind: 'global' },
       typeExpectation: { state: 'valid', validator: null }, sensitivityExpectation: 'unresolved',
       context: { obligation: 'required', class: 'neutral', language: 'en' },
-      authority: { kind: 'official-test-source', reference: 'benchmark:schema-probe', observedAt: '2026-09-26' },
+      authority: { kind: 'official-test-source', locator: 'benchmark:schema-probe', version: '1', claim: 'test-vector', observedAt: '2026-09-26' },
       referenceEvidence: null, qualificationProfile: { id: 'pii-v1', version: 1 },
     },
     provenance: { source: 'benchmarks/evaluation/domains/pii/cases.ts', sourceHash: hash(source), seed: 'pii-schema-probe/1',
       rationale: 'Exercises the PII domain contract without representing a real person or support claim.', sources: ['benchmark:schema-probe'] },
   }];
 }
-

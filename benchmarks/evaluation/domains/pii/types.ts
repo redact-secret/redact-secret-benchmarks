@@ -3,11 +3,13 @@ import type { RuntimeFinding, RuntimeInput, RuntimeObservation, RuntimeScanner }
 export type PiiScope = { kind: 'global' } | { kind: 'jurisdictional'; jurisdiction: string };
 export type PiiSensitivityExpectation = 'sensitive' | 'non-sensitive' | 'unresolved';
 export type PiiAssertionStatus = 'pass' | 'fail' | 'review-required' | 'not-measured';
-export type PiiRangeOutcome = 'exact' | 'covered' | 'overbroad' | 'partial' | 'miss' | 'not-applicable';
+export type PiiRangeOutcome = 'exact' | 'overbroad' | 'partial' | 'miss' | 'not-applicable';
 
 export interface PiiAuthority {
   kind: 'standard' | 'public-authority' | 'official-test-source';
-  reference: string;
+  locator: string;
+  version: string;
+  claim: 'format' | 'allocation' | 'context' | 'test-vector';
   observedAt: string;
 }
 
@@ -91,4 +93,3 @@ export interface PiiMethod {
 }
 
 export type PiiScanner = RuntimeScanner<PiiFinding>;
-

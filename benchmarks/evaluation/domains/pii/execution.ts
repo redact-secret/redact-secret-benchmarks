@@ -13,12 +13,13 @@ import type { PiiCase, PiiFinding, PiiGeneratedCase, PiiMethod, PiiOutcome, PiiS
 
 export const PII_ENGINE_VERSION = '1.0.0';
 export const piiAccounting: MechanicalAccountingConfig = Object.freeze({ minDenominator: 1, replays: 2, intervalZ: 1.96, intervalPrecision: 6 });
+export interface PiiRunProvenance { sourceRevision?: string; candidateArtifactHash?: string; planHash?: string }
 
 export interface PiiEvaluationOptions {
   cases: PiiCase[];
   methods: Registry<PiiMethod>;
   scanners: PiiScanner[];
-  provenance?: Record<string, unknown>;
+  provenance?: PiiRunProvenance;
   runId?: string;
   scratchParent?: string;
   accounting?: MechanicalAccountingConfig;
@@ -59,6 +60,8 @@ const count = (outcomes: PiiOutcome[], axis: 'typeIdentity' | 'sensitivityContex
 export async function executePiiEvaluation({ cases, methods, scanners, provenance = {}, runId = randomUUID(), scratchParent = tmpdir(),
   accounting = piiAccounting, reusedObservations = [], captureObservations }: PiiEvaluationOptions) {
   validateMechanicalAccounting(accounting);
+  if (Object.keys(provenance).some(key => !['sourceRevision', 'candidateArtifactHash', 'planHash'].includes(key)) ||
+      Object.values(provenance).some(value => !/^[a-f0-9]{64}$/.test(value))) throw new Error('Invalid PII run provenance');
   const { generated, fixtures, runtime } = await executeDomainEvaluation({
     prepare: () => { const prepared = evaluationInputs<PiiCase, PiiVariant['fixture'], PiiGeneratedCase>(cases, c => generate(c, methods));
       return { ...prepared, inputs: prepared.fixtures }; },
@@ -73,14 +76,14 @@ export async function executePiiEvaluation({ cases, methods, scanners, provenanc
     engineVersion: PII_ENGINE_VERSION, runId, startedAt: runtime.startedAt, mode: 'discovery',
     scope: 'Internal PII evaluation scaffold; no public support or qualification claim.',
     identity: { ...piiIdentity, accounting },
-    provenance: { ...provenance, casesHash: hash(cases), methods: methods.values().map(({ id, version }) => ({ id, version })) },
+    provenance: { ...provenance, methods: methods.values().map(({ id, version }) => ({ id, version })) },
     observationMetadata: ({ findings: _findings, ...metadata }) => metadata,
     assembleResult: (g: PiiGeneratedCase) => {
       const evaluated = g.method.evaluate({ case: g.case, variants: g.variants, observations });
       return { result: { id: g.case.id, method: g.case.method, category: g.case.contract.category, family: g.case.contract.family,
         scope: g.case.contract.scope, qualificationProfile: g.case.contract.qualificationProfile,
-        variants: g.variants.map(v => ({ id: v.id, strategy: v.strategy, transformation: v.transformation,
-          contract: v.contract, candidate: v.candidate, provenance: v.provenance })), generation: g.attempts, ...evaluated },
+        variants: g.variants.map(v => ({ id: v.id, strategy: v.strategy, transformation: v.transformation })),
+        generation: g.attempts, ...evaluated },
         reviewEntries: evaluated.reviews.map(review => ({ ...review, caseId: g.case.id, method: g.case.method })) };
     },
     failures: results => results.flatMap(result => result.outcomes.filter(outcome =>

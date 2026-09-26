@@ -77,7 +77,7 @@ function assertionDelta(byMethod: Summary, unstable: Set<string>, config: Accoun
 }
 
 export async function executeEvaluation({ cases, methods, operators, scanners, provenance = {}, onProgress = () => {}, runId = randomUUID(), scratchParent = tmpdir(),
-  accounting = suite.accounting as AccountingConfig, ledger = { schemaVersion: 1, entries: {} } }: EvaluationOptions) {
+  accounting = suite.accounting as AccountingConfig, ledger = { schemaVersion: 2, entries: {} } }: EvaluationOptions) {
   validateAccounting(accounting);
   if (!cases.length || new Set(cases.map(c => c.id)).size !== cases.length) throw new Error('Empty or duplicate evaluation cases');
   if (!scanners.length || new Set(scanners.map(s => s.id)).size !== scanners.length) throw new Error('Empty or duplicate scanner selection');

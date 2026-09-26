@@ -279,6 +279,24 @@ pre.snippet { margin: 0; font: var(--text-mono-small); border: var(--hairline) s
 .wb > * { min-width: 0; }
 .qbar { height: var(--space-2); background: var(--line); position: relative; min-width: var(--space-12); }
 .qbar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink); }
+.decision-cards { list-style: none; margin: 0 0 var(--space-8); padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: var(--rule-strong) solid var(--ink); }
+.decision-cards li { min-width: 0; border-bottom: var(--hairline) solid var(--line); }
+.decision-card { min-height: calc(var(--space-16) * 1.5); padding: var(--space-4); color: var(--ink); text-decoration: none; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3); align-items: start; }
+.decision-card > b { font: var(--text-figure-compact); }
+.decision-card span { display: grid; gap: var(--space-1); min-width: 0; }
+.decision-card small { color: var(--ink-muted); }
+.decision-card[aria-current] { background: var(--ink); color: var(--surface); }
+.decision-card[aria-current] small { color: var(--surface); }
+.decision-card[aria-current]:focus-visible { outline-color: var(--surface); outline-offset: calc(var(--rule-strong) * -2); }
+.ledger-list { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-8); }
+.ledger-item { border-top: var(--rule-strong) solid var(--ink); padding-top: var(--space-3); min-width: 0; }
+.ledger-item > header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+.ledger-item dl { display: grid; grid-template-columns: calc(var(--space-16) * 2) minmax(0, 1fr); gap: var(--space-2) var(--space-4); margin: 0; }
+.ledger-item dt { color: var(--ink-muted); font: var(--text-label); }
+.ledger-item dd { margin: 0; min-width: 0; overflow-wrap: break-word; }
+.ledger-item dd small { display: block; color: var(--ink-muted); margin-top: var(--space-1); }
+.ledger-copy, .ledger-locked, .ledger-item > .cmd { margin-top: var(--space-4); }
+.ledger-locked { border: var(--hairline) dashed var(--ink-muted); padding: var(--space-3) var(--space-4); color: var(--ink-muted); }
 .chg { display: grid; grid-template-columns: calc(var(--space-16) + var(--space-6)) minmax(0, 1fr) auto; gap: var(--space-4); align-items: baseline; padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--line); font: var(--text-small); }
 .chg .d { text-align: right; font-family: var(--font-mono); }
 .chg .d s { color: var(--ink-muted); }
@@ -295,6 +313,12 @@ details > summary { cursor: pointer; font: var(--text-small-strong); padding: va
   .health { grid-template-columns: minmax(0, 1fr); }
   .health > * + * { padding-left: 0; border-left: 0; border-top-color: var(--line); border-top-width: var(--hairline); margin-top: 0; }
   .wb { grid-template-columns: minmax(0, 1fr); }
+  .decision-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .decision-cards { grid-template-columns: minmax(0, 1fr); }
+  .ledger-item dl { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .ledger-item dd + dt { margin-top: var(--space-2); }
 }
 @media (max-width: 600px) {
   .chg, .gate-row { grid-template-columns: calc(var(--space-16) + var(--space-6)) minmax(0, 1fr); }

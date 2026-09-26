@@ -88,24 +88,26 @@ async function text(url: string): Promise<string> {
 
 async function renderWorkbench(current: ReturnType<typeof route>, token: number, path: string, force: boolean) {
   if (force) renderPage('<p role="status" class="small">Loading Workbench evidence…</p>', 'Workbench');
-  const [{ workbenchPage }, { reviewPage, bindCopy }, { changesPage }, { qualificationPage }, { methodPage, bindExplorer }, { reviewClasses, evaluationProblem, candidateProblem }, { default: ledger }] = await Promise.all([
+  const [{ workbenchPage }, { reviewPage, bindCopy }, { changesPage }, { qualificationPage }, { methodPage, bindExplorer }, { reviewClasses, evaluationProblem, candidateProblem, reviewLedgerPublicationProblem }, { default: sourceLedger }] = await Promise.all([
     import('./pages/workbench/index'), import('./pages/workbench/review'), import('./pages/workbench/changes'), import('./pages/workbench/qualification'), import('./pages/workbench/method'), import('./evaluation-model'), import('../benchmarks/review-ledger.json'),
   ]);
   const needsEvaluation = current.view !== 'changes';
-  const [data, evaluationText, candidateText] = await Promise.all([loadBench(), needsEvaluation ? text('/results/evaluation-v1.json') : '', text('/results/candidate-evidence-v1.json')]);
+  const [data, evaluationText, reviewLedgerText, candidateText] = await Promise.all([loadBench(), needsEvaluation ? text('/results/evaluation-v1.json') : '', needsEvaluation ? text('/results/review-ledger-v2.json') : '', text('/results/candidate-evidence-v1.json')]);
   if (token !== request || path !== location.pathname) return;
-  const payload = JSON.stringify([path, location.search, data.signature, evaluationText.length, evaluationText.slice(0, 400), candidateText]);
+  const payload = JSON.stringify([path, location.search, data.signature, evaluationText.length, evaluationText.slice(0, 400), reviewLedgerText.length, reviewLedgerText.slice(0, 200), candidateText]);
   if (!force && payload === lastPayload) return;
   lastPayload = payload;
   let evaluation: EvaluationReport | null = null, problem: string | null = needsEvaluation ? 'No evaluation report published' : null;
   if (evaluationText) { try { const parsed = JSON.parse(evaluationText); problem = evaluationProblem(parsed, await hashes); if (!problem) evaluation = parsed; } catch { problem = 'Evaluation report is unreadable'; } }
+  let ledger = sourceLedger as unknown as ReviewLedgerFile, ledgerProblem: string | null = evaluation ? 'No published review provenance' : (problem ?? 'No validated evaluation report');
+  if (evaluation && reviewLedgerText) { try { const parsed = JSON.parse(reviewLedgerText) as ReviewLedgerFile; ledgerProblem = reviewLedgerPublicationProblem(parsed, ledger, evaluation); if (!ledgerProblem) ledger = parsed; } catch { ledgerProblem = 'Published review provenance is unreadable'; } }
   let candidate: CandidateReport | undefined, candidateIssue: string | undefined;
   if (candidateText) { try { const parsed = JSON.parse(candidateText); candidateIssue = candidateProblem(parsed) ?? undefined; if (!candidateIssue) candidate = parsed; } catch { candidateIssue = 'Candidate evidence is unreadable'; } }
-  const classes = reviewClasses(ledger as unknown as ReviewLedgerFile);
+  const classes = reviewClasses(ledger);
   const changes = { data, baseline, candidate, candidateProblem: candidateIssue, site: SITE.env, fixtures };
-  const home = () => workbenchPage({ data, evaluation, evaluationProblem: problem, classes, changes });
+  const home = () => workbenchPage({ data, evaluation, evaluationProblem: problem, reviewLedgerProblem: ledgerProblem, classes, changes });
   const labels: Record<string, string> = { overview: 'Workbench', review: 'Review queue', changes: 'Changes', qualification: 'Qualification', method: current.id };
-  const body = current.view === 'review' ? reviewPage(classes, current.id, evaluation)
+  const body = current.view === 'review' ? reviewPage(classes, current.id, evaluation, ledgerProblem)
     : current.view === 'changes' ? changesPage(changes, new URLSearchParams(location.search).get('corpus') === 'expanded' ? 'expanded-corpus' : 'fixed-corpus')
     : current.view === 'qualification' ? qualificationPage(data, evaluation)
     : current.view === 'method' && evaluation ? methodPage(evaluation, current.id)

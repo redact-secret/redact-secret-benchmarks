@@ -2,6 +2,9 @@ import Ajv from 'ajv';
 import publicSchema from '../schemas/evaluation-public-v1.json';
 import qualificationSchema from '../schemas/qualification-report-v1.json';
 import holdoutSchema from '../schemas/holdout-report-v1.json';
+import reviewCategories from '../benchmarks/review-categories.json';
+import { reviewLedgerProblem, type ReviewLedger, type ReviewLedgerEntry } from '../benchmarks/engine/review-ledger.ts';
+export { reviewLedgerProblem } from '../benchmarks/engine/review-ledger.ts';
 const ajv = new Ajv({ strict: true });
 ajv.addSchema(holdoutSchema); ajv.addSchema(qualificationSchema);
 const validPublicReport = ajv.compile(publicSchema);
@@ -106,11 +109,11 @@ export function evaluationProblem(value: unknown, corpusHashes?: Record<string, 
   } catch { return 'Missing or invalid evaluation evidence'; }
 }
 
-/* ---------- Workbench: review ledger classes (redesign plan section 07) ---------- */
-export interface LedgerEntry { status: 'open' | 'resolved' | 'not-assertable'; firstSeenRun: string; resolvedRun?: string; note: string }
-export interface ReviewLedgerFile { schemaVersion: number; entries: Record<string, LedgerEntry> }
+/* ---------- Workbench: provenance-safe review queue ---------- */
+export type LedgerEntry = ReviewLedgerEntry;
+export type ReviewLedgerFile = ReviewLedger;
 export interface ReviewClass {
-  id: string; label: string; description: string;
+  id: string; label: string; description: string; nextAction: string;
   /** The literal `Class:` values of the ledger notes gathered here. */
   rawClasses: string[];
   open: number; resolved: number;
@@ -123,37 +126,27 @@ export interface ReviewClass {
 export function ledgerClassOf(note: string): string {
   return /Class: (.+?)\.?\s*$/s.exec(note)?.[1] ?? 'unclassified';
 }
-const GROUPS: { id: string; label: string; description: string; match: (raw: string) => boolean }[] = [
-  { id: 't0-fixtures', label: 'T0 fixtures', description: 'No reviewed contract yet', match: raw => raw === 't0-pending-fixture' },
-  // #125: the current-queue T0 rows, settled not-assertable under docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md.
-  // Its own group, not folded into `t0-fixtures`: a settled class carries no open entries, and that group still holds stale open rows.
-  { id: 'pending-fixtures-decided', label: 'Pending fixtures (decided)', description: 'No ground truth is inferable while the fixture is T0', match: raw => raw === 'decision=differential.t0-pending-fixture' },
-  // #213: same-span rows where only the peer's family label is coarser, settled not-assertable under
-  // docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md; kept apart from the open rows in `other`.
-  { id: 'peer-coarser-classification-decided', label: 'Peer-coarser labels (decided)', description: 'Same authored span, only the peer\'s family label is coarser', match: raw => raw === 'decision=differential.peer-coarser-classification' },
-  // Beta.8 arrival re-measure: arrival-family rows labelled by the owning shared detector, settled not-assertable under
-  // docs/decisions/2026-09-24-settle-arrival-classification-by-owning-detector.md.
-  { id: 'arrival-owning-detector-decided', label: 'Arrival labels by owning detector (decided)', description: 'Same authored span, product labels the shared detector that owns the arrival family', match: raw => raw === 'decision=differential.arrival-owning-detector-classification' },
-  { id: 'confirmed-defects',label: 'Confirmed defects', description: 'Product issue candidates', match: raw => raw.startsWith('confirmed-') },
-];
-/** URL-safe id of a ledger class. Operator ids carry dots; paths here never do. */
-export function reviewClassId(raw: string): string {
-  if (raw.startsWith('operator=')) return raw.slice('operator='.length).replace(/[^a-z0-9]+/g, '-');
-  return GROUPS.find(g => g.match(raw))?.id ?? 'other';
-}
-/** What the operator does, in the ledger's own words: "operator `x` <does this>, which …". */
-const operatorEffect = (note: string) => { const m = /operator `[^`]+` (.+?), which/s.exec(note)?.[1]; return m ? m[0].toUpperCase() + m.slice(1) : 'Operator contract broken by construction'; };
+type Category = (typeof reviewCategories.categories)[number];
+const CATEGORIES = reviewCategories.categories as Category[];
+const matches = (raw: string, category: Category) => category.classRules.some(rule => rule.kind === 'exact' ? raw === rule.value : raw.startsWith(rule.value));
+const UNMAPPED = { id: 'unmapped', label: 'Needs classification', description: 'No reviewed decision-category mapping exists for this ledger class.', nextAction: 'Classify the ledger class in benchmarks/review-categories.json before adjudicating it.' };
 
-/** Group the ledger by the reason an entry needs a person. Counts are tallies of the JSON; nothing is inferred. */
+/** Category ids come only from the reviewed mapping registry; unknown classes remain visibly unmapped. */
+export function reviewClassId(raw: string): string {
+  return CATEGORIES.find(category => matches(raw, category))?.id ?? UNMAPPED.id;
+}
+
+/** Group the ledger with reviewed metadata. The ledger is tallied exactly once and never classified from scanner output. */
 export function reviewClasses(ledger: ReviewLedgerFile): ReviewClass[] {
+  const problem = reviewLedgerProblem(ledger);
+  if (problem) throw new Error(problem);
   const classes = new Map<string, ReviewClass>();
   for (const [id, entry] of Object.entries(ledger.entries)) {
-    const raw = ledgerClassOf(entry.note), classId = reviewClassId(raw), group = GROUPS.find(g => g.id === classId);
+    const raw = ledgerClassOf(entry.note), classId = reviewClassId(raw), group = CATEGORIES.find(g => g.id === classId) ?? UNMAPPED;
     let item = classes.get(classId);
     if (!item) classes.set(classId, item = {
       id: classId, rawClasses: [], open: 0, resolved: 0, 'not-assertable': 0, entries: [],
-      label: group?.label ?? (raw.startsWith('operator=') ? raw.slice('operator='.length) : 'Other'),
-      description: group?.description ?? (raw.startsWith('operator=') ? operatorEffect(entry.note) : 'Classes with no group of their own'),
+      label: group.label, description: group.description, nextAction: group.nextAction,
     });
     if (!item.rawClasses.includes(raw)) item.rawClasses.push(raw);
     item[entry.status]++;
@@ -162,9 +155,45 @@ export function reviewClasses(ledger: ReviewLedgerFile): ReviewClass[] {
   return [...classes.values()].sort((a, b) => b.open - a.open || a.label.localeCompare(b.label));
 }
 
-/** A ledger fragment to paste into review-ledger.json through a PR. The UI writes no file. */
-export function ledgerSnippet(entries: ({ id: string } & LedgerEntry)[], resolvedRun: string, decision = '<your decision and why>'): string {
-  return JSON.stringify(Object.fromEntries(entries.map(({ id, firstSeenRun, note }) => [id, { status: 'resolved', firstSeenRun, resolvedRun, note: `${decision} Class: ${ledgerClassOf(note)}.` }])), null, 2);
+/** Bind the generated last-observation artifact to both checked-in decisions and the validated public run. */
+export function reviewLedgerPublicationProblem(published: ReviewLedgerFile, source: ReviewLedgerFile, evaluation: EvaluationReport): string | null {
+  const problem = reviewLedgerProblem(published) ?? reviewLedgerProblem(source);
+  if (problem) return problem;
+  if (published.observationRun?.runId !== evaluation.runId || published.observationRun.observedAt !== evaluation.finishedAt) return 'Review ledger does not describe the published evaluation run';
+  const sourceIds = Object.keys(source.entries), publishedIds = Object.keys(published.entries);
+  if (canonical(sourceIds.sort()) !== canonical(publishedIds.sort())) return 'Review ledger membership differs from the checked-in ledger';
+  if (evaluation.reviews.some(review => !Object.hasOwn(published.entries, review.id))) return 'Published evaluation contains a review absent from the ledger';
+  const observed = new Set(evaluation.reviews.map(review => review.id));
+  for (const id of sourceIds) {
+    const base = source.entries[id], entry = published.entries[id];
+    const immutable = ({ lastSeenRun: _run, lastSeenAt: _at, lastSeenEvidence: _evidence, ...rest }: LedgerEntry) => rest;
+    if (canonical(immutable(base)) !== canonical(immutable(entry))) return `Review ledger decision differs for ${id.slice(0, 12)}`;
+    const namesCurrent = entry.lastSeenRun === evaluation.runId || entry.lastSeenAt === evaluation.finishedAt;
+    const review = evaluation.reviews.find(item => item.id === id), caseSource = review && evaluation.cases.find(item => item.id === review.caseId);
+    if (observed.has(id) !== namesCurrent || (review && (entry.lastSeenRun !== evaluation.runId || entry.lastSeenAt !== evaluation.finishedAt || entry.lastSeenEvidence?.caseId !== review.caseId || entry.lastSeenEvidence.sourceSlug !== caseSource?.sourceSlug || entry.lastSeenEvidence.variant !== review.variant))) return `Review observation mismatch for ${id.slice(0, 12)}`;
+  }
+  return null;
+}
+
+export type ResolutionProof =
+  | { kind: 'current-run'; runId: string; observedAt: string; observedIds: ReadonlySet<string> }
+  | { kind: 'historical-adjudication' };
+
+/** Build a paste-ready fragment only from validated per-entry observation/adjudication proof. */
+export function ledgerSnippet(entries: ({ id: string } & LedgerEntry)[], proof: ResolutionProof, decision = '<your decision and why>'): string | null {
+  const resolved = entries.map(entry => {
+    if (proof.kind === 'current-run') {
+      if (!proof.observedIds.has(entry.id) || entry.lastSeenRun !== proof.runId || entry.lastSeenAt !== proof.observedAt) return null;
+      return [entry.id, { status: 'resolved', firstSeenRun: entry.firstSeenRun, lastSeenRun: entry.lastSeenRun, lastSeenAt: entry.lastSeenAt,
+        resolvedRun: proof.runId, resolutionEvidence: { kind: 'run-observation', observedAt: proof.observedAt }, note: `${decision} Class: ${ledgerClassOf(entry.note)}.` }];
+    }
+    const adjudication = entry.historicalAdjudication;
+    if (!adjudication) return null;
+    return [entry.id, { status: 'resolved', firstSeenRun: entry.firstSeenRun, ...(entry.lastSeenRun ? { lastSeenRun: entry.lastSeenRun, lastSeenAt: entry.lastSeenAt } : {}),
+      ...(adjudication.runId ? { resolvedRun: adjudication.runId } : {}), resolutionEvidence: { kind: 'historical-adjudication', observedAt: adjudication.decidedAt, evidenceUrl: adjudication.evidenceUrl },
+      note: `${decision} Historical evidence: ${adjudication.note} Class: ${ledgerClassOf(entry.note)}.` }];
+  });
+  return resolved.some(row => row === null) ? null : JSON.stringify(Object.fromEntries(resolved as [string, object][]), null, 2);
 }
 
 /* ---------- Workbench: what changed, and why (redesign plan section 08) ---------- */

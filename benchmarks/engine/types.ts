@@ -1,6 +1,7 @@
 import type { Fixture, Finding, Range, ScoredRow } from '../types.ts';
 import type { describeCase, describeVariant } from './reporting.ts';
 import type { variant } from './model.ts';
+import type { ReviewLedger } from './review-ledger.ts';
 
 export interface Registry<T> { register(entry: T): Registry<T>; get(id: string): T; values(): T[] }
 export interface CaseSeed {
@@ -75,4 +76,4 @@ export interface Method {
 }
 export type CaseResult = ReturnType<typeof describeCase> & MethodResult & { variants: ReturnType<typeof describeVariant>[]; generation: GenerationAttempt[] };
 export type Summary = Record<string, Record<AssertionStatus, number>>;
-export interface ReviewLedger { schemaVersion: 1; entries: Record<string, { status: 'open' | 'resolved' | 'not-assertable'; firstSeenRun: string; resolvedRun?: string; note: string }> }
+export type { ReviewLedger };

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "categories": [
+    {
+      "id": "contract-boundary-review",
+      "label": "Contract or boundary review",
+      "description": "The observed span, detector boundary, or comparison contract needs a maintainer decision.",
+      "nextAction": "Re-run the fixture, compare authored ranges, and record the contract decision in a pull request.",
+      "classRules": [
+        { "kind": "prefix", "value": "differential-coverage-gap/" },
+        { "kind": "prefix", "value": "differential-boundary-unconfirmed/" },
+        { "kind": "prefix", "value": "differential-shared-detector-twin/" },
+        { "kind": "prefix", "value": "differential-collateral-public-id/" },
+        { "kind": "exact", "value": "classification-granularity-unasserted" }
+      ]
+    },
+    {
+      "id": "product-defect-candidate",
+      "label": "Product defect candidate",
+      "description": "Reviewed benchmark metadata identifies a repeatable product behavior that may need a product issue.",
+      "nextAction": "Confirm the current observation, link or open the product issue, then record the reviewed decision.",
+      "classRules": [
+        { "kind": "prefix", "value": "confirmed-partial-redaction/" },
+        { "kind": "prefix", "value": "confirmed-boundary-false-positive/" },
+        { "kind": "prefix", "value": "confirmed-twin-false-positive/" }
+      ]
+    },
+    {
+      "id": "fixture-expectation-review",
+      "label": "Fixture or expectation review",
+      "description": "The authored fixture truth or expectation is not yet strong enough for an automatic assertion.",
+      "nextAction": "Review the authored bytes and expectation source before changing either the fixture or ledger.",
+      "classRules": [
+        { "kind": "exact", "value": "t0-pending-fixture" },
+        { "kind": "prefix", "value": "benign-false-alarm-unconfirmed/" }
+      ]
+    },
+    {
+      "id": "intentional-difference",
+      "label": "Intentional difference / not assertable",
+      "description": "The scanners may intentionally differ; peer output remains review evidence, not ground truth.",
+      "nextAction": "Check the documented scanner contracts and record a class-level not-assertable decision when justified.",
+      "classRules": [
+        { "kind": "prefix", "value": "differential-false-alarm-unconfirmed/" },
+        { "kind": "prefix", "value": "classification-disagreement/" },
+        { "kind": "prefix", "value": "decision=" },
+        { "kind": "prefix", "value": "operator=" }
+      ]
+    }
+  ]
+}

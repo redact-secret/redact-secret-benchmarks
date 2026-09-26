@@ -16,6 +16,8 @@ jobs:
           python-version: '3.12'
       - run: npm ci
       - run: npm run fixtures:check
+      - name: Fixture semantic index is complete, reviewed, and current (#340)
+        run: npm run fixture-index:check
       - run: npm test
       - name: Validate published engine qualification evidence
         run: npm run eval:validate -- docs/specs/qualification/engine-v1.json

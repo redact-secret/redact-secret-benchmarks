@@ -28,6 +28,8 @@
     "compare": "npm run fixtures:check && npm test && npm run test:integration && npm run bench -- --strict",
     "fixtures:generate": "node --import tsx scripts/generate-fixtures.mjs",
     "fixtures:check": "node --import tsx scripts/generate-fixtures.mjs --check && node --import tsx scripts/check-fixture-storage.mjs",
+    "fixture-index:generate": "node --import tsx scripts/generate-fixture-index.mjs",
+    "fixture-index:check": "node --import tsx scripts/generate-fixture-index.mjs --check",
     "test:coverage": "node --import tsx --experimental-test-coverage --test-coverage-include='benchmarks/**/*.ts' --test-coverage-include='scanners/**' --test tests/*.test.mjs tests/integration/*.test.mjs",
     "detectors:refresh": "python3 scripts/refresh-detector-inventory.py",
     "detectors:check": "python3 scripts/refresh-detector-inventory.py --check",

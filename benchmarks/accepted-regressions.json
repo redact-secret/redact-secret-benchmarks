@@ -42,5 +42,24 @@
     },
     "decidedAt": "2026-09-26",
     "decidedBy": "milocosmopolitan (maintainer decision relayed for the beta.9 RC qualification)"
+  },
+  {
+    "id": "beta9-final-cli-aarch64-linux-gnu-detector-pack",
+    "triggerId": "size/cli/aarch64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "09e1d7f85cd2ada9f387cc5c9beef3b29023d17d" },
+    "measured": { "baseline": 863848, "candidate": 930616, "unit": "bytes" },
+    "rationale": "The post-contract-review beta.9 candidate produces the same 930,616-byte aarch64 Linux CLI, with the same SHA-256, as the separately reviewed 93ddf510 candidate. The executable, writable and alignment footprint is therefore byte-identical and remains within the already reviewed 64 KiB alignment step. This fresh row applies the unchanged tradeoff to the exact 09e1d7f8 source candidate; it does not widen the 5% budget or transfer acceptance to any later source commit.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The final source retains the beta.9 detector-pack, MCP resources/read, key-aware sanitization and non-enforcing shadow-scoring behavior while correcting the release-contract review and binding that review into the artifact inventory.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/852",
+        "https://github.com/redact-secret/redact-secret/issues/851",
+        "https://github.com/redact-secret/redact-secret/issues/772"
+      ]
+    },
+    "decidedAt": "2026-09-26",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the post-contract-review beta.9 qualification)"
   }
 ]

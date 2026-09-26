@@ -366,6 +366,33 @@ test('the beta.9 RC size tradeoff covers only the exact 93ddf510 candidate and r
   assert.equal(different.triggers.find(trigger => trigger.id === id).verdict, 'regression');
 });
 
+test('the final beta.9 size tradeoff covers only the exact 09e1d7f8 candidate and retains the byte-identical measurement', () => {
+  const committed = readJson('benchmarks/regression-budgets.json');
+  const ledger = readJson('benchmarks/accepted-regressions.json');
+  const current = readJson(committed.baselines.at(-1).file);
+  const id = 'size/cli/aarch64-unknown-linux-gnu';
+  const metric = structuredClone(current.metrics[id]);
+  metric.value = 930_616;
+  const measurement = sourceCommit => ({
+    sourceCommit,
+    sources: ['artifact qualification run 36243644354'],
+    metrics: { [id]: metric },
+    profiles: { size: {} },
+    detection: null,
+  });
+  const exact = evaluateBudgets(committed, current,
+    measurement('09e1d7f85cd2ada9f387cc5c9beef3b29023d17d'), ledger);
+  const exactRow = exact.triggers.find(trigger => trigger.id === id);
+  assert.equal(exactRow.verdict, 'accepted-tradeoff');
+  assert.equal(exactRow.acceptedBy, 'beta9-final-cli-aarch64-linux-gnu-detector-pack');
+  assert.equal(exactRow.baseline, 863_848);
+  assert.equal(exactRow.candidate, 930_616);
+
+  const different = evaluateBudgets(committed, current,
+    measurement('09e1d7f85cd2ada9f387cc5c9beef3b29023d17e'), ledger);
+  assert.equal(different.triggers.find(trigger => trigger.id === id).verdict, 'regression');
+});
+
 test('runner-reruns reduces same-pin performance runs and rejects a different pin', async () => {
   const { execFileSync } = await import('node:child_process');
   const { mkdtempSync, writeFileSync } = await import('node:fs');

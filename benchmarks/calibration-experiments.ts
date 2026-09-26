@@ -1,8 +1,8 @@
 /**
  * Runs the maintainer-local calibration experiments (#255) over the #254
- * candidate-feature dataset. Tunes on development rows, evaluates on the
- * evaluation-only regression rows, never reads holdout, and changes no product
- * threshold or enforcement.
+ * candidate-feature dataset. Tunes on the authored development partition,
+ * evaluates on held-out development and regression rows, never reads holdout,
+ * and changes no product threshold or enforcement.
  *
  *   npm run features:extract && npm run calibration:run
  *   npm run calibration:run -- --dataset=results-output/calibration/candidate-features-v1.json
@@ -27,6 +27,9 @@ import {
   buildManifestDraft, buildProjection, renderReport, runExperiments,
 } from './lib/calibration-experiments.ts';
 import { assertPublicProjection, MIN_STRATUM_ROWS } from './lib/calibration-projection.mjs';
+import {
+  calibrationPartitionCoverage, calibrationPartitionProblems, type CalibrationPartition,
+} from './lib/calibration-partition.ts';
 import { loadRepositoryState, scoringIdentity, validateTuningManifest, type ScoringComponents } from './lib/tuning-manifest.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -43,7 +46,13 @@ const datasetPath = resolveNonPublicOutput(root, options.dataset ?? DEFAULT_DATA
 const dataset: CandidateFeatureDataset = JSON.parse(readFileSync(datasetPath, 'utf8'));
 if (dataset.datasetType !== 'candidate-features' || dataset.holdoutAccess !== 'none') throw new Error('Not a candidate-feature dataset.');
 
-const result = runExperiments(dataset);
+const partition: CalibrationPartition = JSON.parse(readFileSync(path.join(root, 'tuning/shadow-scoring-development-v1.json'), 'utf8'));
+const partitionProblems = calibrationPartitionProblems(partition, dataset);
+if (partitionProblems.length) throw new Error(`Invalid calibration partition:\n${partitionProblems.join('\n')}`);
+const result = {
+  ...runExperiments(dataset, { tuningCategories: partition.tuningCategories }),
+  partition: { id: partition.id, coverage: calibrationPartitionCoverage(partition, dataset) },
+};
 const selectionSourceHash = sha256(canonicalJson(SELECTION_SOURCES.map(file => ({ file, sha256: sha256(readFileSync(path.join(root, file))) }))));
 
 const product = options.product ? JSON.parse(readFileSync(path.resolve(root, options.product), 'utf8')) : null;
@@ -57,7 +66,7 @@ const placeholder = { sourceRevision: '0'.repeat(40), sourceHash: '0'.repeat(64)
 const manifestProblems = validateTuningManifest({ ...manifest, product: manifest.product ?? placeholder }, repo);
 
 const tuningShare = draftNotes.tuningGeneratedShare;
-const projection = buildProjection(result, draft.scoring.identity, selectionSourceHash, { tuningShare, overrideApplied: true }, MIN_STRATUM_ROWS);
+const projection = buildProjection(result, draft.scoring.identity, selectionSourceHash, { tuningShare, overrideApplied: false }, MIN_STRATUM_ROWS);
 assertPublicProjection(projection);
 
 const write = (target: string, text: string) => {
@@ -73,12 +82,12 @@ const written = [
   write(DEFAULT_PROJECTION, JSON.stringify(projection, null, 2) + '\n'),
 ];
 
-const reweighted = result.sensitivity.generatedShareReweighted as { sameConfiguration: boolean } | undefined;
 console.log([
   `Calibration experiments written (maintainer-local; never publish them): ${written.join(', ')}`,
   `  dataset ${dataset.datasetHash} (${dataset.extractor.version})${dataset.benchmark.dirty ? ' (benchmark tree dirty: not citable in a tuning manifest)' : ''}`,
-  `  ${result.configurations.length} configurations; ${result.configurations.filter(c => c.adrConformant).length} contract-conformant; tuned on ${result.rows.development} development rows, evaluated on ${result.rows.evaluation} regression rows; holdout read: none`,
+  `  ${result.configurations.length} configurations; ${result.configurations.filter(c => c.adrConformant).length} contract-conformant; tuned on ${result.rows.development} authored development rows, evaluated on ${result.rows.developmentEvaluation} held-out development + ${result.rows.regressionEvaluation} regression rows; holdout read: none`,
+  `  tuning coverage ${result.partition.coverage.length} families; each has reviewed positive and negative rows`,
   `  selection source ${selectionSourceHash}; scoring identity ${draft.scoring.identity}`,
-  `  generated share of tuning rows ${(100 * tuningShare).toFixed(1)}% (cap 50%): reviewed override applied; reweighted to the cap, the same configuration is ${reweighted?.sameConfiguration ? 'selected' : 'NOT selected'}`,
+  `  generated share of tuning rows ${(100 * tuningShare).toFixed(1)}% (cap 50%): no override`,
   `  tuning manifest draft: ${manifestProblems.length ? `${manifestProblems.length} problem(s), see the report` : 'passes every rule'}${product ? '' : ' (product binding pending)'}`,
 ].join('\n'));

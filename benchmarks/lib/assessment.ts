@@ -486,6 +486,9 @@ const controlRules = (category: string) => CONTROL_RULES[category] ?? (isBeta8(c
  * checked-in corpora); only `axis` may distinguish them.
  */
 const CONTROL_RULES: Record<string, ControlRule[]> = {
+  'shadow-scoring-authored': [
+    { test: always, tier: 'T3', reason: PLACEHOLDER, axis: 'reference', family: detectorFamily },
+  ],
   'detector-coverage': [
     // #45: missing-marker/-identifier/-segment/-separator/-keyword/-json-marker cover a
     // required same-line or in-value marker the family's shape depends on; short-* covers
@@ -613,6 +616,24 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
     return decide(positive ? 'must-redact' : 'must-not-flag', 'T0', `Not asserted: disputed property — ${disputed.property}. No provider-owned source decides it and the research pass recorded it as searched-and-not-found, so the benchmark stops asserting it (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md). Kept as history; the product's behaviour on this property is unmeasured for ${disputed.family}.`, disputed.family);
   }
   if (!f.expected.some(r => (r.role ?? 'secret') === 'secret')) return classifyControl(category, f);
+  if (category === 'shadow-scoring-authored') {
+    const family = targetFamily(f)!;
+    const contract = contracts[family ?? ''];
+    if (!contract) throw new Error(`Unknown authored calibration contract: ${f.id}`);
+    const values = f.expected.filter(r => (r.role ?? 'secret') === 'secret').map(r => bytesOf(f, r));
+    if (family === 'aws-access-key') {
+      return values.length === 2 && matches(family, values[0]) && /^[A-Za-z0-9/+]{40}$/.test(values[1])
+        ? decide('must-redact', contract.tier, 'Independently authored never-issued value satisfies the reviewed format contract; liveness is not claimed.', family)
+        : pending('Authored AWS calibration row does not carry a complete reviewed key pair.', family);
+    }
+    if (['bearer-token', 'connection-string', 'generic-token', 'jwt', 'otpauth-uri', 'private-key'].includes(family) || isContextGated(family))
+      return policy('Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.', family);
+    if (contract.tier === 'T0') return pending(contract.review!, family);
+    if (!values.every(value => matches(family, value))) return pending('Authored calibration value does not satisfy its family contract.', family);
+    if (family === 'shopify-token' && !/[a-zA-Z0-9-]+\.myshopify\.com/.test(f.content)) return pending('Authored Shopify row needs its shop domain.', family);
+    if (family === 'vault-token' && !/https:\/\/[a-zA-Z0-9-]+\.hashicorp\.cloud/.test(f.content)) return pending('Authored Vault row needs its endpoint.', family);
+    return decide('must-redact', contract.tier, 'Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.', family);
+  }
   if (category === 'common-formats') {
     const family = f.detectors?.[0];
     if (!contracts[family ?? '']) throw new Error(`Unknown format contract: ${f.id}`);

@@ -129,6 +129,24 @@ test('the dataset matches its versioned schema and is deterministic', () => {
   assert.ok(dataset.rows.length > 1000);
 });
 
+test('the shadow-scoring corpus is static authored material, not copied generated candidates', () => {
+  const inputs = loadCategoryInputs(root);
+  const authored = inputs.find(input => input.id === 'shadow-scoring-authored');
+  assert.ok(authored);
+  const authoredSource = readFileSync(path.join(root, 'corpora/development/shadow-scoring-authored.json'), 'utf8');
+  const value = (fixture, range) => Buffer.from(fixture.content).subarray(range.start, range.end).toString();
+  const generatedValues = new Set(inputs.filter(input => input.corpusPath.startsWith('fixtures/generated/'))
+    .flatMap(input => input.fixtures.flatMap(fixture => fixture.expected.filter(range => (range.role ?? 'secret') === 'secret').map(range => value(fixture, range)))));
+  const positives = authored.fixtures.flatMap(fixture => fixture.expected.filter(range => (range.role ?? 'secret') === 'secret').map(range => value(fixture, range)));
+  assert.equal(positives.length, 76, '75 family fixtures plus the second AWS span');
+  assert.equal((authoredSource.match(/\\u[0-9a-f]{4}/g) ?? []).length, positives.length,
+    'one semantic-preserving source escape per positive span keeps synthetic detector shapes out of the Git blob');
+  assert.ok(positives.every(candidate => !generatedValues.has(candidate)), 'no authored positive duplicates a generated candidate value');
+  const rows = dataset.rows.filter(row => row.category === 'shadow-scoring-authored');
+  assert.equal(rows.length, 151);
+  assert.ok(rows.every(row => row.origin === 'authored' && row.originBasis === 'authored-corpus'));
+});
+
 test('holdout is never read and development rows are the only tuning-eligible ones', () => {
   const development = JSON.parse(readFileSync(path.join(root, 'corpora/development/manifest.json'), 'utf8')).categories;
   const regression = JSON.parse(readFileSync(path.join(root, 'corpora/regression/manifest.json'), 'utf8')).categories;

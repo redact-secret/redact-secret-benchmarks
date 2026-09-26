@@ -7,7 +7,7 @@ import { accountGroups } from '../benchmarks/lib/accounting.ts';
 import { summarizeRun, selectionGroups } from '../benchmarks/lib/run-summary.ts';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));
-const categories = await read('benchmarks/categories.json');
+const categories = (await read('benchmarks/categories.json')).filter(category => !category.calibrationOnly);
 const registry = await read('benchmarks/detectors.json');
 const assignments = await read('benchmarks/fixture-detectors.json');
 const corpora = Object.fromEntries(await Promise.all(categories.map(async c => [c.id, await read(c.corpus)])));

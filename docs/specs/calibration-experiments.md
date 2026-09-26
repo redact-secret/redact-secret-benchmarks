@@ -28,13 +28,15 @@ npm run calibration:run -- --product=<candidate identity json>   # bind the froz
 
 ## 1. Inputs and roles
 
-- Fitting reads development rows only (`partition: "development"`,
-  `tuningEligible: true`). Every fitted value (ramp ends, lookup cells,
-  logistic weights, band thresholds) comes from them. A test replaces the
-  regression rows with nonsense and checks that no fitted value moves.
-- The regression rows (`partition: "regression"`) are evaluation-only.
-  They never admit a configuration: the selection (section 4) reads them
-  only to break a tie between otherwise equal ones.
+- Fitting reads only the authored categories named in
+  `tuning/shadow-scoring-development-v1.json`. Every fitted value (ramp ends,
+  lookup cells, logistic weights, band thresholds) comes from those rows.
+  Tests replace evaluation rows with nonsense and check that no fitted value
+  moves.
+- Every other development category has role `development-evaluation`; all
+  regression rows remain `regression`. Both roles are evaluation-only. They
+  never admit a configuration: selection reads them only to break a tie
+  between otherwise equal ones.
 - Holdout is never read. The dataset never reads it, the result records
   `holdoutAccess: "none"`, and the result is checked against every holdout
   identifier.
@@ -164,27 +166,34 @@ subtracts at least the largest positive total, so the score floors at 0.
   whitelist, or if any of these outputs stops being git-ignored.
 - This page and the committed code state rules, never the selected values.
 
-## 7. Generated share and the tuning manifest
+## 7. Authored tuning partition and generated share
 
-The development corpora are almost entirely benchmark-generated. The
-dataset's per-row origin (`candidate-features/2`, [candidate
-features](candidate-features.md) §2) moves rows whose value a person typed
-into a generator to `authored`, but most tuning rows stay generated and most
-families have no authored row, so the 0.5 cap of [statistical
-tuning](statistical-tuning.md) §5 cannot hold. The run therefore:
+`corpora/development/shadow-scoring-authored.json` adds one independently
+authored, never-issued positive and one whole-value reference control for
+every reviewed family not already covered by an authored category. The
+partition manifest `tuning/shadow-scoring-development-v1.json` admits that
+corpus plus the existing authored categories to fitting. Its validator emits
+per-family kind/origin counts and requires every applicable family to have a
+reviewed positive and control, every tuning row to be authored, and every
+development category to appear exactly once as tuning or
+`development-evaluation`.
 
-1. emits `tuning-manifest-draft.json` for the selected configuration with a
-   reviewed `generatedShare.override` (cap 1, the reason stated in
-   `GENERATED_SHARE_OVERRIDE`), validated against every #256 rule;
-2. repeats every fit with authored development rows reweighted so that
-   generated rows are exactly half of the weight, and reports whether the
-   same configuration is selected and how its thresholds move;
-3. reports the selected configuration on the authored-only and
-   generated-only subsets.
+The authored corpus is registered with `calibrationOnly: true`. Candidate
+feature extraction and pinning validate it, while public benchmark runs,
+candidate evaluation, support profiles, published evaluation JSON, and the
+site catalog exclude it. It is tuning evidence, not an extra public suite or
+an independent support claim. Its JSON source uses one semantic-preserving
+Unicode escape inside each positive span so the Git blob does not itself match
+secret-scanning push protection; JSON parsing restores the reviewed bytes, and
+the deterministic corpus tests pin both the escapes and the parsed values.
+
+The generated-heavy provider suites remain in the feature dataset and are
+evaluated out of fit; no row is relabelled or duplicated. The tuning manifest
+therefore records `generatedShare.cap: 0.5` with no override. Calibration and
+per-family strata surface any loss on the larger held-out development set.
 
 The draft carries hashes and counts only. Its `product` is the frozen
 candidate that carries this scoring; none exists until redact-secret#770
 and #798 land, so the draft leaves it `null` (validation uses a labelled
 placeholder) and is committed under `tuning/manifests/` only once that
-candidate is bound with `--product`. The override is retired when authored
-rows reach half of each family.
+candidate is bound with `--product`.

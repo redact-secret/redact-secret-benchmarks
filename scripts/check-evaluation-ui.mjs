@@ -83,6 +83,7 @@ try {
   await page.locator('.fig .v a').first().click();
   assert.match(page.url(), /#rows$/, 'a figure leads to the rows behind it');
   const reportLeaves = page.locator('[data-report-leaf]');
+  await reportLeaves.first().waitFor({ state: 'attached', timeout: 30000 });
   const leafCount = await reportLeaves.count();
   const leafSlugs = await reportLeaves.evaluateAll(rows => rows.map(row => row.dataset.slug));
   assert.equal(new Set(leafSlugs).size, leafCount, 'every report fixture has exactly one display bucket');
@@ -207,7 +208,8 @@ try {
 
   // 6. Empty states: what is missing, the next command, no apology.
   page = await open({ viewport: { width: 360, height: 740 } });
-  const results = async handler => { await page.unroute('**/results/*.json').catch(() => {}); await page.route('**/results/*.json', handler); await page.goto(origin + '/report'); await ready(page); return (await page.locator('#main').innerText()).replace(/\s+/g, ' '); };
+  let resultCase = 0;
+  const results = async handler => { await page.unroute('**/results/*.json').catch(() => {}); await page.route('**/results/*.json', handler); await page.goto(`${origin}/report?qa=${++resultCase}`, { waitUntil: 'networkidle' }); await ready(page); return (await page.locator('#main').innerText()).replace(/\s+/g, ' '); };
   let text = await results(r => r.fulfill({ status: 404, body: '' }));
   assert.ok(text.includes('No benchmark results for this checkout') && text.includes('npm run bench'), text);
   await page.screenshot({ path: `${output}/empty-no-results-360.png`, fullPage: true });

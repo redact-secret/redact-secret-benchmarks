@@ -164,3 +164,16 @@ node --import tsx scripts/freeze-adversarial-first-run.mjs --pack=<id>   # a pac
 npm run adversarial:check
 node --import tsx --test tests/adversarial-first-run.test.mjs
 ```
+
+## Later adjudication (2026-09-26)
+
+Added after the run; nothing above is rewritten. The counts in this report
+are misses of the submitted ranges. [#322](https://github.com/redact-secret/redact-secret-benchmarks/issues/322)
+adjudicated three of the 21 misses as outside the product's raw-input
+contract: `rfc7519-jwt-display-breaks` and `rfc7515-jwk-k-display-break` are
+RFC figures with display-only line breaks, and
+`composed-percent-encoded-url-in-json` has no `access_token` parameter under
+standard URL parsing (a decode-before-parse consumer is a separate scenario,
+#325). They are recorded as historical submitted-range misses, not confirmed
+product false negatives. See the pack's `adjudication.json` and the
+`product-822` record.

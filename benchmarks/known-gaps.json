@@ -5181,7 +5181,7 @@
     },
     {
       "id": "product-822",
-      "title": "Policy: credentials visible only after undoing a presentation transform (RFC display line breaks, percent-encoded query in JSON)",
+      "title": "Policy: submitted-range misses outside the raw-input contract (RFC display-wrapped JWT and JWK figures; a percent-encoded URL with no access_token parameter under standard parsing)",
       "url": "https://github.com/redact-secret/redact-secret/issues/822",
       "number": 822,
       "fixtures": [
@@ -5225,9 +5225,16 @@
         }
       },
       "disposition": {
-        "reason": "Maintainer decision (keep current policy): detectors never span a line terminator, an engine invariant that keeps whole-input and incremental scans in agreement; the RFC 7519/7515 figures break their values for display only, so the single-range expectation across those breaks is too strict. The percent-encoded query inside JSON is a real but out-of-contract false negative: the engine does not decode transport encodings before detection. Revisit only with a decoding or line-join decision record.",
+        "reason": "Maintainer decision (redact-secret#822, adjudicated per fixture in #322): no beta.9 line joining or percent decoding. The three first-run misses are historical misses of the submitted ranges, not confirmed product false negatives under the raw-input contract. rfc7519-jwt-display-breaks and rfc7515-jwk-k-display-break are presentation-only examples: RFC 7519 section 3.1 and RFC 7515 appendix A.1.1 insert those line breaks for display only, so the bytes are not a compact JWT and not valid JSON, and the jwt and same-line JWK grammars do not join display-wrapped lines. This is detector-specific: the PEM private-key detector spans lines by design. composed-percent-encoded-url-in-json is a downstream-normalization scenario: its = and & are percent-encoded, and the WHATWG urlencoded parser splits on literal delimiters before decoding, so the URL has no access_token parameter (its one parameter is named access_token=<token>&p=q, with an empty value). Only an application that decodes the whole URL before parsing produces that parameter; that transform needs its own scenario and does not make the bytes safe for every consumer. The pack's expectations and first run are unchanged; the per-fixture adjudication is adversarial/packs/beta9-external-inputs/adjudication.json, which also keeps the superseded wording.",
         "evidence": [
-          "https://github.com/redact-secret/redact-secret/issues/822#issuecomment-5840078456"
+          "https://github.com/redact-secret/redact-secret/issues/822#issuecomment-5840078456",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/322",
+          "https://www.rfc-editor.org/rfc/rfc7519#section-3.1",
+          "https://www.rfc-editor.org/rfc/rfc7515#appendix-A.1.1",
+          "https://url.spec.whatwg.org/#concept-urlencoded-parser",
+          "https://github.com/redact-secret/redact-secret/blob/0af4cb83b571baa86d27a678a351ece2ebc1f3cb/crates/secret-scan-core/src/detectors/jwt.rs#L60-L90",
+          "https://github.com/redact-secret/redact-secret/blob/0af4cb83b571baa86d27a678a351ece2ebc1f3cb/crates/secret-scan-core/src/detectors/private_key.rs",
+          "https://github.com/redact-secret/redact-secret/blob/0af4cb83b571baa86d27a678a351ece2ebc1f3cb/docs/specs/contextual-detection.md#L43"
         ]
       },
       "evidence": [

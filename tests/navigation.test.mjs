@@ -32,7 +32,9 @@ test('the redesign route table resolves, with or without a trailing slash', () =
   assert.equal(resolve('/support').kind, 'support');
   assert.equal(resolve('/performance').kind, 'performance');
   assert.equal(resolve('/performance/').kind, 'performance');
-  assert.deepEqual(resolve('/coverage/github-token'), { kind: 'coverage', id: 'github-token', view: '', to: '' });
+  assert.deepEqual(resolve('/coverage/github-token'), { kind: 'redirect', id: '', view: '', to: '/coverage/detectors/github-token' });
+  assert.deepEqual(resolve('/coverage/detectors/github-token/'), { kind: 'coverage-detector', id: 'github-token', view: '', to: '' });
+  assert.deepEqual(resolve('/coverage/github:classic-personal-access-token'), { kind: 'coverage-family', id: 'github:classic-personal-access-token', view: '', to: '' });
   assert.deepEqual(resolve('/suites/accuracy'), { kind: 'suite', id: 'accuracy', view: '', to: '' });
   assert.deepEqual(resolve('/workbench'), { kind: 'workbench', id: '', view: 'overview', to: '' });
   assert.deepEqual(resolve('/workbench/review/lexical-invalid-alphabet'), { kind: 'workbench', id: 'lexical-invalid-alphabet', view: 'review', to: '' });
@@ -47,9 +49,9 @@ test('no bookmark breaks: every pre-redesign path redirects to a page that resol
     '/': '/report', '/benchmark': '/report', '/benchmark/': '/report', '/coverage-gaps': '/coverage', '/methodology': '/how-to-read',
     '/pending': '/workbench/review/t0-fixtures', '/pending/': '/workbench/review/t0-fixtures',
     '/evaluation': '/workbench', '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation',
-    '/evaluation/detector/github-token': '/coverage/github-token',
+    '/evaluation/detector/github-token': '/coverage/detectors/github-token',
     ...Object.fromEntries(['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => [`/evaluation/method/${m}`, `/workbench/method/${m}`])),
-    ...Object.fromEntries(registry.detectors.map(d => [`/benchmark/${d.id}`, `/coverage/${d.id}`])),
+    ...Object.fromEntries(registry.detectors.map(d => [`/benchmark/${d.id}`, `/coverage/detectors/${d.id}`])),
     ...Object.fromEntries(categories.map(c => [`/benchmark/${c.id}`, `/suites/${c.id}`])),
   };
   assert.ok(Object.keys(legacy).length > 60);
@@ -63,7 +65,7 @@ test('the public-only allowlist drops Workbench and nothing else', () => {
   const open = path => parseRoute(path, { suites, publicOnly: true }).kind;
   for (const path of ['/workbench', '/workbench/changes', '/workbench/method/twin', '/evaluation', '/pending']) assert.equal(open(path), 'missing', path);
   assert.equal(open('/report'), 'report');
-  assert.equal(open('/coverage/github-token'), 'coverage');
+  assert.equal(open('/coverage/detectors/github-token'), 'coverage-detector');
   assert.equal(open('/benchmark/accuracy'), 'redirect');
   assert.equal(open('/how-to-read'), 'how-to-read');
 });

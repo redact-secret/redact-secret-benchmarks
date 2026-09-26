@@ -4,7 +4,8 @@ import { mountShell, renderPage, setBuildLine, type NavItem, type SearchTarget }
 import { siteEnvOf, commitOf, envBanner, buildLine, type Provenance } from './provenance';
 import { summaryProblem, PRODUCT, type BenchData, type RunSummary } from './pages/data';
 import { reportPage, levelOf } from './pages/report';
-import { coveragePage, coverageViewOf, detectorPage, bindInventory } from './pages/coverage';
+import { coveragePage, coverageViewOf, detectorPage, familyPage, bindInventory } from './pages/coverage';
+import { supportMatrixProblem } from './support-model';
 import { suitePage } from './pages/suite';
 import { fixturePage } from './pages/fixture';
 import { howToRead } from './pages/how-to-read';
@@ -31,7 +32,7 @@ const openKeys = new Set<string>();
 
 /** One search for what the sidebar's per-detector links used to do: detectors, suites and fixture slugs. */
 const targets = (): SearchTarget[] => [
-  ...registry.detectors.map(d => ({ href: `/coverage/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
+  ...registry.detectors.map(d => ({ href: `/coverage/detectors/${d.id}`, label: d.title, hint: `detector · ${fixtures.filter(f => f.detectors.includes(d.id)).length} fixtures` })),
   ...categories.map(c => ({ href: `/suites/${c.id}`, label: c.title, hint: 'case suite' })),
   ...fixtures.map(f => ({ href: `/fixture/${f.slug}`, label: f.slug, hint: 'fixture' })),
 ];
@@ -119,7 +120,7 @@ async function renderWorkbench(current: ReturnType<typeof route>, token: number,
 /** The support matrix is a generated artifact like the evaluation report: read, re-validated, then rendered. No status is held in the app. */
 async function renderSupport(token: number, path: string, force: boolean) {
   if (force) renderPage('<p role="status" class="small">Loading support matrix…</p>', 'Support');
-  const [{ supportPage, supportFilterOf }, { supportMatrixProblem }] = await Promise.all([import('./pages/support'), import('./support-model')]);
+  const { supportPage, supportFilterOf } = await import('./pages/support');
   const body = await text('/results/support-matrix-v1.json');
   if (token !== request || path !== location.pathname) return;
   const payload = JSON.stringify([path, location.search, body]);
@@ -142,17 +143,22 @@ async function refresh(force = false): Promise<void> {
   if (current.kind === 'support') return renderSupport(token, path, force);
 
   const fixture = current.kind === 'fixture' ? fixtures.find(f => f.slug === current.id) : undefined;
-  const label = current.kind === 'report' ? 'Report' : current.kind === 'coverage' ? (registry.detectors.find(d => d.id === current.id)?.title ?? 'Coverage') : current.kind === 'suite' ? (categories.find(c => c.id === current.id)?.title ?? 'Suite') : (fixture?.id ?? 'Fixture');
+  const label = current.kind === 'report' ? 'Report' : current.kind === 'coverage' || current.kind === 'coverage-family' || current.kind === 'coverage-detector' ? 'Coverage' : current.kind === 'suite' ? (categories.find(c => c.id === current.id)?.title ?? 'Suite') : (fixture?.id ?? 'Fixture');
   if (force) renderPage('<p role="status" class="small">Loading benchmark results…</p>', label);
   try {
-    const data = await loadBench();
+    const needsMatrix = current.kind === 'coverage' || current.kind === 'coverage-family';
+    const [data, matrixText] = await Promise.all([loadBench(), needsMatrix ? text('/results/support-matrix-v1.json') : Promise.resolve('')]);
     if (token !== request || path !== location.pathname) return;
-    const payload = JSON.stringify([path, location.search, data.signature]);
+    const payload = JSON.stringify([path, location.search, data.signature, matrixText]);
     if (!force && payload === lastPayload) return;
     lastPayload = payload;
+    let matrix: SupportMatrixFile | null = null, matrixProblem: string | null = needsMatrix ? 'No support matrix published' : null;
+    if (matrixText) { try { const parsed = JSON.parse(matrixText); matrixProblem = supportMatrixProblem(parsed); if (!matrixProblem) matrix = parsed; } catch { matrixProblem = 'Support matrix is unreadable'; } }
     let body: string;
     if (current.kind === 'report') body = reportPage(data, levelOf(location.search), fixtures);
-    else if (current.kind === 'coverage') body = current.id ? detectorPage(data, fixtures, current.id) : coveragePage(fixtures, coverageViewOf(location.search), data);
+    else if (current.kind === 'coverage') body = coveragePage(fixtures, coverageViewOf(location.search), data, matrix, matrixProblem, location.search);
+    else if (current.kind === 'coverage-family') body = familyPage(data, fixtures, current.id, matrix, matrixProblem);
+    else if (current.kind === 'coverage-detector') body = detectorPage(data, fixtures, current.id);
     else if (current.kind === 'suite') body = suitePage(data, fixtures, current.id);
     else if (fixture) { const loaded = data.loaded.find(l => l.category.id === fixture.category); body = fixturePage(fixture, loaded?.report, loaded?.problem); }
     else body = `<div class="page-head"><div><h1>No such fixture</h1></div></div>${actionEmptyState({ title: 'No fixture has this slug', body: 'A slug is <code>suite--fixture-id</code>. Search for it, or <a href="/coverage">open the coverage list</a>.' })}`;

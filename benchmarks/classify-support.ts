@@ -20,6 +20,7 @@ import { classifyFamilySupport, statusCriteria, type SupportStatus } from './sup
 import { familiesForDetector } from './support/taxonomy.ts';
 import { familyEvidence } from './support/evidence.ts';
 import { fixtureProfileReport, fixtureProfiles } from './support/profiles.ts';
+import fixtureIndex from './fixture-index.json';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const CANDIDATE_KEYS = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit'] as const;
@@ -141,6 +142,7 @@ async function main() {
     const output = {
       schemaVersion: 1, generatedAt: new Date().toISOString(), runId: report.runId,
       revision, dirty, criteriaSchemaVersion: statusCriteria.schemaVersion, fixtureProfilesVersion: fixtureProfiles.profilesVersion,
+      fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
       // Null except on a candidate run: default behaviour (and its output shape
       // for every other field) is unchanged from before candidate support existed.
       product,

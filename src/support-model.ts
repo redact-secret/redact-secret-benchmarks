@@ -4,6 +4,7 @@ import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import type { SupportMatrixEntry } from '../benchmarks/support/matrix.ts';
 import { statusCriteria, type SupportStatus } from '../benchmarks/support/status.ts';
 import { fixtureProfiles } from '../benchmarks/support/profiles.ts';
+import fixtureIndex from '../benchmarks/fixture-index.json';
 
 /** An empirical entry's basis must be one its recorded evidence can carry, never an asserted label. */
 function empiricalBasisHolds(entry: SupportMatrixEntry): boolean {
@@ -29,6 +30,8 @@ export interface SupportMatrixFile {
   taxonomySchemaVersion: 1;
   sourceReport: {
     schemaVersion: 1; generatedAt: string; runId: string; revision: string; dirty: boolean | null; criteriaSchemaVersion: 1;
+    fixtureIndex: { schemaVersion: 1; algorithm: 'sha256'; digest: string; fixtureCount: number };
+    taxonomyDigest: string;
     /** The redact-secret candidate build measured; absent means the published package. */
     product?: { sourceCommit: string; packageName: string; declaredVersion: string; artifacts: { role: string; sha256: string }[] };
     /** Published mode: the released package the run loaded (absent in matrices generated before #213). */
@@ -76,6 +79,8 @@ export function supportMatrixProblem(value: unknown): string | null {
         (observation.source === 'snapshot') !== Boolean(observation.snapshotDigest && observation.inputDigest))
         return 'Support matrix carries invalid scanner observation provenance';
     }
+    if (matrix.sourceReport.fixtureIndex.digest !== fixtureIndex.identity.digest || matrix.sourceReport.fixtureIndex.fixtureCount !== fixtureIndex.identity.fixtureCount) return 'Support matrix was generated from a different fixture semantic index';
+    if (matrix.sourceReport.taxonomyDigest !== fixtureIndex.sources.taxonomy.digest) return 'Support matrix was generated from a different taxonomy identity';
     if (matrix.familyCount !== matrix.families.length) return 'Support matrix family count does not match its families';
     if (new Set(matrix.families.map(f => f.family)).size !== matrix.families.length) return 'Support matrix repeats a family';
     const counted = countStatuses(matrix.families);
@@ -95,6 +100,7 @@ export function supportMatrixProblem(value: unknown): string | null {
       // Every status but `stable` owes the reader a reason; `buildSupportMatrix`
       // enforces it upstream, and a published file is checked again here.
       if (entry.status !== 'stable' && !entry.reason) return `Support matrix entry ${entry.family} carries ${entry.status} with no reason`;
+      if (entry.detectors.length && !entry.profileCoverage) return `Support matrix entry ${entry.family} has a detector but no fixture profile coverage`;
       if (entry.profileCoverage && entry.profileCoverage.profilesVersion !== fixtureProfiles.profilesVersion) return `Support matrix entry ${entry.family} was measured under different fixture profiles`;
       if (!entry.detectors.length && (entry.evidenceTier || entry.evidenceBasis !== 'none' || entry.qualificationProfile || entry.twinCoverage || entry.unresolvedCriticalItems || entry.empiricalEvidence || entry.fixtureProfile || entry.profileCoverage)) return `Support matrix entry ${entry.family} has no detector but carries evidence`;
       if (entry.detectors.length && !entry.evidenceTier) return `Support matrix entry ${entry.family} has a detector but no format evidence tier`;

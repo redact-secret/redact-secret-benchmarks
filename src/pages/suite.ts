@@ -39,7 +39,7 @@ export function suitePage(data: BenchData, fixtures: Fixture[], id: string): str
       const title = registry.detectors.find(d => d.id === family)?.title ?? family;
       const kinds = [...byFamily.get(family)!.entries()].sort(([a], [b]) => a.localeCompare(b));
       const total = kinds.reduce((sum, [, count]) => sum + count, 0);
-      return `<tr><td><a href="/coverage/${e(family)}">${e(title)}</a></td><td class="num">${total}</td><td>${kinds.map(([kind, count]) => `<code>${e(kind)}</code> × ${count}`).join(' · ')}</td></tr>`;
+      return `<tr><td><a href="/coverage/detectors/${e(family)}">${e(title)}</a></td><td class="num">${total}</td><td>${kinds.map(([kind, count]) => `<code>${e(kind)}</code> × ${count}`).join(' · ')}</td></tr>`;
     }).join('')}</tbody></table></div></section>`;
   })() : '';
   return head + (stale ? actionEmptyState({ title: 'This suite is from an older run', body: `Its run id differs from the current run, so it is left out of every cross-suite total. The numbers below are this suite's own.`, command: `npm run bench -- --category=${id}` }) : '') + table + axis + rowsTable({ fixtures: selected, reports: [report] }) + provenance;

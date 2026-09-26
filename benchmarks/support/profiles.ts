@@ -175,14 +175,26 @@ export interface FixtureProfileReport {
   /** Profiles whose cells are all met; not a qualification, which also needs the tier and the gates. */
   cellsMet: ProfileId[];
   cells: FixtureCells;
+  /** Every floor for the target profile, published so readers never reconstruct criteria in the browser. */
+  requiredCells: Partial<Record<CellId, number>>;
+  /** Required axis dimensions for which this family has no tested axis id at all. */
+  requiredButEmptyAxisIds: ('positiveContextAxes' | 'controlAxes' | 'confusionAxes')[];
   debt: CellDebt[];
 }
 
 export function fixtureProfileReport(claim: ProfileClaim, cells: FixtureCells, profiles: FixtureProfiles = fixtureProfiles): FixtureProfileReport {
   const target = targetProfile(claim);
+  const requiredCells = { ...profiles.profiles[target].cells };
+  const axisIds = {
+    positiveContextAxes: cells.positiveContextAxisIds,
+    controlAxes: cells.controlAxisIds,
+    confusionAxes: cells.confusionAxisIds,
+  } as const;
   return {
     profilesVersion: profiles.profilesVersion, claimed: claim.profile, explicit: claim.explicit, target,
     cellsMet: (Object.keys(profiles.profiles) as ProfileId[]).filter(id => assessProfile(cells, id, profiles).cellsMet),
-    cells, debt: assessProfile(cells, target, profiles).debt,
+    cells, requiredCells,
+    requiredButEmptyAxisIds: (Object.keys(axisIds) as (keyof typeof axisIds)[]).filter(id => requiredCells[id] !== undefined && axisIds[id].length === 0),
+    debt: assessProfile(cells, target, profiles).debt,
   };
 }

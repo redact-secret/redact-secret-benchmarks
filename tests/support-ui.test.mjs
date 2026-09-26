@@ -6,10 +6,16 @@ import { checkSupportUi } from '../scripts/check-support-ui.mjs';
 import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import { statusCriteria } from '../benchmarks/support/status.ts';
 import { parseRoute, isAppPath } from '../src/model.mjs';
+import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
 
 const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ');
 const detected = taxonomy.families.filter(f => f.detectors.length);
 const undetected = taxonomy.families.filter(f => !f.detectors.length);
+const profileCoverage = {
+  profilesVersion: 1, claimed: 'stable-documented', explicit: false, target: 'stable-documented', cellsMet: ['arrival-provisional', 'stable-documented'],
+  cells: { totalFixtures: 24, positiveCases: 6, benignControls: 8, twinPairs: 5, positiveContextAxes: 4, controlAxes: 4, confusionAxes: 4, positiveContextAxisIds: ['env'], controlAxisIds: ['ordinary-prose'], confusionAxisIds: ['near-miss'] },
+  requiredCells: { totalFixtures: 24, positiveCases: 6, benignControls: 8, twinPairs: 5, positiveContextAxes: 4, controlAxes: 4 }, requiredButEmptyAxisIds: [], debt: [],
+};
 
 /** A published matrix shaped exactly like `generate-support-matrix.ts` writes one, with statuses the caller chooses. */
 function matrixOf(statusFor) {
@@ -27,6 +33,7 @@ function matrixOf(statusFor) {
       unresolvedCriticalItems: hasDetector ? { metamorphic: 0, mutation: 2, differential: 0 } : null,
       empiricalEvidence: hasDetector ? { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 0, corroborationOwners: 0, corroborationClasses: [], contradictions: 0, boundedContradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true } : null,
       fixtureProfile: hasDetector ? { positiveCases: 6, positiveAxes: 4, benignCases: 8, controlAxes: 4, twinPairs: 5, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 4 } : null,
+      profileCoverage: hasDetector ? structuredClone(profileCoverage) : null,
       detectors: hasDetector ? [family.detectors[0]] : [],
       reason: status === 'stable' ? null : `${status} because the evidence says so`,
     };
@@ -36,13 +43,14 @@ function matrixOf(statusFor) {
   return {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
     sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T09:00:00.000Z', runId: 'abcdef1234', revision: 'f'.repeat(40), dirty: false, criteriaSchemaVersion: 1,
+      fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
       scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T09:00:00.000Z', sourceRunId: 'abcdef1234' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };
 }
 /** The default view: detector-bearing families provisional, detectorless families unsupported. */
 const mixed = () => matrixOf(family => (family.detectors.length ? 'provisional' : 'unsupported'));
-const rowsOf = html => [...html.matchAll(/<tr data-support-status="([^"]*)" data-family="([^"]*)"/g)].map(m => ({ status: m[1], family: m[2] }));
+const rowsOf = html => [...html.matchAll(/<article data-support-status="([^"]*)" data-family="([^"]*)"/g)].map(m => ({ status: m[1], family: m[2] }));
 
 test('the CI gate that keeps the page\'s statuses the matrix\'s vocabulary passes on this tree', async () => {
   assert.deepEqual(await checkSupportUi(), []);
@@ -61,7 +69,8 @@ test('no status is authored in the UI: the page renders what the matrix says, an
   const afterRow = rowsOf(supportPage(after, null)).find(row => row.family === subject.id);
   assert.deepEqual(afterRow, { status: 'stable', family: subject.id });
   const html = supportPage(after, null);
-  assert.ok(text(html).includes(`${subject.name} ${subject.id} Stable`), 'the family reads Stable on the page');
+  assert.ok(text(html).includes(subject.name) && text(html).includes(subject.id) && html.includes(`data-family="${subject.id}"`), 'the family remains present');
+  assert.ok(html.match(new RegExp(`data-family="${subject.id}"[\\s\\S]*?data-status="pass">Stable`)), 'the family reads Stable on the page');
   assert.equal(rowsOf(html).filter(row => row.status === 'stable').length, after.distribution.stable);
 });
 
@@ -86,7 +95,7 @@ test('unsupported families are listed with their reason, never dropped', () => {
   assert.equal(rows.filter(r => r.status === 'unsupported').length, undetected.length);
   const family = undetected[0], entry = matrix.families.find(f => f.family === family.id);
   const plain = text(html);
-  assert.ok(plain.includes(`${family.name} ${family.id} Unsupported`), 'the unsupported family is visible');
+  assert.ok(plain.includes(family.name) && plain.includes(family.id) && html.includes(`data-family="${family.id}"`), 'the unsupported family is visible');
   assert.ok(plain.includes(entry.reason), 'with the reason recorded in the matrix');
   assert.ok(plain.includes('No detector is registered for this family'), 'and says why there is no evidence to open');
 
@@ -102,12 +111,21 @@ test('the evidence behind a status stays inspectable: tier, provider source and 
   const html = supportPage(matrix, null), plain = text(html);
   const entry = matrix.families.find(f => f.family === family.id);
   assert.ok(html.includes(`<details data-key="support:${family.id}">`), 'each family opens its own evidence');
-  assert.ok(html.includes(`href="/coverage/${entry.detectors[0]}"`), 'the deciding detector links to its coverage page');
+  assert.ok(html.includes(`href="/coverage/detectors/${entry.detectors[0]}"`), 'the deciding detector links to its coverage page');
   assert.ok(plain.includes('T1 · Provider-documented'), 'the tier is named, not just coded');
   assert.ok(html.includes(`href="${entry.providerSource.url}"`) && plain.includes(`observed ${entry.providerSource.observedAt}`), 'the provider source is reachable');
   assert.ok(plain.includes('3 pairs · 1 failure'), 'twin coverage is shown with its failures');
   assert.ok(plain.includes('metamorphic 0 · mutation 2 · differential 0'), 'unresolved critical items are shown');
   assert.ok(plain.includes(entry.reason), 'and the reason the status was decided');
+});
+
+test('Support removes the duplicate profile-debt table only after linking every family to Coverage', () => {
+  const matrix = mixed(), html = supportPage(matrix, null), plain = text(html);
+  assert.doesNotMatch(plain, /Fixture profile coverage debt/);
+  assert.doesNotMatch(html, /id="fixture-profiles"/);
+  assert.match(plain, /Meeting fixture-profile cells is not equivalent to passing Stable qualification/);
+  for (const entry of matrix.families) assert.ok(html.includes(`href="/coverage/${entry.family}"`), entry.family);
+  assert.match(plain, /Classification evidence and reasons/);
 });
 
 test('empirical stable is labeled explicitly, retains T2, and is counted separately', () => {
@@ -183,6 +201,12 @@ test('a malformed, miscounted or stale matrix is refused before it can be render
   const renamed = mixed();
   renamed.families = renamed.families.map((f, i) => (i === 0 ? { ...f, familyName: 'Renamed in the UI' } : f));
   invalid(renamed);
+  const wrongIndex = mixed();
+  wrongIndex.sourceReport.fixtureIndex = { ...wrongIndex.sourceReport.fixtureIndex, digest: '0'.repeat(64) };
+  assert.match(supportMatrixProblem(wrongIndex), /different fixture semantic index/);
+  const wrongTaxonomy = mixed();
+  wrongTaxonomy.sourceReport.taxonomyDigest = '0'.repeat(64);
+  assert.match(supportMatrixProblem(wrongTaxonomy), /different taxonomy identity/);
   assert.equal(supportMatrixProblem(mixed()), null);
 });
 

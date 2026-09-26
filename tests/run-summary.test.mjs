@@ -51,6 +51,7 @@ test('a thin group publishes its reason instead of a rate, and the summary refus
   assert.ok(thin.length, 'the corpus has detector groups below the floor or with too much pending');
   assert.ok(thin.some(({ g }) => g.spans < accounting.minDenominator));
   assert.throws(() => summarizeRun([reports[0], { ...reports[1], runId: 'other' }], assignments), /never mixes run ids/);
+  assert.throws(() => summarizeRun([reports[0], { ...reports[1], domain: 'pii', evaluationProfile: 'measurement-v4', domainAccountingVersion: 'pii-v1' }], assignments), /Unsupported credential accounting identity|Cross-domain/);
   assert.throws(() => summarizeRun([], assignments), /at least one/);
   const none = selectionGroups(allRows('exact'), new Set(), accounting);
   assert.deepEqual(none, {});

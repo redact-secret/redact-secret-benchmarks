@@ -9,13 +9,14 @@ import { hash as compatibilityHash } from '../benchmarks/engine/model.ts';
 import { hash } from '../benchmarks/evaluation/substrate/hash.ts';
 import { evaluationInputs as collectEvaluationInputs } from '../benchmarks/evaluation/substrate/case-lifecycle.ts';
 import { projectKnownResults } from '../benchmarks/evaluation/substrate/public-projection.ts';
+import { executeRuntime } from '../benchmarks/evaluation/substrate/runtime.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const substrate = path.join(root, 'benchmarks/evaluation/substrate');
 
 test('the internal substrate has no domain branches or dependencies on semantic layers', async () => {
   const files = (await readdir(substrate)).filter(file => file.endsWith('.ts')).sort();
-  assert.deepEqual(files, ['case-lifecycle.ts', 'hash.ts', 'provenance.ts', 'public-projection.ts', 'registry.ts', 'review-state.ts', 'runtime.ts', 'variant-lifecycle.ts']);
+  assert.deepEqual(files, ['case-lifecycle.ts', 'hash.ts', 'orchestration.ts', 'provenance.ts', 'public-projection.ts', 'registry.ts', 'result-assembly.ts', 'review-state.ts', 'runtime.ts', 'variant-lifecycle.ts']);
   for (const file of files) {
     const source = await readFile(path.join(substrate, file), 'utf8');
     assert.doesNotMatch(source, /\b(?:credential|pii)\b/i, file);
@@ -46,4 +47,15 @@ test('case lifecycle and public projection are deterministic and fail closed', (
   assert.throws(() => projectKnownResults({
     sources: cases, results: [{ id: 'missing' }], accepts: () => true, project: source => source.id, refusal: 'refused',
   }), /refused/);
+});
+
+test('runtime replay equality includes every normalized domain field', async () => {
+  let replay = 0;
+  const result = await executeRuntime({
+    inputs: [{ id: 'one', path: 'one.txt', content: 'x' }], runId: 'run', replays: 2,
+    scanners: [{ id: 'scanner', mode: 'test', version: async () => '1', scan: async () => [{ path: 'one.txt', start: 0, end: 1, action: replay++ ? 'mask' : 'redact' }] }],
+    identity: hash, normalizeFinding: finding => finding, validateFindings: () => {},
+  });
+  assert.equal(result.observations[0].status, 'unstable');
+  assert.deepEqual(result.observations[0].replays.divergentPaths, ['one.txt']);
 });

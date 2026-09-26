@@ -20,9 +20,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
-import { createMethods } from '../benchmarks/methods/index.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
+import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
 import { runEvaluation } from '../benchmarks/engine/runner.ts';
 import { evaluationInputs } from '../benchmarks/engine/execution.ts';
 import { inputIdentity, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity,
@@ -35,8 +33,8 @@ export async function checkReviewQueueCoverage() {
   const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));
   const ledger = JSON.parse(await readFile(path.join(root, 'benchmarks/review-ledger.json'), 'utf8'));
   const scanners = available.filter(s => Object.hasOwn(suite.scanners, s.id));
-  const operators = createOperators(), methods = createMethods();
-  const cases = (await loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
+  const operators = credentialDomain.createOperators(), methods = credentialDomain.createMethods();
+  const cases = (await credentialDomain.loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
   const fixtures = evaluationInputs(cases, methods, operators).fixtures;
   const input = inputIdentity({ surface: 'evaluation/suite-development', suite: observationSuiteIdentity(suite),
     corpus: cases.map(c => ({ id: c.id, sourceHash: c.provenance.sourceHash, seed: c.provenance.seed })), fixtures,
@@ -44,7 +42,8 @@ export async function checkReviewQueueCoverage() {
   const peers = scanners.filter(s => s.id !== 'redact-secret');
   const reusedObservations = await Promise.all(peers.map(async peer => snapshotObservation(await readSnapshot(
     snapshotPath(root, 'evaluation/suite-development', peer.id), { input, peer: await repositoryPeerIdentity(peer, root) }))));
-  const report = await runEvaluation({ cases, methods, operators, scanners: scanners.filter(s => s.id === 'redact-secret'), reusedObservations, ledger });
+  const report = await runEvaluation({ cases, methods, operators, scanners: scanners.filter(s => s.id === 'redact-secret'), reusedObservations, ledger,
+    normalizeFinding: credentialDomain.normalizeFinding });
   const unknown = report.reviewQueue.filter(q => !Object.hasOwn(ledger.entries, q.id));
   return unknown.map(q => `${q.id.slice(0, 12)}: ${q.method} review-queue entry targeting [${q.targets.join(', ')}] (case ${q.caseId}) has no benchmarks/review-ledger.json row — resolve it, mark it not-assertable under a decided operator class, or record it open with a reason`);
 }

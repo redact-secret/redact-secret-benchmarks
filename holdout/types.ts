@@ -1,12 +1,14 @@
-import type { Fixture } from '../benchmarks/types.ts';
+import type { AccountingArtifactIdentity } from '../benchmarks/accounting/shared/primitives.ts';
 
-export interface HoldoutCorpus { schemaVersion: 2; seed: string; fixtures: Fixture[] }
+export interface HoldoutCorpus<TFixture = unknown> { schemaVersion: number; seed: string; fixtures: TFixture[] }
+export interface ManifestEvaluationIdentity extends AccountingArtifactIdentity { schemaVersion: 1 }
 export interface HoldoutManifest {
   schemaVersion: 1; id: string; revision: number;
   purpose: 'public-conformance' | 'protected';
   review: 'conformance-only' | 'reviewed';
   corpusHash: string; seedHash: string; dataDirectory: string; maxRuns: number;
   publicSeed?: string;
+  evaluation?: ManifestEvaluationIdentity;
 }
 export interface Candidate {
   sourceHash: string; lockHash: string; candidateArtifactHash: string;

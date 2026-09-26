@@ -1,14 +1,11 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { loadCases } from './engine/cases.ts';
-import { createMethods } from './methods/index.ts';
-import { createOperators } from './operators/index.ts';
+import { resolveEvaluationDomain } from './evaluation/domains/registry.ts';
 import { runEvaluation } from './engine/runner.ts';
 import { hash } from './engine/model.ts';
 import { runtimeProvenance, repositoryRoot } from './engine/provenance.ts';
 import { runHoldout } from '../holdout/lifecycle.ts';
-import { validateEvidence, completenessReasons } from './engine/evidence.ts';
 import type { Candidate } from '../holdout/types.ts';
 import type { ReviewLedger } from './engine/types.ts';
 import { ENGINE_VERSION } from './engine/execution.ts';
@@ -16,15 +13,15 @@ import { ACCOUNTING_VERSION, validateAccounting } from './lib/accounting.ts';
 import { scanners as available } from '../scanners/index.mjs';
 
 const asCandidate = (p: Candidate): Candidate => ({ sourceHash: p.sourceHash, lockHash: p.lockHash, candidateArtifactHash: p.candidateArtifactHash });
-
 async function main() {
   const options: Record<string, string | boolean> = {};
   for (const arg of process.argv.slice(2)) {
-    const match = /^--(output|holdout-manifest)=(.+)$/.exec(arg);
+    const match = /^--(domain|output|holdout-manifest)=(.+)$/.exec(arg);
     const key = match?.[1] ?? arg.slice(2);
     if ((!match && arg !== '--require-milestone-closed') || key in options) throw new Error('Invalid qualification arguments');
     options[key] = match?.[2] ?? true;
   }
+  const credentialDomain = resolveEvaluationDomain(String(options.domain ?? 'credential'));
   const suite = JSON.parse(await readFile(path.join(repositoryRoot, 'qualification/suite-v1.json'), 'utf8'));
   const milestone = JSON.parse(await readFile(path.join(repositoryRoot, 'qualification/milestone-status.json'), 'utf8'));
   if (options['require-milestone-closed'] && (milestone.status !== 'closed' || milestone.openPrerequisites.length)) {
@@ -40,13 +37,15 @@ async function main() {
   const provenance = await runtimeProvenance(), candidate = asCandidate(provenance);
   // Fail before accessing a protected corpus if the supported tool set drifted.
   for (const s of scanners) if (await s.version(repositoryRoot) !== suite.scanners[s.id]) throw new Error('Required scanner version is missing or differs from qualification/suite-v1.json');
-  const operators = createOperators(), methods = createMethods();
-  const cases = (await loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
+  const operators = credentialDomain.createOperators(), methods = credentialDomain.createMethods();
+  const cases = (await credentialDomain.loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
   console.log('Running five development methods with all three scanners…');
-  const development = await runEvaluation({ cases, methods, operators, scanners, runId, provenance, accounting, ledger, onProgress: console.log });
+  const development = await runEvaluation({ cases, methods, operators, scanners, runId, provenance, accounting, ledger, onProgress: console.log,
+    normalizeFinding: credentialDomain.normalizeFinding });
   console.log('Running isolated Holdout lifecycle…');
   const manifestFile = path.resolve(repositoryRoot, typeof options['holdout-manifest'] === 'string' ? options['holdout-manifest'] : suite.holdoutManifest);
   const holdout = await runHoldout({ manifestFile, scanners, candidate, runId,
+    domain: credentialDomain.holdout,
     verifyCandidate: async () => asCandidate(await runtimeProvenance()) });
   const coverage = suite.methods.map((method: string) => {
     if (method === 'holdout') return { method, cases: holdout.caseCount, variants: holdout.variantCount,
@@ -61,7 +60,7 @@ async function main() {
       }) };
   });
   const executed = coverage.every((c: any) => c.cases > 0 && c.generationErrors === 0 && c.scanners.every((s: any) => s.status === 'complete')) && holdout.status === 'complete';
-  const reasons = completenessReasons({ executed, unresolvedGroups: development.unresolvedGroups, review: development.review });
+  const reasons = credentialDomain.qualification.completenessReasons({ executed, unresolvedGroups: development.unresolvedGroups, review: development.review });
   const complete = reasons.length === 0;
   const report = {
     schemaVersion: 2, reportType: 'qualification', engineVersion: ENGINE_VERSION, accountingVersion: ACCOUNTING_VERSION, suiteId: 'engine-v1', suiteHash: hash(suite),
@@ -73,7 +72,7 @@ async function main() {
     accounting: { reasons, unresolvedGroups: development.unresolvedGroups, review: development.review },
     methods: coverage, holdout, milestone,
   };
-  validateEvidence(report, 'qualification');
+  credentialDomain.qualification.validateQualificationEvidence(report);
   const target = path.resolve(repositoryRoot, typeof options.output === 'string' ? options.output : 'results-output/qualification/engine-v1.json');
   await mkdir(path.dirname(target), { recursive: true });
   const temporary = `${target}.${runId}.tmp`;

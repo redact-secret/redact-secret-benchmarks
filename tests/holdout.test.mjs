@@ -12,21 +12,25 @@ import { createMethods } from '../benchmarks/methods/index.ts';
 import { createOperators } from '../benchmarks/operators/index.ts';
 import { loadCases } from '../benchmarks/engine/cases.ts';
 import { validateEvidence } from '../benchmarks/engine/evidence.ts';
+import { credentialHoldoutDomain } from '../benchmarks/evaluation/domains/credential/holdout.ts';
+import { credentialHoldoutStorage, validateCredentialHoldoutCorpus } from '../benchmarks/evaluation/domains/credential/holdout-corpus.ts';
 
 const candidate = { sourceHash: 'a'.repeat(64), lockHash: 'b'.repeat(64), candidateArtifactHash: 'c'.repeat(64) };
 const cleanScanner = (extra = {}) => ({ id: 'test', mode: 'offline test', configuration: { verification: false },
   version: async () => '1.2.3', scan: async () => [], ...extra });
-async function fixture(t, purpose = 'protected') {
+async function fixture(t, purpose = 'protected', storage = credentialHoldoutStorage, corpusOverride) {
   const root = await mkdtemp(path.join(tmpdir(), 'holdout-lifecycle-test-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const manifestFile = path.join(root, 'manifest.json');
-  const corpus = publicConformanceCorpus('PRIVATE-SEED-SENTINEL');
-  corpus.fixtures[0].id = 'private-case-sentinel';
-  corpus.fixtures[0].group = 'PRIVATE-GROUP-SENTINEL';
+  const corpus = corpusOverride ?? publicConformanceCorpus('PRIVATE-SEED-SENTINEL');
+  if (!corpusOverride) {
+    corpus.fixtures[0].id = 'private-case-sentinel';
+    corpus.fixtures[0].group = 'PRIVATE-GROUP-SENTINEL';
+  }
   const source = path.join(root, 'input.json');
   await writeFile(source, serialize(corpus), { mode: 0o600 });
   let manifest;
-  if (purpose === 'protected') manifest = await sealProtectedCorpus(manifestFile, source, 'reviewed');
+  if (purpose === 'protected') manifest = await sealProtectedCorpus(manifestFile, source, 'reviewed', storage);
   else {
     const publicSeed = 'public-test';
     manifest = { schemaVersion: 1, id: 'public-test', revision: 1, purpose, review: 'conformance-only',
@@ -37,7 +41,7 @@ async function fixture(t, purpose = 'protected') {
   return { root, manifestFile, manifest, corpus, store: path.join(root, manifest.dataDirectory) };
 }
 const execute = (f, scanners = [cleanScanner()], extra = {}) => runHoldout({ manifestFile: f.manifestFile, scanners, candidate,
-  verifyCandidate: async () => candidate, ...extra });
+  verifyCandidate: async () => candidate, domain: credentialHoldoutDomain, ...extra });
 
 test('default registries/catalogs exclude holdout and development runner rejects protected cases before execution', async () => {
   const methods = createMethods(), operators = createOperators();
@@ -66,8 +70,56 @@ test('repository-shaped protected storage returns aggregates without bytes, seed
   for (const protectedValue of ['PRIVATE-SEED-SENTINEL', 'PRIVATE-GROUP-SENTINEL', 'private-case-sentinel',
     f.corpus.fixtures[0].content, hash(f.corpus.fixtures[0]), '"results"', '"actual"', '"expected"']) assert.equal(text.includes(protectedValue), false);
   await assert.rejects(access(scratch));
-  assert.equal((await readdir(f.store)).some(name => name.startsWith('plan-')), true);
+  const planFile = (await readdir(f.store)).find(name => name.startsWith('plan-'));
+  assert.ok(planFile);
+  const plan = JSON.parse(await readFile(path.join(f.store, planFile)));
+  assert.deepEqual(plan.evaluation, { domain: 'credential', evaluationProfile: 'evaluation-v1', domainAccountingVersion: 'credential-v4' });
+  assert.deepEqual(plan.holdoutMethod, { id: 'credential-holdout', version: 1 });
+  assert.deepEqual(plan.reportContract, { id: 'holdout-v1', version: 1 });
+  assert.equal(hash(plan), report.planHash);
   validateEvidence(report, 'holdout');
+});
+
+test('a different domain report shape reuses the same frozen lock and run-budget lifecycle', async t => {
+  const identity = { domain: 'pii', evaluationProfile: 'pii-evaluation-v1', domainAccountingVersion: 'pii-v1' };
+  const evaluation = { schemaVersion: 1, ...identity };
+  const piiCorpus = { schemaVersion: 1, seed: 'SYNTHETIC-PII-SEED',
+    fixtures: [{ id: 'synthetic-person-name', category: 'identity', sensitivity: 'direct' }] };
+  const validatePiiCorpus = value => {
+    assert.equal(value?.schemaVersion, 1);
+    assert.equal(typeof value?.seed, 'string');
+    assert.ok(Array.isArray(value?.fixtures));
+    assert.ok(value.fixtures.every(fixture => typeof fixture.id === 'string' && typeof fixture.category === 'string'));
+    return value;
+  };
+  const f = await fixture(t, 'protected', { evaluation, validateCorpus: validatePiiCorpus, serializeCorpus: serialize }, piiCorpus);
+  const domain = {
+    identity,
+    holdoutMethod: { id: 'pii-holdout', version: 3 },
+    reportContract: { id: 'pii-aggregate', version: 2 },
+    publicConformanceCorpus: seed => validatePiiCorpus({ ...piiCorpus, seed }),
+    validateCorpus: validatePiiCorpus,
+    serializeCorpus: serialize,
+    resolveManifestEvaluation: manifest => manifest.evaluation,
+    async evaluate({ corpus }) { return { checkedIdentities: corpus.fixtures.length, verdict: 'measured' }; },
+    buildReport(common, evaluated) {
+      return { schemaVersion: 1, reportType: 'pii-holdout-test', runId: common.runId, planHash: common.planHash,
+        domain: common.identity.domain, profile: common.identity.evaluationProfile, aggregate: evaluated };
+    },
+    validateReport(report) { assert.equal(report.reportType, 'pii-holdout-test'); },
+  };
+  const report = await runHoldout({ manifestFile: f.manifestFile, scanners: [cleanScanner()], candidate,
+    verifyCandidate: async () => candidate, domain });
+  assert.deepEqual(report.aggregate, { checkedIdentities: f.corpus.fixtures.length, verdict: 'measured' });
+  assert.equal('scanners' in report, false);
+  const planFile = (await readdir(f.store)).find(name => name.startsWith('plan-'));
+  const plan = JSON.parse(await readFile(path.join(f.store, planFile)));
+  assert.deepEqual(plan.evaluation, domain.identity);
+  assert.deepEqual(plan.holdoutMethod, domain.holdoutMethod);
+  assert.deepEqual(plan.reportContract, domain.reportContract);
+  assert.equal(hash(plan), report.planHash);
+  await assert.rejects(runHoldout({ manifestFile: f.manifestFile, scanners: [cleanScanner()], candidate,
+    verifyCandidate: async () => candidate, domain }), /run-budget-exhausted/);
 });
 
 test('a protected attempt is single-use; scanner failures still consume the frozen budget', async t => {
@@ -178,6 +230,6 @@ test('missing tools and unsafe run identity fail before protected inputs are rea
 test('renaming a manifest cannot reset the budget of an already sealed corpus', async t => {
   const f = await fixture(t);
   await execute(f);
-  await assert.rejects(sealProtectedCorpus(path.join(f.root, 'another-manifest.json'), path.join(f.root, 'input.json'), 'reviewed'), /corpus-already-sealed/);
+  await assert.rejects(sealProtectedCorpus(path.join(f.root, 'another-manifest.json'), path.join(f.root, 'input.json'), 'reviewed', credentialHoldoutStorage), /corpus-already-sealed/);
   assert.equal(JSON.parse(await readFile(path.join(f.store, 'state.json'))).runs.length, 1);
 });

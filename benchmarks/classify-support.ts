@@ -7,24 +7,20 @@ import { fileURLToPath } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
 import { assertPinnedPeers } from '../scanners/pins.mjs';
 import { candidateConfiguration, installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
-import { createMethods } from './methods/index.ts';
-import { createOperators } from './operators/index.ts';
-import { loadCases } from './engine/cases.ts';
+import { resolveEvaluationDomain } from './evaluation/domains/registry.ts';
 import type { ReviewLedger, Scanner } from './engine/types.ts';
 import { runEvaluation } from './engine/runner.ts';
 import { evaluationInputs } from './engine/execution.ts';
 import { inputIdentity, makeSnapshot, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity, snapshotObservation,
   snapshotPath, writeSnapshot } from './lib/peer-observations.ts';
-import { contracts, scoredContractIds } from './lib/assessment.ts';
-import { classifyFamilySupport, statusCriteria, type SupportStatus } from './support/status.ts';
+import type { SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
-import { familyEvidence } from './support/evidence.ts';
 import { fixtureProfileReport, fixtureProfiles } from './support/profiles.ts';
 import fixtureIndex from './fixture-index.json';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const CANDIDATE_KEYS = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit'] as const;
-const usage = 'Usage: npm run eval:classify -- [--output=results-output/support-status.json] '
+const usage = 'Usage: npm run eval:classify -- [--domain=credential] [--output=results-output/support-status.json] '
   + '[--refresh-peer-snapshots|--live-peers] '
   + '[--candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> --candidate-source-commit=<40-hex>]';
 const sha256File = async (file: string) => createHash('sha256').update(await readFile(file)).digest('hex');
@@ -32,12 +28,15 @@ const sha256File = async (file: string) => createHash('sha256').update(await rea
 async function main() {
   const options: Record<string, string | boolean> = {};
   for (const arg of process.argv.slice(2)) {
-    const match = /^--(output|candidate-package|candidate-node-package|candidate-wasm-package|candidate-source-commit)=(.+)$/.exec(arg);
+    const match = /^--(domain|output|candidate-package|candidate-node-package|candidate-wasm-package|candidate-source-commit)=(.+)$/.exec(arg);
     const key = match?.[1] ?? arg.slice(2);
     if ((!match && !['refresh-peer-snapshots', 'live-peers'].includes(key)) || key in options) throw new Error(usage);
     options[key] = match?.[2] ?? true;
   }
   if (options['refresh-peer-snapshots'] && options['live-peers']) throw new Error(usage);
+  const credentialDomain = resolveEvaluationDomain(String(options.domain ?? 'credential'));
+  const { contracts, scoredContractIds } = credentialDomain.assessment;
+  const { classifyFamilySupport, statusCriteria, familyEvidence } = credentialDomain.qualification;
   const candidatePresent = CANDIDATE_KEYS.filter(key => key in options);
   if (candidatePresent.length !== 0 && candidatePresent.length !== CANDIDATE_KEYS.length) throw new Error(usage);
   const useCandidate = candidatePresent.length === CANDIDATE_KEYS.length;
@@ -82,8 +81,8 @@ async function main() {
     // is labelled with the version it describes (#213), not only "the published package".
     const publishedPackage = product ? null
       : { packageName: '@redact-secret/core', version: await scanners.find((s: Scanner) => s.id === 'redact-secret')!.version(root) };
-    const operators = createOperators(), methods = createMethods();
-    const cases = (await loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
+    const operators = credentialDomain.createOperators(), methods = credentialDomain.createMethods();
+    const cases = (await credentialDomain.loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
     let revision = 'unknown', dirty: boolean | null = null;
     try {
       revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
@@ -103,6 +102,7 @@ async function main() {
     const executing = reuse ? productScanners : scanners;
     console.log(`Running every registered family's evidence through the profile: ${cases.length} cases with ${scanners.map((s: { id: string }) => s.id).join(', ')}…`);
     const report = await runEvaluation({ cases, methods, operators, scanners: executing, reusedObservations, ledger, onProgress: console.log,
+      normalizeFinding: credentialDomain.normalizeFinding,
       ...(options['refresh-peer-snapshots'] ? { captureObservations: async (_fixtures, observations) => {
         for (const observation of observations.filter(o => o.id !== 'redact-secret')) {
           if (observation.status !== 'complete') throw new Error(`Cannot snapshot incomplete peer ${observation.id}`);

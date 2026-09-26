@@ -55,6 +55,7 @@ export interface Scanner {
 }
 export interface Report {
   schemaVersion: number;
+  domain?: string; evaluationProfile?: string; domainAccountingVersion?: string;
   accounting: { minDenominator: number; replays: number; measurableShareFloor: Record<string, number>; twinCoverageFloor: Record<string, number>; resolvedRateFloor: Record<string, number> };
   runId: string;
   category: string;
@@ -83,6 +84,7 @@ export interface Report {
 }
 export interface Run {
   schemaVersion: number; runId: string; startedAt: string; finishedAt: string; categories: string[]; partial: boolean;
+  domain?: string; evaluationProfile?: string; domainAccountingVersion?: string;
   scannerVersions: Record<string, string>; lockHash: string; revision: string; dirty: boolean | null;
   scannerObservations?: Record<string, { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest?: string; inputDigest?: string }>;
   /** Staging only (#201): the unreleased redact-secret build this run measured instead of the released package. */

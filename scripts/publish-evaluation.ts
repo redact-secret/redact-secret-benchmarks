@@ -1,7 +1,5 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
-import { loadCases } from '../benchmarks/engine/cases.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { publicEvaluation } from '../benchmarks/engine/public-report.ts';
+import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
 import { hash } from '../benchmarks/engine/model.ts';
 import { carryReviewHistory, observeReviewEntries, reviewLedgerProblem, type ReviewLedger } from '../benchmarks/engine/review-ledger.ts';
 const options = Object.fromEntries(process.argv.slice(2).map(arg => {
@@ -10,11 +8,11 @@ const options = Object.fromEntries(process.argv.slice(2).map(arg => {
   return [match[1], match[2]];
 }));
 const raw = JSON.parse(await readFile(options.input ?? 'results-output/evaluation.json', 'utf8'));
-const cases = await loadCases(createOperators());
+const cases = await credentialDomain.loadCases(credentialDomain.createOperators());
 const categories = JSON.parse(await readFile('benchmarks/categories.json', 'utf8')).filter((category: { calibrationOnly?: boolean }) => !category.calibrationOnly);
 const hashes = Object.fromEntries(await Promise.all(categories.map(async (c: { id: string; corpus: string }) => [c.id, hash(await readFile(c.corpus))])));
 const qualification = options.qualification ? JSON.parse(await readFile(options.qualification, 'utf8')) : null;
-const report = publicEvaluation(raw, cases, hashes, qualification);
+const report = credentialDomain.reporting.publicEvaluation(raw, cases, hashes, qualification);
 const sourceLedger = JSON.parse(await readFile('benchmarks/review-ledger.json', 'utf8')) as ReviewLedger;
 const sourceProblem = reviewLedgerProblem(sourceLedger);
 if (sourceProblem) throw new Error(sourceProblem);

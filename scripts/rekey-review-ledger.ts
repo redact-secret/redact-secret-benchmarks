@@ -11,27 +11,24 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
-import { createMethods } from '../benchmarks/methods/index.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
+import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
 import { runEvaluation } from '../benchmarks/engine/runner.ts';
-import { reviewEntryId } from '../benchmarks/engine/execution.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const ledgerPath = path.join(root, 'benchmarks/review-ledger.json');
 const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));
 const ledger = JSON.parse(await readFile(ledgerPath, 'utf8'));
 const scanners = available.filter((s: { id: string }) => Object.hasOwn(suite.scanners, s.id));
-const operators = createOperators(), methods = createMethods();
-const cases = (await loadCases(operators)).map((c: any) => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
+const operators = credentialDomain.createOperators(), methods = credentialDomain.createMethods();
+const cases = (await credentialDomain.loadCases(operators)).map((c: any) => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
 const sourceHash = new Map(cases.map((c: any) => [c.id, c.provenance.sourceHash]));
-const report = await runEvaluation({ cases, methods, operators, scanners, ledger });
+const report = await runEvaluation({ cases, methods, operators, scanners, ledger, normalizeFinding: credentialDomain.normalizeFinding });
 
 const renamed = new Map<string, string>();
 for (const q of report.reviewQueue as any[]) {
   const { id, caseId, method, targets, ...entry } = q;
   if (!('evidence' in entry)) continue;
-  const legacy = reviewEntryId(caseId, sourceHash.get(caseId), entry, true);
+  const legacy = credentialDomain.review.reviewEntryId(caseId, sourceHash.get(caseId), entry, true);
   if (legacy !== id && Object.hasOwn(ledger.entries, legacy)) {
     if (renamed.has(legacy) && renamed.get(legacy) !== id) throw new Error(`ambiguous rekey for ${legacy.slice(0, 12)}`);
     renamed.set(legacy, id);

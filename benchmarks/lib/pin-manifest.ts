@@ -3,6 +3,7 @@ import { AFTER_FIRST_RUN, type IntakeStatus } from './adversarial-intake.ts';
 export interface PinManifestPins {
   sourceRevision: string;
   redactSecretRevision: string;
+  releaseSourceRevision: string;
   redactSecretVersion: string;
   packageVersion: string;
 }

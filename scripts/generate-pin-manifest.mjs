@@ -23,6 +23,7 @@ const corpusHashes = Object.fromEntries(await Promise.all(
 const pins = {
   sourceRevision: registry.sourceRevision,
   redactSecretRevision: inventory.redactSecretRevision,
+  releaseSourceRevision: inventory.redactSecretReleaseRevision,
   redactSecretVersion: inventory.redactSecretVersion,
   packageVersion: packageJson.dependencies['@redact-secret/core'],
 };

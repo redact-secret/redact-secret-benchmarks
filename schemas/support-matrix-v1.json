@@ -10,7 +10,7 @@
     "sourceReport": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "scannerObservations"],
+      "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "fixtureIndex", "taxonomyDigest", "scannerObservations"],
       "properties": {
         "schemaVersion": { "const": 1 },
         "generatedAt": { "type": "string" },
@@ -38,6 +38,16 @@
             }]
           }
         },
+        "fixtureIndex": {
+          "type": "object", "additionalProperties": false,
+          "required": ["schemaVersion", "algorithm", "digest", "fixtureCount"],
+          "properties": {
+            "schemaVersion": { "const": 1 }, "algorithm": { "const": "sha256" },
+            "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "fixtureCount": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "taxonomyDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
         "publishedPackage": {
           "description": "Published mode only: the released package the pinned redact-secret entry loaded. Absent on a candidate run, which carries product instead.",
           "type": "object",
@@ -92,7 +102,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["provider", "family", "familyName", "status", "evidenceTier", "evidenceBasis", "qualificationProfile", "providerSource", "corroboratingScanners", "twinCoverage", "unresolvedCriticalItems", "empiricalEvidence", "fixtureProfile", "detectors", "reason"],
+        "required": ["provider", "family", "familyName", "status", "evidenceTier", "evidenceBasis", "qualificationProfile", "providerSource", "corroboratingScanners", "twinCoverage", "unresolvedCriticalItems", "empiricalEvidence", "fixtureProfile", "detectors", "reason", "profileCoverage"],
         "properties": {
           "provider": { "type": ["string", "null"] },
           "family": { "type": "string" },
@@ -174,7 +184,7 @@
     "fixtureProfile": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["profilesVersion", "claimed", "explicit", "target", "cellsMet", "cells", "debt"],
+      "required": ["profilesVersion", "claimed", "explicit", "target", "cellsMet", "cells", "requiredCells", "requiredButEmptyAxisIds", "debt"],
       "properties": {
         "profilesVersion": { "type": "integer", "minimum": 1 },
         "claimed": { "enum": ["arrival-provisional", "stable-documented", "stable-empirical", "context-constrained-empirical", null] },
@@ -197,6 +207,24 @@
             "controlAxisIds": { "type": "array", "items": { "type": "string" } },
             "confusionAxisIds": { "type": "array", "items": { "type": "string" } }
           }
+        },
+        "requiredCells": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "totalFixtures": { "type": "integer", "minimum": 1 },
+            "positiveCases": { "type": "integer", "minimum": 1 },
+            "benignControls": { "type": "integer", "minimum": 1 },
+            "twinPairs": { "type": "integer", "minimum": 1 },
+            "positiveContextAxes": { "type": "integer", "minimum": 1 },
+            "controlAxes": { "type": "integer", "minimum": 1 },
+            "confusionAxes": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "requiredButEmptyAxisIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["positiveContextAxes", "controlAxes", "confusionAxes"] }
         },
         "debt": {
           "type": "array",

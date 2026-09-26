@@ -3,7 +3,7 @@
   "$id": "urn:redact-secret-benchmarks:support-status-report:1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "fixtureProfilesVersion", "product", "scanners", "scannerObservations", "caseCount", "variantCount", "familyCount", "distribution", "stableDistribution", "families"],
+  "required": ["schemaVersion", "generatedAt", "runId", "revision", "dirty", "criteriaSchemaVersion", "fixtureProfilesVersion", "fixtureIndex", "taxonomyDigest", "product", "scanners", "scannerObservations", "caseCount", "variantCount", "familyCount", "distribution", "stableDistribution", "families"],
   "properties": {
     "schemaVersion": { "const": 1 },
     "generatedAt": { "type": "string" },
@@ -12,6 +12,16 @@
     "dirty": { "type": ["boolean", "null"] },
     "criteriaSchemaVersion": { "const": 1 },
     "fixtureProfilesVersion": { "type": "integer", "minimum": 1 },
+    "fixtureIndex": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schemaVersion", "algorithm", "digest", "fixtureCount"],
+      "properties": {
+        "schemaVersion": { "const": 1 }, "algorithm": { "const": "sha256" },
+        "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "fixtureCount": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "taxonomyDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
     "publishedPackage": {
       "description": "Published mode only: the released package the pinned redact-secret entry loaded. Absent on a candidate run, which carries product instead.",
       "type": "object",
@@ -159,7 +169,7 @@
     "fixtureProfile": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["profilesVersion", "claimed", "explicit", "target", "cellsMet", "cells", "debt"],
+      "required": ["profilesVersion", "claimed", "explicit", "target", "cellsMet", "cells", "requiredCells", "requiredButEmptyAxisIds", "debt"],
       "properties": {
         "profilesVersion": { "type": "integer", "minimum": 1 },
         "claimed": { "enum": ["arrival-provisional", "stable-documented", "stable-empirical", "context-constrained-empirical", null] },
@@ -183,6 +193,16 @@
             "confusionAxisIds": { "type": "array", "items": { "type": "string" } }
           }
         },
+        "requiredCells": {
+          "type": "object", "additionalProperties": false,
+          "properties": {
+            "totalFixtures": { "type": "integer", "minimum": 1 }, "positiveCases": { "type": "integer", "minimum": 1 },
+            "benignControls": { "type": "integer", "minimum": 1 }, "twinPairs": { "type": "integer", "minimum": 1 },
+            "positiveContextAxes": { "type": "integer", "minimum": 1 }, "controlAxes": { "type": "integer", "minimum": 1 },
+            "confusionAxes": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "requiredButEmptyAxisIds": { "type": "array", "uniqueItems": true, "items": { "enum": ["positiveContextAxes", "controlAxes", "confusionAxes"] } },
         "debt": {
           "type": "array",
           "items": {

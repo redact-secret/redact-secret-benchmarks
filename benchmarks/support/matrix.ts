@@ -3,6 +3,7 @@ import type { EvidenceBasis, QualificationProfile, SupportStatus } from './statu
 import { taxonomy, type Family } from './taxonomy.ts';
 import { contracts } from '../lib/assessment.ts';
 import type { FixtureProfileReport } from './profiles.ts';
+import fixtureIndex from '../fixture-index.json';
 
 /**
  * Support matrix (issue #509, A8). Projects A3's per-detector evidence
@@ -59,6 +60,8 @@ export interface SupportStatusReport {
   revision: string;
   dirty: boolean | null;
   criteriaSchemaVersion: 1;
+  fixtureIndex: { schemaVersion: 1; algorithm: 'sha256'; digest: string; fixtureCount: number };
+  taxonomyDigest: string;
   /** Set only on a candidate run (eval:classify --candidate-*): the redact-secret build measured instead of the published package. */
   product?: SupportProduct | null;
   /** Published mode: the released package the run loaded (#213). */
@@ -91,8 +94,8 @@ export interface SupportMatrixEntry {
   detectors: string[];
   /** Required (non-null) whenever `status` is `pending` or `unsupported`. */
   reason: string | null;
-  /** Fixture cells, axis counts and remaining debt against the family's target profile (#206). Null when no detector exists. Absent in artifacts generated before profiles existed. */
-  profileCoverage?: FixtureProfileReport | null;
+  /** Fixture cells, required floors, tested axes and debt against the target profile (#206). Null when no detector exists. */
+  profileCoverage: FixtureProfileReport | null;
 }
 
 export interface SupportMatrix {
@@ -155,6 +158,10 @@ function detectedEntry(family: Family, result: SupportStatusFamilyResult): Suppo
  * reason — throws rather than defaulting to a friendly status (#509).
  */
 export function buildSupportMatrix(statusReport: SupportStatusReport): SupportMatrix {
+  if (statusReport.fixtureIndex?.digest !== fixtureIndex.identity.digest || statusReport.fixtureIndex?.fixtureCount !== fixtureIndex.identity.fixtureCount)
+    throw new Error('Support status report was generated from a different fixture semantic index.');
+  if (statusReport.taxonomyDigest !== fixtureIndex.sources.taxonomy.digest)
+    throw new Error('Support status report was generated from a different taxonomy identity.');
   const byTaxonomyFamily = new Map<string, SupportStatusFamilyResult>();
   for (const result of statusReport.families) {
     for (const familyId of result.taxonomyFamilies) {

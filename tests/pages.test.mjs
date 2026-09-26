@@ -117,7 +117,7 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   assert.ok(text(html).includes(`${atMinimum} at the minimum sample size`));
   assert.equal((html.match(/At minimum/g) ?? []).length, counts.filter(d => d.fixtures === accounting.minDenominator).length);
   assert.equal((html.match(/<u style="left:/g) ?? []).length, counts.length, 'a minDenominator line on every bar');
-  for (const d of registry.detectors) assert.ok(html.includes(`href="/coverage/${d.id}"`), d.id);
+  for (const d of registry.detectors) assert.ok(html.includes(`href="/coverage/detectors/${d.id}"`), d.id);
   for (const c of categories) assert.ok(html.includes(`href="/suites/${c.id}"`), c.id);
   assert.equal((coveragePage(fixtures, 'thin').match(/class="cov-row" role="row"/g) ?? []).length, atMinimum);
   // #36: the twin figure separates discriminated / not discriminated / un-probeable.

@@ -7,6 +7,8 @@ import { familyEvidence } from '../benchmarks/support/evidence.ts';
 import { classifyFamilySupport } from '../benchmarks/support/status.ts';
 import { taxonomy, familiesForDetector } from '../benchmarks/support/taxonomy.ts';
 import { contracts } from '../benchmarks/lib/assessment.ts';
+import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
+import { fixtureProfileReport } from '../benchmarks/support/profiles.ts';
 
 const read = async path => JSON.parse(await readFile(new URL(`../${path}`, import.meta.url), 'utf8'));
 const schema = await read('schemas/support-matrix-v1.json');
@@ -14,17 +16,19 @@ const ajv = new Ajv({ strict: true });
 const validate = ajv.compile(schema);
 
 const emptyLedger = { schemaVersion: 1, entries: {} };
+const emptyCells = { totalFixtures: 0, positiveCases: 0, benignControls: 0, twinPairs: 0, positiveContextAxes: 0, controlAxes: 0, confusionAxes: 0, positiveContextAxisIds: [], controlAxisIds: [], confusionAxisIds: [] };
 
 /** A full, schema-shaped `support-status.json` built from real evidence, exactly as `eval:classify` would — every registered detector, all-zero evidence. */
 function fullStatusReport() {
   const families = Object.keys(contracts).sort().map(family => {
     const evidence = familyEvidence(family, {}, {}, [], emptyLedger);
     const assessment = classifyFamilySupport(evidence);
-    return { ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable: contracts[family].unprobeable ?? null };
+    return { ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: familiesForDetector(family).map(f => f.id), evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, emptyCells) };
   });
   return {
     schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'test-run', revision: 'abc123', dirty: false,
-    criteriaSchemaVersion: 1, scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'test-run' } }, families,
+    criteriaSchemaVersion: 1, fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
+    scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'test-run' } }, families,
   };
 }
 
@@ -98,11 +102,21 @@ test('throws when two detector results claim the same taxonomy family', () => {
   assert.throws(() => buildSupportMatrix(report), /claimed by more than one detector result/);
 });
 
+test('throws before projection when semantic-index or taxonomy identities are stale', () => {
+  const index = fullStatusReport();
+  index.fixtureIndex = { ...index.fixtureIndex, digest: '0'.repeat(64) };
+  assert.throws(() => buildSupportMatrix(index), /different fixture semantic index/);
+  const taxonomyIdentity = fullStatusReport();
+  taxonomyIdentity.taxonomyDigest = '0'.repeat(64);
+  assert.throws(() => buildSupportMatrix(taxonomyIdentity), /different taxonomy identity/);
+});
+
 test('a synthetic full matrix satisfies its schema', () => {
   const { distribution, stableDistribution, families } = buildSupportMatrix(fullStatusReport());
   const matrix = {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
     sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'test-run', revision: 'abc123', dirty: false, criteriaSchemaVersion: 1,
+      fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
       scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'test-run' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };

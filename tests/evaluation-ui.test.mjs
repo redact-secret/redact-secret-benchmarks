@@ -57,7 +57,7 @@ test('every pre-redesign evaluation route forwards to Workbench on direct naviga
     assert.equal(route.kind, 'redirect', path);
     assert.equal(parseRoute(route.to).kind, 'workbench', path);
   }
-  assert.equal(parseRoute('/evaluation/detector/github-token').to, '/coverage/github-token');
+  assert.equal(parseRoute('/evaluation/detector/github-token').to, '/coverage/detectors/github-token');
   assert.equal(parseRoute('/evaluation/unknown').kind, 'missing');
 });
 

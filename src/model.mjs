@@ -46,9 +46,9 @@ function legacyRoute(path, suites) {
   let match = new RegExp(`^/evaluation/method/(${ID})$`).exec(path);
   if (match) return redirect(`/workbench/method/${match[1]}`);
   match = new RegExp(`^/evaluation/detector/(${ID})$`).exec(path);
-  if (match) return redirect(`/coverage/${match[1]}`);
+  if (match) return redirect(`/coverage/detectors/${match[1]}`);
   match = new RegExp(`^/benchmark/(${ID})$`).exec(path);
-  if (match) return redirect(suites.includes(match[1]) ? `/suites/${match[1]}` : `/coverage/${match[1]}`);
+  if (match) return redirect(suites.includes(match[1]) ? `/suites/${match[1]}` : `/coverage/detectors/${match[1]}`);
   return null;
 }
 
@@ -66,7 +66,13 @@ export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
   if (path === '/support') return at('support');
   if (path === '/performance') return at('performance');
   if (path === '/how-to-read') return at('how-to-read');
-  const match = new RegExp(`^/(coverage|suites|fixture)/(${ID})$`).exec(path);
+  let match = new RegExp(`^/coverage/detectors/(${ID})$`).exec(path);
+  if (match) return at('coverage-detector', match[1]);
+  match = new RegExp(`^/coverage/(${ID}):(${ID})$`).exec(path);
+  if (match) return at('coverage-family', `${match[1]}:${match[2]}`);
+  match = new RegExp(`^/coverage/(${ID})$`).exec(path);
+  if (match) return redirect(`/coverage/detectors/${match[1]}`);
+  match = new RegExp(`^/(suites|fixture)/(${ID})$`).exec(path);
   if (match) return at(match[1] === 'suites' ? 'suite' : match[1], match[2]);
   const workbench = new RegExp(`^/workbench(?:/(changes|qualification)|/(review|method)/(${ID}))?$`).exec(path);
   if (workbench) {

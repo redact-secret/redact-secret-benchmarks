@@ -2,7 +2,8 @@ import { escapeHtml as e, figure } from '../components';
 import type { Fixture } from '../catalog';
 import { currentReports, groupsOf, hasResults, PRODUCT, runIdOf, type BenchData } from './data';
 import { boundCell, confidence, metric, type Floors } from './figures';
-import { rowsTable, tierTitle } from './rows';
+import { peerObservation, reportHierarchy } from './report-hierarchy';
+import { tierTitle } from './rows';
 import { runStates } from './states';
 
 export type Level = 'T1' | 'T2' | 'T3';
@@ -38,8 +39,8 @@ export function reportPage(data: BenchData, level: Level, fixtures: Fixture[]): 
   ].join('')}</div>`;
 
   const others = scanners.filter(s => s.id !== PRODUCT);
-  const peers = others.length ? `<section class="section peers"><p class="eyebrow">OTHER SCANNERS ON THE SAME INPUTS</p><p class="small">Reference only. Not a ranking: scanners differ in scope and defaults. Listed in run order.</p><div class="tbl"><table><thead><tr><th scope="col">Scanner</th><th scope="col" class="num">Leaked, at most</th><th scope="col" class="num">False alarms, at most</th><th scope="col" class="num">Twins, at least</th></tr></thead><tbody>${others.map(s => { const g = groupsOf(summary, s.id); return `<tr><td>${e(s.id)} ${e(s.version ?? '')}</td><td class="num">${boundCell(g[rKey], 'leak', rKey, floors)}</td><td class="num">${boundCell(g[cKey], 'alarm', cKey, floors)}</td><td class="num">${boundCell(g[rKey], 'twins', rKey, floors)}</td></tr>`; }).join('')}</tbody></table></div></section>` : '';
+  const peers = others.length ? `<section class="section peers"><p class="eyebrow">OTHER SCANNERS ON THE SAME INPUTS</p><p class="small">Reference only. Not a ranking: scanners differ in scope and defaults. Listed in run order.</p><div class="tbl"><table><thead><tr><th scope="col">Scanner</th><th scope="col" class="num">Leaked, at most</th><th scope="col" class="num">False alarms, at most</th><th scope="col" class="num">Twins, at least</th></tr></thead><tbody>${others.map(s => { const g = groupsOf(summary, s.id); return `<tr><td>${e(s.id)} ${e(s.version ?? '')}${peerObservation(s.id, reports)}</td><td class="num">${boundCell(g[rKey], 'leak', rKey, floors)}</td><td class="num">${boundCell(g[cKey], 'alarm', cKey, floors)}</td><td class="num">${boundCell(g[rKey], 'twins', rKey, floors)}</td></tr>`; }).join('')}</tbody></table></div></section>` : '';
 
   const selected = fixtures.filter(f => f.assessment.tier === level && (policy ? f.assessment.kind !== 'must-redact' : f.assessment.kind !== 'policy'));
-  return head + figs + runStates(data) + peers + rowsTable({ fixtures: selected, reports, heading: `Rows behind these numbers · ${tierTitle(level)}` });
+  return head + figs + runStates(data) + peers + reportHierarchy(selected, reports, `Rows behind these numbers · ${tierTitle(level)}`);
 }

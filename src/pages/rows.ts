@@ -1,7 +1,7 @@
 import { bindPager, escapeHtml as e, pager, statusMark, OUTCOME_NAME, type Outcome } from '../components';
 import { kinds, tiers } from '../../benchmarks/lib/assessment.ts';
 import type { Fixture } from '../catalog';
-import type { Report, Row } from '../types';
+import type { Report, Row, Scanner } from '../types';
 
 /** The fixture rows behind a number. Every Figure on the site can be followed down to this table, then to the bytes. */
 export const kindTitle = (kind: string) => (kinds as Record<string, { title: string }>)[kind]?.title ?? kind;
@@ -24,22 +24,37 @@ export function rowMarks(row: Row | undefined, scannerStatus: string | undefined
   if (row.flagged != null) return row.flagged ? statusMark(row.kind === 'policy' ? 'info' : 'fail', `Flagged${row.findings && row.findings > 1 ? ` ×${row.findings}` : ''}`) : statusMark('pass', 'Quiet');
   return statusMark('not-measured', `Unscored · ${row.actual.length} range${row.actual.length === 1 ? '' : 's'}`);
 }
-const clean = (row: Row | undefined) => !row || (row.spanOutcomes ? row.spanOutcomes.every(o => o === 'EXACT' || o === 'COVERED') : !row.flagged);
+export interface ScannerColumn { id: string; name: string }
+export interface FixtureCell { scanner: Scanner | undefined; row: Row | undefined }
+
+export const rowClean = (row: Row | undefined) => !row || (row.spanOutcomes ? row.spanOutcomes.every(o => o === 'EXACT' || o === 'COVERED') : !row.flagged);
+export const scannerColumns = (reports: Report[]): ScannerColumn[] =>
+  [...new Map(reports.flatMap(r => r.scanners.map(s => [s.id, s.name] as const))).entries()].map(([id, name]) => ({ id, name }));
+export const cellsForFixture = (fixture: Fixture, reports: Report[], scanners = scannerColumns(reports)): FixtureCell[] => {
+  const report = reports.find(r => r.category === fixture.category);
+  return scanners.map(({ id }) => {
+    const scanner = report?.scanners.find(s => s.id === id);
+    return { scanner, row: scanner?.status === 'complete' ? scanner.rows?.find(r => r.id === fixture.id) : undefined };
+  });
+};
+export const fixtureSearch = (fixture: Fixture) =>
+  `${fixture.slug} ${fixture.group} ${fixture.assessment.kind} ${fixture.assessment.tier} ${kindTitle(fixture.assessment.kind)} ${tierTitle(fixture.assessment.tier)} ${fixture.assessment.contract ?? ''} ${fixture.twinOf ? 'twin' : ''}`.toLowerCase();
+export function fixtureRowCells(fixture: Fixture, cells: FixtureCell[], kindPrefix = ''): string {
+  return `<td><a href="/fixture/${e(fixture.slug)}">${e(fixture.id)}</a><small>${e(fixture.category)} · ${e(fixture.group)}</small></td><td>${kindPrefix}${e(kindTitle(fixture.assessment.kind))}<small>${e(fixture.assessment.tier)} · ${e(tierTitle(fixture.assessment.tier))}${fixture.twinOf ? ' · twin' : ''}</small></td>${cells.map(c => `<td>${rowMarks(c.row, c.scanner?.status)}</td>`).join('')}`;
+}
 
 export interface RowsInput { fixtures: Fixture[]; reports: Report[]; id?: string; heading?: string; note?: string }
 export function rowsTable({ fixtures, reports, id = 'rows', heading = 'Rows', note = '' }: RowsInput): string {
-  const scanners = [...new Map(reports.flatMap(r => r.scanners.map(s => [s.id, s.name] as const))).entries()];
+  const scanners = scannerColumns(reports);
   let attention = 0;
   const body = fixtures.map(f => {
-    const report = reports.find(r => r.category === f.category);
-    const cells = scanners.map(([scannerId]) => { const scanner = report?.scanners.find(s => s.id === scannerId); return { scanner, row: scanner?.status === 'complete' ? scanner.rows?.find(r => r.id === f.id) : undefined }; });
-    const signal = cells.some(c => !clean(c.row));
+    const cells = cellsForFixture(f, reports, scanners);
+    const signal = cells.some(c => !rowClean(c.row));
     if (signal) attention++;
-    const search = `${f.slug} ${f.group} ${f.assessment.kind} ${f.assessment.tier} ${kindTitle(f.assessment.kind)} ${tierTitle(f.assessment.tier)} ${f.assessment.contract ?? ''} ${f.twinOf ? 'twin' : ''}`.toLowerCase();
-    return `<tr data-row data-search="${e(search)}" data-signal="${signal ? 1 : 0}"><td><a href="/fixture/${e(f.slug)}">${e(f.id)}</a><small>${e(f.category)} · ${e(f.group)}</small></td><td>${e(kindTitle(f.assessment.kind))}<small>${e(f.assessment.tier)} · ${e(tierTitle(f.assessment.tier))}${f.twinOf ? ' · twin' : ''}</small></td>${cells.map(c => `<td>${rowMarks(c.row, c.scanner?.status)}</td>`).join('')}</tr>`;
+    return `<tr data-row data-search="${e(fixtureSearch(f))}" data-signal="${signal ? 1 : 0}">${fixtureRowCells(f, cells)}</tr>`;
   }).join('');
   return `<section class="section" id="${e(id)}" data-rows><div class="section-head"><div><h2 class="h2-compact">${e(heading)}</h2><p class="small">${fixtures.length.toLocaleString('en-US')} fixtures, ${attention.toLocaleString('en-US')} where some scanner left a secret readable, redacted too much or flagged a safe value.${note ? ` ${note}` : ''}</p></div><div class="filters"><label class="field">Find<input type="search" data-rows-filter placeholder="id, suite, kind, evidence level"></label><label class="field">Show<select data-rows-signal><option value="signal">Rows needing a look</option><option value="all">All rows</option></select></label></div></div>
-    <div class="tbl wide" tabindex="0" role="region" aria-label="${e(heading)}"><table><thead><tr><th scope="col">Fixture</th><th scope="col">Kind and evidence</th>${scanners.map(([, name]) => `<th scope="col">${e(name)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>
+    <div class="tbl wide" tabindex="0" role="region" aria-label="${e(heading)}"><table><thead><tr><th scope="col">Fixture</th><th scope="col">Kind and evidence</th>${scanners.map(({ name }) => `<th scope="col">${e(name)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>
     ${pager(id, '<span data-rows-count role="status" aria-live="polite"></span>')}</section>`;
 }
 

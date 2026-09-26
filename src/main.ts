@@ -4,6 +4,7 @@ import { mountShell, renderPage, setBuildLine, type NavItem, type SearchTarget }
 import { siteEnvOf, commitOf, envBanner, buildLine, type Provenance } from './provenance';
 import { summaryProblem, PRODUCT, type BenchData, type RunSummary } from './pages/data';
 import { reportPage, levelOf } from './pages/report';
+import { bindReportHierarchy } from './pages/report-hierarchy';
 import { coveragePage, coverageViewOf, detectorPage, familyPage, bindInventory } from './pages/coverage';
 import { supportMatrixProblem } from './support-model';
 import { suitePage } from './pages/suite';
@@ -163,7 +164,7 @@ async function refresh(force = false): Promise<void> {
     else if (fixture) { const loaded = data.loaded.find(l => l.category.id === fixture.category); body = fixturePage(fixture, loaded?.report, loaded?.problem); }
     else body = `<div class="page-head"><div><h1>No such fixture</h1></div></div>${actionEmptyState({ title: 'No fixture has this slug', body: 'A slug is <code>suite--fixture-id</code>. Search for it, or <a href="/coverage">open the coverage list</a>.' })}`;
     renderPage(body, label);
-    restoreDetails(); bindRows(); bindInventory();
+    restoreDetails(); bindRows(); bindReportHierarchy(); bindInventory();
     if (downloadUrl) { URL.revokeObjectURL(downloadUrl); downloadUrl = ''; }
     const download = document.querySelector<HTMLAnchorElement>('#download-fixture');
     if (download && fixture) {

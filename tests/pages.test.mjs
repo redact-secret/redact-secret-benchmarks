@@ -11,8 +11,14 @@ const read = async path => JSON.parse(await readFile(new URL('../' + path, impor
 const categories = (await read('benchmarks/categories.json')).filter(category => !category.calibrationOnly);
 const registry = await read('benchmarks/detectors.json');
 const assignments = await read('benchmarks/fixture-detectors.json');
+const fixtureIndex = await read('benchmarks/fixture-index.json');
 const corpora = Object.fromEntries(await Promise.all(categories.map(async c => [c.id, await read(c.corpus)])));
-const fixtures = buildCatalog(categories, corpora, assignments, registry.detectors);
+const semantics = new Map(fixtureIndex.fixtures.map(entry => [entry.slug, entry]));
+const fixtures = buildCatalog(categories, corpora, assignments, registry.detectors).map(fixture => {
+  const semantic = semantics.get(fixture.slug);
+  assert.ok(semantic, fixture.slug);
+  return { ...fixture, familyIds: semantic.familyIds, scenarioIds: semantic.scenarioIds, ...('unscopedReason' in semantic ? { unscopedReason: semantic.unscopedReason } : {}), provenance: semantic.provenance };
+});
 const accounting = (await read('qualification/suite-v1.json')).accounting;
 const runId = '2026-09-19T12:00:00.000Z-0a0b0c';
 const percent = v => `${(v * 100).toFixed(1)}%`;
@@ -83,12 +89,35 @@ test('Report: a run that measured an unreleased candidate names it in the eyebro
 
 test('Report: reference scanners are muted rows in run order with no rank, and an absent scanner is Not measured, not zero', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
-  const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('data-rows'));
+  const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('id="rows"'));
   assert.ok(peers.indexOf('silent') < peers.indexOf('absent'), 'run order, never sorted by result');
   assert.ok(!/\b(rank|winner|best|worst|#1|leader|score)\b/i.test(text(peers).replace('Not a ranking', '')));
   assert.match(peers, /absent[\s\S]*data-status="not-measured">Not measured/);
   assert.ok(text(html).includes('absent was not found on PATH'), 'scanner-unavailable empty state');
   assert.ok(!text(peers).includes('redact-secret'), 'the product is not a row in the reference table');
+});
+
+test('Report: provider/family projection preserves the exact selected leaf set once', async () => {
+  const { reportPage } = await load('/src/pages/report.ts');
+  for (const level of ['T1', 'T2', 'T3']) {
+    const policy = level === 'T3';
+    const selected = fixtures.filter(f => f.assessment.tier === level && (policy ? f.assessment.kind !== 'must-redact' : f.assessment.kind !== 'policy'));
+    const html = reportPage(data, level, fixtures);
+    assert.match(html, /data-report-tree/, html.slice(-800));
+    const slugs = [...html.matchAll(/data-slug="([^"]+)"/g)].map(match => match[1]);
+    assert.deepEqual(slugs.sort(), selected.map(fixture => fixture.slug).sort(), `${level}: grouping neither drops nor duplicates leaves`);
+    assert.equal(new Set(slugs).size, slugs.length, `${level}: one display bucket per fixture`);
+    assert.equal((html.match(/class="fig"/g) ?? []).length, 3, `${level}: hierarchy never changes the three answers`);
+  }
+  for (const slug of ['accuracy--aws-id', 'common-formats--github-token-ghp-plain', 'sendgrid-regressions--base62-bare', 'accuracy--ordinary-text', 'sendgrid-regressions--base62-bearer', 'beta8-213d--databricks-personal-access-token-env']) {
+    const fixture = fixtures.find(entry => entry.slug === slug);
+    assert.ok(fixture, slug);
+    if (fixture.assessment.tier === 'T0') continue;
+    assert.match(reportPage(data, fixture.assessment.tier, fixtures), new RegExp(`data-slug="${slug}"`), slug);
+  }
+  const t1 = reportPage(data, 'T1', fixtures);
+  assert.ok(t1.includes('Global / multi-family'));
+  assert.match(t1, /sendgrid-regressions--base62-bearer[\s\S]*Families:/);
 });
 
 test('Report: the three empty states name what is missing and the next command', async () => {

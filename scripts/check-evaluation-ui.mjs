@@ -23,11 +23,11 @@ await mkdir(output, { recursive: true });
 
 const percent = v => `${(v * 100).toFixed(1)}%`;
 const fixture = 'milestone-6-closed--issue-255-postgres-literal';
-const ROUTES = ['/report', '/report?level=T2', '/report?level=T3', '/coverage', '/coverage?show=thin', '/coverage?show=inventory', '/coverage/github-token', '/support', '/support?status=unsupported', '/suites/accuracy', `/fixture/${fixture}`,
+const ROUTES = ['/report', '/report?level=T2', '/report?level=T3', '/coverage', '/coverage?show=thin', '/coverage?show=inventory', '/coverage/detectors/github-token', '/coverage/github:classic-personal-access-token', '/support', '/support?status=unsupported', '/suites/accuracy', `/fixture/${fixture}`,
   '/workbench', '/workbench/review/lexical-invalid-alphabet', '/workbench/review/t0-fixtures', '/workbench/changes', '/workbench/changes?corpus=expanded', '/workbench/qualification',
   ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/workbench/method/${m}`), '/how-to-read'];
-const LEGACY = { '/': '/report', '/benchmark': '/report', '/benchmark/github-token': '/coverage/github-token', '/benchmark/accuracy': '/suites/accuracy', '/coverage-gaps': '/coverage', '/evaluation': '/workbench', '/pending': '/workbench/review/t0-fixtures',
-  '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation', '/evaluation/method/twin': '/workbench/method/twin', '/evaluation/detector/github-token': '/coverage/github-token', '/methodology': '/how-to-read', '/#/github-token': '/coverage/github-token' };
+const LEGACY = { '/': '/report', '/benchmark': '/report', '/benchmark/github-token': '/coverage/detectors/github-token', '/benchmark/accuracy': '/suites/accuracy', '/coverage/github-token': '/coverage/detectors/github-token', '/coverage-gaps': '/coverage', '/evaluation': '/workbench', '/pending': '/workbench/review/t0-fixtures',
+  '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation', '/evaluation/method/twin': '/workbench/method/twin', '/evaluation/detector/github-token': '/coverage/detectors/github-token', '/methodology': '/how-to-read', '/#/github-token': '/coverage/detectors/github-token' };
 const KEYBOARD = ['/report', '/coverage', `/fixture/${fixture}`, '/workbench', '/workbench/changes', '/how-to-read'];
 
 const browser = await chromium.launch({ headless: true, channel: 'chrome' });
@@ -82,6 +82,19 @@ try {
   assert.equal(await page.locator('#main .banner, #main .notice').count(), 0, 'no page-level disclaimer banner');
   await page.locator('.fig .v a').first().click();
   assert.match(page.url(), /#rows$/, 'a figure leads to the rows behind it');
+  const reportLeaves = page.locator('[data-report-leaf]');
+  const leafCount = await reportLeaves.count();
+  const leafSlugs = await reportLeaves.evaluateAll(rows => rows.map(row => row.dataset.slug));
+  assert.equal(new Set(leafSlugs).size, leafCount, 'every report fixture has exactly one display bucket');
+  await page.locator('[data-tree-signal]').selectOption('all');
+  await page.locator('[data-tree-filter]').fill('Amazon Web Services');
+  assert.ok(await page.locator('[data-tree-provider]:visible').count() > 0, 'provider search keeps matching branches');
+  assert.equal(await page.locator('[data-tree-provider]:visible:not([open])').count(), 0, 'search exposes matching provider branches');
+  assert.match(await page.locator('[data-tree-status]').innerText(), /of .* fixtures in this selection/);
+  await page.locator('[data-tree-filter]').fill('no-such-report-fixture');
+  assert.ok(await page.locator('[data-tree-empty]').isVisible(), 'a no-match selection has an explicit empty state');
+  await page.locator('[data-tree-filter]').fill('');
+  await page.locator('[data-tree-signal]').selectOption('signal');
 
   await page.goto(origin + '/coverage'); await ready(page);
   assert.equal(await page.locator('.cov-row:not(.cov-head)').count(), registry.detectors.length);
@@ -129,10 +142,27 @@ try {
   await page.keyboard.press('/'); await page.keyboard.type('github tok');
   await page.locator('#global-search-list a').first().waitFor();
   await page.keyboard.press('Enter'); await ready(page);
-  assert.equal(new URL(page.url()).pathname, '/coverage/github-token');
+  assert.equal(new URL(page.url()).pathname, '/coverage/detectors/github-token');
   await page.locator('#global-search').fill(fixture.split('--')[1]); await page.keyboard.press('Enter'); await ready(page);
   assert.equal(new URL(page.url()).pathname, `/fixture/${fixture}`);
   await page.context().close();
+
+  // 4a. Report hierarchy breakpoints from the spec: two-column summaries at
+  // 1080, compact nested rails at 760, and scrolling contained by the table.
+  for (const width of [1080, 760]) {
+    page = await open({ viewport: { width, height: 900 } });
+    await page.goto(origin + '/report'); await ready(page);
+    await page.locator('[data-tree-signal]').selectOption('all');
+    await page.locator('[data-tree-filter]').fill('SendGrid');
+    const provider = page.locator('[data-tree-provider]:visible').first();
+    assert.ok(await provider.isVisible(), `report provider visible at ${width}`);
+    const family = provider.locator('[data-tree-family]:visible').first();
+    if (!(await family.getAttribute('open'))) await family.locator(':scope > summary').click();
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `report page overflow at ${width}`);
+    if (width === 760) assert.ok(await family.locator('.tbl').first().evaluate(table => table.scrollWidth > table.clientWidth), 'wide outcome table scrolls inside its region at 760px');
+    await page.screenshot({ path: `${output}/report-hierarchy-${width}.png`, fullPage: true });
+    await page.context().close();
+  }
 
   // 4. Desktop 1280 and mobile 360, light and dark: overflow, screenshots, rendered contrast.
   for (const theme of ['light', 'dark']) for (const width of [1280, 360]) {
@@ -205,7 +235,7 @@ try {
 
   assert.deepEqual(errors, []);
   const lowest = contrast.reduce((a, b) => (a.lowest < b.lowest ? a : b));
-  await writeFile(`${output}/checks.json`, JSON.stringify({ origin, routes, legacyRedirects: LEGACY, viewports: [1280, 360], themes: ['light', 'dark'], contrast: { lowest, textNodesMeasured: contrast.reduce((n, c) => n + c.measured, 0), byPage: contrast }, keyboard, errors }, null, 2));
+  await writeFile(`${output}/checks.json`, JSON.stringify({ origin, routes, legacyRedirects: LEGACY, viewports: [1280, 1080, 760, 360], themes: ['light', 'dark'], contrast: { lowest, textNodesMeasured: contrast.reduce((n, c) => n + c.measured, 0), byPage: contrast }, keyboard, errors }, null, 2));
   console.log(`Browser QA passed: ${routes.length} routes reloaded, ${Object.keys(LEGACY).length} legacy redirects, 1280 and 360 in light and dark with no page overflow.`);
   console.log(`Rendered contrast: ${contrast.reduce((n, c) => n + c.measured, 0)} text nodes measured, lowest ${lowest.lowest}:1 (${lowest.route}, ${lowest.theme}, ${lowest.width}).`);
   console.log(`Keyboard: ${keyboard.map(k => `${k.route} ${k.reached}/${k.tabStops}`).join(', ')}; every stop shows a focus ring. Empty states: 3. Screenshots: ${output}`);

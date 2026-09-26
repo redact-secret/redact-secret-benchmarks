@@ -13,16 +13,15 @@ import { ACCOUNTING_VERSION, validateAccounting } from './lib/accounting.ts';
 import { scanners as available } from '../scanners/index.mjs';
 
 const asCandidate = (p: Candidate): Candidate => ({ sourceHash: p.sourceHash, lockHash: p.lockHash, candidateArtifactHash: p.candidateArtifactHash });
-const credentialDomain = resolveEvaluationDomain('credential');
-
 async function main() {
   const options: Record<string, string | boolean> = {};
   for (const arg of process.argv.slice(2)) {
-    const match = /^--(output|holdout-manifest)=(.+)$/.exec(arg);
+    const match = /^--(domain|output|holdout-manifest)=(.+)$/.exec(arg);
     const key = match?.[1] ?? arg.slice(2);
     if ((!match && arg !== '--require-milestone-closed') || key in options) throw new Error('Invalid qualification arguments');
     options[key] = match?.[2] ?? true;
   }
+  const credentialDomain = resolveEvaluationDomain(String(options.domain ?? 'credential'));
   const suite = JSON.parse(await readFile(path.join(repositoryRoot, 'qualification/suite-v1.json'), 'utf8'));
   const milestone = JSON.parse(await readFile(path.join(repositoryRoot, 'qualification/milestone-status.json'), 'utf8'));
   if (options['require-milestone-closed'] && (milestone.status !== 'closed' || milestone.openPrerequisites.length)) {

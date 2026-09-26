@@ -10,6 +10,7 @@ import { reviewEntryId } from './review.ts';
 import * as accounting from './accounting.ts';
 import { normalizeFinding } from './normalization.ts';
 import { credentialHoldoutDomain } from './holdout.ts';
+import { credentialHoldoutStorage } from './holdout-corpus.ts';
 
 /**
  * The one internal composition root for current evaluator semantics.
@@ -24,6 +25,7 @@ export const credentialDomain = Object.freeze({
   assessment: Object.freeze({ validateAssessment, validateContracts, classifyFixture, controlAxis, contracts, scoredContractIds }),
   accounting,
   holdout: Object.freeze(credentialHoldoutDomain),
+  holdoutStorage: Object.freeze(credentialHoldoutStorage),
   normalizeFinding,
   qualification: Object.freeze({ familyEvidence, classifyFamilySupport, statusCriteria, buildSupportMatrix, completenessReasons, validateQualificationEvidence }),
   review: Object.freeze({ reviewEntryId }),

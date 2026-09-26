@@ -1,4 +1,4 @@
-import type { EvaluationCase, Registry, Method, Operator, Scanner, Observation, CaseResult, ReviewLedger, Summary } from '../../../engine/types.ts';
+import type { EvaluationCase, Registry, Method, Operator, Scanner, Observation, CaseResult, ReviewEntry, ReviewLedger, Summary } from '../../../engine/types.ts';
 import type { AccountingConfig, DeltaCause, Finding, Fixture } from '../../../types.ts';
 
 export interface EvaluationOptions {
@@ -27,12 +27,15 @@ import { evaluationInputs as collectEvaluationInputs } from '../../substrate/cas
 import { executeDomainEvaluation } from '../../substrate/orchestration.ts';
 import { reviewState } from '../../substrate/review-state.ts';
 import { reviewEntryId } from './review.ts';
+import { assembleEvaluationArtifact } from '../../substrate/result-assembly.ts';
 
 export { reviewEntryId };
 
 export const ENGINE_VERSION = '1.1.0';
 
 export { reviewState };
+
+type CredentialQueuedReview = ReviewEntry & { id: string; caseId: string; method: string; targets: string[] };
 
 /**
  * Engine-side dual scorer (v1.1 §9): v1.0 published counts per summary row and
@@ -78,38 +81,34 @@ export async function executeEvaluation({ cases, methods, operators, scanners, p
   });
   const { startedAt } = runtime;
   const observations = runtime.observations as Observation[];
-  const results: CaseResult[] = [], reviewQueue = [];
-  for (const g of generated) {
-    const result = g.method.evaluate({ case: g.case, variants: g.variants, observations });
-    const description = describeCase(g.case);
-    for (const entry of result.queue) reviewQueue.push({
-      id: reviewEntryId(g.case.id, g.case.provenance.sourceHash, entry),
-      caseId: g.case.id, method: g.case.method, targets: g.case.targets, ...entry,
-    });
-    for (const v of g.variants.filter(v => v.strategy === 'review-required')) reviewQueue.push({
-      id: hash({ case: g.case.id, variant: v.id, hash: v.provenance.fixtureHash }),
-      caseId: g.case.id, method: g.case.method, targets: g.case.targets, variant: v.id,
-      status: 'review-required', reason: 'Mutation expectation requires an authored decision.',
-    });
-    results.push({ ...description, variants: g.variants.map(describeVariant), generation: g.attempts, ...result });
-  }
-  const failures = results.flatMap(r => r.scanners.flatMap(s => s.assertions.filter(a => a.status === 'fail')
-    .map(a => ({ caseId: r.id, method: r.method, targets: r.targets, scanner: s.scanner, assertion: a,
-      transformation: r.variants.find(v => v.id === (a.variant ?? a.candidate))?.transformation }))));
-  const generationErrors = results.flatMap(r => r.generation.filter(g => g.status === 'error').map(g => ({ caseId: r.id, ...g })));
-  const summary = summaries(results);
-  const unstable = new Set(observations.filter(o => o.status === 'unstable').map(o => o.id));
-  const account = (rows: Summary) => Object.fromEntries(Object.entries(rows).map(([key, counts]) => [key, accountCounts(counts, accounting)]));
-  return { schemaVersion: 3, engineVersion: ENGINE_VERSION, accountingVersion: ACCOUNTING_VERSION, accounting,
-    ...credentialAccountingIdentity('evaluation-v1'),
-    runId, startedAt, finishedAt: new Date().toISOString(),
-    mode: 'discovery', scope: 'Internal evaluation infrastructure; no support-status or release qualification claim.',
-    provenance: { ...provenance, casesHash: hash(cases),
-      methods: methods.values().map(({ id, version }) => ({ id, version })),
+  return assembleEvaluationArtifact({
+    generated, observations, caseCount: cases.length, variantCount: fixtures.length, schemaVersion: 3, engineVersion: ENGINE_VERSION,
+    runId, startedAt, mode: 'discovery', scope: 'Internal evaluation infrastructure; no support-status or release qualification claim.',
+    identity: { accountingVersion: ACCOUNTING_VERSION, accounting, ...credentialAccountingIdentity('evaluation-v1') },
+    provenance: { ...provenance, casesHash: hash(cases), methods: methods.values().map(({ id, version }) => ({ id, version })),
       operators: operators.values().map(({ id, version }) => ({ id, version })) },
-    scanners: observations.map(({ findings, ...metadata }) => metadata),
-    caseCount: cases.length, variantCount: fixtures.length,
-    ...summary, resolution: account(summary.byMethod), unresolvedGroups: unresolvedGroups(summary.byMethod, accounting),
-    accountingDelta: assertionDelta(summary.byMethod, unstable, accounting),
-    review: reviewState(reviewQueue, ledger), results, failures, generationErrors, reviewQueue };
+    observationMetadata: ({ findings: _findings, ...metadata }) => metadata,
+    assembleResult: g => {
+      const evaluated = g.method.evaluate({ case: g.case, variants: g.variants, observations });
+      const reviewEntries: CredentialQueuedReview[] = evaluated.queue.map(entry => ({ id: reviewEntryId(g.case.id, g.case.provenance.sourceHash, entry),
+        caseId: g.case.id, method: g.case.method, targets: g.case.targets, ...entry }));
+      reviewEntries.push(...g.variants.filter(v => v.strategy === 'review-required').map(v => ({
+        id: hash({ case: g.case.id, variant: v.id, hash: v.provenance.fixtureHash }), caseId: g.case.id,
+        method: g.case.method, targets: g.case.targets, variant: v.id, status: 'review-required' as const,
+        reason: 'Mutation expectation requires an authored decision.',
+      })));
+      return { result: { ...describeCase(g.case), variants: g.variants.map(describeVariant), generation: g.attempts, ...evaluated } as CaseResult, reviewEntries };
+    },
+    failures: results => results.flatMap(r => r.scanners.flatMap(s => s.assertions.filter(a => a.status === 'fail')
+      .map(a => ({ caseId: r.id, method: r.method, targets: r.targets, scanner: s.scanner, assertion: a,
+        transformation: r.variants.find(v => v.id === (a.variant ?? a.candidate))?.transformation })))),
+    generationErrors: results => results.flatMap(r => r.generation.filter(g => g.status === 'error').map(g => ({ caseId: r.id, ...g }))),
+    summarize: summaries,
+    decorate: (summary, runtimeObservations, reviewQueue: CredentialQueuedReview[]) => {
+      const unstable = new Set(runtimeObservations.filter(o => o.status === 'unstable').map(o => o.id));
+      const account = (rows: Summary) => Object.fromEntries(Object.entries(rows).map(([key, counts]) => [key, accountCounts(counts, accounting)]));
+      return { resolution: account(summary.byMethod), unresolvedGroups: unresolvedGroups(summary.byMethod, accounting),
+        accountingDelta: assertionDelta(summary.byMethod, unstable, accounting), review: reviewState(reviewQueue, ledger) };
+    },
+  });
 }

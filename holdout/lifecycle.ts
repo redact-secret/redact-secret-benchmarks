@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import type { Candidate, HoldoutManifest } from './types.ts';
+import type { Candidate, HoldoutCorpus, HoldoutManifest, ManifestEvaluationIdentity } from './types.ts';
 import { hash } from '../benchmarks/evaluation/substrate/hash.ts';
 import type { AccountingArtifactIdentity } from '../benchmarks/accounting/shared/primitives.ts';
 import { HoldoutError, readManifest, serialize, storeDirectory, privateDirectory, privateRead, atomicPrivateWrite } from './storage.ts';
@@ -12,12 +12,18 @@ interface LifecycleScanner {
 }
 export interface HoldoutLifecycleCommon {
   identity: AccountingArtifactIdentity; runId: string; planHash: string;
+  holdoutMethod: ContractIdentity; reportContract: ContractIdentity;
   independence: 'public-control' | 'custodian-declared'; manifest: HoldoutManifest; candidate: Candidate;
 }
-export interface HoldoutDomainAdapter<TScanner extends LifecycleScanner, TCorpus extends { seed: unknown }, TEvaluated, TReport> {
+export interface ContractIdentity { id: string; version: number }
+export interface HoldoutDomainAdapter<TScanner extends LifecycleScanner, TCorpus extends HoldoutCorpus, TEvaluated, TReport> {
   identity: AccountingArtifactIdentity;
-  publicConformanceCorpus(seed: string): unknown;
+  holdoutMethod: ContractIdentity;
+  reportContract: ContractIdentity;
+  publicConformanceCorpus(seed: string): TCorpus;
   validateCorpus(value: unknown): TCorpus;
+  serializeCorpus(corpus: TCorpus): string;
+  resolveManifestEvaluation(manifest: HoldoutManifest): ManifestEvaluationIdentity;
   evaluate(options: {
     corpus: TCorpus; manifest: HoldoutManifest; scanners: TScanner[]; runId: string; directory: string; planHash: string;
     toolPlan: { id: string; version: string; configuration: Record<string, unknown>; configurationHash: string }[];
@@ -35,7 +41,7 @@ async function stateOf(directory: string, manifest: HoldoutManifest): Promise<St
   return state;
 }
 
-async function publicStore(file: string, m: HoldoutManifest, publicConformanceCorpus: (seed: string) => unknown) {
+async function publicStore<TCorpus extends HoldoutCorpus>(file: string, m: HoldoutManifest, domain: Pick<HoldoutDomainAdapter<LifecycleScanner, TCorpus, unknown, unknown>, 'publicConformanceCorpus' | 'serializeCorpus'>) {
   const generated = path.join(path.dirname(path.resolve(file)), 'generated');
   await mkdir(generated, { mode: 0o700 }).catch(e => { if (e.code !== 'EEXIST') throw e; });
   await privateDirectory(generated);
@@ -43,15 +49,16 @@ async function publicStore(file: string, m: HoldoutManifest, publicConformanceCo
   await mkdir(base, { mode: 0o700 }).catch(e => { if (e.code !== 'EEXIST') throw e; });
   await privateDirectory(base);
   const store = await mkdtemp(path.join(base, 'run-'));
-  const corpus = publicConformanceCorpus(m.publicSeed!);
-  if (hash(serialize(corpus)) !== m.corpusHash) throw new HoldoutError('public-control-drift');
-  await writeFile(path.join(store, 'corpus.json'), serialize(corpus), { mode: 0o600 });
+  const corpus = domain.publicConformanceCorpus(m.publicSeed!);
+  const corpusText = domain.serializeCorpus(corpus);
+  if (hash(corpusText) !== m.corpusHash) throw new HoldoutError('public-control-drift');
+  await writeFile(path.join(store, 'corpus.json'), corpusText, { mode: 0o600 });
   await writeFile(path.join(store, 'state.json'), serialize({ corpusHash: m.corpusHash, status: 'sealed', runs: [] }), { mode: 0o600 });
   return store;
 }
 
 /** Only this lifecycle opts into the holdout method. It never returns rows. */
-export async function runHoldout<TScanner extends LifecycleScanner, TCorpus extends { seed: unknown }, TEvaluated, TReport>({ manifestFile, scanners, candidate, verifyCandidate, domain, runId = randomUUID() }: {
+export async function runHoldout<TScanner extends LifecycleScanner, TCorpus extends HoldoutCorpus, TEvaluated, TReport>({ manifestFile, scanners, candidate, verifyCandidate, domain, runId = randomUUID() }: {
   manifestFile: string; scanners: TScanner[]; candidate: Candidate; verifyCandidate: () => Promise<Candidate>;
   domain: HoldoutDomainAdapter<TScanner, TCorpus, TEvaluated, TReport>; runId?: string;
 }): Promise<TReport> {
@@ -74,9 +81,16 @@ export async function runHoldout<TScanner extends LifecycleScanner, TCorpus exte
     const identity = structuredClone(domain.identity);
     if (![identity.domain, identity.evaluationProfile, identity.domainAccountingVersion].every(value => typeof value === 'string' && value.length))
       throw new HoldoutError('invalid-plan');
-    const plan = { runId, candidate, tools: toolPlan, corpusHash: manifest.corpusHash, revision: manifest.revision, methodVersion: 1, evaluation: identity };
+    const holdoutMethod = structuredClone(domain.holdoutMethod), reportContract = structuredClone(domain.reportContract);
+    if (![holdoutMethod, reportContract].every(contract => typeof contract.id === 'string' && contract.id.length && Number.isInteger(contract.version) && contract.version > 0))
+      throw new HoldoutError('invalid-plan');
+    const manifestIdentity = domain.resolveManifestEvaluation(manifest);
+    if (manifestIdentity.domain !== identity.domain || manifestIdentity.evaluationProfile !== identity.evaluationProfile ||
+        manifestIdentity.domainAccountingVersion !== identity.domainAccountingVersion) throw new HoldoutError('manifest-evaluation-mismatch');
+    const plan = { runId, candidate, tools: toolPlan, corpusHash: manifest.corpusHash, revision: manifest.revision,
+      holdoutMethod, reportContract, evaluation: identity };
     ephemeral = manifest.purpose === 'public-conformance';
-    directory = ephemeral ? await publicStore(manifestFile, manifest, domain.publicConformanceCorpus) : await storeDirectory(manifestFile, manifest);
+    directory = ephemeral ? await publicStore(manifestFile, manifest, domain) : await storeDirectory(manifestFile, manifest);
     await writeFile(path.join(directory, '.lock'), runId, { mode: 0o600, flag: 'wx' });
     locked = true;
     const state = await stateOf(directory, manifest);
@@ -93,7 +107,8 @@ export async function runHoldout<TScanner extends LifecycleScanner, TCorpus exte
     if (hash(corpus.seed) !== manifest.seedHash) throw new HoldoutError('seed-integrity-mismatch');
     const planHash = hash(plan);
     const evaluated = await domain.evaluate({ corpus, manifest, scanners, runId, directory, planHash, toolPlan, candidate, verifyCandidate });
-    const report = domain.buildReport({ identity, runId, planHash, independence: ephemeral ? 'public-control' : 'custodian-declared', manifest, candidate }, evaluated);
+    const report = domain.buildReport({ identity, holdoutMethod, reportContract, runId, planHash,
+      independence: ephemeral ? 'public-control' : 'custodian-declared', manifest, candidate }, evaluated);
     domain.validateReport(report);
     await writeFile(path.join(directory, `aggregate-${runId}.json`), serialize(report), { mode: 0o600, flag: 'wx' });
     return report;

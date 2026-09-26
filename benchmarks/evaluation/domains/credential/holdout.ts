@@ -6,7 +6,7 @@ import { createHoldoutMethods } from './methods/holdout.ts';
 import { createOperators } from './operators/index.ts';
 import { normalizeFinding } from './normalization.ts';
 import { publicConformanceCorpus } from '../../../../holdout/conformance.ts';
-import { validateHoldoutCorpus } from '../../../../holdout/storage.ts';
+import { credentialHoldoutStorage, credentialManifestEvaluation, validateCredentialHoldoutCorpus } from './holdout-corpus.ts';
 import { validateEvidence } from './evidence.ts';
 import { credentialAccountingIdentity } from './accounting.ts';
 import type { HoldoutDomainAdapter, HoldoutLifecycleCommon } from '../../../../holdout/lifecycle.ts';
@@ -14,12 +14,16 @@ import type { HoldoutDomainAdapter, HoldoutLifecycleCommon } from '../../../../h
 const counts = (): Counts => ({ pass: 0, fail: 0, 'review-required': 0 });
 type CredentialHoldoutEvaluation = Pick<HoldoutReport, 'startedAt' | 'finishedAt' | 'caseCount' | 'variantCount' | 'generationErrors' | 'scanners'>;
 
-export const credentialHoldoutDomain: HoldoutDomainAdapter<Scanner, ReturnType<typeof validateHoldoutCorpus>, CredentialHoldoutEvaluation, HoldoutReport> = {
+export const credentialHoldoutDomain: HoldoutDomainAdapter<Scanner, ReturnType<typeof validateCredentialHoldoutCorpus>, CredentialHoldoutEvaluation, HoldoutReport> = {
   identity: credentialAccountingIdentity('evaluation-v1'),
-  publicConformanceCorpus,
-  validateCorpus: validateHoldoutCorpus,
+  holdoutMethod: { id: 'credential-holdout', version: 1 },
+  reportContract: { id: 'holdout-v1', version: 1 },
+  publicConformanceCorpus: seed => validateCredentialHoldoutCorpus(publicConformanceCorpus(seed)),
+  validateCorpus: validateCredentialHoldoutCorpus,
+  serializeCorpus: credentialHoldoutStorage.serializeCorpus,
+  resolveManifestEvaluation: manifest => manifest.evaluation ?? credentialManifestEvaluation,
   async evaluate({ corpus, manifest, scanners, runId, directory, planHash, toolPlan, candidate, verifyCandidate }: {
-    corpus: ReturnType<typeof validateHoldoutCorpus>; manifest: HoldoutManifest; scanners: Scanner[]; runId: string; directory: string;
+    corpus: ReturnType<typeof validateCredentialHoldoutCorpus>; manifest: HoldoutManifest; scanners: Scanner[]; runId: string; directory: string;
     planHash: string; toolPlan: { id: string; version: string; configuration: Record<string, unknown>; configurationHash: string }[];
     candidate: Candidate; verifyCandidate: () => Promise<Candidate>;
   }) {

@@ -13,6 +13,8 @@ import { familyEvidence } from '../benchmarks/support/evidence.ts';
 import { buildSupportMatrix } from '../benchmarks/support/matrix.ts';
 import { generateCase, hash } from '../benchmarks/engine/model.ts';
 import { reviewEntryId } from '../benchmarks/engine/execution.ts';
+import { resolveEvaluationDomain, evaluationDomainIds } from '../benchmarks/evaluation/domains/registry.ts';
+import { assembleEvaluationArtifact } from '../benchmarks/evaluation/substrate/result-assembly.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const text = file => readFile(path.join(root, file), 'utf8');
@@ -29,6 +31,33 @@ test('credential evaluator has one explicit internal identity and composition ro
   assert.equal(credentialDomain.qualification.familyEvidence, familyEvidence);
   assert.equal(credentialDomain.qualification.buildSupportMatrix, buildSupportMatrix);
   assert.equal(credentialDomain.review.reviewEntryId, reviewEntryId);
+});
+
+test('the keyed domain registry validates names without CLI semantic branches', () => {
+  assert.deepEqual(evaluationDomainIds(), ['credential']);
+  assert.equal(resolveEvaluationDomain('credential'), credentialDomain);
+  assert.throws(() => resolveEvaluationDomain('pii-not-registered'), /Unknown evaluation domain/);
+});
+
+test('a PII-like domain reuses post-runtime result and provenance assembly', () => {
+  const artifact = assembleEvaluationArtifact({
+    generated: [{ id: 'person-name' }], observations: [{ id: 'scanner', findings: [{ type: 'name' }], status: 'complete' }],
+    caseCount: 1, variantCount: 1, schemaVersion: 1, engineVersion: 'test', runId: 'run', startedAt: '2026-01-01T00:00:00.000Z',
+    finishedAt: '2026-01-01T00:00:01.000Z', mode: 'test', scope: 'fake-pii',
+    identity: { domain: 'pii', evaluationProfile: 'pii-v1' }, provenance: { source: 'unit-test' },
+    observationMetadata: ({ findings, ...metadata }) => metadata,
+    assembleResult: (generated, observations) => ({
+      result: { type: generated.id, sensitive: observations[0].findings.length > 0 },
+      reviewEntries: [{ id: 'review-name', reason: 'jurisdiction' }],
+    }),
+    failures: results => results.filter(result => !result.sensitive),
+    generationErrors: () => [], summarize: results => ({ sensitiveCount: results.filter(result => result.sensitive).length }),
+    decorate: (_summary, _observations, reviewQueue) => ({ review: { total: reviewQueue.length } }),
+  });
+  assert.deepEqual(artifact.results, [{ type: 'person-name', sensitive: true }]);
+  assert.deepEqual(artifact.scanners, [{ id: 'scanner', status: 'complete' }]);
+  assert.deepEqual(artifact.review, { total: 1 });
+  assert.equal(artifact.provenance.source, 'unit-test');
 });
 
 test('compatibility imports and the explicit contract generate identical credential cases', async () => {
@@ -70,6 +99,7 @@ test('legacy module paths are re-export shims and production entrypoints select 
     assert.match(source, /credentialDomain/, file);
     assert.doesNotMatch(source, /from ['"][^'"]*(?:benchmarks\/)?(?:methods|operators|engine\/cases)(?:\/|\.ts)/, file);
   }
+  assert.match(await text('benchmarks/holdout.ts'), /resolveEvaluationDomain/);
 });
 
 test('the #276 move leaves accounting and serialized report versions untouched', async () => {
@@ -79,4 +109,12 @@ test('the #276 move leaves accounting and serialized report versions untouched',
   assert.match(accounting, /ACCOUNTING_VERSION = '1\.1'/);
   assert.match(execution, /schemaVersion: 3/);
   assert.match(publicReport, /schemaVersion: 2, accountingVersion: '1\.1'/);
+});
+
+test('shared substrate, accounting and holdout mechanics do not import credential policy', async () => {
+  for (const file of [
+    'benchmarks/evaluation/substrate/orchestration.ts', 'benchmarks/evaluation/substrate/result-assembly.ts',
+    'benchmarks/accounting/shared/primitives.ts', 'holdout/lifecycle.ts', 'holdout/storage.ts',
+  ]) assert.doesNotMatch(await text(file), /evaluation\/domains\/credential|lib\/(?:assessment|scoring)|credentialAccounting/, file);
+  assert.doesNotMatch(await text('benchmarks/accounting/shared/primitives.ts'), /from ['"][^'"]*types\.ts['"]/, 'shared accounting types are local');
 });

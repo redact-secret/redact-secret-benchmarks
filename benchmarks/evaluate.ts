@@ -9,16 +9,16 @@ import { hash } from './engine/model.ts';
 import { runEvaluation, exitCode } from './engine/runner.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const usage = 'npm run eval -- [--method=twin,benign] [--detector=github-token] [--scanner=redact-secret,gitleaks,trufflehog] [--seed=experiment-1] [--strict] [--fail-on-assertions] [--output=results-output/evaluation.json]';
+const usage = 'npm run eval -- [--domain=credential] [--method=twin,benign] [--detector=github-token] [--scanner=redact-secret,gitleaks,trufflehog] [--seed=experiment-1] [--strict] [--fail-on-assertions] [--output=results-output/evaluation.json]';
 const args = process.argv.slice(2), options: Record<string, string | boolean> = {};
 for (const arg of args) {
-  const match = /^--(method|detector|scanner|output|seed)=(.+)$/.exec(arg);
+  const match = /^--(domain|method|detector|scanner|output|seed)=(.+)$/.exec(arg);
   const key = match?.[1] ?? arg.slice(2);
   if ((!match && !['--strict', '--fail-on-assertions', '--help'].includes(arg)) || key in options) throw new Error(usage);
   options[key] = match?.[2] ?? true;
 }
 if (options.help) { console.log(usage); process.exit(0); }
-const credentialDomain = resolveEvaluationDomain('credential');
+const credentialDomain = resolveEvaluationDomain(String(options.domain ?? 'credential'));
 const methods = credentialDomain.createMethods(), operators = credentialDomain.createOperators();
 let cases = await credentialDomain.loadCases(operators);
 const select = (value: string | boolean | undefined, available: string[], label: string) => {

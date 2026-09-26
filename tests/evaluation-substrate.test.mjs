@@ -16,7 +16,7 @@ const substrate = path.join(root, 'benchmarks/evaluation/substrate');
 
 test('the internal substrate has no domain branches or dependencies on semantic layers', async () => {
   const files = (await readdir(substrate)).filter(file => file.endsWith('.ts')).sort();
-  assert.deepEqual(files, ['case-lifecycle.ts', 'hash.ts', 'orchestration.ts', 'provenance.ts', 'public-projection.ts', 'registry.ts', 'review-state.ts', 'runtime.ts', 'variant-lifecycle.ts']);
+  assert.deepEqual(files, ['case-lifecycle.ts', 'hash.ts', 'orchestration.ts', 'provenance.ts', 'public-projection.ts', 'registry.ts', 'result-assembly.ts', 'review-state.ts', 'runtime.ts', 'variant-lifecycle.ts']);
   for (const file of files) {
     const source = await readFile(path.join(substrate, file), 'utf8');
     assert.doesNotMatch(source, /\b(?:credential|pii)\b/i, file);

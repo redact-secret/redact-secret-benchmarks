@@ -153,7 +153,13 @@ export function scanText(text: string, list: readonly Needle[]): Hit {
 
 /** Host sinks the contract protects: the model context, the host's log, its store, its audit trail, and error text. */
 export const HOST_SINKS = ['model-context', 'host-log', 'store', 'audit', 'error-text'] as const;
-export type HostSink = typeof HOST_SINKS[number];
+/**
+ * A sink the host supplies to its SDK and the contract places before the
+ * boundary: the 2.x Client's `responseCacheStore` (#321). Scanned and
+ * reported, and plaintext there is a documented host responsibility.
+ */
+export const PRE_BOUNDARY_SINKS = ['response-cache'] as const;
+export type HostSink = typeof HOST_SINKS[number] | typeof PRE_BOUNDARY_SINKS[number];
 
 export interface SinkScan {
   /** case id -> sink -> hit, for the host sinks. */
@@ -177,7 +183,7 @@ function merge(a: Hit | undefined, b: Hit): Hit {
 export function scanRecordDir(dir: string, secrets: readonly string[]): SinkScan {
   const list = needles(secrets);
   const byCase: Record<string, Partial<Record<HostSink, Hit>>> = {};
-  for (const sink of HOST_SINKS) {
+  for (const sink of [...HOST_SINKS, ...PRE_BOUNDARY_SINKS]) {
     for (const record of readJsonl(path.join(dir, `${sink}.jsonl`)) as { case: string; value: unknown }[]) {
       const hit = scanText(JSON.stringify(record.value), list);
       const row = (byCase[record.case] ??= {});
@@ -202,7 +208,7 @@ export function scanRecordDir(dir: string, secrets: readonly string[]): SinkScan
 // Verdicts
 // ---------------------------------------------------------------------------
 
-export interface Expectation { readonly outcome: string; readonly reason?: string }
+export interface Expectation { readonly outcome: string; readonly reason?: string; readonly code?: string }
 
 export interface HostCaseRow {
   readonly id: string;
@@ -221,6 +227,21 @@ export interface HostCaseRow {
   readonly serverStream?: { readonly pulled: number; readonly closed: number };
   readonly threw?: boolean;
   readonly control?: boolean;
+  /** resources/read rows (#321). */
+  readonly surface?: 'resources/read';
+  readonly acceptAlso?: readonly Expectation[];
+  readonly responseMatchesOutcome?: boolean;
+  readonly audit?: { readonly crossings: number; readonly findings: number; readonly auditConforms: boolean; readonly labelConforms: boolean };
+  readonly auditExact?: boolean;
+  readonly keyRedactedInPlace?: boolean;
+  readonly textStaysText?: boolean;
+  readonly blobUnchanged?: boolean;
+  readonly invoked?: boolean;
+  readonly serverResponded?: boolean;
+  readonly wireError?: string | null;
+  readonly deliveredOnAbort?: number;
+  readonly cache?: { readonly mode: 'use' | 'bypass'; readonly storeWrites: number; readonly serverReads: number };
+  readonly hostResponsibility?: boolean;
   readonly [key: string]: unknown;
 }
 
@@ -231,9 +252,14 @@ export interface CaseDeclaration {
   readonly dispatch?: boolean;
   readonly wire?: boolean;
   readonly tool?: string;
+  /** resources/read: the fixed JSON-RPC error a wrapped server's wire output must carry exactly. */
+  readonly wireError?: 'blocked' | 'readError';
+  readonly serverSilent?: boolean;
+  readonly preAborted?: boolean;
+  readonly acceptAlso?: readonly Expectation[];
 }
 
-export type Containment = 'contained' | 'leak' | 'known-false-negative' | 'delivered-by-policy' | 'control-detected' | 'control-missed';
+export type Containment = 'contained' | 'leak' | 'known-false-negative' | 'delivered-by-policy' | 'host-responsibility' | 'control-detected' | 'control-missed';
 
 export interface CaseVerdict {
   readonly id: string;
@@ -252,10 +278,10 @@ export interface CaseVerdict {
 /** Sweep cases report their own composite outcome; it must equal the expected one exactly. */
 const COMPOSITE_OUTCOMES = new Set(['ok-or-aborted', 'ok-or-blocked-at-surrogate-splits']);
 
-export function outcomeMatches(expect: Expectation, observed: HostCaseRow['observed']): boolean {
+export function outcomeMatches(expect: Expectation, observed: HostCaseRow['observed'], acceptAlso: readonly Expectation[] = []): boolean {
   if (COMPOSITE_OUTCOMES.has(expect.outcome)) return observed.outcome === expect.outcome;
-  if (observed.outcome !== expect.outcome) return false;
-  return expect.reason === undefined || observed.reason === expect.reason;
+  const one = (e: Expectation) => observed.outcome === e.outcome && (e.reason === undefined || observed.reason === e.reason) && (e.code === undefined || observed.code === e.code);
+  return one(expect) || acceptAlso.some(one);
 }
 
 export function verdict(row: HostCaseRow, declaration: CaseDeclaration | undefined, scan: SinkScan): CaseVerdict {
@@ -263,8 +289,12 @@ export function verdict(row: HostCaseRow, declaration: CaseDeclaration | undefin
   for (const [sink, hit] of Object.entries(scan.byCase[row.id] ?? {})) if (hit?.fragment) sinks.push(sink);
   if (declaration?.wire && declaration.tool && (scan.wire[declaration.tool]?.fragment ?? false)) sinks.push('server-wire');
   if (declaration?.tool && (scan.toolInput[declaration.tool]?.fragment ?? false) && (declaration.tool === 'wrapped-args' || row.area === 'arguments')) sinks.push('tool-input');
+  const preBoundary = sinks.filter(s => (PRE_BOUNDARY_SINKS as readonly string[]).includes(s));
+  const protectedSinks = sinks.filter(s => !preBoundary.includes(s));
   let containment: Containment = 'contained';
-  if (sinks.length > 0) containment = row.exclusion ? 'known-false-negative' : row.policyDelivers ? 'delivered-by-policy' : 'leak';
+  if (protectedSinks.length > 0) containment = row.exclusion ? 'known-false-negative' : row.policyDelivers ? 'delivered-by-policy' : 'leak';
+  // Plaintext only in a store the host handed its SDK, before the boundary, in a case that declares it.
+  else if (preBoundary.length > 0) containment = row.hostResponsibility ? 'host-responsibility' : 'leak';
 
   if (row.control) {
     const everySink = HOST_SINKS.every(sink => sinks.includes(sink));
@@ -274,8 +304,12 @@ export function verdict(row: HostCaseRow, declaration: CaseDeclaration | undefin
     };
   }
 
-  const checks: { name: string; passed: boolean }[] = [{ name: 'outcome', passed: outcomeMatches(row.expect, row.observed) }];
+  const checks: { name: string; passed: boolean }[] = [{ name: 'outcome', passed: outcomeMatches(row.expect, row.observed, declaration?.acceptAlso) }];
   if (row.threw) checks.push({ name: 'boundary-did-not-throw', passed: false });
+  if (row.surface === 'resources/read') {
+    checks.push(...resourceChecks(row, declaration, preBoundary.length > 0));
+    return finish(row, sinks, containment, checks);
+  }
   if (row.expect.outcome === 'aborted') checks.push({ name: 'nothing-delivered', passed: row.delivered === false });
   if (row.expect.outcome === 'blocked' && row.deliveredFixed !== undefined) checks.push({ name: 'fixed-blocked-result', passed: row.deliveredFixed === 'blocked' });
   if (row.expect.outcome === 'tool_error') checks.push({ name: 'fixed-tool-error-result', passed: row.deliveredFixed === 'toolError' });
@@ -292,14 +326,56 @@ export function verdict(row: HostCaseRow, declaration: CaseDeclaration | undefin
   if (row.serverStream && row.id.includes('block')) checks.push({ name: 'server-producer-closed', passed: row.serverStream.closed >= 1 });
   if (row.serverStream && row.area === 'cancellation') checks.push({ name: 'server-producer-closed-on-cancel', passed: row.serverStream.closed >= 1 });
 
-  const { id, area, expect, observed, exclusion, policyDelivers: _p, delivered: _d, deliveredFixed: _f, ...rest } = row;
+  return finish(row, sinks, containment, checks);
+}
+
+function finish(row: HostCaseRow, sinks: string[], containment: Containment, checks: { name: string; passed: boolean }[]): CaseVerdict {
+  const { id, area, expect, observed, exclusion, surface, policyDelivers: _p, delivered: _d, deliveredFixed: _f, acceptAlso: _a, hostResponsibility: _h, ...rest } = row;
   const observations = Object.fromEntries(Object.entries(rest).filter(([key]) => !['threw'].includes(key)));
   return {
-    id, area, expected: expect, observed, containment, sinks, checks,
+    id, area, ...(surface ? { surface } : {}), expected: expect, observed, containment, sinks, checks,
     conforms: checks.every(c => c.passed) && containment !== 'leak',
     ...(exclusion ? { exclusion } : {}),
     ...(Object.keys(observations).length > 0 ? { observations } : {}),
   };
+}
+
+/**
+ * resources/read checks (#321), each from the contract
+ * (docs/reference/mcp-resources-read.md): the delivered response is the
+ * outcome's (the result, the exact fixed blocked or read error with no
+ * `data`, or nothing when aborted), the audit record and finding label are
+ * the input-free `resource` ones, key-identified leaves are redacted in
+ * place, and cancellation delivers and sends nothing.
+ */
+function resourceChecks(row: HostCaseRow, declaration: CaseDeclaration | undefined, preBoundaryHit: boolean): { name: string; passed: boolean }[] {
+  const checks: { name: string; passed: boolean }[] = [];
+  const outcome = row.observed.outcome;
+  if (['ok', 'blocked', 'read_error', 'aborted'].includes(outcome) && row.responseMatchesOutcome !== undefined) {
+    const name = { ok: 'delivers-sanitized-result', blocked: 'fixed-blocked-error-no-data', read_error: 'fixed-read-error-no-data', aborted: 'nothing-delivered' }[outcome]!;
+    checks.push({ name, passed: row.responseMatchesOutcome });
+  }
+  if (row.expect.outcome === 'aborted' && row.responseMatchesOutcome === undefined) checks.push({ name: 'nothing-delivered', passed: row.delivered === false });
+  if (row.audit) checks.push({ name: 'audit-stage-resource-input-free', passed: row.audit.auditConforms && row.audit.crossings >= (outcome === 'aborted' ? 0 : 1) }, { name: 'finding-label-resource', passed: row.audit.labelConforms });
+  if (row.auditExact !== undefined) checks.push({ name: 'one-audit-record-and-labelled-findings', passed: row.auditExact });
+  if (row.benignUnchanged !== undefined) checks.push({ name: 'benign-delivered-unchanged', passed: row.benignUnchanged });
+  if (row.keyRedactedInPlace !== undefined) checks.push({ name: 'key-identified-leaf-redacted-in-place', passed: row.keyRedactedInPlace });
+  if (row.textStaysText !== undefined) checks.push({ name: 'text-stays-text', passed: row.textStaysText });
+  if (row.blobUnchanged !== undefined) checks.push({ name: 'blob-passed-unchanged', passed: row.blobUnchanged });
+  if (declaration?.preAborted) checks.push({ name: 'read-not-invoked', passed: row.invoked === false });
+  if (declaration?.serverSilent) checks.push({ name: 'server-sent-nothing', passed: row.serverResponded === false });
+  if (declaration?.wireError) checks.push({ name: `server-sent-exact-fixed-${declaration.wireError === 'blocked' ? 'blocked' : 'read'}-error`, passed: row.wireError === declaration.wireError });
+  if (row.deliveredOnAbort !== undefined) checks.push({ name: 'nothing-delivered-on-abort', passed: row.deliveredOnAbort === 0 });
+  if (row.cache?.mode === 'use') {
+    // Documented (mcp-resources-read.md#where-the-authoritative-boundary-sits): the store holds the raw result, and a
+    // cached read is still sanitized. A failure here means the contract's description of the SDK no longer holds.
+    checks.push(
+      { name: 'sdk-cache-stores-raw-result-before-boundary', passed: row.cache.storeWrites >= 1 && preBoundaryHit },
+      { name: 'cached-read-served-and-still-sanitized', passed: row.cache.serverReads === 1 },
+    );
+  }
+  if (row.cache?.mode === 'bypass') checks.push({ name: 'bypass-stores-nothing-and-reads-through', passed: row.cache.storeWrites === 0 && row.cache.serverReads === 2 && !preBoundaryHit });
+  return checks;
 }
 
 export interface CellSummary {
@@ -309,9 +385,12 @@ export interface CellSummary {
   readonly knownFalseNegatives: number;
   readonly deliveredByPolicy: number;
   readonly deviations: number;
+  readonly hostResponsibility?: number;
+  /** The same counts for the resources/read cases alone (#321). */
+  readonly resources?: Omit<CellSummary, 'resources'>;
 }
 
-export function summarizeCell(verdicts: readonly CaseVerdict[]): CellSummary {
+function counts(verdicts: readonly CaseVerdict[]): Omit<CellSummary, 'resources'> {
   return {
     cases: verdicts.length,
     controlsDetected: verdicts.filter(v => v.containment === 'control-detected').length,
@@ -319,7 +398,18 @@ export function summarizeCell(verdicts: readonly CaseVerdict[]): CellSummary {
     knownFalseNegatives: verdicts.filter(v => v.containment === 'known-false-negative').length,
     deliveredByPolicy: verdicts.filter(v => v.containment === 'delivered-by-policy').length,
     deviations: verdicts.filter(v => v.checks.some(c => !c.passed)).length,
+    hostResponsibility: verdicts.filter(v => v.containment === 'host-responsibility').length,
   };
+}
+
+export function summarizeCell(verdicts: readonly CaseVerdict[]): CellSummary {
+  const resources = verdicts.filter(v => v.surface === 'resources/read');
+  const all = counts(verdicts);
+  if (resources.length === 0) {
+    const { hostResponsibility: _h, ...rest } = all;
+    return rest;
+  }
+  return { ...all, resources: counts(resources) };
 }
 
 /** Throws if `text` (a report about to be written) carries any synthetic value or fragment. */

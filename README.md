@@ -66,8 +66,8 @@ boundary as a black box: it installs the exact MCP adapter and core
 tarballs into clean consumers, drives real MCP clients and servers at every
 declared SDK endpoint over stdio and Streamable HTTP, and checks that no
 synthetic value reaches the host's model context, log, store, audit trail or
-error text, and what that costs per call
-([spec](docs/specs/mcp-qualification.md), #281).
+error text, and what that costs per call, for `tools/call` and
+`resources/read` ([spec](docs/specs/mcp-qualification.md), #281, #321).
 
 ## Non-goals
 

@@ -133,6 +133,75 @@ test('the sink scan attributes plaintext per case and sink, and verdicts separat
   }
 });
 
+test('the resources/read corpus is synthetic, pins the contract\'s fixed errors, and runs the cache cases on 2.x only', () => {
+  const ids = [...W.RESOURCE_CASES, ...W.RESOURCE_READ_CASES].map(c => c.id);
+  for (const id of ids) assert.ok(/^resource-[a-z0-9-]+$/.test(id), id);
+  assert.ok(W.RESOURCE_CASES.every(c => typeof c.result === 'function' && typeof c.expect.outcome === 'string'));
+  // Exact contract text (redact-secret docs/reference/mcp-resources-read.md), and no `data` member.
+  assert.deepEqual({ ...W.FIXED_RESOURCE.blocked }, { code: -32603, message: 'This MCP resource read was blocked by secret-redaction policy. No content, URI, or error detail is included.' });
+  assert.deepEqual({ ...W.FIXED_RESOURCE.readError }, { code: -32603, message: 'This MCP resource read failed. No content, URI, or error detail is included.' });
+  assert.deepEqual(W.RESOURCE_CASES.filter(c => c.exclusion).map(c => c.exclusion), ['split-across-entries']);
+  const cache = W.RESOURCE_READ_CASES.filter(c => c.cache).map(c => c.id);
+  assert.equal(cache.length, 2);
+  assert.ok(cache.every(id => !W.caseIdsFor('v1').includes(id) && W.caseIdsFor('v2').includes(id)));
+  assert.equal(W.caseIdsFor('v2').length, W.ALL_CASE_IDS.length);
+  // Every value a resource case sends is one the leak scan looks for, or benign.
+  const benign = JSON.stringify(W.RESOURCE_CASES.filter(c => c.benign).map(c => c.result()));
+  assert.equal(scanText(benign, needles(W.allSecrets())).fragment, false);
+  assert.ok(W.allSecrets().includes(W.SECRETS.sibling));
+  // The depth cases straddle maxDepth only when counted from the result root.
+  const depth = (v, d = 0) => (v !== null && typeof v === 'object' ? Math.max(d, ...Object.values(v).map(x => depth(x, d + 1))) : d);
+  const within = depth(W.resourceCase('resource-depth-within-limit-from-root').result());
+  const over = depth(W.resourceCase('resource-depth-over-limit-from-root').result());
+  assert.ok(within <= W.LIMITS.traversalLimits.maxDepth && over > W.LIMITS.traversalLimits.maxDepth, `${within} ${over}`);
+  const metaDepth = over - 3;
+  assert.ok(metaDepth <= W.LIMITS.traversalLimits.maxDepth, 'over the limit only from the root');
+});
+
+test('resources/read verdicts check the delivered response, audit shape, wire error and cache, and separate a host responsibility from a leak', () => {
+  const secret = W.SECRETS.aws;
+  const dir = recordDir({
+    'model-context.jsonl': [], 'host-log.jsonl': [], 'store.jsonl': [], 'audit.jsonl': [], 'error-text.jsonl': [],
+    'response-cache.jsonl': [{ case: 'cached', value: { method: 'resources/read', value: `{"text":"${secret}"}` } }, { case: 'uncached-leak', value: { value: secret } }],
+  });
+  try {
+    const scan = scanRecordDir(dir, [secret]);
+    const audit = { crossings: 1, findings: 1, auditConforms: true, labelConforms: true };
+    const row = (id, extra = {}) => ({ id, area: 'resource-text', surface: 'resources/read', expect: { outcome: 'ok' }, observed: { outcome: 'ok' }, delivered: true, deliveredFixed: 'result', responseMatchesOutcome: true, audit, ...extra });
+    const ok = verdict(row('clean'), undefined, scan);
+    assert.equal(ok.surface, 'resources/read');
+    assert.deepEqual(ok.checks.map(c => c.name), ['outcome', 'delivers-sanitized-result', 'audit-stage-resource-input-free', 'finding-label-resource']);
+    assert.ok(ok.conforms);
+    // The response cache is before the boundary: plaintext there is a host responsibility only where a case declares it.
+    const cached = verdict(row('cached', { hostResponsibility: true, cache: { mode: 'use', storeWrites: 1, serverReads: 1 } }), undefined, scan);
+    assert.equal(cached.containment, 'host-responsibility');
+    assert.ok(cached.conforms);
+    assert.equal(verdict(row('uncached-leak'), undefined, scan).containment, 'leak');
+    const bypass = verdict(row('clean', { cache: { mode: 'bypass', storeWrites: 1, serverReads: 2 } }), undefined, scan);
+    assert.equal(bypass.checks.find(c => c.name === 'bypass-stores-nothing-and-reads-through').passed, false);
+    // An SDK that rejects a malformed result first is accepted as fail-closed; anything else is a deviation.
+    const decl = { id: 'x', acceptAlso: [{ outcome: 'blocked', reason: 'unsupported_value' }] };
+    const expectRead = { expect: { outcome: 'read_error' } };
+    assert.ok(verdict(row('clean', { ...expectRead, observed: { outcome: 'blocked', reason: 'unsupported_value' }, deliveredFixed: 'resourceBlocked' }), decl, scan).conforms);
+    assert.equal(verdict(row('clean', { ...expectRead, observed: { outcome: 'ok' } }), decl, scan).conforms, false);
+    // The code is part of the expected outcome when the contract names one.
+    const limit = { expect: { outcome: 'blocked', reason: 'limit_exceeded', code: 'INPUT_LIMIT_EXCEEDED' } };
+    assert.equal(verdict(row('clean', { ...limit, observed: { outcome: 'blocked', reason: 'limit_exceeded' } }), undefined, scan).checks[0].passed, false);
+    // A wrong fixed error, a wrong audit shape, a server that answered a cancelled read, a wire error that is not exact.
+    assert.equal(verdict(row('clean', { observed: { outcome: 'blocked', reason: 'policy' }, responseMatchesOutcome: false, expect: { outcome: 'blocked', reason: 'policy' } }), undefined, scan).checks.find(c => c.name === 'fixed-blocked-error-no-data').passed, false);
+    assert.equal(verdict(row('clean', { audit: { ...audit, labelConforms: false } }), undefined, scan).conforms, false);
+    const cancelled = verdict(row('clean', { expect: { outcome: 'aborted' }, observed: { outcome: 'aborted' }, delivered: false, deliveredFixed: null, serverResponded: true }), { id: 'c', serverSilent: true }, scan);
+    assert.deepEqual(cancelled.checks.filter(c => !c.passed).map(c => c.name), ['server-sent-nothing']);
+    const wire = verdict(row('clean', { expect: { outcome: 'read_error' }, observed: { outcome: 'read_error' }, deliveredFixed: 'resourceReadError', wireError: 'other' }), { id: 'w', wireError: 'blocked' }, scan);
+    assert.deepEqual(wire.checks.filter(c => !c.passed).map(c => c.name), ['server-sent-exact-fixed-blocked-error']);
+    const summary = summarizeCell([ok, cached, verdict(row('uncached-leak'), undefined, scan), verdict({ id: 't', area: 'text', expect: { outcome: 'ok' }, observed: { outcome: 'ok' } }, undefined, scan)]);
+    assert.equal(summary.cases, 4);
+    assert.deepEqual(summary.resources, { cases: 3, controlsDetected: 0, leaks: 1, knownFalseNegatives: 0, deliveredByPolicy: 0, deviations: 0, hostResponsibility: 1 });
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('a report carrying a synthetic value or fragment is refused', () => {
   assert.throws(() => assertNoPlaintext(JSON.stringify({ x: W.SECRETS.github.slice(2, 20) }), W.allSecrets()), /refusing/);
   assert.doesNotThrow(() => assertNoPlaintext(JSON.stringify({ x: '<SECRET_1>', fixed: W.FIXED.toolError }), W.allSecrets()));

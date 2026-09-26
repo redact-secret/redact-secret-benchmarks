@@ -3,7 +3,8 @@ import { generatedVariant } from '../../substrate/variant-lifecycle.ts';
 import type { PiiCase, PiiContract, PiiFinding, PiiOutcome, PiiRangeOutcome, PiiVariant } from './types.ts';
 
 const slug = (value: unknown) => typeof value === 'string' && /^[a-z][a-z0-9-]{1,79}$/.test(value);
-const date = (value: unknown) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`));
+const date = (value: unknown) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+  Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
 const locator = (value: unknown) => typeof value === 'string' && (/^https:\/\/[a-z0-9.-]+\/[a-zA-Z0-9._~!$&'()*+,;=:@\/-]+$/.test(value) ||
   /^(?:urn|benchmark):[a-zA-Z0-9][a-zA-Z0-9._:-]{1,199}$/.test(value));
 
@@ -37,13 +38,15 @@ export function validatePiiCase(c: PiiCase) {
   return c;
 }
 
-export function piiVariant(c: PiiCase, id = 'authored', input = c.input, contract = c.contract, strategy: PiiVariant['strategy'] = 'authored'): PiiVariant {
+export function piiVariant(c: PiiCase, id = 'authored', input = c.input, contract = c.contract, strategy: PiiVariant['strategy'] = 'authored',
+  options: { candidate?: PiiCase['candidate']; operator?: string; operatorVersion?: number; typeEffect?: PiiVariant['transformation']['expectationEffect']['type'];
+    sensitivityEffect?: PiiVariant['transformation']['expectationEffect']['sensitivity']; evidence?: Record<string, unknown> } = {}): PiiVariant {
   validatePiiCase(c);
-  const transformation = { method: c.method, methodVersion: 1, operator: 'authored', operatorVersion: 1,
-    expectationEffect: { type: 'preserve' as const, sensitivity: 'preserve' as const } };
+  const transformation = { method: c.method, methodVersion: 1, operator: options.operator ?? 'authored', operatorVersion: options.operatorVersion ?? 1,
+    expectationEffect: { type: options.typeEffect ?? 'preserve', sensitivity: options.sensitivityEffect ?? 'preserve' } };
   const base = generatedVariant({ caseId: c.id, id, fixture: structuredClone(input), strategy, transformation,
     seed: c.provenance.seed, sourceHash: c.provenance.sourceHash, identity: hash });
-  return { ...base, contract: structuredClone(contract), candidate: { ...c.candidate } };
+  return { ...base, contract: structuredClone(contract), candidate: { ...(options.candidate ?? c.candidate) }, ...(options.evidence ? { evidence: options.evidence } : {}) };
 }
 
 const overlaps = (a: { start: number; end: number }, b: { start: number; end: number }) => a.start < b.end && b.start < a.end;

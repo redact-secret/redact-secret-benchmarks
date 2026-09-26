@@ -52,6 +52,7 @@ export interface PiiVariant {
   transformation: PiiTransformation;
   contract: PiiContract;
   candidate: { start: number; end: number };
+  evidence?: Record<string, unknown>;
   provenance: { seed: string; sourceHash: string; fixtureHash: string; contentHash: string; transformationHash: string };
 }
 
@@ -90,6 +91,20 @@ export interface PiiMethod {
   validateCase(c: PiiCase): void;
   generate(c: PiiCase): PiiVariant[];
   evaluate(context: PiiMethodContext): PiiMethodResult;
+}
+
+export type PiiValidationState = 'valid' | 'invalid' | 'unavailable';
+export interface PiiValidator {
+  id: string; version: number;
+  validate(value: string): { state: PiiValidationState };
+}
+export interface PiiOperatorResult {
+  input: RuntimeInput; candidate: { start: number; end: number };
+  expectation: { type: PiiContract['typeExpectation']['state']; sensitivity: PiiSensitivityExpectation };
+}
+export interface PiiOperator {
+  id: string; version: number;
+  apply(c: PiiCase): PiiOperatorResult;
 }
 
 export type PiiScanner = RuntimeScanner<PiiFinding>;

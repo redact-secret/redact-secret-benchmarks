@@ -59,6 +59,7 @@ test('PII contract rejects invalid scope, authority source, profile, and visibil
     { ...base, contract: { ...base.contract, scope: { kind: 'regional' } } },
     { ...base, contract: { ...base.contract, authority: { ...base.contract.authority, kind: 'blog' } } },
     { ...base, contract: { ...base.contract, authority: { ...base.contract.authority, locator: 'free text with a claim' } } },
+    { ...base, contract: { ...base.contract, authority: { ...base.contract.authority, observedAt: '2026-02-31' } } },
     { ...base, contract: { ...base.contract, qualificationProfile: { id: 'credential-v1', version: 1 } } },
   ]) assert.throws(() => piiDomain.validateCase(invalid), /Invalid PII/);
 });

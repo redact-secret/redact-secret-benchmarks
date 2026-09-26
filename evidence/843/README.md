@@ -1,6 +1,6 @@
 # Evidence: redact-secret#843, black-box `resources/read` qualification of `@redact-secret/adapter-mcp`
 
-**Result:** PASS on containment. 3,048 case runs over 24/24 cells (Node.js 20/22/24 × SDK 1.13.0, 1.30.1, 2.0.0, 2.1.0 × stdio and Streamable HTTP), 1,440 of them `resources/read`, with no leak, no contract deviation, and no plaintext in either process's output. Both unprotected controls (tools/call and resources/read) were flagged in 24/24 cells. The 96 known false negatives are the four documented split exclusions in every cell. Tested on the unreleased adapters at `e087cb2` with the published core `0.1.0-beta.8`; the release tarballs need a rerun once redact-secret-adapters#36 bumps their versions.
+**Result:** PASS on containment. 3,048 case runs over 24/24 cells (Node.js 20/22/24 × SDK 1.13.0, 1.30.1, 2.0.0, 2.1.0 × stdio and Streamable HTTP), 1,440 of them `resources/read`, with no leak, no contract deviation, and no plaintext in either process's output. Both unprotected controls (tools/call and resources/read) were flagged in 24/24 cells. The 96 known false negatives are the four documented split exclusions in every cell. This directory records the historical run on unreleased adapters at `e087cb2`; the final rerun on the public post-#36 tarballs is frozen in [`public-release-2026.09.26/`](public-release-2026.09.26/README.md) and also passed.
 
 This is the independent boundary and operational evidence that
 [redact-secret-benchmarks#321](https://github.com/redact-secret/redact-secret-benchmarks/issues/321)
@@ -45,8 +45,9 @@ npm 11.19.1), on Node 22.16.0:
 
 These versions are already used on the registry by different builds
 (redact-secret-adapters#36). The tarballs are therefore not what a release
-would publish: the fix is a version bump at release, which changes every
-digest above, so the release tarballs need this run again.
+would publish: the fix required a version bump, which changed every digest
+above. The completed rerun on those public bytes is in
+[`public-release-2026.09.26/`](public-release-2026.09.26/README.md).
 
 ## Scanner and runtime versions
 

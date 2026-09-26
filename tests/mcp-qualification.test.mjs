@@ -227,7 +227,12 @@ test('the MCP overhead rows feed the #143 adapter-overhead dimension under their
   assert.throws(() => metricsFromAdapterOverhead([{ ...output('h', 1), schema: 'other' }]), /adapter-overhead-schema/);
 });
 
-for (const [dir, controls] of [['evidence/612', 1], ['evidence/612/release-2026.09.25', 1], ['evidence/843', 2]]) {
+for (const [dir, controls] of [
+  ['evidence/612', 1],
+  ['evidence/612/release-2026.09.25', 1],
+  ['evidence/843', 2],
+  ['evidence/843/public-release-2026.09.26', 2],
+]) {
 test(`the committed MCP evidence in ${dir} is a complete, clean, schema-valid run with no plaintext and a flagged control in every cell`, async () => {
   const { default: Ajv } = await import('ajv');
   const schema = JSON.parse(readFileSync('schemas/mcp-qualification-v1.json', 'utf8'));
@@ -275,4 +280,27 @@ test('the release-train consumer check committed with the rc requalification pas
   for (const file of ['registry-consumer-check.json', 'rc-release-pin.json']) {
     assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join(dir, file), 'utf8'), W.allSecrets()), file);
   }
+});
+
+test('the #321 final evidence pins the public post-#36 adapter packages', () => {
+  const dir = 'evidence/843/public-release-2026.09.26';
+  const report = JSON.parse(readFileSync(path.join(dir, 'mcp-qualification.json'), 'utf8'));
+  const pinText = readFileSync(path.join(dir, 'public-release-pin.json'), 'utf8');
+  const pin = JSON.parse(pinText);
+  assert.equal(report.benchmark.commit, '37451453678a76b30b3f7884b31c1ea555bedbfd');
+  assert.equal(report.artifacts.adapters.commit, 'be3f2ad5088d108867b7bae13933d706d8f1f861');
+  assert.deepEqual(
+    report.artifacts.adapters.packages.map(({ name, version, verified }) => ({ name, version, verified })),
+    [
+      { name: '@redact-secret/adapter', version: '0.1.2', verified: true },
+      { name: '@redact-secret/adapter-ai-context', version: '0.1.0-alpha.1', verified: true },
+      { name: '@redact-secret/adapter-mcp', version: '0.1.0-alpha.1', verified: true },
+    ],
+  );
+  assert.deepEqual(
+    [report.summary.cells, report.summary.completeCells, report.summary.caseRuns, report.summary.resourceCaseRuns],
+    [24, 24, 3048, 1440],
+  );
+  assert.deepEqual(pin.packages, report.artifacts.adapters.packages.map(({ name, version, contentDigest }) => ({ name, version, contentDigest })));
+  assert.doesNotThrow(() => assertNoPlaintext(pinText, W.allSecrets()));
 });

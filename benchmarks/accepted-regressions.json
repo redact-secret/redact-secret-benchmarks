@@ -22,5 +22,25 @@
     },
     "decidedAt": "2026-09-25",
     "decidedBy": "milocosmopolitan (maintainer decision relayed for redact-secret-benchmarks#143)"
+  },
+  {
+    "id": "beta9-rc-cli-aarch64-linux-gnu-detector-pack",
+    "triggerId": "size/cli/aarch64-unknown-linux-gnu",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "93ddf510a31563d58c7d4c202363ef65c4d92d55" },
+    "measured": { "baseline": 863848, "candidate": 930616, "unit": "bytes" },
+    "rationale": "The beta.9 RC remains in the same 64 KiB-aligned file-size step accepted for 6b124ac. Its file is 40 bytes larger (+0.0043%) than that candidate, while the executable load segment grows 8,624 bytes (+1.35%) and the writable load segment and second-segment offset are byte-identical. Every other changed shipped binary is within 0.33% of 6b124ac, exact-candidate conformance and cross-runtime determinism pass, and the paired latency, initialization and memory gates pass. This applies the existing candidate-bound review mechanism; it does not widen the 5% budget or transfer the prior acceptance implicitly.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The RC retains the beta.9 detector-pack gains from redact-secret#831-#838 and adds the reviewed MCP resources/read and key-aware sanitization boundary plus the recalibrated, still non-enforcing shadow scorer.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/831",
+        "https://github.com/redact-secret/redact-secret/issues/812",
+        "https://github.com/redact-secret/redact-secret/issues/810",
+        "https://github.com/redact-secret/redact-secret-benchmarks/issues/300"
+      ]
+    },
+    "decidedAt": "2026-09-26",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the beta.9 RC qualification)"
   }
 ]

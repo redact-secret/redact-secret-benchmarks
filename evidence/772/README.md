@@ -1,5 +1,10 @@
 # Evidence: redact-secret#772, the beta.9 regression-budget verdict
 
+The final beta.9 RC re-evaluation is recorded separately at
+[`93ddf510/README.md`](93ddf510/README.md). It applies the same candidate-bound
+tradeoff policy to the exact RC; it does not alter the budget or retroactively
+broaden the `6b124ac` decision.
+
 **Result:** the first beta.9 candidate, `d4bab4e`, breached the size budget
 on 8 of 28 triggers (full WebAssembly +8.2% gzip). The cause was the shadow
 evidence scorer, linked into every shipped artifact without a public caller.

@@ -4,9 +4,12 @@ import type { PiiValidationState, PiiValidator } from './types.ts';
 /** Validator hooks are untrusted: admit one exact enum and reconstruct it. */
 export function observePiiValidator(validator: PiiValidator, value: string): { state: PiiValidationState } {
   const raw: unknown = validator.validate(value);
-  if (!raw || typeof raw !== 'object' || Array.isArray(raw) || Object.keys(raw).length !== 1 || !Object.hasOwn(raw, 'state') ||
-      !['valid', 'invalid', 'unavailable'].includes(String((raw as { state?: unknown }).state))) throw new Error('Invalid PII validator observation');
-  return { state: (raw as { state: PiiValidationState }).state };
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw) || Object.keys(raw).length !== 1 || !Object.hasOwn(raw, 'state'))
+    throw new Error('Invalid PII validator observation');
+  const state: unknown = (raw as { state?: unknown }).state;
+  if (typeof state !== 'string' || (state !== 'valid' && state !== 'invalid' && state !== 'unavailable'))
+    throw new Error('Invalid PII validator observation');
+  return { state };
 }
 
 const syntheticChecksum: PiiValidator = {

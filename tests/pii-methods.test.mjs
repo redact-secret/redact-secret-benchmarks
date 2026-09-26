@@ -126,6 +126,8 @@ test('hostile validator hooks cannot inject fields or out-of-enum states', async
   const hostile = [
     { id: 'extra-validator', version: 1, validate() { return { state: 'valid', rawValue: 'RAW-VALIDATOR-SENTINEL' }; }, method: 'type-validation' },
     { id: 'enum-validator', version: 1, validate() { return { state: 'maybe-sensitive' }; }, method: 'reference-differential' },
+    { id: 'boxed-validator', version: 1, validate() { return { state: new String('valid') }; }, method: 'type-validation' },
+    { id: 'object-validator', version: 1, validate() { return { state: { toString: () => 'valid' } }; }, method: 'type-validation' },
   ];
   for (const entry of hostile) {
     const validators = piiDomain.createValidators([entry]);

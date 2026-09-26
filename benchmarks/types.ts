@@ -111,4 +111,4 @@ export interface ArrivalFamily {
 }
 /** Beta.8 fixture profiles (#206 draft; #206 owns enforcement). */
 export type FixtureProfile = 'arrival-24' | 'documented-24' | 'empirical-40' | 'context-48';
-export interface Category { id: string; kind: string; corpus: string }
+export interface Category { id: string; kind: string; corpus: string; calibrationOnly?: boolean }

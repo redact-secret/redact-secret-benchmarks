@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { figure, directionWord, withheldReason, interval, scaleMax, statusMark, byteView, byteLines, displayText, segment, redactionLane, laneMarks, OUTCOME_NAME, OUTCOME_SHAPE, evidenceCrumb, actionEmptyState } from '../src/components/index.ts';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));
-const categories = await read('benchmarks/categories.json');
+const categories = (await read('benchmarks/categories.json')).filter(category => !category.calibrationOnly);
 const fixtures = (await Promise.all(categories.map(async c => (await read(c.corpus)).fixtures.map(f => ({ ...f, slug: `${c.id}--${f.id}` }))))).flat();
 const text = html => html.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 

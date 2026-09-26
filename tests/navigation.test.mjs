@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { buildCatalog, canonicalUrl, fixtureSlug, parseRoute, reportProblem, summarize, contentSegments, rowSignal } from '../src/model.mjs';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
 const read = async path => JSON.parse(await readFile(new URL('../'+path,import.meta.url),'utf8'));
-const categories = await read('benchmarks/categories.json');
+const categories = (await read('benchmarks/categories.json')).filter(category => !category.calibrationOnly);
 const registry = await read('benchmarks/detectors.json');
 const assignments = await read('benchmarks/fixture-detectors.json');
 const corpora = Object.fromEntries(await Promise.all(categories.map(async c => [c.id, await read(c.corpus)])));

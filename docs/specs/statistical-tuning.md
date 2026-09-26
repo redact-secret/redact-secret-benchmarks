@@ -134,8 +134,10 @@ change.
 
 The feature dataset counts origin per row (`originBasis`,
 [candidate features](candidate-features.md) §2). The beta.9 calibration
-experiments cannot meet the cap and carry a reviewed override, backed by a
-reweighting sensitivity check
+partition meets the default cap without an override: reviewed authored
+positives and controls cover every applicable family in tuning, while the
+generated-heavy development categories remain out-of-fit
+`development-evaluation` evidence
 ([calibration experiments](calibration-experiments.md) §7).
 
 ## 6. Strata

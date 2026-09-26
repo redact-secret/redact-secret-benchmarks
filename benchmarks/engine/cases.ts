@@ -51,6 +51,9 @@ export async function loadCases(operators: Registry<Operator>): Promise<Evaluati
       if (JSON.stringify(f.assessment) !== JSON.stringify(classifyFixture(category.id, f))) throw new Error('Stale case assessment');
     });
     validateStructures(corpus.fixtures);
+    // Calibration-only rows are validated above and consumed by candidate-feature
+    // extraction, but never become public benchmark cases or support evidence.
+    if (category.calibrationOnly) continue;
     const sourceHash = hash(corpus);
     for (const f of corpus.fixtures) {
       const base: CaseSeed = {

@@ -1,14 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertNoHoldout, buildDataset, extractorSourceHash, holdoutIdentifiers, loadCategoryInputs } from '../benchmarks/lib/candidate-features.ts';
 import {
-  BANDS, CAP_GRID, GENERATED_SHARE_OVERRIDE, SIGNALS, bandOf, buildManifestDraft, buildProjection, capNeighbours, combineWithinGroup,
+  BANDS, CAP_GRID, SIGNALS, bandOf, buildManifestDraft, buildProjection, capNeighbours, combineWithinGroup,
   conformance, evaluate, experimentSpecs, fitConfig, generatedShareWeights, halving, isotonicFit, ramp, runConfig, runExperiments,
 } from '../benchmarks/lib/calibration-experiments.ts';
+import { calibrationPartitionCoverage, calibrationPartitionProblems } from '../benchmarks/lib/calibration-partition.ts';
 import { MIN_STRATUM_ROWS, projectionProblems } from '../benchmarks/lib/calibration-projection.mjs';
 import { FEATURE_NAMES, extractEvidenceFeatures } from '../benchmarks/lib/evidence-features.ts';
 import { loadRepositoryState, scoringIdentity, validateTuningManifest } from '../benchmarks/lib/tuning-manifest.ts';
@@ -17,14 +18,16 @@ import { exclusionProblems } from '../scripts/check-feature-dataset-exclusion.mj
 const root = fileURLToPath(new URL('../', import.meta.url));
 const holdout = holdoutIdentifiers(root, readdirSync(path.join(root, 'holdout')));
 const dataset = buildDataset(loadCategoryInputs(root), { sourceHash: extractorSourceHash(root), commit: 'a'.repeat(40), dirty: false, holdoutIdentifiers: holdout });
-const development = dataset.rows.filter(r => r.partition === 'development');
-const evaluation = dataset.rows.filter(r => r.partition === 'regression');
+const partition = JSON.parse(readFileSync(path.join(root, 'tuning/shadow-scoring-development-v1.json'), 'utf8'));
+const allDevelopment = dataset.rows.filter(r => r.partition === 'development');
+const development = dataset.rows.filter(r => r.partition === 'development' && partition.tuningCategories.includes(r.category));
+const evaluation = dataset.rows.filter(r => r.partition === 'regression' || (r.partition === 'development' && !partition.tuningCategories.includes(r.category)));
 
 // A small, representative spec set keeps the suite fast; the CLI runs the whole grid.
 const all = experimentSpecs();
 const SUBSET = all.filter(s => !s.id.startsWith('halving-') && s.kind !== 'logistic' && s.kind !== 'lookup-2d')
   .concat(all.filter(s => /^halving-r1-l0-r(50|60)-l0-c(30|40|50)$/.test(s.id)));
-const result = runExperiments(dataset, { specs: SUBSET, sensitivity: false });
+const result = runExperiments(dataset, { specs: SUBSET, sensitivity: false, tuningCategories: partition.tuningCategories });
 
 // Synthetic values only; none resembles an issued credential.
 const RANDOMISH = 'q7Vd2LmZ9xKp4TsW8nRb3YhJ6cFg1AeU';
@@ -127,23 +130,27 @@ test('tuning reads development rows only: evaluation rows cannot move a fitted v
   assert.deepEqual(other.fitted.ramps, base.fitted.ramps);
   assert.notDeepEqual(other.evaluation.medium, base.evaluation.medium);
   assert.equal(result.rows.development, development.length);
+  assert.equal(result.rows.developmentEvaluation, evaluation.filter(row => row.partition === 'development').length);
+  assert.equal(result.rows.regressionEvaluation, evaluation.filter(row => row.partition === 'regression').length);
   assert.equal(result.holdoutAccess, 'none');
   assert.doesNotThrow(() => assertNoHoldout(result, holdout));
 });
 
 test('the experiment result is deterministic and selects a conformant grid configuration', () => {
-  const again = runExperiments(dataset, { specs: SUBSET, sensitivity: false });
+  const again = runExperiments(dataset, { specs: SUBSET, sensitivity: false, tuningCategories: partition.tuningCategories });
   assert.deepEqual(JSON.parse(JSON.stringify(again)), JSON.parse(JSON.stringify(result)));
   const chosen = result.configurations.find(c => c.id === result.selection.selectedId);
   assert.ok(chosen.adrConformant && chosen.id.startsWith('halving-'));
   assert.ok(result.selection.admissible.includes(chosen.id));
-  assert.ok(result.selection.loco.folds > 10);
+  assert.equal(result.selection.loco.folds, partition.tuningCategories.length);
   for (const band of ['low', 'medium', 'high']) {
     const m = chosen.development[band];
     for (const v of [m.leakedSpanRate, m.falseAlarmRate, m.measurableShare, m.twins.rate]) assert.ok(v >= 0 && v <= 1);
   }
   assert.equal(result.selection.strata.development.family['generic-token'].rows, development.filter(r => r.family === 'generic-token').length);
   assert.match(result.selection.calibration.note, /never a probability/);
+  assert.equal(result.selection.evaluationRoles.developmentEvaluation.medium.rows, result.rows.developmentEvaluation);
+  assert.equal(result.selection.evaluationRoles.regression.medium.rows, result.rows.regressionEvaluation);
 });
 
 test('cap neighbours are one grid step away with the same signals', () => {
@@ -155,9 +162,9 @@ test('cap neighbours are one grid step away with the same signals', () => {
 });
 
 test('generated-share weights balance generated and authored rows', () => {
-  const w = generatedShareWeights(development);
-  const total = development.reduce((s, r) => s + w(r), 0);
-  const generated = development.filter(r => r.origin === 'generated').reduce((s, r) => s + w(r), 0);
+  const w = generatedShareWeights(allDevelopment);
+  const total = allDevelopment.reduce((s, r) => s + w(r), 0);
+  const generated = allDevelopment.filter(r => r.origin === 'generated').reduce((s, r) => s + w(r), 0);
   assert.ok(Math.abs(generated / total - 0.5) < 1e-9);
 });
 
@@ -172,23 +179,29 @@ const repo = loadRepositoryState(root);
 const placeholder = { sourceRevision: '1'.repeat(40), sourceHash: '2'.repeat(64), lockHash: '3'.repeat(64), candidateArtifactHash: '4'.repeat(64) };
 const draft = buildManifestDraft(result, dataset, { createdAt: '2026-09-25', selectionSourceHash: '5'.repeat(64), corpusHashes: repo.corpusHashes, product: placeholder }, identity);
 
-test('the tuning manifest draft passes #256 with its reviewed generated-share override, and only with it', () => {
+test('the authored tuning partition covers every applicable family and needs no generated-share override', () => {
   const { draftNotes, ...manifest } = draft;
-  assert.ok(draftNotes.tuningGeneratedShare > 0.5, 'the corpus really is mostly generated');
+  assert.deepEqual(calibrationPartitionProblems(partition, dataset), []);
+  const coverage = calibrationPartitionCoverage(partition, dataset);
+  assert.equal(coverage.length, 77);
+  assert.ok(coverage.every(row => row.mustRedact + row.policy > 0 && row.controls > 0));
+  assert.ok(coverage.every(row => row.authored > 0 && row.generated === 0));
+  assert.equal(draftNotes.tuningGeneratedShare, 0);
   assert.deepEqual(validateTuningManifest(manifest, repo), []);
-  assert.deepEqual(manifest.generatedShare, { cap: 0.5, override: GENERATED_SHARE_OVERRIDE });
-  const withoutOverride = validateTuningManifest({ ...manifest, generatedShare: { cap: 0.5 } }, repo);
-  assert.ok(withoutOverride.some(p => /generatedShare/.test(p)));
+  assert.deepEqual(manifest.generatedShare, { cap: 0.5 });
+  assert.ok(manifest.corpora.evaluation.some(source => source.role === 'development-evaluation'));
   // The manifest carries hashes and counts only: no configuration id (which encodes caps), no threshold, no weight.
   const text = JSON.stringify(manifest);
   assert.ok(!/halving-r\d|"thresholds"|"ramps"|"caps"/.test(text));
   assert.equal(manifest.holdoutAccess, 'none');
   assert.ok(manifest.corpora.tuning.every(s => repo.developmentCategories.includes(s.category)));
-  assert.ok(manifest.corpora.evaluation.every(s => s.role === 'regression' && repo.regressionCategories.includes(s.source)));
+  assert.ok(manifest.corpora.evaluation.every(s => s.role === 'regression'
+    ? repo.regressionCategories.includes(s.source)
+    : s.role === 'development-evaluation' && repo.developmentCategories.includes(s.source)));
 });
 
 test('the public projection carries aggregate outcomes and identities only', () => {
-  const projection = buildProjection(result, draft.scoring.identity, '5'.repeat(64), { tuningShare: 0.78, overrideApplied: true }, MIN_STRATUM_ROWS);
+  const projection = buildProjection(result, draft.scoring.identity, '5'.repeat(64), { tuningShare: 0, overrideApplied: false }, MIN_STRATUM_ROWS);
   assert.deepEqual(projectionProblems(projection), []);
   const text = JSON.stringify(projection);
   assert.ok(!text.includes(result.selection.selectedId));
@@ -211,7 +224,7 @@ test('the public-surface check refuses calibration results and malformed project
   const temp = mkdtempSync(path.join(tmpdir(), 'calibration-exclusion-'));
   try {
     mkdirSync(path.join(temp, 'public/results'), { recursive: true });
-    const projection = buildProjection(result, draft.scoring.identity, '5'.repeat(64), { tuningShare: 0.78, overrideApplied: true }, MIN_STRATUM_ROWS);
+    const projection = buildProjection(result, draft.scoring.identity, '5'.repeat(64), { tuningShare: 0, overrideApplied: false }, MIN_STRATUM_ROWS);
     writeFileSync(path.join(temp, 'public/results/aggregate.json'), JSON.stringify(projection));
     assert.deepEqual(exclusionProblems(temp, { checkIgnore: false }), []);
     writeFileSync(path.join(temp, 'public/results/calibration-experiments-v1.json'), '{}');

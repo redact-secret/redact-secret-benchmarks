@@ -8,7 +8,8 @@
  * capped sum, max-within-group and the contract's halving rule, a 2-D entropy x
  * length lookup, and a floating-point logistic model kept as a research
  * reference. Each configuration's band thresholds are swept and selected on
- * development rows only, then evaluated on the evaluation-only regression rows.
+ * selected authored development rows only, then evaluated on held-out
+ * development and regression rows.
  * Holdout is never read: the input is the #254 dataset, which never reads it.
  *
  * Rules are normative in docs/specs/calibration-experiments.md.
@@ -38,6 +39,8 @@ export const DEFAULT_MANIFEST_DRAFT = 'results-output/calibration/tuning-manifes
 /** The files whose bytes define the selection procedure; their hash is `selection.sourceHash`. */
 export const SELECTION_SOURCES = [
   'benchmarks/lib/calibration-experiments.ts', 'benchmarks/lib/calibration-projection.mjs', 'benchmarks/calibration-experiments.ts',
+  'benchmarks/lib/calibration-partition.ts',
+  'tuning/shadow-scoring-development-v1.json',
 ] as const;
 
 /** Selection tolerance: a configuration within this much development balanced error of the best is admissible. */
@@ -713,6 +716,8 @@ export interface ExperimentOptions {
   specs?: ConfigSpec[];
   /** Run the generated-share reweighting sensitivity (a second full pass). */
   sensitivity?: boolean;
+  /** Development categories admitted to fitting. Other development categories remain evaluation-only. */
+  tuningCategories?: string[];
 }
 
 const labelsOf = (scored: ScoredRow[]) => scored.map(s => (isMustRedact(s.row) ? 1 : 0));
@@ -750,8 +755,16 @@ function authoredOnlySensitivity(results: ConfigResult[], selected: ConfigResult
 }
 
 export function runExperiments(dataset: CandidateFeatureDataset, options: ExperimentOptions = {}) {
-  const development = dataset.rows.filter(r => r.partition === 'development' && r.tuningEligible);
-  const evaluation = dataset.rows.filter(r => r.partition === 'regression');
+  const allDevelopmentCategories = [...new Set(dataset.corpora.filter(c => c.partition === 'development').map(c => c.category))].sort();
+  const tuningCategories = [...new Set(options.tuningCategories ?? allDevelopmentCategories)].sort();
+  if (!tuningCategories.length || tuningCategories.some(category => !allDevelopmentCategories.includes(category))) throw new Error('Invalid tuning category partition');
+  const tuning = new Set(tuningCategories);
+  const developmentEvaluationCategories = allDevelopmentCategories.filter(category => !tuning.has(category));
+  const regressionCategories = [...new Set(dataset.corpora.filter(c => c.partition === 'regression').map(c => c.category))].sort();
+  const development = dataset.rows.filter(r => r.partition === 'development' && r.tuningEligible && tuning.has(r.category));
+  const developmentEvaluation = dataset.rows.filter(r => r.partition === 'development' && !tuning.has(r.category));
+  const regressionEvaluation = dataset.rows.filter(r => r.partition === 'regression');
+  const evaluation = [...developmentEvaluation, ...regressionEvaluation];
   const specs = options.specs ?? experimentSpecs();
   const results = specs.map(spec => runConfig(spec, development, evaluation));
   const selection = selectConfiguration(results, development);
@@ -764,7 +777,7 @@ export function runExperiments(dataset: CandidateFeatureDataset, options: Experi
       generatedOnly: { development: outcomes(selected.fitted, generated(development), 'medium'), evaluation: outcomes(selected.fitted, generated(evaluation), 'medium') },
     },
   };
-  if (options.sensitivity !== false) {
+  if (options.sensitivity !== false && generated(development).length > development.length / 2) {
     const weight = generatedShareWeights(development);
     const reweighted = specs.map(spec => runConfig(spec, development, evaluation, weight));
     const again = selectConfiguration(reweighted, development, weight);
@@ -788,7 +801,13 @@ export function runExperiments(dataset: CandidateFeatureDataset, options: Experi
     experimentVersion: CALIBRATION_EXPERIMENTS_VERSION,
     aggregationContractVersion: AGGREGATION_CONTRACT_VERSION,
     featureDataset: datasetSummary(dataset),
-    rows: { development: development.length, evaluation: evaluation.length },
+    rows: {
+      development: development.length,
+      evaluation: evaluation.length,
+      developmentEvaluation: developmentEvaluation.length,
+      regressionEvaluation: regressionEvaluation.length,
+    },
+    partitions: { tuningCategories, developmentEvaluationCategories, regressionCategories },
     selectionRule: {
       method: SELECTION_METHOD, tolerance: SELECTION_TOLERANCE, highFalseAlarmTarget: HIGH_FALSE_ALARM_TARGET, capGrid: CAP_GRID,
     },
@@ -820,6 +839,10 @@ export function runExperiments(dataset: CandidateFeatureDataset, options: Experi
         evaluation: { family: strata(selected.fitted, evaluation, 'family'), context: strata(selected.fitted, evaluation, 'contextClass'), origin: strata(selected.fitted, evaluation, 'originBasis') },
       },
       calibration: calibrationStudy(selected.fitted, development, evaluation),
+      evaluationRoles: {
+        developmentEvaluation: Object.fromEntries(BANDS.slice(1).map(band => [band, outcomes(selected.fitted, developmentEvaluation, band)])),
+        regression: Object.fromEntries(BANDS.slice(1).map(band => [band, outcomes(selected.fitted, regressionEvaluation, band)])),
+      },
     },
     logisticResearch: logistic ? {
       note: 'Floating-point research reference: not expressible in core fixed-point arithmetic; shows how much separability the integer models leave unused. Its output is not a product value.',
@@ -885,13 +908,6 @@ export function buildProjection(result: ExperimentResult, scoringIdentityValue: 
 // this scoring (redact-secret#770/#798); until one exists the draft leaves it
 // null and is validated against every other rule.
 
-/** Reviewed override of the 0.5 generated-share cap (statistical tuning §5). */
-export const GENERATED_SHARE_OVERRIDE = {
-  cap: 1,
-  reason: 'The development corpora are benchmark-generated almost throughout: after the per-row refinement (candidate-features/2) only rows whose value a person typed into a generator, and the three authored corpora, count as authored; roughly four in five tuning rows stay generated, and most families have no authored row at all, so no cap below 1 can hold per family. Mitigations: (1) every run repeats each tuning fit with authored rows reweighted to a 0.5 generated share and reports whether the same configuration is selected (it is, at the time of this review); (2) the selected configuration is also reported on the authored-only and generated-only subsets; (3) the selection penalises cap settings that only work at one grid point. Retire this override when authored rows reach half of each family (more authored corpora, redact-secret-benchmarks#255 follow-up).',
-  reviewedBy: 'redact-secret-benchmarks#255 pull request review (maintainer confirmation requested in the PR body)',
-} as const;
-
 export interface ManifestContext {
   createdAt: string;
   selectionSourceHash: string;
@@ -908,7 +924,9 @@ export function buildManifestDraft(result: ExperimentResult, dataset: CandidateF
     weightSetHash: result.selection.components.weightSetHash,
     thresholdSetHash: result.selection.components.thresholdSetHash,
   };
-  const tuning = dataset.corpora.filter(c => c.partition === 'development').map(c => ({
+  const tuningCategories = new Set(result.partitions.tuningCategories);
+  const developmentEvaluationCategories = new Set(result.partitions.developmentEvaluationCategories);
+  const tuning = dataset.corpora.filter(c => c.partition === 'development' && tuningCategories.has(c.category)).map(c => ({
     category: c.category, corpusHash: c.corpusHash, rows: c.rows, families: c.families, contexts: c.contexts,
   }));
   const generated = tuning.reduce((s, c) => s + c.rows.generated, 0), total = tuning.reduce((s, c) => s + c.rows.generated + c.rows.authored, 0);
@@ -925,10 +943,14 @@ export function buildManifestDraft(result: ExperimentResult, dataset: CandidateF
     scoring: { ...components, identity: scoringIdentityOf(components) },
     corpora: {
       tuning,
-      evaluation: dataset.corpora.filter(c => c.partition === 'regression').map(c => ({ source: c.category, role: 'regression' as const, corpusHash: c.corpusHash })),
+      evaluation: dataset.corpora.filter(c => c.partition === 'regression' || developmentEvaluationCategories.has(c.category)).map(c => ({
+        source: c.category,
+        role: c.partition === 'regression' ? 'regression' as const : 'development-evaluation' as const,
+        corpusHash: c.corpusHash,
+      })),
     },
     holdoutAccess: 'none' as const,
-    generatedShare: { cap: 0.5, override: GENERATED_SHARE_OVERRIDE },
+    generatedShare: { cap: 0.5 },
     strata: { dimensions: ['family', 'context', 'kind'] },
     /** Not part of the manifest schema: stripped before a manifest is committed. */
     draftNotes: {
@@ -954,7 +976,7 @@ export function renderReport(result: ExperimentResult, manifestProblems: string[
     '> The evidence score is an ordinal integer and never a probability. Only the Platt/isotonic rows below are calibrated estimates, valid for the development population only.', '',
     `- experiment: \`${result.experimentVersion}\`, aggregation contract \`${result.aggregationContractVersion}\``,
     `- dataset: \`${result.featureDataset.datasetHash}\` (extractor \`${result.featureDataset.extractorVersion}\`, benchmark \`${result.featureDataset.benchmark.commit}\`${result.featureDataset.benchmark.dirty ? ', dirty' : ''})`,
-    `- rows: ${result.rows.development} development (tuning), ${result.rows.evaluation} regression (evaluation-only); holdout read: none`, '');
+    `- rows: ${result.rows.development} authored development (tuning), ${result.rows.developmentEvaluation} held-out development + ${result.rows.regressionEvaluation} regression (evaluation-only); holdout read: none`, '');
   lines.push('## Configurations at `medium` (flagged = band >= medium)', '',
     'BE = leaked span rate + false alarm rate. Grid rows: the selected configuration and the five best by development BE.', '');
   row(['configuration', 'conformant', 'params', 't_low/t_med/t_high', 'dev leak', 'dev policy leak', 'dev FA', 'dev indep. FA', 'dev collateral', 'dev twins', 'dev measurable', 'dev BE', 'eval leak', 'eval FA', 'eval collateral', 'eval twins', 'eval BE']);
@@ -976,6 +998,13 @@ export function renderReport(result: ExperimentResult, manifestProblems: string[
   for (const band of ['low', 'medium', 'high'] as const) for (const part of ['development', 'evaluation'] as const) {
     const m = selected[part][band];
     lines.push(`| ${band} | ${part} | ${pct(m.leakedSpanRate)} | ${pct(m.policyLeakedSpanRate)} | ${pct(m.falseAlarmRate)} | ${pct(m.independentFalseAlarmRate)} | ${num(m.collateralRatio)} | ${m.twins.discriminated}/${m.twins.pairs} | ${pct(m.measurableShare)} (${Object.entries(m.unresolved).map(([k, v]) => `${k} ${v}`).join(', ')}) |`);
+  }
+  lines.push('', 'Evaluation-only roles (kept separate so the smaller fit set cannot hide a loss):', '',
+    '| band cut | role | leak | policy leak | FA | collateral | twins | measurable |',
+    '| --- | --- | --- | --- | --- | --- | --- | --- |');
+  for (const band of ['low', 'medium', 'high'] as const) for (const role of ['developmentEvaluation', 'regression'] as const) {
+    const m = result.selection.evaluationRoles[role][band];
+    lines.push(`| ${band} | ${role} | ${pct(m.leakedSpanRate)} | ${pct(m.policyLeakedSpanRate)} | ${pct(m.falseAlarmRate)} | ${num(m.collateralRatio)} | ${m.twins.discriminated}/${m.twins.pairs} | ${pct(m.measurableShare)} |`);
   }
   lines.push('', `Band distribution: development ${JSON.stringify(selected.bandDistribution.development)}, evaluation ${JSON.stringify(selected.bandDistribution.evaluation)}.`, '');
   lines.push('Selection:', '', `- best neighbourhood BE ${num(result.selection.bestNeighbourhoodBalancedError)}; admissible (${result.selection.admissible.length}): ${result.selection.admissible.join(', ')}`,

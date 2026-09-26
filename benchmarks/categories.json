@@ -173,5 +173,13 @@
     "description": "Independent positives and single-property twin pairs, authored against each family's existing registry contract, that bring gitlab-runner-authentication-token, groq-api-key, langfuse-secret-key, langsmith-api-key, neon-api-key, perplexity-api-key, pinecone-api-key, postman-collection-access-key and xai-api-key to the stable-empirical cells and travisci-api-token to the context-constrained-empirical cells (ten context-twin pairs). Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
     "kind": "accuracy",
     "corpus": "fixtures/generated/beta8-263.json"
+  },
+  {
+    "id": "shadow-scoring-authored",
+    "title": "Authored shadow-scoring calibration rows",
+    "description": "One independently authored, never-issued positive and one whole-value reference control for every reviewed family not already covered by the authored GitHub-token corpus. These static rows are tuning inputs; generated provider suites remain out-of-fit development evaluation.",
+    "kind": "accuracy",
+    "calibrationOnly": true,
+    "corpus": "corpora/development/shadow-scoring-authored.json"
   }
 ]

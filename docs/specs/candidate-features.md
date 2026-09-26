@@ -80,9 +80,10 @@ these fields.
   seeded body, a concatenation and a one-character mutation of a seeded
   body. The row is `generated`.
 
-The rule errs towards `generated`, the direction the cap guards. Most
-tuning rows remain generated, so a tuning manifest built on this dataset
-still needs a reviewed `generatedShare.override` or more authored rows
+The rule errs towards `generated`, the direction the cap guards. The dataset
+still records every generated development row, but the shadow-scoring
+partition admits only reviewed authored categories to fitting and keeps the
+generated-heavy categories as `development-evaluation`
 ([calibration experiments](calibration-experiments.md) §7).
 
 ## 3. Feature definitions

@@ -280,9 +280,10 @@ are in [docs/specs/candidate-features.md](docs/specs/candidate-features.md).
 models for the product's shadow scorer (#255): grouped scores under the
 contract's halving rule and caps, capped-sum and max-within-group variants,
 a flat linear baseline, a 2-D entropy × length lookup, and a floating-point
-logistic reference. It fits ramps and band thresholds on development rows,
-evaluates on regression rows, selects one conformant configuration for
-redact-secret#770, and emits a #256 tuning-manifest draft. Weights, caps,
+logistic reference. It fits ramps and band thresholds on the reviewed authored
+development partition, evaluates on held-out development and regression rows,
+selects one conformant configuration for redact-secret#770, and emits a #256
+tuning-manifest draft without a generated-share override. Weights, caps,
 thresholds and per-configuration results stay in `results-output/`; only an
 aggregate projection passes the public whitelist
 ([docs/specs/calibration-experiments.md](docs/specs/calibration-experiments.md)).

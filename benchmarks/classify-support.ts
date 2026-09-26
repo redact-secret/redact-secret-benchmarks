@@ -7,22 +7,20 @@ import { fileURLToPath } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
 import { assertPinnedPeers } from '../scanners/pins.mjs';
 import { candidateConfiguration, installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
-import { createMethods } from './methods/index.ts';
-import { createOperators } from './operators/index.ts';
-import { loadCases } from './engine/cases.ts';
+import { credentialDomain } from './evaluation/domains/credential/contract.ts';
 import type { ReviewLedger, Scanner } from './engine/types.ts';
 import { runEvaluation } from './engine/runner.ts';
 import { evaluationInputs } from './engine/execution.ts';
 import { inputIdentity, makeSnapshot, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity, snapshotObservation,
   snapshotPath, writeSnapshot } from './lib/peer-observations.ts';
-import { contracts, scoredContractIds } from './lib/assessment.ts';
-import { classifyFamilySupport, statusCriteria, type SupportStatus } from './support/status.ts';
+import type { SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
-import { familyEvidence } from './support/evidence.ts';
 import { fixtureProfileReport, fixtureProfiles } from './support/profiles.ts';
 import fixtureIndex from './fixture-index.json';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
+const { contracts, scoredContractIds } = credentialDomain.assessment;
+const { classifyFamilySupport, statusCriteria, familyEvidence } = credentialDomain.qualification;
 const CANDIDATE_KEYS = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit'] as const;
 const usage = 'Usage: npm run eval:classify -- [--output=results-output/support-status.json] '
   + '[--refresh-peer-snapshots|--live-peers] '
@@ -82,8 +80,8 @@ async function main() {
     // is labelled with the version it describes (#213), not only "the published package".
     const publishedPackage = product ? null
       : { packageName: '@redact-secret/core', version: await scanners.find((s: Scanner) => s.id === 'redact-secret')!.version(root) };
-    const operators = createOperators(), methods = createMethods();
-    const cases = (await loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
+    const operators = credentialDomain.createOperators(), methods = credentialDomain.createMethods();
+    const cases = (await credentialDomain.loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
     let revision = 'unknown', dirty: boolean | null = null;
     try {
       revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
@@ -103,6 +101,7 @@ async function main() {
     const executing = reuse ? productScanners : scanners;
     console.log(`Running every registered family's evidence through the profile: ${cases.length} cases with ${scanners.map((s: { id: string }) => s.id).join(', ')}…`);
     const report = await runEvaluation({ cases, methods, operators, scanners: executing, reusedObservations, ledger, onProgress: console.log,
+      normalizeFinding: credentialDomain.normalizeFinding,
       ...(options['refresh-peer-snapshots'] ? { captureObservations: async (_fixtures, observations) => {
         for (const observation of observations.filter(o => o.id !== 'redact-secret')) {
           if (observation.status !== 'complete') throw new Error(`Cannot snapshot incomplete peer ${observation.id}`);

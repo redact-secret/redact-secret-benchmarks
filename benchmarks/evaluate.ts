@@ -4,9 +4,7 @@ import { platform, arch } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanners } from '../scanners/index.mjs';
-import { createMethods } from './methods/index.ts';
-import { createOperators } from './operators/index.ts';
-import { loadCases } from './engine/cases.ts';
+import { credentialDomain } from './evaluation/domains/credential/contract.ts';
 import { hash } from './engine/model.ts';
 import { runEvaluation, exitCode } from './engine/runner.ts';
 
@@ -20,8 +18,8 @@ for (const arg of args) {
   options[key] = match?.[2] ?? true;
 }
 if (options.help) { console.log(usage); process.exit(0); }
-const methods = createMethods(), operators = createOperators();
-let cases = await loadCases(operators);
+const methods = credentialDomain.createMethods(), operators = credentialDomain.createOperators();
+let cases = await credentialDomain.loadCases(operators);
 const select = (value: string | boolean | undefined, available: string[], label: string) => {
   if (!value) return available;
   const ids = String(value).split(',');
@@ -45,6 +43,7 @@ try {
 console.log(`Evaluating ${cases.length} cases with ${scannerIds.join(', ')}…`);
 const report = await runEvaluation({ cases, methods, operators,
   scanners: scanners.filter(s => scannerIds.includes(s.id)), onProgress: message => console.log(message),
+  normalizeFinding: credentialDomain.normalizeFinding,
   provenance: { revision, dirty, seed: options.seed ?? 'corpus-default', lockHash: hash(await readFile(path.join(root, 'package-lock.json'))),
     runtime: { node: process.version, platform: platform(), arch: arch() },
     selection: { methods: methodIds, detectors: options.detector ? detectorIds : 'all', scanners: scannerIds } },

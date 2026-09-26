@@ -12,6 +12,8 @@ export interface EvaluationOptions {
   reusedObservations?: Observation[];
   /** Refresh-only hook. Receives normalized observations after required stability replays. */
   captureObservations?: (fixtures: Fixture[], observations: Observation[]) => Promise<void>;
+  /** Domain-owned classification normalization. Existing callers default to the current credential behavior. */
+  normalizeFinding?: (finding: Finding, scanner: Scanner) => Finding;
 }
 import { randomUUID } from 'node:crypto';
 import { tmpdir } from 'node:os';
@@ -24,23 +26,9 @@ import suite from '../../qualification/suite-v1.json';
 import { evaluationInputs as collectEvaluationInputs } from '../evaluation/substrate/case-lifecycle.ts';
 import { executeRuntime } from '../evaluation/substrate/runtime.ts';
 import { reviewState } from '../evaluation/substrate/review-state.ts';
+import { reviewEntryId } from '../evaluation/domains/credential/review.ts';
 
-/** The product scanner under test. Its identity changes every release and between published and candidate runs, so it never keys a review. */
-const PRODUCT_SCANNER = 'redact-secret';
-
-/**
- * Ledger id of a queue entry. The product scanner's version, mode and
- * configuration are dropped so a settled review survives a new product version
- * and a candidate run. Peer identity stays: a new peer version can change a
- * disagreement and must be reviewed again.
- */
-export function reviewEntryId(caseId: string, sourceHash: unknown, entry: Record<string, any>, legacy = false) {
-  const tools = entry.evidence?.tools;
-  const keyed = !legacy && Array.isArray(tools)
-    ? { ...entry, evidence: { ...entry.evidence, tools: tools.map((t: any) => (t?.id === PRODUCT_SCANNER ? { id: t.id } : t)) } }
-    : entry;
-  return hash({ case: caseId, source: sourceHash, ...keyed });
-}
+export { reviewEntryId };
 
 export const ENGINE_VERSION = '1.1.0';
 
@@ -76,16 +64,17 @@ export function evaluationInputs(cases: EvaluationCase[], methods: Registry<Meth
 }
 
 export async function executeEvaluation({ cases, methods, operators, scanners, provenance = {}, onProgress = () => {}, runId = randomUUID(), scratchParent = tmpdir(),
-  accounting = suite.accounting as AccountingConfig, ledger = { schemaVersion: 2, entries: {} }, reusedObservations = [], captureObservations }: EvaluationOptions) {
+  accounting = suite.accounting as AccountingConfig, ledger = { schemaVersion: 2, entries: {} }, reusedObservations = [], captureObservations,
+  normalizeFinding = ({ path, start, end, family, action }, scanner) => ({ path, start, end,
+    ...(scanner.capabilities?.classification !== false && family && Object.hasOwn(contracts, family) ? { family } : {}),
+    ...(action !== undefined ? { action } : {}) }) }: EvaluationOptions) {
   validateAccounting(accounting);
   // Validate and generate everything before any scanner sees an input.
   const { generated, fixtures } = evaluationInputs(cases, methods, operators);
   const runtime = await executeRuntime<Fixture, Finding, Finding>({
     inputs: fixtures, scanners, reusedObservations, runId, replays: accounting.replays, scratchParent, onProgress, identity: hash,
     validateFindings: findings => { score(fixtures, findings as Finding[]); },
-    normalizeFinding: ({ path, start, end, family, action }, scanner) => ({ path, start, end,
-      ...(scanner.capabilities?.classification !== false && family && Object.hasOwn(contracts, family) ? { family } : {}),
-      ...(action !== undefined ? { action } : {}) }),
+    normalizeFinding,
     captureObservations,
   });
   const { startedAt } = runtime;

@@ -16,9 +16,8 @@
  * Run: npm run arrival:check
  */
 import { pathToFileURL } from 'node:url';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
-import { contracts } from '../benchmarks/lib/assessment.ts';
+import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
+const { contracts } = credentialDomain.assessment;
 
 const isPositive = seed => !seed.twinOf && seed.expected.some(r => (r.role ?? 'secret') === 'secret');
 
@@ -69,7 +68,7 @@ export function familyArrivalProblems(family, cases, contract) {
 }
 
 export async function checkEvidenceArrival() {
-  const cases = await loadCases(createOperators());
+  const cases = await credentialDomain.loadCases(credentialDomain.createOperators());
   const problems = [];
   for (const family of Object.keys(contracts).sort()) problems.push(...familyArrivalProblems(family, cases, contracts[family]));
   return problems;

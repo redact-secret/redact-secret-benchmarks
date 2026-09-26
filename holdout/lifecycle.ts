@@ -5,8 +5,7 @@ import type { Scanner, EvaluationCase } from '../benchmarks/engine/types.ts';
 import type { Candidate, Counts, HoldoutManifest, HoldoutReport } from './types.ts';
 import { hash } from '../benchmarks/engine/model.ts';
 import { executeEvaluation } from '../benchmarks/engine/execution.ts';
-import { createHoldoutMethods } from '../benchmarks/methods/holdout.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
+import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
 import { publicConformanceCorpus } from './conformance.ts';
 import { HoldoutError, readManifest, serialize, storeDirectory, privateDirectory, privateRead, atomicPrivateWrite, validateHoldoutCorpus } from './storage.ts';
 import { validateEvidence } from '../benchmarks/engine/evidence.ts';
@@ -78,8 +77,8 @@ export async function runHoldout({ manifestFile, scanners, candidate, verifyCand
       provenance: { source: 'holdout', sourceHash: manifest.corpusHash, rationale: f.assessment.reason,
         seed: corpus.seed, reviewStatus: manifest.review, sources: f.assessment.sources },
     }));
-    const raw = await executeEvaluation({ cases, methods: createHoldoutMethods(), operators: createOperators(), scanners,
-      runId, scratchParent: directory, provenance: { planHash: hash(plan) } });
+    const raw = await executeEvaluation({ cases, methods: credentialDomain.createHoldoutMethods(), operators: credentialDomain.createOperators(), scanners,
+      runId, scratchParent: directory, provenance: { planHash: hash(plan) }, normalizeFinding: credentialDomain.normalizeFinding });
     const candidateStable = hash(await verifyCandidate()) === hash(candidate);
     const scannerResults = raw.scanners.map(s => {
       const expected = toolPlan.find(t => t.id === s.id)!;

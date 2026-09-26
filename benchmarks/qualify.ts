@@ -1,9 +1,7 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { loadCases } from './engine/cases.ts';
-import { createMethods } from './methods/index.ts';
-import { createOperators } from './operators/index.ts';
+import { credentialDomain } from './evaluation/domains/credential/contract.ts';
 import { runEvaluation } from './engine/runner.ts';
 import { hash } from './engine/model.ts';
 import { runtimeProvenance, repositoryRoot } from './engine/provenance.ts';
@@ -40,10 +38,11 @@ async function main() {
   const provenance = await runtimeProvenance(), candidate = asCandidate(provenance);
   // Fail before accessing a protected corpus if the supported tool set drifted.
   for (const s of scanners) if (await s.version(repositoryRoot) !== suite.scanners[s.id]) throw new Error('Required scanner version is missing or differs from qualification/suite-v1.json');
-  const operators = createOperators(), methods = createMethods();
-  const cases = (await loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
+  const operators = credentialDomain.createOperators(), methods = credentialDomain.createMethods();
+  const cases = (await credentialDomain.loadCases(operators)).map(c => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
   console.log('Running five development methods with all three scanners…');
-  const development = await runEvaluation({ cases, methods, operators, scanners, runId, provenance, accounting, ledger, onProgress: console.log });
+  const development = await runEvaluation({ cases, methods, operators, scanners, runId, provenance, accounting, ledger, onProgress: console.log,
+    normalizeFinding: credentialDomain.normalizeFinding });
   console.log('Running isolated Holdout lifecycle…');
   const manifestFile = path.resolve(repositoryRoot, typeof options['holdout-manifest'] === 'string' ? options['holdout-manifest'] : suite.holdoutManifest);
   const holdout = await runHoldout({ manifestFile, scanners, candidate, runId,

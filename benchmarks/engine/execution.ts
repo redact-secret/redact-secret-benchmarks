@@ -13,16 +13,17 @@ export interface EvaluationOptions {
   /** Refresh-only hook. Receives normalized observations after required stability replays. */
   captureObservations?: (fixtures: Fixture[], observations: Observation[]) => Promise<void>;
 }
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import path from 'node:path';
 import { randomUUID } from 'node:crypto';
+import { tmpdir } from 'node:os';
 import { score } from '../lib/scoring.ts';
 import { contracts } from '../lib/assessment.ts';
 import { generateCase, hash } from './model.ts';
 import { describeCase, describeVariant, summaries } from './reporting.ts';
 import { ACCOUNTING_VERSION, accountCounts, unresolvedGroups, validateAccounting, floorFor } from '../lib/accounting.ts';
 import suite from '../../qualification/suite-v1.json';
+import { evaluationInputs as collectEvaluationInputs } from '../evaluation/substrate/case-lifecycle.ts';
+import { executeRuntime } from '../evaluation/substrate/runtime.ts';
+import { reviewState } from '../evaluation/substrate/review-state.ts';
 
 /** The product scanner under test. Its identity changes every release and between published and candidate runs, so it never keys a review. */
 const PRODUCT_SCANNER = 'redact-secret';
@@ -43,20 +44,7 @@ export function reviewEntryId(caseId: string, sourceHash: unknown, entry: Record
 
 export const ENGINE_VERSION = '1.1.0';
 
-// Replays are compared as sorted `path:start:end[:family]` tuples (v1.1 §8).
-const tuples = (findings: Finding[]) => findings.map(f => `${f.path}:${f.start}:${f.end}${f.family ? `:${f.family}` : ''}`).sort();
-
-/** Review state of the queue against the checked-in ledger (v1.1 §6). `unknown` is a disagreement nobody has looked at. */
-export function reviewState(queue: { id: string }[], ledger: ReviewLedger) {
-  const state = { open: 0, resolved: 0, notAssertable: 0, unknown: 0, oldestOpenRun: null as string | null };
-  const FIELD = { open: 'open', resolved: 'resolved', 'not-assertable': 'notAssertable' } as const;
-  for (const { id } of queue) {
-    const row = Object.hasOwn(ledger.entries, id) ? ledger.entries[id] : undefined;
-    state[row ? FIELD[row.status] : 'unknown']++;
-    if (row?.status === 'open' && (state.oldestOpenRun === null || row.firstSeenRun < state.oldestOpenRun)) state.oldestOpenRun = row.firstSeenRun;
-  }
-  return state;
-}
+export { reviewState };
 
 /**
  * Engine-side dual scorer (v1.1 §9): v1.0 published counts per summary row and
@@ -82,79 +70,26 @@ function assertionDelta(byMethod: Summary, unstable: Set<string>, config: Accoun
 
 export function evaluationInputs(cases: EvaluationCase[], methods: Registry<Method>, operators: Registry<Operator>) {
   if (!cases.length || new Set(cases.map(c => c.id)).size !== cases.length) throw new Error('Empty or duplicate evaluation cases');
-  const generated = cases.map(c => generateCase(c, methods, operators));
-  const fixtures = generated.flatMap(g => g.variants.map(v => v.fixture));
-  if (new Set(fixtures.map(f => f.path)).size !== fixtures.length) throw new Error('Duplicate generated path');
-  return { generated, fixtures };
+  return collectEvaluationInputs<EvaluationCase, Fixture, ReturnType<typeof generateCase>>(
+    cases, c => generateCase(c, methods, operators),
+  );
 }
 
 export async function executeEvaluation({ cases, methods, operators, scanners, provenance = {}, onProgress = () => {}, runId = randomUUID(), scratchParent = tmpdir(),
   accounting = suite.accounting as AccountingConfig, ledger = { schemaVersion: 2, entries: {} }, reusedObservations = [], captureObservations }: EvaluationOptions) {
   validateAccounting(accounting);
-  const allIds = [...scanners.map(s => s.id), ...reusedObservations.map(s => s.id)];
-  if (!allIds.length || new Set(allIds).size !== allIds.length) throw new Error('Empty or duplicate scanner selection');
   // Validate and generate everything before any scanner sees an input.
   const { generated, fixtures } = evaluationInputs(cases, methods, operators);
-  const startedAt = new Date().toISOString(), observations: Observation[] = [];
-  const validatedReused = structuredClone(reusedObservations);
-  for (const observation of validatedReused) {
-    if (observation.status !== 'complete' || observation.observation?.source !== 'snapshot' || !observation.findings ||
-      observation.findings.some(f => !fixtures.some(input => input.path === f.path) || f.start < 0 || f.end <= f.start ||
-        f.end > Buffer.byteLength(fixtures.find(input => input.path === f.path)!.content)))
-      throw new Error('Invalid reused peer observation');
-    score(fixtures, observation.findings);
-    onProgress(`${observation.id}: reused snapshot ${observation.observation.snapshotDigest}`);
-  }
-  const scratch = await mkdtemp(path.join(scratchParent, 'secret-evaluation-'));
-  try {
-    for (const f of fixtures) {
-      const target = path.join(scratch, f.path);
-      await mkdir(path.dirname(target), { recursive: true });
-      await writeFile(target, f.content, { mode: 0o600 });
-    }
-    for (const scanner of scanners) {
-      let version = null;
-      const configuration = scanner.configuration ?? { mode: scanner.mode ?? 'unspecified' };
-      const metadata = { id: scanner.id, mode: scanner.mode, configuration, configurationHash: hash(configuration) };
-      const start = performance.now();
-      if (scanner.capabilities?.ranges === false) {
-        observations.push({ ...metadata, version, status: 'unsupported', message: 'Adapter does not support source byte ranges.' });
-        onProgress(`${scanner.id}: unsupported`);
-        continue;
-      }
-      try {
-        version = await scanner.version(scratch);
-        // Adapters receive bytes/identity only, never expectations or tiers.
-        // Every replay sees the same scratch tree; the observation is only truth if it repeats (v1.1 §8).
-        const replays: Finding[][] = [];
-        for (let replay = 0; replay < accounting.replays; replay++) {
-          const rawFindings = await scanner.scan(scratch, fixtures.map(({ id, path, content }) => ({ id, path, content })));
-          score(fixtures, rawFindings); // fail closed on unmappable/invalid findings
-          replays.push(rawFindings.map(({ path, start, end, family, action }) => ({ path, start, end,
-            ...(scanner.capabilities?.classification !== false && family && Object.hasOwn(contracts, family) ? { family } : {}),
-            ...(action !== undefined ? { action } : {}) })));
-        }
-        const [first, ...rest] = replays.map(tuples);
-        const divergent = new Set<string>();
-        for (const other of rest) for (const t of [...first.filter(x => !other.includes(x)), ...other.filter(x => !first.includes(x))]) divergent.add(t.split(':')[0]);
-        if (divergent.size) observations.push({ ...metadata, version, status: 'unstable', findings: [],
-          message: 'Replays over identical input disagreed; findings discarded and raw output suppressed.',
-          replays: { count: replays.length, agreed: false, divergentPaths: [...divergent].sort() } });
-        else observations.push({ ...metadata, version, status: 'complete', findings: replays[0],
-          durationMs: Math.round(performance.now() - start), replays: { count: replays.length, agreed: true },
-          observation: { source: 'fresh', observedAt: startedAt, sourceRunId: runId } });
-      } catch (error) {
-        observations.push({ ...metadata, version,
-          status: error instanceof Error && error.message === 'unavailable' ? 'unavailable' : 'error',
-          message: 'Scanner unavailable or execution/normalization failed; raw output suppressed.' });
-      }
-      onProgress(`${scanner.id}: ${observations.at(-1)!.status}`);
-    }
-    observations.push(...validatedReused);
-    if (captureObservations) await captureObservations(fixtures, observations);
-  } finally {
-    await rm(scratch, { recursive: true, force: true });
-  }
+  const runtime = await executeRuntime<Fixture, Finding, Finding>({
+    inputs: fixtures, scanners, reusedObservations, runId, replays: accounting.replays, scratchParent, onProgress, identity: hash,
+    validateFindings: findings => { score(fixtures, findings as Finding[]); },
+    normalizeFinding: ({ path, start, end, family, action }, scanner) => ({ path, start, end,
+      ...(scanner.capabilities?.classification !== false && family && Object.hasOwn(contracts, family) ? { family } : {}),
+      ...(action !== undefined ? { action } : {}) }),
+    captureObservations,
+  });
+  const { startedAt } = runtime;
+  const observations = runtime.observations as Observation[];
   const results: CaseResult[] = [], reviewQueue = [];
   for (const g of generated) {
     const result = g.method.evaluate({ case: g.case, variants: g.variants, observations });

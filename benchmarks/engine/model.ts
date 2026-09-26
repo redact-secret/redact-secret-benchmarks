@@ -1,16 +1,11 @@
 import type { Fixture, Range } from '../types.ts';
 import type { EvaluationCase, Transformation, Strategy, GeneratedVariant, Registry, Method, Operator } from './types.ts';
-import { createHash } from 'node:crypto';
 import { validateCorpus } from '../lib/scoring.ts';
 import { validateAssessment } from '../lib/assessment.ts';
+import { hash, safeParameters } from '../evaluation/substrate/hash.ts';
+import { generatedVariant } from '../evaluation/substrate/variant-lifecycle.ts';
 
-export const hash = (value: unknown) => createHash('sha256').update(typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value)).digest('hex');
-// Parameters containing arbitrary text stay hashed; built-in resolved choices
-// are numeric and can safely be retained for exact replay.
-export const safeParameters = (parameters: Record<string, unknown>) => Object.fromEntries(
-  Object.entries(parameters).filter(([key, value]) => /^[a-zA-Z][a-zA-Z0-9]*$/.test(key) &&
-    (typeof value === 'boolean' || (typeof value === 'number' && Number.isFinite(value)))),
-) as Record<string, number | boolean>;
+export { hash, safeParameters };
 
 export const secrets = (fixture: Fixture) => fixture.expected.filter(r => r.role === 'secret');
 export const bytes = (fixture: Fixture, range: Range) => Buffer.from(fixture.content).subarray(range.start, range.end).toString('utf8');
@@ -50,9 +45,8 @@ export function variant(c: EvaluationCase, id: string, fixture: Fixture, transfo
   // PEM). Source validation runs before generation; ranges are validated here.
   if (strategy !== 'review-required') validateAssessment({ ...f,
     ...(fixture.twinOf ? { twinOf: fixture.twinOf, mutation: fixture.mutation, mutationKind: fixture.mutationKind } : {}) });
-  return { id, parentCaseId: c.id, fixture: f, strategy, transformation,
-    provenance: { seed: c.provenance.seed, sourceHash: hash(c.seed), fixtureHash: hash(f),
-      contentHash: hash(f.content), transformationHash: hash(transformation) } };
+  return generatedVariant({ caseId: c.id, id, fixture: f, strategy, transformation,
+    seed: c.provenance.seed, sourceHash: hash(c.seed), identity: hash });
 }
 
 export function generateCase(c: EvaluationCase, methods: Registry<Method>, operators: Registry<Operator>) {

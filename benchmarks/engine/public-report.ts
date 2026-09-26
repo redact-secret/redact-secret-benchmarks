@@ -3,18 +3,16 @@ import type { EvaluationCase } from './types.ts';
 import type { EvaluationReport } from '../../src/evaluation-types.ts';
 import { evaluationProblem } from '../../src/evaluation-model.ts';
 import { validateEvidence } from './evidence.ts';
+import { projectKnownResults } from '../evaluation/substrate/public-projection.ts';
 /** The only discovery-to-browser boundary. Do not spread raw case/variant/queue fields. */
 export function publicEvaluation(raw: Awaited<ReturnType<typeof runEvaluation>>, sources: EvaluationCase[], corpusHashes: Record<string, string>, qualification: EvaluationReport['qualification'] = null): EvaluationReport {
   if (raw.schemaVersion !== 3 || raw.accountingVersion !== '1.1' || raw.mode !== 'discovery') throw Error('Unsupported discovery report');
-  const known = new Map(sources.map(c => [c.id, c]));
   if (qualification) validateEvidence(qualification, 'qualification');
-  const cases = raw.results.map(c => {
-    const source = known.get(c.id);
-    if (!source || !['development','regression'].includes(c.visibility) || c.method === 'holdout' ||
-      c.method !== source.method || c.provenance.sourceHash !== source.provenance.sourceHash ||
-      c.source.category !== source.source.category || c.source.fixtureId !== source.source.fixtureId)
-      throw Error('Unknown, protected or stale discovery source; publication refused');
-    return { id: source.id, method: source.method, targets: source.targets, taxonomy: source.taxonomy ?? '',
+  const cases = projectKnownResults({ sources, results: raw.results,
+    accepts: (source, c) => ['development','regression'].includes(c.visibility) && c.method !== 'holdout' &&
+      c.method === source.method && c.provenance.sourceHash === source.provenance.sourceHash &&
+      c.source.category === source.source.category && c.source.fixtureId === source.source.fixtureId,
+    project: (source, c) => ({ id: source.id, method: source.method, targets: source.targets, taxonomy: source.taxonomy ?? '',
       sourceSlug: `${source.source.category}--${source.source.fixtureId}`,
       variants: c.variants.map(v => ({ id: v.id, kind: v.kind, tier: v.tier, strategy: v.strategy,
         operator: v.transformation.operator, property: v.transformation.property ?? '', relation: v.transformation.relation ?? '',
@@ -24,7 +22,8 @@ export function publicEvaluation(raw: Awaited<ReturnType<typeof runEvaluation>>,
       findings: c.scanners.flatMap(s => s.variants.map(v => ({ scanner: s.scanner, variant: v.id, count: v.row.actual.length, flagged: v.row.flagged ?? null,
         ...(v.row.actionCounts ? { actionCounts: v.row.actionCounts } : {}) }))),
       generation: c.generation.map(g => ({ operator: g.operator, status: g.status })),
-      comparisons: (c.comparisons ?? []).map(c => ({ peer: c.peer, variant: c.variant, status: c.status, disagreement: c.disagreement ?? '', classification: c.classification ?? '' })) };
+      comparisons: (c.comparisons ?? []).map(c => ({ peer: c.peer, variant: c.variant, status: c.status, disagreement: c.disagreement ?? '', classification: c.classification ?? '' })) }),
+    refusal: 'Unknown, protected or stale discovery source; publication refused',
   });
   const p = raw.provenance as Record<string, unknown>;
   const report: EvaluationReport = { schemaVersion: 2, accountingVersion: '1.1', reportType: 'evaluation-public', supportClaims: false,

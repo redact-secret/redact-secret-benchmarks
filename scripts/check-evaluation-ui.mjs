@@ -96,8 +96,14 @@ try {
   assert.equal(queue.reduce((n, v) => n + Number(v.replace(/,/g, '')), 0), open_, 'queue groups add up to the ledger');
   assert.ok(queue.length <= 12, 'groups, not rows');
 
-  await page.goto(origin + '/workbench/review/lexical-invalid-alphabet'); await ready(page);
-  JSON.parse(await page.locator('#ledger-snippet').innerText());
+  const currentCategory = await page.locator('.decision-card').evaluateAll(cards => cards.map(card => ({ href: card.getAttribute('href'), count: Number(card.querySelector('b')?.textContent?.replace(/,/g, '')) })).find(card => card.count > 0 && !card.href.endsWith('/release-historical'))?.href);
+  assert.ok(currentCategory, 'at least one current decision category is reachable');
+  await page.goto(origin + currentCategory); await ready(page);
+  assert.ok(await page.locator('button[data-copy]').count() > 0, 'a reproduced entry has a copy path');
+  JSON.parse(await page.locator('pre.snippet').first().innerText());
+  await page.goto(origin + '/workbench/review/release-historical'); await ready(page);
+  assert.equal(await page.locator('button[data-copy]').count(), 0, 'historical entries without adjudication have no copy path');
+  assert.equal(await page.locator('pre.snippet').count(), 0, 'historical entries expose no selectable draft');
   await page.goto(origin + '/workbench/method/holdout'); await ready(page);
   assert.equal(await page.locator('#main a[href^="/fixture/"]').count(), 0, 'holdout has no fixture drill-down');
   await page.goto(origin + '/workbench/method/mutation'); await ready(page);

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benchmarks.redactsecret.dev/schemas/review-ledger-v2.json",
+  "title": "Review ledger with observation and resolution provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "entries"],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "observationRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runId", "observedAt"],
+      "properties": { "runId": { "type": "string", "minLength": 1 }, "observedAt": { "type": "string", "format": "date-time" } }
+    },
+    "entries": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-f0-9]{64}$" },
+      "additionalProperties": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "$defs": {
+    "occurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["caseId", "sourceSlug", "variant"],
+      "properties": {
+        "caseId": { "type": "string", "minLength": 1 },
+        "sourceSlug": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" },
+        "variant": { "type": "string", "minLength": 1 },
+        "peer": { "type": "string" },
+        "disagreement": { "type": "string" }
+      }
+    },
+    "adjudication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decidedAt", "evidenceUrl", "note"],
+      "properties": {
+        "decidedAt": { "type": "string", "format": "date-time" },
+        "evidenceUrl": { "type": "string", "pattern": "^https://" },
+        "note": { "type": "string", "minLength": 1 },
+        "runId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "observedAt"],
+      "properties": {
+        "kind": { "enum": ["run-observation", "historical-adjudication"] },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "evidenceUrl": { "type": "string", "pattern": "^https://" }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "firstSeenRun", "note"],
+      "properties": {
+        "status": { "enum": ["open", "resolved", "not-assertable"] },
+        "firstSeenRun": { "type": "string", "minLength": 1 },
+        "lastSeenRun": { "type": "string", "minLength": 1 },
+        "lastSeenAt": { "type": "string", "format": "date-time" },
+        "lastSeenEvidence": { "$ref": "#/$defs/occurrence" },
+        "resolvedRun": { "type": "string", "minLength": 1 },
+        "resolutionEvidence": { "$ref": "#/$defs/resolution" },
+        "historicalAdjudication": { "$ref": "#/$defs/adjudication" },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

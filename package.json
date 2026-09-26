@@ -55,6 +55,7 @@
     "beta8:profiles": "node --import tsx scripts/report-beta8-profiles.mjs",
     "decisions:validate": "node scripts/validate-decisions.mjs",
     "ledger:decisions:check": "node scripts/check-ledger-decisions.mjs",
+    "ledger:provenance:check": "node --import tsx scripts/check-review-ledger.mjs",
     "queue:check": "node --import tsx scripts/check-review-queue-coverage.mjs",
     "eval:candidate": "node --import tsx benchmarks/candidate.ts",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",

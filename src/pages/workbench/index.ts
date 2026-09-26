@@ -11,7 +11,7 @@ import { changeRow, gateRow, gatesSentence } from './shared';
 const n = (value: number) => value.toLocaleString('en-US');
 const SUMMARY_ROWS = 3;
 
-export interface WorkbenchInput { data: BenchData; evaluation: EvaluationReport | null; evaluationProblem: string | null; classes: ReviewClass[]; changes: ChangesInput }
+export interface WorkbenchInput { data: BenchData; evaluation: EvaluationReport | null; evaluationProblem: string | null; reviewLedgerProblem: string | null; classes: ReviewClass[]; changes: ChangesInput }
 
 export function healthStrip(data: BenchData, evaluation: EvaluationReport | null): string {
   return `<div class="health" role="group" aria-label="Run health">${healthCells(data, evaluation).map(cell => {
@@ -20,7 +20,7 @@ export function healthStrip(data: BenchData, evaluation: EvaluationReport | null
   }).join('')}</div>`;
 }
 
-export function workbenchPage({ data, evaluation, evaluationProblem, classes, changes }: WorkbenchInput): string {
+export function workbenchPage({ data, evaluation, evaluationProblem, reviewLedgerProblem, classes, changes }: WorkbenchInput): string {
   const open = classes.reduce((sum, c) => sum + c.open, 0), total = classes.reduce((sum, c) => sum + c.open + c.resolved + c['not-assertable'], 0);
   const view = changeView(changes), rows = view ? rowsFor(view, 'fixed-corpus') : [];
   const lead = [...rows.filter(r => r.status !== 'held'), ...rows.filter(r => r.status === 'held')].slice(0, SUMMARY_ROWS);
@@ -30,7 +30,7 @@ export function workbenchPage({ data, evaluation, evaluationProblem, classes, ch
     <div class="wb"><div>
       <h2 class="h2-compact" id="review-queue">Review queue</h2>
       <p class="small" style="margin:var(--space-1) 0 var(--space-4)">${n(open)} open of ${n(total)}, grouped by the reason they need a person. Decisions are recorded in <code>review-ledger.json</code>.</p>
-      ${reviewQueue(classes)}
+      ${reviewQueue(classes, evaluation, reviewLedgerProblem)}
     </div><div>
       <h2 class="h2-compact">${view ? e(`Since ${view.title.split(' → ')[0]}`) : 'Changes'}</h2>
       ${view ? `<p class="small" style="margin:var(--space-1) 0 var(--space-4)">${e(view.source)}</p>${lead.map(r => changeRow(r)).join('') || '<p class="small">No rows to compare.</p>'}<p style="margin-top:var(--space-3)"><a href="/workbench/changes">All changes</a></p>` : `<p class="small" style="margin:var(--space-1) 0 var(--space-3)">No baseline and run to compare yet.</p><p><a href="/workbench/changes">Open changes</a></p>`}

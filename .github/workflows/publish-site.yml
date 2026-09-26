@@ -233,7 +233,16 @@ jobs:
             test -s "$qualification" || { echo "::error::eval:qualify wrote no qualification report"; exit 1; }
             echo "::warning::qualification is $(jq -r .status "$qualification"): $(jq -r '.accounting.reasons | join(", ")' "$qualification")"
           fi
-          npm run eval:publish -- --qualification="$qualification"
+          # Carry only validated last-observation fields from the currently published
+          # environment. Decisions and notes always come from this checkout's ledger.
+          history=results-output/review-ledger-history.json
+          origin="https://$([ "$TARGET" = production ] && echo benchmarks.redactsecret.dev || echo staging.benchmarks.redactsecret.dev)"
+          if curl --fail --silent --show-error "$origin/results/review-ledger-v2.json" --output "$history"; then
+            npm run eval:publish -- --qualification="$qualification" --ledger-history="$history"
+          else
+            echo "::notice::No prior review observation artifact; legacy entries remain cannot-verify until observed."
+            npm run eval:publish -- --qualification="$qualification"
+          fi
 
       # Writes public/results/candidate-evidence-v1.json (reportType "candidate",
       # supportClaims false) beside, never into, evaluation-v1.json; the page shows

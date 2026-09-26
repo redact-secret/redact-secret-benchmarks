@@ -227,8 +227,8 @@ test('the MCP overhead rows feed the #143 adapter-overhead dimension under their
   assert.throws(() => metricsFromAdapterOverhead([{ ...output('h', 1), schema: 'other' }]), /adapter-overhead-schema/);
 });
 
-for (const dir of ['evidence/612', 'evidence/612/release-2026.09.25']) {
-test(`the committed #281 evidence in ${dir} is a complete, clean, schema-valid run with no plaintext and a flagged control in every cell`, async () => {
+for (const [dir, controls] of [['evidence/612', 1], ['evidence/612/release-2026.09.25', 1], ['evidence/843', 2]]) {
+test(`the committed MCP evidence in ${dir} is a complete, clean, schema-valid run with no plaintext and a flagged control in every cell`, async () => {
   const { default: Ajv } = await import('ajv');
   const schema = JSON.parse(readFileSync('schemas/mcp-qualification-v1.json', 'utf8'));
   const text = readFileSync(path.join(dir, 'mcp-qualification.json'), 'utf8');
@@ -241,8 +241,16 @@ test(`the committed #281 evidence in ${dir} is a complete, clean, schema-valid r
   assert.equal(report.matrix.length, 24);
   for (const cell of report.matrix) {
     assert.equal(cell.status, 'complete');
-    assert.equal(cell.summary.controlsDetected, 1, `${cell.node} ${cell.transport}`);
+    assert.equal(cell.summary.controlsDetected, controls, `${cell.node} ${cell.transport}`);
+    if (controls === 2) {
+      // #321: the resources/read control is flagged in its own right. Its row carries no `surface`, so the
+      // runner at 75c1a2b counts it in the cell total, not in `summary.resources`; check the row itself.
+      const control = cell.cases.find(v => v.id === 'resource-control-unprotected-host');
+      assert.equal(control?.containment, 'control-detected', `${cell.node} ${cell.transport}`);
+      assert.deepEqual([cell.summary.resources.leaks, cell.summary.resources.deviations], [0, 0]);
+    }
   }
+  assert.deepEqual([report.summary.leaks, report.summary.deviations, report.summary.processOutputLeaks], [0, 0, 0]);
   for (const file of ['mcp-qualification.json', 'mcp-qualification.md', 'mcp-overhead-series.json', 'README.md']) {
     assert.doesNotThrow(() => assertNoPlaintext(readFileSync(path.join(dir, file), 'utf8'), W.allSecrets()), file);
   }

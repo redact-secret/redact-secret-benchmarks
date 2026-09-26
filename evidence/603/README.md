@@ -58,6 +58,32 @@ and the `41fc366` run (35868842776) are superseded here; its verdict is still re
 above and in the decision records.
 
 
+### Verified at `0af4cb8`, not re-derived (redact-secret#846)
+
+Product `main` `0af4cb83b571baa86d27a678a351ece2ebc1f3cb` carries
+redact-secret#846 (`2fe3275`), the only change to `detectors/` after
+`192c964` (`generic_token.rs` only; `detectors/mod.rs` unchanged, so the
+registry list is unchanged). Redact-secret-benchmarks#324 tracked the pin.
+[Run 36214273900](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36214273900)
+(`performance-evaluation.yml` at benchmarks `75c1a2b47b37e17feb544b6053a36d242083f20f`,
+candidate `0af4cb8`, baseline `3144bb3` restored from the build cache) reads
+**ACCEPTED** on both verdicts: RC acceptance passed all 46 checks against the
+unchanged `3144bb3` criteria (accuracy TP 21, FP 1, FN 5, policy mismatches 0
+on both sides), and the regression budgets read latency 10/10,
+initialization 10/10, memory 16/16 within budget, with no regression,
+tradeoff or invalid measurement. Runner: AMD EPYC 9V74, 4 logical CPUs, image
+`ubuntu24 20260920.314.1`; 6 interleaved rounds, 12 samples per side.
+
+The thresholds are not re-derived. The run is frozen in
+[`verified-0af4cb8/`](verified-0af4cb8/) and advances only
+`baseline.verifiedCommit`. As before, its `acceptance.json`/`.md` name the
+workflow's fixed summary label; the summary it evaluated is
+`verified-0af4cb8/summary.json`.
+
+Reproduce: dispatch `performance-evaluation.yml` on `develop` with
+`candidate_revision=0af4cb83b571baa86d27a678a351ece2ebc1f3cb`; the artifact is
+`performance-evaluation-0af4cb83b571baa86d27a678a351ece2ebc1f3cb`.
+
 ### Verified at `192c964`, not re-derived (detector fixes #831–#838)
 
 Product `main` `192c9649deb88e342abc8071fb78e7b1d84ec475` changed

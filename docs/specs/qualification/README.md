@@ -4,19 +4,19 @@
 
 - Engine 1.1.0 · accounting 1.1 · report schema 2
 - Status: **`execution-qualified`**
-- Run ID: c2c8b99d-200c-4059-9d51-959e71e3591b
-- Completed: 2026-09-25T12:07:41.353Z
-- Scanners: redact-secret 0.1.0-beta.8 (the released lockfile package), gitleaks 8.30.1, trufflehog 3.97.4, the pins in `qualification/suite-v1.json`
-- Source fingerprint: 074a3506637ac603ce4d48cd9695ccf13939e34d079e1ab0f6e27050242a51ae (revision f94abb1, clean tree)
+- Run ID: 92964c1a-d023-4bd3-8165-c0f6803c1bcc
+- Completed: 2026-09-26T20:45:44.342Z
+- Scanners: redact-secret 0.1.0-beta.9 (the released lockfile package), gitleaks 8.30.1, trufflehog 3.97.4, the pins in `qualification/suite-v1.json`
+- Source fingerprint: d3c904ae5482d0aa52076c0f3c8e01e358fe5c29d2a7c0b04e298d02657d071f (revision c3a3714, clean tree)
 - Cases / variants: twin 698/1,396, benign 1,016/1,016, metamorphic 2,292/10,675, mutation 2,292/8,165, differential 2,990/2,990, holdout 12/12
 - Every scanner completed and agreed across 2 replays; 0 generation errors
 - `unresolvedGroups`: none
-- Review queue: 5,962 entries, **0 `unknown`**, 0 open, 1,530 resolved, 4,432 not-assertable (`benchmarks/review-ledger.json`)
+- Review queue: 5,965 entries, **0 `unknown`**, 12 open, 1,521 resolved, 4,432 not-assertable (`benchmarks/review-ledger.json`)
 - Public holdout lifecycle controls: 12/12 assertions passed for each scanner
 - Development findings: 12,820 failed assertions
 
-Refreshed for the 0.1.0-beta.8 release after the suite and lockfile pins moved
-from 0.1.0-beta.7. The publish workflow produces this same report on every
+Refreshed for the 0.1.0-beta.9 release after the suite and lockfile pins moved
+from 0.1.0-beta.8. The publish workflow produces this same report on every
 staging and production publish and ships it inside `evaluation-v1.json`; this
 file is the checked-in reference copy `validate.yml` re-validates.
 

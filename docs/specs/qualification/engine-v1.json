@@ -4,19 +4,19 @@
   "engineVersion": "1.1.0",
   "accountingVersion": "1.1",
   "suiteId": "engine-v1",
-  "suiteHash": "ae43260814c362348d97ba119bc9bd310ba81b695b4f4cc3133078b2b44381e3",
-  "runId": "c2c8b99d-200c-4059-9d51-959e71e3591b",
-  "startedAt": "2026-09-25T12:07:03.893Z",
-  "finishedAt": "2026-09-25T12:07:41.353Z",
+  "suiteHash": "88e5c95082f56a367329772233885f1b74faa54ef056a7be51f1623f6281d36d",
+  "runId": "92964c1a-d023-4bd3-8165-c0f6803c1bcc",
+  "startedAt": "2026-09-26T20:45:05.836Z",
+  "finishedAt": "2026-09-26T20:45:44.342Z",
   "scope": "engine-conformance",
   "status": "execution-qualified",
   "supportClaims": false,
   "provenance": {
-    "revision": "f94abb1b622d8605036d77e0934ee12d332c26c2",
+    "revision": "c3a3714719073f16ac6cc7b1bf045e2555646e2e",
     "dirty": false,
-    "sourceHash": "074a3506637ac603ce4d48cd9695ccf13939e34d079e1ab0f6e27050242a51ae",
-    "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
-    "candidateArtifactHash": "4021f6b165642b119952e5e44e4f872530be521e5853cf3cd8d43e67a6cd6a27",
+    "sourceHash": "d3c904ae5482d0aa52076c0f3c8e01e358fe5c29d2a7c0b04e298d02657d071f",
+    "lockHash": "2ecd8c21606d6e32c42af4aa26140364f895f89a55014eb4d979da66d18e5a3e",
+    "candidateArtifactHash": "9dd98db1cfed2ed95cf5ec3031a56ea072dbdedac5b6dafba864a573acb6ca3c",
     "runtime": {
       "node": "v22.16.0",
       "platform": "darwin",
@@ -54,7 +54,7 @@
       "beta8-263": "e83345bbe5592d8a640b00423f09ba0ad30b7dfbd3ff9545325ff517d2c52b3e"
     },
     "failures": 12820,
-    "reviewEntries": 5962,
+    "reviewEntries": 5965,
     "byDetector": {
       "github-token": {
         "metamorphic/redact-secret/must-redact:T1/present-within-envelope": {
@@ -24878,11 +24878,11 @@
     "reasons": [],
     "unresolvedGroups": [],
     "review": {
-      "open": 0,
-      "resolved": 1530,
+      "open": 12,
+      "resolved": 1521,
       "notAssertable": 4432,
       "unknown": 0,
-      "oldestOpenRun": null
+      "oldestOpenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344"
     }
   },
   "methods": [
@@ -25115,10 +25115,10 @@
   "holdout": {
     "schemaVersion": 1,
     "reportType": "holdout",
-    "runId": "c2c8b99d-200c-4059-9d51-959e71e3591b",
-    "planHash": "541ac7e5741c5313583641fa0b55ca25c0d76e02836cd33ad62c069fc1069b60",
-    "startedAt": "2026-09-25T12:07:38.300Z",
-    "finishedAt": "2026-09-25T12:07:41.181Z",
+    "runId": "92964c1a-d023-4bd3-8165-c0f6803c1bcc",
+    "planHash": "bef85ea3ae9555276830f8a01c00a4b68ff9e07d2c7199b1d5fdfc5c7b32514d",
+    "startedAt": "2026-09-26T20:45:41.104Z",
+    "finishedAt": "2026-09-26T20:45:44.135Z",
     "methodology": "frozen-candidate-canonical-cases-aggregate-only",
     "independence": "public-control",
     "status": "complete",
@@ -25131,9 +25131,9 @@
       "lifecycle": "sealed-at-execution"
     },
     "candidate": {
-      "sourceHash": "074a3506637ac603ce4d48cd9695ccf13939e34d079e1ab0f6e27050242a51ae",
-      "lockHash": "2fd997ca616a659b7801cf630bfde2441b2df106499df3cfc86b6aee016d568b",
-      "candidateArtifactHash": "4021f6b165642b119952e5e44e4f872530be521e5853cf3cd8d43e67a6cd6a27"
+      "sourceHash": "d3c904ae5482d0aa52076c0f3c8e01e358fe5c29d2a7c0b04e298d02657d071f",
+      "lockHash": "2ecd8c21606d6e32c42af4aa26140364f895f89a55014eb4d979da66d18e5a3e",
+      "candidateArtifactHash": "9dd98db1cfed2ed95cf5ec3031a56ea072dbdedac5b6dafba864a573acb6ca3c"
     },
     "caseCount": 12,
     "variantCount": 12,
@@ -25141,7 +25141,7 @@
     "scanners": [
       {
         "id": "redact-secret",
-        "version": "0.1.0-beta.8",
+        "version": "0.1.0-beta.9",
         "configuration": {
           "adapterVersion": 3,
           "familyMappingVersion": 2,

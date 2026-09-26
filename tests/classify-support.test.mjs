@@ -177,7 +177,8 @@ test('a synthetic report shaped like eval:classify output satisfies the schema',
   const assessment = classifyFamilySupport(evidence);
   const synthetic = {
     schemaVersion: 1, generatedAt: new Date().toISOString(), runId: 'test-run', revision: 'abc', dirty: false,
-    criteriaSchemaVersion: 1, fixtureProfilesVersion: 1, product: null, scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
+    criteriaSchemaVersion: 1, fixtureProfilesVersion: 1, product: null, scanners: ['redact-secret', 'gitleaks', 'trufflehog'],
+    scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: new Date().toISOString(), sourceRunId: 'test-run' } }, caseCount: 1, variantCount: 1,
     familyCount: 1, distribution: { stable: Number(assessment.status === 'stable'), provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
     stableDistribution: { documented: Number(assessment.qualificationProfile === 'documented'), empirical: Number(assessment.qualificationProfile === 'empirical') },
     families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],
@@ -194,7 +195,7 @@ test('a synthetic report shaped like a candidate eval:classify run satisfies the
     criteriaSchemaVersion: 1, fixtureProfilesVersion: 1,
     product: { sourceCommit: 'a'.repeat(40), packageName: '@redact-secret/core', declaredVersion: '9.9.9-candidate.1',
       artifacts: ['package', 'node', 'wasm'].map(role => ({ role, sha256: 'b'.repeat(64) })) },
-    scanners: ['redact-secret', 'gitleaks', 'trufflehog'], caseCount: 1, variantCount: 1,
+    scanners: ['redact-secret', 'gitleaks', 'trufflehog'], scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: new Date().toISOString(), sourceRunId: 'test-run' } }, caseCount: 1, variantCount: 1,
     familyCount: 1, distribution: { stable: Number(assessment.status === 'stable'), provisional: Number(assessment.status === 'provisional'), pending: Number(assessment.status === 'pending'), unsupported: 0 },
     stableDistribution: { documented: Number(assessment.qualificationProfile === 'documented'), empirical: Number(assessment.qualificationProfile === 'empirical') },
     families: [{ ...assessment, evidenceTier: evidence.positiveContractTier, evidenceBasis: evidence.evidenceBasis, taxonomyFamilies: [], evidence, unprobeable: contracts[family].unprobeable ?? null, fixtureProfile: fixtureProfileReport({ profile: null, explicit: false }, measureFixtureCells(family, [])) }],

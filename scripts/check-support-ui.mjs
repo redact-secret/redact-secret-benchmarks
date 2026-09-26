@@ -43,7 +43,8 @@ function probeMatrix(status, vocabulary) {
   const stableDistribution = { documented: status === 'stable' ? families.length : 0, empirical: 0 };
   return {
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
-    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'probe-run', revision: '0'.repeat(40), dirty: false, criteriaSchemaVersion: 1 },
+    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'probe-run', revision: '0'.repeat(40), dirty: false, criteriaSchemaVersion: 1,
+      scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'probe-run' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
   };
 }

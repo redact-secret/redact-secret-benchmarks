@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-213a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "58a2495b2e6796b10927365f1ac9ac495e7c00c4eaa9c3ee5504f2ed9f2d2583",
+    "fixtureCount": 33,
+    "fixturesDigest": "bc037ae36e2cf2ec4f170d7fa4371c4d903ae12b1f9956bce4652f07a2c35a5a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-access-key-boto3-client.py",
+      "start": 76,
+      "end": 96,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 152,
+      "end": 172,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/digitalocean-token-doctl-auth-init.sh",
+      "start": 51,
+      "end": 122,
+      "family": "digitalocean-token"
+    },
+    {
+      "path": "cases/digitalocean-token-env-access-token.env",
+      "start": 26,
+      "end": 97,
+      "family": "digitalocean-token"
+    },
+    {
+      "path": "cases/digitalocean-token-oauth-bearer-header.http",
+      "start": 67,
+      "end": 145,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/linear-token-env-api-key.env",
+      "start": 15,
+      "end": 63,
+      "family": "linear-token"
+    },
+    {
+      "path": "cases/linear-token-graphql-authorization-header.http",
+      "start": 90,
+      "end": 138,
+      "family": "linear-token"
+    },
+    {
+      "path": "cases/linear-token-linear-client-ts.ts",
+      "start": 88,
+      "end": 136,
+      "family": "linear-token"
+    },
+    {
+      "path": "cases/npm-token-npmrc-auth-token.npmrc",
+      "start": 70,
+      "end": 110,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/npm-token-publish-workflow-env.yml",
+      "start": 94,
+      "end": 134,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/slack-token-bearer-header.http",
+      "start": 113,
+      "end": 175,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-token-bolt-app-python.py",
+      "start": 50,
+      "end": 105,
+      "family": "slack-token"
+    }
+  ],
+  "digest": "45d2d712da1225de08429612e3a96f96847bfa7ad582e9fe5bce1dcd4bd988b6"
+}

@@ -31,7 +31,8 @@ export interface EvaluationReport {
   runId: string; startedAt: string; finishedAt: string;
   provenance: { revision: string; dirty: boolean | null; casesHash: string; lockHash: string; methods: { id: string; version: number }[]; operators: { id: string; version: number }[] };
   corpusHashes: Record<string, string>;
-  scanners: { id: string; version: string | null; status: ScannerStatus; mode: string; configurationHash: string }[];
+  scanners: { id: string; version: string | null; status: ScannerStatus; mode: string; configurationHash: string;
+    observation: { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest?: string; inputDigest?: string } }[];
   cases: EvaluationCase[]; reviews: EvaluationReview[];
   review: { open: number; resolved: number; notAssertable: number; unknown: number; oldestOpenRun: string | null };
   byOperator: Record<string, { generated: number; unsupported: number; error: number; assertions: Record<string, Counts> }>;

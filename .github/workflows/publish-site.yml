@@ -180,17 +180,6 @@ jobs:
         if: env.TARGET == 'staging'
         run: node scripts/qualified-candidate.mjs verify --dir "$RUNNER_TEMP/qualified" --packed "$RUNNER_TEMP/candidate"
 
-      # Same provisioning as validate.yml: the published numbers must come from
-      # the binaries CI verifies, never from an unchecked download.
-      - name: Provision checksum-pinned Gitleaks and TruffleHog (versions from qualification/suite-v1.json, digests from scanners/peer-checksums.json)
-        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
-
-      - name: Verify the resolved peers are the pinned ones
-        run: |
-          set -euo pipefail
-          [ "$(command -v gitleaks)" = "$RUNNER_TEMP/scanner-bin/gitleaks" ]
-          [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
-
       # --strict: a scanner that is unavailable fails the run instead of being
       # published as an "unavailable" row. Staging (#201) measures redact-secret
       # from the qualified main candidate, so its Report shows how that
@@ -213,6 +202,19 @@ jobs:
           else
             npm run bench -- --strict
           fi
+
+      # Qualification still executes its distinct holdout lifecycle live. The
+      # four-scanner comparison above has already consumed snapshots and cannot
+      # accidentally fall back to these binaries.
+      - name: Provision checksum-pinned peers for qualification only
+        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
+
+      - name: Verify the qualification peers, including TruffleHog 3.97.4
+        run: |
+          set -euo pipefail
+          [ "$(command -v gitleaks)" = "$RUNNER_TEMP/scanner-bin/gitleaks" ]
+          [ "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog" ]
+          [ "$(trufflehog --version | awk '{print $2}')" = "3.97.4" ]
 
       # Both environments (#213): the Workbench Qualification checklist reads its
       # three engine floors (scanners complete, resolved rate, ledger rows for every

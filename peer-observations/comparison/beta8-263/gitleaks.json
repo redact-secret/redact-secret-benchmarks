@@ -1,0 +1,581 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-263",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "95413f67fa190e58d01c51963465f48ca3ba396aad07b6e895d7c4baa0cff9b7",
+    "fixtureCount": 104,
+    "fixturesDigest": "ccf02279aecb48890c8be54f3d9401c6b660304c74d2e043ffc14c725b33d46c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/gitlab-runner-authentication-token-api-header.http",
+      "start": 104,
+      "end": 129,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-export.sh",
+      "start": 23,
+      "end": 48,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-handover.md",
+      "start": 32,
+      "end": 57,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-query-token.txt",
+      "start": 55,
+      "end": 80,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-query-token.txt",
+      "start": 55,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-register-output.txt",
+      "start": 39,
+      "end": 64,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-runner-log.log",
+      "start": 51,
+      "end": 76,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-short-body-twin.toml",
+      "start": 80,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-terraform-runner.tf",
+      "start": 69,
+      "end": 94,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-terraform-runner.tf",
+      "start": 69,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-twin-base-register.sh",
+      "start": 82,
+      "end": 107,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-twin-base-toml.toml",
+      "start": 80,
+      "end": 105,
+      "family": "gitlab-runner-authentication-token"
+    },
+    {
+      "path": "cases/groq-api-key-compose-env.yml",
+      "start": 97,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-curl-models.sh",
+      "start": 69,
+      "end": 125
+    },
+    {
+      "path": "cases/groq-api-key-prefix-separator-twin.py",
+      "start": 46,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-short-body-twin.env",
+      "start": 20,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-startup-log.log",
+      "start": 49,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-toml-provider.toml",
+      "start": 72,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-twin-base-dotenv.env",
+      "start": 20,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/groq-api-key-twin-base-python.py",
+      "start": 46,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-curl-basic.sh",
+      "start": 8,
+      "end": 93
+    },
+    {
+      "path": "cases/langfuse-secret-key-export.sh",
+      "start": 27,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-long-last-group-twin.yml",
+      "start": 28,
+      "end": 71,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-twin-base-ci.yml",
+      "start": 28,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-twin-base-dotenv.env",
+      "start": 83,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-twin-base-python.py",
+      "start": 63,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-variant-nibble-twin.py",
+      "start": 63,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-version-nibble-twin.env",
+      "start": 83,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-export-pat.sh",
+      "start": 25,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-long-tail-twin.env",
+      "start": 41,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-non-hex-tail-twin.yml",
+      "start": 26,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-role-code-twin.json",
+      "start": 35,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-twin-base-ci.yml",
+      "start": 26,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-twin-base-dotenv.env",
+      "start": 41,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-twin-base-json.json",
+      "start": 35,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/neon-api-key-compose-env.yml",
+      "start": 103,
+      "end": 172,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/neon-api-key-prefix-letter-twin.ts",
+      "start": 101,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/neon-api-key-short-body-twin.env",
+      "start": 13,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/neon-api-key-terraform-vars.tfvars",
+      "start": 16,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/neon-api-key-twin-base-dotenv.env",
+      "start": 13,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/neon-api-key-twin-base-ts.ts",
+      "start": 101,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-chat-message.md",
+      "start": 31,
+      "end": 84,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-compose-env.yml",
+      "start": 63,
+      "end": 116,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-curl-chat.sh",
+      "start": 74,
+      "end": 127
+    },
+    {
+      "path": "cases/perplexity-api-key-curl-chat.sh",
+      "start": 74,
+      "end": 127,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-debug-log.log",
+      "start": 24,
+      "end": 77,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-prefix-letter-twin.py",
+      "start": 52,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-secret-print.txt",
+      "start": 26,
+      "end": 79,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-short-body-twin.env",
+      "start": 19,
+      "end": 71,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-twin-base-dotenv.env",
+      "start": 19,
+      "end": 72,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/perplexity-api-key-twin-base-python.py",
+      "start": 52,
+      "end": 105,
+      "family": "perplexity-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-compose-env.yml",
+      "start": 58,
+      "end": 132,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-json-config.json",
+      "start": 44,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-prefix-letter-twin.py",
+      "start": 54,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-short-label-twin.sh",
+      "start": 25,
+      "end": 98,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-short-secret-twin.env",
+      "start": 17,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-dotenv.env",
+      "start": 17,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-export.sh",
+      "start": 25,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-python.py",
+      "start": 54,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-ci-log.log",
+      "start": 45,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-compose-env.yml",
+      "start": 82,
+      "end": 113,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-long-body-twin.sh",
+      "start": 38,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-newman-json.json",
+      "start": 114,
+      "end": 145,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-short-body-twin.env",
+      "start": 30,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-twin-base-dotenv.env",
+      "start": 30,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-twin-base-export.sh",
+      "start": 38,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-twin-base-url.txt",
+      "start": 87,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-collection-access-key-underscore-delimiter-twin.txt",
+      "start": 87,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-1-twin.yml",
+      "start": 38,
+      "end": 60,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-2-twin.env",
+      "start": 15,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-4-twin.sh",
+      "start": 61,
+      "end": 83
+    },
+    {
+      "path": "cases/travisci-api-token-context-5-twin.json",
+      "start": 29,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-7-twin.log",
+      "start": 22,
+      "end": 44,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-8-twin.sh",
+      "start": 25,
+      "end": 47,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-1.yml",
+      "start": 38,
+      "end": 60,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-2.env",
+      "start": 13,
+      "end": 35,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-4.sh",
+      "start": 62,
+      "end": 84
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-5.json",
+      "start": 28,
+      "end": 50,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-7.log",
+      "start": 23,
+      "end": 45,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-8.sh",
+      "start": 24,
+      "end": 46,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/xai-api-key-curl-chat.sh",
+      "start": 68,
+      "end": 152
+    },
+    {
+      "path": "cases/xai-api-key-json-profile.json",
+      "start": 36,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-k8s-secret.yml",
+      "start": 84,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-prefix-letter-twin.ts",
+      "start": 97,
+      "end": 181,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-short-body-twin.env",
+      "start": 12,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-twin-base-dotenv.env",
+      "start": 12,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-twin-base-ts.ts",
+      "start": 97,
+      "end": 181,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "b471d9c1ec3723f76cf8bd02a73e702774222d2c705b9ad3299a4688ef339f81"
+}

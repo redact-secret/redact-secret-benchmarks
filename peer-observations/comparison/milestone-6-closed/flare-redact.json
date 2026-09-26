@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/milestone-6-closed",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "ac2659e94ce8f0d10029b6a1a63ad2ad73453156a0d053a3edb909759e3d2763",
+    "fixtureCount": 92,
+    "fixturesDigest": "8d0ac1cab8b55847dbd7a3f8686749c7a899568c817eb245123b873ec23b3a5e",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/issue-254-changed-id.txt",
+      "start": 18,
+      "end": 38,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/issue-254-changed-secret.txt",
+      "start": 23,
+      "end": 63,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/issue-254-id-bare.txt",
+      "start": 0,
+      "end": 20,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/issue-254-id-env.txt",
+      "start": 18,
+      "end": 38,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/issue-254-secret-json.txt",
+      "start": 26,
+      "end": 66,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/issue-255-mariadb-default.txt",
+      "start": 0,
+      "end": 27,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-mariadb-literal.txt",
+      "start": 0,
+      "end": 51,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-mongodb-default.txt",
+      "start": 0,
+      "end": 27,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-mongodb-literal.txt",
+      "start": 0,
+      "end": 51,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-mysql-default.txt",
+      "start": 0,
+      "end": 33,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-mysql-literal.txt",
+      "start": 0,
+      "end": 49,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-postgres-default.txt",
+      "start": 0,
+      "end": 36,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-postgres-literal.txt",
+      "start": 0,
+      "end": 52,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-redis-default.txt",
+      "start": 0,
+      "end": 36,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-redis-literal.txt",
+      "start": 0,
+      "end": 49,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-embedded-word.txt",
+      "start": 0,
+      "end": 58,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-filler-near-miss.txt",
+      "start": 0,
+      "end": 32,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-1.txt",
+      "start": 0,
+      "end": 38,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-2.txt",
+      "start": 0,
+      "end": 40,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-3.txt",
+      "start": 0,
+      "end": 39,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-4.txt",
+      "start": 0,
+      "end": 37,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-5.txt",
+      "start": 0,
+      "end": 38,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-6.txt",
+      "start": 0,
+      "end": 32,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-7.txt",
+      "start": 0,
+      "end": 31,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-unrelated-suffix.txt",
+      "start": 0,
+      "end": 61,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-257-url-digit.txt",
+      "start": 0,
+      "end": 29,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-257-url-embedded.txt",
+      "start": 0,
+      "end": 63,
+      "family": "connection-string"
+    }
+  ],
+  "digest": "e040715a4713e8d5abc52cc564a0cf621f9767d1d9ae6ab0d350872b9747c38a"
+}

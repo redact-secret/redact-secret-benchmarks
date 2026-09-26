@@ -28,7 +28,8 @@ function matrixOf(families, overrides = {}) {
   for (const f of families) distribution[f.status]++;
   return {
     schemaVersion: 1, taxonomySchemaVersion: 1,
-    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'run-a', revision: 'a'.repeat(40), dirty: false, criteriaSchemaVersion: 1 },
+    sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'run-a', revision: 'a'.repeat(40), dirty: false, criteriaSchemaVersion: 1,
+      scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'run-a' } } },
     providerCount: 1, familyCount: families.length, distribution, families,
     ...overrides,
   };
@@ -153,7 +154,8 @@ test('a computed drift, wrapped exactly as the CLI writes it, satisfies its own 
     entry({ family: 'a', status: 'provisional', reason: 'minimumTwinPairs: 2 < 5' }),
     entry({ family: 'b', status: 'stable', reason: null }),
     entry({ family: 'c', status: 'unsupported', reason: 'no detector exists', evidenceTier: null, providerSource: null, corroboratingScanners: [], twinCoverage: null, unresolvedCriticalItems: null, detectors: [] }),
-  ], { sourceReport: { schemaVersion: 1, generatedAt: '2026-09-21T00:00:00.000Z', runId: 'run-b', revision: 'b'.repeat(40), dirty: false, criteriaSchemaVersion: 1 } });
+  ], { sourceReport: { schemaVersion: 1, generatedAt: '2026-09-21T00:00:00.000Z', runId: 'run-b', revision: 'b'.repeat(40), dirty: false, criteriaSchemaVersion: 1,
+    scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-21T00:00:00.000Z', sourceRunId: 'run-b' } } } });
   const drift = buildSupportMatrixDrift(baseline, candidate);
   const output = {
     schemaVersion: 1, generatedAt: '2026-09-21T00:00:01.000Z', taxonomySchemaVersion: candidate.taxonomySchemaVersion, familyCount: candidate.familyCount,

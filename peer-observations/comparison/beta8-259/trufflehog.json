@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-259",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "983fdaffdc16ff3f92abfd9fff1e1678d137147900f5cdd4f2a9451844853960",
+    "fixtureCount": 122,
+    "fixturesDigest": "4a610db5dc1f744955ae956e43cabad4314773b8929fa2e75029c84c5237337b",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/mailgun-api-key-triplet-actions-env-context-twin.yml",
+      "start": 47,
+      "end": 97
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-actions-env.yml",
+      "start": 48,
+      "end": 98
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-cli-flag.sh",
+      "start": 27,
+      "end": 77
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-compose-env-context-twin.yml",
+      "start": 64,
+      "end": 114
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-compose-env.yml",
+      "start": 65,
+      "end": 115
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-dotenv-context-twin.env",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-dotenv.env",
+      "start": 16,
+      "end": 66
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-export-context-twin.sh",
+      "start": 26,
+      "end": 76
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-export.sh",
+      "start": 24,
+      "end": 74
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-json-settings-context-twin.json",
+      "start": 18,
+      "end": 68
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-json-settings.json",
+      "start": 19,
+      "end": 69
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-log-line.log",
+      "start": 57,
+      "end": 107
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-node-client.js",
+      "start": 51,
+      "end": 101
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-python-client-context-twin.py",
+      "start": 65,
+      "end": 115
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-python-client.py",
+      "start": 65,
+      "end": 115
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-signing-key-context-twin.env",
+      "start": 19,
+      "end": 69
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-signing-key.env",
+      "start": 28,
+      "end": 78
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-terraform-var-context-twin.txt",
+      "start": 37,
+      "end": 87
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-terraform-var.txt",
+      "start": 38,
+      "end": 88
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-yaml-config-context-twin.yml",
+      "start": 26,
+      "end": 76
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-yaml-config.yml",
+      "start": 27,
+      "end": 77
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 77,
+      "end": 99,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-dotenv.env",
+      "start": 48,
+      "end": 70,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-export.sh",
+      "start": 21,
+      "end": 43,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 76,
+      "end": 98,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-json-config.json",
+      "start": 25,
+      "end": 47,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-sync-log.log",
+      "start": 50,
+      "end": 72,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-travis-whoami.sh",
+      "start": 28,
+      "end": 50,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-travispy-client.py",
+      "start": 50,
+      "end": 72,
+      "family": "travisci-api-token"
+    }
+  ],
+  "digest": "1976eacbc49b38be15f31128bb235cc6c5836f7bf85a1577432cd859078e8d67"
+}

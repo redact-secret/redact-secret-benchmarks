@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/context-edges",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "e00005c4b54f145271e2f5c98f59585f80c972285547ab9a8b58acd98bcba003",
+    "fixtureCount": 173,
+    "fixturesDigest": "2cc93ff4e6a620c2c807f9f9304fd967613822b3d0a8a47f263866be72e6b475",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/blank-lines.txt",
+      "start": 16,
+      "end": 56,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/bom.txt",
+      "start": 16,
+      "end": 56,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/combining-mark.txt",
+      "start": 17,
+      "end": 57,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/comment.txt",
+      "start": 16,
+      "end": 56,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/crlf.txt",
+      "start": 23,
+      "end": 63,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/datadog-api-key-markdown.md",
+      "start": 18,
+      "end": 50
+    },
+    {
+      "path": "cases/double-quotes.txt",
+      "start": 14,
+      "end": 54,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/javascript.js",
+      "start": 21,
+      "end": 61,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/json.json",
+      "start": 17,
+      "end": 57,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/long-prefix.txt",
+      "start": 72016,
+      "end": 72056,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/markdown.md",
+      "start": 15,
+      "end": 55,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-bom.txt",
+      "start": 23,
+      "end": 62
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-json.json",
+      "start": 24,
+      "end": 63
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-markdown.md",
+      "start": 32,
+      "end": 71
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-no-final-newline.txt",
+      "start": 20,
+      "end": 59
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-python.py",
+      "start": 23,
+      "end": 62
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-single-quotes.txt",
+      "start": 21,
+      "end": 60
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-toml.toml",
+      "start": 23,
+      "end": 62
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-yaml.yaml",
+      "start": 22,
+      "end": 61
+    },
+    {
+      "path": "cases/new-relic-user-api-key-bom.txt",
+      "start": 21,
+      "end": 53
+    },
+    {
+      "path": "cases/new-relic-user-api-key-json.json",
+      "start": 22,
+      "end": 54
+    },
+    {
+      "path": "cases/new-relic-user-api-key-markdown.md",
+      "start": 25,
+      "end": 57
+    },
+    {
+      "path": "cases/new-relic-user-api-key-no-final-newline.txt",
+      "start": 18,
+      "end": 50
+    },
+    {
+      "path": "cases/new-relic-user-api-key-python.py",
+      "start": 21,
+      "end": 53
+    },
+    {
+      "path": "cases/new-relic-user-api-key-single-quotes.txt",
+      "start": 19,
+      "end": 51
+    },
+    {
+      "path": "cases/new-relic-user-api-key-toml.toml",
+      "start": 21,
+      "end": 53
+    },
+    {
+      "path": "cases/new-relic-user-api-key-yaml.yaml",
+      "start": 20,
+      "end": 52
+    },
+    {
+      "path": "cases/no-final-newline.txt",
+      "start": 13,
+      "end": 53,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/python.py",
+      "start": 16,
+      "end": 56,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/repeated-lines.txt",
+      "start": 13,
+      "end": 53,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/repeated-lines.txt",
+      "start": 67,
+      "end": 107,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/same-line-distinct.txt",
+      "start": 16,
+      "end": 56,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/same-line-distinct.txt",
+      "start": 59,
+      "end": 99,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/sentry-user-auth-token-bom.txt",
+      "start": 21,
+      "end": 92
+    },
+    {
+      "path": "cases/sentry-user-auth-token-json.json",
+      "start": 22,
+      "end": 93
+    },
+    {
+      "path": "cases/sentry-user-auth-token-markdown.md",
+      "start": 25,
+      "end": 96
+    },
+    {
+      "path": "cases/sentry-user-auth-token-no-final-newline.txt",
+      "start": 18,
+      "end": 89
+    },
+    {
+      "path": "cases/sentry-user-auth-token-python.py",
+      "start": 21,
+      "end": 92
+    },
+    {
+      "path": "cases/sentry-user-auth-token-single-quotes.txt",
+      "start": 19,
+      "end": 90
+    },
+    {
+      "path": "cases/sentry-user-auth-token-toml.toml",
+      "start": 21,
+      "end": 92
+    },
+    {
+      "path": "cases/sentry-user-auth-token-yaml.yaml",
+      "start": 20,
+      "end": 91
+    },
+    {
+      "path": "cases/single-quotes.txt",
+      "start": 14,
+      "end": 54,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/telegram-bot-token-bom.txt",
+      "start": 22,
+      "end": 68
+    },
+    {
+      "path": "cases/telegram-bot-token-json.json",
+      "start": 23,
+      "end": 69
+    },
+    {
+      "path": "cases/telegram-bot-token-markdown.md",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/telegram-bot-token-no-final-newline.txt",
+      "start": 19,
+      "end": 65
+    },
+    {
+      "path": "cases/telegram-bot-token-python.py",
+      "start": 22,
+      "end": 68
+    },
+    {
+      "path": "cases/telegram-bot-token-single-quotes.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/telegram-bot-token-toml.toml",
+      "start": 22,
+      "end": 68
+    },
+    {
+      "path": "cases/telegram-bot-token-yaml.yaml",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/toml.toml",
+      "start": 16,
+      "end": 56,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/two-secrets.txt",
+      "start": 13,
+      "end": 53,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/two-secrets.txt",
+      "start": 67,
+      "end": 107,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/unicode.txt",
+      "start": 31,
+      "end": 71,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/yaml.yaml",
+      "start": 15,
+      "end": 55,
+      "family": "github-token"
+    }
+  ],
+  "digest": "6c09e14043039762ec8f143cd38a31248ec7d46b1ee238628da358ce1f56fa35"
+}

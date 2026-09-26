@@ -1,0 +1,920 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/detector-coverage",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f96bb5023ee8a5aae9426fef3cde4033986fc281ef2ce1b8634b6681d9347e11",
+    "fixtureCount": 979,
+    "fixturesDigest": "06c9d135bfe213383eda47876aa8802568b9f1ccfc2d49073f189f3807bb23dc",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "linux-x64",
+      "digest": "dc24007c2f233bd61c05beabeb44aa27ea9b43288166279209abe0458c5ce76b"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/cloudflare-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 53
+    },
+    {
+      "path": "cases/cloudflare-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 60
+    },
+    {
+      "path": "cases/cloudflare-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 74
+    },
+    {
+      "path": "cases/connection-string-mongodb-bare.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/connection-string-mongodb-quoted.txt",
+      "start": 7,
+      "end": 78
+    },
+    {
+      "path": "cases/connection-string-mongodb-unicode-crlf.txt",
+      "start": 21,
+      "end": 92
+    },
+    {
+      "path": "cases/connection-string-postgres-bare.txt",
+      "start": 0,
+      "end": 72
+    },
+    {
+      "path": "cases/connection-string-postgres-quoted.txt",
+      "start": 7,
+      "end": 79
+    },
+    {
+      "path": "cases/connection-string-postgres-unicode-crlf.txt",
+      "start": 21,
+      "end": 93
+    },
+    {
+      "path": "cases/digitalocean-token-dash-identifier-embedding.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-punctuation-boundary.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-query-boundary.txt",
+      "start": 31,
+      "end": 102
+    },
+    {
+      "path": "cases/digitalocean-token-repeated.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 78
+    },
+    {
+      "path": "cases/digitalocean-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 92
+    },
+    {
+      "path": "cases/digitalocean-token-shape-2-bare.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-shape-2-quoted.txt",
+      "start": 7,
+      "end": 78
+    },
+    {
+      "path": "cases/digitalocean-token-shape-2-unicode-crlf.txt",
+      "start": 21,
+      "end": 92
+    },
+    {
+      "path": "cases/digitalocean-token-shape-3-bare.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/digitalocean-token-shape-3-quoted.txt",
+      "start": 7,
+      "end": 78
+    },
+    {
+      "path": "cases/digitalocean-token-shape-3-unicode-crlf.txt",
+      "start": 21,
+      "end": 92
+    },
+    {
+      "path": "cases/docker-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 36
+    },
+    {
+      "path": "cases/docker-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 43
+    },
+    {
+      "path": "cases/docker-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 57
+    },
+    {
+      "path": "cases/docker-token-shape-2-bare.txt",
+      "start": 0,
+      "end": 41
+    },
+    {
+      "path": "cases/docker-token-shape-2-quoted.txt",
+      "start": 7,
+      "end": 48
+    },
+    {
+      "path": "cases/docker-token-shape-2-unicode-crlf.txt",
+      "start": 21,
+      "end": 62
+    },
+    {
+      "path": "cases/github-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 47,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 61,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-2-bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-2-quoted.txt",
+      "start": 7,
+      "end": 47,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-2-unicode-crlf.txt",
+      "start": 21,
+      "end": 61,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-3-bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-3-quoted.txt",
+      "start": 7,
+      "end": 47,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-3-unicode-crlf.txt",
+      "start": 21,
+      "end": 61,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-4-bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-4-quoted.txt",
+      "start": 7,
+      "end": 47,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-4-unicode-crlf.txt",
+      "start": 21,
+      "end": 61,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-5-bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-5-quoted.txt",
+      "start": 7,
+      "end": 47,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-shape-5-unicode-crlf.txt",
+      "start": 21,
+      "end": 61,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/gitlab-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 26,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 33,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 47,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/groq-api-key-key-shape-bare.txt",
+      "start": 0,
+      "end": 56,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-key-shape-quoted.txt",
+      "start": 7,
+      "end": 63,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/groq-api-key-key-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 77,
+      "family": "groq-api-key"
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-keyword-context-bare.txt",
+      "start": 15,
+      "end": 51
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-keyword-context-quoted.txt",
+      "start": 22,
+      "end": 58
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-keyword-context-unicode-crlf.txt",
+      "start": 36,
+      "end": 72
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-public-id.txt",
+      "start": 14,
+      "end": 50
+    },
+    {
+      "path": "cases/heroku-api-key-prefixed-shape-bare.txt",
+      "start": 0,
+      "end": 65
+    },
+    {
+      "path": "cases/heroku-api-key-prefixed-shape-quoted.txt",
+      "start": 7,
+      "end": 72
+    },
+    {
+      "path": "cases/heroku-api-key-prefixed-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 86
+    },
+    {
+      "path": "cases/huggingface-token-dash-identifier-embedding.txt",
+      "start": 0,
+      "end": 37
+    },
+    {
+      "path": "cases/huggingface-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 37
+    },
+    {
+      "path": "cases/huggingface-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 44
+    },
+    {
+      "path": "cases/huggingface-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 58
+    },
+    {
+      "path": "cases/langsmith-api-key-pat-shape-bare.txt",
+      "start": 0,
+      "end": 51,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-pat-shape-quoted.txt",
+      "start": 7,
+      "end": 58,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/langsmith-api-key-pat-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 72,
+      "family": "langsmith-api-key"
+    },
+    {
+      "path": "cases/linear-token-dash-identifier-embedding.txt",
+      "start": 0,
+      "end": 48
+    },
+    {
+      "path": "cases/linear-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 48
+    },
+    {
+      "path": "cases/linear-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 55
+    },
+    {
+      "path": "cases/linear-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 69
+    },
+    {
+      "path": "cases/mailchimp-api-key-single-digit-datacenter-bare.txt",
+      "start": 18,
+      "end": 54
+    },
+    {
+      "path": "cases/mailchimp-api-key-single-digit-datacenter-quoted.txt",
+      "start": 25,
+      "end": 61
+    },
+    {
+      "path": "cases/mailchimp-api-key-single-digit-datacenter-unicode-crlf.txt",
+      "start": 39,
+      "end": 75
+    },
+    {
+      "path": "cases/mailchimp-api-key-two-digit-datacenter-bare.txt",
+      "start": 18,
+      "end": 55
+    },
+    {
+      "path": "cases/mailchimp-api-key-two-digit-datacenter-quoted.txt",
+      "start": 25,
+      "end": 62
+    },
+    {
+      "path": "cases/mailchimp-api-key-two-digit-datacenter-unicode-crlf.txt",
+      "start": 39,
+      "end": 76
+    },
+    {
+      "path": "cases/mailgun-api-key-http-signing-key-bare.txt",
+      "start": 28,
+      "end": 64
+    },
+    {
+      "path": "cases/mailgun-api-key-http-signing-key-quoted.txt",
+      "start": 35,
+      "end": 71
+    },
+    {
+      "path": "cases/mailgun-api-key-http-signing-key-unicode-crlf.txt",
+      "start": 49,
+      "end": 85
+    },
+    {
+      "path": "cases/mailgun-api-key-private-api-key-bare.txt",
+      "start": 16,
+      "end": 52
+    },
+    {
+      "path": "cases/mailgun-api-key-private-api-key-quoted.txt",
+      "start": 23,
+      "end": 59
+    },
+    {
+      "path": "cases/mailgun-api-key-private-api-key-unicode-crlf.txt",
+      "start": 37,
+      "end": 73
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-digit-q-tilde-bare.txt",
+      "start": 0,
+      "end": 39
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-digit-q-tilde-quoted.txt",
+      "start": 7,
+      "end": 46
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-digit-q-tilde-unicode-crlf.txt",
+      "start": 21,
+      "end": 60
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-leading-dash-bare.txt",
+      "start": 0,
+      "end": 39
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-leading-dash-quoted.txt",
+      "start": 7,
+      "end": 46
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-leading-dash-unicode-crlf.txt",
+      "start": 21,
+      "end": 60
+    },
+    {
+      "path": "cases/netlify-token-keyword-context-bare.txt",
+      "start": 19,
+      "end": 59
+    },
+    {
+      "path": "cases/netlify-token-keyword-context-quoted.txt",
+      "start": 26,
+      "end": 66
+    },
+    {
+      "path": "cases/netlify-token-keyword-context-unicode-crlf.txt",
+      "start": 40,
+      "end": 80
+    },
+    {
+      "path": "cases/new-relic-license-key-current-format-bare.txt",
+      "start": 9,
+      "end": 49
+    },
+    {
+      "path": "cases/new-relic-license-key-current-format-quoted.txt",
+      "start": 16,
+      "end": 56
+    },
+    {
+      "path": "cases/new-relic-license-key-current-format-unicode-crlf.txt",
+      "start": 30,
+      "end": 70
+    },
+    {
+      "path": "cases/new-relic-user-api-key-shape-1-bare.txt",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/new-relic-user-api-key-shape-1-quoted.txt",
+      "start": 7,
+      "end": 39
+    },
+    {
+      "path": "cases/new-relic-user-api-key-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 53
+    },
+    {
+      "path": "cases/npm-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 40
+    },
+    {
+      "path": "cases/npm-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 47
+    },
+    {
+      "path": "cases/npm-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 61
+    },
+    {
+      "path": "cases/openrouter-api-key-key-shape-bare.txt",
+      "start": 0,
+      "end": 73,
+      "family": "openrouter-api-key"
+    },
+    {
+      "path": "cases/openrouter-api-key-key-shape-quoted.txt",
+      "start": 7,
+      "end": 80,
+      "family": "openrouter-api-key"
+    },
+    {
+      "path": "cases/openrouter-api-key-key-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 94,
+      "family": "openrouter-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-key-shape-bare.txt",
+      "start": 0,
+      "end": 75,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-key-shape-quoted.txt",
+      "start": 7,
+      "end": 82,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-key-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 96,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-alphabet-bare-twin.txt",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-alphabet-quoted-twin.txt",
+      "start": 7,
+      "end": 71
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-alphabet-unicode-crlf-twin.txt",
+      "start": 21,
+      "end": 85
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-bare.txt",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-quoted.txt",
+      "start": 7,
+      "end": 71
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-separator-bare-twin.txt",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-separator-quoted-twin.txt",
+      "start": 7,
+      "end": 71
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-separator-unicode-crlf-twin.txt",
+      "start": 21,
+      "end": 85
+    },
+    {
+      "path": "cases/postman-api-key-structured-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 85
+    },
+    {
+      "path": "cases/pulumi-access-token-invalid-alphabet.txt",
+      "start": 0,
+      "end": 44
+    },
+    {
+      "path": "cases/pulumi-access-token-organization-shape-bare.txt",
+      "start": 0,
+      "end": 44
+    },
+    {
+      "path": "cases/pulumi-access-token-organization-shape-quoted.txt",
+      "start": 7,
+      "end": 51
+    },
+    {
+      "path": "cases/pulumi-access-token-organization-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 65
+    },
+    {
+      "path": "cases/pulumi-access-token-personal-shape-bare.txt",
+      "start": 0,
+      "end": 44
+    },
+    {
+      "path": "cases/pulumi-access-token-personal-shape-quoted.txt",
+      "start": 7,
+      "end": 51
+    },
+    {
+      "path": "cases/pulumi-access-token-personal-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 65
+    },
+    {
+      "path": "cases/pulumi-access-token-team-shape-bare.txt",
+      "start": 0,
+      "end": 44
+    },
+    {
+      "path": "cases/pulumi-access-token-team-shape-quoted.txt",
+      "start": 7,
+      "end": 51
+    },
+    {
+      "path": "cases/pulumi-access-token-team-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 65
+    },
+    {
+      "path": "cases/pypi-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 173
+    },
+    {
+      "path": "cases/pypi-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 180
+    },
+    {
+      "path": "cases/pypi-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 194
+    },
+    {
+      "path": "cases/replicate-api-token-token-shape-bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "replicate-api-token"
+    },
+    {
+      "path": "cases/replicate-api-token-token-shape-quoted.txt",
+      "start": 7,
+      "end": 47,
+      "family": "replicate-api-token"
+    },
+    {
+      "path": "cases/replicate-api-token-token-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 61,
+      "family": "replicate-api-token"
+    },
+    {
+      "path": "cases/sendgrid-token-segmented-bare.txt",
+      "start": 0,
+      "end": 69,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/sendgrid-token-segmented-quoted.txt",
+      "start": 7,
+      "end": 76,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/sendgrid-token-segmented-unicode-crlf.txt",
+      "start": 21,
+      "end": 90,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/sentry-user-auth-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 71
+    },
+    {
+      "path": "cases/sentry-user-auth-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 78
+    },
+    {
+      "path": "cases/sentry-user-auth-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 92
+    },
+    {
+      "path": "cases/slack-token-shape-1-bare.txt",
+      "start": 0,
+      "end": 55,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-shape-1-quoted.txt",
+      "start": 7,
+      "end": 62,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-shape-1-unicode-crlf.txt",
+      "start": 21,
+      "end": 76,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-shape-2-bare.txt",
+      "start": 0,
+      "end": 76,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-shape-2-quoted.txt",
+      "start": 7,
+      "end": 83,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-shape-2-unicode-crlf.txt",
+      "start": 21,
+      "end": 97,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/stripe-token-shape-2-bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-shape-2-quoted.txt",
+      "start": 7,
+      "end": 47,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-shape-2-unicode-crlf.txt",
+      "start": 21,
+      "end": 61,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-shape-4-bare.txt",
+      "start": 0,
+      "end": 40,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-shape-4-quoted.txt",
+      "start": 7,
+      "end": 47,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-shape-4-unicode-crlf.txt",
+      "start": 21,
+      "end": 61,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/supabase-management-token-classic-shape-bare.txt",
+      "start": 0,
+      "end": 44
+    },
+    {
+      "path": "cases/supabase-management-token-classic-shape-quoted.txt",
+      "start": 7,
+      "end": 51
+    },
+    {
+      "path": "cases/supabase-management-token-classic-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 65
+    },
+    {
+      "path": "cases/terraform-cloud-token-organization-shape-bare.txt",
+      "start": 0,
+      "end": 90
+    },
+    {
+      "path": "cases/terraform-cloud-token-organization-shape-quoted.txt",
+      "start": 7,
+      "end": 97
+    },
+    {
+      "path": "cases/terraform-cloud-token-organization-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 111
+    },
+    {
+      "path": "cases/terraform-cloud-token-user-shape-bare.txt",
+      "start": 0,
+      "end": 90
+    },
+    {
+      "path": "cases/terraform-cloud-token-user-shape-quoted.txt",
+      "start": 7,
+      "end": 97
+    },
+    {
+      "path": "cases/terraform-cloud-token-user-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 111
+    },
+    {
+      "path": "cases/travisci-api-token-token-shape-bare.txt",
+      "start": 17,
+      "end": 39,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-token-shape-quoted.txt",
+      "start": 24,
+      "end": 46,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/travisci-api-token-token-shape-unicode-crlf.txt",
+      "start": 38,
+      "end": 60,
+      "family": "travisci-api-token"
+    },
+    {
+      "path": "cases/xai-api-key-key-shape-bare.txt",
+      "start": 0,
+      "end": 84,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-key-shape-quoted.txt",
+      "start": 7,
+      "end": 91,
+      "family": "xai-api-key"
+    },
+    {
+      "path": "cases/xai-api-key-key-shape-unicode-crlf.txt",
+      "start": 21,
+      "end": 105,
+      "family": "xai-api-key"
+    }
+  ],
+  "digest": "aaaf31920f450b4af03bfd2cd7888a607e76ac31b4b3ec20a0e1e5ca34861a86"
+}

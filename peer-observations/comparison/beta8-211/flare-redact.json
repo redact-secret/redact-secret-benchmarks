@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/beta8-211",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "a131425aac1b9bf3504c62f7e860737842e522d72c14325ae2e920afd7f78251",
+    "fixtureCount": 97,
+    "fixturesDigest": "31a9aa3c60712ebbed2cb0bb051ce964dd8432b75e93e433a118a65f63e7a597",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/github-fine-grained-pat-actions-env.yml",
+      "start": 101,
+      "end": 194,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-bearer-header-case-twin.http",
+      "start": 87,
+      "end": 187,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-bearer-header.http",
+      "start": 87,
+      "end": 187,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-compose-renovate.yml",
+      "start": 125,
+      "end": 218,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-composer-auth-json.json",
+      "start": 41,
+      "end": 134,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-dotenv-gh-token.env",
+      "start": 94,
+      "end": 187,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-export-github-pat.sh",
+      "start": 18,
+      "end": 111,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-gh-auth-login.sh",
+      "start": 8,
+      "end": 101,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-remote-userinfo-boundary-twin.gitconfig",
+      "start": 25,
+      "end": 136,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-remote-userinfo.gitconfig",
+      "start": 25,
+      "end": 135,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-octokit-debug-log.log",
+      "start": 111,
+      "end": 204,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-terraform-provider.tf",
+      "start": 48,
+      "end": 141,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/notion-integration-token-actions-env.yml",
+      "start": 56,
+      "end": 106
+    },
+    {
+      "path": "cases/notion-integration-token-agent-session-jsonl.jsonl",
+      "start": 73,
+      "end": 123
+    },
+    {
+      "path": "cases/notion-integration-token-bearer-header-separator-twin.http",
+      "start": 70,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-integration-token-bearer-header.http",
+      "start": 70,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-integration-token-compose-mcp.yml",
+      "start": 83,
+      "end": 133
+    },
+    {
+      "path": "cases/notion-integration-token-curl-users-me.sh",
+      "start": 59,
+      "end": 116,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-integration-token-dotenv-notion-token.env",
+      "start": 13,
+      "end": 63
+    },
+    {
+      "path": "cases/notion-integration-token-escaped-openapi-headers.json",
+      "start": 63,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-integration-token-export-api-key.sh",
+      "start": 22,
+      "end": 72
+    },
+    {
+      "path": "cases/notion-integration-token-js-client.js",
+      "start": 83,
+      "end": 133
+    },
+    {
+      "path": "cases/notion-integration-token-mcp-server-env.json",
+      "start": 145,
+      "end": 195
+    },
+    {
+      "path": "cases/slack-app-level-token-connections-open-header-boundary-twin.http",
+      "start": 72,
+      "end": 177,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-app-level-token-connections-open-header.http",
+      "start": 72,
+      "end": 176,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-app-level-token-curl-connections-open.sh",
+      "start": 79,
+      "end": 183,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-app-level-token-docs-sentence-prose.md",
+      "start": 57,
+      "end": 74
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-actions-env.yml",
+      "start": 52,
+      "end": 90
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-compose-webhook-secret.yml",
+      "start": 63,
+      "end": 133
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-dotenv-webhook-secret.env",
+      "start": 61,
+      "end": 99
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-endpoint-create-response.json",
+      "start": 86,
+      "end": 124
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-export-webhook-secret.sh",
+      "start": 29,
+      "end": 67
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-node-construct-event-wide.js",
+      "start": 89,
+      "end": 159
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 19,
+      "end": 57
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-rails-credentials-rolling.yml",
+      "start": 74,
+      "end": 112
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-rails-credentials-rolling.yml",
+      "start": 114,
+      "end": 152
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-listen-ready.txt",
+      "start": 92,
+      "end": 130
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 112,
+      "end": 150
+    }
+  ],
+  "digest": "fe34ffd9187366f80668d368c2ee325ea0fff6cf9d2e709d864b9ec234277216"
+}

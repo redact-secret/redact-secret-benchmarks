@@ -105,6 +105,11 @@ export function reportProblem(report, category, hash, fixtures) {
   const source = fixtures.filter(f => f.category === category);
   for (const scanner of report.scanners) {
     if (scanner.status !== 'complete') continue;
+    const observation = scanner.observation;
+    if (!observation || !['fresh', 'snapshot'].includes(observation.source) || !Number.isFinite(Date.parse(observation.observedAt)) || !observation.sourceRunId ||
+      (observation.source === 'fresh' && observation.sourceRunId !== report.runId) ||
+      (observation.source === 'snapshot' && (![observation.snapshotDigest, observation.inputDigest].every(v => /^[a-f0-9]{64}$/.test(v)))))
+      return 'Invalid scanner observation provenance';
     if (FORBIDDEN.some(k => scanner[k] != null)) return 'Scanner-wide totals are not allowed';
     if (!Array.isArray(scanner.rows) || scanner.rows.length !== source.length || new Set(scanner.rows.map(r => r.id)).size !== source.length) return 'Invalid report rows';
     for (const f of source) {

@@ -33,6 +33,7 @@ export interface SupportMatrixFile {
     product?: { sourceCommit: string; packageName: string; declaredVersion: string; artifacts: { role: string; sha256: string }[] };
     /** Published mode: the released package the run loaded (absent in matrices generated before #213). */
     publishedPackage?: { packageName: string; version: string };
+    scannerObservations: Record<string, { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string; snapshotDigest?: string; inputDigest?: string }>;
   };
   providerCount: number;
   familyCount: number;
@@ -70,6 +71,11 @@ export function supportMatrixProblem(value: unknown): string | null {
     if (matrix.schemaVersion !== 1) return 'Unsupported support-matrix version';
     if (!validMatrix(value)) return 'Invalid support-matrix contract';
     if (matrix.taxonomySchemaVersion !== taxonomy.schemaVersion) return 'Support matrix was generated from a different taxonomy version';
+    for (const observation of Object.values(matrix.sourceReport.scannerObservations)) {
+      if (!Number.isFinite(Date.parse(observation.observedAt)) || !observation.sourceRunId ||
+        (observation.source === 'snapshot') !== Boolean(observation.snapshotDigest && observation.inputDigest))
+        return 'Support matrix carries invalid scanner observation provenance';
+    }
     if (matrix.familyCount !== matrix.families.length) return 'Support matrix family count does not match its families';
     if (new Set(matrix.families.map(f => f.family)).size !== matrix.families.length) return 'Support matrix repeats a family';
     const counted = countStatuses(matrix.families);

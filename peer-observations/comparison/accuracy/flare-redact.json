@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-26T16:13:45.994Z",
+  "sourceRun": {
+    "runId": "2026-09-26T16:13:45.994Z-6afca9",
+    "benchmarkRevision": "df8d74f018a4f368e7a31b008f461906550e7ad7"
+  },
+  "input": {
+    "surface": "comparison/accuracy",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f9c07d079707b3c53b8cee4a22f00c4db632a4a65a5c48ca6eed72b6eaf23dc3",
+    "fixtureCount": 10,
+    "fixturesDigest": "626767b41788a572cf0a0b8c4e437fd12f4891c07de9ee77c0980558ad3c28f0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
+      "fixtureCount": 2990
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "aws-id.txt",
+      "start": 18,
+      "end": 38,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "bearer-header.txt",
+      "start": 15,
+      "end": 56,
+      "family": "bearer-token"
+    },
+    {
+      "path": "github-token.txt",
+      "start": 13,
+      "end": 53,
+      "family": "github-token"
+    },
+    {
+      "path": "quoted-token.txt",
+      "start": 15,
+      "end": 55,
+      "family": "github-token"
+    },
+    {
+      "path": "unicode-prefix.txt",
+      "start": 18,
+      "end": 58,
+      "family": "github-token"
+    }
+  ],
+  "digest": "b2249329ce9551b9f686b7f5724b1f0760062f2bed2a76500b5213df2e010982"
+}

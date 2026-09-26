@@ -1,5 +1,5 @@
 import type { EvaluationCase, Registry, Method, Operator, Scanner, Observation, CaseResult, ReviewLedger, Summary } from './types.ts';
-import type { AccountingConfig, DeltaCause, Finding } from '../types.ts';
+import type { AccountingConfig, DeltaCause, Finding, Fixture } from '../types.ts';
 
 export interface EvaluationOptions {
   cases: EvaluationCase[]; methods: Registry<Method>; operators: Registry<Operator>; scanners: Scanner[];
@@ -8,6 +8,10 @@ export interface EvaluationOptions {
   accounting?: AccountingConfig;
   /** Defaults to an empty ledger: every queue entry is then `unknown`. The engine never writes it. */
   ledger?: ReviewLedger;
+  /** Validated normalized observations to compose with freshly executed scanners. IDs must be disjoint. */
+  reusedObservations?: Observation[];
+  /** Refresh-only hook. Receives normalized observations after required stability replays. */
+  captureObservations?: (fixtures: Fixture[], observations: Observation[]) => Promise<void>;
 }
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -76,16 +80,31 @@ function assertionDelta(byMethod: Summary, unstable: Set<string>, config: Accoun
   return { version: '1.0 -> 1.1' as const, groups };
 }
 
-export async function executeEvaluation({ cases, methods, operators, scanners, provenance = {}, onProgress = () => {}, runId = randomUUID(), scratchParent = tmpdir(),
-  accounting = suite.accounting as AccountingConfig, ledger = { schemaVersion: 2, entries: {} } }: EvaluationOptions) {
-  validateAccounting(accounting);
+export function evaluationInputs(cases: EvaluationCase[], methods: Registry<Method>, operators: Registry<Operator>) {
   if (!cases.length || new Set(cases.map(c => c.id)).size !== cases.length) throw new Error('Empty or duplicate evaluation cases');
-  if (!scanners.length || new Set(scanners.map(s => s.id)).size !== scanners.length) throw new Error('Empty or duplicate scanner selection');
-  // Validate and generate everything before any scanner sees an input.
   const generated = cases.map(c => generateCase(c, methods, operators));
   const fixtures = generated.flatMap(g => g.variants.map(v => v.fixture));
   if (new Set(fixtures.map(f => f.path)).size !== fixtures.length) throw new Error('Duplicate generated path');
+  return { generated, fixtures };
+}
+
+export async function executeEvaluation({ cases, methods, operators, scanners, provenance = {}, onProgress = () => {}, runId = randomUUID(), scratchParent = tmpdir(),
+  accounting = suite.accounting as AccountingConfig, ledger = { schemaVersion: 2, entries: {} }, reusedObservations = [], captureObservations }: EvaluationOptions) {
+  validateAccounting(accounting);
+  const allIds = [...scanners.map(s => s.id), ...reusedObservations.map(s => s.id)];
+  if (!allIds.length || new Set(allIds).size !== allIds.length) throw new Error('Empty or duplicate scanner selection');
+  // Validate and generate everything before any scanner sees an input.
+  const { generated, fixtures } = evaluationInputs(cases, methods, operators);
   const startedAt = new Date().toISOString(), observations: Observation[] = [];
+  const validatedReused = structuredClone(reusedObservations);
+  for (const observation of validatedReused) {
+    if (observation.status !== 'complete' || observation.observation?.source !== 'snapshot' || !observation.findings ||
+      observation.findings.some(f => !fixtures.some(input => input.path === f.path) || f.start < 0 || f.end <= f.start ||
+        f.end > Buffer.byteLength(fixtures.find(input => input.path === f.path)!.content)))
+      throw new Error('Invalid reused peer observation');
+    score(fixtures, observation.findings);
+    onProgress(`${observation.id}: reused snapshot ${observation.observation.snapshotDigest}`);
+  }
   const scratch = await mkdtemp(path.join(scratchParent, 'secret-evaluation-'));
   try {
     for (const f of fixtures) {
@@ -122,7 +141,8 @@ export async function executeEvaluation({ cases, methods, operators, scanners, p
           message: 'Replays over identical input disagreed; findings discarded and raw output suppressed.',
           replays: { count: replays.length, agreed: false, divergentPaths: [...divergent].sort() } });
         else observations.push({ ...metadata, version, status: 'complete', findings: replays[0],
-          durationMs: Math.round(performance.now() - start), replays: { count: replays.length, agreed: true } });
+          durationMs: Math.round(performance.now() - start), replays: { count: replays.length, agreed: true },
+          observation: { source: 'fresh', observedAt: startedAt, sourceRunId: runId } });
       } catch (error) {
         observations.push({ ...metadata, version,
           status: error instanceof Error && error.message === 'unavailable' ? 'unavailable' : 'error',
@@ -130,6 +150,8 @@ export async function executeEvaluation({ cases, methods, operators, scanners, p
       }
       onProgress(`${scanner.id}: ${observations.at(-1)!.status}`);
     }
+    observations.push(...validatedReused);
+    if (captureObservations) await captureObservations(fixtures, observations);
   } finally {
     await rm(scratch, { recursive: true, force: true });
   }

@@ -4,7 +4,7 @@ import { platform, arch } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanners } from '../scanners/index.mjs';
-import { credentialDomain } from './evaluation/domains/credential/contract.ts';
+import { resolveEvaluationDomain } from './evaluation/domains/registry.ts';
 import { hash } from './engine/model.ts';
 import { runEvaluation, exitCode } from './engine/runner.ts';
 
@@ -18,6 +18,7 @@ for (const arg of args) {
   options[key] = match?.[2] ?? true;
 }
 if (options.help) { console.log(usage); process.exit(0); }
+const credentialDomain = resolveEvaluationDomain('credential');
 const methods = credentialDomain.createMethods(), operators = credentialDomain.createOperators();
 let cases = await credentialDomain.loadCases(operators);
 const select = (value: string | boolean | undefined, available: string[], label: string) => {

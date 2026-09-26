@@ -21,8 +21,10 @@ export type RuntimeObservation<TFinding extends RuntimeFinding = RuntimeFinding>
   { status: 'unstable'; message: string; findings: []; replays: { count: number; agreed: boolean; divergentPaths?: string[] }; observation?: RuntimeObservationProvenance }
 );
 
-const tuples = (findings: RuntimeFinding[]) => findings
-  .map(finding => `${finding.path}:${finding.start}:${finding.end}${finding.family ? `:${finding.family}` : ''}`)
+const tuples = (findings: RuntimeFinding[], identity: (value: unknown) => string) => findings
+  // Compare the complete normalized finding. Domain fields beyond ranges/family/action
+  // are evidence too and must not be allowed to vary between stability replays.
+  .map(finding => JSON.stringify([finding.path, identity(finding)]))
   .sort();
 
 export async function executeRuntime<
@@ -82,10 +84,10 @@ export async function executeRuntime<
           validateFindings(raw);
           replayed.push(raw.map(finding => normalizeFinding(finding, scanner)));
         }
-        const [first, ...rest] = replayed.map(tuples);
+        const [first, ...rest] = replayed.map(findings => tuples(findings, identity));
         const divergent = new Set<string>();
         for (const other of rest) for (const tuple of [...first.filter(value => !other.includes(value)), ...other.filter(value => !first.includes(value))])
-          divergent.add(tuple.split(':')[0]);
+          divergent.add(JSON.parse(tuple)[0]);
         if (divergent.size) observations.push({ ...metadata, version, status: 'unstable', findings: [],
           message: 'Replays over identical input disagreed; findings discarded and raw output suppressed.',
           replays: { count: replayed.length, agreed: false, divergentPaths: [...divergent].sort() } });

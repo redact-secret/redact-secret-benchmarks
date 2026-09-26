@@ -5,6 +5,7 @@ import { runtimeProvenance, repositoryRoot } from './engine/provenance.ts';
 import { runHoldout, contaminateHoldout } from '../holdout/lifecycle.ts';
 import { sealProtectedCorpus, HoldoutError } from '../holdout/storage.ts';
 import type { Candidate } from '../holdout/types.ts';
+import { credentialHoldoutDomain } from './evaluation/domains/credential/holdout.ts';
 
 async function main() {
   const [action, ...args] = process.argv.slice(2), options: Record<string, string> = {};
@@ -26,7 +27,7 @@ async function main() {
       const p = await runtimeProvenance();
       return { sourceHash: p.sourceHash, lockHash: p.lockHash, candidateArtifactHash: p.candidateArtifactHash };
     };
-    const report = await runHoldout({ manifestFile: manifest, scanners, candidate: await snapshot(), verifyCandidate: snapshot });
+    const report = await runHoldout({ manifestFile: manifest, scanners, candidate: await snapshot(), verifyCandidate: snapshot, domain: credentialHoldoutDomain });
     // stdout contains only the schema-validated aggregate, never case rows.
     if (options.output) await writeFile(path.resolve(options.output), JSON.stringify(report, null, 2) + '\n', { mode: 0o600, flag: 'wx' });
     else console.log(JSON.stringify(report, null, 2));

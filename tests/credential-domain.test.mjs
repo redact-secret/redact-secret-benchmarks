@@ -64,7 +64,7 @@ test('legacy module paths are re-export shims and production entrypoints select 
   for (const file of [
     'benchmarks/evaluate.ts', 'benchmarks/classify-support.ts', 'benchmarks/qualify.ts', 'benchmarks/generate-support-matrix.ts',
     'scripts/publish-evaluation.ts', 'scripts/check-review-queue-coverage.mjs', 'scripts/rekey-review-ledger.ts',
-    'scripts/generate-fixture-profile-coverage.mjs', 'scripts/check-evidence-arrival.mjs', 'holdout/lifecycle.ts',
+    'scripts/generate-fixture-profile-coverage.mjs', 'scripts/check-evidence-arrival.mjs',
   ]) {
     const source = await text(file);
     assert.match(source, /credentialDomain/, file);
@@ -73,9 +73,9 @@ test('legacy module paths are re-export shims and production entrypoints select 
 });
 
 test('the #276 move leaves accounting and serialized report versions untouched', async () => {
-  const accounting = await text('benchmarks/lib/accounting.ts');
-  const execution = await text('benchmarks/engine/execution.ts');
-  const publicReport = await text('benchmarks/engine/public-report.ts');
+  const accounting = await text('benchmarks/evaluation/domains/credential/accounting.ts');
+  const execution = await text('benchmarks/evaluation/domains/credential/execution.ts');
+  const publicReport = await text('benchmarks/evaluation/domains/credential/public-report.ts');
   assert.match(accounting, /ACCOUNTING_VERSION = '1\.1'/);
   assert.match(execution, /schemaVersion: 3/);
   assert.match(publicReport, /schemaVersion: 2, accountingVersion: '1\.1'/);

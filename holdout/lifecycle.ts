@@ -1,17 +1,33 @@
 import { mkdir, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import type { Scanner, EvaluationCase } from '../benchmarks/engine/types.ts';
-import type { Candidate, Counts, HoldoutManifest, HoldoutReport } from './types.ts';
-import { hash } from '../benchmarks/engine/model.ts';
-import { executeEvaluation } from '../benchmarks/engine/execution.ts';
-import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
-import { publicConformanceCorpus } from './conformance.ts';
-import { HoldoutError, readManifest, serialize, storeDirectory, privateDirectory, privateRead, atomicPrivateWrite, validateHoldoutCorpus } from './storage.ts';
-import { validateEvidence } from '../benchmarks/engine/evidence.ts';
+import type { Candidate, HoldoutManifest } from './types.ts';
+import { hash } from '../benchmarks/evaluation/substrate/hash.ts';
+import type { AccountingArtifactIdentity } from '../benchmarks/accounting/shared/primitives.ts';
+import { HoldoutError, readManifest, serialize, storeDirectory, privateDirectory, privateRead, atomicPrivateWrite } from './storage.ts';
+
+interface LifecycleScanner {
+  id: string; mode: string; configuration?: Record<string, unknown>; capabilities?: { ranges: boolean; classification: boolean };
+  version(directory: string): Promise<string>;
+}
+export interface HoldoutLifecycleCommon {
+  identity: AccountingArtifactIdentity; runId: string; planHash: string;
+  independence: 'public-control' | 'custodian-declared'; manifest: HoldoutManifest; candidate: Candidate;
+}
+export interface HoldoutDomainAdapter<TScanner extends LifecycleScanner, TCorpus extends { seed: unknown }, TEvaluated, TReport> {
+  identity: AccountingArtifactIdentity;
+  publicConformanceCorpus(seed: string): unknown;
+  validateCorpus(value: unknown): TCorpus;
+  evaluate(options: {
+    corpus: TCorpus; manifest: HoldoutManifest; scanners: TScanner[]; runId: string; directory: string; planHash: string;
+    toolPlan: { id: string; version: string; configuration: Record<string, unknown>; configurationHash: string }[];
+    candidate: Candidate; verifyCandidate: () => Promise<Candidate>;
+  }): Promise<TEvaluated>;
+  buildReport(common: HoldoutLifecycleCommon, evaluated: TEvaluated): TReport;
+  validateReport(report: TReport): void;
+}
 
 interface State { corpusHash: string; status: 'sealed' | 'contaminated' | 'retired'; runs: string[]; reason?: string }
-const counts = (): Counts => ({ pass: 0, fail: 0, 'review-required': 0 });
 async function stateOf(directory: string, manifest: HoldoutManifest): Promise<State> {
   const state = JSON.parse(await privateRead(path.join(directory, 'state.json')));
   if (state.corpusHash !== manifest.corpusHash || !['sealed', 'contaminated', 'retired'].includes(state.status) ||
@@ -19,7 +35,7 @@ async function stateOf(directory: string, manifest: HoldoutManifest): Promise<St
   return state;
 }
 
-async function publicStore(file: string, m: HoldoutManifest) {
+async function publicStore(file: string, m: HoldoutManifest, publicConformanceCorpus: (seed: string) => unknown) {
   const generated = path.join(path.dirname(path.resolve(file)), 'generated');
   await mkdir(generated, { mode: 0o700 }).catch(e => { if (e.code !== 'EEXIST') throw e; });
   await privateDirectory(generated);
@@ -35,9 +51,10 @@ async function publicStore(file: string, m: HoldoutManifest) {
 }
 
 /** Only this lifecycle opts into the holdout method. It never returns rows. */
-export async function runHoldout({ manifestFile, scanners, candidate, verifyCandidate, runId = randomUUID() }: {
-  manifestFile: string; scanners: Scanner[]; candidate: Candidate; verifyCandidate: () => Promise<Candidate>; runId?: string;
-}): Promise<HoldoutReport> {
+export async function runHoldout<TScanner extends LifecycleScanner, TCorpus extends { seed: unknown }, TEvaluated, TReport>({ manifestFile, scanners, candidate, verifyCandidate, domain, runId = randomUUID() }: {
+  manifestFile: string; scanners: TScanner[]; candidate: Candidate; verifyCandidate: () => Promise<Candidate>;
+  domain: HoldoutDomainAdapter<TScanner, TCorpus, TEvaluated, TReport>; runId?: string;
+}): Promise<TReport> {
   let directory: string | undefined, locked = false, ephemeral = false;
   try {
     const manifest = await readManifest(manifestFile);
@@ -54,9 +71,12 @@ export async function runHoldout({ manifestFile, scanners, candidate, verifyCand
         configurationHash: hash(s.configuration ?? { mode: s.mode ?? 'unspecified' }) });
     }
     if (hash(await verifyCandidate()) !== hash(candidate)) throw new HoldoutError('candidate-changed');
-    const plan = { runId, candidate, tools: toolPlan, corpusHash: manifest.corpusHash, revision: manifest.revision, methodVersion: 1 };
+    const identity = structuredClone(domain.identity);
+    if (![identity.domain, identity.evaluationProfile, identity.domainAccountingVersion].every(value => typeof value === 'string' && value.length))
+      throw new HoldoutError('invalid-plan');
+    const plan = { runId, candidate, tools: toolPlan, corpusHash: manifest.corpusHash, revision: manifest.revision, methodVersion: 1, evaluation: identity };
     ephemeral = manifest.purpose === 'public-conformance';
-    directory = ephemeral ? await publicStore(manifestFile, manifest) : await storeDirectory(manifestFile, manifest);
+    directory = ephemeral ? await publicStore(manifestFile, manifest, domain.publicConformanceCorpus) : await storeDirectory(manifestFile, manifest);
     await writeFile(path.join(directory, '.lock'), runId, { mode: 0o600, flag: 'wx' });
     locked = true;
     const state = await stateOf(directory, manifest);
@@ -69,45 +89,12 @@ export async function runHoldout({ manifestFile, scanners, candidate, verifyCand
     await writeFile(path.join(directory, `plan-${runId}.json`), serialize(plan), { mode: 0o600, flag: 'wx' });
     const text = await privateRead(path.join(directory, 'corpus.json'));
     if (hash(text) !== manifest.corpusHash) throw new HoldoutError('corpus-integrity-mismatch');
-    const corpus = validateHoldoutCorpus(JSON.parse(text));
+    const corpus = domain.validateCorpus(JSON.parse(text));
     if (hash(corpus.seed) !== manifest.seedHash) throw new HoldoutError('seed-integrity-mismatch');
-    const cases: EvaluationCase[] = corpus.fixtures.map((f, i) => ({
-      id: `holdout-${i}`, method: 'holdout', visibility: 'holdout', seed: f, targets: [], operators: [],
-      source: { category: 'holdout', fixtureId: f.id, path: 'protected' },
-      provenance: { source: 'holdout', sourceHash: manifest.corpusHash, rationale: f.assessment.reason,
-        seed: corpus.seed, reviewStatus: manifest.review, sources: f.assessment.sources },
-    }));
-    const raw = await executeEvaluation({ cases, methods: credentialDomain.createHoldoutMethods(), operators: credentialDomain.createOperators(), scanners,
-      runId, scratchParent: directory, provenance: { planHash: hash(plan) }, normalizeFinding: credentialDomain.normalizeFinding });
-    const candidateStable = hash(await verifyCandidate()) === hash(candidate);
-    const scannerResults = raw.scanners.map(s => {
-      const expected = toolPlan.find(t => t.id === s.id)!;
-      const status = s.status === 'complete' && (!candidateStable || s.version !== expected.version || s.configurationHash !== expected.configurationHash)
-        ? 'error' as const : s.status;
-      const assertions = counts(), byStratum: Record<string, Counts> = {};
-      if (status === 'complete') for (const result of raw.results) {
-        const scored = result.scanners.find(o => o.scanner === s.id)!;
-        for (const a of scored.assertions) {
-          const v = result.variants.find(v => v.id === a.variant)!;
-          const bucket = byStratum[`${v.kind}:${v.tier}`] ??= counts();
-          // Complete scanners never carry `not-measured` rows; holdout stays counts-only (no intervals, by decision).
-          if (a.status === 'not-measured') throw new HoldoutError('access-execution-or-validation-failed');
-          bucket[a.status]++; assertions[a.status]++;
-        }
-      }
-      return { id: s.id, version: s.version, configuration: expected.configuration, configurationHash: expected.configurationHash,
-        status, assertions, byStratum };
-    });
-    const report: HoldoutReport = {
-      schemaVersion: 1, reportType: 'holdout', runId, planHash: hash(plan), startedAt: raw.startedAt, finishedAt: raw.finishedAt,
-      methodology: 'frozen-candidate-canonical-cases-aggregate-only',
-      independence: ephemeral ? 'public-control' : 'custodian-declared',
-      status: scannerResults.every(s => s.status === 'complete') && !raw.generationErrors.length ? 'complete' : 'incomplete',
-      corpus: { id: manifest.id, revision: manifest.revision, purpose: manifest.purpose, corpusHash: manifest.corpusHash,
-        seedHash: manifest.seedHash, lifecycle: 'sealed-at-execution' },
-      candidate, caseCount: raw.caseCount, variantCount: raw.variantCount, generationErrors: raw.generationErrors.length, scanners: scannerResults,
-    };
-    validateEvidence(report, 'holdout');
+    const planHash = hash(plan);
+    const evaluated = await domain.evaluate({ corpus, manifest, scanners, runId, directory, planHash, toolPlan, candidate, verifyCandidate });
+    const report = domain.buildReport({ identity, runId, planHash, independence: ephemeral ? 'public-control' : 'custodian-declared', manifest, candidate }, evaluated);
+    domain.validateReport(report);
     await writeFile(path.join(directory, `aggregate-${runId}.json`), serialize(report), { mode: 0o600, flag: 'wx' });
     return report;
   } catch (error) {

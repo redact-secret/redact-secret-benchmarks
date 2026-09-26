@@ -1,6 +1,6 @@
 import { validateAssessment } from '../benchmarks/lib/assessment.ts';
 import { groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../benchmarks/lib/lattice.ts';
-import { ACCOUNTING_VERSION, accountGroups, accountingDelta, validateAccounting } from '../benchmarks/lib/accounting.ts';
+import { ACCOUNTING_VERSION, accountGroups, accountingDelta, validateAccounting, readCredentialAccountingIdentity } from '../benchmarks/lib/accounting.ts';
 
 /** Pure catalog and report projections shared by the UI and tests. */
 export const fixtureSlug = (category, id) => `${category}--${id}`;
@@ -104,6 +104,7 @@ export function reportProblem(report, category, hash, fixtures) {
   if (report?.schemaVersion < 5) return 'Legacy report: rerun npm run bench';
   // Reports are only comparable under one accounting version; the block is re-validated, never trusted.
   if (report?.accountingVersion !== ACCOUNTING_VERSION) return 'Report accounting version is not comparable';
+  try { readCredentialAccountingIdentity(report, 'measurement-v4'); } catch { return 'Report domain accounting identity is not comparable'; }
   try { validateAccounting(report.accounting); } catch { return 'Invalid accounting configuration'; }
   if (!report || report.schemaVersion !== 5 || report.category !== category || !Array.isArray(report.scanners)) return 'Missing or invalid report';
   if (typeof report.runId !== 'string' || !report.runId) return 'Report has no run id';

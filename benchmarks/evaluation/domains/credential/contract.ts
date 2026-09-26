@@ -1,20 +1,15 @@
-import type { Finding } from '../../../types.ts';
-import type { Scanner } from '../../../engine/types.ts';
 import { createMethods } from './methods/index.ts';
 import { createHoldoutMethods } from './methods/holdout.ts';
 import { createOperators } from './operators/index.ts';
 import { loadCases } from './cases.ts';
 import { validateAssessment, validateContracts, classifyFixture, controlAxis, contracts, scoredContractIds } from './assessment.ts';
-import { publicEvaluation } from '../../../engine/public-report.ts';
+import { publicEvaluation } from './public-report.ts';
 import { credentialIdentity } from './identity.ts';
-import { familyEvidence, classifyFamilySupport, statusCriteria, buildSupportMatrix } from './qualification.ts';
+import { familyEvidence, classifyFamilySupport, statusCriteria, buildSupportMatrix, completenessReasons, validateQualificationEvidence } from './qualification.ts';
 import { reviewEntryId } from './review.ts';
-
-const normalizeFinding = ({ path, start, end, family, action }: Finding, scanner: Pick<Scanner, 'capabilities'>): Finding => ({
-  path, start, end,
-  ...(scanner.capabilities?.classification !== false && family && Object.hasOwn(contracts, family) ? { family } : {}),
-  ...(action !== undefined ? { action } : {}),
-});
+import * as accounting from './accounting.ts';
+import { normalizeFinding } from './normalization.ts';
+import { credentialHoldoutDomain } from './holdout.ts';
 
 /**
  * The one internal composition root for current evaluator semantics.
@@ -27,8 +22,10 @@ export const credentialDomain = Object.freeze({
   createOperators,
   loadCases,
   assessment: Object.freeze({ validateAssessment, validateContracts, classifyFixture, controlAxis, contracts, scoredContractIds }),
+  accounting,
+  holdout: Object.freeze(credentialHoldoutDomain),
   normalizeFinding,
-  qualification: Object.freeze({ familyEvidence, classifyFamilySupport, statusCriteria, buildSupportMatrix }),
+  qualification: Object.freeze({ familyEvidence, classifyFamilySupport, statusCriteria, buildSupportMatrix, completenessReasons, validateQualificationEvidence }),
   review: Object.freeze({ reviewEntryId }),
   reporting: Object.freeze({ publicEvaluation }),
 });

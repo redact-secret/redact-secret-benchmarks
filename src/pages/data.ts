@@ -1,4 +1,5 @@
 import type { RunSummary } from '../../benchmarks/lib/run-summary.ts';
+import { readCredentialAccountingIdentity, assertCredentialAccountingIdentities } from '../../benchmarks/lib/accounting.ts';
 import type { Group, Report, Run } from '../types';
 
 /** What the pages read. Loaded once per refresh by main.ts; pages never fetch. */
@@ -31,6 +32,12 @@ export function summaryProblem(summary: RunSummary | undefined, data: Pick<Bench
   if (summary.runId !== runId) return 'Run summary is from another run';
   const reports = data.loaded.flatMap(l => (l.report && l.report.runId === runId ? [l.report] : []));
   if (reports.some(r => (r as unknown as { accountingVersion: string }).accountingVersion !== summary.accountingVersion)) return 'Run summary accounting version differs from its suites';
+  try {
+    assertCredentialAccountingIdentities([
+      readCredentialAccountingIdentity(summary as unknown as Record<string, unknown>, 'measurement-v4'),
+      ...reports.map(report => readCredentialAccountingIdentity(report as unknown as Record<string, unknown>, 'measurement-v4')),
+    ], 'measurement-v4');
+  } catch { return 'Run summary domain accounting identity differs from its suites'; }
   if (summary.categories.length !== reports.length || summary.categories.some(c => !reports.some(r => r.category === c))) return 'Run summary covers different suites';
   for (const [scanner, groups] of Object.entries(summary.overall)) for (const [key, group] of Object.entries(groups)) for (const field of COUNTS) {
     const total = (group as unknown as Record<string, unknown>)[field];

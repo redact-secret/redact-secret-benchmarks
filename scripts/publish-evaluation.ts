@@ -31,7 +31,9 @@ const occurrences = report.reviews.map(review => {
   return { id: review.id, caseId: review.caseId, sourceSlug: source.sourceSlug, variant: review.variant,
     ...(review.peer ? { peer: review.peer } : {}), ...(review.disagreement ? { disagreement: review.disagreement } : {}) };
 });
-const publishedLedger = observeReviewEntries(carryReviewHistory(sourceLedger, previous), occurrences, report.runId, report.finishedAt);
+const unknown = occurrences.filter(occurrence => !Object.hasOwn(sourceLedger.entries, occurrence.id));
+if (unknown.length) console.warn(`Publishing locked review provenance: ${unknown.length} observed review entries are absent from the checked-in ledger.`);
+const publishedLedger = observeReviewEntries(carryReviewHistory(sourceLedger, previous), occurrences, report.runId, report.finishedAt, { unknown: 'ignore' });
 await mkdir('public/results', { recursive: true });
 const target = 'public/results/evaluation-v1.json', temp = `${target}.tmp`;
 await writeFile(temp, JSON.stringify(report) + '\n');

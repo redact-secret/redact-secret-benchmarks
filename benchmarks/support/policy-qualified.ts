@@ -3,7 +3,6 @@ import type { Finding, Outcome } from '../types.ts';
 import { OUTCOMES, scoreRow } from '../lib/lattice.ts';
 import data from './policy-qualified-credentials.json';
 import type { CredentialPolicyHoldoutReport } from '../evaluation/domains/credential-policy/holdout.ts';
-import { validateCredentialPolicyHoldoutReport } from '../evaluation/domains/credential-policy/holdout.ts';
 
 export const POLICY_FAMILIES = ['bearer-token', 'connection-string', 'otpauth-uri', 'generic-token'] as const;
 export type PolicyFamily = typeof POLICY_FAMILIES[number];
@@ -41,20 +40,6 @@ const emptyActions = (): Record<PolicyAction, number> => ({ warn: 0, redact: 0, 
 const emptyOutcomes = (): Record<Outcome, number> => Object.fromEntries(OUTCOMES.map(outcome => [outcome, 0])) as Record<Outcome, number>;
 const actionOf = (value: string | undefined): PolicyAction | null =>
   value && ['warn', 'redact', 'block', 'allow'].includes(value) ? value as PolicyAction : null;
-
-export function validatePolicyHoldoutReceipt(value: unknown): PolicyHoldoutReceipt {
-  const r = value as PolicyHoldoutReceipt;
-  if (!r || Object.keys(r).sort().join(',') !== 'benchmarkRevision,productRevision,profileId,report,schemaVersion' ||
-      r.schemaVersion !== 2 || r.profileId !== 'credential-policy-v1' ||
-      !/^[a-f0-9]{40}$/.test(r.productRevision) || !/^[a-f0-9]{40}$/.test(r.benchmarkRevision))
-    throw new Error('Invalid policy-qualified credential holdout receipt');
-  try { validateCredentialPolicyHoldoutReport(r.report); } catch { throw new Error('Invalid policy-qualified credential holdout receipt'); }
-  const product = r.report.scanners.find(scanner => scanner.id === 'redact-secret');
-  if (r.report.status !== 'complete' || r.report.corpus.purpose !== 'protected' || r.report.independence !== 'custodian-declared' ||
-      !product || product.status !== 'complete')
-    throw new Error('Invalid policy-qualified credential holdout receipt');
-  return r;
-}
 
 /**
  * Aggregate only canonical differential rows. Other methods deliberately reuse

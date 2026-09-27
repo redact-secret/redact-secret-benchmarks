@@ -133,6 +133,40 @@
           "protectedEvidenceCommitment": "512ee0f73796bafcac5113d3091e4177b1a90a6ceac5118df8bc7f63a54352a9"
         }
       ]
+    },
+    {
+      "product": {
+        "sourceCommit": "2e1bdcf0905f7a374c4c54b7caac41303cd7d88b",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "23c2ba74a93aa4091691572cbc99a3bd4cc23fa19b6a08111ca0d292d6bddc4e"
+      },
+      "activationArtifactCommitment": "8a0b0178905d6dc902b0097c254711a761c49d1fa00f8554c9ceeeef4e5f6583",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:global:email",
+        "pii:global:iban",
+        "pii:global:network-address",
+        "pii:global:payment-card",
+        "pii:global:phone"
+      ],
+      "qualifications": [
+        {
+          "family": "pii:global:phone",
+          "planCommitment": "8e00a1029d2eef67fbbddc705362a7e4f61d8a8cca54bbba8436f9c00dbc5c18",
+          "artifactCommitment": "bc4566502c3eee964e421a451a7dfe225e9e3991ee239b568d1b528f2e6ec2f0",
+          "sourceConformanceCommitment": "4503dc44a094ec07b05e8387c6eccef6793378f46836a2d6d7bfe3c964e0d879",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-identity-only-classification",
+            "class-protected-partition",
+            "diagnostic-population",
+            "identity-only-classification",
+            "population-no-regression",
+            "protected-partition",
+            "runtime-and-package-cost"
+          ]
+        }
+      ]
     }
   ]
 }

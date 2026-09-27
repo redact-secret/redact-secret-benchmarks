@@ -68,6 +68,7 @@ test('trusted product binding is artifact-derived and still fails closed without
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
     ['pii:global:email', 'unavailable', 'pending'], ['pii:global:iban', 'unavailable', 'pending'],
     ['pii:global:network-address', 'available', 'pending'], ['pii:global:payment-card', 'unavailable', 'pending'],
+    ['pii:global:phone', 'unavailable', 'pending'],
     ['pii:us:ssn', 'unavailable', 'pending'],
   ]);
   assert.equal(matrix.activationContract.productSourceCommit, '941053baecdc4b99f98e085429ac26bf24fe0bee');
@@ -109,6 +110,7 @@ test('email binding keeps installed offsets and exact-source conformance separat
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
     ['pii:global:email', 'available', 'pending'], ['pii:global:iban', 'unavailable', 'pending'],
     ['pii:global:network-address', 'available', 'pending'], ['pii:global:payment-card', 'unavailable', 'pending'],
+    ['pii:global:phone', 'unavailable', 'pending'],
     ['pii:us:ssn', 'unavailable', 'pending'],
   ]);
   assert.deepEqual(qualificationArtifact.sourceConformance.lanes.map(row => row.id), [
@@ -214,6 +216,55 @@ test('payment-card binding separates Luhn controls from semantic collisions and 
 
   const hostile = structuredClone(product);
   hostile.qualificationArtifacts[0].sourceConformance.lanes[0].fixture = 'conformance/fixtures/pii-iban-v1.json';
+  hostile.qualificationArtifacts[0].sourceConformance.artifactCommitment =
+    piiBindingArtifactCommitment(hostile.qualificationArtifacts[0].sourceConformance);
+  hostile.qualificationArtifacts[0].artifactCommitment = piiBindingArtifactCommitment(hostile.qualificationArtifacts[0]);
+  assert.throws(() => buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product: hostile }), /trusted PII qualification evidence/);
+});
+
+test('phone binding preserves narrow authority, context, and extension axes while staying pending', async () => {
+  const [candidateEvidence, activationArtifact, qualificationArtifact, plan] = await Promise.all([
+    readFile('evidence/880/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/880/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/880/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+    readFile('benchmarks/evaluation/domains/pii/phone-qualification-v1.json', 'utf8').then(JSON.parse),
+  ]);
+  const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
+  const matrix = buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product });
+  const phone = matrix.families.find(row => row.family === 'pii:global:phone');
+  assert.equal(plan.familyContractVersion, 1);
+  assert.equal(plan.authorityBinding.reservedControl.wholeCandidateRule,
+    'normalized-exchange-and-line-only-555-0100-through-555-0199-extension-ignored');
+  assert.ok(phone.authority.some(row => row.sourceId === 'itu-t-e164'));
+  assert.ok(phone.authority.some(row => row.sourceId === 'nanpa-about'));
+  assert.ok(phone.authority.some(row => row.sourceId === 'nanpa-co-codes-thousands-blocks'));
+  assert.ok(phone.authority.some(row => row.sourceId === 'nanpa-555-line-numbers'));
+  const classes = new Map(qualificationArtifact.classAccounting.map(row => [row.id, row]));
+  for (const id of ['syntactically-valid-sensitive', 'korean-sensitive-context', 'supported-extension',
+    'bare-identity-public-absence', 'authoritative-555-control', 'n11-exclusion', 'accepted-988',
+    'extension-malformed', 'ordinary-prose-suffix', 'shared-context-association'])
+    assert.equal(classes.get(id).status, 'measured');
+  assert.deepEqual(activationArtifact.availableFamilies,
+    ['pii:global:email', 'pii:global:iban', 'pii:global:network-address', 'pii:global:payment-card', 'pii:global:phone']);
+  assert.deepEqual(qualificationArtifact.sourceConformance.lanes.map(row => row.id),
+    ['rust-native-phone-conformance', 'python-phone-conformance', 'cli-phone-conformance']);
+  const korean = qualificationArtifact.installedArtifactConformance.lanes[0].observations
+    .find(row => row.id === 'korean-nfd-sensitive-context');
+  assert.deepEqual(korean.canonicalRange, { start: 33, end: 45 });
+  const astral = qualificationArtifact.installedArtifactConformance.lanes[0].observations
+    .find(row => row.id === 'astral-prefix-offset');
+  assert.deepEqual(astral.nativeRange, { start: 9, end: 21 });
+  assert.deepEqual(astral.canonicalRange, { start: 11, end: 23 });
+  assert.equal(qualificationArtifact.status, 'not-qualified');
+  assert.equal(phone.status.state, 'pending');
+  for (const reason of ['identity-only-classification', 'diagnostic-population-not-measured',
+    'benign-heavy-stress-not-measured', 'population-comparison-not-qualified', 'protected-partition'])
+    assert.ok(phone.status.reasonCodes.includes(reason));
+  assert.ok(phone.populationEvidence.every(row => row.status === 'not-measured' && row.strata === 0));
+  assert.equal(validatePiiSupportMatrixV2(matrix, { registry: piiSupportRegistry, product }).artifactCommitment, matrix.artifactCommitment);
+
+  const hostile = structuredClone(product);
+  hostile.qualificationArtifacts[0].sourceConformance.lanes[0].fixture = 'conformance/fixtures/pii-email-v1.json';
   hostile.qualificationArtifacts[0].sourceConformance.artifactCommitment =
     piiBindingArtifactCommitment(hostile.qualificationArtifacts[0].sourceConformance);
   hostile.qualificationArtifacts[0].artifactCommitment = piiBindingArtifactCommitment(hostile.qualificationArtifacts[0]);

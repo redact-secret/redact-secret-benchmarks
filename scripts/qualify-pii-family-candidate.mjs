@@ -146,6 +146,31 @@ const sourceDefinitions = Object.freeze({
     toolchains: [{ executable: 'python3', args: ['--version'] }, { executable: 'maturin', args: ['--version'] },
       { executable: 'rustc', args: ['--version'] }],
   },
+  'rust-native-phone-conformance': {
+    fixture: 'conformance/fixtures/pii-phone-v1.json',
+    commands: [{ executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret', '--test', 'pii_phone_conformance'] }],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'cli-phone-conformance': {
+    fixture: 'conformance/fixtures/pii-phone-v1.json',
+    commands: [
+      { executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret-cli', 'phone_family_fixture_matches_cli_for_global_streamed_and_file_paths'] },
+      { executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret-cli', 'pii_family_fixtures_match_cli_utf8_metadata_for_exact_selection'] },
+    ],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'python-phone-conformance': {
+    fixture: 'conformance/fixtures/pii-phone-v1.json',
+    commands: [{ executable: 'python3', args: ['-m', 'venv', '--system-site-packages', '{venv}'] },
+      { executable: 'maturin', args: ['develop', '--release', '--manifest-path', 'bindings/python/Cargo.toml'], venv: true },
+      { executable: '{python}', args: ['-c', 'from tests.test_pii_activation import test_pii_runtime_fixture; test_pii_runtime_fixture()'],
+        venv: true, pythonPath: 'bindings/python' },
+      { executable: '{python}', args: ['-c', 'from tests.test_pii_activation import test_phone_exact_global_and_off_in_fresh_processes_with_every_partition; test_phone_exact_global_and_off_in_fresh_processes_with_every_partition()'],
+        venv: true, pythonPath: 'bindings/python' },
+    ],
+    toolchains: [{ executable: 'python3', args: ['--version'] }, { executable: 'maturin', args: ['--version'] },
+      { executable: 'rustc', args: ['--version'] }],
+  },
   'rust-native-us-ssn-conformance': {
     fixture: 'conformance/fixtures/pii-us-ssn-v1.json',
     commands: [

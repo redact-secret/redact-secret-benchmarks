@@ -163,6 +163,18 @@ classification, both population views and comparisons, and the protected
 partition remain unresolved. The generated row is therefore `pending`; a Luhn
 pass alone is never treated as sensitivity or support evidence.
 
+The phone binding pins family contract v1, E.164 and the deliberately narrow
+NANPA grammar, plus the exact 555-0100 through 555-0199 exchange-and-line
+reserved control. Deterministic no-provenance positives are measured separately
+from that authority control, real N11 exclusions, accepted 988 exchanges,
+semantic collisions, supported extension bounds, malformed continuation seams,
+ordinary prose suffixes, Korean context normalization, whole-candidate
+boundaries, and bounded shared-context association. Installed addon/Wasm and
+exact-source Rust/Python/CLI lanes are measured. Identity-only classification,
+both population views and comparisons, and the protected partition remain
+unresolved, so the generated row remains `pending`; neither `provisional` nor
+`stable` is claimed.
+
 Tuning selection is fail-closed. Repository tuning manifests bind the file-byte
 hash in the pin manifest, while the current PII population contract binds an
 inner semantic corpus commitment and declares no dedicated tuning category.

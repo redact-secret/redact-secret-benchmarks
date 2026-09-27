@@ -83,6 +83,8 @@ function validSourceConformance(value: PiiSourceConformance | undefined, sourceC
       fixture: 'conformance/fixtures/pii-iban-v1.json' },
     'pii:global:payment-card': { ids: ['cli-payment-card-conformance', 'python-payment-card-conformance', 'rust-native-payment-card-conformance'],
       fixture: 'conformance/fixtures/pii-payment-card-v1.json' },
+    'pii:global:phone': { ids: ['cli-phone-conformance', 'python-phone-conformance', 'rust-native-phone-conformance'],
+      fixture: 'conformance/fixtures/pii-phone-v1.json' },
     'pii:us:ssn': { ids: ['cli-us-ssn-conformance', 'python-us-ssn-conformance', 'rust-native-us-ssn-conformance'],
       fixture: 'conformance/fixtures/pii-us-ssn-v1.json' },
   };

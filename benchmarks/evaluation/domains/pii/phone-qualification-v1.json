@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "family": "pii:global:phone",
+  "findingType": "pii_global_phone",
+  "familyContractVersion": 1,
+  "profile": { "id": "pii-v1", "version": 1 },
+  "canonicalOffsetUnit": "utf8-byte",
+  "authorityBinding": {
+    "internationalStructure": {
+      "sourceKind": "standard",
+      "sourceId": "itu-t-e164",
+      "locator": "https://www.itu.int/rec/T-REC-E.164-202602-I/en",
+      "revision": "2026-02"
+    },
+    "nanpaStructure": {
+      "sourceKind": "public-authority",
+      "sourceId": "nanpa-about",
+      "locator": "https://www.nanpa.com/about",
+      "revision": "accessed-2026-09-27"
+    },
+    "centralOfficeStatus": {
+      "sourceKind": "public-authority",
+      "sourceId": "nanpa-co-codes-thousands-blocks",
+      "locator": "https://www.nanpa.com/numbering/co-codesthousands-blocks",
+      "revision": "accessed-2026-09-27",
+      "rule": "actual-n11-area-and-central-office-codes-excluded-988-retained"
+    },
+    "reservedControl": {
+      "sourceKind": "public-authority",
+      "sourceId": "nanpa-555-line-numbers",
+      "locator": "https://www.nanpa.com/numbering/555-line-numbers",
+      "revision": "accessed-2026-09-27",
+      "wholeCandidateRule": "normalized-exchange-and-line-only-555-0100-through-555-0199-extension-ignored"
+    }
+  },
+  "sourceConformanceIds": [
+    "rust-native-phone-conformance",
+    "python-phone-conformance",
+    "cli-phone-conformance"
+  ],
+  "activationChecks": [
+    {
+      "selectors": ["pii:global"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v1"
+    },
+    {
+      "selectors": ["pii:family:global:phone"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:family:global:phone;families=pii:global:phone;vocabulary=pii-context/v1"
+    }
+  ],
+  "fixturePolicy": {
+    "positiveConstruction": "Sensitive-path values are deterministic syntactically valid constructions from the recorded issue-880 seed and have no subscriber, assignment, allocation, or real-world provenance.",
+    "negativeAuthority": "Only the exact whole-candidate NANPA 555-0100 through 555-0199 exchange-plus-line range is treated as a reserved control; an extension does not change that decision.",
+    "semanticSeparation": "Actual N11 area and central-office codes are structural exclusions; 988 is accepted because it is not an N11 code. Unsupported international, URI, vanity, separator, boundary, and extension shapes are explicit v1 false negatives.",
+    "plaintextPublication": "Raw deterministic constructions and authoritative controls are confined to this safe qualification plan; installed observations and support projections expose only IDs, outcomes, ranges, commitments, and aggregate states."
+  },
+  "classAccounting": [
+    { "id": "syntactically-valid-sensitive", "status": "measured" },
+    { "id": "korean-sensitive-context", "status": "measured" },
+    { "id": "supported-extension", "status": "measured" },
+    { "id": "bare-identity-public-absence", "status": "measured" },
+    { "id": "ambiguous-context", "status": "measured" },
+    { "id": "named-negative-context", "status": "measured" },
+    { "id": "authoritative-555-control", "status": "measured" },
+    { "id": "n11-exclusion", "status": "measured" },
+    { "id": "accepted-988", "status": "measured" },
+    { "id": "semantic-collision", "status": "measured" },
+    { "id": "unsupported-format", "status": "measured" },
+    { "id": "extension-malformed", "status": "measured" },
+    { "id": "ordinary-prose-suffix", "status": "measured" },
+    { "id": "whole-candidate-boundary", "status": "measured" },
+    { "id": "shared-context-association", "status": "measured" },
+    { "id": "identity-only-classification", "status": "unresolved" },
+    { "id": "protected-partition", "status": "unresolved" }
+  ],
+  "piiOffInput": "phone_number=555-234-5678",
+  "cases": [
+    { "id": "national-sensitive-context", "classes": ["syntactically-valid-sensitive"], "input": "phone_number=555-234-5678", "expected": { "publicFinding": true, "start": 13, "end": 25, "sensitive": true } },
+    { "id": "plus-one-sensitive-context", "classes": ["syntactically-valid-sensitive"], "input": "telephone=+15552345678", "expected": { "publicFinding": true, "start": 10, "end": 22, "sensitive": true } },
+    { "id": "korean-sensitive-context", "classes": ["korean-sensitive-context"], "input": "전화번호 = 555-234-5678", "expected": { "publicFinding": true, "start": 15, "end": 27, "sensitive": true } },
+    { "id": "korean-nfd-sensitive-context", "classes": ["korean-sensitive-context"], "input": "전화번호 = 555-234-5678", "expected": { "publicFinding": true, "start": 33, "end": 45, "sensitive": true } },
+    { "id": "korean-governed-invisible-context", "classes": ["korean-sensitive-context"], "input": "전​화️번호 = 555-234-5678", "expected": { "publicFinding": true, "start": 21, "end": 33, "sensitive": true } },
+    { "id": "extension-one-digit", "classes": ["supported-extension"], "input": "phone=212-555-2345 ext 7", "expected": { "publicFinding": true, "start": 6, "end": 24, "sensitive": true } },
+    { "id": "extension-six-digits", "classes": ["supported-extension"], "input": "phone_number=555-234-5678 ext. 123456", "expected": { "publicFinding": true, "start": 13, "end": 37, "sensitive": true } },
+    { "id": "astral-prefix-offset", "classes": ["syntactically-valid-sensitive"], "input": "🔒 phone=555-234-5678", "expected": { "publicFinding": true, "start": 11, "end": 23, "sensitive": true } },
+    { "id": "bare-identity", "classes": ["bare-identity-public-absence"], "input": "555-234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "ambiguous-english-contact", "classes": ["ambiguous-context"], "input": "contact=555-234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "ambiguous-korean-contact", "classes": ["ambiguous-context"], "input": "연락처=555-234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "negative-context-wins", "classes": ["named-negative-context"], "input": "phone documentation 555-234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "reserved-555-control-lower", "classes": ["authoritative-555-control"], "input": "phone=212-555-0100", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "reserved-555-control-upper-extension", "classes": ["authoritative-555-control"], "input": "phone=212-555-0199 ext 123", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "reserved-substring-no-authority", "classes": ["authoritative-555-control"], "input": "phone=555-234-0102", "expected": { "publicFinding": true, "start": 6, "end": 18, "sensitive": true } },
+    { "id": "n11-area-code", "classes": ["n11-exclusion"], "input": "phone=211-234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "n11-central-office", "classes": ["n11-exclusion"], "input": "phone=555-911-2345", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "accepted-988-exchange", "classes": ["accepted-988"], "input": "phone=988-988-2345", "expected": { "publicFinding": true, "start": 6, "end": 18, "sensitive": true } },
+    { "id": "version-collision", "classes": ["semantic-collision"], "input": "version=212-555-2345", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "order-reference-collision", "classes": ["semantic-collision"], "input": "order_reference=555-234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "ipv4-collision", "classes": ["semantic-collision"], "input": "phone=212.55.52.345", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "date-collision", "classes": ["semantic-collision"], "input": "phone=212/555/2345", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "mixed-separators", "classes": ["unsupported-format"], "input": "phone=555 234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "unsupported-country-code", "classes": ["unsupported-format"], "input": "전화번호=+82 2 1234 5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "unsupported-tel-uri", "classes": ["unsupported-format"], "input": "contact details tel:+15552345678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "unsupported-vanity", "classes": ["unsupported-format"], "input": "phone=1-800-SYNTHETIC", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "unsupported-x-extension", "classes": ["unsupported-format"], "input": "phone=555-234-5678 x7", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "extension-zero-digits", "classes": ["extension-malformed"], "input": "phone=555-234-5678 ext ", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "extension-seven-digits", "classes": ["extension-malformed"], "input": "phone=555-234-5678 ext 1234567", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "extension-line-break", "classes": ["extension-malformed"], "input": "phone=555-234-5678 ext\n123", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "repeated-extension", "classes": ["extension-malformed"], "input": "phone=555-234-5678 ext 123 ext 4", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "repeated-extension-spaced", "classes": ["extension-malformed"], "input": "phone=555-234-5678 ext 123  ext 4", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "second-x-extension", "classes": ["extension-malformed"], "input": "phone=555-234-5678 ext 123 x7", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "ordinary-extra-suffix", "classes": ["ordinary-prose-suffix"], "input": "phone=555-234-5678 extra details", "expected": { "publicFinding": true, "start": 6, "end": 18, "sensitive": true } },
+    { "id": "ordinary-xylophone-suffix", "classes": ["ordinary-prose-suffix"], "input": "phone=555-234-5678 xylophone notes", "expected": { "publicFinding": true, "start": 6, "end": 18, "sensitive": true } },
+    { "id": "adjacent-identifier-prefix", "classes": ["whole-candidate-boundary"], "input": "phone=x555-234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "adjacent-identifier-suffix", "classes": ["whole-candidate-boundary"], "input": "phone=555-234-5678x", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "governed-invisible-interior", "classes": ["whole-candidate-boundary"], "input": "phone=555-234‍-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "shared-contact-details", "classes": ["shared-context-association"], "input": "contact details 555-234-5678", "expected": { "publicFinding": true, "start": 16, "end": 28, "sensitive": true } },
+    { "id": "equidistant-contact-details", "classes": ["shared-context-association"], "input": "555-234-5678 contact details 555-234-5678", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "context-stops-at-candidate", "classes": ["shared-context-association"], "input": "contact details 555-234-5678 555-234-5678", "expected": { "publicFinding": true, "start": 16, "end": 28, "sensitive": true } }
+  ]
+}

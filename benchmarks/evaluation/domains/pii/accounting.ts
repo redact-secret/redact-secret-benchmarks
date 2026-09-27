@@ -2,6 +2,7 @@ import Ajv from 'ajv';
 import reportSchema from '../../../../schemas/pii-accounting-report-v1.json';
 import { assertCompatibleIdentities, proportion, type AccountingArtifactIdentity, type MechanicalPublished } from '../../../accounting/shared/primitives.ts';
 import { piiIdentity } from './identity.ts';
+import { piiContextEvidence } from './context-evidence.ts';
 import { hash } from '../../substrate/hash.ts';
 import { isPiiJurisdiction } from './jurisdictions.ts';
 import { validatePiiOutcome } from './outcome-validation.ts';
@@ -38,12 +39,15 @@ export interface PiiMetric {
 }
 export type PiiContextStatusCounts = { pass: number; fail: number; 'review-required': number; 'not-measured': number };
 export type PiiContextLanguageStrata = Record<string, Record<'sensitive' | 'neutral' | 'non-sensitive', PiiContextStatusCounts>>;
+export type PiiContextRoster = { groupId: string; language: string; frames: { id: string; contextClass: 'sensitive' | 'neutral' | 'non-sensitive';
+  status: 'pass' | 'fail' | 'review-required' | 'not-measured' }[] }[];
 export interface PiiAccountingReport extends AccountingArtifactIdentity {
   schemaVersion: 1; reportType: 'pii-accounting'; profile: { id: 'pii-v1'; version: 1 }; rowCount: number; sourceCaseCount: number;
   inputCommitment: string; commitmentTrust: 'unresolved' | 'trusted';
   sources: PiiAccountingSource[]; metrics: Record<PiiMetricId, PiiMetric>;
   benignByControlClass: Record<PiiControlClass, PiiMetric>;
   contextByLanguage: PiiContextLanguageStrata;
+  contextRoster: PiiContextRoster;
   evidence: { methods: string[]; authority: { total: number; qualified: number; sources: number };
     validators: { applicable: number; evaluated: number }; benign: { cases: number; axes: PiiControlClass[] }; semanticControls: number;
     context: { applicable: number; evaluated: number }; jurisdiction: { applicable: number; evaluated: number };
@@ -153,9 +157,14 @@ function contextGroups(rows: PiiAccountingRow[]) {
   for (const row of rows.filter(candidate => candidate.method === 'context-discrimination')) {
     const key = `${row.source.runId}/${row.scanner}/${row.caseId}`; groups.set(key, [...(groups.get(key) ?? []), row]);
   }
-  for (const group of groups.values()) if (new Set(group.map(row => row.expectation.contextClass)).size !== 3 ||
-      new Set(group.map(row => row.expectation.language)).size !== 1)
-    throw new Error('Incomplete or mixed-language PII context discrimination group');
+  for (const group of groups.values()) {
+    const expected = piiContextEvidence.groups.find(candidate => candidate.id === group[0].caseId);
+    const actualIds = group.map(row => row.variant).sort(), expectedIds = expected?.frames.map(frame => frame.id).sort();
+    if (!expected || canonical(actualIds) !== canonical(expectedIds) || new Set(actualIds).size !== actualIds.length ||
+        group.some(row => { const frame = expected.frames.find(candidate => candidate.id === row.variant); return !frame ||
+          row.expectation.language !== expected.language || row.expectation.contextClass !== frame.contextClass || row.expectation.sensitivity !== frame.sensitivity; }))
+      throw new Error('Incomplete or mismatched PII context evidence roster');
+  }
   return [...groups.values()];
 }
 
@@ -210,6 +219,9 @@ function buildAccounting(input: PiiAccountingRow[], profile: PiiQualificationPro
     Object.fromEntries((['sensitive', 'neutral', 'non-sensitive'] as const).map(contextClass => [contextClass,
       Object.fromEntries(statuses.map(status => [status, contextRows.filter(row => row.expectation.language === language &&
         row.expectation.contextClass === contextClass && row.outcome.sensitivityContext.status === status).length]))]))])) as PiiContextLanguageStrata;
+  const contextRoster: PiiContextRoster = contexts.map(group => ({ groupId: group[0].caseId, language: group[0].expectation.language,
+    frames: group.map(row => ({ id: row.variant, contextClass: row.expectation.contextClass, status: row.outcome.sensitivityContext.status }))
+      .sort((a, b) => a.id.localeCompare(b.id)) })).sort((a, b) => a.groupId.localeCompare(b.groupId));
   const occurrences = unique(rows, row => `${row.caseId}/${row.variant}`), benign = occurrences.filter(row => row.method === 'pii-benign');
   if (new Set(benign.map(row => row.caseId)).size !== benign.length) throw new Error('PII benign controls must be distinct authored cases');
   const requiredSupport = (row: PiiAccountingRow): PiiAuthority['supports'][number] => row.expectation.sensitivity !== 'not-established' ||
@@ -231,7 +243,7 @@ function buildAccounting(input: PiiAccountingRow[], profile: PiiQualificationPro
   return { schemaVersion: 1, reportType: 'pii-accounting', ...PII_ACCOUNTING_IDENTITY, profile: { id: profile.id, version: profile.version }, rowCount: rows.length,
     sourceCaseCount: groups.length, inputCommitment: hash(rows), commitmentTrust: 'unresolved',
     sources: unique(rows.map(row => row.source), source => `${source.runId}/${source.scanner.id}`).sort((a, b) => a.scanner.id.localeCompare(b.scanner.id)),
-    metrics, benignByControlClass, contextByLanguage, evidence };
+    metrics, benignByControlClass, contextByLanguage, contextRoster, evidence };
 }
 
 export function accountPiiRows(input: PiiAccountingRow[], profile: PiiQualificationProfile = piiV1Profile): PiiAccountingReport {
@@ -261,6 +273,22 @@ export function validatePiiAccountingReport(value: unknown): PiiAccountingReport
       JSON.stringify(metric.rate) !== JSON.stringify(proportion(counts.numerator, counts.measured, metric.direction, piiV1Profile.mechanics)))
       throw new Error('Inconsistent PII benign accounting metric'); }
   const languageClasses = ['sensitive', 'neutral', 'non-sensitive'] as const, statuses = ['pass', 'fail', 'review-required', 'not-measured'] as const;
+  const rosterGroups = new Set<string>();
+  for (const group of report.contextRoster) {
+    if (rosterGroups.has(group.groupId)) throw new Error('Inconsistent PII context roster');
+    rosterGroups.add(group.groupId);
+    const expected = piiContextEvidence.groups.find(candidate => candidate.id === group.groupId);
+    if (!expected || group.language !== expected.language || canonical(group.frames.map(frame => frame.id).sort()) !== canonical(expected.frames.map(frame => frame.id).sort()) ||
+        new Set(group.frames.map(frame => frame.id)).size !== group.frames.length || group.frames.some(frame => {
+          const expectedFrame = expected.frames.find(candidate => candidate.id === frame.id);
+          return !expectedFrame || frame.contextClass !== expectedFrame.contextClass;
+        })) throw new Error('Inconsistent PII context roster');
+  }
+  const rosterRows = report.contextRoster.flatMap(group => group.frames.map(frame => ({ ...frame, language: group.language })));
+  const projectedContextByLanguage = Object.fromEntries([...new Set(report.contextRoster.map(group => group.language))].sort().map(language => [language,
+    Object.fromEntries(languageClasses.map(contextClass => [contextClass, Object.fromEntries(statuses.map(status => [status,
+      rosterRows.filter(frame => frame.language === language && frame.contextClass === contextClass && frame.status === status).length]))]))]));
+  if (canonical(projectedContextByLanguage) !== canonical(report.contextByLanguage)) throw new Error('Inconsistent PII context language strata');
   for (const [language, classes] of Object.entries(report.contextByLanguage)) {
     if (!/^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$/.test(language) || !exact(classes, [...languageClasses])) throw new Error('Inconsistent PII context language strata');
     for (const contextClass of languageClasses) if (!exact(classes[contextClass], [...statuses]) ||

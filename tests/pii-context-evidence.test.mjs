@@ -1,19 +1,36 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { piiDomain } from '../benchmarks/evaluation/domains/pii/contract.ts';
-import { piiContextEvidence, validatePiiContextEvidence } from '../benchmarks/evaluation/domains/pii/context-evidence.ts';
+import { piiContextContentCommitment, piiContextEvidence, validatePiiContextEvidence } from '../benchmarks/evaluation/domains/pii/context-evidence.ts';
 import { accountPiiRows, piiAccountingRowsFromEvaluation } from '../benchmarks/evaluation/domains/pii/accounting.ts';
+const recommit = corpus => { corpus.contentCommitment = piiContextContentCommitment(corpus); return corpus; };
 
 test('canonical context evidence is strict, versioned, and frozen to English and Korean', () => {
   assert.deepEqual(piiContextEvidence.languages, ['en', 'ko']);
   assert.equal(piiContextEvidence.upstream.revision, '230439ec8f208afadba6afba82d1b183e7800a15');
+  assert.equal(piiContextEvidence.upstream.contractSha256, '9955ad686ce9def6433ce224fb65a4a391404ea902cbca430d71c018a52e23f2');
+  assert.equal(piiContextEvidence.upstream.schemaSha256, 'bdfbea4cf6d65ce233dcd7dfda9274434d6a4144643abf74f64c9bed98d3d090');
+  assert.equal(piiContextEvidence.contentCommitment, piiContextContentCommitment(piiContextEvidence));
   assert.equal(piiContextEvidence.evidenceGroup, 'contextual');
   assert.deepEqual(piiContextEvidence.normalization.tokenSeparators, ['whitespace', 'underscore', 'hyphen', 'colon', 'equals']);
   assert.throws(() => validatePiiContextEvidence({ ...structuredClone(piiContextEvidence), extra: true }), /schema/);
   const third = structuredClone(piiContextEvidence); third.languages.push('ja');
-  assert.throws(() => validatePiiContextEvidence(third), /English and Korean/);
+  assert.throws(() => validatePiiContextEvidence(third), /commitment/);
+  recommit(third);
+  assert.throws(() => validatePiiContextEvidence(third), /identity or commitment/);
   const duplicate = structuredClone(piiContextEvidence); duplicate.entries.push(structuredClone(duplicate.entries[0]));
-  assert.throws(() => validatePiiContextEvidence(duplicate), /Duplicate/);
+  recommit(duplicate);
+  assert.throws(() => validatePiiContextEvidence(duplicate, { canonical: false }), /Duplicate/);
+});
+
+test('association controls cover direction, distance, lines, stops, ties, domains, and precedence', () => {
+  const rules = new Set(piiContextEvidence.fixtures.flatMap(fixture => fixture.rules));
+  for (const rule of ['direction', 'distance', 'same-line', 'stop-at-candidate', 'tie', 'domain', 'precedence']) assert.ok(rules.has(rule), rule);
+  const hostile = structuredClone(piiContextEvidence);
+  hostile.fixtures.find(fixture => fixture.id === 'equidistant-context-is-unassociated').expectedAssociations[0].matches = ['en-contact-label'];
+  assert.throws(() => validatePiiContextEvidence(hostile), /commitment/);
+  recommit(hostile);
+  assert.throws(() => validatePiiContextEvidence(hostile, { canonical: false }), /fixture expectation/);
 });
 
 test('Korean evidence covers normalization, mixed keys, separators, ambiguity, and benign prose', () => {
@@ -30,6 +47,7 @@ test('Korean evidence covers normalization, mixed keys, separators, ambiguity, a
 
 test('one data-driven method preserves candidate bytes and never infers jurisdiction from language', () => {
   const methods = piiDomain.createMethods();
+  assert.equal(methods.get('context-discrimination').version, 2);
   for (const source of piiDomain.contextEvidence.loadPiiContextCases()) {
     const variants = methods.get('context-discrimination').generate(source);
     assert.equal(source.contract.scope, 'global');
@@ -90,6 +108,7 @@ test('community language additions use the same evidence schema without a new ac
     { id: 'xx-neutral-frame', entry: 'xx-neutral', template: 'beta = {{candidate}}', contextClass: 'neutral', sensitivity: 'not-established', effect: 'neutral-evidence', features: ['equals'] },
     { id: 'xx-negative-frame', entry: 'xx-negative', template: 'gamma = {{candidate}}', contextClass: 'non-sensitive', sensitivity: 'non-sensitive', effect: 'negative-evidence', features: ['equals'] },
   ] });
+  recommit(extension);
   const validated = validatePiiContextEvidence(extension, { canonical: false });
   assert.equal(validated.groups.at(-1).language, 'xx');
 });
@@ -98,7 +117,9 @@ test('ambiguous context and raw-looking templates fail closed', () => {
   const ambiguous = structuredClone(piiContextEvidence);
   const frame = ambiguous.groups[0].frames.find(candidate => candidate.entry === 'en-contact-label');
   frame.contextClass = 'sensitive'; frame.sensitivity = 'sensitive'; frame.effect = 'positive-evidence';
-  assert.throws(() => validatePiiContextEvidence(ambiguous), /Ambiguous context/);
+  recommit(ambiguous);
+  assert.throws(() => validatePiiContextEvidence(ambiguous, { canonical: false }), /Ambiguous context/);
   const raw = structuredClone(piiContextEvidence); raw.groups[0].frames[0].template = 'email subject@example.invalid {{candidate}}';
-  assert.throws(() => validatePiiContextEvidence(raw), /unsafe/);
+  recommit(raw);
+  assert.throws(() => validatePiiContextEvidence(raw, { canonical: false }), /unsafe/);
 });

@@ -13,7 +13,7 @@ function groupFor(c: Parameters<PiiMethod['validateCase']>[0]) {
 }
 
 export const contextDiscrimination: PiiMethod = {
-  id: 'context-discrimination', version: 1,
+  id: 'context-discrimination', version: 2,
   validateCase(c) {
     validatePiiCase(c);
     if (c.method !== this.id || c.contract.typeExpectation.state !== 'valid' ||

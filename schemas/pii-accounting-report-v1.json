@@ -1,7 +1,7 @@
 {
   "$id": "urn:redact-secret:pii-accounting:1",
   "type": "object", "additionalProperties": false,
-  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "sourceCaseCount", "inputCommitment", "commitmentTrust", "sources", "metrics", "benignByControlClass", "contextByLanguage", "evidence"],
+  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "sourceCaseCount", "inputCommitment", "commitmentTrust", "sources", "metrics", "benignByControlClass", "contextByLanguage", "contextRoster", "evidence"],
   "properties": {
     "schemaVersion": { "const": 1 }, "reportType": { "const": "pii-accounting" }, "domain": { "const": "pii" },
     "evaluationProfile": { "const": "pii-v1" }, "domainAccountingVersion": { "const": "pii-v1" },
@@ -29,6 +29,7 @@
       "additionalProperties": false,
       "patternProperties": { "^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$": { "$ref": "#/$defs/contextClasses" } }
     },
+    "contextRoster": { "type": "array", "items": { "$ref": "#/$defs/contextRosterGroup" } },
     "evidence": { "type": "object", "additionalProperties": false,
       "required": ["methods", "authority", "validators", "benign", "semanticControls", "context", "jurisdiction", "reference"],
       "properties": {
@@ -114,6 +115,11 @@
         "review-required": { "type": "integer", "minimum": 0 }, "not-measured": { "type": "integer", "minimum": 0 } } },
     "contextClasses": { "type": "object", "additionalProperties": false, "required": ["sensitive", "neutral", "non-sensitive"],
       "properties": { "sensitive": { "$ref": "#/$defs/contextStatusCounts" }, "neutral": { "$ref": "#/$defs/contextStatusCounts" },
-        "non-sensitive": { "$ref": "#/$defs/contextStatusCounts" } } }
+        "non-sensitive": { "$ref": "#/$defs/contextStatusCounts" } } },
+    "contextRosterGroup": { "type": "object", "additionalProperties": false, "required": ["groupId", "language", "frames"],
+      "properties": { "groupId": { "$ref": "#/$defs/slug" }, "language": { "type": "string", "pattern": "^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$" },
+        "frames": { "type": "array", "minItems": 3, "items": { "type": "object", "additionalProperties": false,
+          "required": ["id", "contextClass", "status"], "properties": { "id": { "$ref": "#/$defs/slug" },
+            "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] }, "status": { "enum": ["pass", "fail", "review-required", "not-measured"] } } } } } }
   }
 }

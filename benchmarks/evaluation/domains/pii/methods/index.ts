@@ -16,7 +16,7 @@ import type { Registry } from '../../../substrate/registry.ts';
 export function createPiiMethods(validators: Registry<PiiValidator> = createPiiValidators(), operators: Registry<PiiOperator> = createPiiOperators(),
   evidence: PiiBenignCollisionEvidence = piiBenignCollisionEvidence) {
   const registry = createRegistry<PiiMethod>('PII method', ['validateCase', 'generate', 'evaluate']);
-  for (const method of [schemaOnly, typeValidation(validators), contextDiscrimination, piiBenign(evidence), jurisdictionCollision(evidence),
+  for (const method of [schemaOnly, typeValidation(validators, evidence), contextDiscrimination, piiBenign(validators, evidence), jurisdictionCollision(validators, evidence),
     mutation(operators), referenceDifferential(validators)]) registry.register(method);
   return registry;
 }

@@ -1,7 +1,7 @@
 {
   "$id": "urn:redact-secret:pii-accounting:1",
   "type": "object", "additionalProperties": false,
-  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "sourceCaseCount", "inputCommitment", "commitmentTrust", "sources", "metrics", "benignByControlClass", "contextByLanguage", "contextRoster", "evidence"],
+  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "sourceCaseCount", "inputCommitment", "commitmentTrust", "sources", "metrics", "benignByControlClass", "evidenceByClass", "contextByLanguage", "contextRoster", "evidence"],
   "properties": {
     "schemaVersion": { "const": 1 }, "reportType": { "const": "pii-accounting" }, "domain": { "const": "pii" },
     "evaluationProfile": { "const": "pii-v1" }, "domainAccountingVersion": { "const": "pii-v1" },
@@ -23,6 +23,15 @@
       "properties": { "reserved": { "$ref": "#/$defs/metric" }, "documentation": { "$ref": "#/$defs/metric" },
         "test-value": { "$ref": "#/$defs/metric" }, "public-operational": { "$ref": "#/$defs/metric" },
         "placeholder": { "$ref": "#/$defs/metric" }, "context-negative": { "$ref": "#/$defs/metric" } }
+    },
+    "evidenceByClass": { "type": "object", "additionalProperties": false,
+      "required": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"],
+      "properties": {
+        "reserved-documentation": { "$ref": "#/$defs/evidenceStratum" }, "official-test": { "$ref": "#/$defs/evidenceStratum" },
+        "public-identifier": { "$ref": "#/$defs/evidenceStratum" }, "ordinary-reference-account": { "$ref": "#/$defs/evidenceStratum" },
+        "near-miss": { "$ref": "#/$defs/evidenceStratum" }, "placeholder": { "$ref": "#/$defs/evidenceStratum" },
+        "context-negative": { "$ref": "#/$defs/evidenceStratum" }, "cross-family-collision": { "$ref": "#/$defs/evidenceStratum" }
+      }
     },
     "contextByLanguage": {
       "type": "object",
@@ -49,6 +58,9 @@
     "nullableDigest": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] },
     "profile": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": { "id": { "const": "pii-v1" }, "version": { "const": 1 } } },
     "controlClass": { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] },
+    "evidenceClass": { "enum": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+    "evidenceStratum": { "type": "object", "additionalProperties": false, "required": ["cases", "accountingClasses"], "properties": {
+      "cases": { "type": "integer", "minimum": 0 }, "accountingClasses": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/controlClass" } } } },
     "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "source": { "type": "object", "additionalProperties": false,
       "required": ["schemaVersion", "engineVersion", "domain", "reportProfile", "evaluationProfile", "domainAccountingVersion", "runId", "startedAt", "finishedAt", "provenance", "scanner"],
@@ -76,8 +88,13 @@
         "contextObligation": { "enum": ["none", "reinforcing", "required-for-sensitive-classification"] }, "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
         "language": { "type": "string", "pattern": "^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$" },
         "validatorApplicable": { "type": "boolean" }, "referenceApplicable": { "type": "boolean" } } },
-    "methodEvidence": { "type": "object", "additionalProperties": false, "required": ["controlClass", "validatorState", "collision", "referenceState"],
-      "properties": { "controlClass": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/controlClass" }] },
+    "methodEvidence": { "type": "object", "additionalProperties": false, "required": ["evidenceClass", "controlClass", "validatorEvidence", "validatorState", "collision", "referenceState"],
+      "properties": { "evidenceClass": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/evidenceClass" }] },
+        "controlClass": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/controlClass" }] },
+        "validatorEvidence": { "type": "array", "items": { "type": "object", "additionalProperties": false,
+          "required": ["family", "id", "version", "expected", "observed"], "properties": {
+            "family": { "$ref": "#/$defs/family" }, "id": { "$ref": "#/$defs/slug" }, "version": { "type": "integer", "minimum": 1 },
+            "expected": { "enum": ["valid", "invalid", "unavailable"] }, "observed": { "enum": ["valid", "invalid", "unavailable"] } } } },
         "validatorState": { "anyOf": [{ "type": "null" }, { "enum": ["valid", "invalid", "unavailable"] }] },
         "collision": { "anyOf": [{ "type": "null" }, { "type": "object", "additionalProperties": false, "required": ["targetFamily", "competingFamilies"],
           "properties": { "targetFamily": { "$ref": "#/$defs/family" }, "competingFamilies": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/family" } } } }] },

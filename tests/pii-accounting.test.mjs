@@ -22,7 +22,7 @@ function row(id, overrides = {}) {
   const base = { source: source(), caseId: id, method: 'type-validation', family: 'pii:global:synthetic-id', scope: 'global', variant: 'authored',
     strategy: 'authored', scanner: 'pii-scanner', qualificationProfile: { id: 'pii-v1', version: 1 }, authority,
     expectation: { type: 'valid', sensitivity: 'sensitive', contextObligation: 'reinforcing', contextClass: 'sensitive', language: 'en', validatorApplicable: true, referenceApplicable: false },
-    methodEvidence: { controlClass: null, validatorState: 'valid', collision: null, referenceState: null },
+    methodEvidence: { evidenceClass: null, controlClass: null, validatorEvidence: [], validatorState: 'valid', collision: null, referenceState: null },
     outcome: { scanner: 'pii-scanner', variant: 'authored', typeIdentity: { axis: 'type-identity', status: 'pass', state: 'correct', reason: 'correct' },
       sensitivityContext: { axis: 'sensitivity-context', status: 'pass', state: 'correct', reason: 'correct' }, range: 'exact',
       observed: { findingCount: 1, families: ['pii:global:synthetic-id'], jurisdictions: [] } } };

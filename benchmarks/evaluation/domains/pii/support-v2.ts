@@ -149,7 +149,8 @@ function matrixProjection(matrix: PiiSupportMatrixV2) { const { artifactCommitme
 export const piiSupportMatrixV2Commitment = (matrix: PiiSupportMatrixV2) => hash(JSON.stringify(canonical(matrixProjection(matrix))));
 
 function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
-  const registry = validatePiiSupportRegistry(options.registry ?? piiSupportRegistry), inputs = options.populations ?? defaultPopulations();
+  const registry = validatePiiSupportRegistry(options.registry ?? piiSupportRegistry), boundPopulations = options.populations !== undefined,
+    inputs = options.populations ?? defaultPopulations();
   const product = options.product ? validatePiiProductBinding(options.product, registry.families.map(row => row.family)) : null;
   if (inputs.length !== 2 || new Set(inputs.map(row => row.report.population)).size !== 2) throw new Error('PII support requires both population reports');
   const reports = inputs.map(input => validatePiiPopulationReport(input.report, input.contract ?? piiPopulationContract,
@@ -165,6 +166,7 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
     status: report.status, contractCommitment: report.contractCommitment, corpusCommitment: report.corpusCommitment,
     reportCommitment: report.observation.reportArtifactCommitment,
     familyEvidence: registry.families.map(family => {
+      if (!boundPopulations) return { family: family.family, status: 'not-measured' as const, strata: 0 };
       const { id: _id, reportStatus: _reportStatus, reportCommitment: _reportCommitment, ...summary } = familyPopulation(report, family.family);
       return { family: family.family, ...summary };
     }) }));
@@ -179,8 +181,11 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
     const activationRow = product ? { state: available ? 'available' as const : 'unavailable' as const, selector: selector(family.family),
       activationIdentity: product.activationIdentity, productArtifactCommitment: product.artifactCommitment } :
       { state: 'not-measured' as const, selector: selector(family.family), activationIdentity: null, productArtifactCommitment: null };
-    const populationEvidence = reports.map(report => familyPopulation(report, family.family));
-    const diagnosticStatus = familyPopulation(diagnostic, family.family).status, stressStatus = familyPopulation(stress, family.family).status;
+    const populationEvidence = reports.map(report => boundPopulations ? familyPopulation(report, family.family) :
+      ({ id: report.population, reportStatus: report.status, status: 'not-measured' as const, strata: 0,
+        reportCommitment: report.observation.reportArtifactCommitment }));
+    const diagnosticStatus = populationEvidence.find(row => row.id === 'diagnostic-balanced')!.status,
+      stressStatus = populationEvidence.find(row => row.id === 'benign-heavy-stress')!.status;
     const qualification = product?.qualification.find(row => row.family === family.family);
     const comparisons = new Map(populationComparisons.map(row => [row.id, row.verdict]));
     const reasonCodes: string[] = [];

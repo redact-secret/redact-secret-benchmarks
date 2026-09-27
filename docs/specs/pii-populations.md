@@ -33,9 +33,11 @@ eight-class authored evidence vocabulary, its explicit (possibly absent)
 `contextDependent` booleans. Omitted cells fail validation. Reports bind the
 exact #284 accounting rows plus scanner ID, scanner version, configuration
 hash, run ID, candidate artifact, and their own artifact commitment. Product
-reports cannot be validated without the bound rows. Empty canonical evidence
-therefore produces an honest `not-measured` report, not synthetic observations
-or rates.
+reports cannot be validated without the bound rows. Absent product observations
+therefore produce an honest `not-measured` report, not synthetic observations
+or rates. The canonical roster may be non-empty; unbound support projections
+still publish zero measured strata until their source reports and accounting
+rows are supplied together.
 
 The diagnostic-balanced report also publishes three independent diagnostic
 blocks: type identity, validator correctness, and context discrimination. Each
@@ -97,6 +99,48 @@ JavaScript-native UTF-16 ranges and canonical UTF-8 byte ranges are both
 recorded; normalization never overwrites the native observation. Public absence
 does not establish an identity-only result, so that gate remains unresolved
 unless separately bound evidence measures it.
+
+The US SSN arrival binds the exact product parent
+`63a834e0a2b44c11f307ece8c539b933dabb68f1` and candidate
+`a0709d2a41b70217874da9afeffb40fb2a1a2596`. Its two disjoint authored rosters
+each declare 10,000 units of assumption mass: five diagnostic cases and ten
+benign-stress cases. The source identity artifact must pass five distinct
+lanes (private identity, validator, native conformance, Python, and CLI);
+public absence is not substituted for any lane. Operational evidence uses ten
+paired samples for every credentials-only, global PII, exact-family, and US
+jurisdiction activation on both Node addon and forced-Wasm surfaces. Package
+and latency limits are committed in `pii-national-id-arrival-v1` before any
+measurement.
+
+Protected SSN evidence is a separate, custodian-declared one-run lifecycle.
+The runner freezes the clean full-suite candidate, core/node/Wasm artifact-set
+commitment, `pii:us` selector configuration, and identity-source commitment
+before opening sealed corpus bytes. Only aggregate type-identity and
+sensitivity-context counts leave the lifecycle. A reviewed trust-resolution
+record must bind that aggregate, and every unresolved or failed count must be
+zero. The public-control lifecycle cannot satisfy this gate. Qualification is
+`provisional` only after identity, both population comparisons, operational
+limits, protected evidence, and trust resolution all validate with empty
+reason codes; this route never emits `stable`.
+
+If a mechanically validated public population or operational gate has already
+failed, the protected run is not spent merely to repeat a known rejection. A
+separate redacted `unspent` attestation may then bind the exact family and
+arrival contracts, product source and candidate artifacts, identity, public
+population and operational commitments, plus opaque sealed-epoch and manifest
+commitments. It must declare one maximum run, zero runs, `not-run`, and
+`public-gates-failed`, with distinct implementation and custodian identities
+and an independent reviewer. It carries no corpus path or content and is
+rejected when both public gates pass. This path forces the protected gate to
+remain unresolved and the family to remain `not-qualified` / `pending`; it is
+procedural custody evidence, never protected-performance evidence.
+
+The issue-879 candidate takes that unspent path. Its diagnostic population and
+all process-isolated runtime comparisons pass, but one benign placeholder
+stratum regresses and the common Wasm payload grows against a frozen zero-growth
+budget. The protected ledger therefore remains 0/1. The immutable artifacts
+and exact reason codes are recorded under `evidence/879/`; neither
+`provisional` nor `stable` is claimed.
 
 The IBAN family binding pins family contract v1, SWIFT ISO 13616 IBAN Registry
 Release 103 (89 derived country/length rows), and the bounded `iban-mod97` v1

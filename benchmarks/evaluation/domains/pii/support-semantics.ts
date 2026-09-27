@@ -8,8 +8,8 @@ export const PII_SUPPORT_REGISTRY_SOURCE = Object.freeze({
 });
 const populationIds = ['benign-heavy-stress', 'diagnostic-balanced'] as const;
 const pendingPopulationIdentities = [
-  { id: 'benign-heavy-stress', status: 'not-measured', contractCommitment: '6bcd6db3f1779f81b8b0f976797c16bcca6e63a563d2888223c58ff87213d162', corpusCommitment: 'f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff', reportCommitment: '9e237095ffa483b80c2894432330555dc93fb1418d61f51b5f89d05e7bd1945c' },
-  { id: 'diagnostic-balanced', status: 'not-measured', contractCommitment: '6bcd6db3f1779f81b8b0f976797c16bcca6e63a563d2888223c58ff87213d162', corpusCommitment: 'f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff', reportCommitment: 'e87ce05e3a59a98e0eb32a16ab7773dbd3758dda93ac8cf59c65161b829b65c9' },
+  { id: 'benign-heavy-stress', status: 'not-measured', contractCommitment: 'ff2a8a456a4a09b31d09b7ebf88fce55a2deb5328009a50f0e1cfbbe78975fbd', corpusCommitment: '7b63d65db012a15e0a6ec9ba9390c45d21bbc0a5d92ca720c72e33365940c966', reportCommitment: '90fce4f21fcac72257a7420be797fc1c71e2694e812a961ff63afec4095b5ac7' },
+  { id: 'diagnostic-balanced', status: 'not-measured', contractCommitment: 'ff2a8a456a4a09b31d09b7ebf88fce55a2deb5328009a50f0e1cfbbe78975fbd', corpusCommitment: '7b63d65db012a15e0a6ec9ba9390c45d21bbc0a5d92ca720c72e33365940c966', reportCommitment: '70e6edb16ca340d03d3556937ecc13c46748d1ee22ed115efe734440e50aa9a8' },
 ] as const;
 const selector = (family: string) => `pii:family:${family.slice('pii:'.length)}`;
 const slug = (value: unknown) => typeof value === 'string' && /^[a-z][a-z0-9-]{1,79}$/.test(value);

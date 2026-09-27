@@ -11,6 +11,7 @@ import { rangeOutcome } from '../benchmarks/evaluation/domains/pii/contract-mode
 import { validatePiiAssessment } from '../benchmarks/evaluation/domains/pii/assessment.ts';
 import { validatePiiSupportMatrix } from '../benchmarks/evaluation/domains/pii/support.ts';
 import { PII_JURISDICTION_STANDARD } from '../benchmarks/evaluation/domains/pii/jurisdictions.ts';
+import { piiBenignCollisionEvidence } from '../benchmarks/evaluation/domains/pii/benign-collision-evidence.ts';
 
 const scanner = {
   id: 'pii-test-scanner', mode: 'candidate', capabilities: { ranges: true, classification: true },
@@ -33,7 +34,8 @@ test('standard PII domain corpus runs through shared runtime with independent ax
   assert.equal(artifact.domainAccountingVersion, 'pii-observation-v1');
   assert.equal(artifact.supportClaims, false);
   assert.equal(artifact.caseCount, cases.length);
-  assert.equal(artifact.variantCount, 2 + piiDomain.contextEvidence.piiContextEvidence.groups.reduce((sum, group) => sum + group.frames.length, 0));
+  assert.equal(artifact.variantCount, 2 + piiDomain.contextEvidence.piiContextEvidence.groups.reduce((sum, group) => sum + group.frames.length, 0) +
+    piiBenignCollisionEvidence.entries.length);
   assert.equal(artifact.assertionCount, artifact.variantCount * 2);
   const statuses = ['pass', 'fail', 'review-required', 'not-measured'];
   assert.equal(statuses.reduce((sum, status) => sum + artifact.typeIdentity[status], 0), artifact.variantCount);

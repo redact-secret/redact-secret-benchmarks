@@ -61,7 +61,7 @@ const expectedClasses: PiiEvidenceClass[] = PII_BENIGN_COLLISION_EVIDENCE_CLASSE
   qualifies: id === 'near-miss' ? ['type-identity', 'validator'] : id === 'cross-family-collision'
     ? ['family-discrimination', 'jurisdiction-discrimination', 'sensitivity'] : ['sensitivity'],
 }));
-const canonicalContentCommitment = 'f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff';
+const canonicalContentCommitment = '7b63d65db012a15e0a6ec9ba9390c45d21bbc0a5d92ca720c72e33365940c966';
 const validateSchema = new Ajv({ strict: true }).compile(schema);
 const canonicalize = (value: unknown): unknown => Array.isArray(value) ? value.map(canonicalize) : value && typeof value === 'object' ?
   Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, canonicalize(child)])) : value;

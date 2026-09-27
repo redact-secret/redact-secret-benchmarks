@@ -37,7 +37,7 @@
     "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "primitiveClass": { "enum": ["luhn", "mod-97", "weighted-mod-10", "weighted-mod-11", "iso-7064", "verhoeff", "bounded-parser-classifier"] },
     "source": { "type": "object", "additionalProperties": false, "required": ["sourceKind", "sourceId", "locator", "revision", "claim"], "properties": {
-      "sourceKind": { "enum": ["standard", "patent", "product-decision"] }, "sourceId": { "$ref": "#/$defs/slug" },
+      "sourceKind": { "enum": ["standard", "patent", "public-authority", "product-decision"] }, "sourceId": { "$ref": "#/$defs/slug" },
       "locator": { "type": "string", "pattern": "^https://" }, "revision": { "type": "string", "minLength": 1, "maxLength": 80 },
       "claim": { "enum": ["algorithm", "lexical-contract"] }
     } },

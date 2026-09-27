@@ -30,6 +30,8 @@ function addEntry(corpus, entry) {
 
 function extension() {
   const corpus = structuredClone(piiBenignCollisionEvidence);
+  corpus.families = [];
+  corpus.entries = [];
   corpus.families.push(
     descriptor('pii:global:email', 'Synthetic email evidence', 'email', 'global', null,
       ['lexical', 'validation', 'reserved-control', 'sensitivity']),
@@ -69,11 +71,13 @@ function extension() {
 const consumerMap = { schemaVersion: 1, mappings: [
   { validator: { id: 'luhn', version: 1 }, families: ['pii:global:synthetic-national-id', 'pii:us:synthetic-national-id'] },
   PII_VALIDATOR_CONSUMERS.mappings.find(row => row.validator.id === 'iban-mod97'),
+  { validator: { id: 'us-ssn-allocation', version: 1 }, families: [] },
 ] };
 const validationOptions = { canonical: false, consumerMap };
 
 test('authored eight-class vocabulary remains distinct from the explicit lossy pii-v1 accounting mapping', () => {
-  assert.equal(piiBenignCollisionEvidence.entries.length, 0, 'no fake production collision or country rows');
+  assert.equal(piiBenignCollisionEvidence.entries.length, 15);
+  assert.ok(piiBenignCollisionEvidence.entries.every(row => row.family === 'pii:us:ssn' && row.evidenceClass !== 'cross-family-collision'));
   assert.deepEqual(piiBenignCollisionEvidence.classes.map(row => row.id), [...PII_BENIGN_COLLISION_EVIDENCE_CLASSES]);
   assert.deepEqual(piiBenignCollisionEvidence.classes.map(row => row.accountingClasses),
     PII_BENIGN_COLLISION_EVIDENCE_CLASSES.map(id => [...PII_EVIDENCE_ACCOUNTING_CLASSES[id]]));

@@ -20,6 +20,11 @@ export interface PiiFamilyQualificationEvidence {
   classAccounting: Array<{ id: string; status: 'measured' | 'unresolved'; observations: number }>;
   installedArtifactConformance?: PiiInstalledArtifactConformance;
   sourceConformance?: PiiSourceConformance;
+  arrivalEvidence?: { contractCommitment: string; identitySourceCommitment: string; populationBundleCommitment: string;
+    operationalCommitment: string; artifactSetCommitment: string; publicGateStatus: {
+      populationNoRegression: 'met' | 'not-met'; runtimeAndPackageCost: 'met' | 'not-met' }; protectedEvidence:
+      ({ state: 'completed'; holdoutCommitment: string; trustCommitment: string; artifactCommitment: string } |
+       { state: 'unspent'; attestationCommitment: string; artifactCommitment: string }); artifactCommitment: string };
   status: 'qualified' | 'not-qualified'; reasonCodes: string[]; artifactCommitment: string;
 }
 interface PiiInstalledObservation { id: string; publicFinding: boolean; type: string | null; action: string | null;
@@ -78,6 +83,8 @@ function validSourceConformance(value: PiiSourceConformance | undefined, sourceC
       fixture: 'conformance/fixtures/pii-iban-v1.json' },
     'pii:global:payment-card': { ids: ['cli-payment-card-conformance', 'python-payment-card-conformance', 'rust-native-payment-card-conformance'],
       fixture: 'conformance/fixtures/pii-payment-card-v1.json' },
+    'pii:us:ssn': { ids: ['cli-us-ssn-conformance', 'python-us-ssn-conformance', 'rust-native-us-ssn-conformance'],
+      fixture: 'conformance/fixtures/pii-us-ssn-v1.json' },
   };
   const contract = contracts[qualificationFamily];
   if (!contract) return false;
@@ -90,13 +97,51 @@ function validSourceConformance(value: PiiSourceConformance | undefined, sourceC
       exact(tool, ['executable', 'version']) && slug(tool.executable) && typeof tool.version === 'string' && tool.version.length > 0));
 }
 
-function parseActivationIdentity(value: string) {
+export function validatePiiQualificationArrivalBinding(row: Pick<PiiFamilyQualificationEvidence,
+  'family' | 'arrivalEvidence' | 'gates' | 'status' | 'reasonCodes'>) {
+  const arrival = row.arrivalEvidence;
+  if (!arrival) return row.family !== 'pii:us:ssn';
+  if (row.family !== 'pii:us:ssn' || !exact(arrival, ['contractCommitment', 'identitySourceCommitment', 'populationBundleCommitment',
+      'operationalCommitment', 'artifactSetCommitment', 'publicGateStatus', 'protectedEvidence', 'artifactCommitment']) ||
+      !['contractCommitment', 'identitySourceCommitment', 'populationBundleCommitment', 'operationalCommitment', 'artifactSetCommitment']
+        .every(key => digest((arrival as any)[key])) ||
+      !exact(arrival.publicGateStatus, ['populationNoRegression', 'runtimeAndPackageCost']) ||
+      Object.values(arrival.publicGateStatus).some(status => !['met', 'not-met'].includes(status)) ||
+      arrival.artifactCommitment !== commitment(arrival)) return false;
+  const protectedEvidence = arrival.protectedEvidence;
+  const validProtected = protectedEvidence.state === 'completed' ?
+    exact(protectedEvidence, ['state', 'holdoutCommitment', 'trustCommitment', 'artifactCommitment']) &&
+      digest(protectedEvidence.holdoutCommitment) && digest(protectedEvidence.trustCommitment) &&
+      protectedEvidence.artifactCommitment === commitment(protectedEvidence) :
+    protectedEvidence.state === 'unspent' ? exact(protectedEvidence, ['state', 'attestationCommitment', 'artifactCommitment']) &&
+      digest(protectedEvidence.attestationCommitment) && protectedEvidence.artifactCommitment === commitment(protectedEvidence) : false;
+  const gate = (id: string) => row.gates.find(candidate => candidate.id === id)?.status;
+  const failed = row.gates.filter(candidate => !['met', 'not-applicable'].includes(candidate.status)).map(candidate => candidate.id).sort();
+  if (!validProtected || gate('population-no-regression') !== arrival.publicGateStatus.populationNoRegression ||
+      gate('runtime-and-package-cost') !== arrival.publicGateStatus.runtimeAndPackageCost ||
+      JSON.stringify(row.reasonCodes) !== JSON.stringify(failed) || row.status !== (failed.length ? 'not-qualified' : 'qualified')) return false;
+  if (protectedEvidence.state === 'completed') return gate('protected-partition') === 'met' &&
+    arrival.publicGateStatus.populationNoRegression === 'met' && arrival.publicGateStatus.runtimeAndPackageCost === 'met';
+  return gate('protected-partition') === 'unresolved' &&
+    (arrival.publicGateStatus.populationNoRegression === 'not-met' || arrival.publicGateStatus.runtimeAndPackageCost === 'not-met') &&
+    row.status === 'not-qualified';
+}
+
+export const piiQualificationSanctionedProjection = (row: PiiFamilyQualificationEvidence) => ({
+  family: row.family, planCommitment: row.planCommitment, artifactCommitment: row.artifactCommitment,
+  ...(row.sourceConformance ? { sourceConformanceCommitment: row.sourceConformance.artifactCommitment } : {}), reasonCodes: row.reasonCodes,
+  ...(row.arrivalEvidence ? { arrivalEvidenceCommitment: row.arrivalEvidence.artifactCommitment,
+    protectedEvidenceCommitment: row.arrivalEvidence.protectedEvidence.artifactCommitment } : {}),
+});
+
+export function parsePiiActivationIdentity(value: string) {
   const match = /^credentials=(full|common);selectors=([a-z0-9:,-]+);families=([a-z0-9:,-]+);vocabulary=pii-context\/v1$/.exec(value);
   if (!match) throw new Error('Invalid PII activation identity');
   const selectors = match[2].split(','), families = match[3].split(',');
-  if (new Set(selectors).size !== selectors.length || new Set(families).size !== families.length || families.some(item => !family(item)))
+  if (new Set(selectors).size !== selectors.length || new Set(families).size !== families.length || families.some(item => !family(item)) ||
+      JSON.stringify(selectors) !== JSON.stringify([...selectors].sort()) || JSON.stringify(families) !== JSON.stringify([...families].sort()))
     throw new Error('Invalid PII activation identity');
-  return { selectors, families };
+  return { credentials: match[1] as 'full' | 'common', selectors, families, vocabulary: 'pii-context/v1' as const };
 }
 
 function selectorClosure(selectors: readonly string[], registryFamilies: readonly string[]) {
@@ -145,14 +190,14 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
       new Set(activation.surfaces.map(row => row.id)).size !== activation.surfaces.length || !Array.isArray(activation.offSurfaces) ||
       JSON.stringify(activation.offSurfaces) !== JSON.stringify(activation.surfaces.map(row => ({ id: row.id, status: 'pass' }))))
     throw new Error('Invalid trusted PII activation evidence');
-  const parsed = parseActivationIdentity(activation.activationIdentity);
+  const parsed = parsePiiActivationIdentity(activation.activationIdentity);
   if (JSON.stringify(parsed.selectors) !== JSON.stringify(activation.requestedSelectors) ||
       JSON.stringify(parsed.families) !== JSON.stringify(activation.availableFamilies) ||
       JSON.stringify(selectorClosure(activation.requestedSelectors, activation.availableFamilies)) !== JSON.stringify(activation.availableFamilies) ||
       JSON.stringify(activation.selectorChecks[0]) !== JSON.stringify({ selectors: activation.requestedSelectors,
         activationIdentity: activation.activationIdentity, availableFamilies: activation.availableFamilies }) ||
       activation.selectorChecks.some(check => {
-        const identity = parseActivationIdentity(check.activationIdentity);
+        const identity = parsePiiActivationIdentity(check.activationIdentity);
         return JSON.stringify(identity.selectors) !== JSON.stringify(check.selectors) ||
           JSON.stringify(identity.families) !== JSON.stringify(check.availableFamilies) ||
           JSON.stringify(selectorClosure(check.selectors, activation.availableFamilies)) !== JSON.stringify(check.availableFamilies);
@@ -163,8 +208,11 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
   if (new Set(qualifications.map(row => row.family)).size !== qualifications.length || qualifications.some(row => {
     const failed = row.gates.filter(gate => gate.status !== 'met' && gate.status !== 'not-applicable').map(gate => gate.id).sort();
     const extended = row.installedArtifactConformance !== undefined || row.sourceConformance !== undefined;
+    const arrivalEvidence = row.arrivalEvidence, arrival = arrivalEvidence !== undefined;
     const keys = ['schemaVersion', 'reportType', 'supportClaims', 'family', 'product', 'activationArtifactCommitment', 'planCommitment', 'profile', 'gates', 'classAccounting',
-      ...(extended ? ['installedArtifactConformance', 'sourceConformance'] : []), 'status', 'reasonCodes', 'artifactCommitment'];
+      ...(extended ? ['installedArtifactConformance', 'sourceConformance'] : []), ...(arrival ? ['arrivalEvidence'] : []),
+      'status', 'reasonCodes', 'artifactCommitment'];
+    const validArrival = validatePiiQualificationArrivalBinding(row);
     return !exact(row, keys) ||
       row.schemaVersion !== 1 || row.reportType !== 'pii-family-qualification' || row.supportClaims !== false || !registryFamilies.includes(row.family) ||
       JSON.stringify(row.product) !== JSON.stringify(activation.product) || row.activationArtifactCommitment !== activation.artifactCommitment ||
@@ -176,6 +224,7 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
         (entry.status === 'measured' ? entry.observations === 0 : entry.observations !== 0)) ||
       (extended && (!validInstalledConformance(row.installedArtifactConformance) || !validSourceConformance(row.sourceConformance, row.product.sourceCommit, row.family) ||
         !row.gates.some(gate => gate.id === 'exact-source-conformance' && gate.status === 'met'))) ||
+      !validArrival ||
       row.status !== (failed.length ? 'not-qualified' : 'qualified') || JSON.stringify(row.reasonCodes) !== JSON.stringify(failed) ||
       row.artifactCommitment !== commitment(row);
   })) throw new Error('Invalid trusted PII qualification evidence');
@@ -184,10 +233,8 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
     row.product.candidateEvidenceCommitment === candidateEvidenceCommitment &&
     row.activationArtifactCommitment === activation.artifactCommitment && row.activationIdentity === activation.activationIdentity &&
     JSON.stringify(row.availableFamilies) === JSON.stringify(activation.availableFamilies));
-  if (!sanctioned || JSON.stringify(sanctioned.qualifications) !== JSON.stringify(qualifications.map(row => ({
-    family: row.family, planCommitment: row.planCommitment, artifactCommitment: row.artifactCommitment,
-    ...(row.sourceConformance ? { sourceConformanceCommitment: row.sourceConformance.artifactCommitment } : {}), reasonCodes: row.reasonCodes,
-  })).sort((a, b) => a.family.localeCompare(b.family)))) throw new Error('PII product binding is not repository-sanctioned');
+  if (!sanctioned || JSON.stringify(sanctioned.qualifications) !== JSON.stringify(qualifications.map(piiQualificationSanctionedProjection)
+    .sort((a, b) => a.family.localeCompare(b.family)))) throw new Error('PII product binding is not repository-sanctioned');
   return { sourceCommit: activation.product.sourceCommit, artifactCommitment: activation.product.artifactCommitment,
     candidateEvidenceCommitment, activationIdentity: activation.activationIdentity, activationArtifactCommitment: activation.artifactCommitment,
     availableFamilies: [...activation.availableFamilies], qualification: qualifications };

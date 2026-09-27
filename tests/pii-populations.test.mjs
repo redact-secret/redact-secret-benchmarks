@@ -60,6 +60,8 @@ function evidenceEntry(id, evidenceClass, accountingClass, options = {}) {
 
 function fixture() {
   const evidence = structuredClone(piiBenignCollisionEvidence);
+  evidence.families = [];
+  evidence.entries = [];
   evidence.families.push(
     { family: 'pii:global:email', displayName: 'Synthetic email evidence', identityDomain: 'email', scope: 'global', validator: null, authority: authority() },
     { family: 'pii:ca:synthetic-id', displayName: 'Synthetic Canadian identifier', identityDomain: 'national-id', scope: 'jurisdiction:CA', validator: null, authority: authority(true) },
@@ -130,7 +132,7 @@ async function observedRows(source, flagged, artifactHash, runId, sensitive = tr
   return piiAccountingRowsFromEvaluation(artifact);
 }
 
-test('canonical contract keeps exactly two committed populations separate and honestly reports an empty corpus', () => {
+test('canonical contract keeps exactly two committed populations separate and reports absent observations honestly', () => {
   assert.deepEqual(piiPopulationContract.populations.map(row => [row.id, row.role]), [
     ['diagnostic-balanced', 'development-tuning'], ['benign-heavy-stress', 'evaluation-only'],
   ]);
@@ -139,13 +141,14 @@ test('canonical contract keeps exactly two committed populations separate and ho
     'reserved-documentation', 'official-test', 'public-identifier', 'ordinary-reference-account', 'near-miss', 'placeholder',
     'context-negative', 'cross-family-collision',
   ]);
-  assert.equal(piiPopulationContract.populations.every(row => row.baseRate.sensitiveMass + row.baseRate.nonSensitiveMass === row.baseRate.totalMass), true);
-  assert.notEqual(piiPopulationContract.populations[0].baseRate.sensitiveMass, piiPopulationContract.populations[1].baseRate.sensitiveMass);
+  assert.equal(piiPopulationContract.populations.every(row =>
+    row.baseRate.sensitiveMass + row.baseRate.nonSensitiveMass + row.baseRate.notEstablishedMass === row.baseRate.totalMass), true);
+  assert.notEqual(piiPopulationContract.populations[0].baseRate.notEstablishedMass, piiPopulationContract.populations[1].baseRate.notEstablishedMass);
   const report = buildPiiPopulationReport(piiPopulationContract, piiBenignCollisionEvidence, [], 'benign-heavy-stress');
   assert.equal(report.status, 'not-measured');
-  assert.equal(report.calibration.status, 'not-measured');
-  assert.deepEqual(report.denominator, { unit: 'authored-evidence-case', declared: 0, observed: 0 });
-  assert.deepEqual(report.strata, []);
+  assert.equal(report.calibration.status, 'not-used');
+  assert.deepEqual(report.denominator, { unit: 'authored-evidence-case', declared: 10, observed: 0 });
+  assert.ok(report.strata.length > 0);
   assert.equal(Object.hasOwn(report, 'overallScore'), false);
 });
 

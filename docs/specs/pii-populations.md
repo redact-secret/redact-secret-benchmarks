@@ -108,6 +108,17 @@ identity-only classification, both population views and comparisons, and the
 protected partition remain unresolved. The generated row is therefore
 `pending`; no absent population mass is inferred or renormalized.
 
+The payment-card binding pins family contract v1, ISO/IEC 7812 structure, the
+frozen Visa Acceptance issuer-range subset, and the bounded `luhn` v1
+validator. Its safe plan confines raw values to authoritative test controls or
+deterministic no-real-world-provenance constructions. Mechanical checksum
+failures are accounted separately from Luhn-valid order/reference, account,
+phone, random-number, and cooking-object collisions. Installed addon/Wasm and
+exact-source Rust/Python/CLI lanes are measured, while identity-only
+classification, both population views and comparisons, and the protected
+partition remain unresolved. The generated row is therefore `pending`; a Luhn
+pass alone is never treated as sensitivity or support evidence.
+
 Tuning selection is fail-closed. Repository tuning manifests bind the file-byte
 hash in the pin manifest, while the current PII population contract binds an
 inner semantic corpus commitment and declares no dedicated tuning category.

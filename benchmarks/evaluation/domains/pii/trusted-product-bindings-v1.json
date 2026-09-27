@@ -76,6 +76,32 @@
           ]
         }
       ]
+    },
+    {
+      "product": {
+        "sourceCommit": "bf3631b1989570fbf6fdd8836ff21acc35f7d678",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "a5f98be45c32883799e0af4baec4c133fcd32f9ae64fe9dcb960838a4817253a"
+      },
+      "activationArtifactCommitment": "c34e695f8b26827ffffb82e2e47a238f70f95c37b6775397e3d421d0c3c4c9e3",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card;vocabulary=pii-context/v1",
+      "availableFamilies": ["pii:global:email", "pii:global:iban", "pii:global:network-address", "pii:global:payment-card"],
+      "qualifications": [
+        {
+          "family": "pii:global:payment-card",
+          "planCommitment": "a56d0f7c35b7c6dfbb6eb0d2f7c6f4e857192d7be85866ef278f0f7b532a23f3",
+          "artifactCommitment": "b060032988d2ae263dd766d6a00fe804a8282261386fbca00010bedc73fcc874",
+          "sourceConformanceCommitment": "857bfc6532f9cc3f0b39f38335e620d9f6ae31117950edc916c476f88a75b50e",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-identity-only-classification",
+            "class-protected-partition",
+            "diagnostic-population",
+            "identity-only-classification",
+            "protected-partition"
+          ]
+        }
+      ]
     }
   ]
 }

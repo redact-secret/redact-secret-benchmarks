@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "family": "pii:global:payment-card",
+  "findingType": "pii_global_payment_card",
+  "familyContractVersion": 1,
+  "profile": { "id": "pii-v1", "version": 1 },
+  "canonicalOffsetUnit": "utf8-byte",
+  "authorityBinding": {
+    "structure": {
+      "sourceKind": "standard",
+      "sourceId": "iso-iec-7812-1",
+      "locator": "https://www.iso.org/standard/70484.html",
+      "revision": "2017-edition-5-confirmed-2022"
+    },
+    "issuerRanges": {
+      "sourceKind": "payment-processor-documentation",
+      "sourceId": "visa-acceptance-card-type-identification",
+      "locator": "https://developer.cybersource.com/docs/cybs/en-us/test-data/developer/all/so/test-data/best_practices_intro/card_type_id.html",
+      "revision": "accessed-2026-09-27"
+    },
+    "validator": {
+      "id": "luhn",
+      "version": 1,
+      "normativeSource": "PCI-SSC-FAQ-1137",
+      "maxCandidateBytes": 19
+    }
+  },
+  "sourceConformanceIds": [
+    "rust-native-payment-card-conformance",
+    "python-payment-card-conformance",
+    "cli-payment-card-conformance"
+  ],
+  "activationChecks": [
+    {
+      "selectors": ["pii:global"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card;vocabulary=pii-context/v1"
+    },
+    {
+      "selectors": ["pii:family:global:payment-card"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:family:global:payment-card;families=pii:global:payment-card;vocabulary=pii-context/v1"
+    }
+  ],
+  "fixturePolicy": {
+    "positiveConstruction": "Sensitive-path values are deterministic Luhn-valid constructions from the recorded issue-877 seed and have no cardholder, issuer-assignment, issuance, or real-world provenance.",
+    "negativeAuthority": "Only exact whole values from the frozen supported-brand subset of the named Visa Acceptance test-card suite are authoritative non-sensitive controls.",
+    "semanticSeparation": "Checksum failures are validator controls; Luhn-valid order, reference, account, phone, random-number, and cooking-pan collisions are separately authored benign axes.",
+    "plaintextPublication": "Raw synthetic and authoritative test values are confined to this safe qualification plan; installed observations and support projections expose only IDs, outcomes, ranges, commitments, and aggregate states."
+  },
+  "classAccounting": [
+    { "id": "validator-valid-sensitive", "status": "measured" },
+    { "id": "validator-checksum-invalid", "status": "measured" },
+    { "id": "issuer-range-invalid", "status": "measured" },
+    { "id": "authoritative-test-value", "status": "measured" },
+    { "id": "luhn-valid-order-reference-collision", "status": "measured" },
+    { "id": "luhn-valid-account-collision", "status": "measured" },
+    { "id": "luhn-valid-phone-collision", "status": "measured" },
+    { "id": "luhn-valid-random-collision", "status": "measured" },
+    { "id": "luhn-valid-cooking-pan-collision", "status": "measured" },
+    { "id": "named-negative-context", "status": "measured" },
+    { "id": "unsupported-format", "status": "measured" },
+    { "id": "whole-candidate-boundary", "status": "measured" },
+    { "id": "url-query", "status": "measured" },
+    { "id": "identity-only-classification", "status": "unresolved" },
+    { "id": "protected-partition", "status": "unresolved" }
+  ],
+  "piiOffInput": "card_number=4000008770000003",
+  "cases": [
+    {
+      "id": "compact-sensitive-context",
+      "classes": ["validator-valid-sensitive"],
+      "input": "card_number=4000008770000003",
+      "expected": { "publicFinding": true, "start": 12, "end": 28, "sensitive": true }
+    },
+    {
+      "id": "astral-prefix-sensitive-context",
+      "classes": ["validator-valid-sensitive"],
+      "input": "🔒 card_number=4000008770000003",
+      "expected": { "publicFinding": true, "start": 17, "end": 33, "sensitive": true }
+    },
+    {
+      "id": "amex-supported-layout",
+      "classes": ["validator-valid-sensitive"],
+      "input": "card_number=3487 700000 00009",
+      "expected": { "publicFinding": true, "start": 12, "end": 29, "sensitive": true }
+    },
+    {
+      "id": "minimum-pan-length",
+      "classes": ["validator-valid-sensitive"],
+      "input": "pan=4000008773",
+      "expected": { "publicFinding": true, "start": 4, "end": 14, "sensitive": true }
+    },
+    {
+      "id": "maximum-pan-length",
+      "classes": ["validator-valid-sensitive"],
+      "input": "payment_card=4000008770000000006",
+      "expected": { "publicFinding": true, "start": 13, "end": 32, "sensitive": true }
+    },
+    {
+      "id": "outside-frozen-iin-boundary",
+      "classes": ["issuer-range-invalid"],
+      "input": "card_number=2220998770000003",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "luhn-failure-neighbor",
+      "classes": ["validator-checksum-invalid"],
+      "input": "card_number=4000008770000004",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "official-test-whole-value-negative",
+      "classes": ["authoritative-test-value"],
+      "input": "card_number=4111111111111111",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "order-reference-collision",
+      "classes": ["luhn-valid-order-reference-collision"],
+      "input": "order_reference=4000008770000003",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "account-number-collision",
+      "classes": ["luhn-valid-account-collision"],
+      "input": "account_number=4000008770000003",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "phone-like-collision",
+      "classes": ["luhn-valid-phone-collision"],
+      "input": "phone=4000008773",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "random-number-collision",
+      "classes": ["luhn-valid-random-collision"],
+      "input": "random_number=4000008770000003",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "cooking-pan-prose-collision",
+      "classes": ["luhn-valid-cooking-pan-collision"],
+      "input": "Put the pan beside object number 4000008770000003.",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "named-negative-context-wins",
+      "classes": ["named-negative-context"],
+      "input": "card_number documentation 4000008770000003",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "mixed-display-separators",
+      "classes": ["unsupported-format"],
+      "input": "card_number=4000 0087-7000 0003",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "identifier-suffix-boundary",
+      "classes": ["whole-candidate-boundary"],
+      "input": "card_number=4000008770000003suffix",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "unicode-mark-boundary",
+      "classes": ["whole-candidate-boundary"],
+      "input": "card_number=4000008770000003⃝",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "governed-invisible-interior",
+      "classes": ["whole-candidate-boundary"],
+      "input": "card_number=40000087‍70000003",
+      "expected": { "publicFinding": false, "sensitive": false }
+    },
+    {
+      "id": "url-query-collision",
+      "classes": ["url-query"],
+      "input": "https://synthetic.invalid/pay?card_number=4000008770000003",
+      "expected": { "publicFinding": false, "sensitive": false }
+    }
+  ]
+}

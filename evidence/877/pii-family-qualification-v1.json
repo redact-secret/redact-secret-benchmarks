@@ -1,0 +1,647 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-family-qualification",
+  "supportClaims": false,
+  "family": "pii:global:payment-card",
+  "product": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "bf3631b1989570fbf6fdd8836ff21acc35f7d678",
+    "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+    "candidateEvidenceCommitment": "a5f98be45c32883799e0af4baec4c133fcd32f9ae64fe9dcb960838a4817253a"
+  },
+  "activationArtifactCommitment": "c34e695f8b26827ffffb82e2e47a238f70f95c37b6775397e3d421d0c3c4c9e3",
+  "planCommitment": "a56d0f7c35b7c6dfbb6eb0d2f7c6f4e857192d7be85866ef278f0f7b532a23f3",
+  "profile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "gates": [
+    {
+      "id": "exact-candidate-artifact",
+      "status": "met"
+    },
+    {
+      "id": "selector-global-closure",
+      "status": "met"
+    },
+    {
+      "id": "selector-exact-family",
+      "status": "met"
+    },
+    {
+      "id": "cross-surface-determinism",
+      "status": "met"
+    },
+    {
+      "id": "sensitive-public-findings",
+      "status": "met"
+    },
+    {
+      "id": "public-absence-controls",
+      "status": "met"
+    },
+    {
+      "id": "identity-only-classification",
+      "status": "unresolved"
+    },
+    {
+      "id": "exact-source-conformance",
+      "status": "met"
+    },
+    {
+      "id": "pii-off-invariance",
+      "status": "met"
+    },
+    {
+      "id": "diagnostic-population",
+      "status": "unresolved"
+    },
+    {
+      "id": "benign-heavy-population",
+      "status": "unresolved"
+    },
+    {
+      "id": "protected-partition",
+      "status": "unresolved"
+    },
+    {
+      "id": "class-identity-only-classification",
+      "status": "unresolved"
+    },
+    {
+      "id": "class-protected-partition",
+      "status": "unresolved"
+    }
+  ],
+  "classAccounting": [
+    {
+      "id": "validator-valid-sensitive",
+      "status": "measured",
+      "observations": 10
+    },
+    {
+      "id": "validator-checksum-invalid",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "issuer-range-invalid",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "authoritative-test-value",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "luhn-valid-order-reference-collision",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "luhn-valid-account-collision",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "luhn-valid-phone-collision",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "luhn-valid-random-collision",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "luhn-valid-cooking-pan-collision",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "named-negative-context",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "unsupported-format",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "whole-candidate-boundary",
+      "status": "measured",
+      "observations": 6
+    },
+    {
+      "id": "url-query",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "identity-only-classification",
+      "status": "unresolved",
+      "observations": 0
+    },
+    {
+      "id": "protected-partition",
+      "status": "unresolved",
+      "observations": 0
+    }
+  ],
+  "installedArtifactConformance": {
+    "canonicalOffsetUnit": "utf8-byte",
+    "lanes": [
+      {
+        "id": "node-addon",
+        "status": "pass",
+        "nativeOffsetUnit": "utf16-code-unit",
+        "observations": [
+          {
+            "id": "compact-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 12,
+              "end": 28
+            },
+            "canonicalRange": {
+              "start": 12,
+              "end": 28
+            }
+          },
+          {
+            "id": "astral-prefix-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 15,
+              "end": 31
+            },
+            "canonicalRange": {
+              "start": 17,
+              "end": 33
+            }
+          },
+          {
+            "id": "amex-supported-layout",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 12,
+              "end": 29
+            },
+            "canonicalRange": {
+              "start": 12,
+              "end": 29
+            }
+          },
+          {
+            "id": "minimum-pan-length",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 4,
+              "end": 14
+            },
+            "canonicalRange": {
+              "start": 4,
+              "end": 14
+            }
+          },
+          {
+            "id": "maximum-pan-length",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 13,
+              "end": 32
+            },
+            "canonicalRange": {
+              "start": 13,
+              "end": 32
+            }
+          },
+          {
+            "id": "outside-frozen-iin-boundary",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "luhn-failure-neighbor",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "official-test-whole-value-negative",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "order-reference-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "account-number-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "phone-like-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "random-number-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "cooking-pan-prose-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "named-negative-context-wins",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "mixed-display-separators",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "identifier-suffix-boundary",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "unicode-mark-boundary",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "governed-invisible-interior",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "url-query-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          }
+        ]
+      },
+      {
+        "id": "node-wasm",
+        "status": "pass",
+        "nativeOffsetUnit": "utf16-code-unit",
+        "observations": [
+          {
+            "id": "compact-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 12,
+              "end": 28
+            },
+            "canonicalRange": {
+              "start": 12,
+              "end": 28
+            }
+          },
+          {
+            "id": "astral-prefix-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 15,
+              "end": 31
+            },
+            "canonicalRange": {
+              "start": 17,
+              "end": 33
+            }
+          },
+          {
+            "id": "amex-supported-layout",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 12,
+              "end": 29
+            },
+            "canonicalRange": {
+              "start": 12,
+              "end": 29
+            }
+          },
+          {
+            "id": "minimum-pan-length",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 4,
+              "end": 14
+            },
+            "canonicalRange": {
+              "start": 4,
+              "end": 14
+            }
+          },
+          {
+            "id": "maximum-pan-length",
+            "publicFinding": true,
+            "type": "pii_global_payment_card",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 13,
+              "end": 32
+            },
+            "canonicalRange": {
+              "start": 13,
+              "end": 32
+            }
+          },
+          {
+            "id": "outside-frozen-iin-boundary",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "luhn-failure-neighbor",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "official-test-whole-value-negative",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "order-reference-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "account-number-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "phone-like-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "random-number-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "cooking-pan-prose-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "named-negative-context-wins",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "mixed-display-separators",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "identifier-suffix-boundary",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "unicode-mark-boundary",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "governed-invisible-interior",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "url-query-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          }
+        ]
+      }
+    ],
+    "artifactCommitment": "fbb90819174ebb40e0eb6e41bc7e22fc4468ca38932185ef86b4048ee5d0f417"
+  },
+  "sourceConformance": {
+    "sourceCommit": "bf3631b1989570fbf6fdd8836ff21acc35f7d678",
+    "sourceState": "clean",
+    "lanes": [
+      {
+        "id": "rust-native-payment-card-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-payment-card-v1.json",
+        "fixtureCommitment": "c8a6f90bbf7fb048d02a8218b1a0e2ec8779cfd8b9aec92e5a38ad5ae0fd5bc3",
+        "commandDefinitionCommitment": "d52c2b92a1d6fe18f61e58a9b49677fa64888dae2d055a7ab9e574d2b9efe458",
+        "toolchain": [
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          {
+            "executable": "cargo",
+            "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+          }
+        ]
+      },
+      {
+        "id": "python-payment-card-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-payment-card-v1.json",
+        "fixtureCommitment": "c8a6f90bbf7fb048d02a8218b1a0e2ec8779cfd8b9aec92e5a38ad5ae0fd5bc3",
+        "commandDefinitionCommitment": "fc564fb1e6ee9a538648aabb288d54b955e316184d2588532c5de40164801385",
+        "toolchain": [
+          {
+            "executable": "python3",
+            "version": "Python 3.14.7"
+          },
+          {
+            "executable": "maturin",
+            "version": "maturin 1.15.0"
+          },
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          }
+        ]
+      },
+      {
+        "id": "cli-payment-card-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-payment-card-v1.json",
+        "fixtureCommitment": "c8a6f90bbf7fb048d02a8218b1a0e2ec8779cfd8b9aec92e5a38ad5ae0fd5bc3",
+        "commandDefinitionCommitment": "f4abba7dc5a3e38eb86904f58fafb637fb8a7c4e0bc0ebacba081f37d34a4c01",
+        "toolchain": [
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          {
+            "executable": "cargo",
+            "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+          }
+        ]
+      }
+    ],
+    "artifactCommitment": "857bfc6532f9cc3f0b39f38335e620d9f6ae31117950edc916c476f88a75b50e"
+  },
+  "status": "not-qualified",
+  "reasonCodes": [
+    "benign-heavy-population",
+    "class-identity-only-classification",
+    "class-protected-partition",
+    "diagnostic-population",
+    "identity-only-classification",
+    "protected-partition"
+  ],
+  "artifactCommitment": "b060032988d2ae263dd766d6a00fe804a8282261386fbca00010bedc73fcc874"
+}

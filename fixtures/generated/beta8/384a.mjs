@@ -37,6 +37,25 @@ export function build384a({ fixture, synthetic }) {
   };
   const digest = slug => synthetic(`beta10:384a:digest:${slug}`, 64, HEX);
 
+  // ------------------------------------------------------ anthropic-token (registry, sk-ant-api03-)
+  // The four common-formats twins that used sk-ant-api01- and sk-ant-admin01- as negatives of sk-ant-api03- are re-scoped in
+  // DISPUTED_PROPERTIES (redact-secret#862 makes both prefixes Anthropic credentials). These positives and twins replace them with
+  // prefix mutations no source claims as an Anthropic class, so the documented-prefix twin floor stays met on independent evidence.
+  {
+    const T = "anthropic-token";
+    const key = slug => check(T, `sk-ant-api03-${synthetic(seed(T, slug), 93, URLSAFE)}AA`);
+    const k = { dotenv: key("dotenv"), curl: key("curl"), python: key("python") };
+    const dotenv = v => ["# .env\nANTHROPIC_API_KEY=", v, "\nANTHROPIC_VERSION=2023-06-01\n"];
+    const curl = v => ["curl -s https://api.anthropic.com/v1/messages -H \"x-api-key: ", v, "\" -H \"anthropic-version: 2023-06-01\"\n"];
+    const python = v => ["import anthropic\n\nclient = anthropic.Anthropic(api_key=\"", v, "\")\n"];
+    c.positive(T, "env", "api03-dotenv", dotenv({ secret: k.dotenv }), "env");
+    c.positive(T, "header", "api03-curl-x-api-key", curl({ secret: k.curl }), "sh");
+    c.positive(T, "sdk-config", "api03-python-sdk", python({ secret: k.python }), "py");
+    c.twin(T, "api03-dotenv", "api03-underscore-prefix", dotenv(refuse(T, `sk_ant_api03_${k.dotenv.slice(13)}`)), "prefix: underscores in place of the provider-documented hyphens of sk-ant-api03-", "prefix", "env");
+    c.twin(T, "api03-curl-x-api-key", "api03-vendor-stem-prefix", curl(refuse(T, `sk-anp-api03-${k.curl.slice(13)}`)), "prefix: sk-anp-api03- (a different vendor stem) in place of sk-ant-api03-", "prefix", "sh");
+    c.twin(T, "api03-python-sdk", "api03-no-final-hyphen-prefix", python(refuse(T, `sk-ant-api03${k.python.slice(13)}`)), "prefix: the hyphen after api03 removed from sk-ant-api03-", "prefix", "py");
+  }
+
   // ------------------------------------------------------ anthropic api01 / admin01
   const anthropic = (T, cfg) => {
     const prefix = cfg.prefix;

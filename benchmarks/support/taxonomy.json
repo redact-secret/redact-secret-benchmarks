@@ -1489,143 +1489,167 @@
       "provider": "anthropic",
       "name": "Enterprise organization key (sk-ant-api01-)",
       "description": "sk-ant-api01- prefixed key that Anthropic documents as a Compliance Access Key; the prefix is the general Claude Enterprise organization key for any scope set, so a finding must not claim 'compliance'.",
-      "detectors": [],
+      "detectors": [
+        "anthropic-api01-key"
+      ],
       "sources": [
         "https://platform.claude.com/docs/en/manage-claude/compliance-api-access",
         "https://platform.claude.com/docs/en/manage-claude/admin-api-keys"
       ],
-      "note": "Beta.10 arrival family anthropic-api01-key (#384, research redact-secret#776, product #862). The product extends the shared anthropic-token detector and keeps the anthropic_api_key type, so this family maps to no registry detector and shows the measured status of an unscored arrival id, never the status of anthropic:secret-api-key. T1 on the prefix only; the body is unspecified."
+      "note": "Beta.10 arrival family anthropic-api01-key (#384, research redact-secret#776, product #862, #882). The product extends the shared anthropic-token detector; since product PR #882 (redact-secret#774) it reports its own anthropic_enterprise_api_key finding type (previously the shared anthropic_api_key type), so this family maps to no registry detector id but is scored on its own arrival id by finding type (scanners/families.mjs arrivalFindingTypes), never borrowing the status of anthropic:secret-api-key. T1 on the prefix only; the body is unspecified."
     },
     {
       "id": "anthropic:admin-api-key",
       "provider": "anthropic",
       "name": "Admin API key (sk-ant-admin01-)",
       "description": "sk-ant-admin01- prefixed full-access Admin API key created by organization admins in the Claude Console.",
-      "detectors": [],
+      "detectors": [
+        "anthropic-admin01-key"
+      ],
       "sources": [
         "https://platform.claude.com/docs/en/manage-claude/admin-api-keys",
         "https://platform.claude.com/docs/en/manage-claude/admin-api"
       ],
-      "note": "Beta.10 arrival family anthropic-admin01-key (#384, research redact-secret#775, product #862). Same shared-detector reason as anthropic:compliance-access-key. T1 prefix, tool-corroborated 93-character + AA body."
+      "note": "Beta.10 arrival family anthropic-admin01-key (#384, research redact-secret#775, product #862, #882). Same shared-detector reason as anthropic:compliance-access-key; since product PR #882 (redact-secret#774) it reports its own anthropic_admin_api_key finding type, so it is scored on its own arrival id by finding type. T1 prefix, tool-corroborated 93-character + AA body."
     },
     {
       "id": "openai:admin-api-key",
       "provider": "openai",
       "name": "Admin API key (sk-admin-)",
       "description": "sk-admin- prefixed organization admin key with the T3BlbkFJ marker between two 58- or 74-byte segments; a marker-less body is out of contract.",
-      "detectors": [],
+      "detectors": [
+        "openai-admin-api-key"
+      ],
       "sources": [
         "https://github.com/openai/codex/blob/418199f6ade4f9018b1f0b455a685387a811ad2e/codex-rs/network-proxy/src/credential_broker/providers/openai.rs#L13-L23",
         "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
       ],
-      "note": "Beta.10 arrival family openai-admin-api-key (#384, research redact-secret#777, product #863). openai-token already recognises sk-admin-, but a taxonomy family mapped to it would borrow the status of openai:secret-api-key, so it is measured as its own unscored arrival id. T2."
+      "note": "Beta.10 arrival family openai-admin-api-key (#384, research redact-secret#777, product #863, #882). openai-token already recognises sk-admin-; since product PR #882 (redact-secret#774) it reports its own openai_admin_api_key finding type (previously the shared openai_api_key type), so it is scored on its own arrival id by finding type rather than borrowing the status of openai:secret-api-key. T2."
     },
     {
       "id": "aws-bedrock:long-term-api-key",
       "provider": "aws-bedrock",
       "name": "Long-term API key (ABSK)",
       "description": "ABSK-prefixed standard-Base64 key for an IAM service-specific credential; its decoded form is BedrockAPIKey-<user>-at-<account>:<secret>.",
-      "detectors": [],
+      "detectors": [
+        "aws-bedrock-long-term-api-key"
+      ],
       "sources": [
         "https://aws.amazon.com/blogs/security/securing-amazon-bedrock-api-keys-best-practices-for-implementation-and-management/",
         "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-reference.html"
       ],
-      "note": "Beta.10 arrival family aws-bedrock-long-term-api-key (#384, research redact-secret#778, product #864). T2 while the maintainer T1 ruling on the AWS Security Blog pattern is open. Not the short-term key, the public IAM alias or an access key id."
+      "note": "Registry detector aws-bedrock-long-term-api-key since redact-secret#864 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #778), contract in benchmarks/lib/beta8/384b.ts. T1 by maintainer ruling of 2026-09-27 (redact-secret#778): the ABSK prefix and standard-Base64 alphabet, from the AWS Security Blog scan pattern; lengths stay T2. Not the short-term key, the public IAM alias or an access key id."
     },
     {
       "id": "aws-bedrock:short-term-api-key",
       "provider": "aws-bedrock",
       "name": "Short-term API key (bedrock-api-key-)",
       "description": "bedrock-api-key- prefixed Base64 pre-signed CallWithBearerToken URL, valid for at most 12 hours.",
-      "detectors": [],
+      "detectors": [
+        "aws-bedrock-short-term-api-key"
+      ],
       "sources": [
         "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-reference.html",
         "https://github.com/aws/aws-bedrock-token-generator-python/blob/main/aws_bedrock_token_generator/token_generator.py"
       ],
-      "note": "Beta.10 arrival family aws-bedrock-short-term-api-key (#384, research redact-secret#779, product #864). T2 while the maintainer T1 ruling on AWS-authored generator code and the blog head is open. Whether the product reports it with the long-term key as one family or two is redact-secret#864's decision."
+      "note": "Registry detector aws-bedrock-short-term-api-key since redact-secret#864 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #779), contract in benchmarks/lib/beta8/384b.ts. T1 by maintainer ruling of 2026-09-27 (redact-secret#779): the bedrock-api-key- prefix, the fixed 133-character head and standard padded Base64, from AWS-authored token generators and the blog; total length stays T2. The product reports the two Bedrock keys as separate detectors."
     },
     {
       "id": "elevenlabs:api-key",
       "provider": "elevenlabs",
       "name": "API key (sk_)",
       "description": "sk_ + 48 lowercase hex, with an optional provider-code-evidenced _residency_<region> suffix, sent in the xi-api-key header.",
-      "detectors": [],
+      "detectors": [
+        "elevenlabs-api-key"
+      ],
       "sources": [
         "https://github.com/elevenlabs/elevenlabs-python/blob/main/src/elevenlabs/speech_engine/server.py",
         "https://elevenlabs.io/docs/api-reference/authentication"
       ],
-      "note": "Beta.10 arrival family elevenlabs-api-key (#384, research redact-secret#788, product #865). T2 while the maintainer T1 ruling on provider SDK code is open. sk_ is shared with Stripe (sk_live_, sk_test_, sk_org_) and Pollinations."
+      "note": "Registry detector elevenlabs-api-key since redact-secret#865 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #788), contract in benchmarks/lib/beta8/384c.ts. T1 by maintainer ruling of 2026-09-27 (redact-secret#788) on ElevenLabs SDK code for the sk_ prefix and the _residency_[a-z0-9]+ suffix grammar; the 48-lowercase-hex body stays T2 and no fixture asserts it. sk_ is shared with Stripe (sk_live_, sk_test_, sk_org_) and Pollinations."
     },
     {
       "id": "together:api-key",
       "provider": "together",
       "name": "Project API key (tgp_v1_)",
       "description": "tgp_v1_ + 43 base64url characters; a deprecated legacy key population has an undocumented format and is not claimed.",
-      "detectors": [],
+      "detectors": [
+        "together-ai-api-key"
+      ],
       "sources": [
         "https://docs.together.ai/docs/api-keys-authentication",
         "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/togetherai.go"
       ],
-      "note": "Beta.10 arrival family together-api-key (#384, research redact-secret#783, product #867). T2 pending hands-on corroboration; no pinned scanner has a Together rule."
+      "note": "Registry detector together-ai-api-key since redact-secret#867 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #783), contract in benchmarks/lib/beta8/384d.ts. T2; no pinned scanner has a Together rule (betterleaks only, a gitleaks lineage). The arrival id together-api-key was renamed to the detector id."
     },
     {
       "id": "tavily:api-key",
       "provider": "tavily",
       "name": "API key (tvly-)",
       "description": "tvly- with an optional dev- segment and a 32-character alphanumeric body; tvly-prod- and production key widths are unresolved.",
-      "detectors": [],
+      "detectors": [
+        "tavily-api-key"
+      ],
       "sources": [
         "https://docs.tavily.com/documentation/api-reference/introduction",
         "https://docs.tavily.com/documentation/enterprise/generate-keys"
       ],
-      "note": "Beta.10 arrival family tavily-api-key (#384, research redact-secret#786, product #867). T2 pending hands-on corroboration; no pinned scanner has a Tavily rule."
+      "note": "Registry detector tavily-api-key since redact-secret#867 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #786), contract in benchmarks/lib/beta8/384d.ts. T2; no pinned scanner has a Tavily rule (noseyparker and GitGuardian only)."
     },
     {
       "id": "mistral:api-key",
       "provider": "mistral",
       "name": "Studio API key (unprefixed)",
       "description": "32 alphanumeric characters recognised only beside a same-line Mistral name, host or SDK constructor; no prefix is documented.",
-      "detectors": [],
+      "detectors": [
+        "mistral-api-key"
+      ],
       "sources": [
         "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
         "https://github.com/google/osv-scalibr/blob/main/veles/secrets/mistralapikey/detector.go"
       ],
-      "note": "Beta.10 context-gated arrival family mistral-api-key (#384, research redact-secret#781, product #868). T2, no bare-value claim; generic coverage already redacts labelled forms, so the family adds the SDK-call-argument forms."
+      "note": "Registry detector mistral-api-key since redact-secret#868 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #781), contract in benchmarks/lib/beta8/384e.ts. T2, context-gated, no bare-value claim; generic coverage already redacts labelled forms, so the family adds the SDK-call-argument forms."
     },
     {
       "id": "cohere:api-key",
       "provider": "cohere",
       "name": "API key (unprefixed)",
       "description": "40 alphanumeric characters recognised only beside a same-line cohere or CO_API_KEY name, host or SDK constructor; trial and production keys share one shape.",
-      "detectors": [],
+      "detectors": [
+        "cohere-api-key"
+      ],
       "sources": [
         "https://docs.cohere.com/docs/rate-limits",
         "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
       ],
-      "note": "Beta.10 context-gated arrival family cohere-api-key (#384, research redact-secret#782, product #868). T2, no bare-value claim."
+      "note": "Registry detector cohere-api-key since redact-secret#868 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #782), contract in benchmarks/lib/beta8/384e.ts. T2, context-gated, no bare-value claim."
     },
     {
       "id": "deepgram:api-key",
       "provider": "deepgram",
       "name": "API key (unprefixed)",
       "description": "40 lowercase hex characters recognised only beside a same-line Deepgram name, host or SDK constructor; sent as Authorization: Token, not Bearer.",
-      "detectors": [],
+      "detectors": [
+        "deepgram-api-key"
+      ],
       "sources": [
         "https://developers.deepgram.com/guides/fundamentals/authenticating",
         "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/deepgram/deepgram.go"
       ],
-      "note": "Beta.10 context-gated arrival family deepgram-api-key (#384, research redact-secret#789, product #868). T2, no bare-value claim; the hex versus base36 alphabet is disputed between the tools and asserted by no fixture."
+      "note": "Registry detector deepgram-api-key since redact-secret#868 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #789), contract in benchmarks/lib/beta8/384e.ts. T2, context-gated, no bare-value claim; the hex versus base36 alphabet is disputed between the tools and asserted by no fixture."
     },
     {
       "id": "ai21:api-key",
       "provider": "ai21",
       "name": "API key (unprefixed)",
       "description": "32 alphanumeric characters recognised only beside a same-line AI21 name, host or SDK constructor; the shape rests on one ten-sample maintainer observation.",
-      "detectors": [],
+      "detectors": [
+        "ai21-api-key"
+      ],
       "sources": [
         "https://docs.ai21.com/docs/create-api-key"
       ],
-      "note": "Beta.10 context-gated arrival family ai21-api-key (#384, research redact-secret#784, product #868). T0: no provider statement and no scanner rule; pending, unclaimed."
+      "note": "Registry detector ai21-api-key since redact-secret#868 (registry pinned at cfe2aec); graduated from a Beta.10 arrival family (#384, research #784), contract in benchmarks/lib/beta8/384e.ts. T0, context-gated: no provider statement and no scanner rule; pending."
     },
     {
       "id": "exa:api-key",

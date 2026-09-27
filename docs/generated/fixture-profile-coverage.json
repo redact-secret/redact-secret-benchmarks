@@ -3,9 +3,9 @@
   "profilesVersion": 1,
   "familyCount": 90,
   "cellsMetByProfile": {
-    "arrival-provisional": 68,
-    "stable-documented": 68,
-    "stable-empirical": 24,
+    "arrival-provisional": 73,
+    "stable-documented": 73,
+    "stable-empirical": 26,
     "context-constrained-empirical": 9
   },
   "families": [
@@ -18,11 +18,11 @@
       "target": "arrival-provisional",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 28,
-        "positiveCases": 0,
-        "benignControls": 10,
+        "totalFixtures": 36,
+        "positiveCases": 3,
+        "benignControls": 15,
         "twinPairs": 10,
-        "positiveContextAxes": 7,
+        "positiveContextAxes": 8,
         "controlAxes": 5,
         "confusionAxes": 7,
         "positiveContextAxisIds": [
@@ -32,7 +32,8 @@
           "#384e · ai21-api-key · shell-export",
           "#384e · ai21-api-key · source-code",
           "#384e · ai21-api-key · structured-file",
-          "#384e · ai21-api-key · tool-output"
+          "#384e · ai21-api-key · tool-output",
+          "ai21-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -63,9 +64,9 @@
       "debt": [
         {
           "cell": "positiveCases",
-          "actual": 0,
+          "actual": 3,
           "required": 6,
-          "shortfall": 6
+          "shortfall": 3
         }
       ]
     },
@@ -209,11 +210,11 @@
         "stable-documented"
       ],
       "cells": {
-        "totalFixtures": 24,
+        "totalFixtures": 26,
         "positiveCases": 6,
         "benignControls": 8,
-        "twinPairs": 7,
-        "positiveContextAxes": 5,
+        "twinPairs": 6,
+        "positiveContextAxes": 8,
         "controlAxes": 5,
         "confusionAxes": 6,
         "positiveContextAxisIds": [
@@ -221,6 +222,9 @@
           "#209 · anthropic-token · header",
           "#209 · anthropic-token · sdk-config",
           "#209 · anthropic-token · source-code",
+          "#384a · anthropic-token · env",
+          "#384a · anthropic-token · header",
+          "#384a · anthropic-token · sdk-config",
           "anthropic-token"
         ],
         "controlAxisIds": [
@@ -374,18 +378,21 @@
     },
     {
       "family": "aws-bedrock-long-term-api-key",
-      "tier": "T2",
+      "tier": "T1",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-documented",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 27,
-        "positiveCases": 4,
-        "benignControls": 11,
+        "totalFixtures": 35,
+        "positiveCases": 7,
+        "benignControls": 16,
         "twinPairs": 6,
-        "positiveContextAxes": 10,
+        "positiveContextAxes": 11,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
@@ -398,7 +405,8 @@
           "#384b · aws-bedrock-long-term-api-key · shell-export",
           "#384b · aws-bedrock-long-term-api-key · source-code",
           "#384b · aws-bedrock-long-term-api-key · structured-file",
-          "#384b · aws-bedrock-long-term-api-key · tool-output"
+          "#384b · aws-bedrock-long-term-api-key · tool-output",
+          "aws-bedrock-long-term-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -429,29 +437,25 @@
         "controlAxes": 4
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 4,
-          "required": 6,
-          "shortfall": 2
-        }
-      ]
+      "debt": []
     },
     {
       "family": "aws-bedrock-short-term-api-key",
-      "tier": "T2",
+      "tier": "T1",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-documented",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 26,
-        "positiveCases": 4,
-        "benignControls": 10,
+        "totalFixtures": 34,
+        "positiveCases": 7,
+        "benignControls": 15,
         "twinPairs": 6,
-        "positiveContextAxes": 10,
+        "positiveContextAxes": 11,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -464,7 +468,8 @@
           "#384b · aws-bedrock-short-term-api-key · shell-export",
           "#384b · aws-bedrock-short-term-api-key · source-code",
           "#384b · aws-bedrock-short-term-api-key · structured-file",
-          "#384b · aws-bedrock-short-term-api-key · tool-output"
+          "#384b · aws-bedrock-short-term-api-key · tool-output",
+          "aws-bedrock-short-term-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -496,14 +501,7 @@
         "controlAxes": 4
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 4,
-          "required": 6,
-          "shortfall": 2
-        }
-      ]
+      "debt": []
     },
     {
       "family": "azure-devops-personal-access-token",
@@ -692,16 +690,16 @@
       "family": "cohere-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 48,
+        "totalFixtures": 58,
         "positiveCases": 0,
-        "benignControls": 22,
-        "twinPairs": 14,
-        "positiveContextAxes": 9,
+        "benignControls": 26,
+        "twinPairs": 17,
+        "positiveContextAxes": 10,
         "controlAxes": 6,
         "confusionAxes": 8,
         "positiveContextAxisIds": [
@@ -713,7 +711,8 @@
           "#384e · cohere-api-key · shell-export",
           "#384e · cohere-api-key · source-code",
           "#384e · cohere-api-key · structured-file",
-          "#384e · cohere-api-key · tool-output"
+          "#384e · cohere-api-key · tool-output",
+          "cohere-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -735,20 +734,19 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 48,
+        "positiveCases": 1,
+        "benignControls": 1,
+        "twinPairs": 10,
+        "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
       "debt": [
         {
           "cell": "positiveCases",
           "actual": 0,
-          "required": 6,
-          "shortfall": 6
+          "required": 1,
+          "shortfall": 1
         }
       ]
     },
@@ -1194,16 +1192,16 @@
       "family": "deepgram-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 48,
+        "totalFixtures": 58,
         "positiveCases": 0,
-        "benignControls": 22,
-        "twinPairs": 14,
-        "positiveContextAxes": 8,
+        "benignControls": 26,
+        "twinPairs": 17,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 8,
         "positiveContextAxisIds": [
@@ -1214,7 +1212,8 @@
           "#384e · deepgram-api-key · sdk-config",
           "#384e · deepgram-api-key · shell-export",
           "#384e · deepgram-api-key · source-code",
-          "#384e · deepgram-api-key · tool-output"
+          "#384e · deepgram-api-key · tool-output",
+          "deepgram-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -1236,20 +1235,19 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 48,
+        "positiveCases": 1,
+        "benignControls": 1,
+        "twinPairs": 10,
+        "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
       "debt": [
         {
           "cell": "positiveCases",
           "actual": 0,
-          "required": 6,
-          "shortfall": 6
+          "required": 1,
+          "shortfall": 1
         }
       ]
     },
@@ -1424,20 +1422,23 @@
     },
     {
       "family": "elevenlabs-api-key",
-      "tier": "T2",
+      "tier": "T1",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-documented",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 27,
-        "positiveCases": 3,
-        "benignControls": 10,
+        "totalFixtures": 35,
+        "positiveCases": 7,
+        "benignControls": 15,
         "twinPairs": 7,
-        "positiveContextAxes": 8,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
-        "confusionAxes": 10,
+        "confusionAxes": 8,
         "positiveContextAxisIds": [
           "#384c · elevenlabs-api-key · env",
           "#384c · elevenlabs-api-key · header",
@@ -1446,7 +1447,8 @@
           "#384c · elevenlabs-api-key · shell-export",
           "#384c · elevenlabs-api-key · source-code",
           "#384c · elevenlabs-api-key · structured-file",
-          "#384c · elevenlabs-api-key · tool-output"
+          "#384c · elevenlabs-api-key · tool-output",
+          "elevenlabs-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -1463,9 +1465,7 @@
           "placeholder",
           "public-identifier",
           "reference",
-          "twin:alphabet",
           "twin:boundary",
-          "twin:length",
           "twin:prefix"
         ]
       },
@@ -1478,14 +1478,7 @@
         "controlAxes": 4
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "exa-api-key",
@@ -2929,16 +2922,16 @@
       "family": "mistral-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 48,
+        "totalFixtures": 58,
         "positiveCases": 0,
-        "benignControls": 22,
-        "twinPairs": 14,
-        "positiveContextAxes": 9,
+        "benignControls": 26,
+        "twinPairs": 17,
+        "positiveContextAxes": 10,
         "controlAxes": 6,
         "confusionAxes": 8,
         "positiveContextAxisIds": [
@@ -2950,7 +2943,8 @@
           "#384e · mistral-api-key · shell-export",
           "#384e · mistral-api-key · source-code",
           "#384e · mistral-api-key · structured-file",
-          "#384e · mistral-api-key · tool-output"
+          "#384e · mistral-api-key · tool-output",
+          "mistral-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -2972,20 +2966,19 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 48,
+        "positiveCases": 1,
+        "benignControls": 1,
+        "twinPairs": 10,
+        "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
       "debt": [
         {
           "cell": "positiveCases",
           "actual": 0,
-          "required": 6,
-          "shortfall": 6
+          "required": 1,
+          "shortfall": 1
         }
       ]
     },
@@ -4950,28 +4943,36 @@
       "family": "tavily-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented",
+        "stable-empirical"
+      ],
       "cells": {
-        "totalFixtures": 25,
-        "positiveCases": 3,
-        "benignControls": 10,
-        "twinPairs": 6,
-        "positiveContextAxes": 9,
+        "totalFixtures": 45,
+        "positiveCases": 10,
+        "benignControls": 19,
+        "twinPairs": 8,
+        "positiveContextAxes": 13,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
+          "#384d · tavily-api-key · ci-config",
+          "#384d · tavily-api-key · cli",
           "#384d · tavily-api-key · container-config",
           "#384d · tavily-api-key · env",
           "#384d · tavily-api-key · header",
+          "#384d · tavily-api-key · log",
           "#384d · tavily-api-key · sdk-config",
           "#384d · tavily-api-key · shell-export",
           "#384d · tavily-api-key · source-code",
           "#384d · tavily-api-key · structured-file",
           "#384d · tavily-api-key · tool-output",
-          "#384d · tavily-api-key · url"
+          "#384d · tavily-api-key · url",
+          "tavily-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -4995,22 +4996,15 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "telegram-bot-token",
@@ -5131,30 +5125,39 @@
       "debt": []
     },
     {
-      "family": "together-api-key",
+      "family": "together-ai-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented",
+        "stable-empirical"
+      ],
       "cells": {
-        "totalFixtures": 25,
-        "positiveCases": 3,
-        "benignControls": 10,
-        "twinPairs": 6,
-        "positiveContextAxes": 8,
+        "totalFixtures": 45,
+        "positiveCases": 10,
+        "benignControls": 19,
+        "twinPairs": 8,
+        "positiveContextAxes": 13,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
-          "#384d · together-api-key · env",
-          "#384d · together-api-key · header",
-          "#384d · together-api-key · log",
-          "#384d · together-api-key · sdk-config",
-          "#384d · together-api-key · shell-export",
-          "#384d · together-api-key · source-code",
-          "#384d · together-api-key · structured-file",
-          "#384d · together-api-key · tool-output"
+          "#384d · together-ai-api-key · ci-config",
+          "#384d · together-ai-api-key · cli",
+          "#384d · together-ai-api-key · container-config",
+          "#384d · together-ai-api-key · env",
+          "#384d · together-ai-api-key · header",
+          "#384d · together-ai-api-key · log",
+          "#384d · together-ai-api-key · prose",
+          "#384d · together-ai-api-key · sdk-config",
+          "#384d · together-ai-api-key · shell-export",
+          "#384d · together-ai-api-key · source-code",
+          "#384d · together-ai-api-key · structured-file",
+          "#384d · together-ai-api-key · tool-output",
+          "together-ai-api-key"
         ],
         "controlAxisIds": [
           "encoded-value",
@@ -5178,22 +5181,15 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "travisci-api-token",

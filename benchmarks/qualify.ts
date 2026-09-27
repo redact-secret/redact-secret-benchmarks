@@ -67,7 +67,7 @@ async function main() {
     runId, startedAt, finishedAt: new Date().toISOString(), scope: holdout.independence === 'public-control' ? 'engine-conformance' : 'engine-with-protected-holdout',
     status: complete ? 'execution-qualified' : 'incomplete', supportClaims: false, provenance,
     development: { seed: suite.developmentSeed, casesHash: development.provenance.casesHash,
-      corpusHashes: Object.fromEntries(cases.map(c => [c.source.category, c.provenance.sourceHash])),
+      corpusHashes: Object.fromEntries(cases.map(c => [c.source.category, c.provenance.corpusHash!])),
       failures: development.failures.length, reviewEntries: development.reviewQueue.length, byDetector: development.byDetector },
     accounting: { reasons, unresolvedGroups: development.unresolvedGroups, review: development.review },
     methods: coverage, holdout, milestone,

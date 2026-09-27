@@ -8,7 +8,7 @@ export interface CaseSeed {
   seed: Fixture; twin?: Fixture; targets: string[]; visibility: 'development' | 'regression' | 'holdout';
   source: { category: string; fixtureId: string; path: string };
   operators: { id: string; parameters?: Record<string, unknown> }[];
-  provenance: { source: string; sourceHash: string; rationale: string; seed: string; reviewStatus?: string; sources: string[] };
+  provenance: { source: string; sourceHash: string; corpusHash?: string; rationale: string; seed: string; reviewStatus?: string; sources: string[] };
 }
 export interface EvaluationCase extends CaseSeed { id: string; method: string; taxonomy?: string }
 export type Strategy = 'authored' | 'derived' | 'review-required';

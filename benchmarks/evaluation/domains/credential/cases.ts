@@ -54,7 +54,14 @@ export async function loadCases(operators: Registry<Operator>): Promise<Evaluati
     // Calibration-only rows are validated above and consumed by candidate-feature
     // extraction, but never become public benchmark cases or support evidence.
     if (category.calibrationOnly) continue;
-    const sourceHash = hash(corpus);
+    // A category's corpus can be shared by many unrelated families (`detector-coverage` is one
+    // file for every registered detector). `corpusHash` fingerprints that whole file for
+    // category-level reporting (`qualify.ts`'s `corpusHashes`); it must never be folded into a
+    // case's own identity, or editing one family's fixture reshuffles the differential/
+    // review-ledger id of every other family sharing the file (#774). A case's `sourceHash`
+    // instead identifies only the fixture it actually depends on, mirroring the `hash(c.seed)`
+    // convention `engine/model.ts`'s `variant()` already uses for generated variants.
+    const corpusHash = hash(corpus);
     for (const f of corpus.fixtures) {
       const base: CaseSeed = {
         // Beta.8 arrival targets (#207–#212) are case targets, never registry detectors.
@@ -62,11 +69,15 @@ export async function loadCases(operators: Registry<Operator>): Promise<Evaluati
         visibility: visibilityByCategory.get(category.id)!,
         source: { category: category.id, fixtureId: f.id, path: category.corpus },
         seed: f, operators: [],
-        provenance: { source: category.corpus, sourceHash, rationale: f.assessment.reason,
+        provenance: { source: category.corpus, sourceHash: hash(f), corpusHash, rationale: f.assessment.reason,
           seed: `${category.id}/${f.id}`, reviewStatus: corpus.reviewStatus, sources: f.assessment.sources },
       };
       const add = (method: string, extra: Partial<EvaluationCase> = {}) => {
         const c = { ...base, id: `${category.id}--${f.id}--${method}`, method, ...extra };
+        // A twin case's real seed is the paired positive fixture (`extra.seed`); re-key its
+        // identity to that fixture so the disagreement tracks what it is actually about, not
+        // the twin-shaped negative `f` this loop iteration started from.
+        if (c.seed !== f) c.provenance = { ...c.provenance, sourceHash: hash(c.seed) };
         cases.push(c);
         return c;
       };

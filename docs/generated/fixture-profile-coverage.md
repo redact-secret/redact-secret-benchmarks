@@ -24,27 +24,27 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 68 | 90 |
-| Stable / documented | 68 | 90 |
-| Stable / empirical | 24 | 90 |
+| Arrival / provisional | 73 | 90 |
+| Stable / documented | 73 | 90 |
+| Stable / empirical | 26 | 90 |
 | Context-constrained empirical | 9 | 90 |
 
 ## Per family
 
 | Family | Tier | Target | Total fixtures | Positive/context cases | Non-twin benign controls | Twin pairs | Positive-context axes | Control axes | Confusion axes | Remaining debt |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| ai21-api-key | T0 | arrival-provisional | 28 | 0 | 10 | 10 | 7 | 5 | 7 | positive/context cases 0/6 |
+| ai21-api-key | T0 | arrival-provisional | 36 | 3 | 15 | 10 | 8 | 5 | 7 | positive/context cases 3/6 |
 | anthropic-admin01-key | T1 | stable-documented | 24 | 3 | 9 | 6 | 9 | 6 | 8 | positive/context cases 3/6 |
 | anthropic-api01-key | T1 | stable-documented | 24 | 3 | 9 | 6 | 9 | 6 | 8 | positive/context cases 3/6 |
-| anthropic-token | T1 | stable-documented | 24 | 6 | 8 | 7 | 5 | 5 | 6 | none |
+| anthropic-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 8 | 5 | 6 | none |
 | atlassian-api-token | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | aws-access-key | T1 | stable-documented | 26 | 6 | 8 | 6 | 5 | 5 | 6 | none |
-| aws-bedrock-long-term-api-key | T2 | arrival-provisional | 27 | 4 | 11 | 6 | 10 | 6 | 9 | positive/context cases 4/6 |
-| aws-bedrock-short-term-api-key | T2 | arrival-provisional | 26 | 4 | 10 | 6 | 10 | 6 | 10 | positive/context cases 4/6 |
+| aws-bedrock-long-term-api-key | T1 | stable-documented | 35 | 7 | 16 | 6 | 11 | 6 | 9 | none |
+| aws-bedrock-short-term-api-key | T1 | stable-documented | 34 | 7 | 15 | 6 | 11 | 6 | 10 | none |
 | azure-devops-personal-access-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
 | bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
 | cloudflare-token | T1 | stable-documented | 24 | 6 | 10 | 6 | 4 | 5 | 8 | none |
-| cohere-api-key | T2 | arrival-provisional | 48 | 0 | 22 | 14 | 9 | 6 | 8 | positive/context cases 0/6 |
+| cohere-api-key | T2 | context-constrained-empirical | 58 | 0 | 26 | 17 | 10 | 6 | 8 | positive/context cases 0/1 |
 | confluent-cloud-api-secret | T1 | stable-documented | 31 | 6 | 8 | 10 | 11 | 5 | 9 | none |
 | confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 48 | 1 | 19 | 15 | 12 | 6 | 9 | none |
 | connection-string | T3 | arrival-provisional | 58 | 10 | 16 | 16 | 4 | 3 | 4 | control axes 3/4 |
@@ -52,11 +52,11 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
 | datadog-application-key-legacy | T2 | context-constrained-empirical | 52 | 10 | 14 | 16 | 18 | 6 | 9 | none |
-| deepgram-api-key | T2 | arrival-provisional | 48 | 0 | 22 | 14 | 8 | 6 | 8 | positive/context cases 0/6 |
+| deepgram-api-key | T2 | context-constrained-empirical | 58 | 0 | 26 | 17 | 9 | 6 | 8 | positive/context cases 0/1 |
 | digitalocean-token | T1 | stable-documented | 39 | 15 | 10 | 8 | 4 | 4 | 6 | none |
 | discord-bot-token | T2 | stable-empirical | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
 | docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |
-| elevenlabs-api-key | T2 | arrival-provisional | 27 | 3 | 10 | 7 | 8 | 6 | 10 | positive/context cases 3/6 |
+| elevenlabs-api-key | T1 | stable-documented | 35 | 7 | 15 | 7 | 9 | 6 | 8 | none |
 | exa-api-key | T0 | arrival-provisional | 30 | 0 | 14 | 8 | 6 | 6 | 7 | positive/context cases 0/6 |
 | firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
@@ -80,7 +80,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 8 | 11 | 6 | 9 | none |
 | mailgun-api-key-triplet | T2 | arrival-provisional | 50 | 0 | 24 | 14 | 10 | 6 | 9 | positive/context cases 0/6 |
 | microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
-| mistral-api-key | T2 | arrival-provisional | 48 | 0 | 22 | 14 | 9 | 6 | 8 | positive/context cases 0/6 |
+| mistral-api-key | T2 | context-constrained-empirical | 58 | 0 | 26 | 17 | 10 | 6 | 8 | positive/context cases 0/1 |
 | neon-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 10 | none |
 | netlify-token | T1 | stable-documented | 24 | 7 | 8 | 6 | 5 | 6 | 8 | none |
 | new-relic-license-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 7 | 6 | 8 | none |
@@ -113,10 +113,10 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | stripe-webhook-signing-secret | T1 | stable-documented | 26 | 6 | 10 | 5 | 9 | 6 | 10 | none |
 | supabase-management-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 7 | 6 | 8 | none |
 | supabase-token | T1 | stable-documented | 30 | 6 | 14 | 5 | 9 | 6 | 9 | none |
-| tavily-api-key | T2 | arrival-provisional | 25 | 3 | 10 | 6 | 9 | 6 | 10 | positive/context cases 3/6 |
+| tavily-api-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 13 | 6 | 10 | none |
 | telegram-bot-token | T2 | stable-empirical | 41 | 12 | 15 | 8 | 14 | 5 | 8 | none |
 | terraform-cloud-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
-| together-api-key | T2 | arrival-provisional | 25 | 3 | 10 | 6 | 8 | 6 | 10 | positive/context cases 3/6 |
+| together-ai-api-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 13 | 6 | 10 | none |
 | travisci-api-token | T2 | context-constrained-empirical | 48 | 6 | 16 | 13 | 17 | 6 | 9 | none |
 | twilio-api-key-secret | T2 | context-constrained-empirical | 49 | 13 | 16 | 10 | 18 | 6 | 7 | none |
 | twilio-auth-token | T2 | context-constrained-empirical | 49 | 12 | 17 | 10 | 18 | 6 | 7 | none |

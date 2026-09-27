@@ -1,5 +1,6 @@
 // Authored against the beta.3 format contracts, never scanner output.
 // Prefix variants are structural examples, not issued/valid credentials.
+import { BEDROCK_SHORT_HEAD_TEXT } from "../../benchmarks/lib/beta8/384b.ts";
 import { createHash } from "node:crypto";
 import { crc32 } from "node:zlib";
 
@@ -896,6 +897,95 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("postman-collection-access-key", "mask", [`PMAT-${"*".repeat(26)}`]);
   add("postman-collection-access-key", "reference", ["POSTMAN_COLLECTION_ACCESS_KEY=${POSTMAN_COLLECTION_ACCESS_KEY}\n"]);
   add("postman-collection-access-key", "label-prose", ["Documentation mentions a Postman collection access key (PMAT- prefix) without embedding the key value."]);
+
+  // Beta.10 #384 families, registry detectors since the cfe2aec re-pin (redact-secret#864, #865, #867, #868). Full
+  // evidence lives in the beta8-384b..384e corpora and benchmarks/lib/beta8/384b..384e.ts; these are the registry-wide
+  // minimum. The keyword-gated four (Mistral, Cohere, Deepgram, AI21) are context-gated, so each positive carries a
+  // same-line provider name and each "missing-keyword" near miss keeps the value and drops it.
+  const b64Text = text => Buffer.from(text, "utf8").toString("base64");
+  const bedrockLong = `ABSK${b64Text(`BedrockAPIKey-${synthetic("coverage:bedrock-long:user", 4, AI_ALNUM)}-at-000000000000:${synthetic("coverage:bedrock-long:secret", 59, AI_ALNUM + "+/")}=`)}`;
+  positive("aws-bedrock-long-term-api-key", "key-shape", ["AWS_BEARER_TOKEN_BEDROCK=", { secret: bedrockLong }]);
+  add("aws-bedrock-long-term-api-key", "prefix-only", ["ABSK"]);
+  add("aws-bedrock-long-term-api-key", "short-body", [`AWS_BEARER_TOKEN_BEDROCK=${bedrockLong.slice(0, 22)}`]);
+  add("aws-bedrock-long-term-api-key", "mask", [`AWS_BEARER_TOKEN_BEDROCK=ABSK${"*".repeat(128)}`]);
+  add("aws-bedrock-long-term-api-key", "reference", ["AWS_BEARER_TOKEN_BEDROCK=${AWS_BEARER_TOKEN_BEDROCK}\n"]);
+  add("aws-bedrock-long-term-api-key", "label-prose", ["Documentation mentions a long-term Amazon Bedrock API key (ABSK prefix) without embedding the key value."]);
+  const bedrockShortQuery = [
+    `${BEDROCK_SHORT_HEAD_TEXT}=ASIA${synthetic("coverage:bedrock-short:akid", 16, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")}%2F20260926%2Fus-east-1%2Fbedrock%2Faws4_request`,
+    "X-Amz-Date=20260926T101500Z", "X-Amz-Expires=43200", "X-Amz-SignedHeaders=host",
+    `X-Amz-Signature=${synthetic("coverage:bedrock-short:signature", 64, AI_HEX)}`,
+  ].join("&");
+  const bedrockShort = `bedrock-api-key-${b64Text(`${bedrockShortQuery}&Version=1`)}`;
+  positive("aws-bedrock-short-term-api-key", "key-shape", ["AWS_BEARER_TOKEN_BEDROCK=", { secret: bedrockShort }]);
+  add("aws-bedrock-short-term-api-key", "prefix-only", ["bedrock-api-key-"]);
+  add("aws-bedrock-short-term-api-key", "short-body", [`AWS_BEARER_TOKEN_BEDROCK=${bedrockShort.slice(0, 60)}`]);
+  add("aws-bedrock-short-term-api-key", "mask", [`AWS_BEARER_TOKEN_BEDROCK=bedrock-api-key-${"*".repeat(200)}`]);
+  add("aws-bedrock-short-term-api-key", "reference", ["AWS_BEARER_TOKEN_BEDROCK=${AWS_BEARER_TOKEN_BEDROCK}\n"]);
+  add("aws-bedrock-short-term-api-key", "label-prose", ["Documentation mentions a short-term Amazon Bedrock API key (bedrock-api-key- prefix) without embedding the key value."]);
+  const elevenLabsKey = `sk_${synthetic("coverage:elevenlabs:api-key:body", 48, AI_HEX)}`;
+  positive("elevenlabs-api-key", "key-shape", [{ secret: elevenLabsKey }]);
+  add("elevenlabs-api-key", "prefix-only", ["sk_"]);
+  add("elevenlabs-api-key", "short-body", [elevenLabsKey.slice(0, 27)]);
+  add("elevenlabs-api-key", "mask", [`sk_${"*".repeat(48)}`]);
+  add("elevenlabs-api-key", "reference", ["ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}\n"]);
+  add("elevenlabs-api-key", "label-prose", ["Documentation mentions an ElevenLabs API key (sk_ prefix) without embedding the key value."]);
+  const togetherKey = `tgp_v1_${synthetic("coverage:together-ai:api-key:body", 43, AI_ALNUM + "_-")}`;
+  positive("together-ai-api-key", "key-shape", [{ secret: togetherKey }]);
+  add("together-ai-api-key", "prefix-only", ["tgp_v1_"]);
+  add("together-ai-api-key", "short-body", [togetherKey.slice(0, 27)]);
+  add("together-ai-api-key", "mask", [`tgp_v1_${"*".repeat(43)}`]);
+  add("together-ai-api-key", "reference", ["TOGETHER_API_KEY=${TOGETHER_API_KEY}\n"]);
+  add("together-ai-api-key", "label-prose", ["Documentation mentions a Together AI API key (tgp_v1_ prefix) without embedding the key value."]);
+  const tavilyKey = `tvly-dev-${synthetic("coverage:tavily:api-key:body", 32, AI_ALNUM)}`;
+  positive("tavily-api-key", "key-shape", [{ secret: tavilyKey }]);
+  add("tavily-api-key", "prefix-only", ["tvly-dev-"]);
+  add("tavily-api-key", "short-body", [tavilyKey.slice(0, 25)]);
+  add("tavily-api-key", "mask", [`tvly-dev-${"*".repeat(32)}`]);
+  add("tavily-api-key", "reference", ["TAVILY_API_KEY=${TAVILY_API_KEY}\n"]);
+  add("tavily-api-key", "label-prose", ["Documentation mentions a Tavily API key (tvly- prefix) without embedding the key value."]);
+  const mistralKey = synthetic("coverage:mistral:api-key:body", 32, AI_ALNUM);
+  positive("mistral-api-key", "key-shape", ["MISTRAL_API_KEY=", { secret: mistralKey }]);
+  add("mistral-api-key", "missing-keyword", [mistralKey]);
+  // #384 follow-up (beta.10 promotion investigation): authored as a negative twin of key-shape, not
+  // an independent control. The body is a genuine high-entropy 31-character near-miss beside the
+  // credential-named assignment, one byte short of the corroborated 32-character shape -- exactly
+  // the kind of value generic-token exists to catch. A control here would assert silence from every
+  // detector; a twin correctly scopes the claim to mistral-api-key's own grammar, so a same-span
+  // generic-token finding reads as co-detection (assertions.ts), not a mistral-api-key false alarm.
+  addTwin("mistral-api-key", "key-shape", [`MISTRAL_API_KEY=${mistralKey.slice(0, 31)}`], "length: 31 vs contracted 32");
+  add("mistral-api-key", "mask", [`MISTRAL_API_KEY=${"*".repeat(32)}`]);
+  add("mistral-api-key", "reference", ["MISTRAL_API_KEY=${MISTRAL_API_KEY}\n"]);
+  add("mistral-api-key", "label-prose", ["Documentation mentions a Mistral API key without embedding the key value."]);
+  const cohereKey = synthetic("coverage:cohere:api-key:body", 40, AI_ALNUM);
+  positive("cohere-api-key", "key-shape", ["COHERE_API_KEY=", { secret: cohereKey }]);
+  add("cohere-api-key", "missing-keyword", [cohereKey]);
+  // #384 follow-up (beta.10 promotion investigation): same reasoning as mistral-api-key above -- a
+  // genuine 39-character near-miss beside the credential-named assignment, one byte short of the
+  // corroborated 40-character shape, authored as a negative twin so a same-span generic-token
+  // finding reads as co-detection, not a cohere-api-key false alarm.
+  addTwin("cohere-api-key", "key-shape", [`COHERE_API_KEY=${cohereKey.slice(0, 39)}`], "length: 39 vs contracted 40");
+  add("cohere-api-key", "mask", [`COHERE_API_KEY=${"*".repeat(40)}`]);
+  add("cohere-api-key", "reference", ["COHERE_API_KEY=${COHERE_API_KEY}\n"]);
+  add("cohere-api-key", "label-prose", ["Documentation mentions a Cohere API key without embedding the key value."]);
+  const deepgramKey = synthetic("coverage:deepgram:api-key:body", 40, AI_HEX);
+  positive("deepgram-api-key", "key-shape", ["DEEPGRAM_API_KEY=", { secret: deepgramKey }]);
+  add("deepgram-api-key", "missing-keyword", [deepgramKey]);
+  // #384 follow-up (beta.10 promotion investigation): same reasoning as mistral-api-key above -- a
+  // genuine 39-character near-miss beside the credential-named assignment, one byte short of the
+  // corroborated 40-character shape, authored as a negative twin so a same-span generic-token
+  // finding reads as co-detection, not a deepgram-api-key false alarm.
+  addTwin("deepgram-api-key", "key-shape", [`DEEPGRAM_API_KEY=${deepgramKey.slice(0, 39)}`], "length: 39 vs contracted 40");
+  add("deepgram-api-key", "mask", [`DEEPGRAM_API_KEY=${"*".repeat(40)}`]);
+  add("deepgram-api-key", "reference", ["DEEPGRAM_API_KEY=${DEEPGRAM_API_KEY}\n"]);
+  add("deepgram-api-key", "label-prose", ["Documentation mentions a Deepgram API key without embedding the key value."]);
+  // ai21-api-key has a pending (T0) contract: its positive scores unasserted.
+  const ai21Key = synthetic("coverage:ai21:api-key:body", 32, AI_ALNUM);
+  positive("ai21-api-key", "key-shape", ["AI21_API_KEY=", { secret: ai21Key }]);
+  add("ai21-api-key", "missing-keyword", [ai21Key]);
+  add("ai21-api-key", "short-token", [`AI21_API_KEY=${ai21Key.slice(0, 31)}`]);
+  add("ai21-api-key", "mask", [`AI21_API_KEY=${"*".repeat(32)}`]);
+  add("ai21-api-key", "reference", ["AI21_API_KEY=${AI21_API_KEY}\n"]);
+  add("ai21-api-key", "label-prose", ["Documentation mentions an AI21 API key without embedding the key value."]);
 
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains

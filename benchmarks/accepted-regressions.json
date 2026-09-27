@@ -61,5 +61,120 @@
     },
     "decidedAt": "2026-09-26",
     "decidedBy": "milocosmopolitan (maintainer decision relayed for the post-contract-review beta.9 qualification)"
+  },
+  {
+    "id": "beta10-cli-scale-logs-medium-credential-detector-pack",
+    "triggerId": "latency/cli/scale-logs-medium-fixed4096/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
+    "measured": { "baseline": 1, "candidate": 1.129, "unit": "ratio" },
+    "rationale": "Two interleaved dispatches at this candidate measured processing-ratio 1.142 and 1.116 against the 10% budget (median 1.129 shown here). This is the CLI's forced per-line incremental dispatch of 7 new provider detectors from redact-secret#862-#868 (Anthropic api01/admin01 prefixes, an OpenAI admin-key contract fix, Amazon Bedrock long/short-term keys, ElevenLabs, Together AI, Tavily, and keyword-gated Mistral/Cohere/AI21/Deepgram coverage). Three rounds of optimization (redact-secret#870, #871, #872) cut the regression from an initial 13-31% down to this residual by removing an unconditional per-line table allocation, replacing a length-sensitive Boyer-Moore-Horspool scan with a faster first-byte scan, and removing a duplicate whole-input scan on single-line CLI input. The remaining cost is structural: rust-core's own scale-logs benchmark uses a one-shot scan() the CLI's stdin path never takes (it always streams per line, so a credential can straddle a chunk boundary), which amplifies each new detector's fixed per-line cost relative to that one-shot comparison. Closing it further needs a redesign of the incremental per-line dispatch path, tracked separately in redact-secret#883 and not committed to this or any specific release. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Seven new or corrected LLM/developer-credential provider families researched in redact-secret#774-#789 with T1 evidence for the Anthropic admin/enterprise prefixes, the Amazon Bedrock key shapes and the ElevenLabs prefix/suffix, and an honest T2 empirical contract for the rest.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-27",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 credential-detector latency tradeoff, redact-secret#774)"
+  },
+  {
+    "id": "beta10-cli-scale-logs-small-credential-detector-pack",
+    "triggerId": "latency/cli/scale-logs-small-whole/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
+    "measured": { "baseline": 1, "candidate": 1.116, "unit": "ratio" },
+    "rationale": "Two interleaved dispatches at this candidate measured processing-ratio 1.127 and 1.105 against the 10% budget (median 1.116 shown here). Same root cause and remediation history as the medium-profile CLI row above: the incremental per-line dispatch of the seven redact-secret#862-#868 detectors is amplified on this shorter, single-shot-vs-streamed workload comparison specifically. Tracked for a further fix in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Same seven-family Beta.10 credential-detector addition as the medium-profile CLI row above.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-27",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 credential-detector latency tradeoff, redact-secret#774)"
+  },
+  {
+    "id": "beta10-browser-wasm-scale-logs-medium-credential-detector-pack",
+    "triggerId": "latency/browser-wasm/scale-logs-medium-fixed4096/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
+    "measured": { "baseline": 1, "candidate": 1.118, "unit": "ratio" },
+    "rationale": "Two interleaved dispatches at this candidate measured processing-ratio 1.117 and 1.119 against the 10% budget. Same seven-detector Beta.10 addition and the same structural per-line dispatch cost as the CLI rows above, carried through the shared wasm32 core; the browser-wasm surface showed the same pattern intermittently through the optimization rounds (sometimes clearing, sometimes not) and is consistently over budget at this final candidate. Tracked for a further fix in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Same seven-family Beta.10 credential-detector addition as the CLI rows above.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-27",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 credential-detector latency tradeoff, redact-secret#774)"
+  },
+  {
+    "id": "beta10-python-scale-logs-medium-credential-detector-pack",
+    "triggerId": "latency/python/scale-logs-medium-fixed4096/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
+    "measured": { "baseline": 1, "candidate": 1.104, "unit": "ratio" },
+    "rationale": "Two interleaved dispatches at this candidate measured processing-ratio 1.101 and 1.107, both just over the 10% budget. Same seven-detector Beta.10 addition and structural per-line dispatch cost as the CLI/browser-wasm rows above, carried through the shared core via the Python binding; unlike node and rust-core (which cleared budget on both dispatches), this surface's binding overhead pushed it just over the line. Tracked for a further fix in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Same seven-family Beta.10 credential-detector addition as the CLI rows above.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-27",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 credential-detector latency tradeoff, redact-secret#774)"
+  },
+  {
+    "id": "beta10-node-scale-logs-medium-credential-detector-pack",
+    "triggerId": "latency/node/scale-logs-medium-fixed4096/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
+    "measured": { "baseline": 1, "candidate": 1.102, "unit": "ratio" },
+    "rationale": "This surface cleared budget on the two dispatches used to judge the candidate overall (1.089, 1.097) but a third, later dispatch at the same source commit measured 1.102, just over the 10% budget. Same root cause and remediation history as the other Beta.10 rows in this file: the seven redact-secret#862-#868 detectors' fixed per-line cost through the incremental dispatch path, right at the noise boundary on this surface rather than clearly over it like cli. Recorded rather than re-dispatched for a favorable sample, since every surface at this commit is hovering within noise of the 10% line and picking a lucky run would not be honest. Tracked in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Same seven-family Beta.10 credential-detector addition as the other rows in this file.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-27",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 credential-detector latency tradeoff, redact-secret#774)"
   }
 ]

@@ -63,17 +63,16 @@ const EXA_MCP = 'https://github.com/exa-labs/exa-mcp-server';
 
 const reason = (name: string, note: string) => `No registry detector covers the ${name} key at the pinned product revision: ${note} redact-secret#868 adds keyword-gated contextual coverage where the evidence supports it; until that lands the family is measured as an unscored arrival family.`;
 
-/** Families measured here that no registry detector targets. */
+/**
+ * Only Exa remains an arrival family: redact-secret#868 (product PR #869, merge cfe2aec) registered mistral-api-key, cohere-api-key,
+ * deepgram-api-key and ai21-api-key as detectors, which graduated at that re-pin, but gave Exa no detector of its own.
+ */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'mistral-api-key', taxonomy: 'mistral:api-key', issue, reason: reason('Mistral Studio', 'env, JSON, YAML and Bearer forms are redacted today under generic types by name, while the SDK-call-argument forms (Mistral(api_key="..."), ChatMistralAI(mistral_api_key="...")), log lines and prose are missed.') },
-  { id: 'cohere-api-key', taxonomy: 'cohere:api-key', issue, reason: reason('Cohere', 'env, JSON, YAML and Bearer forms are redacted today under generic types by name, while the SDK-call-argument forms (cohere.ClientV2(api_key="..."), new CohereClientV2({ token })) are missed.') },
-  { id: 'deepgram-api-key', taxonomy: 'deepgram:api-key', issue, reason: reason('Deepgram', 'env, JSON and YAML forms are redacted today under generic types by name, while DeepgramClient(api_key="..."), quoted or JSON Authorization: Token headers and the WebSocket subprotocol pair are missed.') },
-  { id: 'ai21-api-key', taxonomy: 'ai21:api-key', issue, reason: reason('AI21', 'env, JSON, YAML and Bearer forms are redacted today under generic types by name, while AI21Client(api_key="...") and ChatAI21(api_key="...") are missed.') },
   { id: 'exa-api-key', taxonomy: 'exa:api-key', issue, reason: reason('Exa', 'keyword-anchored env, JSON, YAML and header forms are redacted today under generic types by name, while SDK-call arguments (Exa(api_key="..."), new Exa("...")) are missed, and no identifying shape is evidenced.') },
 ];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Contracts for this issue's families that are registry detectors since redact-secret#868 (registry pinned at cfe2aec). */
+export const registryContracts: Record<string, FormatContract> = {
   'mistral-api-key': {
     tier: 'T2', contextGated: true,
     pattern: '^[A-Za-z0-9]{32}$',
@@ -133,6 +132,10 @@ export const contracts: Record<string, FormatContract> = {
       field({ field: 'non-secrets', claim: 'AI21_API_HOST, AI21_API_VERSION, AI21_AWS_REGION and the console\'s masked suffix are not credentials', basis: 'provider-code', status: 'frozen', sources: [src(AI21_ENV)] }),
     ],
   },
+};
+
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = {
   'exa-api-key': {
     tier: 'T0', contextGated: true,
     twinSource: provider(EXA_UPDATE_KEY, 'Team Management API key id, teamId and userId (format: uuid)', 'Exa documents the key id, the team id and the user id as UUIDs, and lists a key\'s id, name, rate limit and budget in its response with no field for the secret value. Context twins keep the UUID-shaped value and rename the assignment to one of those identifier names (EXA_KEY_ID, EXA_API_KEY_ID, EXA_TEAM_ID) or a request id, so silence follows from the documented identifier role', at),

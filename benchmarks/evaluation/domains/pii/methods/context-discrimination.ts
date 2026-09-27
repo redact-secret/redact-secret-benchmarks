@@ -4,7 +4,7 @@ import { candidateValue, evaluatePiiVariants } from './common.ts';
 
 const rows = [
   { id: 'sensitive', class: 'sensitive', expectation: 'sensitive', text: 'private onboarding record' },
-  { id: 'neutral', class: 'neutral', expectation: 'unresolved', text: 'unclassified record' },
+  { id: 'neutral', class: 'neutral', expectation: 'not-established', text: 'unclassified record' },
   { id: 'non-sensitive', class: 'non-sensitive', expectation: 'non-sensitive', text: 'published documentation example' },
 ] as const;
 

@@ -4,7 +4,7 @@ import { evaluatePiiVariants } from './common.ts';
 
 function collision(c: Parameters<PiiMethod['validateCase']>[0]) {
   const value = c.metadata?.collision as { targetFamily?: unknown; competingFamilies?: unknown } | undefined;
-  const family = (candidate: unknown) => typeof candidate === 'string' && /^[a-z][a-z0-9-]{1,79}$/.test(candidate);
+  const family = (candidate: unknown) => typeof candidate === 'string' && /^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$/.test(candidate);
   if (!value || value.targetFamily !== c.contract.family || !Array.isArray(value.competingFamilies) || !value.competingFamilies.length ||
       !family(value.targetFamily) || value.competingFamilies.some(candidate => !family(candidate) || candidate === value.targetFamily))
     throw new Error('Invalid PII jurisdiction collision');

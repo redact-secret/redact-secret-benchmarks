@@ -71,11 +71,12 @@ export const piiHoldoutDomain: HoldoutDomainAdapter<PiiScanner, ReturnType<typeo
   publicConformanceCorpus(seed) {
     const fixture = structuredClone(validatePiiCase({
       id: 'pii-public-control', method: 'schema-only', visibility: 'holdout',
-      input: { id: 'pii-public-control', path: 'pii/public-control.txt', content: 'subject_id=SYNTHETIC-PERSON-ID-001' }, candidate: { start: 11, end: 34 },
-      contract: { category: 'personal-identifier', family: 'synthetic-person-id', scope: { kind: 'global' },
-        typeExpectation: { state: 'valid', validator: null }, sensitivityExpectation: 'unresolved',
-        context: { obligation: 'required', class: 'neutral', language: 'en' },
-        authority: { kind: 'official-test-source', locator: 'benchmark:public-control', version: '1', claim: 'test-vector', observedAt: '2026-09-26' },
+      input: { id: 'pii-public-control', path: 'pii/public-control.txt', content: 'contact=person@example.invalid' }, candidate: { start: 8, end: 30 },
+      contract: { category: 'pii', family: 'pii:global:email', displayName: 'Email address', identityDomain: 'email', scope: 'global',
+        typeExpectation: { state: 'valid', validator: null }, sensitivityExpectation: 'non-sensitive',
+        context: { obligation: 'none', class: 'non-sensitive', language: 'en' },
+        authority: [{ sourceKind: 'standard', sourceId: 'ietf-rfc-5322', locator: 'https://www.rfc-editor.org/rfc/rfc5322', revision: 'RFC5322', supports: ['lexical', 'validation'] },
+          { sourceKind: 'standard', sourceId: 'ietf-rfc-2606', locator: 'https://www.rfc-editor.org/rfc/rfc2606', revision: 'RFC2606', supports: ['reserved-control', 'sensitivity'] }],
         referenceEvidence: null, qualificationProfile: { id: 'pii-v1', version: 1 } },
       provenance: { source: 'pii-public-control', sourceHash: hash({ seed, source: 'pii-public-control' }), seed,
         rationale: 'Synthetic public lifecycle control.', sources: ['benchmark:public-control'] },

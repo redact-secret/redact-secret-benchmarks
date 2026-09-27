@@ -1,13 +1,13 @@
 {
   "$id": "urn:redact-secret:pii-accounting:1",
   "type": "object", "additionalProperties": false,
-  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "sources", "rows", "metrics", "benignByControlClass", "evidence"],
+  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "sourceCaseCount", "inputCommitment", "commitmentTrust", "sources", "metrics", "benignByControlClass", "evidence"],
   "properties": {
     "schemaVersion": { "const": 1 }, "reportType": { "const": "pii-accounting" }, "domain": { "const": "pii" },
     "evaluationProfile": { "const": "pii-v1" }, "domainAccountingVersion": { "const": "pii-v1" },
     "profile": { "$ref": "#/$defs/profile" }, "rowCount": { "type": "integer", "minimum": 0 },
+    "sourceCaseCount": { "type": "integer", "minimum": 0 }, "inputCommitment": { "$ref": "#/$defs/digest" }, "commitmentTrust": { "const": "unresolved" },
     "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
-    "rows": { "type": "array", "items": { "$ref": "#/$defs/row" } },
     "metrics": { "type": "object", "additionalProperties": false,
       "required": ["type-miss-rate", "wrong-family-rate", "wrong-jurisdiction-rate", "sensitive-miss-rate", "non-sensitive-flag-rate", "context-discrimination-rate", "benign-suppression-rate", "jurisdiction-collision-rate", "range-collateral-rate", "measurable-share"],
       "properties": {
@@ -99,9 +99,10 @@
         "unresolved": { "type": "integer", "minimum": 0 }, "notMeasured": { "type": "integer", "minimum": 0 }, "notApplicable": { "type": "integer", "minimum": 0 }, "total": { "type": "integer", "minimum": 0 } } },
     "rate": { "anyOf": [{ "type": "null" }, { "const": "insufficient-evidence" }, { "type": "object", "additionalProperties": false, "required": ["point", "bound", "n", "direction"],
       "properties": { "point": { "type": "number", "minimum": 0, "maximum": 1 }, "bound": { "type": "number", "minimum": 0, "maximum": 1 }, "n": { "type": "integer", "minimum": 1 }, "direction": { "enum": ["upper", "lower"] } } }] },
-    "metric": { "type": "object", "additionalProperties": false, "required": ["population", "numerator", "denominator", "direction", "status", "counts", "rate"],
+    "metric": { "type": "object", "additionalProperties": false, "required": ["population", "numerator", "denominator", "direction", "status", "counts", "effectiveN", "rate"],
       "properties": { "population": { "type": "string", "minLength": 1 }, "numerator": { "type": "string", "minLength": 1 }, "denominator": { "type": "string", "minLength": 1 },
-        "direction": { "enum": ["upper", "lower"] }, "status": { "enum": ["measured", "partial", "unresolved", "not-measured", "not-applicable"] }, "counts": { "$ref": "#/$defs/counts" }, "rate": { "$ref": "#/$defs/rate" } } },
+        "direction": { "enum": ["upper", "lower"] }, "status": { "enum": ["measured", "partial", "unresolved", "not-measured", "not-applicable"] }, "counts": { "$ref": "#/$defs/counts" },
+        "effectiveN": { "type": "integer", "minimum": 0 }, "rate": { "$ref": "#/$defs/rate" } } },
     "applicable": { "type": "object", "additionalProperties": false, "required": ["applicable", "evaluated"], "properties": { "applicable": { "type": "integer", "minimum": 0 }, "evaluated": { "type": "integer", "minimum": 0 } } },
     "applicableUnavailable": { "type": "object", "additionalProperties": false, "required": ["applicable", "evaluated", "unavailable"], "properties": { "applicable": { "type": "integer", "minimum": 0 }, "evaluated": { "type": "integer", "minimum": 0 }, "unavailable": { "type": "integer", "minimum": 0 } } }
   }

@@ -52,12 +52,14 @@ function metricGate(id: PiiMetricId, accounting: PiiAccountingReport, profile: P
 }
 
 function assemble(accounting: PiiAccountingReport, evidence: PiiQualificationEvidence, profile: PiiQualificationProfile): PiiQualificationReport {
+  const candidates = new Set(accounting.sources.map(source => source.provenance.candidateArtifactHash).filter(value => value !== null));
+  for (const artifact of [evidence.protected, evidence.independent]) if (artifact &&
+      (candidates.size !== 1 || !candidates.has(artifact.candidateArtifactHash)))
+    throw new Error('PII qualification evidence does not match accounting source');
   if (evidence.protected && evidence.independent) {
     if (evidence.protected.runId === evidence.independent.runId || evidence.protected.corpusHash === evidence.independent.corpusHash || evidence.protected.planHash === evidence.independent.planHash)
       throw new Error('PII qualification evidence artifacts must be distinct');
     if (evidence.protected.candidateArtifactHash !== evidence.independent.candidateArtifactHash) throw new Error('PII qualification evidence candidate mismatch');
-    const candidates = new Set(accounting.sources.map(source => source.provenance.candidateArtifactHash).filter(value => value !== null));
-    if (candidates.size !== 1 || !candidates.has(evidence.protected.candidateArtifactHash)) throw new Error('PII qualification evidence does not match accounting source');
   }
   const gates: PiiQualificationGate[] = PII_METRIC_IDS.map(id => metricGate(id, accounting, profile)), present = new Set(accounting.evidence.methods);
   gates.push(gate('required-methods', profile.gates.requiredMethods.every(method => present.has(method)) ? 'met' : 'not-met', accounting.evidence.methods.join(',') || 'none', `methods ${profile.gates.requiredMethods.join(',')}`));

@@ -87,8 +87,10 @@ test('unresolved, not-measured, and not-applicable remain explicit', () => {
   const report = accountPiiRows([unresolved]);
   assert.equal(report.metrics['type-miss-rate'].status, 'not-measured');
   assert.equal(report.metrics['sensitive-miss-rate'].status, 'not-applicable');
-  assert.equal(report.metrics['measurable-share'].counts.notApplicable, 1);
+  assert.equal(report.metrics['measurable-share'].counts.unresolved, 1);
   assert.equal(report.metrics['measurable-share'].counts.notMeasured, 1);
+  assert.equal(report.metrics['measurable-share'].effectiveN, 2);
+  assert.equal(report.metrics['measurable-share'].rate, 'insufficient-evidence');
 });
 
 test('validated holdout projections remain provisional until a trusted resolver exists', () => {
@@ -99,7 +101,8 @@ test('validated holdout projections remain provisional until a trusted resolver 
   assert.equal(qualifyPii(accountPiiRows([]), { protected: null, independent: null }).status, 'not-applicable');
   assert.throws(() => qualifyPii(accounting, { protected: completeEvidence.protected, independent: completeEvidence.protected }), /distinct/);
   assert.throws(() => qualifyPii(accounting, { protected: holdout({ purpose: 'public-conformance' }), independent: completeEvidence.independent }), /purpose and independence/);
-  assert.throws(() => qualifyPii(accounting, { protected: completeEvidence.protected, independent: holdout({ run: '6', corpus: '7', plan: '8', candidate: digest('9') }) }), /candidate mismatch/);
+  assert.throws(() => qualifyPii(accounting, { protected: completeEvidence.protected, independent: holdout({ run: '6', corpus: '7', plan: '8', candidate: digest('9') }) }), /does not match/);
+  assert.throws(() => qualifyPii(accounting, { protected: holdout({ candidate: digest('9') }), independent: null }), /does not match/);
   assert.notEqual(qualifyPii(accounting, { protected: holdout({ fail: 1 }), independent: completeEvidence.independent }).status, 'stable');
   assert.notEqual(qualifyPii(accounting, { protected: null, independent: null }).status, 'stable');
 });
@@ -118,6 +121,8 @@ test('context discrimination counts complete correlated trios rather than endpoi
   const report = accountPiiRows(trio);
   assert.equal(report.metrics['context-discrimination-rate'].counts.total, 1);
   assert.equal(report.metrics['context-discrimination-rate'].counts.numerator, 1);
+  assert.equal(report.metrics['type-miss-rate'].counts.total, 1);
+  assert.equal(report.metrics['measurable-share'].counts.total, 2);
   assert.throws(() => accountPiiRows(trio.slice(0, 2)), /Incomplete PII context/);
 });
 
@@ -127,7 +132,16 @@ test('metric labels and evidence tallies are canonical and recomputed from safe 
   assert.throws(() => validatePiiAccountingReport(label), /Inconsistent/);
   const evidence = structuredClone(report); evidence.evidence.semanticControls++;
   assert.throws(() => validatePiiAccountingReport(evidence), /Inconsistent/);
+  const noSource = structuredClone(report); noSource.sources = [];
+  assert.throws(() => validatePiiAccountingReport(noSource), /Inconsistent/);
+  const trustedCommitment = structuredClone(report); trustedCommitment.commitmentTrust = 'trusted';
+  assert.throws(() => validatePiiAccountingReport(trustedCommitment), /schema|Inconsistent/);
+  const badBenign = structuredClone(report); badBenign.benignByControlClass.reserved.direction = 'upper';
+  assert.throws(() => validatePiiAccountingReport(badBenign), /Inconsistent/);
+  assert.equal(report.commitmentTrust, 'unresolved');
   assert.doesNotMatch(JSON.stringify(report.metrics), /SYNTHETIC-PERSON-ID/);
+  assert.equal(Object.hasOwn(report, 'rows'), false);
+  assert.doesNotMatch(JSON.stringify(report), /type-case-0|benchmark:pii-accounting|4111-1111-1111-1111/);
   const rawReason = accountPiiRows([row('raw-reason', { outcome: { typeIdentity: { reason: '4111-1111-1111-1111' } } })]);
   assert.doesNotMatch(JSON.stringify(rawReason), /4111-1111-1111-1111/);
   assert.throws(() => accountPiiRows([row('raw-mode', { source: { scanner: { mode: '4111-1111-1111-1111' } } })]), /Invalid/);
@@ -149,6 +163,11 @@ test('actual PII execution artifacts preserve their source envelope without raw 
   assert.throws(() => piiAccountingRowsFromEvaluation(duplicate), /outcome matrix/);
   const omitted = structuredClone(artifact); omitted.results[0].outcomes = [];
   assert.throws(() => piiAccountingRowsFromEvaluation(omitted), /outcome matrix/);
+  const second = { ...scanner, id: 'second-accounting-scanner' };
+  const multi = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [scanner, second],
+    provenance: { candidateArtifactHash: candidateHash } });
+  assert.throws(() => piiAccountingRowsFromEvaluation(multi), /explicit scanner selector/);
+  assert.equal(piiAccountingRowsFromEvaluation(multi, second.id).length, 1);
 });
 
 test('profiles and reports are strict and cross-domain aggregation remains forbidden', () => {

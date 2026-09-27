@@ -10,6 +10,7 @@ import { hash } from '../benchmarks/evaluation/substrate/hash.ts';
 import { rangeOutcome } from '../benchmarks/evaluation/domains/pii/contract-model.ts';
 import { validatePiiAssessment } from '../benchmarks/evaluation/domains/pii/assessment.ts';
 import { validatePiiSupportMatrix } from '../benchmarks/evaluation/domains/pii/support.ts';
+import { PII_JURISDICTION_STANDARD } from '../benchmarks/evaluation/domains/pii/jurisdictions.ts';
 
 const scanner = {
   id: 'pii-test-scanner', mode: 'candidate', capabilities: { ranges: true, classification: true },
@@ -55,10 +56,23 @@ test('unavailable or unclassified scanner evidence cannot pass either axis', asy
 });
 
 test('PII contract rejects invalid scope, authority source, profile, and visibility enums', () => {
+  assert.deepEqual(PII_JURISDICTION_STANDARD, {
+    id: 'ISO-3166-1-alpha-2', revision: 'ISO/TC-46-N1127-2024-02-29', codeCount: 249,
+  });
   const base = piiDomain.loadCases()[0];
+  const future = structuredClone(piiDomain.loadCases()[1]);
+  future.contract.scope = 'jurisdiction:CA';
+  future.contract.family = 'pii:ca:sin';
+  future.contract.displayName = 'Canadian national identifier';
+  assert.doesNotThrow(() => piiDomain.validateCase(future));
+  const unknown = structuredClone(future);
+  unknown.contract.scope = 'jurisdiction:ZZ';
+  unknown.contract.family = 'pii:zz:sin';
+  assert.throws(() => piiDomain.validateCase(unknown), /Invalid PII scope/);
   for (const invalid of [
     { ...base, visibility: 'public' },
-    { ...base, contract: { ...base.contract, scope: 'jurisdiction:ZZ' } },
+    { ...base, contract: { ...base.contract, scope: 'jurisdiction:ca' } },
+    { ...base, contract: { ...base.contract, scope: 'jurisdiction:USA' } },
     { ...base, contract: { ...base.contract, family: 'synthetic-person-id' } },
     { ...base, contract: { ...base.contract, authority: [{ ...base.contract.authority[0], sourceKind: 'blog' }] } },
     { ...base, contract: { ...base.contract, authority: [{ ...base.contract.authority[0], locator: 'free text with a claim' }] } },
@@ -68,6 +82,45 @@ test('PII contract rejects invalid scope, authority source, profile, and visibil
     { ...base, contract: { ...base.contract, sensitivityExpectation: 'unknown' } },
     { ...base, contract: { ...base.contract, qualificationProfile: { id: 'credential-v1', version: 1 } } },
   ]) assert.throws(() => piiDomain.validateCase(invalid), /Invalid PII/);
+});
+
+test('PII finding identity couples family and jurisdiction while missing jurisdiction stays not measured', async () => {
+  const [globalCase, jurisdictionCase] = piiDomain.loadCases();
+  const findingScanner = (id, finding) => ({ ...scanner, id, async scan() { return [finding]; } });
+  const globalMismatch = await piiDomain.execute({ cases: [globalCase], methods: piiDomain.createMethods(), scanners: [findingScanner('global-with-country', {
+    path: globalCase.input.path, ...globalCase.candidate, family: 'pii:global:email', jurisdiction: 'BR', sensitive: false,
+  })] });
+  assert.equal(globalMismatch.scanners[0].status, 'error');
+  assert.equal(globalMismatch.results[0].outcomes[0].typeIdentity.state, 'not-measured');
+  const countryMismatch = await piiDomain.execute({ cases: [jurisdictionCase], methods: piiDomain.createMethods(), scanners: [findingScanner('country-mismatch', {
+    path: jurisdictionCase.input.path, ...jurisdictionCase.candidate, family: 'pii:us:ssn', jurisdiction: 'BR', sensitive: false,
+  })] });
+  assert.equal(countryMismatch.scanners[0].status, 'error');
+  assert.equal(countryMismatch.results[0].outcomes[0].typeIdentity.state, 'not-measured');
+  const unknownCountry = await piiDomain.execute({ cases: [jurisdictionCase], methods: piiDomain.createMethods(), scanners: [findingScanner('unknown-country', {
+    path: jurisdictionCase.input.path, ...jurisdictionCase.candidate, family: 'pii:zz:ssn', sensitive: false,
+  })] });
+  assert.equal(unknownCountry.scanners[0].status, 'error');
+
+  const canadianCase = structuredClone(jurisdictionCase);
+  canadianCase.contract.family = 'pii:ca:sin';
+  canadianCase.contract.scope = 'jurisdiction:CA';
+  canadianCase.contract.displayName = 'Canadian national identifier';
+  canadianCase.contract.typeExpectation.state = 'valid';
+  const canadian = await piiDomain.execute({ cases: [canadianCase], methods: piiDomain.createMethods(), scanners: [findingScanner('canadian-family', {
+    path: canadianCase.input.path, ...canadianCase.candidate, family: 'pii:ca:sin', jurisdiction: 'CA', sensitive: false,
+  })] });
+  assert.equal(canadian.scanners[0].status, 'complete');
+  assert.equal(canadian.results[0].outcomes[0].typeIdentity.state, 'correct');
+
+  const validJurisdictionCase = structuredClone(jurisdictionCase);
+  validJurisdictionCase.contract.typeExpectation.state = 'valid';
+  const absent = await piiDomain.execute({ cases: [validJurisdictionCase], methods: piiDomain.createMethods(), scanners: [findingScanner('country-absent', {
+    path: validJurisdictionCase.input.path, ...validJurisdictionCase.candidate, family: 'pii:us:ssn', sensitive: false,
+  })] });
+  assert.deepEqual(absent.results[0].outcomes[0].typeIdentity, {
+    axis: 'type-identity', status: 'not-measured', state: 'not-measured', reason: 'The scanner did not provide jurisdiction identity.',
+  });
 });
 
 test('global and jurisdictional assessments flow through evaluation into a safe support projection', async () => {
@@ -84,13 +137,27 @@ test('global and jurisdictional assessments flow through evaluation into a safe 
   assert.ok(matrix.entries.every(entry => entry.assessment.authority.every(source => source.supports.length > 0)));
   const serialized = JSON.stringify(matrix);
   assert.doesNotMatch(serialized, /person@example\.invalid|000-00-0000|contact=|national_id=|\.txt|"content"|"candidate"|"seed"/);
-  assert.throws(() => validatePiiAssessment({ ...structuredClone(matrix.entries[0].assessment), scope: 'jurisdiction:ZZ' }), /Invalid/);
+  assert.throws(() => validatePiiAssessment({ ...structuredClone(matrix.entries[1].assessment), scope: 'jurisdiction:ZZ', family: 'pii:zz:ssn' }), /Invalid/);
   assert.throws(() => validatePiiAssessment({ ...structuredClone(matrix.entries[0].assessment), family: 'synthetic-person-id' }), /Invalid/);
   assert.throws(() => validatePiiSupportMatrix({ ...structuredClone(matrix), extra: true }), /Invalid/);
   const inconsistent = structuredClone(matrix); inconsistent.entries[0].observations[0].typeIdentity.pass--;
   assert.throws(() => validatePiiSupportMatrix(inconsistent), /Inconsistent/);
   const stale = structuredClone(artifact); stale.results[0].assessment.scope = 'jurisdiction:US';
   assert.throws(() => piiDomain.support.projectPiiSupportMatrix(stale, cases), /stale/);
+
+  const hostileMutations = [
+    value => { value.results[0].outcomes[0].raw = 'RAW-SENTINEL-MUST-DROP'; },
+    value => { value.results[0].outcomes[0].typeIdentity.axis = 'sensitivity-context'; },
+    value => { value.results[0].outcomes[0].typeIdentity.status = 'fail'; },
+    value => { value.results[0].outcomes[0].scanner = 'injected-scanner'; },
+    value => { value.results[0].outcomes[0].variant = 'injected-variant'; },
+    value => { value.results[0].variants[0].expectation.type = 'maybe'; },
+    value => { value.results[0].variants[0].expectation.raw = 'RAW-SENTINEL-MUST-DROP'; },
+  ];
+  for (const mutate of hostileMutations) {
+    const hostile = structuredClone(artifact); mutate(hostile);
+    assert.throws(() => piiDomain.support.projectPiiSupportMatrix(hostile, cases), /PII/);
+  }
 });
 
 test('generic registry preserves PII domain identity without credential casts', () => {

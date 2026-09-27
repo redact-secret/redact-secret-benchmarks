@@ -1,6 +1,7 @@
 import { hash } from '../../substrate/hash.ts';
 import { generatedVariant } from '../../substrate/variant-lifecycle.ts';
-import { PII_AUTHORITY_SUPPORTS, PII_IDENTITY_DOMAINS, PII_JURISDICTIONS, type PiiAuthority, type PiiCase, type PiiContract, type PiiFinding, type PiiOutcome, type PiiRangeOutcome, type PiiVariant } from './types.ts';
+import { isPiiJurisdiction } from './jurisdictions.ts';
+import { PII_AUTHORITY_SUPPORTS, PII_IDENTITY_DOMAINS, type PiiAuthority, type PiiCase, type PiiContract, type PiiFinding, type PiiOutcome, type PiiRangeOutcome, type PiiVariant } from './types.ts';
 
 const slug = (value: unknown) => typeof value === 'string' && /^[a-z][a-z0-9-]{1,79}$/.test(value);
 const locator = (value: unknown) => typeof value === 'string' && /^(?:https:\/\/[a-z0-9.-]+\/[a-zA-Z0-9._~!$&'()*+,;=:@\/-]+|(?:section|clause|annex):[a-zA-Z0-9][a-zA-Z0-9._:-]{0,119})$/.test(value);
@@ -27,7 +28,7 @@ export function validatePiiContract(contract: PiiContract) {
     throw new Error('Invalid PII contract');
   for (const authority of contract.authority) validatePiiAuthority(authority);
   const jurisdiction = contract.scope === 'global' ? null : /^jurisdiction:([A-Z]{2})$/.exec(contract.scope)?.[1] ?? null;
-  if (contract.scope !== 'global' && (!jurisdiction || !PII_JURISDICTIONS.includes(jurisdiction as never))) throw new Error('Invalid PII scope');
+  if (contract.scope !== 'global' && (!jurisdiction || !isPiiJurisdiction(jurisdiction))) throw new Error('Invalid PII scope');
   const familyScope = contract.family.split(':')[1];
   if ((contract.scope === 'global' && familyScope !== 'global') || (jurisdiction && familyScope !== jurisdiction.toLowerCase())) throw new Error('PII family and scope disagree');
   if (!contract.authority.some(row => row.supports.some(item => ['lexical', 'validation', 'allocation'].includes(item)))) throw new Error('PII identity lacks normative authority');

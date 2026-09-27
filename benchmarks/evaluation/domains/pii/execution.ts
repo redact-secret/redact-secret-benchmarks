@@ -10,6 +10,7 @@ import type { Registry } from '../../substrate/registry.ts';
 import { assembleEvaluationArtifact } from '../../substrate/result-assembly.ts';
 import type { RuntimeObservation } from '../../substrate/runtime.ts';
 import { piiIdentity } from './identity.ts';
+import { isPiiJurisdiction } from './jurisdictions.ts';
 import type { PiiCase, PiiFinding, PiiGeneratedCase, PiiMethod, PiiOutcome, PiiScanner, PiiVariant } from './types.ts';
 
 export const PII_ENGINE_VERSION = '1.0.0';
@@ -39,10 +40,13 @@ function generate(c: PiiCase, methods: Registry<PiiMethod>): PiiGeneratedCase {
 function validateFindings(findings: PiiFinding[], fixtures: PiiVariant['fixture'][]) {
   for (const finding of findings) {
     const fixture = fixtures.find(row => row.path === finding.path);
+    const familyScope = typeof finding.family === 'string' ? /^pii:(global|[a-z]{2}):/.exec(finding.family)?.[1] : undefined;
     if (!fixture || !Number.isInteger(finding.start) || !Number.isInteger(finding.end) || finding.start < 0 || finding.end <= finding.start ||
         finding.end > Buffer.byteLength(fixture.content) ||
         (finding.family !== undefined && !/^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$/.test(finding.family)) ||
-        (finding.jurisdiction !== undefined && !/^(?:BR|TR|US)$/.test(finding.jurisdiction)) ||
+        (familyScope !== undefined && familyScope !== 'global' && !isPiiJurisdiction(familyScope.toUpperCase())) ||
+        (finding.jurisdiction !== undefined && (!isPiiJurisdiction(finding.jurisdiction) || familyScope === undefined || familyScope === 'global' ||
+          familyScope.toUpperCase() !== finding.jurisdiction)) ||
         (finding.sensitive !== undefined && typeof finding.sensitive !== 'boolean')) throw new Error('Invalid PII finding');
   }
 }

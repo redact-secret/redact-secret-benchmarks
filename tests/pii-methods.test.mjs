@@ -112,8 +112,9 @@ test('replay stability includes normalized PII sensitivity and jurisdiction fiel
   let replay = 0;
   const unstable = { ...scanner, id: 'unstable-pii-extras', async scan(_directory, inputs) {
     replay++;
-    return inputs.map(input => ({ path: input.path, start: 6, end: Buffer.byteLength(input.content), family: 'pii:global:synthetic-id',
-      jurisdiction: replay % 2 ? 'US' : 'BR', sensitive: replay % 2 === 1 }));
+    const jurisdiction = replay % 2 ? 'US' : 'BR';
+    return inputs.map(input => ({ path: input.path, start: 6, end: Buffer.byteLength(input.content), family: `pii:${jurisdiction.toLowerCase()}:synthetic-id`,
+      jurisdiction, sensitive: replay % 2 === 1 }));
   } };
   const c = piiCase('replay-extras', 'pii-benign', 'SYNTHETIC-0000',
     { contract: { sensitivityExpectation: 'non-sensitive', context: { class: 'non-sensitive' } }, metadata: { benignClass: 'documentation' } });

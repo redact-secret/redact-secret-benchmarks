@@ -3,7 +3,9 @@ import reportSchema from '../../../../schemas/pii-accounting-report-v1.json';
 import { assertCompatibleIdentities, proportion, type AccountingArtifactIdentity, type MechanicalPublished } from '../../../accounting/shared/primitives.ts';
 import { piiIdentity } from './identity.ts';
 import { hash } from '../../substrate/hash.ts';
-import { PII_JURISDICTIONS, type PiiAuthority, type PiiOutcome, type PiiScope, type PiiSensitivityExpectation } from './types.ts';
+import { isPiiJurisdiction } from './jurisdictions.ts';
+import { validatePiiOutcome } from './outcome-validation.ts';
+import type { PiiAuthority, PiiOutcome, PiiScope, PiiSensitivityExpectation } from './types.ts';
 import { validatePiiAuthority } from './contract-model.ts';
 import { PII_METRIC_IDS, piiV1Profile, validatePiiQualificationProfile, type PiiMetricId, type PiiQualificationProfile } from './profile.ts';
 
@@ -80,35 +82,21 @@ function validateSource(source: PiiAccountingSource) {
 
 function validateRow(row: PiiAccountingRow) {
   const family = (value: unknown) => typeof value === 'string' && /^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
-  const typeStates = ['correct', 'miss', 'invalid-correct', 'invalid-accepted', 'wrong-family', 'wrong-jurisdiction', 'not-measured'];
-  const sensitivityStates = ['correct', 'miss', 'false-positive', 'unresolved', 'not-measured'];
   if (!row || !exact(row, ['source', 'caseId', 'method', 'family', 'scope', 'variant', 'strategy', 'scanner', 'qualificationProfile', 'authority', 'expectation', 'methodEvidence', 'outcome']) ||
       !validateSource(row.source) || !slug(row.caseId) || !slug(row.method) || !family(row.family) || !slug(row.variant) || !['authored', 'derived', 'review-required'].includes(row.strategy) ||
       !/^[a-z][a-z0-9.-]+$/.test(row.scanner) || row.scanner !== row.source.scanner.id || row.qualificationProfile?.id !== 'pii-v1' || row.qualificationProfile.version !== 1 ||
       !exact(row.qualificationProfile, ['id', 'version']) || !exact(row.expectation, ['type', 'sensitivity', 'contextObligation', 'contextClass', 'validatorApplicable', 'referenceApplicable']) ||
       !['valid', 'invalid'].includes(row.expectation?.type) || !['sensitive', 'non-sensitive', 'not-established'].includes(row.expectation?.sensitivity) ||
       !['none', 'reinforcing', 'required-for-sensitive-classification'].includes(row.expectation?.contextObligation) || !['sensitive', 'neutral', 'non-sensitive'].includes(row.expectation?.contextClass) ||
-      typeof row.expectation?.validatorApplicable !== 'boolean' || typeof row.expectation?.referenceApplicable !== 'boolean' || !Array.isArray(row.authority) || row.authority.length === 0 ||
-      !row.outcome || !exact(row.outcome, ['scanner', 'variant', 'typeIdentity', 'sensitivityContext', 'range', 'observed']) || row.outcome.variant !== row.variant || row.outcome.scanner !== row.scanner ||
-      !exact(row.outcome.typeIdentity, ['axis', 'status', 'state', 'reason']) || row.outcome.typeIdentity.axis !== 'type-identity' ||
-      !['pass', 'fail', 'review-required', 'not-measured'].includes(row.outcome.typeIdentity.status) || !typeStates.includes(row.outcome.typeIdentity.state) ||
-      !exact(row.outcome.sensitivityContext, ['axis', 'status', 'state', 'reason']) || row.outcome.sensitivityContext.axis !== 'sensitivity-context' ||
-      !['pass', 'fail', 'review-required', 'not-measured'].includes(row.outcome.sensitivityContext.status) || !sensitivityStates.includes(row.outcome.sensitivityContext.state) ||
-      !['exact', 'overbroad', 'partial', 'miss', 'not-applicable'].includes(row.outcome.range) || !exact(row.outcome.observed, ['findingCount', 'families', 'jurisdictions']) ||
-      !Number.isInteger(row.outcome.observed.findingCount) || row.outcome.observed.findingCount < 0 || !Array.isArray(row.outcome.observed.families) ||
-      !Array.isArray(row.outcome.observed.jurisdictions) || row.outcome.observed.families.some(value => !family(value)) ||
-      row.outcome.observed.jurisdictions.some(value => !PII_JURISDICTIONS.includes(value as never)))
+      typeof row.expectation?.validatorApplicable !== 'boolean' || typeof row.expectation?.referenceApplicable !== 'boolean' || !Array.isArray(row.authority) || row.authority.length === 0)
     throw new Error('Invalid PII accounting row');
   for (const authority of row.authority) validatePiiAuthority(authority);
-  if (row.scope !== 'global' && !/^jurisdiction:[A-Z]{2}$/.test(row.scope)) throw new Error('Invalid PII accounting row');
-  const typeStatus = row.outcome.typeIdentity.state === 'not-measured' ? 'not-measured' : ['correct', 'invalid-correct'].includes(row.outcome.typeIdentity.state) ? 'pass' : 'fail';
-  const sensitivityStatus = row.outcome.sensitivityContext.state === 'not-measured' ? 'not-measured' : row.outcome.sensitivityContext.state === 'unresolved'
-    ? 'review-required' : row.outcome.sensitivityContext.state === 'correct' ? 'pass' : 'fail';
-  const validTypeStates = row.expectation.type === 'valid' ? ['correct', 'miss', 'wrong-family', 'wrong-jurisdiction', 'not-measured'] : ['invalid-correct', 'invalid-accepted', 'not-measured'];
-  const validSensitivityStates = row.expectation.sensitivity === 'not-established' ? ['unresolved', 'not-measured'] : row.expectation.sensitivity === 'sensitive'
-    ? ['correct', 'miss', 'not-measured'] : ['correct', 'false-positive', 'not-measured'];
-  if (row.outcome.typeIdentity.status !== typeStatus || row.outcome.sensitivityContext.status !== sensitivityStatus || !validTypeStates.includes(row.outcome.typeIdentity.state) ||
-      !validSensitivityStates.includes(row.outcome.sensitivityContext.state)) throw new Error('PII accounting outcome contradicts its authored expectation');
+  const jurisdiction = row.scope === 'global' ? null : /^jurisdiction:([A-Z]{2})$/.exec(row.scope)?.[1] ?? null;
+  const familyScope = row.family.split(':')[1];
+  if ((row.scope === 'global' && familyScope !== 'global') || (row.scope !== 'global' &&
+      (!jurisdiction || !isPiiJurisdiction(jurisdiction) || familyScope !== jurisdiction.toLowerCase()))) throw new Error('Invalid PII accounting row');
+  validatePiiOutcome(row.outcome, { scanner: row.scanner, scannerStatus: row.source.scanner.status, variant: row.variant,
+    expectation: { type: row.expectation.type, sensitivity: row.expectation.sensitivity } });
   const states = [row.methodEvidence.validatorState, row.methodEvidence.referenceState];
   const collision = row.methodEvidence.collision;
   if (!exact(row.methodEvidence, ['controlClass', 'validatorState', 'collision', 'referenceState']) ||

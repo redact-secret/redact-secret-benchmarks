@@ -203,7 +203,7 @@ export function build212({ fixture, synthetic }) {
     const k = {
       env: token("env", [12, 12, 12]), bearer: token("bearer", [11, 10, 11]), oauth: token("oauth", [13, 13, 13]), sdk: token("sdk", [12, 12, 12]),
       url: token("url", [12, 12, 12]), cli: token("cli", [10, 12, 13]), ci: token("ci", [12, 12, 12]),
-      scim: token("scim", [10, 13, 12]), audit: token("audit", [13, 11, 10]), installation: token("installation", [11, 12, 13]),
+      scim: token("scim", [10, 13, 12]), form: token("form", [13, 11, 10]), installation: token("installation", [11, 12, 13]),
       // Pre-August-2016 user tokens may carry a 10-character secret (docs.slack.dev/authentication/tokens).
       legacy: token("legacy", [11, 11, 11], 10),
     };
@@ -215,10 +215,12 @@ export function build212({ fixture, synthetic }) {
     c.positive(T, "cli", "slack-login", ["slack login --token ", { secret: k.cli }, "\n"], "sh");
     c.positive(T, "ci-config", "audit-env", ["jobs:\n  audit:\n    runs-on: ubuntu-latest\n    env:\n      SLACK_ADMIN_TOKEN: ", { secret: k.ci }, "\n"], "yml");
     c.positive(T, "shell-export", "legacy-short-secret", ["# pre-2016 legacy user token (10-character secret)\nexport SLACK_LEGACY_TOKEN=", { secret: k.legacy }, "\n"], "sh");
-    // Provider SDKs require an admin xoxp- token for two independently scoped clients
-    // (#229 row 8); these are distinct from the general WebClient wrapper above.
+    // The provider SDK requires an admin xoxp- token for SCIM (#229 row 8),
+    // distinct from the general WebClient wrapper above.
     c.positive(T, "sdk-config", "python-scim-client", ["from slack_sdk.scim.v1 import SCIMClient\n\nscim = SCIMClient(token=\"", { secret: k.scim }, "\")\n"], "py");
-    c.positive(T, "sdk-config", "python-audit-logs-client", ["from slack_sdk.audit_logs.v1 import AuditLogsClient\n\naudit = AuditLogsClient(token=\"", { secret: k.audit }, "\")\n"], "py");
+    // Legacy Web API calls accept the user token as a curl form field (#229 row 30),
+    // a request-body carrier rather than an SDK constructor or Bearer header.
+    c.positive(T, "cli", "curl-form-token", ["curl -sS -F \"token=", { secret: k.form }, "\" -F \"query=deploy\" https://slack.com/api/search.messages\n"], "sh");
     // Bolt installation stores persist a classic user token under `user_token`;
     // this is storage evidence, not another OAuth response or CLI wrapper.
     c.positive(T, "structured-file", "bolt-installation-store", ["{\n  \"installation\": {\n    \"team_id\": \"T0SYNTH01\",\n    \"user_id\": \"U0SYNTH02\",\n    \"user_token\": \"", { secret: k.installation }, "\",\n    \"user_scopes\": [\"search:read\"]\n  }\n}\n"], "json");

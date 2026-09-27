@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "be51ec051a8118f0ded7f287d0d8f480036a59afeefa8978bee5b069b2a1a868"
+      "digest": "a0c3f393f37b11b181d5f03a5ff913f5c674573b4f60a9109850190dee79f972"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -21,7 +21,7 @@
     },
     "taxonomy": {
       "algorithm": "sha256",
-      "digest": "438e934216697ff8ca93bc02fec2c141ebafd5d6bd2ba504ca096f49dd4a8316"
+      "digest": "9759bff9363129a57a5d153ea8de1ce5fbcc684c1f8658b769a8b1f56633b20b"
     }
   },
   "fixtures": [
@@ -12928,6 +12928,27 @@
       }
     },
     {
+      "slug": "beta8-211--github-fine-grained-pat-git-credential-fill",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-git-credential-fill",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-git-credential-fill.txt"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-211--github-fine-grained-pat-git-remote-userinfo",
       "source": {
         "categoryId": "beta8-211",
@@ -13737,6 +13758,27 @@
       }
     },
     {
+      "slug": "beta8-211--slack-app-level-token-bolt-js-app-token",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-bolt-js-app-token",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-bolt-js-app-token.mjs"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-211--slack-app-level-token-bolt-python-handler",
       "source": {
         "categoryId": "beta8-211",
@@ -14340,6 +14382,27 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--stripe-webhook-signing-secret-event-destination-create-response",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "stripe-webhook-signing-secret-event-destination-create-response",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/stripe-webhook-signing-secret-event-destination-create-response.json"
+      },
+      "familyIds": [
+        "stripe:webhook-signing-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -17941,6 +18004,27 @@
       }
     },
     {
+      "slug": "beta8-212--slack-user-token-bolt-installation-store",
+      "source": {
+        "categoryId": "beta8-212",
+        "fixtureId": "slack-user-token-bolt-installation-store",
+        "corpus": "fixtures/generated/beta8-212.json",
+        "path": "cases/slack-user-token-bolt-installation-store.json"
+      },
+      "familyIds": [
+        "slack:user-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-212",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-212--slack-user-token-channel-ids-public-id",
       "source": {
         "categoryId": "beta8-212",
@@ -17953,6 +18037,27 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-212",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-212--slack-user-token-curl-form-token",
+      "source": {
+        "categoryId": "beta8-212",
+        "fixtureId": "slack-user-token-curl-form-token",
+        "corpus": "fixtures/generated/beta8-212.json",
+        "path": "cases/slack-user-token-curl-form-token.sh"
+      },
+      "familyIds": [
+        "slack:user-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -18192,6 +18297,27 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-212",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-212--slack-user-token-python-scim-client",
+      "source": {
+        "categoryId": "beta8-212",
+        "fixtureId": "slack-user-token-python-scim-client",
+        "corpus": "fixtures/generated/beta8-212.json",
+        "path": "cases/slack-user-token-python-scim-client.py"
+      },
+      "familyIds": [
+        "slack:user-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -61798,7 +61924,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
-    "fixtureCount": 2990
+    "digest": "66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801",
+    "fixtureCount": 2996
   }
 }

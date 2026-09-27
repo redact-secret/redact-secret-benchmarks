@@ -24,8 +24,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 64 | 77 |
-| Stable / documented | 64 | 77 |
+| Arrival / provisional | 68 | 77 |
+| Stable / documented | 68 | 77 |
 | Stable / empirical | 24 | 77 |
 | Context-constrained empirical | 9 | 77 |
 
@@ -52,7 +52,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
 | generic-token | T3 | arrival-provisional | 128 | 35 | 75 | 9 | 12 | 4 | 5 | none |
-| github-fine-grained-pat | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 6 | 9 | positive/context cases 5/6 |
+| github-fine-grained-pat | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 11 | 6 | 9 | none |
 | github-token | T1 | stable-documented | 117 | 27 | 8 | 42 | 21 | 5 | 7 | none |
 | gitlab-runner-authentication-token | T2 | stable-empirical | 43 | 11 | 16 | 8 | 15 | 6 | 10 | none |
 | gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
@@ -95,11 +95,11 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
 | shopify-token | T1 | stable-documented | 27 | 9 | 8 | 6 | 4 | 6 | 8 | none |
-| slack-app-level-token | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 5 | 8 | positive/context cases 5/6 |
+| slack-app-level-token | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 10 | 5 | 8 | none |
 | slack-token | T1 | stable-documented | 47 | 26 | 13 | 6 | 4 | 4 | 6 | none |
-| slack-user-token | T1 | stable-documented | 24 | 3 | 11 | 5 | 8 | 6 | 9 | positive/context cases 3/6 |
+| slack-user-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 9 | 6 | 9 | none |
 | stripe-token | T1 | stable-documented | 39 | 21 | 8 | 6 | 4 | 6 | 8 | none |
-| stripe-webhook-signing-secret | T1 | stable-documented | 25 | 5 | 10 | 5 | 9 | 6 | 10 | positive/context cases 5/6 |
+| stripe-webhook-signing-secret | T1 | stable-documented | 26 | 6 | 10 | 5 | 9 | 6 | 10 | none |
 | supabase-management-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 7 | 6 | 8 | none |
 | supabase-token | T1 | stable-documented | 30 | 6 | 14 | 5 | 9 | 6 | 9 | none |
 | telegram-bot-token | T2 | stable-empirical | 41 | 12 | 15 | 8 | 14 | 5 | 8 | none |

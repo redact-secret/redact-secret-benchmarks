@@ -7,11 +7,11 @@
     "benchmarkRevision": "a66dbef943ccbb9fd4ffd6747e0ddaf7914c10a0"
   },
   "input": {
-    "surface": "comparison/real-world-shapes",
+    "surface": "comparison/policy-qualified-credentials",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "a2aee870981b7e6436678af90b54ea6fcab3402baef6aee6c6dbb2cd9da59a57",
-    "fixtureCount": 15,
-    "fixturesDigest": "c4187ce8980366757c26e1b1ebd3bb89331087a22be09507d950aac0f7228902",
+    "corpusHash": "c45a8892853938099443473bdee7fbb9fa470720cb60a1f95921dd7e6ce861df",
+    "fixtureCount": 19,
+    "fixturesDigest": "59f8acf96f61672f64780d1a8f43ae90823380d5060c4447c8332508de119338",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
@@ -49,6 +49,37 @@
     "count": 2,
     "agreed": true
   },
-  "findings": [],
-  "digest": "85bea6e03830845b8f9eb1b2b6f2377df52970a6b0482fd978d118a04239418b"
+  "findings": [
+    {
+      "path": "cases/bearer-token-authorization-header-twin.txt",
+      "start": 15,
+      "end": 32,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-authorization-header.txt",
+      "start": 15,
+      "end": 54,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-proxy-header.txt",
+      "start": 21,
+      "end": 60,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/connection-string-postgres-userinfo.txt",
+      "start": 0,
+      "end": 44,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-reference.txt",
+      "start": 0,
+      "end": 34,
+      "family": "connection-string"
+    }
+  ],
+  "digest": "d0addbd204623586dc61f80ac5df52e5f1c5a53dffba769a86c2e0aa10fb2a59"
 }

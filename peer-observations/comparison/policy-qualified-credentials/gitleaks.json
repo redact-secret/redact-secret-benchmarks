@@ -7,11 +7,11 @@
     "benchmarkRevision": "a66dbef943ccbb9fd4ffd6747e0ddaf7914c10a0"
   },
   "input": {
-    "surface": "comparison/beta8-213e",
+    "surface": "comparison/policy-qualified-credentials",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "055b9b5b63313c024552993d5f099bca072fbb62f3ace4efaf7a60ee87ccf558",
-    "fixtureCount": 12,
-    "fixturesDigest": "0cbcd78541d3727d0cb80d6d9cdda0c957c50b457e8154f0d42dd84c3fc68cf9",
+    "corpusHash": "c45a8892853938099443473bdee7fbb9fa470720cb60a1f95921dd7e6ce861df",
+    "fixtureCount": 19,
+    "fixturesDigest": "59f8acf96f61672f64780d1a8f43ae90823380d5060c4447c8332508de119338",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
@@ -61,27 +61,11 @@
   },
   "findings": [
     {
-      "path": "cases/datadog-application-key-legacy-dotenv.env",
-      "start": 41,
-      "end": 81,
+      "path": "cases/generic-token-high-signal-redact.txt",
+      "start": 9,
+      "end": 37,
       "family": "generic-token"
-    },
-    {
-      "path": "cases/datadog-application-key-legacy-http-request.http",
-      "start": 99,
-      "end": 139,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/datadog-application-key-legacy-python-constant.py",
-      "start": 62,
-      "end": 102
-    },
-    {
-      "path": "cases/datadog-application-key-legacy-terraform-output-json.txt",
-      "start": 108,
-      "end": 148
     }
   ],
-  "digest": "4a19e483a0ad0141d7fe1fe8bc3c2c54d824e1d032aec412acc9db4e271bb1f8"
+  "digest": "cd521cd9f985b54f84111322796740a2200988085bb63fb2a9ff32dbc21170e9"
 }

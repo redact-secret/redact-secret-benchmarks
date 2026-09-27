@@ -6,10 +6,10 @@ Research context: [#367](https://github.com/redact-secret/redact-secret-benchmar
 
 - Frozen benchmark baseline: `4366b6a5ed03ac3633d9ae86063d23fce2169edb`; baseline record commit: `626c05cf0d2d4f1ee63467a446bd54f19c9451e4`.
 - Frozen product baseline: `266204c87126a9de2c0ff28e7913bccabebd1d98`.
-- Final measured pair: product `f5f91cbe1d3250dc99e32332477915e0e45a94cf`; benchmark `5b40436e9de00dddcf6c17c87d4f4e0e206244a2`.
+- Final measured pair: product `f5f91cbe1d3250dc99e32332477915e0e45a94cf`; benchmark `3fe8cb9dfaa5b12f2722505f0574684333ff5f39`.
 - Published comparison package: `@redact-secret/core` `0.1.0-beta.9`.
 - Peer scanners: Gitleaks `8.30.1`; TruffleHog `3.97.4` from the official Darwin arm64 release, placed read-only first on `PATH` after checksum verification.
-- Fixture semantic index: 2,990 fixtures / `1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7` before; 2,996 fixtures / `66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801` after.
+- Fixture semantic index: 2,990 fixtures / `1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7` at the frozen baseline; 2,996 fixtures / `66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801` for this work before the final base update; 3,015 fixtures / `95b2123327c4763d3b1fbcebdcea6c5d23b0ae1866197c3b10ab9adfbbc9e955` in the final integrated branch. The extra 19 fixtures arrived through `develop` in the separately scoped #365 work and are not counted in the five-family deltas below.
 - Candidate core artifact SHA-256: `51fc3d78f24ed5c13d7460c25627476e1751a71c511ce51bd1fe6cfd69047664`.
 
 ## Before and after
@@ -55,11 +55,11 @@ Refreshing the pinned peer observations after the semantic-index change re-keyed
 - `npm run build`, `npm run fixture-index:check`, `npm run profiles:check`, `npm run decisions:validate`, `npm run support:check:ui`, and `npm run arrival:check`: passed.
 - `PATH=<trufflehog-3.97.4>:$PATH npm run peers:snapshots:refresh`: passed; 25/25 suites, then published-mode classification completed.
 - `npm test`: 753/753 passed.
-- `npm run queue:check`, `npm run ledger:provenance:check`, and `npm run ledger:decisions:check`: passed; 22,909 ledger entries, including the carried and open records above.
+- `npm run queue:check`, `npm run ledger:provenance:check`, and `npm run ledger:decisions:check`: passed; 22,926 ledger entries after the final `develop` integration, including the carried and open records above.
 - `PATH=<trufflehog-3.97.4>:$PATH npm run compare`: passed, including fixture checks, unit tests, integration tests, and strict four-scanner benchmark execution.
 - `PATH=<trufflehog-3.97.4>:$PATH npm run eval:classify`: passed in published mode; 61 Stable, 12 Provisional, 1 Pending across 74 detector families. Stable basis: 37 documented, 24 empirical.
 - `PATH=<trufflehog-3.97.4>:$PATH npm run eval:matrix`: passed; 78 Stable, 12 Provisional, 6 Pending, 17 Unsupported across 113 taxonomy families.
 - Product `npm run ci`: passed on `f5f91cbe1d3250dc99e32332477915e0e45a94cf`.
-- Product `npm run benchmark:candidate -- --benchmark-ref 5b40436e9de00dddcf6c17c87d4f4e0e206244a2 --benchmark-repo <local-benchmark>`: complete and evidence validated. Fixed corpus: 150 rows, 0 required-positive misses after, 0 policy misses, 2 negative flags after. Expanded corpus: 2,846 rows, 0 required-positive misses after, 0 policy misses, 101 negative flags after. The negative-flag delta belongs to the broader product-main candidate versus beta.9, not to the documentation-only #858 change; no status in this report is promoted from that aggregate.
+- Product `npm run benchmark:candidate -- --benchmark-ref 3fe8cb9dfaa5b12f2722505f0574684333ff5f39 --benchmark-repo <local-benchmark>`: complete and evidence validated. Fixed corpus: 150 rows, 0 required-positive misses after, 0 policy misses, 2 negative flags after. Expanded corpus: 2,865 rows, 0 required-positive misses after, 0 policy misses out of 359, 101 negative flags after. The negative-flag delta belongs to the broader product-main candidate versus beta.9, not to the documentation-only #858 change; no status in this report is promoted from that aggregate.
 
 No package was published, no release or deployment was performed, and the PRs are not to be merged as part of this session.

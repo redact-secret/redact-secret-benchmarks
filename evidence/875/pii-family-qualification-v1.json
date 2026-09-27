@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-family-qualification",
+  "supportClaims": false,
+  "family": "pii:global:network-address",
+  "product": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "941053baecdc4b99f98e085429ac26bf24fe0bee",
+    "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+    "candidateEvidenceCommitment": "64b7e887bc8299fd3ad5f14e1033263508b7294c0bf07ab6b647d93438782d99"
+  },
+  "activationArtifactCommitment": "b893d6218e8e9b6632ad90825c34bc82e05d069b29cc3a5505b72231c6b81911",
+  "planCommitment": "1700856f519f2921f39fe706abda9e4d0b15e2fdb67469ac397b77bfd02d746e",
+  "profile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "gates": [
+    {
+      "id": "exact-candidate-artifact",
+      "status": "met"
+    },
+    {
+      "id": "selector-global-closure",
+      "status": "met"
+    },
+    {
+      "id": "selector-exact-family",
+      "status": "met"
+    },
+    {
+      "id": "cross-surface-determinism",
+      "status": "met"
+    },
+    {
+      "id": "sensitive-public-findings",
+      "status": "met"
+    },
+    {
+      "id": "public-absence-controls",
+      "status": "met"
+    },
+    {
+      "id": "identity-only-classification",
+      "status": "unresolved"
+    },
+    {
+      "id": "pii-off-invariance",
+      "status": "met"
+    },
+    {
+      "id": "diagnostic-population",
+      "status": "unresolved"
+    },
+    {
+      "id": "benign-heavy-population",
+      "status": "unresolved"
+    },
+    {
+      "id": "protected-partition",
+      "status": "unresolved"
+    },
+    {
+      "id": "class-public-global",
+      "status": "unresolved"
+    }
+  ],
+  "classAccounting": [
+    {
+      "id": "public-global",
+      "status": "unresolved",
+      "observations": 0
+    },
+    {
+      "id": "private-ipv4",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "unique-local-ipv6",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "link-local",
+      "status": "measured",
+      "observations": 4
+    },
+    {
+      "id": "shared-cgnat",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "teredo",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "translation-prefix",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "orchidv2",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "non-endpoint-constants",
+      "status": "measured",
+      "observations": 6
+    },
+    {
+      "id": "multicast",
+      "status": "measured",
+      "observations": 4
+    },
+    {
+      "id": "documentation",
+      "status": "measured",
+      "observations": 4
+    },
+    {
+      "id": "rfc2544-benchmarking",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "bmwg-benchmarking",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "rfc9637-documentation",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "mapped-inheritance",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "url-neutral",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "invalid-spelling",
+      "status": "measured",
+      "observations": 4
+    },
+    {
+      "id": "version-collision",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "boundary-collision",
+      "status": "measured",
+      "observations": 4
+    }
+  ],
+  "status": "not-qualified",
+  "reasonCodes": [
+    "benign-heavy-population",
+    "class-public-global",
+    "diagnostic-population",
+    "identity-only-classification",
+    "protected-partition"
+  ],
+  "artifactCommitment": "a2cf4d57d96d4eec3d00f8158d7f05a99e8f22c3df3e62272ab9b71e1c89b05f"
+}

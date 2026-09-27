@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "bindings": [
+    {
+      "product": {
+        "sourceCommit": "941053baecdc4b99f98e085429ac26bf24fe0bee",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "64b7e887bc8299fd3ad5f14e1033263508b7294c0bf07ab6b647d93438782d99"
+      },
+      "activationArtifactCommitment": "b893d6218e8e9b6632ad90825c34bc82e05d069b29cc3a5505b72231c6b81911",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:network-address;vocabulary=pii-context/v1",
+      "availableFamilies": ["pii:global:network-address"],
+      "qualifications": [
+        {
+          "family": "pii:global:network-address",
+          "planCommitment": "1700856f519f2921f39fe706abda9e4d0b15e2fdb67469ac397b77bfd02d746e",
+          "artifactCommitment": "a2cf4d57d96d4eec3d00f8158d7f05a99e8f22c3df3e62272ab9b71e1c89b05f",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-public-global",
+            "diagnostic-population",
+            "identity-only-classification",
+            "protected-partition"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { isPiiJurisdiction } from './jurisdictions.ts';
+import trustedBindings from './trusted-product-bindings-v1.json';
 
 export const PII_SUPPORT_REGISTRY_SOURCE = Object.freeze({
   repository: 'redact-secret/redact-secret' as const,
@@ -28,7 +29,18 @@ export function piiSupportRegistryProjection(matrix: any) {
 
 /** Browser-safe semantic checks shared with the Node producer; schema and cryptographic commitments are checked separately. */
 export function piiSupportSemanticProblem(matrix: any, options: { allowBoundPopulationEvidence?: boolean } = {}): string | null {
-  if (matrix.activationContract?.productArtifact !== 'not-measured') return 'PII activation is not measured';
+  if (!['not-measured', 'trusted'].includes(matrix.activationContract?.productArtifact)) return 'PII activation identity is invalid';
+  const trustedProduct = matrix.activationContract.productArtifact === 'trusted';
+  const bound = [matrix.activationContract.productArtifactCommitment, matrix.activationContract.candidateEvidenceCommitment,
+    matrix.activationContract.activationArtifactCommitment];
+  if (trustedProduct ? (!/^[a-f0-9]{40}$/.test(matrix.activationContract.productSourceCommit) || bound.some(value => !/^[a-f0-9]{64}$/.test(value))) :
+    (matrix.activationContract.productSourceCommit !== null || bound.some(value => value !== null))) return 'PII product artifact binding is incomplete';
+  const sanctioned = trustedProduct ? trustedBindings.bindings.find(binding =>
+    binding.product.sourceCommit === matrix.activationContract.productSourceCommit &&
+    binding.product.artifactCommitment === matrix.activationContract.productArtifactCommitment &&
+    binding.product.candidateEvidenceCommitment === matrix.activationContract.candidateEvidenceCommitment &&
+    binding.activationArtifactCommitment === matrix.activationContract.activationArtifactCommitment) : null;
+  if (trustedProduct && !sanctioned) return 'PII product artifact binding is not repository-sanctioned';
   if (!Array.isArray(matrix.populationReports) || JSON.stringify(matrix.populationReports.map((row: any) => row.id)) !== JSON.stringify(populationIds) ||
       matrix.populationReports.some((row: any) => !['measured', 'partial', 'not-measured'].includes(row.status)) ||
       new Set(matrix.populationReports.map((row: any) => row.contractCommitment)).size !== 1 ||
@@ -114,12 +126,32 @@ export function piiSupportSemanticProblem(matrix: any, options: { allowBoundPopu
     if (!allowBoundPopulationEvidence && row.populationEvidence.some((entry: any) =>
       entry.reportStatus !== 'not-measured' || entry.status !== 'not-measured' || entry.strata !== 0))
       return 'PII family population evidence requires bound source reports';
-    const reasons = ['product-activation-not-measured'];
+    const trusted = trustedProduct;
+    const sanctionedQualification = sanctioned?.qualifications.find(candidate => candidate.family === row.family);
+    const sanctionedAvailable = sanctioned?.availableFamilies.includes(row.family) ?? false;
+    if (trusted ? (!['available', 'unavailable'].includes(row.activation.state) ||
+        row.activation.state !== (sanctionedAvailable ? 'available' : 'unavailable') ||
+        row.activation.activationIdentity !== sanctioned?.activationIdentity ||
+        row.activation.productArtifactCommitment !== matrix.activationContract.productArtifactCommitment ||
+        row.qualificationArtifactCommitment !== (sanctionedQualification?.artifactCommitment ?? null)) :
+      (row.activation.state !== 'not-measured' || row.activation.activationIdentity !== null || row.activation.productArtifactCommitment !== null ||
+        row.qualificationArtifactCommitment !== null))
+      return 'PII activation row does not match the product artifact binding';
+    const reasons: string[] = [];
+    if (!trusted) reasons.push('product-activation-not-measured');
+    else if (row.activation.state !== 'available') reasons.push('product-family-unavailable');
     if (row.populationEvidence.find((entry: any) => entry.id === 'diagnostic-balanced')?.status !== 'measured') reasons.push('diagnostic-population-not-measured');
     if (row.populationEvidence.find((entry: any) => entry.id === 'benign-heavy-stress')?.status !== 'measured') reasons.push('benign-heavy-stress-not-measured');
-    if (row.status.state !== 'pending' || row.activation.state !== 'not-measured' || row.activation.activationIdentity !== null ||
-        row.activation.productArtifactCommitment !== null || row.qualificationArtifactCommitment !== null ||
-        JSON.stringify(row.status.reasonCodes) !== JSON.stringify(reasons.sort())) return 'PII pending status is not exactly derived';
+    if (matrix.populationComparisons.some((comparison: any) => comparison.verdict !== 'no-regression')) reasons.push('population-comparison-not-qualified');
+    if (row.qualificationArtifactCommitment === null) reasons.push('qualification-not-measured');
+    else if (!/^[a-f0-9]{64}$/.test(row.qualificationArtifactCommitment)) return 'PII qualification artifact commitment is invalid';
+    else reasons.push(...(sanctionedQualification?.reasonCodes ?? []));
+    const provisional = row.activation.state === 'available' && row.populationEvidence.every((entry: any) => entry.status === 'measured') &&
+      matrix.populationComparisons.every((comparison: any) => comparison.verdict === 'no-regression') && row.qualificationArtifactCommitment !== null &&
+      row.status.reasonCodes.length === 0;
+    const exactReasons = [...new Set(reasons)].sort();
+    if (row.status.state !== (provisional ? 'provisional' : 'pending') ||
+        JSON.stringify(row.status.reasonCodes) !== JSON.stringify(exactReasons)) return 'PII support status is not exactly derived';
   }
   return null;
 }

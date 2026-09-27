@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "family": "pii:global:network-address",
+  "findingType": "pii_global_network_address",
+  "profile": { "id": "pii-v1", "version": 1 },
+  "activationChecks": [
+    {
+      "selectors": ["pii:global"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:global;families=pii:global:network-address;vocabulary=pii-context/v1"
+    },
+    {
+      "selectors": ["pii:family:global:network-address"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:family:global:network-address;families=pii:global:network-address;vocabulary=pii-context/v1"
+    }
+  ],
+  "piiOffInput": "client_ip=10.0.0.8",
+  "classAccounting": [
+    { "id": "public-global", "status": "unresolved" },
+    { "id": "private-ipv4", "status": "measured" },
+    { "id": "unique-local-ipv6", "status": "measured" },
+    { "id": "link-local", "status": "measured" },
+    { "id": "shared-cgnat", "status": "measured" },
+    { "id": "teredo", "status": "measured" },
+    { "id": "translation-prefix", "status": "measured" },
+    { "id": "orchidv2", "status": "measured" },
+    { "id": "non-endpoint-constants", "status": "measured" },
+    { "id": "multicast", "status": "measured" },
+    { "id": "documentation", "status": "measured" },
+    { "id": "rfc2544-benchmarking", "status": "measured" },
+    { "id": "bmwg-benchmarking", "status": "measured" },
+    { "id": "rfc9637-documentation", "status": "measured" },
+    { "id": "mapped-inheritance", "status": "measured" },
+    { "id": "url-neutral", "status": "measured" },
+    { "id": "invalid-spelling", "status": "measured" },
+    { "id": "version-collision", "status": "measured" },
+    { "id": "boundary-collision", "status": "measured" }
+  ],
+  "cases": [
+    { "id": "ipv4-private-context", "classes": ["private-ipv4"], "input": "client_ip=10.0.0.8", "expected": { "publicFinding": true, "start": 10, "end": 18 } },
+    { "id": "ipv6-ula-context", "classes": ["unique-local-ipv6"], "input": "remote_address=fd00::8", "expected": { "publicFinding": true, "start": 15, "end": 22 } },
+    { "id": "ipv4-link-local-context", "classes": ["link-local"], "input": "client_ip=169.254.0.1", "expected": { "publicFinding": true, "start": 10, "end": 21 } },
+    { "id": "ipv6-link-local-context", "classes": ["link-local"], "input": "remote_address=fe80::1", "expected": { "publicFinding": true, "start": 15, "end": 22 } },
+    { "id": "ipv4-shared-context", "classes": ["shared-cgnat"], "input": "client_ip=100.64.0.1", "expected": { "publicFinding": true, "start": 10, "end": 20 } },
+    { "id": "ipv6-teredo-context", "classes": ["teredo"], "input": "remote_address=2001:0::c000:201", "expected": { "publicFinding": true, "start": 15, "end": 31 } },
+    { "id": "ipv6-translation-context", "classes": ["translation-prefix"], "input": "remote_address=64:ff9b::192.0.2.1", "expected": { "publicFinding": true, "start": 15, "end": 33 } },
+    { "id": "ipv6-orchid-context", "classes": ["orchidv2"], "input": "remote_address=2001:20::1", "expected": { "publicFinding": true, "start": 15, "end": 25 } },
+    { "id": "ipv4-unspecified", "classes": ["non-endpoint-constants"], "input": "client_ip=0.0.0.0", "expected": { "publicFinding": false } },
+    { "id": "ipv4-loopback", "classes": ["non-endpoint-constants"], "input": "client_ip=127.0.0.1", "expected": { "publicFinding": false } },
+    { "id": "ipv6-loopback", "classes": ["non-endpoint-constants"], "input": "remote_address=::1", "expected": { "publicFinding": false } },
+    { "id": "ipv4-multicast", "classes": ["multicast"], "input": "client_ip=224.0.0.1", "expected": { "publicFinding": false } },
+    { "id": "ipv6-multicast", "classes": ["multicast"], "input": "remote_address=ff02::1", "expected": { "publicFinding": false } },
+    { "id": "ipv4-documentation", "classes": ["documentation"], "input": "client_ip=192.0.2.1", "expected": { "publicFinding": false } },
+    { "id": "ipv6-documentation", "classes": ["documentation"], "input": "remote_address=2001:db8::1", "expected": { "publicFinding": false } },
+    { "id": "ipv4-rfc2544", "classes": ["rfc2544-benchmarking"], "input": "client_ip=198.18.0.1", "expected": { "publicFinding": false } },
+    { "id": "ipv6-bmwg", "classes": ["bmwg-benchmarking"], "input": "remote_address=2001:2::1", "expected": { "publicFinding": false } },
+    { "id": "ipv6-rfc9637", "classes": ["rfc9637-documentation"], "input": "remote_address=3fff::1", "expected": { "publicFinding": false } },
+    { "id": "ipv4-mapped-docs", "classes": ["mapped-inheritance"], "input": "remote_address=::ffff:192.0.2.1", "expected": { "publicFinding": false } },
+    { "id": "ipv4-url-neutral", "classes": ["url-neutral"], "input": "client_ip=http://10.0.0.8:443/", "expected": { "publicFinding": false } },
+    { "id": "ipv4-leading-zero", "classes": ["invalid-spelling"], "input": "client_ip=010.0.0.8", "expected": { "publicFinding": false } },
+    { "id": "ipv6-zone-id", "classes": ["invalid-spelling"], "input": "remote_address=fe80::1%eth0", "expected": { "publicFinding": false } },
+    { "id": "ipv4-version-collision", "classes": ["version-collision"], "input": "client_ip=v192.168.1.7", "expected": { "publicFinding": false } },
+    { "id": "ipv4-right-boundary", "classes": ["boundary-collision"], "input": "client_ip=192.168.1.7suffix", "expected": { "publicFinding": false } },
+    { "id": "ipv6-right-boundary", "classes": ["boundary-collision"], "input": "remote_address=fd00::8zone", "expected": { "publicFinding": false } }
+  ]
+}

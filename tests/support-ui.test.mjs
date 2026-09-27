@@ -7,6 +7,7 @@ import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import { statusCriteria } from '../benchmarks/support/status.ts';
 import { parseRoute, isAppPath } from '../src/model.mjs';
 import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
+import { credentialSupportPage, piiSupportPage, supportDomainOf, supportDomainUnavailablePage } from '../src/pages/pii-support.ts';
 
 const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ');
 const detected = taxonomy.families.filter(f => f.detectors.length);
@@ -220,6 +221,31 @@ test('with nothing published the page says what to run, and the route is part of
   assert.equal(parseRoute('/support/').kind, 'support');
   assert.equal(parseRoute('/support/github').kind, 'missing');
   assert.ok(isAppPath('/support'));
+});
+
+test('support selects credential by default, exposes only PII schema state, and fails closed for unknown domains', () => {
+  assert.equal(supportDomainOf(''), 'credential');
+  assert.equal(supportDomainOf('?domain=credential'), 'credential');
+  assert.equal(supportDomainOf('?domain=pii'), 'pii');
+  assert.equal(supportDomainOf('?domain=unknown'), null);
+  assert.equal(supportDomainOf('?domain='), null);
+  assert.equal(supportDomainOf('?domain=PII'), null);
+  assert.equal(supportDomainOf('?domain=pii&domain=credential'), null);
+  const descriptor = { domain: 'pii', reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
+    qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null }, support: { state: 'schema-only', href: null } };
+  const html = piiSupportPage(descriptor);
+  assert.match(text(html), /PII support is schema-only/);
+  assert.match(html, /pii-v1@1/);
+  assert.doesNotMatch(html, /data-support-status=|\b0%\b/);
+  assert.match(text(supportDomainUnavailablePage('Unknown support domain')), /No credential or PII support evidence is shown/);
+  const credential = { ...descriptor, domain: 'credential', reportProfile: { id: 'credential-evaluation', version: 1 }, evaluationProfile: 'evaluation-v1', domainAccountingVersion: 'credential-v4',
+    qualificationProfiles: [{ id: 'documented', version: 1 }, { id: 'empirical', version: 1 }], evaluation: { state: 'published', href: '/results/evaluation-v1.json' }, support: { state: 'published', href: '/results/support-matrix-v1.json' } };
+  const matrixHtml = supportPage(mixed(), null, 'unsupported');
+  const credentialHtml = credentialSupportPage(matrixHtml, credential);
+  assert.ok(credentialHtml.endsWith(matrixHtml), 'domain chrome does not rewrite the credential matrix');
+  assert.match(credentialHtml, /credential-v4/);
+  assert.match(credentialHtml, /documented@1/);
+  assert.match(credentialHtml, /aria-current="page">Credentials/);
 });
 
 test('families read in provider order, with the non-provider-specific formats last', () => {

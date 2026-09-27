@@ -81,8 +81,11 @@ export async function executePiiEvaluation({ cases, methods, scanners, provenanc
     assembleResult: (g: PiiGeneratedCase) => {
       const evaluated = g.method.evaluate({ case: g.case, variants: g.variants, observations });
       return { result: { id: g.case.id, method: g.case.method, category: g.case.contract.category, family: g.case.contract.family,
-        scope: g.case.contract.scope, qualificationProfile: g.case.contract.qualificationProfile,
-        variants: g.variants.map(v => ({ id: v.id, strategy: v.strategy, transformation: v.transformation })),
+        scope: g.case.contract.scope, qualificationProfile: g.case.contract.qualificationProfile, authority: g.case.contract.authority,
+        variants: g.variants.map(v => ({ id: v.id, strategy: v.strategy, transformation: v.transformation,
+          expectation: { type: v.contract.typeExpectation.state, sensitivity: v.contract.sensitivityExpectation,
+            contextObligation: v.contract.context.obligation, contextClass: v.contract.context.class,
+            validatorApplicable: v.contract.typeExpectation.validator !== null, referenceApplicable: v.contract.referenceEvidence !== null } })),
         generation: g.attempts, ...evaluated },
         reviewEntries: evaluated.reviews.map(review => ({ ...review, caseId: g.case.id, method: g.case.method })) };
     },

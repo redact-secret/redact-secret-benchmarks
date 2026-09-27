@@ -294,6 +294,10 @@ jobs:
           fi
           npm run eval:matrix
           npm run eval:publish:matrix
+          # Publish the strict domain descriptor only after both referenced
+          # credential artifacts pass their existing validators. PII remains a
+          # schema-only entry until domain evidence is publishable.
+          npm run eval:publish:domains
 
       # The page marks which environment served it and which commit built it
       # (#155); an unset VITE_SITE_ENV builds as "local", never production.

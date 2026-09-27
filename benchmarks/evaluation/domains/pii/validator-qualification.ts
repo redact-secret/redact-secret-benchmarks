@@ -38,7 +38,7 @@ export interface PiiValidatorRegistration {
   version: number;
   primitiveClass: PiiValidatorPrimitiveClass;
   maxCandidateBytes: number;
-  normativeSources: { sourceKind: 'standard' | 'patent' | 'product-decision'; sourceId: string; locator: string; revision: string; claim: 'algorithm' | 'lexical-contract' }[];
+  normativeSources: { sourceKind: 'standard' | 'patent' | 'public-authority' | 'product-decision'; sourceId: string; locator: string; revision: string; claim: 'algorithm' | 'lexical-contract' }[];
   implementation: { repository: 'redact-secret/redact-secret'; component: 'secret-scan-core'; identity: string; version: number; mergeCommit: string };
   vectorSet: { id: string; version: 1 };
 }
@@ -111,10 +111,22 @@ const ibanVectors: ValidatorVector[] = [
   { id: 'iban-over-maximum', class: 'maximum-length', candidate: `ZZ25SYNTHETIC${'0'.repeat(22)}`, expected: 'candidate-too-long' },
   { id: 'iban-adversarial-oversize', class: 'maximum-length', candidate: 'Z'.repeat(1_000_000), expected: 'candidate-too-long' },
 ];
+const usSsnVectors: ValidatorVector[] = [
+  { id: 'us-ssn-positive', class: 'positive', candidate: '890626879', expected: 'valid' },
+  { id: 'us-ssn-area-zero', class: 'mechanical-invalid', candidate: '000626879', expected: 'malformed' },
+  { id: 'us-ssn-area-666', class: 'mechanical-invalid', candidate: '666626879', expected: 'malformed' },
+  { id: 'us-ssn-area-high', class: 'mechanical-invalid', candidate: '900626879', expected: 'malformed' },
+  { id: 'us-ssn-group-zero', class: 'mechanical-invalid', candidate: '890006879', expected: 'malformed' },
+  { id: 'us-ssn-serial-zero', class: 'mechanical-invalid', candidate: '890620000', expected: 'malformed' },
+  { id: 'us-ssn-short-boundary', class: 'boundary', candidate: '89062687', expected: 'malformed' },
+  { id: 'us-ssn-exact-maximum', class: 'maximum-length', candidate: '890626879', expected: 'valid' },
+  { id: 'us-ssn-over-maximum', class: 'maximum-length', candidate: '8906268790', expected: 'candidate-too-long' },
+];
 
 const vectors = new Map<string, ValidatorVector[]>([
   ['luhn-v1', luhnVectors],
   ['iban-mod97-v1', ibanVectors],
+  ['us-ssn-allocation-v1', usSsnVectors],
 ]);
 const registryVectors = [
   { id: 'unknown-validator-identity', validator: { id: 'unknown-validator', version: 1 }, candidate: '0'.repeat(1_000_000), expected: 'unknown-validator' as const },
@@ -141,15 +153,27 @@ export const PII_VALIDATOR_REGISTRATIONS: readonly PiiValidatorRegistration[] = 
   ],
   implementation: { repository: 'redact-secret/redact-secret', component: 'secret-scan-core', identity: 'iban-mod97', version: 1,
     mergeCommit: PII_VALIDATOR_PRODUCT_CONTRACT.mergeCommit }, vectorSet: { id: 'iban-mod97-v1', version: 1 },
+}, {
+  id: 'us-ssn-allocation', version: 1, primitiveClass: 'bounded-parser-classifier', maxCandidateBytes: 9,
+  normativeSources: [
+    { sourceKind: 'public-authority', sourceId: 'ssa-poms-rm-10201-035', locator: 'https://secure.ssa.gov/poms.nsf/lnx/0110201035',
+      revision: 'TN-2-2011-06-23', claim: 'algorithm' },
+    { sourceKind: 'product-decision', sourceId: 'decision-define-pii-v1-qualification-and-national-id-arrival-gates',
+      locator: 'https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md',
+      revision: 'a0709d2a41b70217874da9afeffb40fb2a1a2596', claim: 'lexical-contract' },
+  ],
+  implementation: { repository: 'redact-secret/redact-secret', component: 'secret-scan-core', identity: 'us-ssn-allocation', version: 1,
+    mergeCommit: 'a0709d2a41b70217874da9afeffb40fb2a1a2596' }, vectorSet: { id: 'us-ssn-allocation-v1', version: 1 },
 }]);
 
 export const PII_VALIDATOR_CONSUMERS: PiiValidatorConsumerMap = deepFreeze({ schemaVersion: 1, mappings: [
   { validator: { id: 'luhn', version: 1 }, families: [] },
   { validator: { id: 'iban-mod97', version: 1 }, families: [] },
+  { validator: { id: 'us-ssn-allocation', version: 1 }, families: ['pii:us:ssn'] },
 ] });
 export const PII_VALIDATOR_FAMILIES: readonly PiiValidatorFamilyDescriptor[] = deepFreeze([
   { family: 'pii:global:email', validator: null },
-  { family: 'pii:us:ssn', validator: null },
+  { family: 'pii:us:ssn', validator: { id: 'us-ssn-allocation', version: 1 } },
 ]);
 
 const ajv = new Ajv({ strict: true });
@@ -167,13 +191,13 @@ function validateRegistration(registration: PiiValidatorRegistration) {
       !slug(registration.id) || !Number.isInteger(registration.version) || registration.version < 1 ||
       !PII_VALIDATOR_PRIMITIVE_CLASSES.includes(registration.primitiveClass) || !Number.isInteger(registration.maxCandidateBytes) || registration.maxCandidateBytes < 1 ||
       !Array.isArray(registration.normativeSources) || registration.normativeSources.length < 2 || registration.normativeSources.some(source =>
-        !exact(source, ['sourceKind', 'sourceId', 'locator', 'revision', 'claim']) || !['standard', 'patent', 'product-decision'].includes(source.sourceKind) ||
+        !exact(source, ['sourceKind', 'sourceId', 'locator', 'revision', 'claim']) || !['standard', 'patent', 'public-authority', 'product-decision'].includes(source.sourceKind) ||
         !slug(source.sourceId) || typeof source.locator !== 'string' || !source.locator.startsWith('https://') || typeof source.revision !== 'string' ||
         !['algorithm', 'lexical-contract'].includes(source.claim)) ||
       !exact(registration.implementation, ['repository', 'component', 'identity', 'version', 'mergeCommit']) ||
       registration.implementation.repository !== PII_VALIDATOR_PRODUCT_CONTRACT.repository || registration.implementation.component !== 'secret-scan-core' ||
       registration.implementation.identity !== registration.id || registration.implementation.version !== registration.version ||
-      registration.implementation.mergeCommit !== PII_VALIDATOR_PRODUCT_CONTRACT.mergeCommit ||
+      !/^[a-f0-9]{40}$/.test(registration.implementation.mergeCommit) ||
       !exact(registration.vectorSet, ['id', 'version']) || registration.vectorSet.version !== 1) throw new Error('Invalid PII validator registration');
   const corpus = vectors.get(registration.vectorSet.id);
   if (!corpus || corpus.length === 0 || new Set(corpus.map(row => row.id)).size !== corpus.length ||
@@ -352,6 +376,11 @@ export function benchmarkReferenceValidator(request: { validator: { id: string; 
     for (const character of `${value.slice(4)}${value.slice(0, 4)}`) for (const digit of /[0-9]/.test(character) ? character : String(character.charCodeAt(0) - 55))
       remainder = (remainder * 10 + Number(digit)) % 97;
     return { outcome: remainder === 1 ? 'valid' : 'checksum-mismatch' };
+  }
+  if (registration.id === 'us-ssn-allocation') {
+    if (!/^\d{9}$/.test(value)) return { outcome: 'malformed' };
+    const area = value.slice(0, 3), group = value.slice(3, 5), serial = value.slice(5);
+    return { outcome: area === '000' || area === '666' || Number(area) >= 900 || group === '00' || serial === '0000' ? 'malformed' : 'valid' };
   }
   return { outcome: 'unavailable' };
 }

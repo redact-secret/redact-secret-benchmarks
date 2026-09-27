@@ -11,6 +11,8 @@ import {
   validatePiiSupportMatrixV2, validatePiiSupportRegistry, piiSupportRegistry,
 } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 import { piiBindingArtifactCommitment } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
+import { buildPiiPopulationReport, piiPopulationContract } from '../benchmarks/evaluation/domains/pii/populations.ts';
+import { piiBenignCollisionEvidence } from '../benchmarks/evaluation/domains/pii/benign-collision-evidence.ts';
 import { buildEvaluationDomainsV2, domainDescriptorV2, evaluationDomainsV2Problem } from '../src/evaluation-domains-v2.ts';
 import { piiSupportMatrixProblem } from '../src/pii-support-model.ts';
 import { credentialSupportPage, piiSupportPage, piiSupportQueryOf } from '../src/pages/pii-support.ts';
@@ -43,6 +45,16 @@ test('absent product artifact publishes only explicit pending/not-measured famil
   assert.equal(validatePiiSupportMatrixV2(matrix).artifactCommitment, matrix.artifactCommitment);
 });
 
+test('unbound support projects zero strata while explicitly bound canonical reports retain their authored strata', () => {
+  const unbound = buildPiiSupportMatrixV2(), populations = ['diagnostic-balanced', 'benign-heavy-stress'].map(id => ({
+    report: buildPiiPopulationReport(piiPopulationContract, piiBenignCollisionEvidence, [], id), rows: [],
+  }));
+  const bound = buildPiiSupportMatrixV2({ populations });
+  const summaries = matrix => matrix.families.find(row => row.family === 'pii:us:ssn').populationEvidence;
+  assert.ok(summaries(unbound).every(row => row.status === 'not-measured' && row.strata === 0));
+  assert.ok(summaries(bound).every(row => row.status === 'not-measured' && row.strata > 0));
+});
+
 test('trusted product binding is artifact-derived and still fails closed without population and qualification gates', async () => {
   const value = piiSupportRegistry;
   const [candidateEvidence, activationArtifact, qualificationArtifact] = await Promise.all([
@@ -56,6 +68,7 @@ test('trusted product binding is artifact-derived and still fails closed without
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
     ['pii:global:email', 'unavailable', 'pending'], ['pii:global:iban', 'unavailable', 'pending'],
     ['pii:global:network-address', 'available', 'pending'], ['pii:global:payment-card', 'unavailable', 'pending'],
+    ['pii:us:ssn', 'unavailable', 'pending'],
   ]);
   assert.equal(matrix.activationContract.productSourceCommit, '941053baecdc4b99f98e085429ac26bf24fe0bee');
   assert.equal(matrix.activationContract.productArtifactCommitment, 'ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1');
@@ -96,6 +109,7 @@ test('email binding keeps installed offsets and exact-source conformance separat
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
     ['pii:global:email', 'available', 'pending'], ['pii:global:iban', 'unavailable', 'pending'],
     ['pii:global:network-address', 'available', 'pending'], ['pii:global:payment-card', 'unavailable', 'pending'],
+    ['pii:us:ssn', 'unavailable', 'pending'],
   ]);
   assert.deepEqual(qualificationArtifact.sourceConformance.lanes.map(row => row.id), [
     'rust-native-email-conformance', 'python-email-conformance', 'cli-email-conformance',

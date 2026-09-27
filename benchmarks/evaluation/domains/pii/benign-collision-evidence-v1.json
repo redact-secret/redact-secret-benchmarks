@@ -2,25 +2,977 @@
   "schemaVersion": 1,
   "id": "pii-benign-collision-v1",
   "version": 1,
-  "contentCommitment": "f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff",
-  "accountingProfile": { "id": "pii-v1", "version": 1, "benignAxes": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] },
+  "contentCommitment": "7b63d65db012a15e0a6ec9ba9390c45d21bbc0a5d92ca720c72e33365940c966",
+  "accountingProfile": {
+    "id": "pii-v1",
+    "version": 1,
+    "benignAxes": [
+      "reserved",
+      "documentation",
+      "test-value",
+      "public-operational",
+      "placeholder",
+      "context-negative"
+    ]
+  },
   "reporting": {
     "evidenceClasses": "evidenceByClass",
     "validatorCorrectness": "evidence.validators",
     "familyDiscrimination": "metrics.wrong-family-rate",
     "jurisdictionDiscrimination": "metrics.wrong-jurisdiction-rate",
-    "sensitivity": ["metrics.sensitive-miss-rate", "metrics.non-sensitive-flag-rate"]
+    "sensitivity": [
+      "metrics.sensitive-miss-rate",
+      "metrics.non-sensitive-flag-rate"
+    ]
   },
   "classes": [
-    { "id": "reserved-documentation", "kind": "benign", "accountingClasses": ["reserved", "documentation"], "qualifies": ["sensitivity"] },
-    { "id": "official-test", "kind": "benign", "accountingClasses": ["test-value"], "qualifies": ["sensitivity"] },
-    { "id": "public-identifier", "kind": "benign", "accountingClasses": ["public-operational"], "qualifies": ["sensitivity"] },
-    { "id": "ordinary-reference-account", "kind": "benign", "accountingClasses": ["public-operational"], "qualifies": ["sensitivity"] },
-    { "id": "near-miss", "kind": "mechanical-control", "accountingClasses": [], "qualifies": ["type-identity", "validator"] },
-    { "id": "placeholder", "kind": "benign", "accountingClasses": ["placeholder"], "qualifies": ["sensitivity"] },
-    { "id": "context-negative", "kind": "benign", "accountingClasses": ["context-negative"], "qualifies": ["sensitivity"] },
-    { "id": "cross-family-collision", "kind": "collision", "accountingClasses": [], "qualifies": ["family-discrimination", "jurisdiction-discrimination", "sensitivity"] }
+    {
+      "id": "reserved-documentation",
+      "kind": "benign",
+      "accountingClasses": [
+        "reserved",
+        "documentation"
+      ],
+      "qualifies": [
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "official-test",
+      "kind": "benign",
+      "accountingClasses": [
+        "test-value"
+      ],
+      "qualifies": [
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "public-identifier",
+      "kind": "benign",
+      "accountingClasses": [
+        "public-operational"
+      ],
+      "qualifies": [
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "ordinary-reference-account",
+      "kind": "benign",
+      "accountingClasses": [
+        "public-operational"
+      ],
+      "qualifies": [
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "near-miss",
+      "kind": "mechanical-control",
+      "accountingClasses": [],
+      "qualifies": [
+        "type-identity",
+        "validator"
+      ]
+    },
+    {
+      "id": "placeholder",
+      "kind": "benign",
+      "accountingClasses": [
+        "placeholder"
+      ],
+      "qualifies": [
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "context-negative",
+      "kind": "benign",
+      "accountingClasses": [
+        "context-negative"
+      ],
+      "qualifies": [
+        "sensitivity"
+      ]
+    },
+    {
+      "id": "cross-family-collision",
+      "kind": "collision",
+      "accountingClasses": [],
+      "qualifies": [
+        "family-discrimination",
+        "jurisdiction-discrimination",
+        "sensitivity"
+      ]
+    }
   ],
-  "families": [],
-  "entries": []
+  "families": [
+    {
+      "family": "pii:us:ssn",
+      "displayName": "US Social Security Number",
+      "identityDomain": "national-id",
+      "scope": "jurisdiction:US",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1
+      },
+      "authority": [
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "ssa-poms-rm-10201-030",
+          "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201030",
+          "revision": "TN-2-2011-06-23",
+          "supports": [
+            "lexical",
+            "allocation"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "ssa-ssn-randomization",
+          "locator": "https://www.ssa.gov/employer/randomization.html",
+          "revision": "implemented-2011-06-25-retrieved-2026-09-27",
+          "supports": [
+            "allocation"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "ssa-poms-rm-10201-035",
+          "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+          "revision": "TN-2-2011-06-23",
+          "supports": [
+            "validation",
+            "allocation"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "ssa-poms-rm-10201-020",
+          "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201020",
+          "revision": "Basic-2009-08-28",
+          "supports": [
+            "reserved-control"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "ssa-poms-gn-03325-002",
+          "locator": "https://secure.ssa.gov/poms.nsf/lnx/0203325002",
+          "revision": "TN-9-2024-04",
+          "supports": [
+            "sensitivity"
+          ]
+        }
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "id": "diagnostic-reserved-display",
+      "caseId": "diagnostic-reserved-display",
+      "evidenceClass": "reserved-documentation",
+      "accountingClass": "reserved",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "f120bb5698d520c5691b6d603a00bfd662d13bf177a04571f9d10c0745dfa2a5",
+      "fixture": {
+        "prefix": "ssn=",
+        "suffix": "",
+        "candidate": {
+          "kind": "authoritative-reserved",
+          "value": "000000000"
+        }
+      },
+      "typeExpectation": "invalid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "invalid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "authoritative",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-020",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201020",
+            "revision": "Basic-2009-08-28"
+          },
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostic-official-control",
+      "caseId": "diagnostic-official-control",
+      "evidenceClass": "official-test",
+      "accountingClass": "test-value",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "ef4a1ebc5c044bae0c0f3b489e3ee807fea9d9a40e5d4f4e61fa34e2f78abd24",
+      "fixture": {
+        "prefix": "ssn=",
+        "suffix": "",
+        "candidate": {
+          "kind": "authoritative-reserved",
+          "value": "000626879"
+        }
+      },
+      "typeExpectation": "invalid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "invalid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "authoritative",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-020",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201020",
+            "revision": "Basic-2009-08-28"
+          },
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostic-ordinary-reference",
+      "caseId": "diagnostic-ordinary-reference",
+      "evidenceClass": "ordinary-reference-account",
+      "accountingClass": "public-operational",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "554ef473f3656d2dcacbe993328f7909cf307d548f0fe79f7134072141208dc9",
+      "fixture": {
+        "prefix": "order_reference=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/diagnostic/ordinary-reference/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "94afea92a890e01a5bd4f9979283fce7166da7bddae16222eb596d043be3fd0c"
+        }
+      }
+    },
+    {
+      "id": "diagnostic-allocation-near-miss",
+      "caseId": "diagnostic-allocation-near-miss",
+      "evidenceClass": "near-miss",
+      "accountingClass": null,
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "b7f27d73349989cd8c460f1b5427c15a06becfdc96fb26069384d8184f4a8612",
+      "fixture": {
+        "prefix": "ssn=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/diagnostic/allocation-near-miss/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "invalid",
+      "sensitivityExpectation": "not-established",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "invalid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "neutral"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "b154f1b0c94fba142938926619aefac1e91fae9727f901c1c7d6e69f28e2c37f"
+        }
+      }
+    },
+    {
+      "id": "diagnostic-context-negative",
+      "caseId": "diagnostic-context-negative",
+      "evidenceClass": "context-negative",
+      "accountingClass": "context-negative",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "0c9c2d9c47fa1efd40bbbf0071f852cfd00181eaee79779add14195197824dcf",
+      "fixture": {
+        "prefix": "ssn documentation=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/diagnostic/context-negative/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "required-for-sensitive-classification",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "04fde2abbfed49ad3b0c35c07f819daf5fb050617393058d69a2f4ffa6aa4b83"
+        }
+      }
+    },
+    {
+      "id": "stress-reserved-display",
+      "caseId": "stress-reserved-display",
+      "evidenceClass": "reserved-documentation",
+      "accountingClass": "reserved",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "f120bb5698d520c5691b6d603a00bfd662d13bf177a04571f9d10c0745dfa2a5",
+      "fixture": {
+        "prefix": "ssn=",
+        "suffix": "",
+        "candidate": {
+          "kind": "authoritative-reserved",
+          "value": "000000000"
+        }
+      },
+      "typeExpectation": "invalid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "invalid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "authoritative",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-020",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201020",
+            "revision": "Basic-2009-08-28"
+          },
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stress-documentation",
+      "caseId": "stress-documentation",
+      "evidenceClass": "reserved-documentation",
+      "accountingClass": "documentation",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "a4ee3b39ffae527012232ff2bce9b76695faedb6e620add530154cd5b7849929",
+      "fixture": {
+        "prefix": "ssn documentation=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/stress/documentation/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "required-for-sensitive-classification",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "ecb9fd282594fc092b6cdf1b653bac0f27ff6da31d0499f46fc72456fe860ab3"
+        }
+      }
+    },
+    {
+      "id": "stress-official-area-zero",
+      "caseId": "stress-official-area-zero",
+      "evidenceClass": "official-test",
+      "accountingClass": "test-value",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "ef4a1ebc5c044bae0c0f3b489e3ee807fea9d9a40e5d4f4e61fa34e2f78abd24",
+      "fixture": {
+        "prefix": "ssn=",
+        "suffix": "",
+        "candidate": {
+          "kind": "authoritative-reserved",
+          "value": "000626879"
+        }
+      },
+      "typeExpectation": "invalid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "invalid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "authoritative",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-020",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201020",
+            "revision": "Basic-2009-08-28"
+          },
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stress-official-area-666",
+      "caseId": "stress-official-area-666",
+      "evidenceClass": "official-test",
+      "accountingClass": "test-value",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "cf3dba38a6faa02bc416f845085cfaaff7e1f59967cdde86188b6177ce630cdc",
+      "fixture": {
+        "prefix": "ssn=",
+        "suffix": "",
+        "candidate": {
+          "kind": "authoritative-reserved",
+          "value": "666626879"
+        }
+      },
+      "typeExpectation": "invalid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "invalid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "authoritative",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-020",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201020",
+            "revision": "Basic-2009-08-28"
+          },
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stress-public-identifier-a",
+      "caseId": "stress-public-identifier-a",
+      "evidenceClass": "public-identifier",
+      "accountingClass": "public-operational",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "cc524c09a96063550286326fa71dddbbda3405d776ac7a6da3e16b62128396c4",
+      "fixture": {
+        "prefix": "public_record_id=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/stress/public-identifier-a/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "c92521b83aec6d5a1833dd9e4c2e29221138906dcf8ac40e1c6de74bc5861df9"
+        }
+      }
+    },
+    {
+      "id": "stress-public-identifier-b",
+      "caseId": "stress-public-identifier-b",
+      "evidenceClass": "public-identifier",
+      "accountingClass": "public-operational",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "95be939701c4b51aee32dfe11d807eb0839dbb696ad20485238a2e6c0b902c5f",
+      "fixture": {
+        "prefix": "employee_registry_id=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/stress/public-identifier-b/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "cd82d15cc321353df3b4d9941bb944b95f6fb80df2991aa733beffa4f817e40e"
+        }
+      }
+    },
+    {
+      "id": "stress-order-reference",
+      "caseId": "stress-order-reference",
+      "evidenceClass": "ordinary-reference-account",
+      "accountingClass": "public-operational",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "6e19e4dff69d24e696a7e067b0b5af9526bc356a23cc5f05f762bbcc1f6710f3",
+      "fixture": {
+        "prefix": "order_reference=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/stress/order-reference/1",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "819e62fdefb5b84e62a2b6b084282c9ac5054a4036bad8cb26392e8b2d868796"
+        }
+      }
+    },
+    {
+      "id": "stress-invoice-reference",
+      "caseId": "stress-invoice-reference",
+      "evidenceClass": "ordinary-reference-account",
+      "accountingClass": "public-operational",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "aa41b9045ddb08f627ec11b6406732b07f0499e8bf6cfd86c85169b32d556675",
+      "fixture": {
+        "prefix": "invoice_number=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/stress/invoice-reference/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "8e742a6a0d82f7bda3fe15d0cba0eaa45a314ad94cc40211747690b15e62d66b"
+        }
+      }
+    },
+    {
+      "id": "stress-placeholder",
+      "caseId": "stress-placeholder",
+      "evidenceClass": "placeholder",
+      "accountingClass": "placeholder",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "0b4dd61a8647aa77827fc4762e5f0428c95eb3672b9b16bfaec51dbfe59b202c",
+      "fixture": {
+        "prefix": "placeholder_ssn=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/stress/placeholder/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "none",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "6301cc20bea99e3208e5a3dc57af8099b27e399487d2c413c2788d5c1b8fba08"
+        }
+      }
+    },
+    {
+      "id": "stress-context-negative",
+      "caseId": "stress-context-negative",
+      "evidenceClass": "context-negative",
+      "accountingClass": "context-negative",
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "identityDomain": "national-id",
+      "language": "en",
+      "candidateCommitment": "d262e70d191575bc49205a79b1be7bc45ef6745261b4444a17cb8c479810a7e1",
+      "fixture": {
+        "prefix": "not_ssn=",
+        "suffix": "",
+        "candidate": {
+          "kind": "deterministic-pattern",
+          "generator": "sha256-pattern",
+          "seed": "redact-secret-benchmarks-392/stress/context-negative/0",
+          "pattern": "DDDDDDDDD"
+        }
+      },
+      "typeExpectation": "valid",
+      "sensitivityExpectation": "non-sensitive",
+      "validator": {
+        "id": "us-ssn-allocation",
+        "version": 1,
+        "expected": "valid"
+      },
+      "contextGroup": null,
+      "context": {
+        "obligation": "required-for-sensitive-classification",
+        "class": "non-sensitive"
+      },
+      "collision": null,
+      "provenance": {
+        "kind": "deterministic-synthetic",
+        "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-poms-rm-10201-035",
+            "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+            "revision": "TN-2-2011-06-23"
+          },
+          {
+            "sourceKind": "product-decision",
+            "sourceId": "redact-secret-us-ssn-v1",
+            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
+            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
+          }
+        ],
+        "generator": {
+          "id": "sha256-pattern",
+          "version": 1,
+          "seedCommitment": "cb8c534c34e0e665b7687900a963ee9447abac9af431ddab70697d553f5abde0"
+        }
+      }
+    }
+  ]
 }

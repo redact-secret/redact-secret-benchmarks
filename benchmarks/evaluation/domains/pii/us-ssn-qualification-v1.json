@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "family": "pii:us:ssn",
+  "findingType": "pii_jurisdiction_us_ssn",
+  "familyContractVersion": 1,
+  "profile": { "id": "pii-v1", "version": 1 },
+  "canonicalOffsetUnit": "utf8-byte",
+  "authorityBinding": {
+    "structure": {
+      "sourceKind": "public-authority",
+      "sourceId": "ssa-poms-rm-10201-030",
+      "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201030",
+      "revision": "TN-2-2011-06-23"
+    },
+    "randomization": {
+      "sourceKind": "public-authority",
+      "sourceId": "ssa-ssn-randomization",
+      "locator": "https://www.ssa.gov/employer/randomization.html",
+      "revision": "implemented-2011-06-25-retrieved-2026-09-27"
+    },
+    "allocation": {
+      "sourceKind": "public-authority",
+      "sourceId": "ssa-poms-rm-10201-035",
+      "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
+      "revision": "TN-2-2011-06-23"
+    },
+    "reservedControl": {
+      "sourceKind": "public-authority",
+      "sourceId": "ssa-poms-rm-10201-020",
+      "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201020",
+      "revision": "Basic-2009-08-28"
+    },
+    "sensitivity": {
+      "sourceKind": "public-authority",
+      "sourceId": "ssa-poms-gn-03325-002",
+      "locator": "https://secure.ssa.gov/poms.nsf/lnx/0203325002",
+      "revision": "TN-9-2024-04"
+    },
+    "validator": {
+      "id": "us-ssn-allocation",
+      "version": 1,
+      "normativeSource": "SSA-POMS-RM-10201.035",
+      "maxCandidateBytes": 9
+    }
+  },
+  "sourceConformanceIds": [
+    "rust-native-us-ssn-conformance",
+    "python-us-ssn-conformance",
+    "cli-us-ssn-conformance"
+  ],
+  "activationChecks": [
+    {
+      "selectors": ["pii:us"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:us:ssn;vocabulary=pii-context/v1"
+    },
+    {
+      "selectors": ["pii:family:us:ssn"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:family:us:ssn;families=pii:us:ssn;vocabulary=pii-context/v1"
+    }
+  ],
+  "fixturePolicy": {
+    "positiveConstruction": "Deterministic FNV-1a component generation from the issue-879 seed, with no person, assignment, registry, issuance, or lookup provenance.",
+    "negativeAuthority": "SSA-published structurally excluded areas, group, serial, and 000-area display controls are identity-unmatched controls.",
+    "semanticSeparation": "Ordinary references and named negative contexts are separate from mechanical allocation exclusions.",
+    "plaintextPublication": "Raw values are confined to this safe plan and the product conformance fixture; evidence emits IDs, ranges, commitments, and aggregates only."
+  },
+  "classAccounting": [
+    { "id": "validator-valid-sensitive", "status": "measured" },
+    { "id": "identity-only-classification", "status": "measured" },
+    { "id": "validator-area-invalid", "status": "measured" },
+    { "id": "validator-group-invalid", "status": "measured" },
+    { "id": "validator-serial-invalid", "status": "measured" },
+    { "id": "authoritative-reserved-control", "status": "measured" },
+    { "id": "ordinary-reference-collision", "status": "measured" },
+    { "id": "existing-family-collision", "status": "measured" },
+    { "id": "named-negative-context", "status": "measured" },
+    { "id": "unsupported-format", "status": "measured" },
+    { "id": "whole-candidate-boundary", "status": "measured" }
+  ],
+  "piiOffInput": "ssn=890-62-6879",
+  "cases": [
+    { "id": "compact-sensitive-context", "classes": ["validator-valid-sensitive"], "input": "ssn=890626879", "expected": { "publicFinding": true, "start": 4, "end": 13, "sensitive": true } },
+    { "id": "display-sensitive-context", "classes": ["validator-valid-sensitive"], "input": "social_security_number=890-62-6879", "expected": { "publicFinding": true, "start": 23, "end": 34, "sensitive": true } },
+    { "id": "astral-prefix-sensitive-context", "classes": ["validator-valid-sensitive"], "input": "🔒 ssn=890-62-6879", "expected": { "publicFinding": true, "start": 9, "end": 20, "sensitive": true } },
+    { "id": "identity-without-context", "classes": ["identity-only-classification"], "input": "890-62-6879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "area-zero", "classes": ["validator-area-invalid"], "input": "ssn=000-62-6879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "area-666", "classes": ["validator-area-invalid"], "input": "ssn=666-62-6879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "area-high", "classes": ["validator-area-invalid"], "input": "ssn=900-62-6879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "group-zero", "classes": ["validator-group-invalid"], "input": "ssn=890-00-6879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "serial-zero", "classes": ["validator-serial-invalid"], "input": "ssn=890-62-0000", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "ssa-display-control", "classes": ["authoritative-reserved-control"], "input": "ssn=000-00-0000", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "order-reference", "classes": ["ordinary-reference-collision"], "input": "order_reference=890626879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "invoice-reference", "classes": ["ordinary-reference-collision"], "input": "invoice_number=890626879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "payment-card-field", "classes": ["existing-family-collision"], "input": "card_number=890626879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "documentation-negative", "classes": ["named-negative-context"], "input": "ssn documentation=890626879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "negation-negative", "classes": ["named-negative-context"], "input": "not_ssn=890-62-6879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "unicode-dash", "classes": ["unsupported-format"], "input": "ssn=890‐62‐6879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "unicode-space", "classes": ["unsupported-format"], "input": "ssn=890 62 6879", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "identifier-suffix", "classes": ["whole-candidate-boundary"], "input": "ssn=890-62-6879x", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "percent-suffix", "classes": ["whole-candidate-boundary"], "input": "ssn=890-62-6879%20", "expected": { "publicFinding": false, "sensitive": false } },
+    { "id": "unicode-mark-suffix", "classes": ["whole-candidate-boundary"], "input": "ssn=890-62-6879⃝", "expected": { "publicFinding": false, "sensitive": false } }
+  ]
+}

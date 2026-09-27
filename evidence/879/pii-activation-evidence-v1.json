@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-activation-evidence",
+  "supportClaims": false,
+  "product": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "a0709d2a41b70217874da9afeffb40fb2a1a2596",
+    "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+    "candidateEvidenceCommitment": "abd77d4f53cbea579d184b0ee24304582aa6b78803481cab6e8117db95ceb939"
+  },
+  "profile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "requestedSelectors": [
+    "pii:us"
+  ],
+  "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:us:ssn;vocabulary=pii-context/v1",
+  "availableFamilies": [
+    "pii:global:email",
+    "pii:global:iban",
+    "pii:global:network-address",
+    "pii:global:payment-card",
+    "pii:us:ssn"
+  ],
+  "selectorChecks": [
+    {
+      "selectors": [
+        "pii:us"
+      ],
+      "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:us:ssn;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:global:email",
+        "pii:global:iban",
+        "pii:global:network-address",
+        "pii:global:payment-card",
+        "pii:us:ssn"
+      ]
+    },
+    {
+      "selectors": [
+        "pii:family:us:ssn"
+      ],
+      "activationIdentity": "credentials=full;selectors=pii:family:us:ssn;families=pii:us:ssn;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:us:ssn"
+      ]
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "node-addon",
+      "status": "pass",
+      "activationChecks": [
+        {
+          "selectors": [
+            "pii:us"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:us:ssn;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:email",
+            "pii:global:iban",
+            "pii:global:network-address",
+            "pii:global:payment-card",
+            "pii:us:ssn"
+          ]
+        },
+        {
+          "selectors": [
+            "pii:family:us:ssn"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:family:us:ssn;families=pii:us:ssn;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:us:ssn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-wasm",
+      "status": "pass",
+      "activationChecks": [
+        {
+          "selectors": [
+            "pii:us"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:us:ssn;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:email",
+            "pii:global:iban",
+            "pii:global:network-address",
+            "pii:global:payment-card",
+            "pii:us:ssn"
+          ]
+        },
+        {
+          "selectors": [
+            "pii:family:us:ssn"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:family:us:ssn;families=pii:us:ssn;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:us:ssn"
+          ]
+        }
+      ]
+    }
+  ],
+  "offSurfaces": [
+    {
+      "id": "node-addon",
+      "status": "pass"
+    },
+    {
+      "id": "node-wasm",
+      "status": "pass"
+    }
+  ],
+  "artifactCommitment": "c65eb0ba56a64cb46698c84a602c11760a196342f526b0884ae0c13ae53dc54e"
+}

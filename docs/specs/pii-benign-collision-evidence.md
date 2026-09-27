@@ -5,6 +5,15 @@ canonical registry intentionally contains no collision rows. A row is added
 only when a proposed or supported family pair has a reviewed reason to share a
 lexical space.
 
+The canonical registry now includes fifteen US SSN controls split between the
+diagnostic and benign-heavy populations. They are reserved displays,
+deterministic synthetic public/reference/placeholder cases, allocation near
+misses, and context-negative cases—not cross-family or cross-jurisdiction
+collisions. Their five SSA authority bindings remain distinct: RM 10201.030,
+the SSN randomization page, RM 10201.035, RM 10201.020, and GN 03325.002.
+Structurally valid positive values are deterministically generated and carry
+no issuance, assignment, registry, lookup, or person provenance.
+
 The authored eight-class vocabulary is retained end to end. `evidenceClass`
 appears in method evidence and the accounting report's `evidenceByClass`
 strata. Its separate `accountingClass` maps explicitly, and deliberately

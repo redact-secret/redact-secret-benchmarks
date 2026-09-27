@@ -58,11 +58,12 @@ async function nodePackageName(tarball) {
 // `actions` carries the product policy action (#95) on each finding, as the
 // published adapter does; `bench` needs it for scoreRow's actionCounts. Off by
 // default so eval:candidate and eval:classify output is unchanged.
-export async function loadCandidate(installation, ruleset, { actions = false } = {}) {
+export async function loadCandidate(installation, ruleset, { actions = false, pii = [] } = {}) {
   try {
     const module = await import(`${pathToFileURL(path.join(installation.root, 'node_modules/@redact-secret/core/dist/index.js')).href}?candidate=${Date.now()}`);
     if (typeof module.initialize !== 'function' || typeof module.scan !== 'function') throw new Error('api');
-    await module.initialize();
+    if (!Array.isArray(pii) || pii.some(selector => typeof selector !== 'string')) throw new Error('pii-selectors');
+    await module.initialize(pii.length ? { pii } : undefined);
     const options = ruleset ? { ruleset } : undefined;
     return {
       version: typeof module.VERSION === 'string' ? module.VERSION : installation.declaredVersion,
@@ -76,7 +77,9 @@ export async function loadCandidate(installation, ruleset, { actions = false } =
             path: fixture.path,
             start: Buffer.byteLength(text.slice(0, finding.start)),
             end: Buffer.byteLength(text.slice(0, finding.end)),
-            ...findingFamily('redact-secret', finding.detector, finding.type),
+            ...(finding.detector === 'pii-domain' && finding.type === 'pii_jurisdiction_us_ssn' ?
+              { family: 'pii:us:ssn', jurisdiction: 'US', sensitive: true } :
+              findingFamily('redact-secret', finding.detector, finding.type)),
             ...(actions && finding.action !== undefined ? { action: finding.action } : {}),
           });
         }

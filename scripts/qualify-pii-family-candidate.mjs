@@ -1,11 +1,15 @@
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
-import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { validateEvidence } from '../benchmarks/evaluation/domains/credential/evidence.ts';
+import { validatePiiArrivalCandidateBinding, validatePiiArrivalOperational, validatePiiArrivalQualificationReadiness,
+  validatePiiArrivalProtectedEvidence, validatePiiPopulationArrivalBundle, piiArrivalCommitment,
+  piiArrivalContractCommitment, piiArrivalFamilyContractCommitment,
+  piiArrivalGateStatuses } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
 import { piiBindingArtifactCommitment } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 
@@ -17,7 +21,10 @@ const candidate = JSON.parse(await readFile(args['candidate-evidence'], 'utf8'))
 if (candidate.status !== 'complete' || candidate.candidate.sourceState !== 'clean' || candidate.benchmark.dirty !== false) throw new Error('candidate evidence is not complete and clean');
 const artifact = role => candidate.candidate.artifacts.find(row => row.role === role)?.sha256;
 const digestFile = async location => createHash('sha256').update(await readFile(location)).digest('hex');
-if (await digestFile(args.core) !== artifact('package') || await digestFile(args.node) !== artifact('node') || await digestFile(args.wasm) !== artifact('wasm'))
+const actualComponents = { core: await digestFile(args.core), node: await digestFile(args.node), wasm: await digestFile(args.wasm) };
+const actualPackedSizes = { core: (await stat(args.core)).size, node: (await stat(args.node)).size, wasm: (await stat(args.wasm)).size };
+const actualCandidateEvidenceSha256 = await digestFile(args['candidate-evidence']);
+if (actualComponents.core !== artifact('package') || actualComponents.node !== artifact('node') || actualComponents.wasm !== artifact('wasm'))
   throw new Error('candidate component identity mismatch');
 const plan = JSON.parse(await readFile(args.plan, 'utf8'));
 if (plan.schemaVersion !== 1 || !/^pii:(?:global|[a-z]{2}):/.test(plan.family) || !/^pii_[a-z0-9_]+$/.test(plan.findingType) ||
@@ -29,6 +36,50 @@ const planCommitment = createHash('sha256').update(JSON.stringify(plan)).digest(
 const candidateEvidenceCommitment = createHash('sha256').update(JSON.stringify(candidate)).digest('hex');
 const product = { repository: 'redact-secret/redact-secret', sourceCommit: candidate.candidate.sourceCommit,
   artifactCommitment: candidate.candidate.artifactSha256, candidateEvidenceCommitment };
+let arrivalEvidence = null;
+let arrivalGateStatuses = null;
+if (plan.family === 'pii:us:ssn') {
+  for (const key of ['population-evidence', 'operational-evidence'])
+    if (!args[key]) throw new Error(`missing --${key} for US SSN arrival qualification`);
+  if (!args['protected-evidence'] && (!args['holdout-evidence'] || !args['holdout-trust']))
+    throw new Error('missing protected evidence for US SSN arrival qualification');
+  if (args['protected-evidence'] && (args['holdout-evidence'] || args['holdout-trust']))
+    throw new Error('protected evidence inputs are mutually exclusive');
+  const population = validatePiiPopulationArrivalBundle(JSON.parse(await readFile(args['population-evidence'], 'utf8')));
+  const operational = validatePiiArrivalOperational(JSON.parse(await readFile(args['operational-evidence'], 'utf8')), population);
+  validatePiiArrivalCandidateBinding(population, operational, product.sourceCommit, actualComponents, actualPackedSizes,
+    actualCandidateEvidenceSha256);
+  const protectedInput = args['protected-evidence'] ? JSON.parse(await readFile(args['protected-evidence'], 'utf8')) : {
+    state: 'completed', report: JSON.parse(await readFile(args['holdout-evidence'], 'utf8')),
+    trust: JSON.parse(await readFile(args['holdout-trust'], 'utf8')),
+  };
+  const protectedEvidence = validatePiiArrivalProtectedEvidence(protectedInput, {
+    familyContractCommitment: piiArrivalFamilyContractCommitment, productSourceCommit: product.sourceCommit, candidateEvidenceCommitment,
+    candidateArtifactSetCommitment: population.candidate.artifactSetCommitment,
+    identitySourceCommitment: population.identitySourceEvidence.artifactCommitment,
+    populationBundleCommitment: population.artifactCommitment, operationalCommitment: operational.artifactCommitment,
+    populationStatus: population.status, operationalStatus: operational.status,
+  });
+  if (protectedEvidence.state === 'completed') validatePiiArrivalQualificationReadiness(population, operational, product.sourceCommit,
+    actualComponents, actualPackedSizes, actualCandidateEvidenceSha256);
+  const protectedProjection = protectedEvidence.state === 'completed' ? { state: 'completed',
+    holdoutCommitment: protectedEvidence.reportCommitment, trustCommitment: protectedEvidence.trust.artifactCommitment,
+    artifactCommitment: protectedEvidence.artifactCommitment } : { state: 'unspent',
+    attestationCommitment: protectedEvidence.artifactCommitment,
+    artifactCommitment: piiArrivalCommitment({ state: 'unspent', attestationCommitment: protectedEvidence.artifactCommitment }) };
+  const arrivalProjection = {
+    contractCommitment: piiArrivalContractCommitment,
+    identitySourceCommitment: population.identitySourceEvidence.artifactCommitment,
+    populationBundleCommitment: population.artifactCommitment,
+    operationalCommitment: operational.artifactCommitment,
+    artifactSetCommitment: population.candidate.artifactSetCommitment,
+    publicGateStatus: { populationNoRegression: population.status === 'complete' ? 'met' : 'not-met',
+      runtimeAndPackageCost: operational.status === 'complete' ? 'met' : 'not-met' },
+    protectedEvidence: protectedProjection,
+  };
+  arrivalEvidence = { ...arrivalProjection, artifactCommitment: piiArrivalCommitment(arrivalProjection) };
+  arrivalGateStatuses = piiArrivalGateStatuses(population, operational, protectedEvidence.state);
+}
 
 const execFileAsync = promisify(execFile);
 const sourceEnvironmentPolicy = Object.freeze({
@@ -88,6 +139,29 @@ const sourceDefinitions = Object.freeze({
   },
   'python-payment-card-conformance': {
     fixture: 'conformance/fixtures/pii-payment-card-v1.json',
+    commands: [{ executable: 'python3', args: ['-m', 'venv', '--system-site-packages', '{venv}'] },
+      { executable: 'maturin', args: ['develop', '--release', '--manifest-path', 'bindings/python/Cargo.toml'], venv: true },
+      { executable: '{python}', args: ['-c', 'from tests.test_pii_activation import test_pii_runtime_fixture; test_pii_runtime_fixture()'],
+        venv: true, pythonPath: 'bindings/python' }],
+    toolchains: [{ executable: 'python3', args: ['--version'] }, { executable: 'maturin', args: ['--version'] },
+      { executable: 'rustc', args: ['--version'] }],
+  },
+  'rust-native-us-ssn-conformance': {
+    fixture: 'conformance/fixtures/pii-us-ssn-v1.json',
+    commands: [
+      { executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret', '--test', 'pii_us_ssn_conformance'] },
+      { executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret', 'structured_validators::tests::us_ssn_v1_enforces_only_current_ssa_structural_exclusions'] },
+      { executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret', 'pii::pii_us_ssn::tests'] },
+    ],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'cli-us-ssn-conformance': {
+    fixture: 'conformance/fixtures/pii-us-ssn-v1.json',
+    commands: [{ executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret-cli', 'pii_family_fixtures_match_cli_utf8_metadata_for_exact_selection'] }],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'python-us-ssn-conformance': {
+    fixture: 'conformance/fixtures/pii-us-ssn-v1.json',
     commands: [{ executable: 'python3', args: ['-m', 'venv', '--system-site-packages', '{venv}'] },
       { executable: 'maturin', args: ['develop', '--release', '--manifest-path', 'bindings/python/Cargo.toml'], venv: true },
       { executable: '{python}', args: ['-c', 'from tests.test_pii_activation import test_pii_runtime_fixture; test_pii_runtime_fixture()'],
@@ -221,10 +295,13 @@ const gates = [
   { id: 'exact-candidate-artifact', status: 'met' }, { id: 'selector-global-closure', status: 'met' },
   { id: 'selector-exact-family', status: 'met' }, { id: 'cross-surface-determinism', status: 'met' },
   { id: 'sensitive-public-findings', status: 'met' }, { id: 'public-absence-controls', status: 'met' },
-  { id: 'identity-only-classification', status: 'unresolved' },
+  { id: 'identity-only-classification', status: arrivalGateStatuses?.identity ?? 'unresolved' },
   { id: 'exact-source-conformance', status: sourceConformance ? 'met' : 'not-applicable' },
-  { id: 'pii-off-invariance', status: 'met' }, { id: 'diagnostic-population', status: 'unresolved' },
-  { id: 'benign-heavy-population', status: 'unresolved' }, { id: 'protected-partition', status: 'unresolved' },
+  { id: 'pii-off-invariance', status: 'met' }, { id: 'diagnostic-population', status: arrivalGateStatuses?.identity ?? 'unresolved' },
+  { id: 'benign-heavy-population', status: arrivalGateStatuses?.identity ?? 'unresolved' },
+  { id: 'population-no-regression', status: arrivalGateStatuses?.population ?? 'unresolved' },
+  { id: 'protected-partition', status: arrivalGateStatuses?.protected ?? 'unresolved' },
+  { id: 'runtime-and-package-cost', status: arrivalGateStatuses?.operational ?? 'unresolved' },
 ];
 const classAccounting = plan.classAccounting.map(entry => {
   if (!/^[a-z][a-z0-9-]+$/.test(entry.id) || !['measured', 'unresolved'].includes(entry.status)) throw new Error('invalid PII class accounting');
@@ -238,6 +315,7 @@ const reasonCodes = gates.filter(gate => !['met', 'not-applicable'].includes(gat
 const qualification = { schemaVersion: 1, reportType: 'pii-family-qualification', supportClaims: false, family: plan.family, product,
   activationArtifactCommitment: activation.artifactCommitment, planCommitment, profile: plan.profile, gates, classAccounting,
   ...(sourceConformance ? { installedArtifactConformance, sourceConformance } : {}),
+  ...(arrivalEvidence ? { arrivalEvidence } : {}),
   status: reasonCodes.length ? 'not-qualified' : 'qualified',
   reasonCodes, artifactCommitment: '' };
 qualification.artifactCommitment = piiBindingArtifactCommitment(qualification);

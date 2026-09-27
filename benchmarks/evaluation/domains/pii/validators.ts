@@ -21,7 +21,18 @@ const syntheticChecksum: PiiValidator = {
   },
 };
 
-export function createPiiValidators(entries: PiiValidator[] = [syntheticChecksum]): Registry<PiiValidator> {
+export const usSsnAllocationV1: PiiValidator = {
+  id: 'us-ssn-allocation', version: 1,
+  validate(value) {
+    if (!/^\d{9}$/.test(value)) return { state: 'invalid' };
+    const area = Number(value.slice(0, 3));
+    if (area === 0 || area === 666 || area >= 900 || value.slice(3, 5) === '00' || value.slice(5) === '0000')
+      return { state: 'invalid' };
+    return { state: 'valid' };
+  },
+};
+
+export function createPiiValidators(entries: PiiValidator[] = [syntheticChecksum, usSsnAllocationV1]): Registry<PiiValidator> {
   const registry = createRegistry<PiiValidator>('PII validator', ['validate']);
   for (const entry of entries) registry.register(entry);
   return registry;

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "pii-populations-v1",
   "version": 1,
-  "contentCommitment": "6bcd6db3f1779f81b8b0f976797c16bcca6e63a563d2888223c58ff87213d162",
+  "contentCommitment": "ff2a8a456a4a09b31d09b7ebf88fce55a2deb5328009a50f0e1cfbbe78975fbd",
   "source": {
     "repository": "redact-secret/redact-secret-benchmarks",
     "definitionIssue": 285,
@@ -10,57 +10,298 @@
     "corpus": {
       "id": "pii-benign-collision-v1",
       "version": 1,
-      "contentCommitment": "f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff"
+      "contentCommitment": "7b63d65db012a15e0a6ec9ba9390c45d21bbc0a5d92ca720c72e33365940c966"
     }
   },
   "partitionPolicy": {
     "membership": "explicit-evidence-identities",
     "overlap": "forbidden",
-    "tuningVisibility": ["development"],
+    "tuningVisibility": [
+      "development"
+    ],
     "holdoutAccess": "none",
     "protectedRows": "reject",
     "evaluationOnlyTuning": "reject"
   },
-  "strata": ["family", "scope", "context-class", "evidence-class", "accounting-axis", "sensitivity", "classification-basis"],
-  "evidenceClasses": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"],
+  "strata": [
+    "family",
+    "scope",
+    "context-class",
+    "evidence-class",
+    "accounting-axis",
+    "sensitivity",
+    "classification-basis"
+  ],
+  "evidenceClasses": [
+    "reserved-documentation",
+    "official-test",
+    "public-identifier",
+    "ordinary-reference-account",
+    "near-miss",
+    "placeholder",
+    "context-negative",
+    "cross-family-collision"
+  ],
   "populations": [
     {
       "id": "diagnostic-balanced",
       "role": "development-tuning",
-      "denominator": { "unit": "authored-evidence-case", "selection": "explicit-members", "evidenceIds": [], "caseIds": [] },
+      "denominator": {
+        "unit": "authored-evidence-case",
+        "selection": "explicit-members",
+        "evidenceIds": [
+          "diagnostic-reserved-display",
+          "diagnostic-official-control",
+          "diagnostic-ordinary-reference",
+          "diagnostic-allocation-near-miss",
+          "diagnostic-context-negative"
+        ],
+        "caseIds": [
+          "diagnostic-reserved-display",
+          "diagnostic-official-control",
+          "diagnostic-ordinary-reference",
+          "diagnostic-allocation-near-miss",
+          "diagnostic-context-negative"
+        ]
+      },
       "baseRate": {
         "kind": "declared-assumption",
         "totalMass": 10000,
-        "sensitiveMass": 5000,
-        "nonSensitiveMass": 5000,
-        "notEstablishedMass": 0,
+        "sensitiveMass": 0,
+        "nonSensitiveMass": 8000,
+        "notEstablishedMass": 2000,
         "rationaleCode": "diagnostic-behavior-balance",
-        "strata": []
+        "strata": [
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "reserved-documentation",
+            "accountingAxis": "reserved",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 2000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 2000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "official-test",
+            "accountingAxis": "test-value",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 2000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 2000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "ordinary-reference-account",
+            "accountingAxis": "public-operational",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 2000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 2000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "neutral",
+            "evidenceClass": "near-miss",
+            "accountingAxis": null,
+            "sensitivity": "not-established",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 2000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 0,
+            "notEstablishedMass": 2000
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "context-negative",
+            "accountingAxis": "context-negative",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": true,
+            "totalMass": 2000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 2000,
+            "notEstablishedMass": 0
+          }
+        ]
       },
       "weighting": {
         "kind": "equal-evidence-class",
         "rationaleCode": "equal-authored-class-influence"
       },
-      "regressionPolicy": { "metric": "benign-false-alarm-rate", "maxAbsoluteIncrease": 0, "locality": "any-stratum" }
+      "regressionPolicy": {
+        "metric": "benign-false-alarm-rate",
+        "maxAbsoluteIncrease": 0,
+        "locality": "any-stratum"
+      }
     },
     {
       "id": "benign-heavy-stress",
       "role": "evaluation-only",
-      "denominator": { "unit": "authored-evidence-case", "selection": "explicit-members", "evidenceIds": [], "caseIds": [] },
+      "denominator": {
+        "unit": "authored-evidence-case",
+        "selection": "explicit-members",
+        "evidenceIds": [
+          "stress-reserved-display",
+          "stress-documentation",
+          "stress-official-area-zero",
+          "stress-official-area-666",
+          "stress-public-identifier-a",
+          "stress-public-identifier-b",
+          "stress-order-reference",
+          "stress-invoice-reference",
+          "stress-placeholder",
+          "stress-context-negative"
+        ],
+        "caseIds": [
+          "stress-reserved-display",
+          "stress-documentation",
+          "stress-official-area-zero",
+          "stress-official-area-666",
+          "stress-public-identifier-a",
+          "stress-public-identifier-b",
+          "stress-order-reference",
+          "stress-invoice-reference",
+          "stress-placeholder",
+          "stress-context-negative"
+        ]
+      },
       "baseRate": {
         "kind": "declared-assumption",
         "totalMass": 10000,
-        "sensitiveMass": 100,
-        "nonSensitiveMass": 9900,
+        "sensitiveMass": 0,
+        "nonSensitiveMass": 10000,
         "notEstablishedMass": 0,
         "rationaleCode": "benign-operational-stress",
-        "strata": []
+        "strata": [
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "reserved-documentation",
+            "accountingAxis": "reserved",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 1000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 1000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "reserved-documentation",
+            "accountingAxis": "documentation",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": true,
+            "totalMass": 1000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 1000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "official-test",
+            "accountingAxis": "test-value",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 2000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 2000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "public-identifier",
+            "accountingAxis": "public-operational",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 2000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 2000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "ordinary-reference-account",
+            "accountingAxis": "public-operational",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 2000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 2000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "placeholder",
+            "accountingAxis": "placeholder",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": false,
+            "totalMass": 1000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 1000,
+            "notEstablishedMass": 0
+          },
+          {
+            "family": "pii:us:ssn",
+            "scope": "jurisdiction:US",
+            "contextClass": "non-sensitive",
+            "evidenceClass": "context-negative",
+            "accountingAxis": "context-negative",
+            "sensitivity": "non-sensitive",
+            "validatorBacked": true,
+            "contextDependent": true,
+            "totalMass": 1000,
+            "sensitiveMass": 0,
+            "nonSensitiveMass": 1000,
+            "notEstablishedMass": 0
+          }
+        ]
       },
       "weighting": {
         "kind": "authored-case-frequency",
         "rationaleCode": "retain-authored-case-frequency"
       },
-      "regressionPolicy": { "metric": "benign-false-alarm-rate", "maxAbsoluteIncrease": 0, "locality": "any-stratum" }
+      "regressionPolicy": {
+        "metric": "benign-false-alarm-rate",
+        "maxAbsoluteIncrease": 0,
+        "locality": "any-stratum"
+      }
     }
   ]
 }

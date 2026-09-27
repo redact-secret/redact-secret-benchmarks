@@ -25,18 +25,24 @@ async function captured() {
 
 test('validator registry pins normative, implementation, vector-class, and empty current-consumer identity once', () => {
   const registry = validatePiiValidatorRegistry();
-  assert.deepEqual(registry.map(row => [row.id, row.version, row.maxCandidateBytes]), [['luhn', 1, 19], ['iban-mod97', 1, 34]]);
+  assert.deepEqual(registry.map(row => [row.id, row.version, row.maxCandidateBytes]), [
+    ['luhn', 1, 19], ['iban-mod97', 1, 34], ['us-ssn-allocation', 1, 9],
+  ]);
   assert.deepEqual(PII_VALIDATOR_PRIMITIVE_CLASSES, [
     'luhn', 'mod-97', 'weighted-mod-10', 'weighted-mod-11', 'iso-7064', 'verhoeff', 'bounded-parser-classifier',
   ]);
   assert.ok(registry.every(row => row.normativeSources.some(source => source.claim === 'algorithm')));
   assert.ok(registry.every(row => row.normativeSources.some(source => source.claim === 'lexical-contract')));
-  assert.ok(registry.every(row => row.implementation.mergeCommit === '266204c87126a9de2c0ff28e7913bccabebd1d98'));
+  assert.deepEqual(registry.map(row => row.implementation.mergeCommit), [
+    '266204c87126a9de2c0ff28e7913bccabebd1d98', '266204c87126a9de2c0ff28e7913bccabebd1d98',
+    'a0709d2a41b70217874da9afeffb40fb2a1a2596',
+  ]);
   assert.deepEqual(piiValidatorCorpusSummary().map(row => row.counts), [
     { positive: 2, 'mechanical-invalid': 1, boundary: 3, 'maximum-length': 3 },
     { positive: 1, 'mechanical-invalid': 1, boundary: 4, 'maximum-length': 3 },
+    { positive: 1, 'mechanical-invalid': 5, boundary: 1, 'maximum-length': 2 },
   ]);
-  assert.deepEqual(validatePiiValidatorConsumerMap(PII_VALIDATOR_CONSUMERS).mappings.map(row => row.families), [[], []]);
+  assert.deepEqual(validatePiiValidatorConsumerMap(PII_VALIDATOR_CONSUMERS).mappings.map(row => row.families), [[], [], ['pii:us:ssn']]);
   assert.equal(new Set(PII_VALIDATOR_REGISTRATIONS.map(row => row.vectorSet.id)).size, PII_VALIDATOR_REGISTRATIONS.length);
 });
 
@@ -59,7 +65,7 @@ test('bounded replay capture represents native-Wasm parity without trusting or p
   assert.equal(calls.length, artifact.observations.length * 2);
   assert.equal(artifact.reportType, 'pii-validator-simulation');
   assert.equal(artifact.producer.kind, 'benchmark-simulation');
-  assert.equal(artifact.observations.length, 40);
+  assert.equal(artifact.observations.length, 58);
   const report = qualifyPiiValidators(artifact);
   assert.equal(report.status, 'not-measured');
   assert.equal(report.evidenceTrust, 'untrusted-simulation');

@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-26T19:35:00.524Z",
+  "observedAt": "2026-09-27T02:27:03.085Z",
   "sourceRun": {
-    "runId": "2026-09-26T19:35:00.524Z-693bc3",
-    "benchmarkRevision": "ad2dd903ca05efa9de20b53f89a2f13cf1401377"
+    "runId": "2026-09-27T02:27:03.085Z-3507d1",
+    "benchmarkRevision": "bd5488df3f6040819a86ac969474d57f059da3c2"
   },
   "input": {
     "surface": "comparison/beta8-211",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "a131425aac1b9bf3504c62f7e860737842e522d72c14325ae2e920afd7f78251",
-    "fixtureCount": 97,
-    "fixturesDigest": "31a9aa3c60712ebbed2cb0bb051ce964dd8432b75e93e433a118a65f63e7a597",
+    "corpusHash": "e70dd2bc54b70a7b5ccb925a500ac6ee99d8b5729c5fb95f713ffc3fabe1a25a",
+    "fixtureCount": 100,
+    "fixturesDigest": "931e8b9336053d9fe3ab22f5b0abae8c7a871b76b4b37c69df2f4a1f5c2a142f",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
-      "fixtureCount": 2990
+      "digest": "66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801",
+      "fixtureCount": 2996
     }
   },
   "peer": {
@@ -99,6 +99,12 @@
       "family": "github-token"
     },
     {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 126,
+      "end": 219,
+      "family": "github-token"
+    },
+    {
       "path": "cases/github-fine-grained-pat-git-remote-userinfo.gitconfig",
       "start": 41,
       "end": 134,
@@ -123,5 +129,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "b236a9782e19b79faa77222e76a508ecd4c0b59d476f83fe1a5362f960c9df6d"
+  "digest": "a1456fe5ff70a074fc4ce514bd9a377a940c4d3f482a7b60ba54904bda65fb35"
 }

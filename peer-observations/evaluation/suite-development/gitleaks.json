@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-26T19:52:30.351Z",
+  "observedAt": "2026-09-27T02:28:09.797Z",
   "sourceRun": {
-    "runId": "18bdd8ab-b517-4e65-8bc8-c7c79f76b3ba",
-    "benchmarkRevision": "ad2dd903ca05efa9de20b53f89a2f13cf1401377"
+    "runId": "a7386a04-1488-4789-a5e7-d4617df56805",
+    "benchmarkRevision": "bd5488df3f6040819a86ac969474d57f059da3c2"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "caf490547741891d0b6d2e4ff9576b8ef8a1bff7e2c7184d391b14cf81ceca85",
-    "fixtureCount": 24242,
-    "fixturesDigest": "400b9b6384530b244d2c8a677974108e55ce46c19f494f79a49a6a21c0d6438a",
+    "corpusHash": "981f48c83a59fdc6e5a2916c7dc224ac34ef0f0a51c5744b4000b1b721f3993c",
+    "fixtureCount": 24308,
+    "fixturesDigest": "47635949d6454117fa78c9274c4f022232ada74fc99af068b57cd345511c65a4",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
-      "fixtureCount": 2990
+      "digest": "66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801",
+      "fixtureCount": 2996
     }
   },
   "peer": {
@@ -9976,6 +9976,46 @@
       "end": 101
     },
     {
+      "path": "cases/beta8-211--github-fine-grained-pat-git-credential-fill--differential/canonical.txt",
+      "start": 126,
+      "end": 219
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-git-credential-fill--metamorphic/canonical.txt",
+      "start": 126,
+      "end": 219
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-git-credential-fill--metamorphic/context.indent.txt",
+      "start": 130,
+      "end": 223
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-git-credential-fill--metamorphic/context.unicode-prefix.txt",
+      "start": 146,
+      "end": 239
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-git-credential-fill--metamorphic/encoding.crlf.txt",
+      "start": 130,
+      "end": 223
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-git-credential-fill--mutation/canonical.txt",
+      "start": 126,
+      "end": 219
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-git-credential-fill--mutation/lexical.length-plus-one.txt",
+      "start": 126,
+      "end": 219
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-git-credential-fill--mutation/lexical.replace-last.txt",
+      "start": 126,
+      "end": 219
+    },
+    {
       "path": "cases/beta8-211--github-fine-grained-pat-git-remote-userinfo--differential/canonical.txt",
       "start": 41,
       "end": 134
@@ -10843,6 +10883,56 @@
       "end": 137
     },
     {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--differential/canonical.txt",
+      "start": 109,
+      "end": 206
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--metamorphic/canonical.txt",
+      "start": 109,
+      "end": 206
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--metamorphic/context.indent.txt",
+      "start": 113,
+      "end": 210
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--metamorphic/context.unicode-prefix.txt",
+      "start": 129,
+      "end": 226
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--metamorphic/encoding.crlf.txt",
+      "start": 113,
+      "end": 210
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--mutation/canonical.txt",
+      "start": 109,
+      "end": 206
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 109,
+      "end": 205
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--mutation/lexical.length-minus-one.txt",
+      "start": 109,
+      "end": 205
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--mutation/lexical.length-plus-one.txt",
+      "start": 109,
+      "end": 207
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--mutation/lexical.replace-last.txt",
+      "start": 109,
+      "end": 206
+    },
+    {
       "path": "cases/beta8-211--slack-app-level-token-bolt-python-handler--differential/canonical.txt",
       "start": 96,
       "end": 193
@@ -11486,6 +11576,42 @@
       "path": "cases/beta8-211--stripe-webhook-signing-secret-dotenv-webhook-secret-public-prefix-twin--twin/canonical.txt",
       "start": 61,
       "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--stripe-webhook-signing-secret-event-destination-create-response--differential/canonical.txt",
+      "start": 232,
+      "end": 270,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--stripe-webhook-signing-secret-event-destination-create-response--metamorphic/canonical.txt",
+      "start": 232,
+      "end": 270,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--stripe-webhook-signing-secret-event-destination-create-response--metamorphic/context.indent.txt",
+      "start": 236,
+      "end": 274,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--stripe-webhook-signing-secret-event-destination-create-response--metamorphic/context.unicode-prefix.txt",
+      "start": 252,
+      "end": 290,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--stripe-webhook-signing-secret-event-destination-create-response--metamorphic/encoding.crlf.txt",
+      "start": 238,
+      "end": 276,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--stripe-webhook-signing-secret-event-destination-create-response--mutation/canonical.txt",
+      "start": 232,
+      "end": 270,
       "family": "generic-token"
     },
     {
@@ -14986,6 +15112,130 @@
       "end": 138
     },
     {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--differential/canonical.txt",
+      "start": 97,
+      "end": 173
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--metamorphic/canonical.txt",
+      "start": 97,
+      "end": 173
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--metamorphic/context.indent.txt",
+      "start": 101,
+      "end": 177
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--metamorphic/context.unicode-prefix.txt",
+      "start": 117,
+      "end": 193
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--metamorphic/encoding.crlf.txt",
+      "start": 101,
+      "end": 177
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--mutation/boundary.remove-delimiter.txt",
+      "start": 97,
+      "end": 172,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--mutation/canonical.txt",
+      "start": 97,
+      "end": 173
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--mutation/lexical.invalid-alphabet.txt",
+      "start": 97,
+      "end": 172
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--mutation/lexical.length-minus-one.txt",
+      "start": 97,
+      "end": 172
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--mutation/lexical.length-plus-one.txt",
+      "start": 97,
+      "end": 174
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--mutation/lexical.prefix-change.txt",
+      "start": 97,
+      "end": 173,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-bolt-installation-store--mutation/lexical.replace-last.txt",
+      "start": 97,
+      "end": 173
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--differential/canonical.txt",
+      "start": 19,
+      "end": 93
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--metamorphic/canonical.txt",
+      "start": 19,
+      "end": 93
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--metamorphic/context.indent.txt",
+      "start": 23,
+      "end": 97
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--metamorphic/context.unicode-prefix.txt",
+      "start": 39,
+      "end": 113
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--metamorphic/encoding.crlf.txt",
+      "start": 19,
+      "end": 93
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--mutation/boundary.remove-delimiter.txt",
+      "start": 19,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--mutation/canonical.txt",
+      "start": 19,
+      "end": 93
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 19,
+      "end": 92
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--mutation/lexical.length-minus-one.txt",
+      "start": 19,
+      "end": 92
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--mutation/lexical.length-plus-one.txt",
+      "start": 19,
+      "end": 94
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--mutation/lexical.prefix-change.txt",
+      "start": 19,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-curl-form-token--mutation/lexical.replace-last.txt",
+      "start": 19,
+      "end": 93
+    },
+    {
       "path": "cases/beta8-212--slack-user-token-dotenv--differential/canonical.txt",
       "start": 17,
       "end": 93
@@ -15270,6 +15520,68 @@
       "path": "cases/beta8-212--slack-user-token-oauth-v2-access--mutation/lexical.replace-last.txt",
       "start": 132,
       "end": 211
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--differential/canonical.txt",
+      "start": 67,
+      "end": 142
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--metamorphic/canonical.txt",
+      "start": 67,
+      "end": 142
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--metamorphic/context.indent.txt",
+      "start": 71,
+      "end": 146
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--metamorphic/context.unicode-prefix.txt",
+      "start": 87,
+      "end": 162
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--metamorphic/encoding.crlf.txt",
+      "start": 69,
+      "end": 144
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--mutation/boundary.remove-delimiter.txt",
+      "start": 67,
+      "end": 141,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--mutation/canonical.txt",
+      "start": 67,
+      "end": 142
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--mutation/lexical.invalid-alphabet.txt",
+      "start": 67,
+      "end": 141
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--mutation/lexical.length-minus-one.txt",
+      "start": 67,
+      "end": 141
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--mutation/lexical.length-plus-one.txt",
+      "start": 67,
+      "end": 143
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--mutation/lexical.prefix-change.txt",
+      "start": 67,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-212--slack-user-token-python-scim-client--mutation/lexical.replace-last.txt",
+      "start": 67,
+      "end": 142
     },
     {
       "path": "cases/beta8-212--slack-user-token-python-webclient--differential/canonical.txt",
@@ -58363,5 +58675,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "c67a485cd26c4e7d3f8a25b16347d564ceec68cd7cad6411d787631a49b429d8"
+  "digest": "c87fb8d4082b00963474617474118261866b29e2a7baa0a021a5792cff557c56"
 }

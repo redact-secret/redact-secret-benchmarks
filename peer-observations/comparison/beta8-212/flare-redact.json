@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-26T19:35:00.524Z",
+  "observedAt": "2026-09-27T02:27:03.085Z",
   "sourceRun": {
-    "runId": "2026-09-26T19:35:00.524Z-693bc3",
-    "benchmarkRevision": "ad2dd903ca05efa9de20b53f89a2f13cf1401377"
+    "runId": "2026-09-27T02:27:03.085Z-3507d1",
+    "benchmarkRevision": "bd5488df3f6040819a86ac969474d57f059da3c2"
   },
   "input": {
     "surface": "comparison/beta8-212",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "2688a67f804eadc32c46fd22202cda9f7b0a384d7412988bcc306663e4ab792b",
-    "fixtureCount": 168,
-    "fixturesDigest": "532f8cfe2a0a4a06f42428e6ee4a1952e5dd4c19098277624d057b6cdd1c66a3",
+    "corpusHash": "cc1c553b07080fa1ac1abcfc86bf55c1c20b4f779bb5a8208b6f5797158417d1",
+    "fixtureCount": 171,
+    "fixturesDigest": "7131255e3f236a4d42f184ab2ec0fbf1aabb3af2a08e460b7d99f535708fcb1a",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
-      "fixtureCount": 2990
+      "digest": "66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801",
+      "fixtureCount": 2996
     }
   },
   "peer": {
@@ -135,6 +135,18 @@
       "family": "bearer-token"
     },
     {
+      "path": "cases/slack-user-token-bolt-installation-store.json",
+      "start": 97,
+      "end": 141,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-curl-form-token.sh",
+      "start": 19,
+      "end": 61,
+      "family": "slack-token"
+    },
+    {
       "path": "cases/slack-user-token-docs-placeholder-placeholder.env",
       "start": 17,
       "end": 37,
@@ -183,6 +195,12 @@
       "family": "slack-token"
     },
     {
+      "path": "cases/slack-user-token-python-scim-client.py",
+      "start": 67,
+      "end": 110,
+      "family": "slack-token"
+    },
+    {
       "path": "cases/slack-user-token-python-webclient.py",
       "start": 59,
       "end": 103,
@@ -201,5 +219,5 @@
       "family": "bearer-token"
     }
   ],
-  "digest": "a92165558598de902d4d47abac868287126841b3705d32bcaa9bea31e7476d2d"
+  "digest": "efc19ecacf3a337e46d9e2e85d2686e7138c8566ce983fe04e9cd5cda3a96d79"
 }

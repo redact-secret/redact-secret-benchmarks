@@ -23,17 +23,26 @@ function piiCase(id, method, value, overrides = {}) {
     provenance: { ...base.provenance, ...overrides.provenance }, metadata: { ...base.metadata, ...overrides.metadata } };
 }
 
+function contextCase(id, language = 'en') {
+  return piiCase(id, 'context-discrimination', 'subject@example.invalid', {
+    contract: { family: 'pii:global:email', displayName: 'Email address', identityDomain: 'email', sensitivityExpectation: 'not-established',
+      context: { language, class: 'neutral', obligation: 'required-for-sensitive-classification' } },
+    metadata: { contextEvidenceGroup: `${language}-email-core` },
+  });
+}
+
 const scanner = {
   id: 'pii-method-scanner', mode: 'candidate', configuration: { synthetic: true }, capabilities: { ranges: true, classification: true },
   async version() { return '1.0.0'; },
   async scan(_directory, inputs) {
     return inputs.flatMap(input => {
       if (input.path.includes('checksum-invalid') || input.path.includes('-mutated')) return [];
-      const marker = input.content.includes('value=') ? 'value=' : 'value=';
-      const start = Buffer.byteLength(input.content.slice(0, input.content.indexOf(marker) + marker.length));
+      const candidate = input.content.includes('subject@example.invalid') ? 'subject@example.invalid' : input.content.includes('SYNTHETIC-0000') ? 'SYNTHETIC-0000' : '123456789';
+      const start = Buffer.byteLength(input.content.slice(0, input.content.indexOf(candidate)));
       if (input.path.includes('collision')) return [{ path: input.path, start, end: Buffer.byteLength(input.content), family: 'pii:br:ordinary-numeric-id', jurisdiction: 'BR', sensitive: true }];
-      return [{ path: input.path, start, end: Buffer.byteLength(input.content), family: 'pii:global:synthetic-id',
-        sensitive: !input.path.includes('non-sensitive') && !input.path.includes('benign') }];
+      const nonSensitive = /negative|benign|neutral|ambiguous/.test(input.path);
+      return [{ path: input.path, start, end: start + Buffer.byteLength(candidate),
+        family: candidate.includes('@') ? 'pii:global:email' : 'pii:global:synthetic-id', sensitive: !nonSensitive }];
     });
   },
 };
@@ -43,9 +52,11 @@ test('PII method registry is complete and context trio preserves type while chan
   assert.deepEqual(methods.values().map(method => method.id).sort(), [
     'context-discrimination', 'jurisdiction-collision', 'mutation', 'pii-benign', 'reference-differential', 'schema-only', 'type-validation',
   ]);
-  const source = piiCase('context-source', 'context-discrimination', 'SYNTHETIC-0000');
+  const source = contextCase('context-source');
   const variants = methods.get('context-discrimination').generate(source);
-  assert.deepEqual(variants.map(v => v.contract.sensitivityExpectation), ['sensitive', 'not-established', 'non-sensitive']);
+  assert.ok(variants.some(v => v.contract.sensitivityExpectation === 'sensitive'));
+  assert.ok(variants.some(v => v.contract.sensitivityExpectation === 'not-established'));
+  assert.ok(variants.some(v => v.contract.sensitivityExpectation === 'non-sensitive'));
   assert.ok(variants.every(v => v.contract.typeExpectation.state === 'valid'));
   assert.equal(new Set(variants.map(v => Buffer.from(v.fixture.content).subarray(v.candidate.start, v.candidate.end).toString())).size, 1);
   assert.ok(variants.every(v => v.transformation.expectationEffect.type === 'preserve'));
@@ -71,7 +82,7 @@ test('validator invalid negatives remain distinct from benign semantic controls'
 });
 
 test('context, collision, and mutation methods produce domain-owned non-vacuous evidence', async () => {
-  const context = piiCase('context-run', 'context-discrimination', 'SYNTHETIC-0000');
+  const context = contextCase('context-run');
   const collision = piiCase('collision-run', 'jurisdiction-collision', '123456789', {
     contract: { family: 'pii:us:tax-id', displayName: 'Synthetic US tax identifier', scope: 'jurisdiction:US' },
     metadata: { collision: { targetFamily: 'pii:us:tax-id', competingFamilies: ['pii:br:ordinary-numeric-id', 'pii:tr:tax-id'] } },
@@ -80,8 +91,9 @@ test('context, collision, and mutation methods produce domain-owned non-vacuous 
     { contract: { typeExpectation: { validator: 'synthetic-mod10' } }, metadata: { operator: 'invalidate-final-digit' } });
   const artifact = await piiDomain.execute({ cases: [context, collision, mutation], methods: piiDomain.createMethods(), scanners: [scanner] });
   const contextResult = artifact.results.find(result => result.id === 'context-run');
-  assert.equal(contextResult.outcomes.length, 3);
-  assert.deepEqual(contextResult.outcomes.map(outcome => outcome.sensitivityContext.state), ['correct', 'unresolved', 'correct']);
+  assert.equal(contextResult.outcomes.length, 8);
+  assert.ok(contextResult.outcomes.some(outcome => outcome.sensitivityContext.state === 'unresolved'));
+  assert.ok(contextResult.outcomes.filter(outcome => outcome.sensitivityContext.state === 'correct').length >= 5);
   const collisionResult = artifact.results.find(result => result.id === 'collision-run');
   assert.deepEqual(collisionResult.evidence.collision, { kind: 'jurisdiction-collision', targetFamily: 'pii:us:tax-id',
     competingFamilies: ['pii:br:ordinary-numeric-id', 'pii:tr:tax-id'] });

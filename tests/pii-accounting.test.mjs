@@ -20,7 +20,7 @@ const source = (overrides = {}) => ({ schemaVersion: 1, engineVersion: '1.0.0', 
 function row(id, overrides = {}) {
   const base = { source: source(), caseId: id, method: 'type-validation', family: 'pii:global:synthetic-id', scope: 'global', variant: 'authored',
     strategy: 'authored', scanner: 'pii-scanner', qualificationProfile: { id: 'pii-v1', version: 1 }, authority,
-    expectation: { type: 'valid', sensitivity: 'sensitive', contextObligation: 'reinforcing', contextClass: 'sensitive', validatorApplicable: true, referenceApplicable: false },
+    expectation: { type: 'valid', sensitivity: 'sensitive', contextObligation: 'reinforcing', contextClass: 'sensitive', language: 'en', validatorApplicable: true, referenceApplicable: false },
     methodEvidence: { controlClass: null, validatorState: 'valid', collision: null, referenceState: null },
     outcome: { scanner: 'pii-scanner', variant: 'authored', typeIdentity: { axis: 'type-identity', status: 'pass', state: 'correct', reason: 'correct' },
       sensitivityContext: { axis: 'sensitivity-context', status: 'pass', state: 'correct', reason: 'correct' }, range: 'exact',
@@ -160,7 +160,23 @@ test('context discrimination counts complete correlated trios rather than endpoi
   assert.equal(report.metrics['context-discrimination-rate'].counts.numerator, 1);
   assert.equal(report.metrics['type-miss-rate'].counts.total, 1);
   assert.equal(report.metrics['measurable-share'].counts.total, 2);
-  assert.throws(() => accountPiiRows(trio.slice(0, 2)), /Incomplete PII context/);
+  assert.deepEqual(report.contextByLanguage.en.sensitive, { pass: 1, fail: 0, 'review-required': 0, 'not-measured': 0 });
+  assert.deepEqual(report.contextByLanguage.en.neutral, { pass: 0, fail: 0, 'review-required': 1, 'not-measured': 0 });
+  assert.throws(() => accountPiiRows(trio.slice(0, 2)), /Incomplete.*PII context/);
+});
+
+test('context accounting separates language from jurisdiction and reconciles English and Korean strata', () => {
+  const english = stableRows().filter(item => item.caseId === 'context-case-0');
+  const korean = stableRows().filter(item => item.caseId === 'context-case-1').map(item => ({ ...item,
+    expectation: { ...item.expectation, language: 'ko' } }));
+  const report = accountPiiRows([...english, ...korean]);
+  assert.deepEqual(Object.keys(report.contextByLanguage), ['en', 'ko']);
+  assert.equal(report.contextByLanguage.ko.sensitive.pass, 1);
+  assert.equal(report.contextByLanguage.ko.neutral['review-required'], 1);
+  assert.equal(report.contextByLanguage.ko['non-sensitive'].pass, 1);
+  assert.equal(Object.hasOwn(report, 'jurisdiction'), false);
+  const forged = structuredClone(report); forged.contextByLanguage.ko.sensitive.pass++;
+  assert.throws(() => validatePiiAccountingReport(forged), /context language strata/);
 });
 
 test('metric labels and evidence tallies are canonical and recomputed from safe rows', () => {

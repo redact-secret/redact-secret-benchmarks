@@ -1,7 +1,7 @@
 {
   "$id": "urn:redact-secret:pii-accounting:1",
   "type": "object", "additionalProperties": false,
-  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "sourceCaseCount", "inputCommitment", "commitmentTrust", "sources", "metrics", "benignByControlClass", "evidence"],
+  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "sourceCaseCount", "inputCommitment", "commitmentTrust", "sources", "metrics", "benignByControlClass", "contextByLanguage", "evidence"],
   "properties": {
     "schemaVersion": { "const": 1 }, "reportType": { "const": "pii-accounting" }, "domain": { "const": "pii" },
     "evaluationProfile": { "const": "pii-v1" }, "domainAccountingVersion": { "const": "pii-v1" },
@@ -23,6 +23,11 @@
       "properties": { "reserved": { "$ref": "#/$defs/metric" }, "documentation": { "$ref": "#/$defs/metric" },
         "test-value": { "$ref": "#/$defs/metric" }, "public-operational": { "$ref": "#/$defs/metric" },
         "placeholder": { "$ref": "#/$defs/metric" }, "context-negative": { "$ref": "#/$defs/metric" } }
+    },
+    "contextByLanguage": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": { "^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$": { "$ref": "#/$defs/contextClasses" } }
     },
     "evidence": { "type": "object", "additionalProperties": false,
       "required": ["methods", "authority", "validators", "benign", "semanticControls", "context", "jurisdiction", "reference"],
@@ -65,9 +70,10 @@
         "locator": { "type": "string", "minLength": 1 }, "revision": { "type": "string", "minLength": 1 },
         "supports": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["lexical", "validation", "allocation", "reserved-control", "sensitivity"] } } } },
     "expectation": { "type": "object", "additionalProperties": false,
-      "required": ["type", "sensitivity", "contextObligation", "contextClass", "validatorApplicable", "referenceApplicable"],
+      "required": ["type", "sensitivity", "contextObligation", "contextClass", "language", "validatorApplicable", "referenceApplicable"],
       "properties": { "type": { "enum": ["valid", "invalid"] }, "sensitivity": { "enum": ["sensitive", "non-sensitive", "not-established"] },
         "contextObligation": { "enum": ["none", "reinforcing", "required-for-sensitive-classification"] }, "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
+        "language": { "type": "string", "pattern": "^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$" },
         "validatorApplicable": { "type": "boolean" }, "referenceApplicable": { "type": "boolean" } } },
     "methodEvidence": { "type": "object", "additionalProperties": false, "required": ["controlClass", "validatorState", "collision", "referenceState"],
       "properties": { "controlClass": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/controlClass" }] },
@@ -102,6 +108,12 @@
         "direction": { "enum": ["upper", "lower"] }, "status": { "enum": ["measured", "partial", "unresolved", "not-measured", "not-applicable"] }, "counts": { "$ref": "#/$defs/counts" },
         "effectiveN": { "type": "integer", "minimum": 0 }, "rate": { "$ref": "#/$defs/rate" } } },
     "applicable": { "type": "object", "additionalProperties": false, "required": ["applicable", "evaluated"], "properties": { "applicable": { "type": "integer", "minimum": 0 }, "evaluated": { "type": "integer", "minimum": 0 } } },
-    "applicableUnavailable": { "type": "object", "additionalProperties": false, "required": ["applicable", "evaluated", "unavailable"], "properties": { "applicable": { "type": "integer", "minimum": 0 }, "evaluated": { "type": "integer", "minimum": 0 }, "unavailable": { "type": "integer", "minimum": 0 } } }
+    "applicableUnavailable": { "type": "object", "additionalProperties": false, "required": ["applicable", "evaluated", "unavailable"], "properties": { "applicable": { "type": "integer", "minimum": 0 }, "evaluated": { "type": "integer", "minimum": 0 }, "unavailable": { "type": "integer", "minimum": 0 } } },
+    "contextStatusCounts": { "type": "object", "additionalProperties": false, "required": ["pass", "fail", "review-required", "not-measured"],
+      "properties": { "pass": { "type": "integer", "minimum": 0 }, "fail": { "type": "integer", "minimum": 0 },
+        "review-required": { "type": "integer", "minimum": 0 }, "not-measured": { "type": "integer", "minimum": 0 } } },
+    "contextClasses": { "type": "object", "additionalProperties": false, "required": ["sensitive", "neutral", "non-sensitive"],
+      "properties": { "sensitive": { "$ref": "#/$defs/contextStatusCounts" }, "neutral": { "$ref": "#/$defs/contextStatusCounts" },
+        "non-sensitive": { "$ref": "#/$defs/contextStatusCounts" } } }
   }
 }

@@ -1,14 +1,21 @@
-# Evidence: redact-secret#774 — Beta.10 credential families measured at cfe2aec
+# Evidence: redact-secret#774 — Beta.10 credential families measured at cfe2aec, then 735797a
 
-**Result:** 3 of 13 Beta.10 families read `stable` (documented, T1) in candidate mode: `aws-bedrock-long-term-api-key`,
-`aws-bedrock-short-term-api-key`, `elevenlabs-api-key`. No family qualifies for `Stable · Empirical` (T2). Candidate mode
-64 stable of 83 families; published mode (0.1.0-beta.9) 61 stable of 83, unchanged from `develop`.
+**Current result (735797a, superseding cfe2aec below):** 4 of 13 Beta.10 families read `stable`: three T1 documented
+(`aws-bedrock-long-term-api-key`, `aws-bedrock-short-term-api-key`, `elevenlabs-api-key`) and one T2 empirical
+(`tavily-api-key`, newly qualified once redact-secret#870 removed its placeholder false alarm). Candidate mode 65 stable
+of 83 families; published mode (0.1.0-beta.9) unchanged at 61 of 83. The registry re-pin to 735797a is otherwise
+unblocked by detector-list changes (none), but the performance evaluation twice read REJECTED at 735797a
+(see "Performance evaluation" below), so `benchmarks/performance-criteria.json baseline.verifiedCommit` is not advanced
+and `pins:check` still fails on the pre-existing #150 coupling.
+
+**Prior result (cfe2aec, first measured):** 3 of 13 families read `stable` (documented, T1), none empirical. Candidate
+mode 64 stable of 83; published mode 61 stable of 83.
 
 Benchmark side of [redact-secret#774](https://github.com/redact-secret/redact-secret/issues/774) (product #862-#868, PR #869),
 [redact-secret-benchmarks#384](https://github.com/redact-secret/redact-secret-benchmarks/issues/384), per [`evidence/README.md`](../README.md).
 No matched plaintext or example credential is retained here.
 
-## Source revisions
+## Source revisions (cfe2aec, first measurement)
 
 | Repository | Revision |
 | --- | --- |
@@ -64,3 +71,83 @@ npm run eval:matrix -- --input=evidence/774/support-status.json --output=evidenc
 
 The artifacts came from the product's own candidate build (`npm ci`, `js:build`, node addon, `wasm:build`, `wasm:build:common`, `npm pack`)
 at cfe2aec, not through `npm run benchmark:candidate`, so the classification could run against the working corpus.
+
+## Update: re-measured and re-pinned at 735797a (redact-secret PR #870)
+
+Product follow-up PR #870 (merge `735797a7950dbb41c8f87bc94ca152d1f2ec9604`) fixes the `scale-logs` performance
+regression (a cheap provider-keyword pre-scan gates the keyword-gated detectors before the full run scan) and the
+`tvly-`/`MISTRAL_API_KEY=`/etc. instructional-placeholder false alarms, and updates the Bedrock/ElevenLabs doc comments
+to the maintainer's 2026-09-27 T1 ruling text. `crates/secret-scan-core/src/detectors/mod.rs` (the registry list) is
+unchanged between cfe2aec and 735797a, so the re-pin touches only `benchmarks/detectors.json` `sourceRevision` and
+`benchmarks/detector-inventory.json` `redactSecretRevision` (`redactSecretReleaseRevision` stays `f726f2f`, the last
+published beta.9 source — no new release happened).
+
+### Source revisions (735797a)
+
+| Repository | Revision |
+| --- | --- |
+| `redact-secret` candidate | `735797a7950dbb41c8f87bc94ca152d1f2ec9604` (PR #870 merge), clean |
+| `redact-secret-benchmarks` | this branch tip |
+
+Candidate artifact SHA-256: core `51fc3d78f24ed5c13d7460c25627476e1751a71c511ce51bd1fe6cfd69047664` (unchanged: no JS
+façade change), node darwin-arm64 `c0bc886033fb13a6de98932f062af4c55f512edc86510fee9528b853d4a4b86d`, wasm
+`d532eec1a517bc740dc18c7f33a90e5ce0fdd11de8a6c337e4e75639faba6f13`. Candidate run (`735797a/candidate-evidence-v1.json`):
+complete, 3,527 of 3,527 fixtures. Candidate classification `21f0b8f1-af97-4c1e-8599-1b3c8d339079`
+(`735797a/support-status.json`, `735797a/support-matrix.json`); published classification in `735797a/published/`.
+Pinned scanners: trufflehog 3.97.4, gitleaks 8.30.1 (same provisioning as above).
+
+### Per-family result (candidate mode, 735797a)
+
+| Family | cfe2aec status | 735797a status | Tier | What changed / remaining unmet floor |
+| --- | --- | --- | --- | --- |
+| `aws-bedrock-long-term-api-key` | stable (documented) | stable (documented) | T1 | unchanged |
+| `aws-bedrock-short-term-api-key` | stable (documented) | stable (documented) | T1 | unchanged |
+| `elevenlabs-api-key` | stable (documented) | stable (documented) | T1 | unchanged |
+| `tavily-api-key` | provisional | **stable (empirical)** | T2 | #870 removed the `tvly-YOUR_API_KEY` placeholder false alarm; the family already had the corroborated-route evidence (4 references, 4 owners, `peer-scanner-rule`/`provider-example`/`independent-research`) recorded in `benchmarks/support/empirical-observations.json`, so it now clears every empirical gate |
+| `together-ai-api-key` | provisional | provisional | T2 | unchanged: corroboration 2 references / 2 owners / 1 non-summary class (needs 3/3/2); #870 fixed no Together-specific placeholder |
+| `mistral-api-key` | provisional | provisional | T2, gated | improved (false alarms 3→1, metamorphic 29→15, mutation 3→1, differential 5→1) but one benign false alarm remains: the `detector-coverage--mistral-api-key-short-token` near-miss control (`MISTRAL_API_KEY=` + a 31-byte body, one short of the contracted 32) is still redacted, labelled `generic-token` — a named-assignment co-detection on a boundary value, not an instructional placeholder, so #870 does not touch it. One non-summary corroboration class also remains short (needs 2) |
+| `cohere-api-key` | provisional | provisional | T2, gated | same pattern: false alarms 3→1 (the analogous `short-token` control), metamorphic 29→15; still short of the empirical floors |
+| `deepgram-api-key` | provisional | provisional | T2, gated | false alarms 3→1 (same `short-token` pattern), metamorphic 43→29; still misses `createClient(key)` and the WebSocket subprotocol form, 2 twin failures remain |
+| `ai21-api-key` | pending | pending | T0 | unchanged: no provider or scanner shape |
+| `anthropic-api01-key`, `anthropic-admin01-key`, `openai-admin-api-key` | unscored arrival | unscored arrival | T1, T1, T2 | unchanged |
+| `exa-api-key` | unscored arrival | unscored arrival | T0 | unchanged |
+
+The `short-token` false alarm on mistral/cohere/deepgram is a genuine, reproducible product behavior, not a fixture
+defect: `generic-token`'s credential-named-assignment rule (redact-secret#702) redacts any value assigned to an
+`*_API_KEY=`-shaped name regardless of length, so a one-byte-short near-miss beside that exact name is still flagged
+(labelled `generic-token`, not the family's own detector). The equivalent `travisci-api-token` control
+(`TRAVIS_API_TOKEN=` + a 21-byte body) is not flagged, because travis's native body (22 bytes) minus one character
+falls below whatever length threshold `generic-token`'s heuristic uses, while mistral/cohere/deepgram's longer
+native bodies (32/40/40) do not. The fixture was kept at the strictest one-byte-short boundary per this repository's
+near-miss convention rather than widened to dodge the interaction, so the finding is reported open, not resolved.
+
+### Performance evaluation: still REJECTED at 735797a
+
+Two independent dispatches of `performance-evaluation.yml` at 735797a both read REJECTED, each on `scale-logs`
+`processing-ratio` (budget `allowedChange: 0.1`, i.e. 10%), on a different subset of surfaces each time (noise near
+the budget line, not a single stable offender):
+
+| Run | Surfaces over budget | Measured ratio |
+| --- | --- | --- |
+| [36300197486](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36300197486) | browser-wasm (medium-fixed4096), cli (medium-fixed4096), rust-core (medium-fixed4096) | 1.112, 1.107, 1.102 (node 1.064, python 1.065 — within budget) |
+| [36300482562](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36300482562) | browser-wasm (medium-fixed4096), node (small-whole), rust-core (small-whole) | 1.117, 1.104, 1.114 |
+
+This is a real, measured residual regression of roughly 10-12% on `scale-logs`, not the ~4-5% estimated before
+dispatch. It clears the ~13-31% regression that rejected cfe2aec, but does not clear the reviewed 10% budget on both
+runs. Per the documented re-pin procedure, a REJECTED run is never recalibrated away: `benchmarks/performance-criteria.json`
+`baseline.verifiedCommit` stays `0af4cb8`, and `npm run pins:check` / the `pin consistency` unit test keep failing on
+the pre-existing #150 coupling until a run reads ACCEPTED at 735797a (or a later commit) or the maintainer records an
+accepted tradeoff in `benchmarks/accepted-regressions.json`. No performance criteria were hand-edited or forced.
+
+### Commands (735797a)
+
+```sh
+npm run peers:provision -- --dir /path/peers && export PATH=/path/peers:$PATH   # trufflehog 3.97.4, gitleaks 8.30.1
+npm run fixtures:generate
+npm run eval:candidate -- --candidate-package <core.tgz> --candidate-node-package <node.tgz> --candidate-wasm-package <wasm.tgz> \
+  --candidate-source-commit 735797a7950dbb41c8f87bc94ca152d1f2ec9604 --product-state clean --expected-artifact-sha256 <core sha> --output-dir evidence/774/735797a
+npm run eval:classify -- --candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> \
+  --candidate-source-commit=735797a7950dbb41c8f87bc94ca152d1f2ec9604 --output=evidence/774/735797a/support-status.json
+npm run eval:matrix -- --input=evidence/774/735797a/support-status.json --output=evidence/774/735797a/support-matrix.json
+gh workflow run performance-evaluation.yml --ref develop -f candidate_revision=735797a7950dbb41c8f87bc94ca152d1f2ec9604
+```

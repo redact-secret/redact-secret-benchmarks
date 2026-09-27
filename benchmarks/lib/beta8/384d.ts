@@ -14,6 +14,11 @@ import { field } from '../contract-sources.ts';
 // Registry. redact-secret#867 (product PR #869, merge cfe2aec) added both as registry detectors,
 // `together-ai-api-key` and `tavily-api-key`. The Together arrival id `together-api-key` was renamed
 // to the detector id so the family graduates at that re-pin; the taxonomy id is unchanged.
+//
+// redact-secret#870 (merge 735797a) fixes the tvly-YOUR_API_KEY placeholder false alarm this module's
+// docs-bearer-placeholder control exercised. With that gone, tavily-api-key clears the corroborated
+// empirical route on the record already in benchmarks/support/empirical-observations.json (4 references,
+// 4 owners, peer-scanner-rule/provider-example/independent-research) and the 40-fixture profile below.
 export const issue = '384d';
 
 const at = '2026-09-26';
@@ -77,5 +82,7 @@ export const registryContracts: Record<string, FormatContract> = {
 /** The Beta.8 profile each target this issue owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = {
   'together-ai-api-key': 'arrival-24',
-  'tavily-api-key': 'arrival-24',
+  // Product fix redact-secret#870 removes the tvly-YOUR_API_KEY placeholder false alarm; the family now clears the
+  // corroborated empirical route (4 references, 4 owners, peer-scanner-rule/provider-example/independent-research) and the 40-fixture profile.
+  'tavily-api-key': 'empirical-40',
 };

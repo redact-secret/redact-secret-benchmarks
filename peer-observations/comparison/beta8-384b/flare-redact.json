@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T04:37:03.340Z",
+  "sourceRun": {
+    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
+    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+  },
+  "input": {
+    "surface": "comparison/beta8-384b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "fd4dd5b984a24d90d1431bb5f3e5602095a8ad5be4ca0705f18530ec7374d6b8",
+    "fixtureCount": 53,
+    "fixturesDigest": "02bbf505bec313170f3606e10c3f0e1ba72481db87f674f3b93e9dba8238c7e8",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
+      "fixtureCount": 3422
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-curl-bearer.sh",
+      "start": 104,
+      "end": 243,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-lowercase-prefix-twin.sh",
+      "start": 104,
+      "end": 243,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-curl-bearer.sh",
+      "start": 104,
+      "end": 571,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-plural-prefix-twin.sh",
+      "start": 104,
+      "end": 572,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "c68e84e9cacb242174b018dab618a10baac941d3b92a9b570a95490c70a517a8"
+}

@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T04:37:03.340Z",
+  "sourceRun": {
+    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
+    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+  },
+  "input": {
+    "surface": "comparison/beta8-384b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "fd4dd5b984a24d90d1431bb5f3e5602095a8ad5be4ca0705f18530ec7374d6b8",
+    "fixtureCount": 53,
+    "fixturesDigest": "02bbf505bec313170f3606e10c3f0e1ba72481db87f674f3b93e9dba8238c7e8",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
+      "fixtureCount": 3422
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-actions-env.yml",
+      "start": 84,
+      "end": 220
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-agent-settings.json",
+      "start": 55,
+      "end": 187
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-alias-base64-encoded-value.yml",
+      "start": 22,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-curl-bearer.sh",
+      "start": 111,
+      "end": 243
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-curl-bearer.sh",
+      "start": 111,
+      "end": 243
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-dotenv.env",
+      "start": 32,
+      "end": 164
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-embedded-leading-twin.py",
+      "start": 122,
+      "end": 255,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-export-136.sh",
+      "start": 33,
+      "end": 169
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-leading-equals-twin.json",
+      "start": 55,
+      "end": 187,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-lowercase-prefix-twin.sh",
+      "start": 111,
+      "end": 243
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-openai-sdk.py",
+      "start": 122,
+      "end": 254
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-pasted-key.txt",
+      "start": 75,
+      "end": 207
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-proxy-log.log",
+      "start": 59,
+      "end": 191
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-python-environ.py",
+      "start": 53,
+      "end": 185
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-tool-call.json",
+      "start": 75,
+      "end": 207
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-truncated-head-near-miss.env",
+      "start": 25,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-wrong-prefix-twin.env",
+      "start": 32,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-actions-env.yml",
+      "start": 84,
+      "end": 128
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-agent-settings.json",
+      "start": 55,
+      "end": 99
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-curl-bearer.sh",
+      "start": 111,
+      "end": 155
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-curl-bearer.sh",
+      "start": 111,
+      "end": 571
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-dotenv.env",
+      "start": 32,
+      "end": 76
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-embedded-leading-twin.py",
+      "start": 109,
+      "end": 153
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-export-with-session.sh",
+      "start": 33,
+      "end": 77
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-head-only-twin.json",
+      "start": 55,
+      "end": 99
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-head-only-twin.json",
+      "start": 55,
+      "end": 204,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-openai-sdk-mantle.py",
+      "start": 108,
+      "end": 152
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-pasted-key.txt",
+      "start": 78,
+      "end": 122
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-plural-prefix-twin.sh",
+      "start": 111,
+      "end": 572
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-proxy-log.log",
+      "start": 59,
+      "end": 103
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-python-environ.py",
+      "start": 53,
+      "end": 97
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-rule-with-body-class-near-miss.txt",
+      "start": 33,
+      "end": 77
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-scanner-rule-anchor-near-miss.txt",
+      "start": 47,
+      "end": 91
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-tool-call.json",
+      "start": 75,
+      "end": 119
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-urlsafe-body-twin.py",
+      "start": 53,
+      "end": 97
+    }
+  ],
+  "digest": "840e9e9ac090012085dd055695c0dde05fe999a5c7f31b3f40c5256d34e59045"
+}

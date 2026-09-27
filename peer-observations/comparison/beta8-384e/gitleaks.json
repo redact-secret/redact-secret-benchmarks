@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T04:37:03.340Z",
+  "sourceRun": {
+    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
+    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+  },
+  "input": {
+    "surface": "comparison/beta8-384e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "4a7414bbc3ebc5d2c79a7e1d00825b5be16465bb8128dd0d1c03387d0ef78fc3",
+    "fixtureCount": 202,
+    "fixturesDigest": "0c53ec025ca97d188944fc122cfae83c6ec92806e8f65ef20af72edf28d1c1d0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
+      "fixtureCount": 3422
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/ai21-api-key-curl-header.sh",
+      "start": 65,
+      "end": 97
+    },
+    {
+      "path": "cases/ai21-api-key-dotenv.env",
+      "start": 20,
+      "end": 52,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-export.sh",
+      "start": 21,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-id-named-env-twin.env",
+      "start": 21,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-id-named-export-twin.sh",
+      "start": 22,
+      "end": 54,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-id-named-tool-call-twin.json",
+      "start": 64,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-json-config.json",
+      "start": 19,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-langchain-kwarg.py",
+      "start": 44,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-long-value-twin.py",
+      "start": 58,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-other-host-curl-twin.sh",
+      "start": 72,
+      "end": 104
+    },
+    {
+      "path": "cases/ai21-api-key-python-ctor.py",
+      "start": 58,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-short-value-twin.env",
+      "start": 20,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-tool-call.json",
+      "start": 63,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-ts-ctor.ts",
+      "start": 35,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-unrelated-python-ctor-twin.py",
+      "start": 54,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-unrelated-ts-ctor-twin.ts",
+      "start": 37,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-compose-env.yml",
+      "start": 93,
+      "end": 133
+    },
+    {
+      "path": "cases/cohere-api-key-curl-header.sh",
+      "start": 67,
+      "end": 107
+    },
+    {
+      "path": "cases/cohere-api-key-dotenv-alt.env",
+      "start": 15,
+      "end": 55
+    },
+    {
+      "path": "cases/cohere-api-key-dotenv.env",
+      "start": 18,
+      "end": 58
+    },
+    {
+      "path": "cases/cohere-api-key-export.sh",
+      "start": 19,
+      "end": 59
+    },
+    {
+      "path": "cases/cohere-api-key-id-named-env-alt-twin.env",
+      "start": 16,
+      "end": 56
+    },
+    {
+      "path": "cases/cohere-api-key-id-named-json-twin.json",
+      "start": 24,
+      "end": 64
+    },
+    {
+      "path": "cases/cohere-api-key-id-named-kwarg-twin.py",
+      "start": 56,
+      "end": 96
+    },
+    {
+      "path": "cases/cohere-api-key-json-config.json",
+      "start": 21,
+      "end": 61
+    },
+    {
+      "path": "cases/cohere-api-key-langchain-kwarg.py",
+      "start": 57,
+      "end": 97
+    },
+    {
+      "path": "cases/cohere-api-key-litellm-yaml.yml",
+      "start": 113,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-long-value-twin.sh",
+      "start": 19,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-other-host-curl-twin.sh",
+      "start": 72,
+      "end": 112
+    },
+    {
+      "path": "cases/cohere-api-key-other-host-log-twin.log",
+      "start": 62,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-other-provider-model-twin.yml",
+      "start": 110,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-proxy-log.log",
+      "start": 57,
+      "end": 97
+    },
+    {
+      "path": "cases/cohere-api-key-python-ctor.py",
+      "start": 49,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-short-value-twin.env",
+      "start": 18,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-tool-call.json",
+      "start": 61,
+      "end": 101
+    },
+    {
+      "path": "cases/cohere-api-key-ts-ctor.ts",
+      "start": 44,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-unrelated-python-ctor-twin.py",
+      "start": 40,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-unrelated-ts-ctor-twin.ts",
+      "start": 36,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-compose-env.yml",
+      "start": 99,
+      "end": 139,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-curl-header.sh",
+      "start": 68,
+      "end": 108
+    },
+    {
+      "path": "cases/deepgram-api-key-dotenv-alt.env",
+      "start": 11,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-dotenv.env",
+      "start": 24,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-export.sh",
+      "start": 25,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-long-value-twin.sh",
+      "start": 25,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-other-host-curl-twin.sh",
+      "start": 71,
+      "end": 111
+    },
+    {
+      "path": "cases/deepgram-api-key-other-host-log-twin.log",
+      "start": 62,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-other-host-websocket-twin.txt",
+      "start": 80,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-proxy-log.log",
+      "start": 59,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-python-ctor.py",
+      "start": 70,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-short-value-twin.env",
+      "start": 24,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-tool-call.json",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-ts-ctor.ts",
+      "start": 42,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-unrelated-python-ctor-twin.py",
+      "start": 62,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-unrelated-ts-ctor-twin.ts",
+      "start": 34,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-websocket-subprotocol.txt",
+      "start": 77,
+      "end": 117,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/exa-api-key-curl-x-api-key.sh",
+      "start": 49,
+      "end": 85
+    },
+    {
+      "path": "cases/exa-api-key-dotenv.env",
+      "start": 19,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/exa-api-key-export.sh",
+      "start": 20,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/exa-api-key-hosted-mcp-query.json",
+      "start": 68,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/exa-api-key-langchain-kwarg.py",
+      "start": 37,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/exa-api-key-other-host-twin.sh",
+      "start": 58,
+      "end": 94
+    },
+    {
+      "path": "cases/exa-api-key-python-kwarg.py",
+      "start": 43,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/exa-api-key-unrelated-python-ctor-twin.py",
+      "start": 46,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-compose-env.yml",
+      "start": 98,
+      "end": 130,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-curl-header.sh",
+      "start": 67,
+      "end": 99
+    },
+    {
+      "path": "cases/mistral-api-key-dotenv-alt.env",
+      "start": 18,
+      "end": 50,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-dotenv.env",
+      "start": 23,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-export.sh",
+      "start": 24,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-json-config.json",
+      "start": 22,
+      "end": 54,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-langchain-kwarg.py",
+      "start": 67,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-litellm-yaml.yml",
+      "start": 126,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-long-value-twin.sh",
+      "start": 24,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-other-host-curl-twin.sh",
+      "start": 72,
+      "end": 104
+    },
+    {
+      "path": "cases/mistral-api-key-other-host-log-twin.log",
+      "start": 62,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-other-provider-model-twin.yml",
+      "start": 110,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-proxy-log.log",
+      "start": 57,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-python-ctor.py",
+      "start": 57,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-short-value-twin.env",
+      "start": 23,
+      "end": 54,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-tool-call.json",
+      "start": 66,
+      "end": 98,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-ts-ctor.ts",
+      "start": 38,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-unrelated-python-ctor-twin.py",
+      "start": 56,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-unrelated-ts-ctor-twin.ts",
+      "start": 37,
+      "end": 69,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "069977b77407740b5febab961476be80cf82c6eb29a8c97e3a092ea35840e56d"
+}

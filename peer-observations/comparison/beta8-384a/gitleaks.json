@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T04:37:03.340Z",
+  "sourceRun": {
+    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
+    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+  },
+  "input": {
+    "surface": "comparison/beta8-384a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "d12772370ffa7a2f1488aa9716c3c539a2b1e094cdd779d015922bec26dc52f7",
+    "fixtureCount": 75,
+    "fixturesDigest": "8173a810f72a93d68293f5c9aa1b9e0f0f66d8214acd7ebd104f77bdc7b3c89b",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
+      "fixtureCount": 3422
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-admin01-key-api03-prefix-twin.env",
+      "start": 31,
+      "end": 139,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-compose-env.yml",
+      "start": 116,
+      "end": 226
+    },
+    {
+      "path": "cases/anthropic-admin01-key-curl-x-api-key.sh",
+      "start": 75,
+      "end": 185
+    },
+    {
+      "path": "cases/anthropic-admin01-key-curl-x-api-key.sh",
+      "start": 75,
+      "end": 185
+    },
+    {
+      "path": "cases/anthropic-admin01-key-dotenv.env",
+      "start": 31,
+      "end": 141
+    },
+    {
+      "path": "cases/anthropic-admin01-key-export.sh",
+      "start": 28,
+      "end": 138
+    },
+    {
+      "path": "cases/anthropic-admin01-key-job-log.log",
+      "start": 41,
+      "end": 151
+    },
+    {
+      "path": "cases/anthropic-admin01-key-json-config.json",
+      "start": 22,
+      "end": 132
+    },
+    {
+      "path": "cases/anthropic-admin01-key-key-digest-encoded-value.txt",
+      "start": 46,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-pasted-key.txt",
+      "start": 60,
+      "end": 170
+    },
+    {
+      "path": "cases/anthropic-admin01-key-python-sdk.py",
+      "start": 56,
+      "end": 166
+    },
+    {
+      "path": "cases/anthropic-admin01-key-tool-call.json",
+      "start": 118,
+      "end": 228
+    },
+    {
+      "path": "cases/anthropic-admin01-key-tool-call.json",
+      "start": 118,
+      "end": 228
+    },
+    {
+      "path": "cases/anthropic-admin01-key-underscore-delimiters-twin.sh",
+      "start": 75,
+      "end": 185
+    },
+    {
+      "path": "cases/anthropic-api01-key-admin01-prefix-twin.sh",
+      "start": 26,
+      "end": 136
+    },
+    {
+      "path": "cases/anthropic-api01-key-api03-prefix-twin.env",
+      "start": 39,
+      "end": 147,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-curl-x-api-key.sh",
+      "start": 74,
+      "end": 182
+    },
+    {
+      "path": "cases/anthropic-api01-key-key-digest-encoded-value.txt",
+      "start": 54,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-tool-call.json",
+      "start": 117,
+      "end": 225
+    },
+    {
+      "path": "cases/anthropic-api01-key-underscore-delimiters-twin.sh",
+      "start": 74,
+      "end": 182
+    },
+    {
+      "path": "cases/openai-admin-api-key-compose-env.yml",
+      "start": 117,
+      "end": 250,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-curl-bearer.sh",
+      "start": 79,
+      "end": 212
+    },
+    {
+      "path": "cases/openai-admin-api-key-curl-bearer.sh",
+      "start": 79,
+      "end": 212,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-dotenv.env",
+      "start": 24,
+      "end": 157,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-export-74.sh",
+      "start": 25,
+      "end": 190,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-json-config.json",
+      "start": 22,
+      "end": 155,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-key-digest-encoded-value.txt",
+      "start": 39,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-prefix-only-near-miss.sh",
+      "start": 79,
+      "end": 88
+    },
+    {
+      "path": "cases/openai-admin-api-key-python-sdk.py",
+      "start": 58,
+      "end": 191,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-short-second-segment-twin.sh",
+      "start": 79,
+      "end": 211
+    },
+    {
+      "path": "cases/openai-admin-api-key-tool-call.json",
+      "start": 67,
+      "end": 200,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-ts-client.ts",
+      "start": 72,
+      "end": 205,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-usage-log.log",
+      "start": 45,
+      "end": 178,
+      "family": "openai-token"
+    }
+  ],
+  "digest": "5681e4bcd0c9bcbbbd15300c8383d1a9f09970172055afdc75bec333c9573c13"
+}

@@ -5,6 +5,7 @@ import { piiV1Profile, validatePiiQualificationProfile } from '../benchmarks/eva
 import { accountPiiRows, assertPiiAccountingIdentities, piiAccountingRowsFromEvaluation, validatePiiAccountingReport } from '../benchmarks/evaluation/domains/pii/accounting.ts';
 import { qualifyPii, validatePiiQualificationReport } from '../benchmarks/evaluation/domains/pii/qualification.ts';
 import { credentialAccountingIdentity } from '../benchmarks/evaluation/domains/credential/accounting.ts';
+import { proportion } from '../benchmarks/accounting/shared/primitives.ts';
 
 const digest = character => character.repeat(64);
 const candidateHash = digest('c');
@@ -96,6 +97,8 @@ test('unresolved, not-measured, and not-applicable remain explicit', () => {
 test('validated holdout projections remain provisional until a trusted resolver exists', () => {
   const accounting = accountPiiRows(stableRows()), qualified = qualifyPii(accounting, completeEvidence);
   assert.equal(qualified.status, 'provisional');
+  assert.equal(qualified.gates.find(item => item.id === 'accounting-source-trust').status, 'unresolved');
+  assert.equal(qualified.gates.find(item => item.id === 'measurable-share').status, 'unresolved');
   assert.equal(qualified.evidence.protected.trust, 'unresolved');
   assert.equal(Object.hasOwn(qualified.evidence.protected, 'scanners'), false);
   assert.equal(qualifyPii(accountPiiRows([]), { protected: null, independent: null }).status, 'not-applicable');
@@ -105,6 +108,39 @@ test('validated holdout projections remain provisional until a trusted resolver 
   assert.throws(() => qualifyPii(accounting, { protected: holdout({ candidate: digest('9') }), independent: null }), /does not match/);
   assert.notEqual(qualifyPii(accounting, { protected: holdout({ fail: 1 }), independent: completeEvidence.independent }).status, 'stable');
   assert.notEqual(qualifyPii(accounting, { protected: null, independent: null }).status, 'stable');
+});
+
+test('only measurable-share evaluates a partial denominator and uses its lower bound', () => {
+  const unresolvedSensitivity = repeat('partial-share', 4, id => row(id, {
+    expectation: { sensitivity: 'unresolved', validatorApplicable: false }, methodEvidence: { validatorState: null },
+    outcome: { sensitivityContext: { status: 'review-required', state: 'unresolved', reason: 'authored unresolved' } },
+  }));
+  const belowFloor = qualifyPii(accountPiiRows(unresolvedSensitivity), { protected: null, independent: null });
+  const share = belowFloor.accounting.metrics['measurable-share'];
+  assert.equal(share.status, 'partial');
+  assert.equal(share.effectiveN, 8);
+  assert.ok(share.rate.bound < piiV1Profile.metrics['measurable-share'].threshold);
+  assert.equal(belowFloor.gates.find(item => item.id === 'measurable-share').status, 'not-met');
+
+  const partlyMeasuredType = repeat('partial-type', 5, (id, index) => row(id, index === 0 ? {
+    outcome: { typeIdentity: { status: 'not-measured', state: 'not-measured', reason: 'scanner unavailable' } },
+  } : {}));
+  const otherPartial = qualifyPii(accountPiiRows(partlyMeasuredType), { protected: null, independent: null });
+  assert.equal(otherPartial.accounting.metrics['type-miss-rate'].status, 'partial');
+  assert.notEqual(otherPartial.accounting.metrics['type-miss-rate'].rate, 'insufficient-evidence');
+  assert.equal(otherPartial.gates.find(item => item.id === 'type-miss-rate').status, 'unresolved');
+});
+
+test('opaque commitment substitution and coordinated aggregate forgery remain untrusted', () => {
+  const forged = structuredClone(accountPiiRows(stableRows())), metric = forged.metrics['measurable-share'];
+  forged.inputCommitment = digest('f');
+  metric.counts.numerator--;
+  metric.rate = proportion(metric.counts.numerator, metric.effectiveN, metric.direction, piiV1Profile.mechanics);
+  validatePiiAccountingReport(forged);
+  const qualification = qualifyPii(forged, completeEvidence);
+  assert.equal(qualification.accounting.commitmentTrust, 'unresolved');
+  assert.equal(qualification.gates.find(item => item.id === 'accounting-source-trust').status, 'unresolved');
+  assert.equal(qualification.status, 'provisional');
 });
 
 test('duplicate, mixed-run, mixed-profile, and mixed-scanner samples fail closed', () => {
@@ -172,6 +208,8 @@ test('actual PII execution artifacts preserve their source envelope without raw 
 
 test('profiles and reports are strict and cross-domain aggregation remains forbidden', () => {
   assert.throws(() => validatePiiQualificationProfile({ ...structuredClone(piiV1Profile), extra: true }), /Invalid PII qualification profile/);
+  const withoutTrustGate = structuredClone(piiV1Profile); delete withoutTrustGate.gates.requireTrustedAccountingSource;
+  assert.throws(() => validatePiiQualificationProfile(withoutTrustGate), /Invalid PII qualification profile/);
   const accounting = accountPiiRows(stableRows()), qualification = qualifyPii(accounting, completeEvidence);
   assert.doesNotMatch(JSON.stringify(qualification.evidence), /"configuration"/);
   assert.throws(() => validatePiiAccountingReport({ ...structuredClone(accounting), overallScore: 1 }), /schema/);

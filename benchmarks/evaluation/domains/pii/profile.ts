@@ -11,7 +11,7 @@ export interface PiiQualificationProfile {
   mechanics: MechanicalAccountingConfig;
   metrics: Record<PiiMetricId, { direction: 'upper' | 'lower'; threshold: number; applicability: 'required' | 'jurisdictional' | 'reported-spans' }>;
   gates: { requiredMethods: ['type-validation', 'context-discrimination', 'pii-benign']; minBenignCases: number; minBenignAxes: number;
-    requireProtectedEvidence: true; requireIndependentEvidence: true };
+    requireProtectedEvidence: true; requireIndependentEvidence: true; requireTrustedAccountingSource: true };
 }
 
 const validate = new Ajv({ strict: true }).compile(profileSchema);

@@ -6,7 +6,7 @@
     "schemaVersion": { "const": 1 }, "reportType": { "const": "pii-accounting" }, "domain": { "const": "pii" },
     "evaluationProfile": { "const": "pii-v1" }, "domainAccountingVersion": { "const": "pii-v1" },
     "profile": { "$ref": "#/$defs/profile" }, "rowCount": { "type": "integer", "minimum": 0 },
-    "sourceCaseCount": { "type": "integer", "minimum": 0 }, "inputCommitment": { "$ref": "#/$defs/digest" }, "commitmentTrust": { "const": "unresolved" },
+    "sourceCaseCount": { "type": "integer", "minimum": 0 }, "inputCommitment": { "$ref": "#/$defs/digest" }, "commitmentTrust": { "enum": ["unresolved", "trusted"] },
     "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
     "metrics": { "type": "object", "additionalProperties": false,
       "required": ["type-miss-rate", "wrong-family-rate", "wrong-jurisdiction-rate", "sensitive-miss-rate", "non-sensitive-flag-rate", "context-discrimination-rate", "benign-suppression-rate", "jurisdiction-collision-rate", "range-collateral-rate", "measurable-share"],

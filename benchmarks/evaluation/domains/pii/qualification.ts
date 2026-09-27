@@ -44,11 +44,15 @@ function validateProjection(value: unknown, role: 'protected' | 'independent'): 
       typeof row.outcomesClean !== 'boolean') throw new Error('Invalid PII external evidence projection');
   return structuredClone(row);
 }
-function metricGate(id: PiiMetricId, accounting: PiiAccountingReport, profile: PiiQualificationProfile) {
+function metricGate(id: PiiMetricId, accounting: PiiAccountingReport, profile: PiiQualificationProfile, sourceTrusted: boolean) {
   const metric = accounting.metrics[id], rule = profile.metrics[id], requirement = `${rule.direction} confidence bound ${rule.direction === 'upper' ? '≤' : '≥'} ${rule.threshold}`;
   if (metric.status === 'not-applicable') return gate(id, rule.applicability === 'required' ? 'unresolved' : 'not-applicable', metric.population, requirement);
-  if (metric.status !== 'measured' || metric.rate === null || metric.rate === 'insufficient-evidence') return gate(id, 'unresolved', metric.population, `complete denominator ≥ ${profile.mechanics.minDenominator}`);
-  return gate(id, (rule.direction === 'upper' ? metric.rate.bound! <= rule.threshold : metric.rate.bound! >= rule.threshold) ? 'met' : 'not-met', metric.population, `${requirement}; n=${metric.rate.n}`);
+  if (metric.rate === null || metric.rate === 'insufficient-evidence') return gate(id, 'unresolved', metric.population, `complete denominator ≥ ${profile.mechanics.minDenominator}`);
+  if (metric.status !== 'measured' && !(id === 'measurable-share' && metric.status === 'partial'))
+    return gate(id, 'unresolved', metric.population, `complete denominator ≥ ${profile.mechanics.minDenominator}`);
+  const meetsThreshold = rule.direction === 'upper' ? metric.rate.bound! <= rule.threshold : metric.rate.bound! >= rule.threshold;
+  return gate(id, meetsThreshold ? sourceTrusted ? 'met' : 'unresolved' : 'not-met', metric.population,
+    `${requirement}; n=${metric.rate.n}${sourceTrusted ? '' : '; accounting source trust unresolved'}`);
 }
 
 function assemble(accounting: PiiAccountingReport, evidence: PiiQualificationEvidence, profile: PiiQualificationProfile): PiiQualificationReport {
@@ -61,7 +65,10 @@ function assemble(accounting: PiiAccountingReport, evidence: PiiQualificationEvi
       throw new Error('PII qualification evidence artifacts must be distinct');
     if (evidence.protected.candidateArtifactHash !== evidence.independent.candidateArtifactHash) throw new Error('PII qualification evidence candidate mismatch');
   }
-  const gates: PiiQualificationGate[] = PII_METRIC_IDS.map(id => metricGate(id, accounting, profile)), present = new Set(accounting.evidence.methods);
+  const sourceTrusted = !profile.gates.requireTrustedAccountingSource || accounting.commitmentTrust === 'trusted';
+  const gates: PiiQualificationGate[] = PII_METRIC_IDS.map(id => metricGate(id, accounting, profile, sourceTrusted)), present = new Set(accounting.evidence.methods);
+  gates.push(gate('accounting-source-trust', sourceTrusted ? 'met' : 'unresolved', accounting.commitmentTrust,
+    'trusted resolver binds the input commitment to the accounting source'));
   gates.push(gate('required-methods', profile.gates.requiredMethods.every(method => present.has(method)) ? 'met' : 'not-met', accounting.evidence.methods.join(',') || 'none', `methods ${profile.gates.requiredMethods.join(',')}`));
   const authority = accounting.evidence.authority;
   gates.push(gate('authoritative-provenance', authority.total === 0 ? 'not-applicable' : authority.qualified === authority.total ? 'met' : 'not-met', `${authority.qualified}/${authority.total}`, 'each occurrence has an authority claim matching its own obligation'));

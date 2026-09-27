@@ -35,7 +35,7 @@ export interface PiiMetric {
 }
 export interface PiiAccountingReport extends AccountingArtifactIdentity {
   schemaVersion: 1; reportType: 'pii-accounting'; profile: { id: 'pii-v1'; version: 1 }; rowCount: number; sourceCaseCount: number;
-  inputCommitment: string; commitmentTrust: 'unresolved';
+  inputCommitment: string; commitmentTrust: 'unresolved' | 'trusted';
   sources: PiiAccountingSource[]; metrics: Record<PiiMetricId, PiiMetric>;
   benignByControlClass: Record<PiiControlClass, PiiMetric>;
   evidence: { methods: string[]; authority: { total: number; qualified: number; sources: number };

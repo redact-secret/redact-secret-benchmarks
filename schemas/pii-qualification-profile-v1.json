@@ -38,13 +38,14 @@
     },
     "gates": {
       "type": "object", "additionalProperties": false,
-      "required": ["requiredMethods", "minBenignCases", "minBenignAxes", "requireProtectedEvidence", "requireIndependentEvidence"],
+      "required": ["requiredMethods", "minBenignCases", "minBenignAxes", "requireProtectedEvidence", "requireIndependentEvidence", "requireTrustedAccountingSource"],
       "properties": {
         "requiredMethods": { "const": ["type-validation", "context-discrimination", "pii-benign"] },
         "minBenignCases": { "type": "integer", "minimum": 1 },
         "minBenignAxes": { "type": "integer", "minimum": 1 },
         "requireProtectedEvidence": { "const": true },
-        "requireIndependentEvidence": { "const": true }
+        "requireIndependentEvidence": { "const": true },
+        "requireTrustedAccountingSource": { "const": true }
       }
     }
   },

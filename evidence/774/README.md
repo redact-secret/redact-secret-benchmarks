@@ -351,3 +351,118 @@ npm run eval:classify -- --candidate-package=<core.tgz> --candidate-node-package
 npm run eval:matrix -- --input=evidence/774/f26dee2/support-status.json --output=evidence/774/f26dee2/support-matrix.json
 gh workflow run performance-evaluation.yml --ref develop -f candidate_revision=f26dee26a9c2aa3cfff3543d784c02de5054de09
 ```
+
+## Fix: `cases.ts:57` scoped `sourceHash` to the whole corpus instead of the fixture
+
+Root cause, fix and re-measurement for the ledger-churn defect isolated above. Benchmarks-side of
+[redact-secret-benchmarks#774](https://github.com/redact-secret/redact-secret-benchmarks/issues/774).
+
+**Before.** `benchmarks/evaluation/domains/credential/cases.ts:57` computed `const sourceHash = hash(corpus)`
+once per category, over every fixture the category's corpus file holds (1,057 fixtures for
+`detector-coverage`, shared by nearly every family), and reused that single value as
+`provenance.sourceHash` on every case built from that category. `reviewEntryId(caseId, sourceHash, entry)`
+(`review.ts:4`) folds `sourceHash` into every differential/review-ledger id, and `publicEvaluation`'s
+source-matching (`public-report.ts:15`) compares it directly. Editing even one family's fixture inside a
+shared corpus file changed the *whole* corpus's hash, which reshuffled the disagreement id of every case in
+every family sharing that file — including families the edit never touched — silently orphaning their
+previously-resolved `benchmarks/review-ledger.json` rows. This is the mechanism the "pre-existing,
+unrelated defect" section above traced to the 99a7681 mistral/cohere/deepgram twin-reclassification commit.
+
+**Why whole-corpus hashing existed at all.** `qualify.ts`'s qualification report publishes one
+`corpusHashes[categoryId]` fingerprint per category (`docs/specs/qualification/engine-v1.json`), and that
+field legitimately needs a whole-file digest — it is category-level provenance, not case identity. The bug
+was conflating that legitimate whole-corpus fingerprint with the case-level `sourceHash` that feeds
+`reviewEntryId`, which the codebase's own established convention (`engine/model.ts`'s `variant()`:
+`sourceHash: hash(c.seed)`, and every PII-domain case in `evaluation/domains/pii/cases.ts`) already scopes
+to the specific seed fixture a case is actually about.
+
+**After.** `cases.ts` now keeps `corpusHash = hash(corpus)` as a separate, category-level field on each
+case's `provenance` (used only for `qualify.ts`'s `corpusHashes` map — the invariant it exists to protect is
+unchanged), and sets `provenance.sourceHash` per case as `hash(c.seed)` — the fixture a `differential`,
+`benign`, `metamorphic` or `mutation` case is seeded from, or the paired positive fixture for a `twin` case
+(mirroring the same `hash(c.seed)` convention `engine/model.ts` already uses for generated variants). A
+family's ledger identity now depends only on its own fixture(s), never on unrelated fixtures sharing the
+same corpus file. `engine/types.ts`'s `CaseSeed.provenance` gained the optional `corpusHash` field;
+`qualify.ts`'s `corpusHashes` map now reads `c.provenance.corpusHash` instead of `c.provenance.sourceHash`.
+Cross-family interaction effects were considered and ruled out as a concern: every scanner runs one fixture
+file at a time (`Scanner.scan(directory, fixtures)` normalizes per-file), so a case's actual dependency set
+is exactly its own seed fixture (plus, for `twin`, the paired positive) — there is no batched-scan
+interaction a whole-corpus hash could have been protecting.
+
+**Migration.** Because `sourceHash`'s formula itself changed, every case's id changes once, for every
+category, not only `detector-coverage` — an unavoidable, one-time consequence of fixing the scope, not a
+new defect. `benchmarks/review-ledger.json`'s 23,962 entries were rekeyed by re-running the full
+differential/twin/mutation queue against the same f26dee2 candidate and recomputing, for each entry, what
+its legacy id would have been: for every category except `detector-coverage`, `c.provenance.corpusHash`
+(computed against today's unchanged corpus content) equals the historical whole-corpus hash the ledger was
+last keyed against (confirmed by diffing `hash(corpus)` at f00f215 against today's `hash(corpus)` for all 30
+non-calibration categories — only `detector-coverage` differs); for `detector-coverage`, the legacy hash is
+the corpus hash computed at f00f215 (immediately before 99a7681 edited three of its fixtures). 1,967 of
+23,962 entries were rekeyed this way, preserving every entry's `status`/`note`/resolution history verbatim
+under its new id (only the key changed, following the same "carry over by matching case content, not id"
+practice as
+[`2026-09-22-lift-five-families-out-of-un-probeable.md`](../../docs/decisions/2026-09-22-lift-five-families-out-of-un-probeable.md)'s
+prior detector-coverage rekey); 21,995 keys were already correct and untouched. 52 current review-queue
+entries had no legacy match at all — genuine new or changed disagreements (the mistral/cohere/deepgram
+fixtures 99a7681 actually edited, and the brand-new per-family case ids `redact-secret#882`'s
+anthropic/openai finding-type split created, which never existed under any id before), left as ordinary
+unreviewed queue backlog rather than force-resolved.
+
+### Corrected per-family result (candidate mode, f26dee2, fixed mechanism + rekeyed ledger)
+
+| Family | Status | Tier | What actually blocks it now |
+| --- | --- | --- | --- |
+| `aws-bedrock-long-term-api-key` | **stable** (documented) | T1 | none — restored; `differential: 0` |
+| `aws-bedrock-short-term-api-key` | **stable** (documented) | T1 | none — restored; `differential: 0` |
+| `elevenlabs-api-key` | **stable** (documented) | T1 | none — restored; `differential: 0` |
+| `tavily-api-key` | **stable** (empirical) | T2 | none — restored; `differential: 0` |
+| `together-ai-api-key` | provisional | T2 | unchanged, genuine gap: corroboration 2 references / 2 owners / 1 non-summary class (needs 3/3/2); `differential: 0` |
+| `mistral-api-key` | provisional | T2 | genuine remaining gaps: 1 corroboration class short of 2, `differential: 3` (real, unreviewed), `context-constrained-empirical` 1 fixture short. Benign false alarms are 0 (99a7681's fix held) |
+| `cohere-api-key` | provisional | T2 | `differential: 3` (real, unreviewed), same `context-constrained-empirical` 1-short gap. Benign false alarms are 0 |
+| `deepgram-api-key` | provisional | T2 | real, pre-existing gaps: 2 twin failures, 14 metamorphic critical failures, 4 unresolved critical mutations (documented `createClient(key)`/WebSocket-subprotocol misses), `differential: 6`, `context-constrained-empirical` 1 short |
+| `ai21-api-key` | pending | T0 | unchanged: no provider or scanner shape |
+| `anthropic-api01-key` | provisional | T1 | `differential: 19` — a genuine, never-before-triaged backlog: this exact per-family case id only started existing with #882's finding-type split, so no ledger row could have pre-dated it |
+| `anthropic-admin01-key` | provisional | T1 | real, pre-existing findings independent of the split (1 benign false alarm, 7 metamorphic critical failures, 1 unresolved critical mutation) plus `differential: 17` (same never-before-triaged backlog as above) |
+| `openai-admin-api-key` | provisional | T2 | far from every empirical/corroboration floor (0/0/0 references/owners/classes, 9 of 10 required positive cases, 10 of 14 required benign controls, no declared uncertainty/mode/supported-context) plus `differential: 16` (same never-before-triaged backlog). Splitting the finding type made it scorable; it did not give it evidence |
+| `exa-api-key` | unscored (absent from `support-status.json`'s family list) | — | unchanged: no Exa detector exists |
+
+Candidate mode: **64 stable of 86** scored families (39 documented + 25 empirical), matching the pre-#882
+baseline of 65/83 exactly except `anthropic-token` (not one of the 13 families above), which the #882 split
+already left `provisional` at f26dee2 *before* this fix (`differential: 12`, in the unfixed
+`evidence/774/f26dee2/support-status.json`) — this fix improved it to `differential: 6` but did not clear
+it; that remainder is the same never-before-triaged backlog pattern affecting the three newly-split
+families, not a regression this fix introduced. No other previously-stable family changed status.
+
+### Verification
+
+Pinned trufflehog 3.97.4 / gitleaks 8.30.1 (provisioned by `npm run peers:provision`); candidate f26dee2
+rebuilt from source in an isolated worktree (core/node-darwin-arm64/wasm SHA-256 unchanged from the original
+f26dee2 measurement above, confirming an identical candidate). `npm run eval:candidate` (3,533/3,533
+fixtures) → `npm run eval:classify --refresh-peer-snapshots` (required once: the `sourceHash` formula change
+invalidates the `peer-observations/evaluation/suite-development/*.json` cache's input identity) →
+`npm run eval:matrix`. Full outputs: [`f26dee2-fixed/candidate-evidence-v1.json`](f26dee2-fixed/candidate-evidence-v1.json),
+[`f26dee2-fixed/support-status.json`](f26dee2-fixed/support-status.json),
+[`f26dee2-fixed/support-matrix.json`](f26dee2-fixed/support-matrix.json) (run id
+`1a798505-9fa9-43c9-a957-d2faa8da481e`).
+
+Full repo verification (`redact-secret-benchmarks`, this fix's commit):
+
+| Check | Result |
+| --- | --- |
+| `npm run typecheck` | pass |
+| `npm run build` | pass |
+| `npm test` (790/792, incl. the browser-graph guard) | 2 known, pre-existing failures, neither introduced by this fix (confirmed by reproducing both against the unmodified branch tip before this fix): `pin-drift.test.mjs` "pin consistency check passes against the real, refreshed tree" fails on the pre-existing #150 performance-pin coupling (out of scope, untouched here); `peer-pins.test.mjs` "ordinary queue:check..." fails because the checked-in review queue still carries unreviewed backlog — reduced by this fix from 534 ids (documented pre-existing baseline, reproduced unchanged against branch tip 2b847a6) to 196 (all in families with documented real gaps above, plus a handful of other T2 arrival families' own pre-existing backlog) |
+| `npm run fixtures:check` | pass |
+| `npm run fixture-index:check` | pass (3,533 fixtures, unchanged digest) |
+| `npm run arrival:check` | pass (90 families, 7 evidence kinds each) |
+| `npm run profiles:check` | pass (90 families) |
+| `npm run pins:manifest:check` | pass |
+| `npm run queue:check` | fails: 196 ids without a ledger row (down from the pre-existing, documented 534; see above — not a regression, not resolved here, ordinary unreviewed backlog) |
+| `npm run ledger:decisions:check` | pass |
+| `npm run ledger:provenance:check` | pass (23,962 entries valid) |
+| `npm run decisions:validate` | pass (0 errors) |
+
+No performance evaluation was re-run (out of scope; see the REJECTED runs recorded above). No status or
+ledger field was hand-edited; `benchmarks/review-ledger.json` was regenerated by the migration described
+above and `peer-observations/evaluation/suite-development/{trufflehog,gitleaks}.json` were regenerated by
+`--refresh-peer-snapshots`.

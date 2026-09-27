@@ -11,6 +11,7 @@ import * as accounting from './accounting.ts';
 import * as qualification from './qualification.ts';
 import * as assessment from './assessment.ts';
 import * as support from './support.ts';
+import * as validatorQualification from './validator-qualification.ts';
 
 export const piiDomain = Object.freeze({ ...piiIdentity, createMethods: createPiiMethods, createOperators: createPiiOperators,
   createValidators: createPiiValidators, loadCases: loadPiiCases,
@@ -18,6 +19,7 @@ export const piiDomain = Object.freeze({ ...piiIdentity, createMethods: createPi
   qualification,
   assessment,
   support,
+  validatorQualification,
   validateCase: validatePiiCase, validateContract: validatePiiContract, execute: executePiiEvaluation,
   normalizeFinding: normalizePiiFinding, holdout: Object.freeze(piiHoldoutDomain), holdoutStorage: Object.freeze(piiHoldoutStorage) });
 

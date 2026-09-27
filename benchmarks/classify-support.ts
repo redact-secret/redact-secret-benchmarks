@@ -17,7 +17,8 @@ import type { SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
 import { fixtureProfileReport, fixtureProfiles } from './support/profiles.ts';
 import fixtureIndex from './fixture-index.json';
-import { validatePolicyHoldoutReceipt, type PolicyHoldoutReceipt } from './support/policy-qualified.ts';
+import type { PolicyHoldoutReceipt } from './support/policy-qualified.ts';
+import { validatePolicyHoldoutReceipt } from './support/policy-holdout-receipt.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const CANDIDATE_KEYS = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit'] as const;

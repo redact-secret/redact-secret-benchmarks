@@ -1,4 +1,4 @@
-import { crc32 } from 'node:zlib';
+import { crc32Latin1 } from '../crc32.ts';
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { th, gl, provider, field } from '../contract-sources.ts';
 
@@ -34,7 +34,7 @@ export const arrivalFamilies: ArrivalFamily[] = [
 // `validate` re-checks them so a checksum or length-holder failure twin is
 // contract-invalid even though it satisfies the lexical pattern.
 export const GITLAB_ROUTABLE_CRC_WIDTH = 7;
-export const base36Crc = (text: string) => crc32(Buffer.from(text, 'latin1')).toString(36).padStart(GITLAB_ROUTABLE_CRC_WIDTH, '0');
+export const base36Crc = (text: string) => crc32Latin1(text).toString(36).padStart(GITLAB_ROUTABLE_CRC_WIDTH, '0');
 export function gitlabRoutableValid(value: string): boolean {
   const m = /^(glrt-)([A-Za-z0-9_-]+)\.([0-9a-z]{2})\.([0-9a-z]{2})([0-9a-z]{7})$/.exec(value);
   if (!m) return true; // not the routable branch: the lexical pattern alone decides

@@ -58,6 +58,7 @@ test('PII method registry is complete and context trio preserves type while chan
   assert.ok(variants.some(v => v.contract.sensitivityExpectation === 'not-established'));
   assert.ok(variants.some(v => v.contract.sensitivityExpectation === 'non-sensitive'));
   assert.ok(variants.every(v => v.contract.typeExpectation.state === 'valid'));
+  assert.ok(variants.every(variant => variant.transformation.methodVersion === methods.get(source.method).version));
   assert.equal(new Set(variants.map(v => Buffer.from(v.fixture.content).subarray(v.candidate.start, v.candidate.end).toString())).size, 1);
   assert.ok(variants.every(v => v.transformation.expectationEffect.type === 'preserve'));
 });

@@ -3,6 +3,8 @@ import { piiContextGroup } from '../context-evidence.ts';
 import type { PiiContract, PiiMethod } from '../types.ts';
 import { candidateValue, evaluatePiiVariants } from './common.ts';
 
+const methodVersion = 2;
+
 function groupFor(c: Parameters<PiiMethod['validateCase']>[0]) {
   const id = c.metadata?.contextEvidenceGroup;
   if (typeof id !== 'string') throw new Error('Missing PII context evidence group');
@@ -13,7 +15,7 @@ function groupFor(c: Parameters<PiiMethod['validateCase']>[0]) {
 }
 
 export const contextDiscrimination: PiiMethod = {
-  id: 'context-discrimination', version: 2,
+  id: 'context-discrimination', version: methodVersion,
   validateCase(c) {
     validatePiiCase(c);
     if (c.method !== this.id || c.contract.typeExpectation.state !== 'valid' ||
@@ -29,7 +31,7 @@ export const contextDiscrimination: PiiMethod = {
       const contract: PiiContract = { ...structuredClone(c.contract), sensitivityExpectation: frame.sensitivity,
         context: { ...c.contract.context, class: frame.contextClass } };
       return piiVariant(c, frame.id, input, contract, 'derived', { candidate: { start: Buffer.byteLength(prefix), end: Buffer.byteLength(prefix + value) },
-        operator: 'context-frame', sensitivityEffect: 'change', evidence: { kind: 'context', contextClass: frame.contextClass,
+        methodVersion, operator: 'context-frame', sensitivityEffect: 'change', evidence: { kind: 'context', contextClass: frame.contextClass,
           language: c.contract.context.language, entry: frame.entry, effect: frame.effect, features: frame.features } });
     });
   },

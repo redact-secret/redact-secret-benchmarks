@@ -40,7 +40,7 @@ trufflehog --version
 npm run benchmark:candidate -- --benchmark-ref 7c639ba2a979048a601b89a755f1b0a05cd3a349 --benchmark-repo /absolute/path/to/redact-secret-benchmarks --output-dir /absolute/path/to/evidence/875
 ```
 
-Then check out benchmark implementation commit `4a298f144493d40b1441166655fafb7a7423593c` (the first #388 PR commit, which contains the qualification/record scripts and frozen plan), place the emitted artifacts under `evidence/875/artifacts/`, and run:
+Then check out benchmark implementation commit `7c4f8381bb38b20f2771c376ef70057f65f9bb14` (the first #388 PR commit, which contains the qualification/record scripts and frozen plan), place the emitted artifacts under `evidence/875/artifacts/`, and run:
 
 ```sh
 export PATH="$PWD/.peer-bin:$PATH"

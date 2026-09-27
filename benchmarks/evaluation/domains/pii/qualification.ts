@@ -3,98 +3,90 @@ import accountingSchema from '../../../../schemas/pii-accounting-report-v1.json'
 import qualificationSchema from '../../../../schemas/pii-qualification-report-v1.json';
 import { PII_METRIC_IDS, piiV1Profile, validatePiiQualificationProfile, type PiiMetricId, type PiiQualificationProfile } from './profile.ts';
 import { validatePiiAccountingReport, type PiiAccountingReport } from './accounting.ts';
+import { validatePiiHoldoutReport, type PiiHoldoutReport } from './holdout.ts';
 
-export interface PiiExternalEvidence { status: 'complete' | 'incomplete' | 'not-measured'; artifactHash: string | null }
-export interface PiiQualificationEvidence { protected: PiiExternalEvidence; independent: PiiExternalEvidence }
+export interface PiiQualificationEvidenceInput { protected: PiiHoldoutReport | null; independent: PiiHoldoutReport | null }
+export interface PiiExternalEvidence { role: 'protected' | 'independent'; trust: 'unresolved'; status: 'complete' | 'incomplete'; domain: 'pii';
+  evaluationProfile: 'pii-schema-v1'; domainAccountingVersion: 'pii-observation-v1'; runId: string; planHash: string;
+  purpose: 'public-conformance' | 'protected'; independence: 'public-control' | 'custodian-declared'; corpusHash: string;
+  candidateArtifactHash: string; outcomesClean: boolean }
+export interface PiiQualificationEvidence { protected: PiiExternalEvidence | null; independent: PiiExternalEvidence | null }
 export interface PiiQualificationGate { id: string; status: 'met' | 'not-met' | 'unresolved' | 'not-applicable'; population: string; requirement: string }
-export interface PiiQualificationReport {
-  schemaVersion: 1; reportType: 'pii-qualification'; domain: 'pii'; evaluationProfile: 'pii-v1'; domainAccountingVersion: 'pii-v1';
-  profile: { id: 'pii-v1'; version: 1 }; status: 'stable' | 'provisional' | 'not-applicable';
-  evidence: PiiQualificationEvidence; gates: PiiQualificationGate[]; accounting: PiiAccountingReport;
-}
+export interface PiiQualificationReport { schemaVersion: 1; reportType: 'pii-qualification'; domain: 'pii'; evaluationProfile: 'pii-v1';
+  domainAccountingVersion: 'pii-v1'; profile: { id: 'pii-v1'; version: 1 }; status: 'stable' | 'provisional' | 'not-applicable';
+  evidence: PiiQualificationEvidence; gates: PiiQualificationGate[]; accounting: PiiAccountingReport }
 
-const ajv = new Ajv({ strict: true });
-ajv.addSchema(accountingSchema);
-const validateSchema = ajv.compile(qualificationSchema);
+const ajv = new Ajv({ strict: true }); ajv.addSchema(accountingSchema); const validateSchema = ajv.compile(qualificationSchema);
 const exact = (value: object, keys: string[]) => Object.keys(value).sort().join(',') === [...keys].sort().join(',');
-const gate = (id: string, status: PiiQualificationGate['status'], population: string, requirement: string): PiiQualificationGate =>
-  ({ id, status, population, requirement });
+const gate = (id: string, status: PiiQualificationGate['status'], population: string, requirement: string): PiiQualificationGate => ({ id, status, population, requirement });
 
-function validateExternal(value: unknown): PiiExternalEvidence {
-  const row = value as PiiExternalEvidence;
-  if (!row || typeof row !== 'object' || Array.isArray(row) || !exact(row, ['status', 'artifactHash']) ||
-      !['complete', 'incomplete', 'not-measured'].includes(row.status) ||
-      (row.artifactHash !== null && (typeof row.artifactHash !== 'string' || !/^[a-f0-9]{64}$/.test(row.artifactHash))) ||
-      (row.status === 'complete') !== (row.artifactHash !== null)) throw new Error('Invalid PII external qualification evidence');
+function project(value: unknown, role: 'protected' | 'independent'): PiiExternalEvidence | null {
+  if (value === null) return null;
+  const report = validatePiiHoldoutReport(structuredClone(value) as PiiHoldoutReport);
+  if ((report.corpus.purpose === 'public-conformance') !== (report.independence === 'public-control')) throw new Error('PII holdout purpose and independence disagree');
+  if (role === 'protected' && report.corpus.purpose !== 'protected') throw new Error('PII protected evidence must use a protected corpus');
+  if (role === 'independent' && report.independence !== 'custodian-declared') throw new Error('PII independent evidence must be custodian-declared');
+  return { role, trust: 'unresolved', status: report.status, domain: 'pii', evaluationProfile: 'pii-schema-v1', domainAccountingVersion: 'pii-observation-v1',
+    runId: report.runId, planHash: report.planHash, purpose: report.corpus.purpose, independence: report.independence,
+    corpusHash: report.corpus.corpusHash, candidateArtifactHash: report.candidate.candidateArtifactHash,
+    outcomesClean: report.scanners.every(scanner => scanner.status === 'complete' && scanner.axes.typeIdentity.fail === 0 &&
+      scanner.axes.sensitivityContext.fail === 0 && scanner.axes.typeIdentity['review-required'] === 0 && scanner.axes.sensitivityContext['review-required'] === 0 &&
+      scanner.axes.typeIdentity['not-measured'] === 0 && scanner.axes.sensitivityContext['not-measured'] === 0) };
+}
+function validateProjection(value: unknown, role: 'protected' | 'independent'): PiiExternalEvidence | null {
+  if (value === null) return null;
+  const row = value as PiiExternalEvidence, digests = (candidate: unknown) => typeof candidate === 'string' && /^[a-f0-9]{64}$/.test(candidate);
+  if (!row || !exact(row, ['role', 'trust', 'status', 'domain', 'evaluationProfile', 'domainAccountingVersion', 'runId', 'planHash', 'purpose', 'independence',
+      'corpusHash', 'candidateArtifactHash', 'outcomesClean']) || row.role !== role || row.trust !== 'unresolved' || !['complete', 'incomplete'].includes(row.status) ||
+      row.domain !== 'pii' || row.evaluationProfile !== 'pii-schema-v1' || row.domainAccountingVersion !== 'pii-observation-v1' || !/^[a-f0-9-]{36}$/.test(row.runId) ||
+      ![row.planHash, row.corpusHash, row.candidateArtifactHash].every(digests) || !['public-conformance', 'protected'].includes(row.purpose) ||
+      !['public-control', 'custodian-declared'].includes(row.independence) || (row.purpose === 'public-conformance') !== (row.independence === 'public-control') ||
+      typeof row.outcomesClean !== 'boolean') throw new Error('Invalid PII external evidence projection');
   return structuredClone(row);
 }
-
-function metricGate(id: PiiMetricId, accounting: PiiAccountingReport, profile: PiiQualificationProfile): PiiQualificationGate {
-  const metric = accounting.metrics[id], rule = profile.metrics[id];
-  const conditional = rule.applicability !== 'required';
-  if (metric.status === 'not-applicable') return gate(id, conditional ? 'not-applicable' : 'unresolved', metric.population,
-    `${rule.direction} confidence bound ${rule.direction === 'upper' ? '≤' : '≥'} ${rule.threshold}; denominator ≥ ${profile.mechanics.minDenominator}`);
-  if (metric.status !== 'measured' || metric.rate === null || metric.rate === 'insufficient-evidence') return gate(id, 'unresolved', metric.population,
-    `complete denominator ≥ ${profile.mechanics.minDenominator}`);
-  const bound = metric.rate.bound!;
-  const met = rule.direction === 'upper' ? bound <= rule.threshold : bound >= rule.threshold;
-  return gate(id, met ? 'met' : 'not-met', metric.population,
-    `${rule.direction} confidence bound ${rule.direction === 'upper' ? '≤' : '≥'} ${rule.threshold}; n=${metric.rate.n}`);
+function metricGate(id: PiiMetricId, accounting: PiiAccountingReport, profile: PiiQualificationProfile) {
+  const metric = accounting.metrics[id], rule = profile.metrics[id], requirement = `${rule.direction} confidence bound ${rule.direction === 'upper' ? '≤' : '≥'} ${rule.threshold}`;
+  if (metric.status === 'not-applicable') return gate(id, rule.applicability === 'required' ? 'unresolved' : 'not-applicable', metric.population, requirement);
+  if (metric.status !== 'measured' || metric.rate === null || metric.rate === 'insufficient-evidence') return gate(id, 'unresolved', metric.population, `complete denominator ≥ ${profile.mechanics.minDenominator}`);
+  return gate(id, (rule.direction === 'upper' ? metric.rate.bound! <= rule.threshold : metric.rate.bound! >= rule.threshold) ? 'met' : 'not-met', metric.population, `${requirement}; n=${metric.rate.n}`);
 }
 
-function buildPiiQualification(accountingInput: PiiAccountingReport, evidenceInput: PiiQualificationEvidence,
-  profile: PiiQualificationProfile = piiV1Profile): PiiQualificationReport {
-  validatePiiQualificationProfile(profile);
-  const accounting = validatePiiAccountingReport(structuredClone(accountingInput));
-  const evidence = { protected: validateExternal(evidenceInput?.protected), independent: validateExternal(evidenceInput?.independent) };
-  const gates: PiiQualificationGate[] = PII_METRIC_IDS.map(id => metricGate(id, accounting, profile));
-  const present = new Set(accounting.evidence.methods);
-  gates.push(gate('required-methods', profile.gates.requiredMethods.every(method => present.has(method)) ? 'met' : 'not-met',
-    accounting.evidence.methods.join(',') || 'none', `methods ${profile.gates.requiredMethods.join(',')}`));
-  gates.push(gate('authoritative-provenance', accounting.evidence.authority.total > 0 &&
-    accounting.evidence.authority.qualified === accounting.evidence.authority.total ? 'met' : accounting.evidence.authority.total ? 'not-met' : 'not-applicable',
-  `${accounting.evidence.authority.qualified}/${accounting.evidence.authority.total}`, 'every occurrence has structured authoritative provenance'));
+function assemble(accounting: PiiAccountingReport, evidence: PiiQualificationEvidence, profile: PiiQualificationProfile): PiiQualificationReport {
+  if (evidence.protected && evidence.independent) {
+    if (evidence.protected.runId === evidence.independent.runId || evidence.protected.corpusHash === evidence.independent.corpusHash || evidence.protected.planHash === evidence.independent.planHash)
+      throw new Error('PII qualification evidence artifacts must be distinct');
+    if (evidence.protected.candidateArtifactHash !== evidence.independent.candidateArtifactHash) throw new Error('PII qualification evidence candidate mismatch');
+    const candidates = new Set(accounting.sources.map(source => source.provenance.candidateArtifactHash).filter(value => value !== null));
+    if (candidates.size !== 1 || !candidates.has(evidence.protected.candidateArtifactHash)) throw new Error('PII qualification evidence does not match accounting source');
+  }
+  const gates: PiiQualificationGate[] = PII_METRIC_IDS.map(id => metricGate(id, accounting, profile)), present = new Set(accounting.evidence.methods);
+  gates.push(gate('required-methods', profile.gates.requiredMethods.every(method => present.has(method)) ? 'met' : 'not-met', accounting.evidence.methods.join(',') || 'none', `methods ${profile.gates.requiredMethods.join(',')}`));
+  const authority = accounting.evidence.authority;
+  gates.push(gate('authoritative-provenance', authority.total === 0 ? 'not-applicable' : authority.qualified === authority.total ? 'met' : 'not-met', `${authority.qualified}/${authority.total}`, 'each occurrence has an authority claim matching its own obligation'));
   const validators = accounting.evidence.validators;
-  gates.push(gate('validator-qualification', validators.applicable === 0 ? 'not-applicable' : validators.evaluated === validators.applicable ? 'met' : 'unresolved',
-    `${validators.evaluated}/${validators.applicable}`, 'every applicable validator primitive is measured'));
-  gates.push(gate('benign-case-count', accounting.evidence.benign.cases >= profile.gates.minBenignCases ? 'met' : 'not-met',
-    String(accounting.evidence.benign.cases), `≥ ${profile.gates.minBenignCases} distinct semantic benign cases`));
-  gates.push(gate('benign-axis-diversity', accounting.evidence.benign.axes.length >= profile.gates.minBenignAxes ? 'met' : 'not-met',
-    accounting.evidence.benign.axes.join(',') || 'none', `≥ ${profile.gates.minBenignAxes} benign axes`));
-  gates.push(gate('semantic-controls', accounting.evidence.semanticControls > 0 ? 'met' : 'not-met', String(accounting.evidence.semanticControls),
-    'semantic controls separate from checksum-invalid neighbours'));
-  const context = accounting.evidence.context;
-  gates.push(gate('context-obligations', context.applicable === 0 ? 'not-applicable' : context.evaluated === context.applicable ? 'met' : 'unresolved',
-    `${context.evaluated}/${context.applicable}`, 'context-discrimination evidence when context is required'));
-  const jurisdiction = accounting.evidence.jurisdiction;
-  gates.push(gate('jurisdiction-collisions', jurisdiction.applicable === 0 ? 'not-applicable' : jurisdiction.evaluated === jurisdiction.applicable ? 'met' : 'unresolved',
-    `${jurisdiction.evaluated}/${jurisdiction.applicable}`, 'collision evidence for jurisdictional identifiers'));
+  gates.push(gate('validator-qualification', validators.applicable === 0 ? 'not-applicable' : validators.evaluated === validators.applicable ? 'met' : 'unresolved', `${validators.evaluated}/${validators.applicable}`, 'every applicable validator primitive is measured'));
+  gates.push(gate('benign-case-count', accounting.evidence.benign.cases >= profile.gates.minBenignCases ? 'met' : 'not-met', String(accounting.evidence.benign.cases), `≥ ${profile.gates.minBenignCases} distinct authored cases`));
+  gates.push(gate('benign-axis-diversity', accounting.evidence.benign.axes.length >= profile.gates.minBenignAxes ? 'met' : 'not-met', accounting.evidence.benign.axes.join(',') || 'none', `≥ ${profile.gates.minBenignAxes} benign axes`));
+  gates.push(gate('semantic-controls', accounting.evidence.semanticControls > 0 ? 'met' : 'not-met', String(accounting.evidence.semanticControls), 'semantic controls separate from invalid neighbours'));
+  for (const [id, evidenceRow, requirement] of [['context-obligations', accounting.evidence.context, 'complete context trios per obligation'], ['jurisdiction-collisions', accounting.evidence.jurisdiction, 'collision target and competitors per jurisdiction']] as const)
+    gates.push(gate(id, evidenceRow.applicable === 0 ? 'not-applicable' : evidenceRow.evaluated === evidenceRow.applicable ? 'met' : 'unresolved', `${evidenceRow.evaluated}/${evidenceRow.applicable}`, requirement));
   const reference = accounting.evidence.reference;
-  gates.push(gate('reference-differential', reference.applicable === 0 ? 'not-applicable' :
-    reference.evaluated === reference.applicable && reference.unavailable === 0 ? 'met' : 'unresolved',
-    `${reference.evaluated}/${reference.applicable}; unavailable ${reference.unavailable}`, 'independent reference observation where declared meaningful'));
-  gates.push(gate('protected-evidence', evidence.protected.status === 'complete' ? 'met' : 'unresolved', evidence.protected.status,
-    'complete protected evidence artifact'));
-  gates.push(gate('independent-evidence', evidence.independent.status === 'complete' ? 'met' : 'unresolved', evidence.independent.status,
-    'complete independent evidence artifact'));
+  gates.push(gate('reference-differential', reference.applicable === 0 ? 'not-applicable' : reference.evaluated === reference.applicable && reference.unavailable === 0 ? 'met' : 'unresolved', `${reference.evaluated}/${reference.applicable}; unavailable ${reference.unavailable}`, 'independent reference observation where meaningful'));
+  gates.push(gate('protected-evidence', 'unresolved', evidence.protected ? `${evidence.protected.status}; trust unresolved` : 'not-measured', 'trusted resolution of protected evidence (no trust store in #284)'));
+  gates.push(gate('independent-evidence', 'unresolved', evidence.independent ? `${evidence.independent.status}; trust unresolved` : 'not-measured', 'trusted resolution of independent evidence (no trust store in #284)'));
   const status = accounting.rowCount === 0 ? 'not-applicable' : gates.every(row => row.status === 'met' || row.status === 'not-applicable') ? 'stable' : 'provisional';
-  return { schemaVersion: 1, reportType: 'pii-qualification', domain: 'pii', evaluationProfile: 'pii-v1',
-    domainAccountingVersion: 'pii-v1', profile: { id: 'pii-v1', version: 1 }, status, evidence, gates, accounting };
+  return { schemaVersion: 1, reportType: 'pii-qualification', domain: 'pii', evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
+    profile: { id: 'pii-v1', version: 1 }, status, evidence, gates, accounting };
 }
-
-export function qualifyPii(accountingInput: PiiAccountingReport, evidenceInput: PiiQualificationEvidence,
-  profile: PiiQualificationProfile = piiV1Profile): PiiQualificationReport {
-  return validatePiiQualificationReport(buildPiiQualification(accountingInput, evidenceInput, profile));
+export function qualifyPii(accountingInput: PiiAccountingReport, evidenceInput: PiiQualificationEvidenceInput, profile: PiiQualificationProfile = piiV1Profile) {
+  validatePiiQualificationProfile(profile); const accounting = validatePiiAccountingReport(structuredClone(accountingInput));
+  return validatePiiQualificationReport(assemble(accounting, { protected: project(evidenceInput?.protected, 'protected'), independent: project(evidenceInput?.independent, 'independent') }, profile));
 }
-
 export function validatePiiQualificationReport(value: unknown): PiiQualificationReport {
   if (!validateSchema(value)) throw new Error('Invalid PII qualification report schema');
-  const report = value as unknown as PiiQualificationReport;
-  validatePiiAccountingReport(report.accounting);
-  validateExternal(report.evidence.protected); validateExternal(report.evidence.independent);
-  const expected = buildPiiQualification(report.accounting, report.evidence, piiV1Profile);
-  if (new Set(report.gates.map(row => row.id)).size !== report.gates.length ||
-      JSON.stringify(report.gates) !== JSON.stringify(expected.gates) || report.status !== expected.status || Object.hasOwn(report, 'overallScore'))
-    throw new Error('Inconsistent PII qualification report');
+  const report = value as unknown as PiiQualificationReport, accounting = validatePiiAccountingReport(report.accounting);
+  const evidence = { protected: validateProjection(report.evidence.protected, 'protected'), independent: validateProjection(report.evidence.independent, 'independent') };
+  const expected = assemble(accounting, evidence, piiV1Profile);
+  if (JSON.stringify(report) !== JSON.stringify(expected) || Object.hasOwn(report, 'overallScore')) throw new Error('Inconsistent PII qualification report');
   return report;
 }

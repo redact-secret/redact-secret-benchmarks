@@ -13,7 +13,8 @@
   },
   "metrics": {
     "type-miss-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
-    "wrong-identity-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
+    "wrong-family-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
+    "wrong-jurisdiction-rate": { "direction": "upper", "threshold": 0.5, "applicability": "jurisdictional" },
     "sensitive-miss-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
     "non-sensitive-flag-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
     "context-discrimination-rate": { "direction": "lower", "threshold": 0.5, "applicability": "required" },

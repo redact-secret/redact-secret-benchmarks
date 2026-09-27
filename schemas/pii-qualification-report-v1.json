@@ -22,6 +22,13 @@
     "accounting": { "$ref": "urn:redact-secret:pii-accounting:1" }
   },
   "$defs": {
-    "external": { "type": "object", "additionalProperties": false, "required": ["status", "artifactHash"], "properties": { "status": { "enum": ["complete", "incomplete", "not-measured"] }, "artifactHash": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^[a-f0-9]{64}$" }] } } }
+    "external": { "anyOf": [{ "type": "null" }, { "type": "object", "additionalProperties": false,
+      "required": ["role", "trust", "status", "domain", "evaluationProfile", "domainAccountingVersion", "runId", "planHash", "purpose", "independence", "corpusHash", "candidateArtifactHash", "outcomesClean"],
+      "properties": { "role": { "enum": ["protected", "independent"] }, "trust": { "const": "unresolved" }, "status": { "enum": ["complete", "incomplete"] },
+        "domain": { "const": "pii" }, "evaluationProfile": { "const": "pii-schema-v1" }, "domainAccountingVersion": { "const": "pii-observation-v1" },
+        "runId": { "type": "string", "pattern": "^[a-f0-9-]{36}$" }, "planHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "purpose": { "enum": ["public-conformance", "protected"] }, "independence": { "enum": ["public-control", "custodian-declared"] },
+        "corpusHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "candidateArtifactHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "outcomesClean": { "type": "boolean" } } }] }
   }
 }

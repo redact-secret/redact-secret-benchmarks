@@ -22,10 +22,11 @@
     },
     "metrics": {
       "type": "object", "additionalProperties": false,
-      "required": ["type-miss-rate", "wrong-identity-rate", "sensitive-miss-rate", "non-sensitive-flag-rate", "context-discrimination-rate", "benign-suppression-rate", "jurisdiction-collision-rate", "range-collateral-rate", "measurable-share"],
+      "required": ["type-miss-rate", "wrong-family-rate", "wrong-jurisdiction-rate", "sensitive-miss-rate", "non-sensitive-flag-rate", "context-discrimination-rate", "benign-suppression-rate", "jurisdiction-collision-rate", "range-collateral-rate", "measurable-share"],
       "properties": {
         "type-miss-rate": { "$ref": "#/$defs/metric" },
-        "wrong-identity-rate": { "$ref": "#/$defs/metric" },
+        "wrong-family-rate": { "$ref": "#/$defs/metric" },
+        "wrong-jurisdiction-rate": { "$ref": "#/$defs/metric" },
         "sensitive-miss-rate": { "$ref": "#/$defs/metric" },
         "non-sensitive-flag-rate": { "$ref": "#/$defs/metric" },
         "context-discrimination-rate": { "$ref": "#/$defs/metric" },

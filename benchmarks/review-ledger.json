@@ -136342,6 +136342,1293 @@
       "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
       "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
       "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 39 vs contracted 40) correctly falls outside the deepgram-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([38,77)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to deepgram-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input on this variant — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--deepgram-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "4a390685f898d791c7286a0893bb442b0ff406622775bc658075e1aff149151a": {
+      "status": "not-assertable",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture common-formats/anthropic-token-api03-admin-prefix-plain-twin, family anthropic-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names exists, so this redact-secret/gitleaks peer-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Assessment reason: Not asserted: disputed property — whether sk-ant-api01- and sk-ant-admin01- are Anthropic credentials of the shared type (they are, per the provider pages and redact-secret#862; the twins predate that and assert the opposite). No provider-owned source decides it and the research pass recorded it as searched-and-not-found, so the benchmark stops asserting it (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md). Kept as history; the product's behaviour on this property is unmeasured for anthropic-token. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "877b15e743093a8ad5ca8a2b769ff832ca84c34216dfe39f496339ddc3506dd1": {
+      "status": "not-assertable",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture common-formats/anthropic-token-api03-admin-prefix-plain-twin, family anthropic-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names exists, so this redact-secret/trufflehog peer-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Assessment reason: Not asserted: disputed property — whether sk-ant-api01- and sk-ant-admin01- are Anthropic credentials of the shared type (they are, per the provider pages and redact-secret#862; the twins predate that and assert the opposite). No provider-owned source decides it and the research pass recorded it as searched-and-not-found, so the benchmark stops asserting it (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md). Kept as history; the product's behaviour on this property is unmeasured for anthropic-token. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "50d879e7db5fca1634320577d517f9b4ae6dfe51ecc2a2da424037f2cc5efd86": {
+      "status": "not-assertable",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture common-formats/anthropic-token-api03-admin-prefix-unicode-crlf-twin, family anthropic-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names exists, so this redact-secret/gitleaks peer-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Assessment reason: Not asserted: disputed property — whether sk-ant-api01- and sk-ant-admin01- are Anthropic credentials of the shared type (they are, per the provider pages and redact-secret#862; the twins predate that and assert the opposite). No provider-owned source decides it and the research pass recorded it as searched-and-not-found, so the benchmark stops asserting it (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md). Kept as history; the product's behaviour on this property is unmeasured for anthropic-token. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "11f97db44bd318a7054c33d9d7a3cb22909a147a699facb88469d4f7a97af991": {
+      "status": "not-assertable",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Not assertable from this corpus: the fixture's assessment is pending (tier T0; fixture common-formats/anthropic-token-api03-admin-prefix-unicode-crlf-twin, family anthropic-token). The corpus records no reviewed expectation for this input and excludes it from comparative scores until the evidence its own assessment reason names exists, so this redact-secret/trufflehog peer-only disagreement has no authored ground truth to be adjudicated against, and none is inferable from scanner comparison. Assessment reason: Not asserted: disputed property — whether sk-ant-api01- and sk-ant-admin01- are Anthropic credentials of the shared type (they are, per the provider pages and redact-secret#862; the twins predate that and assert the opposite). No provider-owned source decides it and the research pass recorded it as searched-and-not-found, so the benchmark stops asserting it (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md). Kept as history; the product's behaviour on this property is unmeasured for anthropic-token. Settled per docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md: differential disagreements on pending fixtures are not assertable, distinct from resolved — nobody has signed off on either side. Class: decision=differential.t0-pending-fixture.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "3dff65ade47232aedc5e091233437b9cf5bfb7b249238c1527920b15fb7db55f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (detector-coverage/aws-bedrock-long-term-api-key-key-shape-bare); gitleaks reports a aws-bedrock-long-term-api-key finding at 25,157, this corpus's authored expected span (25,157). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "171c1f25a5bdb317acacf3439765a0b9fbf608b606320bd643cbbed3e773b3a0": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (detector-coverage/aws-bedrock-long-term-api-key-key-shape-quoted); gitleaks reports a aws-bedrock-long-term-api-key finding at 32,164, this corpus's authored expected span (32,164). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "07c900b58eb8d8c79f968f9a7750dff1bc87bcd052fea14cbcbbba57b5e9a08c": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (detector-coverage/aws-bedrock-long-term-api-key-key-shape-unicode-crlf); gitleaks reports a aws-bedrock-long-term-api-key finding at 46,178, this corpus's authored expected span (46,178). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "828ab66963f4340ea90592ad9282a3622e389cd06ccc30c12c720c52ce03ec82": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (detector-coverage/aws-bedrock-short-term-api-key-key-shape-bare); gitleaks reports a aws-bedrock-short-term-api-key finding at 25,69, this corpus's authored expected span (25,485). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "a423b6eab90de944ff93e6e0875be36145c01d271417042d05508c19ff749b70": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (detector-coverage/aws-bedrock-short-term-api-key-key-shape-quoted); gitleaks reports a aws-bedrock-short-term-api-key finding at 32,76, this corpus's authored expected span (32,492). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "2b7f2ce1a12b1e664f725671eaf8b3eed1ab3c80ffada6a5a150652001dfacc1": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (detector-coverage/aws-bedrock-short-term-api-key-key-shape-unicode-crlf); gitleaks reports a aws-bedrock-short-term-api-key finding at 46,90, this corpus's authored expected span (46,506). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "f6737e09b20d24b98a0b7163df434af13981f57afd963633e54d902e031014c1": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "565718ff40d1a34367ec0a2c80e9e592874ce72216caa20109baef858536e345": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "018c874e8f82fc2e52b4fd610ae783c353b389f37b1942e20f43961a2b0b9d6b": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "0adbd196c16bc3849c8f20097d9949c1ad317adf61c612a5c048e7ce73e40c36": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target mistral-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [16,47) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "375017bc0406807353104999d1d8beb7a59e93af4d59c785d8fae66c916d08df": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target mistral-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [23,54) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "573097515604cfe231310a3979ed4a1b4ad3e31d4761f382c24d6983c7384273": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target mistral-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [37,68) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "6402b29d1d9c4a0aa6a66086da44b117141b5d60ddace8bf272f5b052f94438d": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 15,55, the authored expected span, on the canonical variant of detector-coverage/cohere-api-key-key-shape-bare. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "2b9c0a41a8a54f3b6081826b20dba061ac2c8c50c2d6693f63854f618099fac5": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "e98a250293d9745439ebf814c461831ead9813fab2ff7cf500c86e2bae148384": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 22,62, the authored expected span, on the canonical variant of detector-coverage/cohere-api-key-key-shape-quoted. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "9044307d266ca5b10134c791571f83a51982fe3452431edd6735fc68e61ea4e4": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "63508cedd7f8393e4fdf637cbcbe9a22b527449497731dd806dfe71396b41d4b": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 36,76, the authored expected span, on the canonical variant of detector-coverage/cohere-api-key-key-shape-unicode-crlf. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "c26c8cbc8a16be8585a38e29cadd74793adbb9fb4894a7a4255c218c5c52d86f": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "0dcb2fcfea7594b09a12288109555a751cd82577fbdee7f304228ba164ee70fb": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [15,54) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "de9b5549037a44d48345943560882ffc5acebacb5424b36287b17dd94fd9b16f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [22,61) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "67f851952310e456b7dd4a81df6e6d8800dea71776d719332a4869a8b18b9aa3": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [36,75) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "432b724ea3ed6185d8df087c1c416f1778a11c56889a1e308dcb0a17ce5ec2e1": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 17,57, the authored expected span, on the canonical variant of detector-coverage/deepgram-api-key-key-shape-bare. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for deepgram-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "a33b74901fec9e4e95244deedfa97d212f4104d289e7f9478d1a8deb0d0ac207": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 24,64, the authored expected span, on the canonical variant of detector-coverage/deepgram-api-key-key-shape-quoted. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for deepgram-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "bb0df419212bc6181424986020efd07335011db9e8366b7e7e846d7d6ce0a065": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 38,78, the authored expected span, on the canonical variant of detector-coverage/deepgram-api-key-key-shape-unicode-crlf. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for deepgram-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "a48ac8ee3db81e7998f2771e28f6809b42a60fc6b38f05b6cd25aef01820be46": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [17,56) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "b92fd102677e30904577a433f53cab6cc1f5dd35520c3ba512b2e753da727619": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [24,63) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "6b21b62e6baef565f66513ecfcc6cca10190981fbb3bd50d541a3fd4554286a8": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [38,77) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "88fb93b8c5e8b6409605eb195bb6093f4c7b1559cc03159c4b312bd5feea69b9": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "01f47b2762afe919e521c37bacc261cfdfa552e0e37a661c898b1d006ae5539d": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "6221375404a5109bf45851e483e2a12cb48d230725fbee00100219ac68069a9e": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "753e52918805e9e35f5d5a8d5c00a33580ffd9be55124600f6979b20a462b0c2": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "0ef7a2740312645298db85b3bbd0f6522fd37c1711b40155f67dbc927af44b75": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "c6a0db3f979928d0251289c4da8a5185ec7b032d52ad826c7e6de37cffe35713": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "1bb6b466172e5b107b57af59a151b29a53d3004286c46ed6d28831062a844a4d": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "b9291da11f211d4606b3d01d23c56d434a0075c3df7ecf08b1f4125515fd2ffe": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "c54fcd5c095dd8a666564f34b57f64c21e8965d2f5202ab8e2bc0f7bd58f9590": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "3019c267fb308e7c0c880199194ce4c7471721d29d66547ac004ee12a9f06cc5": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "1a62409ff5047bf3d9b685d483fea1f4b899725a369640b30dac72481c0b747c": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "18a69a0d8978147babc487e9ffb5051e7f86d6a5e15e6a02539bfd61f976a880": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "bf568b94cf561f0bd277baf8be6a79e018b8e2486bb50d64134a1836d7cddf0a": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "de9085cbe9235610b8d40e164f8052d463629d5335cda159a8b8bcdc8ec5956c": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "a6b8be09e3d0d37b75e9fd17d9518cb908f5c3e7c93fe4eebfef5ff07df8955a": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "b56a1ed5bc2b32bd58a69357dfe032da1de99aebb6791c24c1cadab44baab5fd": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by trufflehog flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "4e49224304512c5f4099ac0334d0244af69972c3a6d2b701eb51c8863fbd817c": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-dotenv); gitleaks reports an unmapped finding at 31,141, this corpus's authored expected span (31,141). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "26f18b020bd245e08c5b9166d266997850af0ddd615c6178a4706caf2c2b56f5": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-dotenv); trufflehog reports a anthropic-token finding at 31,141, this corpus's authored expected span (31,141). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "5c67d06b4b685efae3674c597093d445a09068e2378084678701bcc2b3d6d000": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-export); gitleaks reports an unmapped finding at 28,138, this corpus's authored expected span (28,138). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "3b3d173c6f551e169821c1672932a55c0aa969a4345966f9256c598f7c6fde5b": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-export); trufflehog reports a anthropic-token finding at 28,138, this corpus's authored expected span (28,138). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "65b519a88d89fbe244c7e9d9a967c5510c9cb4bf602c72315d098c7eed14ebd8": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 75,185, the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-curl-x-api-key. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it anthropic-token. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for anthropic-admin01-key, not settled by any established class. Class: differential-boundary-unconfirmed/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "0f74014738f0b473a1e6676f6d00c83b563256d8a7df333775097dac558dd84f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 22,132, the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-json-config. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it anthropic-token. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for anthropic-admin01-key, not settled by any established class. Class: differential-boundary-unconfirmed/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "d3220648dfcf440ae58a3e5bca2d3895aa2101262a026f90a0abd73d175eb165": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-python-sdk); gitleaks reports an unmapped finding at 56,166, this corpus's authored expected span (56,166). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "9a4ffc60027ef8d0971638fff853ce0372117e4b3e83c779ae48ccec8382c54f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-python-sdk); trufflehog reports a anthropic-token finding at 56,166, this corpus's authored expected span (56,166). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "d5025ddf52e82ad953352fd53d37e073faf31f5d2f2357fb90f2c9be32c95434": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-compose-env); gitleaks reports an unmapped finding at 116,226, this corpus's authored expected span (116,226). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "9d693aed6fd9732cb57fbbb5ed1e01912c2d7faa24ef549d571198c0128f81b4": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-compose-env); trufflehog reports a anthropic-token finding at 116,226, this corpus's authored expected span (116,226). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "2fcee40921805487543f659fbc772a2b33ed63c1d9f7cc6b7f78868fae25f987": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 118,228, the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-tool-call. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it anthropic-token. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for anthropic-admin01-key, not settled by any established class. Class: differential-boundary-unconfirmed/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "58c6aac15f71203b2e258f0675183d0dff9cd7e6eff034795ae2fc9f03c81b1d": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-job-log); gitleaks reports an unmapped finding at 41,151, this corpus's authored expected span (41,151). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "4dddb4a8303e98fef6012c4e9d9b13d08b34ce45ead7a63d513cb1082536968d": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-job-log); trufflehog reports a anthropic-token finding at 41,151, this corpus's authored expected span (41,151). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "629763197ddc6dc1fa4f43a159a2bcd2ee030978bd23b35696910558104cff13": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-pasted-key); gitleaks reports an unmapped finding at 60,170, this corpus's authored expected span (60,170). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "a363bbf3b1e7edc07f1c8d70d1da66372cdc9f73c91f5fcebbf314fc22182894": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384a/anthropic-admin01-key-pasted-key); trufflehog reports a anthropic-token finding at 60,170, this corpus's authored expected span (60,170). This is a genuine, currently-measured detection gap for anthropic-admin01-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/anthropic-admin01-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "4a36758dfbb4ef1ea189a6c8ca0011d49860fe79cca250fef9a66c4d27e305ad": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "fd5ac7d6d0958ea6b2b291ccc836a63cf32274a8255c50ecc6363cd3732a0254": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-long-term-api-key-dotenv); gitleaks reports a aws-bedrock-long-term-api-key finding at 32,164, this corpus's authored expected span (32,164). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "050bd66b7a98ece1b6f5c96553d77b9c77a6c2a577dfe6dbc7ae75b4cee4b60a": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-long-term-api-key-export-136); gitleaks reports a aws-bedrock-long-term-api-key finding at 33,169, this corpus's authored expected span (33,169). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "96df5514ef340f59d816f77bb8ab9c6bdf9ecdf8893e63bec71eecd4b2d9c1f5": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "23b1dbb3008bc22ef5c83bbe45581f244188853288cfa581cecbd9ea84838f21": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-long-term-api-key-python-environ); gitleaks reports a aws-bedrock-long-term-api-key finding at 53,185, this corpus's authored expected span (53,185). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "0c9c3337c4e66808cb973759714b5a8a7426985e69e9be829abd3cc1ddd8fae8": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-long-term-api-key-openai-sdk); gitleaks reports a aws-bedrock-long-term-api-key finding at 122,254, this corpus's authored expected span (122,254). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "e8e8f9464b41c07ad128a06cd712491710b4941326cd0e1ed3a63d87611894f2": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-long-term-api-key-actions-env); gitleaks reports a aws-bedrock-long-term-api-key finding at 84,220, this corpus's authored expected span (84,220). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "8a0e493c0a0f240803b80321260e56b26cd712cc8e087eae6977d6944e49cb32": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-long-term-api-key-agent-settings); gitleaks reports a aws-bedrock-long-term-api-key finding at 55,187, this corpus's authored expected span (55,187). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "d04ae5f5d2e9ea48ac0293f16e1af8b571c3d4a6c910f81b079b748cad1a545f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-long-term-api-key-tool-call); gitleaks reports a aws-bedrock-long-term-api-key finding at 75,207, this corpus's authored expected span (75,207). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "b1e26cf6817d735ce8da62677d849c9b9a681bd1353c7f6f26c6004b4b5d1fb6": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 59,191, the authored expected span, on the canonical variant of beta8-384b/aws-bedrock-long-term-api-key-proxy-log. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it bearer-token; gitleaks labels it aws-bedrock-long-term-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for aws-bedrock-long-term-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "47a117618beacd3c50517e13c1443b5a8954d5bbb53a3dad20849f70fb96e78d": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "fe3db50d99d2da4561871d9b8ea0c69d443dcda4777fedd6b7da0b272ece3087": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-long-term-api-key-pasted-key); gitleaks reports a aws-bedrock-long-term-api-key finding at 75,207, this corpus's authored expected span (75,207). This is a genuine, currently-measured detection gap for aws-bedrock-long-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-long-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "2a8754f973964d64d1970680e76b8425bf9e76df060de7c51f77d0a6b160649f": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "9c849361a9277d20dff432c57fa81921e2bfbe8bbde6b364775920b0391cca13": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-short-term-api-key-dotenv); gitleaks reports a aws-bedrock-short-term-api-key finding at 32,76, this corpus's authored expected span (32,492). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "8a2c875d768e70597b23b2bf3fb3022a6216e0628227f92e7574528d3aa93fa4": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-short-term-api-key-export-with-session); gitleaks reports a aws-bedrock-short-term-api-key finding at 33,77, this corpus's authored expected span (33,1457). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "5b0c46054382ff8e99ba6c408765c6de8d4cd748b38976d3b675790c80753f12": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports 111,571, exactly this corpus's authored expected span, labelled bearer-token on beta8-384b/aws-bedrock-short-term-api-key-curl-bearer. gitleaks reports 111,155 (aws-bedrock-short-term-api-key) and 111,571 (unmapped), a narrower or additional span that does not match the authored span — its own rule only captures a truncated prefix of this credential (aws-bedrock-short-term/long-term values are long base64 session tokens; gitleaks' family rule appears to cap the match length), not evidence against redact-secret's exact-span result. The engine classifies this as a range-disagreement (the peer's range set differs from redact-secret's) even though redact-secret's span is authored-expectation-correct; the residual open question is the same one the classification-disagreement rows for this family raise — redact-secret's label here is the generic bearer-token, not the specific aws-bedrock-short-term-api-key family. Not settled by any established class. Class: differential-boundary-unconfirmed/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "2c3e3d8d3c4ed1a020ad7a0de878c8b2c09b3e2380702eb26b2e0f94e36274c2": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "97f02675de3ed35d27b847a790807593bad4f2360828b818809a2aedad4fb915": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-short-term-api-key-python-environ); gitleaks reports a aws-bedrock-short-term-api-key finding at 53,97, this corpus's authored expected span (53,1477). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "7a0e7e30ee07c70c35f6079892cad9c7ce6c2c2853bcc7837c50700bf8914723": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-short-term-api-key-openai-sdk-mantle); gitleaks reports a aws-bedrock-short-term-api-key finding at 108,152, this corpus's authored expected span (108,2064). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "8de45708bc54f883edb7cc724ce9b06ae12d6da28f07614c409e614b7b838524": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-short-term-api-key-actions-env); gitleaks reports a aws-bedrock-short-term-api-key finding at 84,128, this corpus's authored expected span (84,1508). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "a701581aee9dba610280e830269ac3d35e68683354613660e1abda72ff525b10": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-short-term-api-key-agent-settings); gitleaks reports a aws-bedrock-short-term-api-key finding at 55,99, this corpus's authored expected span (55,515). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "145172a70863de949a5a777f08a930b3dcf20c2990136fc3a3145a96c91bedfb": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-short-term-api-key-tool-call); gitleaks reports a aws-bedrock-short-term-api-key finding at 75,119, this corpus's authored expected span (75,1499). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "4aa22735e80f531ac807cdc69730239f519657cf4d6f73ead56401508743fba1": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports 59,519, exactly this corpus's authored expected span, labelled bearer-token on beta8-384b/aws-bedrock-short-term-api-key-proxy-log. gitleaks reports 59,103 (aws-bedrock-short-term-api-key), a narrower or additional span that does not match the authored span — its own rule only captures a truncated prefix of this credential (aws-bedrock-short-term/long-term values are long base64 session tokens; gitleaks' family rule appears to cap the match length), not evidence against redact-secret's exact-span result. The engine classifies this as a range-disagreement (the peer's range set differs from redact-secret's) even though redact-secret's span is authored-expectation-correct; the residual open question is the same one the classification-disagreement rows for this family raise — redact-secret's label here is the generic bearer-token, not the specific aws-bedrock-short-term-api-key family. Not settled by any established class. Class: differential-boundary-unconfirmed/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "bc327b1bfae016d6987bd8285d3d27d74c74053b47e9372bcf7ec7a9ac5952b7": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "64e4f9db06f22795429eeb0f795cd823c9c9789f17efe2355f99c78a4d798992": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384b/aws-bedrock-short-term-api-key-pasted-key); gitleaks reports a aws-bedrock-short-term-api-key finding at 78,122, this corpus's authored expected span (78,2034). This is a genuine, currently-measured detection gap for aws-bedrock-short-term-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/aws-bedrock-short-term-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "1e257872d32cf27d05242326ac65933aff209ef41454fa2a247b73015b032990": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "a66fdf7218d47a203db681f71a77bac65ba4c20e70b3065c35cebaaf9a19c79e": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 26,77, the authored expected span, on the canonical variant of beta8-384c/elevenlabs-api-key-dotenv. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it elevenlabs-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for elevenlabs-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "f6ddfbd279c8691f74951af8350aff3bd1ef5722616aad03508bce03ba67bd08": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 19,70, the authored expected span, on the canonical variant of beta8-384c/elevenlabs-api-key-export-xi-api-key. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it elevenlabs-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for elevenlabs-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "48a4bd309736e1fa87d3463b6f03e50e575b6249f58ece57f7e693f6e2a5f6b2": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 39,90, the authored expected span, on the canonical variant of beta8-384c/elevenlabs-api-key-yaml-config. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it elevenlabs-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for elevenlabs-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "935c200910a182e265951483c9d197d691d47b03fc55c38b0ac1181adcb33ee8": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 58,109, the authored expected span, on the canonical variant of beta8-384c/elevenlabs-api-key-curl-xi-api-key. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it elevenlabs-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for elevenlabs-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "3ea4a921ce51cb1b226801de82fd5ba82af019436347741717c2333d7bf8f944": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384c/elevenlabs-api-key-python-single-line); gitleaks reports a generic-token finding at 64,115, this corpus's authored expected span (64,115). This is a genuine, currently-measured detection gap for elevenlabs-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "fb19c124f59584db8fa696d1ac6631a57ddfdbd03984604d83bbe8828537a407": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384c/elevenlabs-api-key-python-single-line); trufflehog reports a elevenlabs-api-key finding at 64,115, this corpus's authored expected span (64,115). This is a genuine, currently-measured detection gap for elevenlabs-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "a0e3e7cf96049cd3c318e0492be75b1610f2705a2f96ce8b40aef027c9b0cdcf": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 76,127, the authored expected span, on the canonical variant of beta8-384c/elevenlabs-api-key-python-multi-line. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it elevenlabs-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for elevenlabs-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "44bc2f010b755e5d059e47e6dc75fe45bc32f7e6c469d360484fd6126100905a": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 110,161, the authored expected span, on the canonical variant of beta8-384c/elevenlabs-api-key-js-client. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it elevenlabs-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for elevenlabs-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "81c09d7f9af0f395bf0b8afb0164b0a83635feadf8fc3fd11e1a71c683c429bd": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 103,154, the authored expected span, on the canonical variant of beta8-384c/elevenlabs-api-key-tool-call. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it elevenlabs-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for elevenlabs-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/elevenlabs-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "59ea788cb6be680ea04e052ad652f040931f197442d9b6905fffe2baa3553f0a": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detected span 53,117 contains this corpus's authored expected span 53,104 and lies inside the authored envelope 33,118, which records that the surrounding text may be redacted with the value at no collateral cost (Quoted assignment: key name and enclosing quotes are not secret, and neither is the _residency_<region> label a data-residency key carries after the key, but redacting them with the value is acceptable.). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-within-envelope.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "36fb1b8122802536973eb6ff319a75e67bb2ef1c82fa0d89098fbf5a84666f4a": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detected span 53,117 contains this corpus's authored expected span 53,104 and lies inside the authored envelope 33,118, which records that the surrounding text may be redacted with the value at no collateral cost (Quoted assignment: key name and enclosing quotes are not secret, and neither is the _residency_<region> label a data-residency key carries after the key, but redacting them with the value is acceptable.). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-within-envelope.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "0fa66ce8fed65415aafa9539d3184887a0569a0db22ace8373767de8cb5fd7fc": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "05544e67f7574545b81dceb6392125200457d22bd83e12846a2a4db8223049a2": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "97df54f711cf80f3de66e5a3e79754b9d768fc069aa43d79f606351a104fdacc": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "9f967d0a621e6dab5c68825d3db084ab5073f2a8be8c738d4e2eaa40f1950355": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384d/together-ai-api-key-python-together); gitleaks reports a generic-token finding at 58,108, this corpus's authored expected span (58,108). This is a genuine, currently-measured detection gap for together-ai-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/together-ai-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "b0b9f4975752700267604d9c7d62f9d68ed660a9a45ea15b0c99cee5c1fd496f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384d/together-ai-api-key-openai-sdk-base-url); gitleaks reports a generic-token finding at 92,142, this corpus's authored expected span (92,142). This is a genuine, currently-measured detection gap for together-ai-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/together-ai-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "4d78fe809a337eb2a74ccbc7a583187b93a59b9e9a0a53beba678a021fcdd201": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "6c5d2b8fdd2651c8888ce1eb0e7a7759fb325b25cf5bb50636082345fa1d515e": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "3ff065014628abaa07167c95e903a036988eab3b5ddafd7a16f7a5182080d59d": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "c66274ae90ef2c5ffc48f10011761947b05cedf0858504e7ef592ed3fd3c1ce4": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "268283f645b8ef3b93c063e4f6a370864715fe411acd26d141f7e7d533d6f143": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "e9c0ae4abf008468f0bee42f6403e0b3446a3e3f3f9c67dac56f247181ed06f9": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "f58d1480fe00c0e5707256c154485ea8e61e328c76fc41ad17bfe2a5f974eb9c": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "bba7e76f088982ec5bad563d50e3a3a48722be2294e6c429a759a913f36d432e": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "324600b7860731c1de99e19414b28fe4b1095cf3763ef334479f8a135610407b": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "51fd61268a2b5565721fb664268452bec9f6874c7a0243bd9f51404cb8e914c5": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "c226adf35f678f1962f07d0dbdc3255c959770882609235bc8756e13127ba2c4": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "b0a0d9ae135d19f55f91e7526cd6321dc2c4bef59d882e887a19f398915ac240": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "bc4f654121feaa701f2eb7d0827f0f05f05739020434f917e4b6c5e677eba319": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "96cba26f69c23db3d3f28af29dfc9853bbfd8a3e7fef5ca6461bf0b4f3847b15": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "877f2bbb794585107b95f4728e52c31ff10b7b25710773db5ded85ee05af9be6": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "592441472055b6d43fe10242b077e46e53cbabab315d8125aad8a12ebd416dd8": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "52717b444cd6a915b6eca5df1488fad26c5f0ad89d8a70671c83fcf0b0264e66": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "4d99cbb7b6d119a02040fc4969b711f3d8fe9ac4db72099a560360a6b634e986": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "9a601d9677b6360e20891b5faa270ef3912294a60f908ef963afe0f6f22b313d": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "7ef2c58378b48118e88cefb74cd9764573298d019e9476065ea643af3ee138a5": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "88ab4afa7e4f0b4e706ba6e3bfa0b0cec3abeb2b18652fb9c7e6655e26677e8f": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "fc69c68143d802209c75c4b655b3aa5e1e3877b2a9e036661950acc325e9f99c": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "6ed8ff46777823cec1c12835b23c9c7eecfd5f15f071353cba6518c7b4d8866d": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "e71ad540620d338a946c9f9ee55bb54551b8e92ee19c8ad7c3e94b7e77d9d5bb": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical must-redact positive (beta8-384d/tavily-api-key-langchain-kwarg); gitleaks reports a generic-token finding at 131,168, this corpus's authored expected span (131,168). This is a genuine, currently-measured detection gap for tavily-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/tavily-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "e480195e7bd15d04d1afd3f29d2801a4c159205ea2af86e59b3d15433428f110": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target tavily-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [72,89) (labelled bearer-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/tavily-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "f5d602ebc38f38be5ac759cbc1aa9f3eb8aea1e563eeb0fc08095b081ab27948": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "0ec09ab2178936a34628a2eb5676aa656f60698af916b912d91876951b433241": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "5c0dfaca839bc4fbf83bc8bada2ddd494864c1d1db80f8dc51e97400a69caccf": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "b37d07aa9b818148c195be09dd00d6591e0298e3920fec0eba144a46ea714579": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/mistral-api-key-python-ctor); gitleaks reports a generic-token finding at 57,89, this corpus's authored expected span (57,89). This is a genuine, currently-measured detection gap for mistral-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "976ea6c195dafbbcafb147b616c7e4dd55ce37552f761559b632bfb4cdd0a9ca": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/mistral-api-key-langchain-kwarg); gitleaks reports a generic-token finding at 67,99, this corpus's authored expected span (67,99). This is a genuine, currently-measured detection gap for mistral-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "63d6d2505604abfef7be15123056de027beee6b336d4994a1771e6a051bd7540": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "2af7d310f256ea2879fd9f38df222cedf4075b9d5cc5e950ecfe69a675de9a2e": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "ee43f0ae6cd42261f60c95f1e11ba8de1f31e498e6124595b330d27c3e995442": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "889f1028939150d0064301b344d3a6513088e24e4e422a21adbd1e52333b2e99": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/mistral-api-key-proxy-log); gitleaks reports a generic-token finding at 57,89, this corpus's authored expected span (57,89). This is a genuine, currently-measured detection gap for mistral-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "9e881049e9d383c3a37828f1fd33d6eb9da5b3dbf8979a279158d0831c1e99ed": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "ddde4b26e5d84dd0c280d50e9322d3893134545e5f798be5a1f977e8acf9f717": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target mistral-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [16,41) (labelled generic-token) while gitleaks reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "e78c877b0241ed274b1e238f54e1053c6e9b77fd5e1146e99c472383c324e9a4": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target mistral-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [16,41) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "9b60c11fabd3c752d58e4151e8418a31e12c976c1a1bcd849cfb7d0bb9b69f2f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target mistral-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [16,36) (labelled generic-token) while gitleaks reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "1e63953c614c6aae703f5b393092ecad39936e767e1fb4d72d6c741240c2a4ae": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target mistral-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [16,36) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/mistral-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "e93b3e36017088760c34872aab3294afeba04e83f648486bbf22c24210c1dfb2": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 18,58, the authored expected span, on the canonical variant of beta8-384e/cohere-api-key-dotenv. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "ee51a1e25b0f51e316d2c00ef6d22fae8762a6c0ca9eb0f0275f620aa114d702": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "a2a992ea74771d0b40dcee4db1e532ed46f5c24c08b8c370dd1938a520b2e376": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 15,55, the authored expected span, on the canonical variant of beta8-384e/cohere-api-key-dotenv-alt. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "984f9f46f7fcb7d9176de63fe316ac19829671696d95126cb98fe08e381602b9": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "0d20b9989375db8a50f40f87535cc95a9fc93b5c370298b08c308d3754d8ab99": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 19,59, the authored expected span, on the canonical variant of beta8-384e/cohere-api-key-export. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "806dd37816d7017fc0670011eb2d995968b47e7bfcf4a1c4a7a13545741a2fae": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "29fa8552b0e047c52d59ffce7776f56ae59b1b0cf5e7daaad1a68ad808ea15c8": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 93,133, the authored expected span, on the canonical variant of beta8-384e/cohere-api-key-compose-env. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "0eed8fc2ea6cb55cb52ab6df07bba71c3ff8b19e22d7478d2e637030cd49434d": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "5b1967a62798bcbb2a2d9718945676a5a93beb9c81f9b6232ed8dd6b99bc6403": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/cohere-api-key-python-ctor); gitleaks reports a generic-token finding at 49,89, this corpus's authored expected span (49,89). This is a genuine, currently-measured detection gap for cohere-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "ef4b0fe8095e7c338d9cbc74387683753e21d9b4963511026149a1734e1f791e": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/cohere-api-key-langchain-kwarg); gitleaks reports a cohere-api-key finding at 57,97, this corpus's authored expected span (57,97). This is a genuine, currently-measured detection gap for cohere-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "2eadbd175d3800971f91cc4fff6290f5fcf0d0e0036972a3a3d665c4f3e288cc": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/cohere-api-key-ts-ctor); gitleaks reports a generic-token finding at 44,84, this corpus's authored expected span (44,84). This is a genuine, currently-measured detection gap for cohere-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "6e1e0af273a3a174e936932a81a4b622974012780b23b6b28097820ded912a42": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 21,61, the authored expected span, on the canonical variant of beta8-384e/cohere-api-key-json-config. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "6dacbcf1798d206ea98b0bd51141bdd4ab45036679c63b2ef5264621185d2697": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "63eb6b49cf77584e5431d18934ede04d76c21b7f92322c7b38fbaaab6dcc4ff7": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and gitleaks both report 61,101, the authored expected span, on the canonical variant of beta8-384e/cohere-api-key-tool-call. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; gitleaks labels it cohere-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for cohere-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "31c6302fc76bd745f975da6043c23d08bc50687194c0a276c3b9db286fdf441e": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "aaca447f9c0fc67e9f458ad19bfe6b8bd92af13b9b10d84653c9e196caf778a6": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/cohere-api-key-proxy-log); gitleaks reports a cohere-api-key finding at 57,97, this corpus's authored expected span (57,97). This is a genuine, currently-measured detection gap for cohere-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "f0cc5a8b04302319b91b038fe1f25aeb4bbe63a014d8a04126a7d304766882d0": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "c5360270875b0daedf95bdf0e6abfc715bdf36c2f94c242bc897a83de80ba68d": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [11,35) (labelled generic-token) while gitleaks reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "93dbea39ee9d64d50299f620c45b123f090a0a286a81eeb13eb9834f98868f7f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [11,35) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "86eff1acfa13459632c9690d2890142c29260e3c970d23d313cdbd71558bf96e": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [11,30) (labelled generic-token) while gitleaks reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "a04cf17f1a657dff6371075cc354589b69512cd6bae2e1f5381d18c4b9bec1bd": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [11,30) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "3a631cb55cb290f76b6c76ed0cca456bf0a5ccbd13d0c309b42f517302134bb1": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 24,64, the authored expected span, on the canonical variant of beta8-384e/deepgram-api-key-dotenv. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for deepgram-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "8967c0086b9e4229533360736371afd05c37adcf10afcb1e89a7f5204f395802": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 25,65, the authored expected span, on the canonical variant of beta8-384e/deepgram-api-key-export. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for deepgram-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "4b9bbac456c7f8bed5ae020281bc97bb68e35704d74a61388dd040ae340779b5": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 99,139, the authored expected span, on the canonical variant of beta8-384e/deepgram-api-key-compose-env. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for deepgram-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "b558bafe489a31d2a8265031fbcdcf0a02e6a89f971a1873feb11d42b92c1b49": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/deepgram-api-key-python-ctor); gitleaks reports a generic-token finding at 70,110, this corpus's authored expected span (70,110). This is a genuine, currently-measured detection gap for deepgram-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "c98eb427bf50b1e65d67853508041752358fa153e9143c9d6bdd40fb7d73f21d": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/deepgram-api-key-python-ctor); trufflehog reports a deepgram-api-key finding at 70,110, this corpus's authored expected span (70,110). This is a genuine, currently-measured detection gap for deepgram-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "7db9d09d2cb25a7c50f187abe73bc0ca54697acca3e1464fad342e578aba8338": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/deepgram-api-key-ts-ctor); gitleaks reports a generic-token finding at 42,82, this corpus's authored expected span (42,82). This is a genuine, currently-measured detection gap for deepgram-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "8cbbdb62690b02f5ed82ff6f6c12446bdfd9e4a0d107acfed91ec1a0b2ffbc2a": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/deepgram-api-key-ts-ctor); trufflehog reports a deepgram-api-key finding at 42,82, this corpus's authored expected span (42,82). This is a genuine, currently-measured detection gap for deepgram-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "cfb36381ab53283af2a4ad322aa2fac483c824ab83dee3ad825c2cdc55249d82": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/deepgram-api-key-curl-header); gitleaks reports an unmapped finding at 68,108, this corpus's authored expected span (68,108). This is a genuine, currently-measured detection gap for deepgram-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "50c47309287c8a5d651d82cdbb5344fc757f4d670e66adf1eea9d34e7fad1b80": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/deepgram-api-key-curl-header); trufflehog reports a deepgram-api-key finding at 68,108, this corpus's authored expected span (68,108). This is a genuine, currently-measured detection gap for deepgram-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "d0c5c5fc79f1e0c12e648af3e521f0534da94ad74d355fe167183962f261785d": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret and trufflehog both report 67,107, the authored expected span, on the canonical variant of beta8-384e/deepgram-api-key-tool-call. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.9) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md, a classification-disagreement row is only settled not-assertable when redact-secret's own label is one of the row's targeted families and the peer's label is the coarser one; here the peer's label is the more specific one (or an adjacent family), so this row is explicitly one the decision leaves open, not one it settles. This reflects the currently pinned published package (0.1.0-beta.9) and is a genuine, currently-measured product attribution question for deepgram-api-key, not settled by any established class. Class: differential-boundary-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "47d31214bfa55ad58c2a63a93b85ceab04632101b38dc59f7c759a26ceaa627e": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/deepgram-api-key-proxy-log); gitleaks reports a generic-token finding at 59,99, this corpus's authored expected span (59,99). This is a genuine, currently-measured detection gap for deepgram-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "61228679f495f6ed5f7f9708fe0709a4f439456da20c0e27394c8a8500c4cf2f": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/deepgram-api-key-proxy-log); trufflehog reports a deepgram-api-key finding at 59,99, this corpus's authored expected span (59,99). This is a genuine, currently-measured detection gap for deepgram-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "19aae86ce4bd9cf56aeb30a664d0888d511558865688ea7ab3764c039240688e": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "3369e624278edf8b578a2a31cd677b3abacc2db6f9ed7137fcf25da30c8aee96": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by trufflehog flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "c3e86703b0a99f658908d3dbe1380e3f05b2a92fcabdc0880fbb7bb5cf1aac4d": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [17,43) (labelled generic-token) while gitleaks reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "3dba54a7d55daf495bb0daf4084e98ccd132740c533645458f8710b4bf96b3c0": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [17,43) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "33336a9d8dd971c21466e308a9adc836e5ce93fb6e23b49bcfe880bdd1214d63": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [17,38) (labelled generic-token) while gitleaks reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "6ca567abd8a82aaf8e76f4d6eb0fbf80d69b022ee78c7db83b6f07d433fe26f5": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [17,38) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "b7f5172ef174087b004484dd948f1df7341546acf1ea477d3872916384e86395": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "1618d0d583cab826ecae40eb54ad3b5e1186b693aa9495385a83667d0b97dacb": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "759d0f9035aba32978309f36dc95c6231f6195dbfb0429da9345a9bd0794c20a": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/ai21-api-key-python-ctor); gitleaks reports a generic-token finding at 58,90, this corpus's authored expected span (58,90). This is a genuine, currently-measured detection gap for ai21-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/ai21-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "cfc74017f69157a5d35e3b76fbf99aae3a160d09f54ccc36357e32f5ec6902d1": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "redact-secret (published npm package 0.1.0-beta.9) reports no finding at all on this canonical policy positive (beta8-384e/ai21-api-key-langchain-kwarg); gitleaks reports a generic-token finding at 44,76, this corpus's authored expected span (44,76). This is a genuine, currently-measured detection gap for ai21-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/ai21-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "784fb36b1c63947238a3dcbc0f1432aafa9a99a817c7a22a9218f7995a4c0483": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "e64f1f7b9bb63325a8028a88a49b27ae8f7b7f12a616ad8ed7a8667a94e440c1": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "a9135ceae0463936e899a34d2348bae08de148d6e6209cd5c9550d1096624ed5": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "3680c69e82691cfbfa203aaa0c70bf94dff97f22333c5b889309421c0ddcda14": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "973c7e26715cb02afb34503cf4f6e68590656fe7f4885a94087cbc4d7665126d": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "0e4cf0a77fd098dd12056bd0cb716cf5270852546737a856db44de68543e842b": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target ai21-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [13,35) (labelled generic-token) while gitleaks reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/ai21-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "8e0e080e5af970b843b6cdbf8db278870a939e405fcb763e59b67566729a90b9": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Differential observation on a Beta.10 fixture (#384, target ai21-api-key, must-not-flag/T3): redact-secret (published npm package 0.1.0-beta.9) reports [13,35) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/ai21-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "43973a4daec9da42b5416620d9d91d3e8a850ac59e310674c1fc5ac56ac36bde": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "exa-api-key is an arrival family with no registry detector in the published package (benchmarks/lib/beta8/384e.ts, issue #384/384e, redact-secret#868/#787): its own recorded reason states redact-secret today misses \"SDK-call-argument forms (Exa(api_key=\"...\"), new Exa(\"...\"))\" while catching keyword-anchored env/JSON/YAML/header forms. This row (exa-api-key-python-kwarg) is exactly that documented, already-accepted gap recurring against gitleaks's generic-token catch at 43,79 (the authored expected span 43,79); it is not a new finding. No established resolved or not-assertable class covers \"an arrival family's own already-documented absence\", so it is recorded open rather than forced into one. Class: differential-coverage-gap/exa-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+    },
+    "0cafe52c4bc149fbb3f4970ea3bf9671acdf3cb4a5e7cde4ada17e12c174bb0e": {
+      "status": "resolved",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
+    },
+    "04d81f66eb38a9abc8a9543bea7b082ff4914f85d49e405c884cdce779ee8e11": {
+      "status": "open",
+      "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "note": "exa-api-key is an arrival family with no registry detector in the published package (benchmarks/lib/beta8/384e.ts, issue #384/384e, redact-secret#868/#787): its own recorded reason states redact-secret today misses \"SDK-call-argument forms (Exa(api_key=\"...\"), new Exa(\"...\"))\" while catching keyword-anchored env/JSON/YAML/header forms. This row (exa-api-key-langchain-kwarg) is exactly that documented, already-accepted gap recurring against gitleaks's generic-token catch at 37,73 (the authored expected span 37,73); it is not a new finding. No established resolved or not-assertable class covers \"an arrival family's own already-documented absence\", so it is recorded open rather than forced into one. Class: differential-coverage-gap/exa-api-key.",
+      "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
+      "lastSeenAt": "2026-09-27T12:00:00.000Z"
     }
   }
 }

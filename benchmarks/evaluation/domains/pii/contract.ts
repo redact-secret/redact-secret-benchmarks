@@ -13,6 +13,7 @@ import * as assessment from './assessment.ts';
 import * as support from './support.ts';
 import * as validatorQualification from './validator-qualification.ts';
 import * as contextEvidence from './context-evidence.ts';
+import * as benignCollisionEvidence from './benign-collision-evidence.ts';
 
 export const piiDomain = Object.freeze({ ...piiIdentity, createMethods: createPiiMethods, createOperators: createPiiOperators,
   createValidators: createPiiValidators, loadCases: loadPiiCases,
@@ -22,6 +23,7 @@ export const piiDomain = Object.freeze({ ...piiIdentity, createMethods: createPi
   support,
   validatorQualification,
   contextEvidence,
+  benignCollisionEvidence,
   validateCase: validatePiiCase, validateContract: validatePiiContract, execute: executePiiEvaluation,
   normalizeFinding: normalizePiiFinding, holdout: Object.freeze(piiHoldoutDomain), holdoutStorage: Object.freeze(piiHoldoutStorage) });
 

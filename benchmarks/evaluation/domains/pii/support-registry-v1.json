@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "pii-support-registry-v1",
   "version": 1,
-  "contentCommitment": "159e8fa902f90ab004a5c36e0a685e0c250661a1a50c078e145a36ec7a354ee6",
+  "contentCommitment": "cfa8fad88b9ea01c2090fdaec0d59027f34e9b7e5868f9f6c33bdc88e655cfa0",
   "source": {
     "repository": "redact-secret/redact-secret",
     "decision": "decision-define-pii-v1-qualification-and-national-id-arrival-gates",
@@ -246,6 +246,60 @@
           "supports": [
             "validation",
             "sensitivity"
+          ]
+        }
+      ],
+      "contextObligation": "required-for-sensitive-classification",
+      "validatorApplicable": true
+    },
+    {
+      "family": "pii:global:phone",
+      "displayName": "Phone number",
+      "identityDomain": "phone",
+      "familyContractVersion": 1,
+      "scope": "global",
+      "jurisdiction": null,
+      "qualificationProfile": {
+        "id": "pii-v1",
+        "version": 1
+      },
+      "authority": [
+        {
+          "sourceKind": "standard",
+          "sourceId": "itu-t-e164",
+          "locator": "https://www.itu.int/rec/T-REC-E.164-202602-I/en",
+          "revision": "2026-02",
+          "supports": [
+            "lexical",
+            "validation"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "nanpa-about",
+          "locator": "https://www.nanpa.com/about",
+          "revision": "accessed-2026-09-27",
+          "supports": [
+            "lexical",
+            "validation"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "nanpa-co-codes-thousands-blocks",
+          "locator": "https://www.nanpa.com/numbering/co-codesthousands-blocks",
+          "revision": "accessed-2026-09-27",
+          "supports": [
+            "validation"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "nanpa-555-line-numbers",
+          "locator": "https://www.nanpa.com/numbering/555-line-numbers",
+          "revision": "accessed-2026-09-27",
+          "supports": [
+            "reserved-control"
           ]
         }
       ],

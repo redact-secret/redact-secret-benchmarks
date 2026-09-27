@@ -76,6 +76,8 @@ function validSourceConformance(value: PiiSourceConformance | undefined, sourceC
       fixture: 'conformance/fixtures/pii-email-v1.json' },
     'pii:global:iban': { ids: ['cli-iban-conformance', 'python-iban-conformance', 'rust-native-iban-conformance'],
       fixture: 'conformance/fixtures/pii-iban-v1.json' },
+    'pii:global:payment-card': { ids: ['cli-payment-card-conformance', 'python-payment-card-conformance', 'rust-native-payment-card-conformance'],
+      fixture: 'conformance/fixtures/pii-payment-card-v1.json' },
   };
   const contract = contracts[qualificationFamily];
   if (!contract) return false;

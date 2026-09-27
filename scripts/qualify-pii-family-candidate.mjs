@@ -76,6 +76,25 @@ const sourceDefinitions = Object.freeze({
     toolchains: [{ executable: 'python3', args: ['--version'] }, { executable: 'maturin', args: ['--version'] },
       { executable: 'rustc', args: ['--version'] }],
   },
+  'rust-native-payment-card-conformance': {
+    fixture: 'conformance/fixtures/pii-payment-card-v1.json',
+    commands: [{ executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret', '--test', 'pii_payment_card_conformance'] }],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'cli-payment-card-conformance': {
+    fixture: 'conformance/fixtures/pii-payment-card-v1.json',
+    commands: [{ executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret-cli', 'payment_card_family_fixture_matches_cli_utf8_metadata_for_exact_selection'] }],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'python-payment-card-conformance': {
+    fixture: 'conformance/fixtures/pii-payment-card-v1.json',
+    commands: [{ executable: 'python3', args: ['-m', 'venv', '--system-site-packages', '{venv}'] },
+      { executable: 'maturin', args: ['develop', '--release', '--manifest-path', 'bindings/python/Cargo.toml'], venv: true },
+      { executable: '{python}', args: ['-c', 'from tests.test_pii_activation import test_pii_runtime_fixture; test_pii_runtime_fixture()'],
+        venv: true, pythonPath: 'bindings/python' }],
+    toolchains: [{ executable: 'python3', args: ['--version'] }, { executable: 'maturin', args: ['--version'] },
+      { executable: 'rustc', args: ['--version'] }],
+  },
 });
 const digest = value => createHash('sha256').update(value).digest('hex');
 const utf16ToByteOffset = (input, offset) => {

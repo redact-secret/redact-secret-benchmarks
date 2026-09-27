@@ -55,7 +55,7 @@ test('trusted product binding is artifact-derived and still fails closed without
   assert.equal(matrix.activationContract.productArtifact, 'trusted');
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
     ['pii:global:email', 'unavailable', 'pending'], ['pii:global:iban', 'unavailable', 'pending'],
-    ['pii:global:network-address', 'available', 'pending'],
+    ['pii:global:network-address', 'available', 'pending'], ['pii:global:payment-card', 'unavailable', 'pending'],
   ]);
   assert.equal(matrix.activationContract.productSourceCommit, '941053baecdc4b99f98e085429ac26bf24fe0bee');
   assert.equal(matrix.activationContract.productArtifactCommitment, 'ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1');
@@ -95,7 +95,7 @@ test('email binding keeps installed offsets and exact-source conformance separat
   assert.equal(matrix.activationContract.productSourceCommit, 'b73daade943f9dea5f86d90a91aa0332083f728a');
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
     ['pii:global:email', 'available', 'pending'], ['pii:global:iban', 'unavailable', 'pending'],
-    ['pii:global:network-address', 'available', 'pending'],
+    ['pii:global:network-address', 'available', 'pending'], ['pii:global:payment-card', 'unavailable', 'pending'],
   ]);
   assert.deepEqual(qualificationArtifact.sourceConformance.lanes.map(row => row.id), [
     'rust-native-email-conformance', 'python-email-conformance', 'cli-email-conformance',
@@ -156,6 +156,50 @@ test('IBAN binding pins authority and validator provenance while unresolved evid
 
   const hostile = structuredClone(product);
   hostile.qualificationArtifacts[0].sourceConformance.lanes[0].fixture = 'conformance/fixtures/pii-email-v1.json';
+  hostile.qualificationArtifacts[0].sourceConformance.artifactCommitment =
+    piiBindingArtifactCommitment(hostile.qualificationArtifacts[0].sourceConformance);
+  hostile.qualificationArtifacts[0].artifactCommitment = piiBindingArtifactCommitment(hostile.qualificationArtifacts[0]);
+  assert.throws(() => buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product: hostile }), /trusted PII qualification evidence/);
+});
+
+test('payment-card binding separates Luhn controls from semantic collisions and stays pending without populations', async () => {
+  const [candidateEvidence, activationArtifact, qualificationArtifact, plan] = await Promise.all([
+    readFile('evidence/877/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/877/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/877/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+    readFile('benchmarks/evaluation/domains/pii/payment-card-qualification-v1.json', 'utf8').then(JSON.parse),
+  ]);
+  const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
+  const matrix = buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product });
+  const paymentCard = matrix.families.find(row => row.family === 'pii:global:payment-card');
+  assert.equal(plan.familyContractVersion, 1);
+  assert.deepEqual(plan.authorityBinding.validator,
+    { id: 'luhn', version: 1, normativeSource: 'PCI-SSC-FAQ-1137', maxCandidateBytes: 19 });
+  assert.ok(paymentCard.authority.some(row => row.sourceId === 'iso-iec-7812-1'));
+  assert.ok(paymentCard.authority.some(row => row.sourceId === 'visa-acceptance-card-type-identification'));
+  const classes = new Map(qualificationArtifact.classAccounting.map(row => [row.id, row]));
+  assert.equal(classes.get('validator-checksum-invalid').status, 'measured');
+  for (const id of ['luhn-valid-order-reference-collision', 'luhn-valid-account-collision', 'luhn-valid-phone-collision',
+    'luhn-valid-random-collision', 'luhn-valid-cooking-pan-collision'])
+    assert.equal(classes.get(id).status, 'measured');
+  assert.deepEqual(activationArtifact.availableFamilies,
+    ['pii:global:email', 'pii:global:iban', 'pii:global:network-address', 'pii:global:payment-card']);
+  assert.deepEqual(qualificationArtifact.sourceConformance.lanes.map(row => row.id),
+    ['rust-native-payment-card-conformance', 'python-payment-card-conformance', 'cli-payment-card-conformance']);
+  const astral = qualificationArtifact.installedArtifactConformance.lanes[0].observations
+    .find(row => row.id === 'astral-prefix-sensitive-context');
+  assert.deepEqual(astral.nativeRange, { start: 15, end: 31 });
+  assert.deepEqual(astral.canonicalRange, { start: 17, end: 33 });
+  assert.equal(qualificationArtifact.status, 'not-qualified');
+  assert.equal(paymentCard.status.state, 'pending');
+  for (const reason of ['identity-only-classification', 'diagnostic-population-not-measured',
+    'benign-heavy-stress-not-measured', 'population-comparison-not-qualified', 'protected-partition'])
+    assert.ok(paymentCard.status.reasonCodes.includes(reason));
+  assert.ok(paymentCard.populationEvidence.every(row => row.status === 'not-measured' && row.strata === 0));
+  assert.equal(validatePiiSupportMatrixV2(matrix, { registry: piiSupportRegistry, product }).artifactCommitment, matrix.artifactCommitment);
+
+  const hostile = structuredClone(product);
+  hostile.qualificationArtifacts[0].sourceConformance.lanes[0].fixture = 'conformance/fixtures/pii-iban-v1.json';
   hostile.qualificationArtifacts[0].sourceConformance.artifactCommitment =
     piiBindingArtifactCommitment(hostile.qualificationArtifacts[0].sourceConformance);
   hostile.qualificationArtifacts[0].artifactCommitment = piiBindingArtifactCommitment(hostile.qualificationArtifacts[0]);

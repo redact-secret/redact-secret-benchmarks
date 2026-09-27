@@ -4,6 +4,7 @@ import type { MechanicalAccountingConfig } from '../../../accounting/shared/prim
 import { accountCounts, validateMechanicalAccounting } from '../../../accounting/shared/primitives.ts';
 import { evaluationInputs } from '../../substrate/case-lifecycle.ts';
 import { hash } from '../../substrate/hash.ts';
+import { assessPiiCase } from './assessment.ts';
 import { executeDomainEvaluation } from '../../substrate/orchestration.ts';
 import type { Registry } from '../../substrate/registry.ts';
 import { assembleEvaluationArtifact } from '../../substrate/result-assembly.ts';
@@ -40,8 +41,8 @@ function validateFindings(findings: PiiFinding[], fixtures: PiiVariant['fixture'
     const fixture = fixtures.find(row => row.path === finding.path);
     if (!fixture || !Number.isInteger(finding.start) || !Number.isInteger(finding.end) || finding.start < 0 || finding.end <= finding.start ||
         finding.end > Buffer.byteLength(fixture.content) ||
-        (finding.family !== undefined && !/^[a-z][a-z0-9-]{1,79}$/.test(finding.family)) ||
-        (finding.jurisdiction !== undefined && !/^[a-z][a-z0-9-]{1,79}$/.test(finding.jurisdiction)) ||
+        (finding.family !== undefined && !/^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$/.test(finding.family)) ||
+        (finding.jurisdiction !== undefined && !/^(?:BR|TR|US)$/.test(finding.jurisdiction)) ||
         (finding.sensitive !== undefined && typeof finding.sensitive !== 'boolean')) throw new Error('Invalid PII finding');
   }
 }
@@ -80,7 +81,8 @@ export async function executePiiEvaluation({ cases, methods, scanners, provenanc
     observationMetadata: ({ findings: _findings, ...metadata }) => metadata,
     assembleResult: (g: PiiGeneratedCase) => {
       const evaluated = g.method.evaluate({ case: g.case, variants: g.variants, observations });
-      return { result: { id: g.case.id, method: g.case.method, category: g.case.contract.category, family: g.case.contract.family,
+      return { result: { id: g.case.id, method: g.case.method, assessment: assessPiiCase(g.case), category: g.case.contract.category, family: g.case.contract.family,
+        displayName: g.case.contract.displayName, identityDomain: g.case.contract.identityDomain,
         scope: g.case.contract.scope, qualificationProfile: g.case.contract.qualificationProfile, authority: g.case.contract.authority,
         variants: g.variants.map(v => ({ id: v.id, strategy: v.strategy, transformation: v.transformation,
           expectation: { type: v.contract.typeExpectation.state, sensitivity: v.contract.sensitivityExpectation,

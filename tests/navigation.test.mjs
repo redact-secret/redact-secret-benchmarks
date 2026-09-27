@@ -30,6 +30,9 @@ test('the redesign route table resolves, with or without a trailing slash', () =
   assert.equal(resolve('/report').kind, 'report');
   assert.equal(resolve('/coverage/').kind, 'coverage');
   assert.equal(resolve('/support').kind, 'support');
+  assert.deepEqual(resolve('/evaluation'), { kind: 'redirect', id: '', view: '', to: '/evaluation/credentials' });
+  assert.deepEqual(resolve('/evaluation/credentials/'), { kind: 'evaluation-domain', id: 'credential', view: '', to: '' });
+  assert.deepEqual(resolve('/evaluation/pii'), { kind: 'evaluation-domain', id: 'pii', view: '', to: '' });
   assert.equal(resolve('/performance').kind, 'performance');
   assert.equal(resolve('/performance/').kind, 'performance');
   assert.deepEqual(resolve('/coverage/github-token'), { kind: 'redirect', id: '', view: '', to: '/coverage/detectors/github-token' });
@@ -49,7 +52,7 @@ test('no bookmark breaks: every pre-redesign path redirects to a page that resol
   const legacy = {
     '/': '/report', '/benchmark': '/report', '/benchmark/': '/report', '/coverage-gaps': '/coverage', '/methodology': '/how-to-read',
     '/pending': '/workbench/review/t0-fixtures', '/pending/': '/workbench/review/t0-fixtures',
-    '/evaluation': '/workbench', '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation',
+    '/evaluation': '/evaluation/credentials', '/evaluation/reviews': '/workbench', '/evaluation/failures': '/workbench', '/evaluation/operators': '/workbench/method/mutation',
     '/evaluation/detector/github-token': '/coverage/detectors/github-token',
     ...Object.fromEntries(['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => [`/evaluation/method/${m}`, `/workbench/method/${m}`])),
     ...Object.fromEntries(registry.detectors.map(d => [`/benchmark/${d.id}`, `/coverage/detectors/${d.id}`])),
@@ -64,7 +67,10 @@ test('no bookmark breaks: every pre-redesign path redirects to a page that resol
 });
 test('the public-only allowlist drops Workbench and nothing else', () => {
   const open = path => parseRoute(path, { suites, publicOnly: true }).kind;
-  for (const path of ['/workbench', '/workbench/changes', '/workbench/method/twin', '/evaluation', '/pending']) assert.equal(open(path), 'missing', path);
+  for (const path of ['/workbench', '/workbench/changes', '/workbench/method/twin', '/pending']) assert.equal(open(path), 'missing', path);
+  assert.equal(open('/evaluation'), 'redirect');
+  assert.equal(open('/evaluation/credentials'), 'evaluation-domain');
+  assert.equal(open('/evaluation/pii'), 'evaluation-domain');
   assert.equal(open('/report'), 'report');
   assert.equal(open('/coverage/detectors/github-token'), 'coverage-detector');
   assert.equal(open('/scenarios/context-and-encoding'), 'scenario');

@@ -40,7 +40,7 @@ function legacyRoute(path, suites) {
   if (path === '/methodology') return redirect('/how-to-read');
   // T0 fixtures are one class of the review queue now.
   if (path === '/pending') return redirect('/workbench/review/t0-fixtures');
-  if (path === '/evaluation' || path === '/evaluation/reviews' || path === '/evaluation/failures') return redirect('/workbench');
+  if (path === '/evaluation/reviews' || path === '/evaluation/failures') return redirect('/workbench');
   // Operator evidence sits with the method that generates operator variants.
   if (path === '/evaluation/operators') return redirect('/workbench/method/mutation');
   let match = new RegExp(`^/evaluation/method/(${ID})$`).exec(path);
@@ -64,6 +64,9 @@ export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
   if (path === '/report') return at('report');
   if (path === '/coverage') return at('coverage');
   if (path === '/support') return at('support');
+  if (path === '/evaluation') return redirect('/evaluation/credentials');
+  if (path === '/evaluation/credentials') return at('evaluation-domain', 'credential');
+  if (path === '/evaluation/pii') return at('evaluation-domain', 'pii');
   if (path === '/performance') return at('performance');
   if (path === '/how-to-read') return at('how-to-read');
   let match = new RegExp(`^/coverage/detectors/(${ID})$`).exec(path);

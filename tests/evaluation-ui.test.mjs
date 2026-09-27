@@ -7,6 +7,7 @@ import { runEvaluation } from '../benchmarks/engine/runner.ts';
 import { publicEvaluation } from '../benchmarks/engine/public-report.ts';
 import { assertionRows, reviewRows, summarizeEvaluation, evaluationProblem } from '../src/evaluation-model.ts';
 import { parseRoute } from '../src/model.mjs';
+import { domainEvaluationPage } from '../src/pages/domain-evaluation.ts';
 const operators = createOperators(), sources = await loadCases(operators);
 const selected = ['twin','benign','mutation','differential'].map(m => sources.find(c => c.method === m));
 const scanners = [{ id: 'redact-secret', mode: 'test', async version() { return '1.0.0'; }, async scan() { return []; } },
@@ -51,14 +52,27 @@ test('missing, legacy, stale, dangling assertions and scored T0 evidence fail cl
   const scored = published(); scored.cases[0].variants[0].tier = 'T0';
   assert.ok(evaluationProblem(scored));
 });
-test('every pre-redesign evaluation route forwards to Workbench on direct navigation', () => {
-  for (const path of ['/evaluation','/evaluation/failures','/evaluation/reviews','/evaluation/operators', ...['twin','benign','metamorphic','mutation','differential','holdout'].map(m => `/evaluation/method/${m}`)]) {
+test('domain routes are public while pre-redesign detail routes still forward to Workbench', () => {
+  assert.equal(parseRoute('/evaluation').to, '/evaluation/credentials');
+  assert.deepEqual(parseRoute('/evaluation/credentials'), { kind: 'evaluation-domain', id: 'credential', view: '', to: '' });
+  assert.deepEqual(parseRoute('/evaluation/pii'), { kind: 'evaluation-domain', id: 'pii', view: '', to: '' });
+  for (const path of ['/evaluation/failures','/evaluation/reviews','/evaluation/operators', ...['twin','benign','metamorphic','mutation','differential','holdout'].map(m => `/evaluation/method/${m}`)]) {
     const route = parseRoute(path + '/');
     assert.equal(route.kind, 'redirect', path);
     assert.equal(parseRoute(route.to).kind, 'workbench', path);
   }
   assert.equal(parseRoute('/evaluation/detector/github-token').to, '/coverage/detectors/github-token');
   assert.equal(parseRoute('/evaluation/unknown').kind, 'missing');
+});
+
+test('PII evaluation renders a strict schema-only state without credential metrics or invented results', () => {
+  const descriptor = { domain: 'pii', reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
+    qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null }, support: { state: 'schema-only', href: null } };
+  const html = domainEvaluationPage(descriptor);
+  assert.match(html, /PII evaluation is schema-only/);
+  assert.match(html, /pii-v1@1/);
+  assert.match(html, /No status, rate or cross-domain score/);
+  assert.doesNotMatch(html, /data-support-status=|\b0%\b|unsupported|provisional|stable/i);
 });
 
 test('public contract rejects unknown fields and injected holdout detail', () => {

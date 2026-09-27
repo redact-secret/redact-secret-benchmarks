@@ -1,12 +1,14 @@
-# Evidence: redact-secret#774 — Beta.10 credential families measured at cfe2aec, then 735797a
+# Evidence: redact-secret#774 — Beta.10 credential families measured at cfe2aec, then 735797a, then 26efbba
 
-**Current result (735797a, superseding cfe2aec below):** 4 of 13 Beta.10 families read `stable`: three T1 documented
-(`aws-bedrock-long-term-api-key`, `aws-bedrock-short-term-api-key`, `elevenlabs-api-key`) and one T2 empirical
-(`tavily-api-key`, newly qualified once redact-secret#870 removed its placeholder false alarm). Candidate mode 65 stable
-of 83 families; published mode (0.1.0-beta.9) unchanged at 61 of 83. The registry re-pin to 735797a is otherwise
-unblocked by detector-list changes (none), but the performance evaluation twice read REJECTED at 735797a
-(see "Performance evaluation" below), so `benchmarks/performance-criteria.json baseline.verifiedCommit` is not advanced
-and `pins:check` still fails on the pre-existing #150 coupling.
+**Current result (26efbba, superseding 735797a and cfe2aec below):** 4 of 13 Beta.10 families read `stable`: three T1
+documented (`aws-bedrock-long-term-api-key`, `aws-bedrock-short-term-api-key`, `elevenlabs-api-key`) and one T2
+empirical (`tavily-api-key`, qualified once redact-secret#870 removed its placeholder false alarm; unchanged by
+#871's perf-only fix). Candidate mode 65 stable of 83 families; published mode (0.1.0-beta.9) unchanged at 61 of 83.
+The registry re-pin to 26efbba is otherwise unblocked by detector-list changes (none across cfe2aec/735797a/26efbba),
+but the performance evaluation reads REJECTED at every commit measured so far, most recently on `cli`'s
+`scale-logs` surface specifically (see "Update: re-pinned at 26efbba" below), so
+`benchmarks/performance-criteria.json baseline.verifiedCommit` is not advanced and `pins:check` still fails on the
+pre-existing #150 coupling.
 
 **Prior result (cfe2aec, first measured):** 3 of 13 families read `stable` (documented, T1), none empirical. Candidate
 mode 64 stable of 83; published mode 61 stable of 83.
@@ -150,4 +152,57 @@ npm run eval:classify -- --candidate-package=<core.tgz> --candidate-node-package
   --candidate-source-commit=735797a7950dbb41c8f87bc94ca152d1f2ec9604 --output=evidence/774/735797a/support-status.json
 npm run eval:matrix -- --input=evidence/774/735797a/support-status.json --output=evidence/774/735797a/support-matrix.json
 gh workflow run performance-evaluation.yml --ref develop -f candidate_revision=735797a7950dbb41c8f87bc94ca152d1f2ec9604
+```
+
+## Update: re-pinned at 26efbba (redact-secret PR #871, round-2 perf fix)
+
+Product follow-up PR #871 (merge `26efbbaa5627ade0f9e7b248f4f88bdbe5334322`) replaces `contains_ascii_ci`'s
+Boyer-Moore-Horspool scan (added in #870) with a first-byte linear scan, for the keyword-gated detectors'
+provider-context pre-check. `crates/secret-scan-core/src/detectors/mod.rs` is unchanged, so this is a pure
+performance change: candidate mode reads the identical distribution as 735797a (65 stable of 83, 25 empirical;
+tavily-api-key still the only newly-qualified family). Node darwin-arm64 artifact SHA-256
+`b6fd4681ef7d4195002d8b8e3269f190a1a4645a24bc7bac5fe17f2378814664`, wasm
+`f4b97b6572d5a2d9de360c442e58a97634f301307f4d1af6a307090468ff1b96` (core façade unchanged:
+`51fc3d78f24ed5c13d7460c25627476e1751a71c511ce51bd1fe6cfd69047664`). Candidate classification
+`1e1c7fbc-7407-4879-ae1e-f4d917593063` (`26efbba/support-status.json`, `26efbba/support-matrix.json`); published
+classification in `26efbba/published/`. Same pinned scanners as above.
+
+### Performance evaluation: still REJECTED, closer, `cli` is the persistent offender
+
+Two independent dispatches at 26efbba, full `scale-logs` `processing-ratio` table (budget `allowedChange` shown per
+row; 0.1 = 10% unless noted):
+
+| Surface / profile | Budget | Run [36302356053](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36302356053) | Run [36302653920](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36302653920) |
+| --- | --- | --- | --- |
+| browser-wasm / medium-fixed4096 | 10% | **1.1097 (regression)** | 1.0931 (within budget) |
+| browser-wasm / small-whole | 30% | 1.1364 (within budget) | 1.2634 (within budget) |
+| cli / medium-fixed4096 | 10% | **1.1060 (regression)** | **1.1331 (regression)** |
+| cli / small-whole | 10% | **1.1089 (regression)** | **1.1245 (regression)** |
+| node / medium-fixed4096 | 10% | 1.0892 (within budget) | 1.0969 (within budget) |
+| node / small-whole | 10% | 1.0889 (within budget) | 1.0815 (within budget) |
+| python / medium-fixed4096 | 10% | 1.0895 (within budget) | 1.0879 (within budget) |
+| python / small-whole | 10% | 1.0869 (within budget) | 1.0705 (within budget) |
+| rust-core / medium-fixed4096 | 10% | 1.0968 (within budget) | 1.0930 (within budget) |
+| rust-core / small-whole | 10% | 1.0845 (within budget) | 1.0918 (within budget) |
+
+Both runs regress on `cli/scale-logs-medium-fixed4096` and `cli/scale-logs-small-whole` (10.6-13.3%); `browser-wasm`'s
+`medium-fixed4096` regressed once (10.97%) and cleared once (9.31%) — noise near the 10% line, not a persistent
+offender the way `cli` is. `node`, `python` and `rust-core` clear both runs and both profiles with margin (7-11%
+below budget). This round's fix cleared the ~13-31% regression measured at cfe2aec and the ~10-12% still open at
+735797a on most surfaces, but `cli` stays over budget on both dispatches — a real, reproducible residual regression
+specific to the CLI runtime, not run-to-run noise. `baseline.verifiedCommit` is not advanced; `pins:check` and the
+`pin consistency` unit test keep failing on the pre-existing #150 coupling. No performance criteria were hand-edited,
+no tradeoff was recorded, and no run was forced or re-dispatched beyond these two.
+
+### Commands (26efbba)
+
+```sh
+npm run peers:provision -- --dir /path/peers && export PATH=/path/peers:$PATH   # trufflehog 3.97.4, gitleaks 8.30.1
+npm run fixtures:generate
+npm run eval:candidate -- --candidate-package <core.tgz> --candidate-node-package <node.tgz> --candidate-wasm-package <wasm.tgz> \
+  --candidate-source-commit 26efbbaa5627ade0f9e7b248f4f88bdbe5334322 --product-state clean --expected-artifact-sha256 <core sha> --output-dir evidence/774/26efbba
+npm run eval:classify -- --candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> \
+  --candidate-source-commit=26efbbaa5627ade0f9e7b248f4f88bdbe5334322 --output=evidence/774/26efbba/support-status.json
+npm run eval:matrix -- --input=evidence/774/26efbba/support-status.json --output=evidence/774/26efbba/support-matrix.json
+gh workflow run performance-evaluation.yml --ref develop -f candidate_revision=26efbbaa5627ade0f9e7b248f4f88bdbe5334322
 ```

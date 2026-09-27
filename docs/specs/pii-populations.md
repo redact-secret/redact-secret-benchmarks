@@ -86,6 +86,18 @@ canonical populations are measured, and both baseline/candidate comparisons
 show no regression. Otherwise it remains `pending` with the exact failed or
 unmeasured gate reasons; this path never emits `stable`.
 
+When a family binds exact-source conformance in addition to installed npm
+artifacts, the source checkout must be clean and equal the candidate source
+commit. Source commands are selected by repository-owned allowlist IDs; plans
+cannot supply executables, arguments, shells, or environment fragments. The
+evidence keeps installed addon/Wasm lanes distinct from Rust, Python, and CLI
+source lanes, commits the command definitions, toolchains, and fixture bytes,
+and sanctions the source-conformance commitment with the family qualification.
+JavaScript-native UTF-16 ranges and canonical UTF-8 byte ranges are both
+recorded; normalization never overwrites the native observation. Public absence
+does not establish an identity-only result, so that gate remains unresolved
+unless separately bound evidence measures it.
+
 Tuning selection is fail-closed. Repository tuning manifests bind the file-byte
 hash in the pin manifest, while the current PII population contract binds an
 inner semantic corpus commitment and declares no dedicated tuning category.

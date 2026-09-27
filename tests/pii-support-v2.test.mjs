@@ -54,7 +54,7 @@ test('trusted product binding is artifact-derived and still fails closed without
   const matrix = buildPiiSupportMatrixV2({ registry: value, product });
   assert.equal(matrix.activationContract.productArtifact, 'trusted');
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
-    ['pii:global:network-address', 'available', 'pending'],
+    ['pii:global:email', 'unavailable', 'pending'], ['pii:global:network-address', 'available', 'pending'],
   ]);
   assert.equal(matrix.activationContract.productSourceCommit, '941053baecdc4b99f98e085429ac26bf24fe0bee');
   assert.equal(matrix.activationContract.productArtifactCommitment, 'ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1');
@@ -66,8 +66,9 @@ test('trusted product binding is artifact-derived and still fails closed without
   assert.deepEqual(activationArtifact.offSurfaces, [
     { id: 'node-addon', status: 'pass' }, { id: 'node-wasm', status: 'pass' },
   ]);
-  assert.ok(matrix.families[0].status.reasonCodes.includes('protected-partition'));
-  assert.ok(matrix.families[0].status.reasonCodes.includes('diagnostic-population-not-measured'));
+  const network = matrix.families.find(row => row.family === 'pii:global:network-address');
+  assert.ok(network.status.reasonCodes.includes('protected-partition'));
+  assert.ok(network.status.reasonCodes.includes('diagnostic-population-not-measured'));
   assert.equal(validatePiiSupportMatrixV2(matrix, { registry: value, product }).artifactCommitment, matrix.artifactCommitment);
   assert.equal(validatePiiSupportMatrixV2(matrix).artifactCommitment, matrix.artifactCommitment);
 
@@ -79,6 +80,44 @@ test('trusted product binding is artifact-derived and still fails closed without
   ]) {
     const invalid = structuredClone(product); mutation(invalid);
     assert.throws(() => buildPiiSupportMatrixV2({ registry: value, product: invalid }), /trusted PII|activation evidence|qualification evidence/);
+  }
+});
+
+test('email binding keeps installed offsets and exact-source conformance separately committed', async () => {
+  const [candidateEvidence, activationArtifact, qualificationArtifact] = await Promise.all([
+    readFile('evidence/876/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/876/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/876/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+  ]);
+  const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
+  const matrix = buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product });
+  assert.equal(matrix.activationContract.productSourceCommit, 'b73daade943f9dea5f86d90a91aa0332083f728a');
+  assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
+    ['pii:global:email', 'available', 'pending'], ['pii:global:network-address', 'available', 'pending'],
+  ]);
+  assert.deepEqual(qualificationArtifact.sourceConformance.lanes.map(row => row.id), [
+    'rust-native-email-conformance', 'python-email-conformance', 'cli-email-conformance',
+  ]);
+  const unicode = qualificationArtifact.installedArtifactConformance.lanes[0].observations
+    .find(row => row.id === 'smtputf8-local-sensitive-context');
+  assert.deepEqual(unicode.nativeRange, { start: 5, end: 29 });
+  assert.deepEqual(unicode.canonicalRange, { start: 11, end: 39 });
+  assert.equal(qualificationArtifact.sourceConformance.sourceState, 'clean');
+  assert.ok(matrix.families[0].status.reasonCodes.includes('identity-only-classification'));
+  assert.equal(validatePiiSupportMatrixV2(matrix, { registry: piiSupportRegistry, product }).artifactCommitment, matrix.artifactCommitment);
+
+  for (const mutation of [
+    candidate => { candidate.qualificationArtifacts[0].sourceConformance.sourceState = 'dirty'; },
+    candidate => { candidate.qualificationArtifacts[0].sourceConformance.lanes[0].id = 'plan-authored-command'; },
+    candidate => { candidate.qualificationArtifacts[0].installedArtifactConformance.lanes[0].observations[1].canonicalRange.start = 5; },
+  ]) {
+    const invalid = structuredClone(product); mutation(invalid);
+    invalid.qualificationArtifacts[0].sourceConformance.artifactCommitment =
+      piiBindingArtifactCommitment(invalid.qualificationArtifacts[0].sourceConformance);
+    invalid.qualificationArtifacts[0].installedArtifactConformance.artifactCommitment =
+      piiBindingArtifactCommitment(invalid.qualificationArtifacts[0].installedArtifactConformance);
+    invalid.qualificationArtifacts[0].artifactCommitment = piiBindingArtifactCommitment(invalid.qualificationArtifacts[0]);
+    assert.throws(() => buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product: invalid }), /trusted PII|qualification evidence|product binding/);
   }
 });
 

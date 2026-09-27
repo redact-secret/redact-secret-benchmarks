@@ -1,7 +1,10 @@
 import { createHash } from 'node:crypto';
-import { readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { promisify } from 'node:util';
 import { validateEvidence } from '../benchmarks/evaluation/domains/credential/evidence.ts';
 import { piiBindingArtifactCommitment } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
@@ -26,7 +29,94 @@ const candidateEvidenceCommitment = createHash('sha256').update(JSON.stringify(c
 const product = { repository: 'redact-secret/redact-secret', sourceCommit: candidate.candidate.sourceCommit,
   artifactCommitment: candidate.candidate.artifactSha256, candidateEvidenceCommitment };
 
-async function runSurfaceCheck(id, fallback, check) {
+const execFileAsync = promisify(execFile);
+const sourceEnvironmentPolicy = Object.freeze({
+  inherit: ['PATH', 'HOME', 'TMPDIR', 'CARGO_HOME', 'RUSTUP_HOME', 'LANG', 'LC_ALL', 'SYSTEMROOT'],
+  fixed: { CARGO_TERM_COLOR: 'never', NO_COLOR: '1', PYTHONNOUSERSITE: '1' },
+});
+const commandEnvironment = { ...Object.fromEntries(sourceEnvironmentPolicy.inherit.flatMap(key =>
+  process.env[key] === undefined ? [] : [[key, process.env[key]]])), ...sourceEnvironmentPolicy.fixed };
+const sourceDefinitions = Object.freeze({
+  'rust-native-email-conformance': {
+    fixture: 'conformance/fixtures/pii-email-v1.json',
+    commands: [{ executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret', '--test', 'pii_email_conformance'] }],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'cli-email-conformance': {
+    fixture: 'conformance/fixtures/pii-email-v1.json',
+    commands: [{ executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret-cli', 'email_family_fixture_matches_cli_utf8_metadata_for_exact_selection'] }],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'python-email-conformance': {
+    fixture: 'conformance/fixtures/pii-email-v1.json',
+    commands: [{ executable: 'python3', args: ['-m', 'venv', '--system-site-packages', '{venv}'] },
+      { executable: 'maturin', args: ['develop', '--release', '--manifest-path', 'bindings/python/Cargo.toml'], venv: true },
+      { executable: '{python}', args: ['-c', 'from tests.test_pii_activation import test_pii_runtime_fixture; test_pii_runtime_fixture()'],
+        venv: true, pythonPath: 'bindings/python' }],
+    toolchains: [{ executable: 'python3', args: ['--version'] }, { executable: 'maturin', args: ['--version'] },
+      { executable: 'rustc', args: ['--version'] }],
+  },
+});
+const digest = value => createHash('sha256').update(value).digest('hex');
+const utf16ToByteOffset = (input, offset) => {
+  let units = 0, bytes = 0;
+  for (const scalar of input) {
+    if (units === offset) return bytes;
+    units += scalar.length; bytes += Buffer.byteLength(scalar);
+    if (units > offset) throw new Error('finding offset splits a UTF-16 surrogate pair');
+  }
+  if (units !== offset) throw new Error('finding offset exceeds input');
+  return bytes;
+};
+const run = async (executable, commandArgs, options = {}) => execFileAsync(executable, commandArgs, {
+  cwd: options.cwd, env: options.env ?? commandEnvironment, timeout: 300_000, maxBuffer: 5 * 1024 * 1024,
+});
+
+async function runSourceConformance() {
+  const ids = plan.sourceConformanceIds;
+  if (ids === undefined) return null;
+  if (!args['product-source'] || !Array.isArray(ids) || ids.length === 0 || new Set(ids).size !== ids.length ||
+      ids.some(id => !Object.hasOwn(sourceDefinitions, id))) throw new Error('invalid source conformance selection');
+  const source = path.resolve(args['product-source']);
+  const verifySource = async () => {
+    const [{ stdout: root }, { stdout: sourceCommit }, { stdout: sourceState }] = await Promise.all([
+      run('git', ['rev-parse', '--show-toplevel'], { cwd: source }), run('git', ['rev-parse', 'HEAD'], { cwd: source }),
+      run('git', ['status', '--porcelain', '--untracked-files=all'], { cwd: source }),
+    ]);
+    if (path.resolve(root.trim()) !== source || sourceCommit.trim() !== product.sourceCommit || sourceState.trim() !== '')
+      throw new Error('product source is not the exact clean candidate commit');
+  };
+  await verifySource();
+  const lanes = [];
+  for (const id of ids) {
+    const definition = sourceDefinitions[id];
+    const fixtureCommitment = await digestFile(path.join(source, definition.fixture));
+    const toolchain = [];
+    for (const probe of definition.toolchains) {
+      const { stdout, stderr } = await run(probe.executable, probe.args, { cwd: source });
+      toolchain.push({ executable: probe.executable, version: `${stdout}${stderr}`.trim() });
+    }
+    const temporary = await mkdtemp(path.join(os.tmpdir(), 'redact-secret-pii-source-'));
+    try {
+      const venv = path.join(temporary, 'venv'), python = path.join(venv, 'bin', 'python');
+      for (const command of definition.commands) {
+        const executable = command.executable === '{python}' ? python : command.executable;
+        const commandArgs = command.args.map(value => value === '{venv}' ? venv : value);
+        const env = command.venv ? { ...commandEnvironment, VIRTUAL_ENV: venv, PATH: `${path.join(venv, 'bin')}${path.delimiter}${process.env.PATH}`,
+          ...(command.pythonPath ? { PYTHONPATH: path.join(source, command.pythonPath) } : {}) } : commandEnvironment;
+        await run(executable, commandArgs, { cwd: source, env });
+      }
+    } finally { await rm(temporary, { recursive: true, force: true }); }
+    lanes.push({ id, status: 'pass', fixture: definition.fixture, fixtureCommitment,
+      commandDefinitionCommitment: digest(JSON.stringify({ definition, environmentPolicy: sourceEnvironmentPolicy })), toolchain });
+  }
+  await verifySource();
+  const evidence = { sourceCommit: product.sourceCommit, sourceState: 'clean', lanes, artifactCommitment: '' };
+  evidence.artifactCommitment = piiBindingArtifactCommitment(evidence);
+  return evidence;
+}
+
+async function runSurfaceCheck(id, fallback, check, captureCases) {
   const installation = await installCandidate({ core: args.core, node: args.node, wasm: args.wasm });
   try {
     if (fallback) {
@@ -37,21 +127,33 @@ async function runSurfaceCheck(id, fallback, check) {
     await module.initialize({ pii: check.selectors });
     const activationIdentity = module.piiActivation();
     if (activationIdentity !== check.expectedActivationIdentity) throw new Error('activation identity mismatch');
+    const observations = [];
     for (const row of plan.cases) {
       const findings = module.scan(row.input).filter(finding => finding.type === plan.findingType);
       if (row.expected.publicFinding) {
-        if (findings.length !== 1 || findings[0].start !== row.expected.start || findings[0].end !== row.expected.end) throw new Error(`case failed: ${row.id}`);
+        if (row.expected.sensitive !== true || findings.length !== 1 || findings[0].action !== 'redact') throw new Error(`case failed: ${row.id}`);
+        const canonicalRange = { start: utf16ToByteOffset(row.input, findings[0].start), end: utf16ToByteOffset(row.input, findings[0].end) };
+        if (canonicalRange.start !== row.expected.start || canonicalRange.end !== row.expected.end) throw new Error(`case failed: ${row.id}`);
+        if (captureCases) observations.push({ id: row.id, publicFinding: true, type: findings[0].type, action: findings[0].action,
+          nativeOffsetUnit: 'utf16-code-unit', nativeRange: { start: findings[0].start, end: findings[0].end }, canonicalRange });
       } else if (findings.length) throw new Error(`case failed: ${row.id}`);
+      else if (captureCases) observations.push({ id: row.id, publicFinding: false, type: null, action: null,
+        nativeOffsetUnit: 'utf16-code-unit', nativeRange: null, canonicalRange: null });
     }
-    return { selectors: check.selectors, activationIdentity,
-      availableFamilies: activationIdentity.split(';families=')[1].split(';vocabulary=')[0].split(',') };
+    return { activation: { selectors: check.selectors, activationIdentity,
+      availableFamilies: activationIdentity.split(';families=')[1].split(';vocabulary=')[0].split(',') }, observations };
   } finally { await removeCandidate(installation); }
 }
 const surfaceConfigurations = [['node-addon', false], ['node-wasm', true]];
 const surfaces = [];
+const installedLanes = [];
 for (const [id, fallback] of surfaceConfigurations) {
   const activationChecks = [];
-  for (const check of plan.activationChecks) activationChecks.push(await runSurfaceCheck(id, fallback, check));
+  for (const [index, check] of plan.activationChecks.entries()) {
+    const result = await runSurfaceCheck(id, fallback, check, index === 0);
+    activationChecks.push(result.activation);
+    if (index === 0) installedLanes.push({ id, status: 'pass', nativeOffsetUnit: 'utf16-code-unit', observations: result.observations });
+  }
   surfaces.push({ id, status: 'pass', activationChecks });
 }
 const offSurfaces = [];
@@ -73,11 +175,15 @@ const activation = { schemaVersion: 1, reportType: 'pii-activation-evidence', su
   profile: plan.profile, requestedSelectors: primary.selectors, activationIdentity: primary.activationIdentity,
   availableFamilies: primary.availableFamilies, selectorChecks: surfaces[0].activationChecks, surfaces, offSurfaces, artifactCommitment: '' };
 activation.artifactCommitment = piiBindingArtifactCommitment(activation);
+const installedArtifactConformance = { canonicalOffsetUnit: plan.canonicalOffsetUnit, lanes: installedLanes, artifactCommitment: '' };
+installedArtifactConformance.artifactCommitment = piiBindingArtifactCommitment(installedArtifactConformance);
+const sourceConformance = await runSourceConformance();
 const gates = [
   { id: 'exact-candidate-artifact', status: 'met' }, { id: 'selector-global-closure', status: 'met' },
   { id: 'selector-exact-family', status: 'met' }, { id: 'cross-surface-determinism', status: 'met' },
   { id: 'sensitive-public-findings', status: 'met' }, { id: 'public-absence-controls', status: 'met' },
   { id: 'identity-only-classification', status: 'unresolved' },
+  { id: 'exact-source-conformance', status: sourceConformance ? 'met' : 'not-applicable' },
   { id: 'pii-off-invariance', status: 'met' }, { id: 'diagnostic-population', status: 'unresolved' },
   { id: 'benign-heavy-population', status: 'unresolved' }, { id: 'protected-partition', status: 'unresolved' },
 ];
@@ -92,6 +198,7 @@ gates.push(...classAccounting.filter(entry => entry.status === 'unresolved').map
 const reasonCodes = gates.filter(gate => !['met', 'not-applicable'].includes(gate.status)).map(gate => gate.id).sort();
 const qualification = { schemaVersion: 1, reportType: 'pii-family-qualification', supportClaims: false, family: plan.family, product,
   activationArtifactCommitment: activation.artifactCommitment, planCommitment, profile: plan.profile, gates, classAccounting,
+  ...(sourceConformance ? { installedArtifactConformance, sourceConformance } : {}),
   status: reasonCodes.length ? 'not-qualified' : 'qualified',
   reasonCodes, artifactCommitment: '' };
 qualification.artifactCommitment = piiBindingArtifactCommitment(qualification);

@@ -117,7 +117,8 @@ test('throws rather than defaulting when support-status.json is stale relative t
 
 test('throws when two detector results claim the same taxonomy family', () => {
   const report = fullStatusReport();
-  const [a, b] = report.families;
+  // Arrival families (no registry detector, e.g. ai21-api-key from #384) carry no taxonomy family; pick two that do.
+  const [a, b] = report.families.filter(f => f.taxonomyFamilies.length);
   b.taxonomyFamilies = [...b.taxonomyFamilies, a.taxonomyFamilies[0]];
   assert.throws(() => buildSupportMatrix(report), /claimed by more than one detector result/);
 });

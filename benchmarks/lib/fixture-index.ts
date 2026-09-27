@@ -125,11 +125,14 @@ export function buildFixtureIndex(input: {
       if (!positive || positive.fixture.twinOf) throw new Error(`Invalid positive/twin relation: ${slug} -> ${twinOf}`);
       if (positive.fixture.assessment.kind === 'must-not-flag' || !positive.fixture.expected.length) throw new Error(`Twin target is not a positive fixture: ${slug} -> ${twinOf}`);
     }
-    const beta8 = /^beta8-/.test(category.id);
+    // beta8-384a..384e hold the Beta.10 credential corpus (#384); the beta8- prefix is the shared per-issue corpus layout, not the milestone.
+    const beta10 = /^beta8-384/.test(category.id);
+    const beta8 = /^beta8-/.test(category.id) && !beta10;
     const provenance: FixtureIndexEntry['provenance'] = {
       categoryId: category.id,
       ...(fixture.issue ? { issue: fixture.issue } : {}),
       ...(beta8 ? { milestone: 'beta.8', release: '0.1.0-beta.8' } : {}),
+      ...(beta10 ? { milestone: 'beta.10' } : {}),
     };
     return {
       slug,

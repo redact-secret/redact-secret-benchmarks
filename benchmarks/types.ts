@@ -112,7 +112,7 @@ export interface FieldClaim {
 }
 /** A credential family measured ahead of (or without) a product detector. Its id is a case target, never a detector id. */
 export interface ArrivalFamily {
-  id: string; taxonomy: string; issue: number;
+  id: string; taxonomy: string; issue: number | string;
   /** Why no registry detector is targeted: none exists at the pinned product revision, or the taxonomy maps none to this family. */
   reason: string;
 }

@@ -62,6 +62,18 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
   complete positive contract and independently attributable behavior. The aggregate's
   T0 fixture cells must never be broadcast or copied into those rows (#858,
   [benchmark #373](https://github.com/redact-secret/redact-secret-benchmarks/issues/373)).
+- **Beta.10 credential families (#384).** Thirteen zero-detector rows are measured
+  arrival families whose contracts and corpora live in
+  `benchmarks/lib/beta8/384a.ts`–`384e.ts` (see
+  [beta8-evidence.md](beta8-evidence.md)): `anthropic:compliance-access-key`,
+  `anthropic:admin-api-key`, `openai:admin-api-key`, the two `aws-bedrock:` keys,
+  `elevenlabs:api-key`, `together:api-key`, `tavily:api-key` and the five
+  keyword-gated `mistral:`, `cohere:`, `deepgram:`, `ai21:` and `exa:` rows. Three of
+  them (the two Anthropic prefixes and the OpenAI admin key) sit inside detectors the
+  product already ships or extends; their rows deliberately map no detector, so they
+  never borrow the status of `anthropic:secret-api-key` or `openai:secret-api-key`.
+  Two further rows, `mistral:realtime-client-token` and `voyage-ai:api-key`, record the
+  research dispositions that stay `pending` with no corpus (redact-secret#780, #785).
 - **`families[].provider: null`** marks a family that is not provider-specific
   at all: `private-key`, `jwt`, `bearer-token`, `connection-string`,
   `otpauth-uri` and `generic-token` are structural or protocol-level formats
@@ -107,8 +119,8 @@ without one.
 
 ## Current counts
 
-113 families total: 107 across 53 providers plus 6 non-provider-specific
-formats; 91 carry at least one detector, 22 currently do not (counts as of 2026-09-26;
+128 families total: 122 across 63 providers plus 6 non-provider-specific
+formats; 91 carry at least one detector, 37 currently do not (counts as of 2026-09-27;
 `benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or

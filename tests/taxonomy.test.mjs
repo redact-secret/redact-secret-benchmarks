@@ -49,6 +49,20 @@ test('github-token serves five families; the fine-grained PAT is scored as its o
   assert.deepEqual(fgpat.detectors, ['github-fine-grained-pat']);
 });
 
+test('#373: Vercel modern classes are separate and do not inherit the compatibility aggregate measurement', () => {
+  const modern = [
+    'vercel:personal-access-token',
+    'vercel:integration-token',
+    'vercel:app-access-token',
+    'vercel:app-refresh-token',
+    'vercel:api-key',
+  ].map(id => familyById(id));
+  assert.ok(modern.every(Boolean));
+  assert.ok(modern.every(family => family.detectors.length === 0));
+  assert.ok(modern.every(family => family.supportStatus === 'pending'));
+  assert.deepEqual(familiesForDetector('vercel-token').map(family => family.id), ['vercel:access-token']);
+});
+
 test('#730: each scored arrival family is the sole id of exactly one taxonomy family', () => {
   for (const id of scoredArrivalFamilies) {
     const served = familiesForDetector(id);

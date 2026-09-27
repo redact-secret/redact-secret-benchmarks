@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T01:55:40.998Z",
+  "observedAt": "2026-09-27T02:54:05.758Z",
   "sourceRun": {
-    "runId": "2026-09-27T01:55:40.998Z-82a182",
-    "benchmarkRevision": "a66dbef943ccbb9fd4ffd6747e0ddaf7914c10a0"
+    "runId": "2026-09-27T02:54:05.758Z-9988f4",
+    "benchmarkRevision": "aa5ff5fc57c47db208bf97b5823cf01c1d9ed68f"
   },
   "input": {
     "surface": "comparison/beta8-211",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "a131425aac1b9bf3504c62f7e860737842e522d72c14325ae2e920afd7f78251",
-    "fixtureCount": 97,
-    "fixturesDigest": "31a9aa3c60712ebbed2cb0bb051ce964dd8432b75e93e433a118a65f63e7a597",
+    "corpusHash": "e70dd2bc54b70a7b5ccb925a500ac6ee99d8b5729c5fb95f713ffc3fabe1a25a",
+    "fixtureCount": 100,
+    "fixturesDigest": "931e8b9336053d9fe3ab22f5b0abae8c7a871b76b4b37c69df2f4a1f5c2a142f",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "6094a80d86bde3e8c183676f04e8b8b49670333310bbad52619b49e1f7a8dc2c",
-      "fixtureCount": 3009
+      "digest": "95b2123327c4763d3b1fbcebdcea6c5d23b0ae1866197c3b10ab9adfbbc9e955",
+      "fixtureCount": 3015
     }
   },
   "peer": {
@@ -100,6 +100,11 @@
       "path": "cases/github-fine-grained-pat-gh-auth-login.sh",
       "start": 8,
       "end": 101
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 126,
+      "end": 219
     },
     {
       "path": "cases/github-fine-grained-pat-git-remote-userinfo-boundary-twin.gitconfig",
@@ -200,6 +205,11 @@
       "end": 137
     },
     {
+      "path": "cases/slack-app-level-token-bolt-js-app-token.mjs",
+      "start": 109,
+      "end": 206
+    },
+    {
       "path": "cases/slack-app-level-token-bolt-python-handler.py",
       "start": 96,
       "end": 193
@@ -280,6 +290,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/stripe-webhook-signing-secret-event-destination-create-response.json",
+      "start": 232,
+      "end": 270,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/stripe-webhook-signing-secret-export-webhook-secret-case-twin.sh",
       "start": 29,
       "end": 67,
@@ -310,5 +326,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "f4b80804b441e899974f6ae9ce1edfcdee4f22999542f85b87c98aaa17c2a55f"
+  "digest": "3888183fef52de91d99264ac6d0b8c14cd27eba9a4746899227192dd9174f653"
 }

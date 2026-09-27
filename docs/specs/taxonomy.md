@@ -29,6 +29,7 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
       "name": "Fine-grained personal access token",
       "description": "...",
       "detectors": [],
+      "supportStatus": "unsupported",
       "sources": ["https://docs.github.com/..."],
       "note": "why this family has no detector"
     }
@@ -47,9 +48,20 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
 - **`families[].detectors: []`** is a family a provider offers that this
   project does not detect. This is deliberate and representable, not an
   omission: A8's `support-matrix.json` (#509) turns every such entry into an
-  `unsupported` status. A test enforces that every zero-detector family
-  carries `sources` and/or a `note` — an unsupported claim without a reason
+  `unsupported` status by default. `supportStatus: "pending"` is the narrow
+  exception for a reviewed but blocked contract whose final support
+  disposition is unresolved; it still carries no evidence tier or profile
+  measurement. A test enforces that every zero-detector family
+  carries `sources` and/or a `note` — a detectorless disposition without a reason
   is a bug in the taxonomy, not a fact about the provider.
+- **A compatibility aggregate is not split-family evidence.** Vercel's
+  `vercel:access-token` row temporarily preserves the existing
+  `vercel-token` detector and fixture routing while the runtime still reports
+  five implementation branches through one finding type. The five modern
+  semantic families are separate detectorless Pending rows until each has a
+  complete positive contract and independently attributable behavior. The aggregate's
+  T0 fixture cells must never be broadcast or copied into those rows (#858,
+  [benchmark #373](https://github.com/redact-secret/redact-secret-benchmarks/issues/373)).
 - **`families[].provider: null`** marks a family that is not provider-specific
   at all: `private-key`, `jwt`, `bearer-token`, `connection-string`,
   `otpauth-uri` and `generic-token` are structural or protocol-level formats
@@ -86,14 +98,17 @@ reviewed; where the source is a lower-confidence inference (e.g. `npm`'s
 pre-2021 legacy token, inferred from the changelog announcing its
 replacement, or `vercel`'s single unconfirmed family, since its candidate
 prefixes are corpus-authored rather than provider-documented) the family's
-`note` says so plainly. Extending the taxonomy is a data change: add a
+`note` says so plainly. Vercel is now the explicit exception to that stale
+example: product #858 split five provider-named modern classes, while leaving
+all five positive grammars T0 and the prior aggregate bounded as compatibility
+history. Extending the taxonomy is a data change: add a
 `families[]` entry with a `sources`/`note` trail, never assert a family
 without one.
 
 ## Current counts
 
-79 families across 34 providers plus 6 non-provider-specific formats; 63
-carry at least one detector, 16 currently do not (counts as of 2026-09-21;
+113 families total: 107 across 53 providers plus 6 non-provider-specific
+formats; 91 carry at least one detector, 22 currently do not (counts as of 2026-09-26;
 `benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or

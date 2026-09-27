@@ -112,7 +112,7 @@ function undetectedEntry(family: Family): SupportMatrixEntry {
   const reason = [family.note, provenance].filter(Boolean).join(' ');
   if (!reason) throw new Error(`Taxonomy family ${family.id} has no detector and no note or sources — refusing to default it to a friendly status.`);
   return {
-    provider: family.provider, family: family.id, familyName: family.name, status: 'unsupported',
+    provider: family.provider, family: family.id, familyName: family.name, status: family.supportStatus ?? 'unsupported',
     evidenceTier: null, evidenceBasis: 'none', qualificationProfile: null, providerSource: null, corroboratingScanners: [], twinCoverage: null,
     unresolvedCriticalItems: null, empiricalEvidence: null, policyQualification: null, fixtureProfile: null, profileCoverage: null, detectors: [], reason,
   };
@@ -160,6 +160,9 @@ function detectedEntry(family: Family, result: SupportStatusFamilyResult): Suppo
  * — a detector-bearing family missing from `statusReport`, one claimed by two
  * different detector results, or a zero-detector family with no recorded
  * reason — throws rather than defaulting to a friendly status (#509).
+ * A zero-detector taxonomy row is unsupported by default; an explicit
+ * `supportStatus: pending` records a blocked contract whose disposition is
+ * not yet an unsupported decision (#373).
  */
 export function buildSupportMatrix(statusReport: SupportStatusReport): SupportMatrix {
   if (statusReport.fixtureIndex?.digest !== fixtureIndex.identity.digest || statusReport.fixtureIndex?.fixtureCount !== fixtureIndex.identity.fixtureCount)

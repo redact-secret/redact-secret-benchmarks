@@ -3,8 +3,8 @@
   "profilesVersion": 1,
   "familyCount": 77,
   "cellsMetByProfile": {
-    "arrival-provisional": 64,
-    "stable-documented": 64,
+    "arrival-provisional": 68,
+    "stable-documented": 68,
     "stable-empirical": 24,
     "context-constrained-empirical": 9
   },
@@ -1167,13 +1167,16 @@
       "claimed": null,
       "explicit": false,
       "target": "arrival-provisional",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 5,
+        "totalFixtures": 25,
+        "positiveCases": 6,
         "benignControls": 9,
         "twinPairs": 5,
-        "positiveContextAxes": 10,
+        "positiveContextAxes": 11,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
@@ -1186,6 +1189,7 @@
           "#211 · github-fine-grained-pat · sdk-config",
           "#211 · github-fine-grained-pat · shell-export",
           "#211 · github-fine-grained-pat · structured-file",
+          "#211 · github-fine-grained-pat · tool-output",
           "#211 · github-fine-grained-pat · url"
         ],
         "controlAxisIds": [
@@ -1217,14 +1221,7 @@
         "controlAxes": 4
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 5,
-          "required": 6,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "github-token",
@@ -3846,10 +3843,13 @@
       "claimed": null,
       "explicit": false,
       "target": "arrival-provisional",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 5,
+        "totalFixtures": 25,
+        "positiveCases": 6,
         "benignControls": 9,
         "twinPairs": 5,
         "positiveContextAxes": 10,
@@ -3894,14 +3894,7 @@
         "controlAxes": 4
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 5,
-          "required": 6,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "slack-token",
@@ -3961,13 +3954,16 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 24,
-        "positiveCases": 3,
+        "totalFixtures": 27,
+        "positiveCases": 6,
         "benignControls": 11,
         "twinPairs": 5,
-        "positiveContextAxes": 8,
+        "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
@@ -3977,6 +3973,7 @@
           "#212 · slack-user-token · header",
           "#212 · slack-user-token · sdk-config",
           "#212 · slack-user-token · shell-export",
+          "#212 · slack-user-token · structured-file",
           "#212 · slack-user-token · tool-output",
           "#212 · slack-user-token · url"
         ],
@@ -4009,14 +4006,7 @@
         "controlAxes": 4
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "stripe-token",
@@ -4080,10 +4070,13 @@
       "claimed": "stable-documented",
       "explicit": false,
       "target": "stable-documented",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
       "cells": {
-        "totalFixtures": 25,
-        "positiveCases": 5,
+        "totalFixtures": 26,
+        "positiveCases": 6,
         "benignControls": 10,
         "twinPairs": 5,
         "positiveContextAxes": 9,
@@ -4130,14 +4123,7 @@
         "controlAxes": 4
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 5,
-          "required": 6,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "supabase-management-token",

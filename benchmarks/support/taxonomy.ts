@@ -4,7 +4,7 @@ import data from './taxonomy.json';
 export interface Provider { id: string; name: string }
 export interface Family {
   id: string; provider: string | null; name: string; description: string;
-  detectors: string[]; sources?: string[]; note?: string;
+  detectors: string[]; supportStatus?: 'pending' | 'unsupported'; sources?: string[]; note?: string;
 }
 export interface Taxonomy { schemaVersion: 1; sourceNote: string; providers: Provider[]; families: Family[] }
 

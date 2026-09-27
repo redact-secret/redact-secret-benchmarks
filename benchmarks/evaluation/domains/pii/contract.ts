@@ -14,6 +14,8 @@ import * as support from './support.ts';
 import * as validatorQualification from './validator-qualification.ts';
 import * as contextEvidence from './context-evidence.ts';
 import * as benignCollisionEvidence from './benign-collision-evidence.ts';
+import * as populations from './populations.ts';
+import * as supportV2 from './support-v2.ts';
 import type { Registry } from '../../substrate/registry.ts';
 import type { PiiOperator, PiiValidator } from './types.ts';
 import {
@@ -46,6 +48,8 @@ export function configurePiiDomain(options: PiiDomainConfiguration = {}) {
     validatorQualification,
     contextEvidence,
     benignCollisionEvidence,
+    populations,
+    supportV2,
     validateCase: validatePiiCase, validateContract: validatePiiContract, execute: executePiiEvaluation,
     normalizeFinding: normalizePiiFinding, holdout: Object.freeze(piiHoldoutDomain), holdoutStorage: Object.freeze(piiHoldoutStorage) });
 }

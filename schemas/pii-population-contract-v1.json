@@ -1,0 +1,61 @@
+{
+  "$id": "urn:redact-secret:pii-populations:1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schemaVersion", "id", "version", "contentCommitment", "source", "partitionPolicy", "strata", "evidenceClasses", "populations"],
+  "properties": {
+    "schemaVersion": { "const": 1 }, "id": { "const": "pii-populations-v1" }, "version": { "const": 1 },
+    "contentCommitment": { "$ref": "#/$defs/digest" },
+    "source": { "type": "object", "additionalProperties": false, "required": ["repository", "definitionIssue", "evidenceIssue", "corpus"], "properties": {
+      "repository": { "const": "redact-secret/redact-secret-benchmarks" }, "definitionIssue": { "const": 285 }, "evidenceIssue": { "const": 269 },
+      "corpus": { "type": "object", "additionalProperties": false, "required": ["id", "version", "contentCommitment"], "properties": {
+        "id": { "const": "pii-benign-collision-v1" }, "version": { "const": 1 }, "contentCommitment": { "$ref": "#/$defs/digest" }
+      } }
+    } },
+    "partitionPolicy": { "type": "object", "additionalProperties": false,
+      "required": ["membership", "overlap", "tuningVisibility", "holdoutAccess", "protectedRows", "evaluationOnlyTuning"], "properties": {
+        "membership": { "const": "explicit-evidence-identities" }, "overlap": { "const": "forbidden" },
+        "tuningVisibility": { "const": ["development"] }, "holdoutAccess": { "const": "none" }, "protectedRows": { "const": "reject" }, "evaluationOnlyTuning": { "const": "reject" }
+      } },
+    "strata": { "const": ["family", "scope", "context-class", "evidence-class", "accounting-axis", "sensitivity", "classification-basis"] },
+    "evidenceClasses": { "const": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+    "populations": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/population" } }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,79}$" },
+    "population": { "type": "object", "additionalProperties": false,
+      "required": ["id", "role", "denominator", "baseRate", "weighting", "regressionPolicy"], "properties": {
+        "id": { "enum": ["diagnostic-balanced", "benign-heavy-stress"] },
+        "role": { "enum": ["development-tuning", "evaluation-only"] },
+        "denominator": { "type": "object", "additionalProperties": false, "required": ["unit", "selection", "evidenceIds", "caseIds"], "properties": {
+          "unit": { "const": "authored-evidence-case" }, "selection": { "const": "explicit-members" },
+          "evidenceIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/slug" } },
+          "caseIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/slug" } }
+        } },
+        "baseRate": { "type": "object", "additionalProperties": false, "required": ["kind", "totalMass", "sensitiveMass", "nonSensitiveMass", "notEstablishedMass", "rationaleCode", "strata"], "properties": {
+          "kind": { "const": "declared-assumption" }, "totalMass": { "type": "integer", "minimum": 1 },
+          "sensitiveMass": { "type": "integer", "minimum": 0 }, "nonSensitiveMass": { "type": "integer", "minimum": 0 }, "notEstablishedMass": { "type": "integer", "minimum": 0 },
+          "rationaleCode": { "enum": ["diagnostic-behavior-balance", "benign-operational-stress"] },
+          "strata": { "type": "array", "items": { "$ref": "#/$defs/mass" } }
+        } },
+        "weighting": { "type": "object", "additionalProperties": false, "required": ["kind", "rationaleCode"], "properties": {
+          "kind": { "enum": ["equal-evidence-class", "authored-case-frequency"] },
+          "rationaleCode": { "enum": ["equal-authored-class-influence", "retain-authored-case-frequency"] }
+        } },
+        "regressionPolicy": { "type": "object", "additionalProperties": false, "required": ["metric", "maxAbsoluteIncrease", "locality"], "properties": {
+          "metric": { "const": "benign-false-alarm-rate" }, "maxAbsoluteIncrease": { "type": "number", "minimum": 0, "maximum": 1 }, "locality": { "const": "any-stratum" }
+        } }
+      } },
+    "mass": { "type": "object", "additionalProperties": false,
+      "required": ["family", "scope", "contextClass", "evidenceClass", "accountingAxis", "sensitivity", "validatorBacked", "contextDependent", "totalMass", "sensitiveMass", "nonSensitiveMass", "notEstablishedMass"], "properties": {
+        "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "scope": { "type": "string", "pattern": "^(?:global|jurisdiction:[A-Z]{2})$" },
+        "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
+        "evidenceClass": { "enum": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+        "accountingAxis": { "anyOf": [{ "type": "null" }, { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] }] },
+        "sensitivity": { "enum": ["sensitive", "non-sensitive", "not-established"] },
+        "validatorBacked": { "type": "boolean" }, "contextDependent": { "type": "boolean" },
+        "totalMass": { "type": "integer", "minimum": 1 }, "sensitiveMass": { "type": "integer", "minimum": 0 }, "nonSensitiveMass": { "type": "integer", "minimum": 0 }, "notEstablishedMass": { "type": "integer", "minimum": 0 }
+      } }
+  }
+}

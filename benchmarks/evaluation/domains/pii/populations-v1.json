@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "id": "pii-populations-v1",
+  "version": 1,
+  "contentCommitment": "6bcd6db3f1779f81b8b0f976797c16bcca6e63a563d2888223c58ff87213d162",
+  "source": {
+    "repository": "redact-secret/redact-secret-benchmarks",
+    "definitionIssue": 285,
+    "evidenceIssue": 269,
+    "corpus": {
+      "id": "pii-benign-collision-v1",
+      "version": 1,
+      "contentCommitment": "f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff"
+    }
+  },
+  "partitionPolicy": {
+    "membership": "explicit-evidence-identities",
+    "overlap": "forbidden",
+    "tuningVisibility": ["development"],
+    "holdoutAccess": "none",
+    "protectedRows": "reject",
+    "evaluationOnlyTuning": "reject"
+  },
+  "strata": ["family", "scope", "context-class", "evidence-class", "accounting-axis", "sensitivity", "classification-basis"],
+  "evidenceClasses": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"],
+  "populations": [
+    {
+      "id": "diagnostic-balanced",
+      "role": "development-tuning",
+      "denominator": { "unit": "authored-evidence-case", "selection": "explicit-members", "evidenceIds": [], "caseIds": [] },
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "sensitiveMass": 5000,
+        "nonSensitiveMass": 5000,
+        "notEstablishedMass": 0,
+        "rationaleCode": "diagnostic-behavior-balance",
+        "strata": []
+      },
+      "weighting": {
+        "kind": "equal-evidence-class",
+        "rationaleCode": "equal-authored-class-influence"
+      },
+      "regressionPolicy": { "metric": "benign-false-alarm-rate", "maxAbsoluteIncrease": 0, "locality": "any-stratum" }
+    },
+    {
+      "id": "benign-heavy-stress",
+      "role": "evaluation-only",
+      "denominator": { "unit": "authored-evidence-case", "selection": "explicit-members", "evidenceIds": [], "caseIds": [] },
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "sensitiveMass": 100,
+        "nonSensitiveMass": 9900,
+        "notEstablishedMass": 0,
+        "rationaleCode": "benign-operational-stress",
+        "strata": []
+      },
+      "weighting": {
+        "kind": "authored-case-frequency",
+        "rationaleCode": "retain-authored-case-frequency"
+      },
+      "regressionPolicy": { "metric": "benign-false-alarm-rate", "maxAbsoluteIncrease": 0, "locality": "any-stratum" }
+    }
+  ]
+}

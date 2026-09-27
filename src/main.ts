@@ -18,6 +18,8 @@ import type { EvaluationReport } from './evaluation-types';
 import type { CandidateReport, ReviewLedgerFile } from './evaluation-model';
 import type { SupportMatrixFile } from './support-model';
 import { domainDescriptor, evaluationDomainsProblem, type EvaluationDomainId } from './evaluation-domains';
+import { domainDescriptorV2, evaluationDomainsV2Problem } from './evaluation-domains-v2';
+import { piiSupportMatrixProblem, type PiiSupportMatrixFile } from './pii-support-model';
 import './tokens.css';
 import './style.css';
 
@@ -125,21 +127,26 @@ async function renderWorkbench(current: ReturnType<typeof route>, token: number,
 /** The support matrix is a generated artifact like the evaluation report: read, re-validated, then rendered. No status is held in the app. */
 async function renderSupport(token: number, path: string, force: boolean) {
   if (force) renderPage('<p role="status" class="small">Loading support matrix…</p>', 'Support');
-  const { credentialSupportPage, piiSupportPage, supportDomainOf, supportDomainUnavailablePage } = await import('./pages/pii-support');
-  const selected = supportDomainOf(location.search);
-  if (!selected) { renderPage(supportDomainUnavailablePage('Unknown support domain'), 'Support'); return; }
-  if (selected === 'pii') {
-    const indexText = await text('/results/evaluation-domains-v1.json');
+  const { credentialSupportPage, piiSupportPage, piiSupportQueryProblem, supportQueryOf, supportDomainUnavailablePage } = await import('./pages/pii-support');
+  const query = supportQueryOf(location.search);
+  if (!query) { renderPage(supportDomainUnavailablePage('Invalid or unknown support query'), 'Support'); return; }
+  if (query.domain === 'pii') {
+    const indexText = await text('/results/evaluation-domains-v2.json');
     if (token !== request || path !== location.pathname) return;
-    const payload = JSON.stringify([path, location.search, indexText]);
+    let problem = 'No evaluation-domain v2 index published', descriptor = null;
+    if (indexText) { try { const parsed = JSON.parse(indexText); problem = evaluationDomainsV2Problem(parsed) ?? ''; descriptor = domainDescriptorV2(parsed, 'pii'); } catch { problem = 'Evaluation-domain v2 index is unreadable'; } }
+    const matrixText = descriptor?.support.state === 'published' && descriptor.support.href ? await text(descriptor.support.href) : '';
+    if (token !== request || path !== location.pathname) return;
+    const payload = JSON.stringify([path, location.search, indexText, matrixText]);
     if (!force && payload === lastPayload) return;
     lastPayload = payload;
-    let problem = 'No evaluation-domain index published', descriptor = null;
-    if (indexText) { try { const parsed = JSON.parse(indexText); problem = evaluationDomainsProblem(parsed) ?? ''; descriptor = domainDescriptor(parsed, 'pii'); } catch { problem = 'Evaluation-domain index is unreadable'; } }
-    renderPage(descriptor?.support.state === 'schema-only' ? piiSupportPage(descriptor) : supportDomainUnavailablePage(problem || 'PII support is not schema-only'), 'PII support');
+    let matrix: PiiSupportMatrixFile | null = null;
+    if (descriptor?.support.state === 'published' && matrixText) { try { const parsed = JSON.parse(matrixText); problem = await piiSupportMatrixProblem(parsed, descriptor.support.artifactCommitment ?? undefined) ?? ''; if (!problem) matrix = parsed; } catch { problem = 'PII support matrix is unreadable'; } }
+    if (matrix) problem = piiSupportQueryProblem(query, matrix) ?? problem;
+    renderPage(descriptor && matrix && !problem ? piiSupportPage(descriptor, matrix, query) : supportDomainUnavailablePage(problem || 'PII support publication is unavailable'), 'PII support');
     return;
   }
-  const { supportPage, supportFilterOf } = await import('./pages/support');
+  const { supportPage } = await import('./pages/support');
   const [body, indexText] = await Promise.all([text('/results/support-matrix-v1.json'), text('/results/evaluation-domains-v1.json')]);
   if (token !== request || path !== location.pathname) return;
   const payload = JSON.stringify([path, location.search, body, indexText]);
@@ -149,7 +156,7 @@ async function renderSupport(token: number, path: string, force: boolean) {
   if (body) { try { const parsed = JSON.parse(body); problem = supportMatrixProblem(parsed); if (!problem) matrix = parsed; } catch { problem = 'Support matrix is unreadable'; } }
   let indexProblem = 'No evaluation-domain index published', descriptor = null;
   if (indexText) { try { const parsed = JSON.parse(indexText); indexProblem = evaluationDomainsProblem(parsed) ?? ''; descriptor = domainDescriptor(parsed, 'credential'); } catch { indexProblem = 'Evaluation-domain index is unreadable'; } }
-  renderPage(descriptor ? credentialSupportPage(supportPage(matrix, problem, supportFilterOf(location.search)), descriptor) : supportDomainUnavailablePage(indexProblem || 'Credential domain is missing from the evaluation-domain index'), 'Support');
+  renderPage(descriptor ? credentialSupportPage(supportPage(matrix, problem, query.status), descriptor) : supportDomainUnavailablePage(indexProblem || 'Credential domain is missing from the evaluation-domain index'), 'Support');
   restoreDetails();
 }
 

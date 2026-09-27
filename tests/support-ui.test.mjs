@@ -7,7 +7,7 @@ import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import { statusCriteria } from '../benchmarks/support/status.ts';
 import { parseRoute, isAppPath } from '../src/model.mjs';
 import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
-import { credentialSupportPage, piiSupportPage, supportDomainOf, supportDomainUnavailablePage } from '../src/pages/pii-support.ts';
+import { credentialSupportPage, piiSupportPage, piiSupportQueryOf, supportDomainOf, supportDomainUnavailablePage } from '../src/pages/pii-support.ts';
 
 const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ');
 const detected = taxonomy.families.filter(f => f.detectors.length);
@@ -223,7 +223,7 @@ test('with nothing published the page says what to run, and the route is part of
   assert.ok(isAppPath('/support'));
 });
 
-test('support selects credential by default, exposes only PII schema state, and fails closed for unknown domains', () => {
+test('support selects credential by default and PII queries fail closed', () => {
   assert.equal(supportDomainOf(''), 'credential');
   assert.equal(supportDomainOf('?domain=credential'), 'credential');
   assert.equal(supportDomainOf('?domain=pii'), 'pii');
@@ -231,10 +231,16 @@ test('support selects credential by default, exposes only PII schema state, and 
   assert.equal(supportDomainOf('?domain='), null);
   assert.equal(supportDomainOf('?domain=PII'), null);
   assert.equal(supportDomainOf('?domain=pii&domain=credential'), null);
+  assert.deepEqual(piiSupportQueryOf('?domain=pii&family=pii%3Aus%3Assn'), { domain: 'pii', family: 'pii:us:ssn', jurisdiction: null });
+  for (const query of ['?domain=pii&status=stable', '?domain=pii&family=pii:us:ssn&family=pii:global:email', '?domain=pii&family=pii:us:ssn&jurisdiction=CA', '?domain=credential&family=pii:us:ssn']) assert.equal(piiSupportQueryOf(query), null);
   const descriptor = { domain: 'pii', reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
-    qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null }, support: { state: 'schema-only', href: null } };
-  const html = piiSupportPage(descriptor);
-  assert.match(text(html), /PII support is schema-only/);
+    qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null, artifactCommitment: null }, support: { state: 'published', href: `/results/pii-support-matrix-v2-${'a'.repeat(64)}.json`, artifactCommitment: 'a'.repeat(64) } };
+  const matrix = { families: [], supportClaims: false, populationComparisons: [
+    { id: 'benign-heavy-stress', status: 'not-measured', verdict: 'not-measured', benignFalseAlarmDeltas: [], diagnosticDeltas: [] },
+    { id: 'diagnostic-balanced', status: 'not-measured', verdict: 'not-measured', benignFalseAlarmDeltas: [], diagnosticDeltas: [] },
+  ] };
+  const html = piiSupportPage(descriptor, matrix, { family: null, jurisdiction: null });
+  assert.match(text(html), /PII support is pending/);
   assert.match(html, /pii-v1@1/);
   assert.doesNotMatch(html, /data-support-status=|\b0%\b/);
   assert.match(text(supportDomainUnavailablePage('Unknown support domain')), /No credential or PII support evidence is shown/);

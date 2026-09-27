@@ -15,22 +15,29 @@ import { PII_JURISDICTION_STANDARD } from '../benchmarks/evaluation/domains/pii/
 const scanner = {
   id: 'pii-test-scanner', mode: 'candidate', capabilities: { ranges: true, classification: true },
   configuration: { fixture: true }, async version() { return '1.0.0'; },
-  async scan(_directory, inputs) { return inputs.flatMap(input => input.id === 'pii-jurisdiction-probe' ? [] : [{ path: input.path, start: 8, end: 30,
-    family: 'pii:global:email', sensitive: false, diagnostic: 'RAW-SENTINEL-MUST-DROP' }]); },
+  async scan(_directory, inputs) { return inputs.flatMap(input => {
+    const value = ['person@example.invalid', 'subject@example.invalid'].find(candidate => input.content.includes(candidate));
+    if (!value) return [];
+    const characterStart = input.content.indexOf(value), start = Buffer.byteLength(input.content.slice(0, characterStart));
+    return [{ path: input.path, start, end: start + Buffer.byteLength(value),
+      family: 'pii:global:email', sensitive: false, diagnostic: 'RAW-SENTINEL-MUST-DROP' }];
+  }); },
 };
 
-test('schema-only PII runs through shared runtime with independent axes and no support claim', async () => {
-  const artifact = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [scanner],
+test('standard PII domain corpus runs through shared runtime with independent axes and no support claim', async () => {
+  const cases = piiDomain.loadCases();
+  const artifact = await piiDomain.execute({ cases, methods: piiDomain.createMethods(), scanners: [scanner],
     runId: '00000000-0000-4000-8000-000000000277', provenance: { sourceRevision: 'd'.repeat(64) } });
   assert.equal(artifact.domain, 'pii');
   assert.equal(artifact.evaluationProfile, 'pii-schema-v1');
   assert.equal(artifact.domainAccountingVersion, 'pii-observation-v1');
   assert.equal(artifact.supportClaims, false);
-  assert.equal(artifact.caseCount, 2);
-  assert.equal(artifact.variantCount, 2);
-  assert.equal(artifact.assertionCount, 4);
-  assert.equal(artifact.typeIdentity.pass, 2);
-  assert.equal(artifact.sensitivityContext.pass, 2);
+  assert.equal(artifact.caseCount, cases.length);
+  assert.equal(artifact.variantCount, 2 + piiDomain.contextEvidence.piiContextEvidence.groups.reduce((sum, group) => sum + group.frames.length, 0));
+  assert.equal(artifact.assertionCount, artifact.variantCount * 2);
+  const statuses = ['pass', 'fail', 'review-required', 'not-measured'];
+  assert.equal(statuses.reduce((sum, status) => sum + artifact.typeIdentity[status], 0), artifact.variantCount);
+  assert.equal(statuses.reduce((sum, status) => sum + artifact.sensitivityContext[status], 0), artifact.variantCount);
   assert.equal(artifact.results[0].outcomes[0].typeIdentity.state, 'correct');
   assert.equal(artifact.results[0].outcomes[0].sensitivityContext.state, 'correct');
   assert.equal(artifact.provenance.sourceRevision, 'd'.repeat(64));
@@ -45,14 +52,14 @@ test('schema-only PII runs through shared runtime with independent axes and no s
 test('unavailable or unclassified scanner evidence cannot pass either axis', async () => {
   const unavailable = { ...scanner, id: 'unavailable', async version() { throw new Error('unavailable'); } };
   const artifact = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [unavailable] });
-  assert.equal(artifact.typeIdentity['not-measured'], 2);
-  assert.equal(artifact.sensitivityContext['not-measured'], 2);
+  assert.equal(artifact.typeIdentity['not-measured'], artifact.variantCount);
+  assert.equal(artifact.sensitivityContext['not-measured'], artifact.variantCount);
 
   const unclassified = { ...scanner, id: 'unclassified', async scan(_directory, inputs) {
     return inputs.map(input => ({ path: input.path, start: 11, end: 34, sensitive: true }));
   } };
   const second = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [unclassified] });
-  assert.equal(second.typeIdentity['not-measured'], 2);
+  assert.equal(second.typeIdentity['not-measured'], second.variantCount);
 });
 
 test('PII contract rejects invalid scope, authority source, profile, and visibility enums', () => {
@@ -129,10 +136,9 @@ test('global and jurisdictional assessments flow through evaluation into a safe 
     runId: '00000000-0000-4000-8000-000000000268' });
   const matrix = piiDomain.support.projectPiiSupportMatrix(artifact, cases);
   assert.equal(matrix.supportClaims, false);
-  assert.deepEqual(matrix.entries.map(entry => [entry.assessment.family, entry.assessment.scope]), [
-    ['pii:global:email', 'global'], ['pii:us:ssn', 'jurisdiction:US'],
-  ]);
-  assert.deepEqual(matrix.entries.map(entry => entry.assessment.identityDomain), ['email', 'national-id']);
+  assert.deepEqual(matrix.entries.map(entry => [entry.assessment.family, entry.assessment.scope]),
+    cases.map(source => [source.contract.family, source.contract.scope]));
+  assert.deepEqual(matrix.entries.map(entry => entry.assessment.identityDomain), cases.map(source => source.contract.identityDomain));
   assert.ok(matrix.entries.every(entry => entry.assessment.qualificationProfile.id === 'pii-v1'));
   assert.ok(matrix.entries.every(entry => entry.assessment.authority.every(source => source.supports.length > 0)));
   const serialized = JSON.stringify(matrix);

@@ -225,7 +225,7 @@ test('actual PII execution artifacts preserve their source envelope without raw 
   const multi = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [scanner, second],
     provenance: { candidateArtifactHash: candidateHash } });
   assert.throws(() => piiAccountingRowsFromEvaluation(multi), /explicit scanner selector/);
-  assert.equal(piiAccountingRowsFromEvaluation(multi, second.id).length, 2);
+  assert.equal(piiAccountingRowsFromEvaluation(multi, second.id).length, multi.variantCount);
 });
 
 test('profiles and reports are strict and cross-domain aggregation remains forbidden', () => {

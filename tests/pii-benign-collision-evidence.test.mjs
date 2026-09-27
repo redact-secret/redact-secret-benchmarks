@@ -92,7 +92,7 @@ test('data rows deterministically compose validated executable cases and preserv
   assert.deepEqual(cases.map(row => row.method), ['pii-benign', 'type-validation', 'jurisdiction-collision']);
   const values = new Map(corpus.entries.map(entry => [materializePiiEvidenceCandidate(entry), entry.validator?.expected]));
   const validators = createPiiValidators([{ id: 'luhn', version: 1, validate(value) { return { state: values.get(value) ?? 'invalid' }; } }]);
-  const methods = piiDomain.createMethods(validators, undefined, corpus);
+  const methods = piiDomain.configure({ evidence: corpus, evidenceValidation: validationOptions, validators }).createMethods();
   for (const source of cases) {
     const method = methods.get(source.method), variants = method.generate(source);
     assert.ok(variants.every(variant => variant.transformation.methodVersion === method.version));
@@ -126,6 +126,29 @@ test('data rows deterministically compose validated executable cases and preserv
   assert.doesNotMatch(safe, /"content"|"candidate"|"seed"|"pattern"/);
 });
 
+test('standard domain configuration executes data-only evidence additions with cases and methods bound to one corpus', async () => {
+  const corpus = validatePiiBenignCollisionEvidence(extension(), validationOptions);
+  const values = new Map(corpus.entries.map(entry => [materializePiiEvidenceCandidate(entry), entry.validator?.expected]));
+  const validators = createPiiValidators([{ id: 'luhn', version: 1, validate(value) { return { state: values.get(value) ?? 'invalid' }; } }]);
+  const domain = piiDomain.configure({ evidence: corpus, evidenceValidation: validationOptions, validators });
+  const cases = domain.loadCases();
+  for (const entry of corpus.entries) assert.ok(cases.some(source => source.id === entry.caseId), `missing executable case for ${entry.id}`);
+  assert.ok(cases.some(source => source.method === 'schema-only'));
+  assert.ok(cases.some(source => source.method === 'context-discrimination'));
+
+  const byId = new Map(cases.map(source => [source.id, source]));
+  const scanner = { id: 'configured-domain-scanner', mode: 'test', capabilities: { ranges: true, classification: true }, configuration: { fixture: true },
+    async version() { return '1.0.0'; }, async scan(_directory, inputs) { return inputs.flatMap(input => {
+      const source = byId.get(input.id); return source?.method === 'jurisdiction-collision' ? [{ path: input.path, ...source.candidate,
+        family: source.contract.family, jurisdiction: 'US', sensitive: false }] : [];
+    }); } };
+  const artifact = await domain.execute({ cases, methods: domain.createMethods(), scanners: [scanner],
+    runId: '00000000-0000-4000-8000-000000002269' });
+  for (const entry of corpus.entries) assert.ok(artifact.results.some(result => result.id === entry.caseId), `evidence row was not executed: ${entry.id}`);
+  const safe = JSON.stringify(artifact);
+  for (const entry of corpus.entries) assert.doesNotMatch(safe, new RegExp(materializePiiEvidenceCandidate(entry)));
+});
+
 test('collision descriptors stay in one identity domain and require an independently valid competitor', () => {
   const crossDomain = extension(), competitor = crossDomain.entries.find(row => row.evidenceClass === 'cross-family-collision').collision.competitors[0];
   crossDomain.families.find(row => row.family === competitor.family).identityDomain = 'email';
@@ -152,8 +175,9 @@ test('hostile case, validator, context, fixture, and class mutations fail closed
   const nullValidator = structuredClone(cases.find(row => row.method === 'type-validation'));
   nullValidator.contract.typeExpectation.validator = null;
   const validators = createPiiValidators([{ id: 'luhn', version: 1, validate() { return { state: 'invalid' }; } }]);
-  assert.throws(() => piiDomain.createMethods(validators, undefined, corpus).get('type-validation').generate(nullValidator), /requires a validator|case identity/);
+  const methods = piiDomain.configure({ evidence: corpus, evidenceValidation: validationOptions, validators }).createMethods();
+  assert.throws(() => methods.get('type-validation').generate(nullValidator), /requires a validator|case identity/);
   const wrongScope = structuredClone(cases.find(row => row.method === 'jurisdiction-collision'));
   wrongScope.contract.scope = 'global'; wrongScope.contract.family = 'pii:global:synthetic-national-id';
-  assert.throws(() => piiDomain.createMethods(validators, undefined, corpus).get('jurisdiction-collision').generate(wrongScope), /evidence case identity|collision/);
+  assert.throws(() => methods.get('jurisdiction-collision').generate(wrongScope), /evidence case identity|collision/);
 });

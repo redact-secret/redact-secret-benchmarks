@@ -1,4 +1,9 @@
 import { hash } from '../../substrate/hash.ts';
+import {
+  loadPiiBenignCollisionCases, piiBenignCollisionEvidence,
+  type PiiBenignCollisionValidationOptions,
+} from './benign-collision-evidence.ts';
+import { loadPiiContextCases } from './context-evidence.ts';
 import type { PiiAuthority, PiiCase } from './types.ts';
 
 const content = 'contact=person@example.invalid';
@@ -40,4 +45,10 @@ export function loadPiiCases(): PiiCase[] {
     provenance: { source: 'benchmarks/evaluation/domains/pii/cases.ts', sourceHash: hash({ ...source, id: 'pii-jurisdiction-probe', contentHash: hash(nationalContent) }),
       seed: 'pii-jurisdiction-probe/1', rationale: 'Exercises explicit jurisdictional PII without representing a real person or support claim.', sources: ['benchmark:schema-probe'] },
   }];
+}
+
+/** Standard domain corpus: fixed schema probes plus every committed context and benign/collision evidence row. */
+export function loadPiiDomainCases(value: unknown = piiBenignCollisionEvidence,
+  options: PiiBenignCollisionValidationOptions = {}): PiiCase[] {
+  return [...loadPiiCases(), ...loadPiiContextCases(), ...loadPiiBenignCollisionCases(value, options)];
 }

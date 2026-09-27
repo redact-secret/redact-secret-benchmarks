@@ -190,6 +190,8 @@ export function build211({ fixture, synthetic }) {
       tpl: (slot, v) => [`{\n  "id": "we_${weId}",\n  "object": "webhook_endpoint",\n  "secret": "`, slot(v), "\",\n  \"url\": \"https://example.com/stripe/webhook\"\n}\n"],
       twins: [{ slug: "endpoint-create-response-boundary", kind: "boundary", mutate: v => `Q${v}`,
         mutation: "boundary: a letter glued directly before whsec_, so the prefix is no longer at a token boundary (the value itself is unchanged)" }] },
+    { axis: "structured-file", slug: "event-destination-create-response", ext: "json",
+      tpl: (slot, v) => [`{\n  "id": "ed_test_${s(ST, "event-destination-create", "id", 44)}",\n  "object": "v2.core.event_destination",\n  "type": "webhook_endpoint",\n  "webhook_endpoint": {\n    "url": "https://example.com/stripe/events",\n    "signing_secret": "`, slot(v), "\"\n  }\n}\n"] },
     { axis: "sdk-config", slug: "rails-credentials-rolling", ext: "yml",
       tpl: (slot, v) => ["stripe:\n  private_key: <%= ENV[\"STRIPE_SECRET_KEY\"] %>\n  signing_secret: [", slot(v), ", ", slot(stValue("rails-credentials-rolling-previous")), "]\n"] },
     { axis: "container-config", slug: "compose-webhook-secret", variant: true, ext: "yml",

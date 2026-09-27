@@ -6,6 +6,7 @@ import { contracts, controlAxis } from '../benchmarks/lib/assessment.ts';
 import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/beta8/index.ts';
 import { BEDROCK_SHORT_HEAD, BEDROCK_SHORT_HEAD_TEXT } from '../benchmarks/lib/beta8/384b.ts';
 import { beta8ProfileCounts } from '../scripts/report-beta8-profiles.mjs';
+import { scoredArrivalFamilies } from '../scanners/families.mjs';
 
 // Beta.10 contracts and corpus (#384): the conventions that tests/beta8.test.mjs cannot see because
 // they are specific to these five slices.
@@ -16,7 +17,10 @@ const slices = ['384a', '384b', '384c', '384d', '384e'];
 const corpora = slices.map(key => [`beta8-${key}`, generated[`beta8-${key}`]]);
 const modules = BETA8_MODULES.filter(m => slices.includes(m.issue));
 const arrival = modules.flatMap(m => m.arrivalFamilies);
-// Nine of the thirteen graduated to registry detectors at the cfe2aec pin (redact-secret#864-#868); Anthropic x2, OpenAI admin (shared detector types) and Exa (no detector) stay arrival families.
+// Nine of the thirteen graduated to registry detectors at the cfe2aec pin (redact-secret#864-#868); the Anthropic x2 and OpenAI admin
+// families stay arrival families (the product still shares anthropic-token/openai-token, never a distinct registry detector), but
+// since product PR #882 (redact-secret#774, f26dee2 pin) each reports its own finding type and so is scored on its own arrival id
+// (scanners/families.mjs arrivalFindingTypes); Exa has no detector at all and stays unscored.
 const graduated = modules.flatMap(m => Object.keys(m.registryContracts ?? {}));
 const targetIds = modules.flatMap(m => Object.keys(m.profiles));
 const targetOf = f => (f.arrivalTargets ?? f.detectors)[0];
@@ -33,7 +37,9 @@ test('the thirteen Beta.10 families are four arrival families and nine graduated
     assert.ok(contracts[family.id], family.id);
     const row = taxonomy.families.find(f => f.id === family.taxonomy);
     assert.ok(row, `${family.id}: taxonomy row ${family.taxonomy}`);
-    assert.deepEqual(row.detectors, [], `${family.id}: an unscored arrival family maps no registry detector`);
+    if (scoredArrivalFamilies.includes(family.id))
+      assert.deepEqual(row.detectors, [family.id], `${family.id}: a scored arrival family maps its taxonomy family to its own id`);
+    else assert.deepEqual(row.detectors, [], `${family.id}: an unscored arrival family maps no registry detector`);
     assert.ok(taxonomyIds.has(family.taxonomy));
   }
   for (const id of graduated) {

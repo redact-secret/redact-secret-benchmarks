@@ -130,6 +130,12 @@ export const arrivalFindingTypes = Object.freeze({
   'github-token': Object.freeze({ github_fine_grained_personal_access_token: 'github-fine-grained-pat' }),
   'stripe-token': Object.freeze({ stripe_webhook_signing_secret: 'stripe-webhook-signing-secret' }),
   'slack-token': Object.freeze({ slack_app_level_token: 'slack-app-level-token', slack_user_token: 'slack-user-token' }),
+  // #384/#774: product PR #882 splits sk-ant-api01- and sk-ant-admin01- out of the shared
+  // anthropic_api_key type into their own types; sk-ant-api03- keeps anthropic_api_key.
+  'anthropic-token': Object.freeze({ anthropic_enterprise_api_key: 'anthropic-api01-key', anthropic_admin_api_key: 'anthropic-admin01-key' }),
+  // #384/#774: the same PR splits sk-admin- out of the shared openai_api_key type; the
+  // sk-/sk-proj-/sk-svcacct- widths keep openai_api_key.
+  'openai-token': Object.freeze({ openai_admin_api_key: 'openai-admin-api-key' }),
 });
 // The arrival families with a recorded finding-type mapping. eval:classify scores
 // these like registry families, each on its own contract, profile and ledger rows

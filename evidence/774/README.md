@@ -206,3 +206,148 @@ npm run eval:classify -- --candidate-package=<core.tgz> --candidate-node-package
 npm run eval:matrix -- --input=evidence/774/26efbba/support-status.json --output=evidence/774/26efbba/support-matrix.json
 gh workflow run performance-evaluation.yml --ref develop -f candidate_revision=26efbbaa5627ade0f9e7b248f4f88bdbe5334322
 ```
+
+## Update: re-pinned at f26dee2 (redact-secret PR #882, finding-type split) — a pre-existing ledger-churn defect surfaces
+
+Product PR #882 (merge `f26dee26a9c2aa3cfff3543d784c02de5054de09`, parent #862/#863, this issue) splits the shared
+`anthropic_api_key`/`openai_api_key` finding types the three anthropic/openai arrival families were riding inside:
+`sk-ant-api01-` now reports `anthropic_enterprise_api_key`, `sk-ant-admin01-` reports `anthropic_admin_api_key`, and
+`sk-admin-` reports `openai_admin_api_key`. `crates/secret-scan-core/src/detectors/mod.rs` (the registry list) is
+unchanged; only `anthropic.rs`, `openai.rs` and `policy.rs`'s `ALWAYS_REDACT_TYPES` (72 → 75 entries) move.
+
+**Benchmarks-side mapping (the actual change this re-pin makes):** `anthropic-api01-key`, `anthropic-admin01-key`
+and `openai-admin-api-key` move off "unscored arrival" by the repo's existing #251/#730 mechanism — the same one
+`github-fine-grained-pat`, `slack-app-level-token`, `slack-user-token` and `stripe-webhook-signing-secret` already
+use — never a hand-edit of a derived file:
+
+- `scanners/families.mjs` `arrivalFindingTypes`: added `'anthropic-token': { anthropic_enterprise_api_key: 'anthropic-api01-key', anthropic_admin_api_key: 'anthropic-admin01-key' }`
+  and `'openai-token': { openai_admin_api_key: 'openai-admin-api-key' }`. This is what makes `scoredArrivalFamilies`
+  (and therefore `scoredContractIds`, `familyCount`) include the three ids.
+- `benchmarks/support/taxonomy.json`: the three families' `detectors` field moves from `[]` to `[<own arrival id>]`
+  (`anthropic:compliance-access-key` → `["anthropic-api01-key"]`, `anthropic:admin-api-key` →
+  `["anthropic-admin01-key"]`, `openai:admin-api-key` → `["openai-admin-api-key"]`) — the same convention every
+  other scored arrival family's taxonomy row already follows (`tests/beta8.test.mjs`'s "a scored arrival family
+  maps its taxonomy family to its own id" check enforces this).
+- `benchmarks/lib/beta8/384a.ts`: each arrival family's `reason` text now names its new finding type, satisfied
+  `tests/evaluation-methods.test.mjs`'s #251 check that the reason names both the shared detector and the type.
+- `benchmarks/detectors.json` `sourceRevision` and `benchmarks/detector-inventory.json` `redactSecretRevision` move
+  to `f26dee26a9c2aa3cfff3543d784c02de5054de09`; `redactSecretReleaseRevision` stays `f726f2f` (no new release).
+  Regenerated `benchmarks/fixture-index.json` and `benchmarks/pin-manifest.json` from the taxonomy edit; no fixture
+  content changed (fixture bytes are identical — this is a classification-plumbing change, not a corpus edit).
+
+### A pre-existing, unrelated defect blocks almost every family from reading `stable` here
+
+Running the full 13-family candidate suite (something #384's 2026-09-27 mistral/cohere/deepgram twin-reclassification
+commit did not do — it only checked mistral/cohere/deepgram directly) surfaces that **`aws-bedrock-long-term-api-key`,
+`aws-bedrock-short-term-api-key`, `elevenlabs-api-key`, `tavily-api-key` and `together-ai-api-key` no longer read
+`stable`/`provisional` the way this README's prior entries describe** — they all now carry a nonzero
+`differential.unresolvedContractDisagreements` count, which is untrue of anything this re-pin or #882 touches.
+
+Root cause, isolated by re-running the *identical* f26dee2 candidate against three benchmarks states:
+
+| Benchmarks tip | Candidate | tavily diff | bedrock (long/short) diff | elevenlabs diff | Result |
+| --- | --- | --- | --- | --- | --- |
+| `f00f215` (pre-mistral-fix) | f26dee2 | 0 | 0 / 0 | 0 | stable, matches this README's existing entries exactly (65/83 stable) |
+| `99a7681` (this branch's tip, mistral/cohere/deepgram twin fix) | f26dee2 | 6 | 4 / 7 | 6 | provisional — regressed |
+| `99a7681` (unmodified, none of this re-pin's edits) | f26dee2 | 6 | 4 / 7 | 6 | same regression, present before this re-pin touched anything |
+
+`crates/secret-scan-core/src/detectors/{bedrock,elevenlabs,tavily,together,mistral,cohere,deepgram}.rs` did not
+change between `f00f215`'s pin (`3ddfc29`) and `f26dee2` (only `anthropic.rs`/`openai.rs`/`policy.rs` did), so the
+candidate cannot be the cause. The actual cause: `benchmarks/evaluation/domains/credential/cases.ts:57` computes
+`const sourceHash = hash(corpus)` — one hash over the **entire** `detector-coverage` corpus (1,057 fixtures shared
+by nearly every family), not per-fixture. `reviewEntryId(caseId, sourceHash, entry)`
+(`benchmarks/evaluation/domains/credential/review.ts:4`) folds that corpus-wide hash into every differential
+disagreement id. The 2026-09-27 mistral/cohere/deepgram twin reclassification edited three `detector-coverage`
+fixtures; that shifted `sourceHash` for the whole corpus, which reshuffled the disagreement id of **every** case
+across **every** family sharing it — silently invalidating previously-resolved `benchmarks/review-ledger.json` rows
+for families the edit never touched. That commit's own message already named part of this ("a pre-existing,
+unrelated backlog of 534 stale differential review-queue ids... predates this change and is out of scope",
+confirmed independently here: `npm run queue:check` gives the identical 534 ids and the identical count whether run
+against the untouched `99a7681` tip or this branch's edits) — what it did not check is that the *same* mechanism
+also demotes the candidate-mode status of `aws-bedrock-*`, `elevenlabs-api-key`, `tavily-api-key` and
+`together-ai-api-key`, because `queue:check` only exercises the **published** package, never a candidate build.
+
+This is a pre-existing defect in already-committed work (the `99a7681` twin-reclassification commit), not something
+`f26dee2` or this re-pin's mapping change introduces, and re-triaging 500+ ledger rows is out of scope for a re-pin.
+It is not fixed here; `evidence/774/f26dee2/support-status.json` and `support-matrix.json` report the real,
+unforced numbers below, including this effect.
+
+### Per-family result (candidate mode, f26dee2) — read together with the defect above
+
+| Family | Status | Tier | What actually blocks it |
+| --- | --- | --- | --- |
+| `anthropic-api01-key` | provisional | T1 | only `differential.unresolvedContractDisagreements: 19` (the ledger-churn defect); no other reason is listed |
+| `anthropic-admin01-key` | provisional | T1 | `differential: 17`, plus real, pre-existing findings independent of the split: 1 benign false alarm, 7 metamorphic critical failures, 1 unresolved critical mutation |
+| `openai-admin-api-key` | provisional | T2 | far from every empirical/corroboration floor (0 references/owners/classes, 9 of 10 required positive cases, 10 of 14 required benign controls, no declared uncertainty/mode/supported-context), plus `differential: 16`. Splitting the finding type made it scorable; it did not give it evidence |
+| `aws-bedrock-long-term-api-key` | provisional (was stable/T1/documented) | T1 | only `differential: 4` — the ledger-churn defect above |
+| `aws-bedrock-short-term-api-key` | provisional (was stable/T1/documented) | T1 | only `differential: 7` — ditto |
+| `elevenlabs-api-key` | provisional (was stable/T1/documented) | T1 | only `differential: 6` — ditto |
+| `tavily-api-key` | provisional (was stable/T2/empirical) | T2 | only `differential: 6` — ditto |
+| `together-ai-api-key` | provisional (unchanged in kind) | T2 | unchanged corroboration shortfall (2 references/2 owners/1 non-summary class, needs 3/3/2), plus `differential: 6` |
+| `mistral-api-key` | provisional | T2 | benign false alarms are now **0** (the twin reclassification worked: the instructional-placeholder/near-miss issue is gone); still short one corroboration class (1 of 2) and `differential: 6` |
+| `cohere-api-key` | provisional | T2 | benign false alarms **0**, metamorphic clear; only `differential: 3` plus one short context-constrained axis — closest of the three to clearing once the ledger is re-triaged |
+| `deepgram-api-key` | provisional | T2 | real, pre-existing gaps unrelated to the fix remain: 2 twin failures, 14 metamorphic critical failures, 4 unresolved critical mutations (the documented `createClient(key)`/WebSocket-subprotocol misses), plus `differential: 6` |
+| `ai21-api-key` | pending | T0 | unchanged: no provider or scanner shape |
+| `exa-api-key` | unscored arrival | — | unchanged: no Exa detector exists |
+
+Candidate mode: 6 stable of 86 scored families (86 = 83 + the 3 newly-scored ids), 5 documented + 1 empirical.
+Published mode (0.1.0-beta.9, predates #882): also 6 of 86 — the anthropic/openai split has no published-mode
+effect since the published package does not yet report the new types. Both numbers are suppressed by the same
+ledger-churn defect described above, not a genuine drop from 65/83.
+
+### Source revisions (f26dee2)
+
+| Repository | Revision |
+| --- | --- |
+| `redact-secret` candidate | `f26dee26a9c2aa3cfff3543d784c02de5054de09` (PR #882 merge), clean |
+| `redact-secret-benchmarks` | this branch tip |
+
+Candidate artifact SHA-256: core `51fc3d78f24ed5c13d7460c25627476e1751a71c511ce51bd1fe6cfd69047664` (unchanged: no
+JS façade change), node darwin-arm64 `e58a8cae2b7e962590323a1838b21f903a67de456543ed176cc518f3bc4e8add`, wasm
+`89dd94b6847c150289f0a6b84cae832d69ac9f630dd315638ab4c7ba14e458c9`. Candidate run: complete, 3,533/3,533 fixtures
+(`f26dee2/candidate-evidence-v1.json`). Candidate classification `7846bf40-86e8-4c04-a762-2fb6a95f6ed2`
+(`f26dee2/support-status.json`, `f26dee2/support-matrix.json`); published classification in `f26dee2/published/`.
+Pinned scanners: trufflehog 3.97.4, gitleaks 8.30.1 (same provisioning as above).
+
+### Performance evaluation: still REJECTED at f26dee2
+
+Two independent dispatches of `performance-evaluation.yml` at f26dee2, full `scale-logs` `processing-ratio` table
+(the finding-type split touches no scanning hot path, so this is expected to read like 3ddfc29's measurement, and
+does):
+
+| Surface / profile | Budget | Run [36319135388](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36319135388) | Run [36319146715](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36319146715) |
+| --- | --- | --- | --- |
+| browser-wasm / medium-fixed4096 | 10% | **1.1167 (regression)** | **1.1188 (regression)** |
+| browser-wasm / small-whole | 30% | within budget | within budget |
+| cli / medium-fixed4096 | 10% | **1.1425 (regression)** | **1.1157 (regression)** |
+| cli / small-whole | 10% | **1.1274 (regression)** | **1.1054 (regression)** |
+| node / medium-fixed4096 | 10% | within budget | within budget |
+| node / small-whole | 10% | within budget | within budget |
+| python / medium-fixed4096 | 10% | **1.1014 (regression)** | **1.1067 (regression)** |
+| python / small-whole | 10% | within budget | within budget |
+| rust-core / medium-fixed4096 | 10% | within budget | within budget |
+| rust-core / small-whole | 10% | within budget | within budget |
+
+Both runs regress the same four triggers on both dispatches: `browser-wasm`, `cli` (both profiles) and `python`
+(medium profile only) on `scale-logs`, roughly 10.1-14.2%; `node` and `rust-core` clear both profiles on both runs
+with margin. This is unchanged in kind from 3ddfc29's measurement (also REJECTED, cli 10.4-11.1%) — consistent with
+the finding-type split (`anthropic.rs`/`openai.rs`/`policy.rs` only) touching no scanning hot path.
+`baseline.verifiedCommit` is not advanced; `pins:check` and the `pin consistency` unit test keep failing on the
+pre-existing #150 coupling. No performance criteria were hand-edited, no tradeoff was recorded, and no run was
+forced or re-dispatched beyond these two.
+
+### Commands (f26dee2)
+
+```sh
+npm run peers:provision -- --dir /path/peers && export PATH=/path/peers:$PATH   # trufflehog 3.97.4, gitleaks 8.30.1
+npm run fixtures:generate && npm run fixture-index:generate
+# candidate built manually (js:build, bindings/node napi build --release, wasm:build, wasm:build:common,
+# scripts/pack-npm-candidate.mjs), same as every prior entry in this file — not npm run benchmark:candidate,
+# so classification runs against the working corpus.
+npm run eval:candidate -- --candidate-package <core.tgz> --candidate-node-package <node.tgz> --candidate-wasm-package <wasm.tgz> \
+  --candidate-source-commit f26dee26a9c2aa3cfff3543d784c02de5054de09 --product-state clean --expected-artifact-sha256 <core sha> --output-dir evidence/774/f26dee2
+npm run eval:classify -- --candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> \
+  --candidate-source-commit=f26dee26a9c2aa3cfff3543d784c02de5054de09 --output=evidence/774/f26dee2/support-status.json
+npm run eval:matrix -- --input=evidence/774/f26dee2/support-status.json --output=evidence/774/f26dee2/support-matrix.json
+gh workflow run performance-evaluation.yml --ref develop -f candidate_revision=f26dee26a9c2aa3cfff3543d784c02de5054de09
+```

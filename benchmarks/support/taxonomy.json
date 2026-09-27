@@ -1489,36 +1489,42 @@
       "provider": "anthropic",
       "name": "Enterprise organization key (sk-ant-api01-)",
       "description": "sk-ant-api01- prefixed key that Anthropic documents as a Compliance Access Key; the prefix is the general Claude Enterprise organization key for any scope set, so a finding must not claim 'compliance'.",
-      "detectors": [],
+      "detectors": [
+        "anthropic-api01-key"
+      ],
       "sources": [
         "https://platform.claude.com/docs/en/manage-claude/compliance-api-access",
         "https://platform.claude.com/docs/en/manage-claude/admin-api-keys"
       ],
-      "note": "Beta.10 arrival family anthropic-api01-key (#384, research redact-secret#776, product #862). The product extends the shared anthropic-token detector and keeps the anthropic_api_key type, so this family maps to no registry detector and shows the measured status of an unscored arrival id, never the status of anthropic:secret-api-key. T1 on the prefix only; the body is unspecified."
+      "note": "Beta.10 arrival family anthropic-api01-key (#384, research redact-secret#776, product #862, #882). The product extends the shared anthropic-token detector; since product PR #882 (redact-secret#774) it reports its own anthropic_enterprise_api_key finding type (previously the shared anthropic_api_key type), so this family maps to no registry detector id but is scored on its own arrival id by finding type (scanners/families.mjs arrivalFindingTypes), never borrowing the status of anthropic:secret-api-key. T1 on the prefix only; the body is unspecified."
     },
     {
       "id": "anthropic:admin-api-key",
       "provider": "anthropic",
       "name": "Admin API key (sk-ant-admin01-)",
       "description": "sk-ant-admin01- prefixed full-access Admin API key created by organization admins in the Claude Console.",
-      "detectors": [],
+      "detectors": [
+        "anthropic-admin01-key"
+      ],
       "sources": [
         "https://platform.claude.com/docs/en/manage-claude/admin-api-keys",
         "https://platform.claude.com/docs/en/manage-claude/admin-api"
       ],
-      "note": "Beta.10 arrival family anthropic-admin01-key (#384, research redact-secret#775, product #862). Same shared-detector reason as anthropic:compliance-access-key. T1 prefix, tool-corroborated 93-character + AA body."
+      "note": "Beta.10 arrival family anthropic-admin01-key (#384, research redact-secret#775, product #862, #882). Same shared-detector reason as anthropic:compliance-access-key; since product PR #882 (redact-secret#774) it reports its own anthropic_admin_api_key finding type, so it is scored on its own arrival id by finding type. T1 prefix, tool-corroborated 93-character + AA body."
     },
     {
       "id": "openai:admin-api-key",
       "provider": "openai",
       "name": "Admin API key (sk-admin-)",
       "description": "sk-admin- prefixed organization admin key with the T3BlbkFJ marker between two 58- or 74-byte segments; a marker-less body is out of contract.",
-      "detectors": [],
+      "detectors": [
+        "openai-admin-api-key"
+      ],
       "sources": [
         "https://github.com/openai/codex/blob/418199f6ade4f9018b1f0b455a685387a811ad2e/codex-rs/network-proxy/src/credential_broker/providers/openai.rs#L13-L23",
         "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml"
       ],
-      "note": "Beta.10 arrival family openai-admin-api-key (#384, research redact-secret#777, product #863). openai-token already recognises sk-admin-, but a taxonomy family mapped to it would borrow the status of openai:secret-api-key, so it is measured as its own unscored arrival id. T2."
+      "note": "Beta.10 arrival family openai-admin-api-key (#384, research redact-secret#777, product #863, #882). openai-token already recognises sk-admin-; since product PR #882 (redact-secret#774) it reports its own openai_admin_api_key finding type (previously the shared openai_api_key type), so it is scored on its own arrival id by finding type rather than borrowing the status of openai:secret-api-key. T2."
     },
     {
       "id": "aws-bedrock:long-term-api-key",

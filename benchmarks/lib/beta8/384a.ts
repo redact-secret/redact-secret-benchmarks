@@ -6,12 +6,15 @@ import { th, gl, provider, field } from '../contract-sources.ts';
 // redact-secret#862) and the OpenAI sk-admin- reconciliation (research
 // #777; product #863). Owned by that issue only; see docs/specs/beta8-evidence.md.
 //
-// All three are arrival families. The product extends the existing shared detectors
-// (anthropic-token, openai-token) and keeps their finding types, so a taxonomy family
-// that maps to a registry detector would silently borrow that detector's status. Each
-// family therefore stays an arrival id with its own contract, profile and ledger rows
-// until the product gives it a finding type of its own (docs/specs/beta8-evidence.md,
-// "Finding types inside a shared detector").
+// All three are arrival families: the product extends the existing shared detectors
+// (anthropic-token, openai-token) rather than registering new ones, so a taxonomy
+// family that mapped to the registry detector id would still not distinguish
+// per-family status. Product PR #882 (redact-secret#774) has since given each of
+// these three prefixes its own finding type (anthropic_enterprise_api_key,
+// anthropic_admin_api_key, openai_admin_api_key), so each is now scored by finding
+// type via scanners/families.mjs's arrivalFindingTypes (docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md)
+// while remaining an arrival id with its own contract, profile and ledger rows
+// (docs/specs/beta8-evidence.md, "Finding types inside a shared detector").
 //
 // The anthropic-token and openai-token registry contracts are not edited: they still claim
 // only sk-ant-api03- and the sk-proj-/sk-svcacct- widths. Four existing common-formats twins
@@ -38,11 +41,11 @@ const TH_OPENAI_ISSUE = 'https://github.com/trufflesecurity/trufflehog/issues/46
 /** Families measured here that no registry detector targets. */
 export const arrivalFamilies: ArrivalFamily[] = [
   { id: 'anthropic-api01-key', taxonomy: 'anthropic:compliance-access-key', issue,
-    reason: 'redact-secret#862 extends anthropic-token with the sk-ant-api01- prefix under the shared anthropic_api_key type. The registry anthropic-token contract claims sk-ant-api03- only, and a shared finding type gives no per-family attribution, so sk-ant-api01- is measured as its own unscored arrival family rather than a registry id.' },
+    reason: 'redact-secret#862 extends anthropic-token with the sk-ant-api01- prefix. Product PR #882 (redact-secret#774) splits it out of the shared anthropic_api_key type into its own anthropic_enterprise_api_key finding type. The registry anthropic-token contract still claims sk-ant-api03- only, so sk-ant-api01- is measured as its own arrival family — scored by finding type (scanners/families.mjs arrivalFindingTypes) rather than by a distinct registry detector id.' },
   { id: 'anthropic-admin01-key', taxonomy: 'anthropic:admin-api-key', issue,
-    reason: 'redact-secret#862 extends anthropic-token with the sk-ant-admin01- prefix under the shared anthropic_api_key type. The registry anthropic-token contract claims sk-ant-api03- only, and a shared finding type gives no per-family attribution, so sk-ant-admin01- is measured as its own unscored arrival family rather than a registry id.' },
+    reason: 'redact-secret#862 extends anthropic-token with the sk-ant-admin01- prefix. Product PR #882 (redact-secret#774) splits it out of the shared anthropic_api_key type into its own anthropic_admin_api_key finding type. The registry anthropic-token contract still claims sk-ant-api03- only, so sk-ant-admin01- is measured as its own arrival family — scored by finding type (scanners/families.mjs arrivalFindingTypes) rather than by a distinct registry detector id.' },
   { id: 'openai-admin-api-key', taxonomy: 'openai:admin-api-key', issue,
-    reason: 'openai-token already recognises sk-admin- under the shared openai_api_key type, and the registry openai-token contract claims the sk-proj-/sk-svcacct- widths only (redact-secret#863). A taxonomy family mapped to the shared detector would borrow the status of openai:secret-api-key, so sk-admin- is measured as its own unscored arrival family.' },
+    reason: 'openai-token already recognises sk-admin-, and the registry openai-token contract claims the sk-proj-/sk-svcacct- widths only (redact-secret#863). Product PR #882 (redact-secret#774) splits sk-admin- out of the shared openai_api_key type into its own openai_admin_api_key finding type, so it is measured as its own arrival family — scored by finding type (scanners/families.mjs arrivalFindingTypes) rather than by a distinct registry detector id.' },
 ];
 
 /** Contracts for `arrivalFamilies` ids only. */

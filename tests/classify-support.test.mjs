@@ -221,7 +221,7 @@ test('eval:classify CLI rejects a malformed candidate source commit', async () =
 test('#730: the scored ids are the registry ids plus exactly the arrival families with a finding-type mapping', () => {
   const mapped = [...new Set(Object.values(arrivalFindingTypes).flatMap(types => Object.values(types)))].sort();
   assert.deepEqual([...scoredArrivalIds], mapped);
-  assert.deepEqual([...scoredArrivalIds], ['github-fine-grained-pat', 'slack-app-level-token', 'slack-user-token', 'stripe-webhook-signing-secret']);
+  assert.deepEqual([...scoredArrivalIds], ['anthropic-admin01-key', 'anthropic-api01-key', 'github-fine-grained-pat', 'openai-admin-api-key', 'slack-app-level-token', 'slack-user-token', 'stripe-webhook-signing-secret']);
   assert.deepEqual([...scoredContractIds], [...registryContractIds, ...scoredArrivalIds]);
   for (const id of scoredArrivalIds) assert.ok(!registryContractIds.includes(id), `${id} is an arrival id, never a registry id`);
   // An arrival family without a mapping stays unscored: the context-gated legacy Pinecone key and the Mailgun triplet.

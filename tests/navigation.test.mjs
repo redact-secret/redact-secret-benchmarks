@@ -12,7 +12,7 @@ const fixtures = buildCatalog(categories,corpora,assignments,registry.detectors)
 
 test('all corpus fixtures have unique, routable slugs and explicit detector assignments', () => {
   // Pre-Beta.8 corpus; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
-  assert.equal(fixtures.filter(f => !f.category.startsWith('beta8-')).length,1570);
+  assert.equal(fixtures.filter(f => !f.category.startsWith('beta8-')).length,1589);
   assert.equal(registry.detectors.length,70);
   for (const f of fixtures) {
     assert.equal(parseRoute('/fixture/'+f.slug).id,f.slug);

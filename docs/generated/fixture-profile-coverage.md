@@ -37,11 +37,11 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | atlassian-api-token | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | aws-access-key | T1 | stable-documented | 26 | 6 | 8 | 6 | 5 | 5 | 6 | none |
 | azure-devops-personal-access-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
-| bearer-token | T3 | arrival-provisional | 48 | 4 | 18 | 13 | 12 | 6 | 8 | positive/context cases 4/6 |
+| bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
 | cloudflare-token | T1 | stable-documented | 24 | 6 | 10 | 6 | 4 | 5 | 8 | none |
 | confluent-cloud-api-secret | T1 | stable-documented | 31 | 6 | 8 | 10 | 11 | 5 | 9 | none |
 | confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 48 | 1 | 19 | 15 | 12 | 6 | 9 | none |
-| connection-string | T3 | arrival-provisional | 54 | 9 | 15 | 15 | 4 | 3 | 4 | control axes 3/4 |
+| connection-string | T3 | arrival-provisional | 58 | 10 | 16 | 16 | 4 | 3 | 4 | control axes 3/4 |
 | databricks-personal-access-token | T2 | stable-empirical | 40 | 12 | 15 | 9 | 14 | 6 | 9 | none |
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
@@ -51,7 +51,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |
 | firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
-| generic-token | T3 | arrival-provisional | 128 | 35 | 75 | 9 | 12 | 4 | 5 | none |
+| generic-token | T3 | arrival-provisional | 132 | 36 | 76 | 10 | 12 | 4 | 5 | none |
 | github-fine-grained-pat | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 6 | 9 | positive/context cases 5/6 |
 | github-token | T1 | stable-documented | 117 | 27 | 8 | 42 | 21 | 5 | 7 | none |
 | gitlab-runner-authentication-token | T2 | stable-empirical | 43 | 11 | 16 | 8 | 15 | 6 | 10 | none |
@@ -81,7 +81,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
-| otpauth-uri | T3 | arrival-provisional | 17 | 0 | 5 | 6 | 1 | 3 | 4 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
+| otpauth-uri | T3 | arrival-provisional | 24 | 2 | 8 | 7 | 1 | 3 | 4 | positive/context cases 2/6; positive-context axes 1/4; control axes 3/4 |
 | perplexity-api-key | T2 | stable-empirical | 41 | 10 | 15 | 8 | 15 | 6 | 10 | none |
 | pinecone-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 9 | none |
 | pinecone-api-key-legacy | T3 | arrival-provisional | 48 | 0 | 24 | 12 | 9 | 6 | 7 | positive/context cases 0/6 |

@@ -95,7 +95,7 @@
     },
     "stableDistribution": {
       "type": "object", "additionalProperties": false, "required": ["documented", "empirical"],
-      "properties": { "documented": { "type": "integer", "minimum": 0 }, "empirical": { "type": "integer", "minimum": 0 } }
+      "properties": { "documented": { "type": "integer", "minimum": 0 }, "empirical": { "type": "integer", "minimum": 0 }, "policy-qualified": { "type": "integer", "minimum": 0 } }
     },
     "families": {
       "type": "array",
@@ -110,7 +110,7 @@
           "status": { "enum": ["stable", "provisional", "pending", "unsupported"] },
           "evidenceTier": { "enum": ["T0", "T1", "T2", "T3", null] },
           "evidenceBasis": { "enum": ["provider-documented", "independently-corroborated", "empirically-observed", "project-policy", "none"] },
-          "qualificationProfile": { "enum": ["documented", "empirical", null] },
+          "qualificationProfile": { "enum": ["documented", "empirical", "policy-qualified", null] },
           "providerSource": {
             "type": ["object", "null"],
             "additionalProperties": false,
@@ -163,6 +163,7 @@
               "supportsBareValues": { "type": "boolean" }
             }
           },
+          "policyQualification": { "type": ["object", "null"] },
           "fixtureProfile": {
             "type": ["object", "null"], "additionalProperties": false,
             "required": ["positiveCases", "positiveAxes", "benignCases", "controlAxes", "twinPairs", "totalFixtures", "contextTwinPairs", "confusionAxes"],

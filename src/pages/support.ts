@@ -4,6 +4,7 @@ import { EVIDENCE_BASIS_LABEL, statusCriteria } from '../../benchmarks/support/s
 import type { SupportMatrixEntry } from '../../benchmarks/support/matrix.ts';
 import type { SupportStatus } from '../../benchmarks/support/status.ts';
 import { fixtureProfiles, type CellId } from '../../benchmarks/support/profiles.ts';
+import { policyCredentialProfile } from '../../benchmarks/support/policy-qualified.ts';
 import registry from '../../benchmarks/detectors.json';
 import { orderedFamilies, providerName, statusesOf, SUPPORT_STATUSES, type SupportMatrixFile } from '../support-model';
 
@@ -34,7 +35,7 @@ export const SUPPORT_STATUS_COPY: Record<SupportStatus, SupportStatusCopy> = {
   stable: {
     kind: 'pass', word: 'Stable', short: 'every floor met',
     meaning: 'Detected, and every evidence floor in the profile is met — the floors are listed below.',
-    rationale: `${statusCriteria.stable.documented.rationale} ${statusCriteria.stable.empirical.rationale}`,
+    rationale: `${statusCriteria.stable.documented.rationale} ${statusCriteria.stable.empirical.rationale} ${policyCredentialProfile.criteria.rationale}`,
   },
   provisional: {
     kind: 'unstable', word: 'Provisional', short: 'evidence incomplete',
@@ -63,7 +64,7 @@ const n = (value: number) => value.toLocaleString('en-US');
 const families = (count: number) => `${n(count)} ${count === 1 ? 'family' : 'families'}`;
 const tierTitle = (tier: string) => (tiers as Record<string, { title: string }>)[tier]?.title ?? tier;
 
-/** The two `stable` profiles, read from `status-criteria.json`: no threshold is repeated here. */
+/** Stable profiles, read from their machine contracts: no threshold is repeated here. */
 function floors(): string {
   const s = statusCriteria.stable;
   const rows: [string, string, string][] = [
@@ -79,6 +80,9 @@ function floors(): string {
     ['Empirical benign / axes', `${n(s.empirical.minimumBenignCases.value)} / ${n(s.empirical.minimumControlAxes.value)}`, s.empirical.minimumBenignCases.rationale],
     ['Empirical twin pairs', `at least ${n(s.empirical.minimumTwinPairs.value)}`, s.empirical.minimumTwinPairs.rationale],
     ['Opaque context profile', `${n(s.empirical.contextConstrained.minimumContextTwinPairs.value)} context twins, ${n(s.empirical.contextConstrained.minimumConfusionAxes.value)} axes, ${n(s.empirical.contextConstrained.minimumFixtures.value)} fixtures`, s.empirical.contextConstrained.minimumFixtures.rationale],
+    ['Policy-qualified provenance', 'T3 project-policy; remains T3', policyCredentialProfile.criteria.rationale],
+    ['Policy exact span and leakage', 'zero exact misses, leaks, overbreadth, and collateral', 'The supported claim is value-only redaction, not merely containment.'],
+    ['Policy actions and holdout', 'resolved warn/redact action, zero redact/block control false alarms, public and protected holdout pass', 'Warnings cannot hide a required redaction miss, and protected evidence is used only after the product build is frozen.'],
     ['Twin failures', `at most ${n(s.twinFailures.value)}`, s.twinFailures.rationale],
     ['False alarms on benign controls', `at most ${n(s.benign.falseAlarms.value)}`, s.benign.falseAlarms.rationale],
     ['Metamorphic critical failures', `at most ${n(s.metamorphic.criticalFailures.value)}`, s.metamorphic.criticalFailures.rationale],
@@ -129,6 +133,7 @@ function evidence(entry: SupportMatrixEntry): string {
   const items = entry.unresolvedCriticalItems;
   const empirical = entry.empiricalEvidence;
   const fixture = entry.fixtureProfile;
+  const policy = entry.policyQualification;
   const lines = [
     `<b>Detectors</b> ${entry.detectors.map(scoredIdLink).join(' · ')}`,
     `<b>Format evidence</b> ${entry.evidenceTier ? `${e(entry.evidenceTier)} · ${e(tierTitle(entry.evidenceTier))}` : 'none recorded'}`,
@@ -143,6 +148,7 @@ function evidence(entry: SupportMatrixEntry): string {
     `<b>External format corroboration</b> ${empirical ? `${n(empirical.corroborationReferences)} references · ${n(empirical.corroborationOwners)} owners · ${empirical.corroborationClasses.length ? empirical.corroborationClasses.map(e).join(', ') : 'no classes'} · ${n(empirical.contradictions)} unresolved / ${n(empirical.boundedContradictions)} bounded contradictions` : 'none recorded'}`,
     `<b>Provider-issued observations</b> ${empirical ? `${n(empirical.observations)} observations · ${n(empirical.subjects)} subjects · ${n(empirical.issuanceDates)} issuance dates` : 'none recorded'}`,
     `<b>Uncertainty and context limits</b> ${empirical?.uncertainty ? `${e(empirical.uncertainty)} · contexts: ${empirical.supportedContexts.map(e).join(', ')}` : 'none recorded'}`,
+    `<b>Policy-qualified aggregate</b> ${policy ? `${n(policy.spans)} spans · exact misses ${n(policy.exactSpanMisses)} · leaked ${n(policy.leakedSpans)} · overbroad ${n(policy.overbroadSpans)} · collateral bytes ${n(policy.collateralBytes)} · false alarms by action warn ${n(policy.controlFalseAlarms.warn)}, redact ${n(policy.controlFalseAlarms.redact)}, block ${n(policy.controlFalseAlarms.block)} · holdout public ${e(policy.publicConformance)}, protected ${e(policy.protectedHoldout)} · failed gates ${n(policy.failedGates.length)}` : 'not applicable'}`,
   ];
   return `<details data-key="support:${e(entry.family)}"><summary><small>Evidence</small></summary><ul class="small">${lines.map(line => `<li>${line}</li>`).join('')}</ul></details>`;
 }
@@ -166,7 +172,7 @@ export function supportPage(matrix: SupportMatrixFile | null, problem: string | 
       ? `<span>Measured the <b>released</b> package <b>${e(source.publishedPackage.packageName)} ${e(source.publishedPackage.version)}</b></span>`
       : '<span>Measured the <b>published</b> redact-secret package</span>';
   const meta = `<span><b>${n(matrix.familyCount)}</b> families across <b>${n(matrix.providerCount)}</b> providers</span>
-    <span>Stable: <b>${n(matrix.stableDistribution.documented)}</b> documented · <b>${n(matrix.stableDistribution.empirical)}</b> empirical</span>
+    <span>Stable: <b>${n(matrix.stableDistribution.documented)}</b> documented · <b>${n(matrix.stableDistribution.empirical)}</b> empirical · <b>${n(matrix.stableDistribution['policy-qualified'] ?? 0)}</b> policy qualified</span>
     ${measured}
     <span>Evidence run <b>${e(source.runId.slice(0, 8))}</b> · ${e(source.generatedAt.slice(0, 10))}</span>
     <span>Revision <code>${e(source.revision.slice(0, 12))}</code></span>
@@ -175,7 +181,8 @@ export function supportPage(matrix: SupportMatrixFile | null, problem: string | 
   const familyEvidence = shown.length
     ? `<div class="support-family-links">${shown.map(entry => {
       const copy = SUPPORT_STATUS_COPY[entry.status], reasons = entry.reason ? entry.reason.split(' | ') : [];
-      const statusWord = entry.status === 'stable' && entry.qualificationProfile === 'empirical' ? 'Stable · Empirically qualified' : copy.word;
+      const statusWord = entry.status === 'stable' && entry.qualificationProfile === 'empirical' ? 'Stable · Empirically qualified'
+        : entry.status === 'stable' && entry.qualificationProfile === 'policy-qualified' ? 'Stable · Policy qualified' : copy.word;
       return `<article data-support-status="${e(entry.status)}" data-family="${e(entry.family)}"><div><a href="/coverage/${e(entry.family)}"><b>${e(entry.familyName)}</b></a><small>${e(providerName(entry.provider))} · <code>${e(entry.family)}</code></small></div><div>${statusMark(copy.kind, statusWord)}<small>${reasons.length ? reasons.map(e).join(' · ') : 'No unmet floor is recorded.'}</small></div>${evidence(entry)}</article>`;
     }).join('')}</div>`
     : `<p class="small">No family carries this status in the published matrix.</p>`;

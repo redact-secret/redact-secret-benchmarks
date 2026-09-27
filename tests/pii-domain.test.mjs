@@ -68,7 +68,7 @@ test('generic registry preserves PII domain identity without credential casts', 
   const registry = defineEvaluationDomains({ pii: piiDomain });
   assert.equal(registry.pii.domain, 'pii');
   assert.equal(registry.pii.createMethods().get('schema-only').id, 'schema-only');
-  assert.deepEqual(evaluationDomainIds(), ['credential', 'pii']);
+  assert.deepEqual(evaluationDomainIds(), ['credential', 'credential-policy', 'pii']);
   assert.equal(resolveEvaluationDomain('pii'), piiDomain);
 });
 

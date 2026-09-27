@@ -1,8 +1,9 @@
-import type { Summary, ReviewLedger, EvaluationCase } from '../engine/types.ts';
+import type { Summary, ReviewLedger, EvaluationCase, CaseResult } from '../engine/types.ts';
 import { basisForRoute, empiricalRoute, type EvidenceBasis, type FamilySupportEvidence } from './status.ts';
 import { contracts, disputedProperty } from '../lib/assessment.ts';
 import { measureFixtureCells, profileClaim } from './profiles.ts';
 import { empiricalEvidence } from './empirical.ts';
+import { policyBehaviorAggregate, type PolicyHoldoutReceipt } from './policy-qualified.ts';
 
 /**
  * Real `FamilySupportEvidence` per family (issue #504, A3). Aggregates
@@ -72,7 +73,8 @@ function fixtureProfile(family: string, cases: EvaluationCase[]) {
   };
 }
 
-export function familyEvidence(family: string, byDetector: Record<string, Summary>, axesByDetector: Record<string, string[]>, reviewQueue: QueuedReview[], ledger: ReviewLedger, cases?: EvaluationCase[]): FamilySupportEvidence {
+export function familyEvidence(family: string, byDetector: Record<string, Summary>, axesByDetector: Record<string, string[]>, reviewQueue: QueuedReview[], ledger: ReviewLedger,
+  cases?: EvaluationCase[], results: CaseResult[] = [], policyHoldout?: PolicyHoldoutReceipt): FamilySupportEvidence {
   const summary = byDetector[family] ?? {};
   const contract = contracts[family];
   const twin = totalWhere(summary, 'twin', 'must-flip');
@@ -86,6 +88,7 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
   // observation bar is met (#177 as amended 2026-09-24). Tier never changes either way.
   const evidenceBasis: EvidenceBasis = contract?.tier === 'T1' ? 'provider-documented' : contract?.tier === 'T3' ? 'project-policy' :
     contract?.tier === 'T2' ? basisForRoute(empiricalRoute(empirical)) : 'none';
+  const criticalFailures = metamorphic.fail + mutation.fail + unresolvedInQueue(family, 'mutation', reviewQueue, ledger) + unresolvedInQueue(family, 'differential', reviewQueue, ledger);
   return {
     family,
     detectors: contract ? [family] : [],
@@ -110,6 +113,7 @@ export function familyEvidence(family: string, byDetector: Record<string, Summar
     // signed off that either is acceptable (only a `resolved` ledger entry does).
     mutationUnresolvedCritical: mutation.fail + unresolvedInQueue(family, 'mutation', reviewQueue, ledger),
     differentialUnresolvedContractDisagreements: unresolvedInQueue(family, 'differential', reviewQueue, ledger),
+    policyQualification: cases?.length ? policyBehaviorAggregate(family, cases, results, criticalFailures, policyHoldout) : null,
     // No corpus supplied means unmeasured: `profileFailures` fails closed on that for any binding claim.
     ...(cases ? { fixtureProfile: {
       claim: profileClaim(contract, empirical.empiricalMode), cells: measureFixtureCells(family, cases),

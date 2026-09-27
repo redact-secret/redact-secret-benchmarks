@@ -489,6 +489,9 @@ const CONTROL_RULES: Record<string, ControlRule[]> = {
   'shadow-scoring-authored': [
     { test: always, tier: 'T3', reason: PLACEHOLDER, axis: 'reference', family: detectorFamily },
   ],
+  'policy-qualified-credentials': [
+    { test: always, tier: 'T3', reason: 'Independent public control for the bounded credential policy profile.', axis: 'near-miss', family: detectorFamily },
+  ],
   'detector-coverage': [
     // #45: missing-marker/-identifier/-segment/-separator/-keyword/-json-marker cover a
     // required same-line or in-value marker the family's shape depends on; short-* covers
@@ -641,6 +644,7 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
   }
   if (category === 'accuracy') return policy('Legacy SYNTHETIC/filler example; not an independently reviewed credential format. Original regression expectation retained.');
   if (category === 'reference-syntax') return policy('Literal value in a sensitive field; tests generic masking rather than a provider credential.');
+  if (category === 'policy-qualified-credentials') return policy('Independently authored public conformance row for the bounded credential project-policy contract.', targetFamily(f));
   if (category === 'milestone-6-closed') {
     if ([254, 257, 263, 264, 280].includes(f.issue!)) return policy('Mutated documentation, placeholder, template, mask or reference. Expected masking follows a redact-secret issue decision, not a universal secret definition.');
     return policy('Issue-specific literal/password range; expectations are the project’s masking policy.');
@@ -711,6 +715,12 @@ export function validateAssessment(f: Fixture) {
   const a = f.assessment;
   if (!a || !KINDS.includes(a.kind) || !TIERS.includes(a.tier) || typeof a.reason !== 'string' || !a.reason.trim() || !Array.isArray(a.sources)) throw new Error(`Missing or invalid assessment: ${f.id}`);
   const secrets = f.expected.filter(r => (r.role ?? 'secret') === 'secret');
+  if (f.expectedAction !== undefined && !['warn', 'redact', 'block'].includes(f.expectedAction))
+    throw new Error(`Invalid expected action: ${f.id}`);
+  if (f.policyConformance && secrets.length && f.expectedAction === undefined)
+    throw new Error(`Policy-conformance positive without authored expected action: ${f.id}`);
+  if (!secrets.length && f.expectedAction !== undefined)
+    throw new Error(`Control with expected action: ${f.id}`);
   if (a.kind === 'must-not-flag') {
     if (secrets.length) throw new Error(`Control with secret spans: ${f.id}`);
     if (f.twinOf && (typeof f.mutation !== 'string' || !f.mutation.trim() || !MUTATION_KINDS.includes(f.mutationKind!))) throw new Error(`Invalid twin metadata: ${f.id}`);

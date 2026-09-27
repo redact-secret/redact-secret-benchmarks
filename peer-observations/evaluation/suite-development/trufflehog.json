@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T07:12:47.515Z",
+  "observedAt": "2026-09-27T11:20:21.820Z",
   "sourceRun": {
-    "runId": "1e1c7fbc-7407-4879-ae1e-f4d917593063",
-    "benchmarkRevision": "cf2211b12d42914928cd204af08c3c7d8162111c"
+    "runId": "3c5bc5c8-7590-4148-8128-d279dafdad67",
+    "benchmarkRevision": "f00f215f91e0cb0c3d7764a3e554080445967392"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "1ec5587000a94f5e3d9af8130f8a2e2c299956043e9344fe19243f7b3c6bad29",
-    "fixtureCount": 28247,
-    "fixturesDigest": "e9d34c58a1f1b587adf96c132c6e81bd52a0a5e553a51a4ae7660ba1e17fe628",
+    "corpusHash": "6c72ee3d1ff179d2ea6b7ce465f8abe43eb69e83b4f81bd4a4b0ffba27447f56",
+    "fixtureCount": 28250,
+    "fixturesDigest": "5d366d4896d9851cb31bb74ac02c080a66a4d26578deda3b70632572c5a397c5",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "ad9252a683a313650f395edfd8370987f2ff35973409021c6a2882653c139ffa",
-      "fixtureCount": 3527
+      "digest": "69c6f746d7a741e8ebe50a960195aa75e9e74f3015f2bc92749ff5cf68ec3030",
+      "fixtureCount": 3533
     }
   },
   "peer": {
@@ -23734,6 +23734,12 @@
       "family": "deepgram-api-key"
     },
     {
+      "path": "cases/detector-coverage--deepgram-api-key-key-shape-bare-twin--twin/canonical.txt",
+      "start": 17,
+      "end": 57,
+      "family": "deepgram-api-key"
+    },
+    {
       "path": "cases/detector-coverage--deepgram-api-key-key-shape-quoted--differential/canonical.txt",
       "start": 24,
       "end": 64,
@@ -23770,6 +23776,12 @@
       "family": "deepgram-api-key"
     },
     {
+      "path": "cases/detector-coverage--deepgram-api-key-key-shape-quoted-twin--twin/canonical.txt",
+      "start": 24,
+      "end": 64,
+      "family": "deepgram-api-key"
+    },
+    {
       "path": "cases/detector-coverage--deepgram-api-key-key-shape-unicode-crlf--differential/canonical.txt",
       "start": 38,
       "end": 78,
@@ -23795,6 +23807,12 @@
     },
     {
       "path": "cases/detector-coverage--deepgram-api-key-key-shape-unicode-crlf--mutation/canonical.txt",
+      "start": 38,
+      "end": 78,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--deepgram-api-key-key-shape-unicode-crlf-twin--twin/canonical.txt",
       "start": 38,
       "end": 78,
       "family": "deepgram-api-key"
@@ -33927,5 +33945,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "eb89522b5c2b85d2b0bbe9004bbf30e0e1c3aa37709771cc4c05adedf0344169"
+  "digest": "b93c52079ab2abfaf79fb473b78c212d44a93d6446db133c449f491217b0ccef"
 }

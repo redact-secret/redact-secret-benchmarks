@@ -946,21 +946,35 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   const mistralKey = synthetic("coverage:mistral:api-key:body", 32, AI_ALNUM);
   positive("mistral-api-key", "key-shape", ["MISTRAL_API_KEY=", { secret: mistralKey }]);
   add("mistral-api-key", "missing-keyword", [mistralKey]);
-  add("mistral-api-key", "short-token", [`MISTRAL_API_KEY=${mistralKey.slice(0, 31)}`]);
+  // #384 follow-up (beta.10 promotion investigation): authored as a negative twin of key-shape, not
+  // an independent control. The body is a genuine high-entropy 31-character near-miss beside the
+  // credential-named assignment, one byte short of the corroborated 32-character shape -- exactly
+  // the kind of value generic-token exists to catch. A control here would assert silence from every
+  // detector; a twin correctly scopes the claim to mistral-api-key's own grammar, so a same-span
+  // generic-token finding reads as co-detection (assertions.ts), not a mistral-api-key false alarm.
+  addTwin("mistral-api-key", "key-shape", [`MISTRAL_API_KEY=${mistralKey.slice(0, 31)}`], "length: 31 vs contracted 32");
   add("mistral-api-key", "mask", [`MISTRAL_API_KEY=${"*".repeat(32)}`]);
   add("mistral-api-key", "reference", ["MISTRAL_API_KEY=${MISTRAL_API_KEY}\n"]);
   add("mistral-api-key", "label-prose", ["Documentation mentions a Mistral API key without embedding the key value."]);
   const cohereKey = synthetic("coverage:cohere:api-key:body", 40, AI_ALNUM);
   positive("cohere-api-key", "key-shape", ["COHERE_API_KEY=", { secret: cohereKey }]);
   add("cohere-api-key", "missing-keyword", [cohereKey]);
-  add("cohere-api-key", "short-token", [`COHERE_API_KEY=${cohereKey.slice(0, 39)}`]);
+  // #384 follow-up (beta.10 promotion investigation): same reasoning as mistral-api-key above -- a
+  // genuine 39-character near-miss beside the credential-named assignment, one byte short of the
+  // corroborated 40-character shape, authored as a negative twin so a same-span generic-token
+  // finding reads as co-detection, not a cohere-api-key false alarm.
+  addTwin("cohere-api-key", "key-shape", [`COHERE_API_KEY=${cohereKey.slice(0, 39)}`], "length: 39 vs contracted 40");
   add("cohere-api-key", "mask", [`COHERE_API_KEY=${"*".repeat(40)}`]);
   add("cohere-api-key", "reference", ["COHERE_API_KEY=${COHERE_API_KEY}\n"]);
   add("cohere-api-key", "label-prose", ["Documentation mentions a Cohere API key without embedding the key value."]);
   const deepgramKey = synthetic("coverage:deepgram:api-key:body", 40, AI_HEX);
   positive("deepgram-api-key", "key-shape", ["DEEPGRAM_API_KEY=", { secret: deepgramKey }]);
   add("deepgram-api-key", "missing-keyword", [deepgramKey]);
-  add("deepgram-api-key", "short-token", [`DEEPGRAM_API_KEY=${deepgramKey.slice(0, 39)}`]);
+  // #384 follow-up (beta.10 promotion investigation): same reasoning as mistral-api-key above -- a
+  // genuine 39-character near-miss beside the credential-named assignment, one byte short of the
+  // corroborated 40-character shape, authored as a negative twin so a same-span generic-token
+  // finding reads as co-detection, not a deepgram-api-key false alarm.
+  addTwin("deepgram-api-key", "key-shape", [`DEEPGRAM_API_KEY=${deepgramKey.slice(0, 39)}`], "length: 39 vs contracted 40");
   add("deepgram-api-key", "mask", [`DEEPGRAM_API_KEY=${"*".repeat(40)}`]);
   add("deepgram-api-key", "reference", ["DEEPGRAM_API_KEY=${DEEPGRAM_API_KEY}\n"]);
   add("deepgram-api-key", "label-prose", ["Documentation mentions a Deepgram API key without embedding the key value."]);

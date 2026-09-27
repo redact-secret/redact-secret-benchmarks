@@ -228,7 +228,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // the #212 graduation adds 20 more for four further registry detectors, and the #259 re-pin
   // (3144bb3) 15 more for travisci-api-token, neon-api-key and postman-collection-access-key. The #384 re-pin (cfe2aec) adds 45 for nine
   // registry detectors (five each) and takes four anthropic twins out of the tally (they are re-scoped to must-not-flag/T0, but still count in twins.length): +41.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 530);
+  // The beta.10 promotion follow-up (#384) replaces one independent must-not-flag control each for
+  // mistral-api-key, cohere-api-key and deepgram-api-key (detector-coverage's short-token, an
+  // absolute-silence claim on a genuine near-miss beside the credential name) with three negative
+  // length twins of key-shape each (netted out via -twins.length): -3.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 527);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

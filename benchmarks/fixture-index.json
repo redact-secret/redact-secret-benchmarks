@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "b660dd8f1504abcfb29cb4b124bf5e2a9eeb998e0824e182e5b223f66a78a3d8"
+      "digest": "5e899fff7c252121b5eb9f94233ffbe18454aa843005c655e4e1ce9c4118e5ee"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -49945,6 +49945,28 @@
       }
     },
     {
+      "slug": "detector-coverage--cohere-api-key-key-shape-bare-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-key-shape-bare-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-key-shape-bare-twin.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--cohere-api-key-key-shape-bare"
+      }
+    },
+    {
       "slug": "detector-coverage--cohere-api-key-key-shape-quoted",
       "source": {
         "categoryId": "detector-coverage",
@@ -49963,6 +49985,28 @@
       }
     },
     {
+      "slug": "detector-coverage--cohere-api-key-key-shape-quoted-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-key-shape-quoted-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-key-shape-quoted-twin.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--cohere-api-key-key-shape-quoted"
+      }
+    },
+    {
       "slug": "detector-coverage--cohere-api-key-key-shape-unicode-crlf",
       "source": {
         "categoryId": "detector-coverage",
@@ -49978,6 +50022,28 @@
       ],
       "provenance": {
         "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-key-shape-unicode-crlf-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-key-shape-unicode-crlf-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-key-shape-unicode-crlf-twin.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--cohere-api-key-key-shape-unicode-crlf"
       }
     },
     {
@@ -50044,25 +50110,6 @@
         "fixtureId": "cohere-api-key-reference",
         "corpus": "fixtures/generated/detector-coverage.json",
         "path": "cases/cohere-api-key-reference.txt"
-      },
-      "familyIds": [
-        "cohere:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "credential-shape-grammar"
-      ],
-      "provenance": {
-        "categoryId": "detector-coverage"
-      }
-    },
-    {
-      "slug": "detector-coverage--cohere-api-key-short-token",
-      "source": {
-        "categoryId": "detector-coverage",
-        "fixtureId": "cohere-api-key-short-token",
-        "corpus": "fixtures/generated/detector-coverage.json",
-        "path": "cases/cohere-api-key-short-token.txt"
       },
       "familyIds": [
         "cohere:api-key"
@@ -52378,6 +52425,28 @@
       }
     },
     {
+      "slug": "detector-coverage--deepgram-api-key-key-shape-bare-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-key-shape-bare-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-key-shape-bare-twin.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--deepgram-api-key-key-shape-bare"
+      }
+    },
+    {
       "slug": "detector-coverage--deepgram-api-key-key-shape-quoted",
       "source": {
         "categoryId": "detector-coverage",
@@ -52396,6 +52465,28 @@
       }
     },
     {
+      "slug": "detector-coverage--deepgram-api-key-key-shape-quoted-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-key-shape-quoted-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-key-shape-quoted-twin.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--deepgram-api-key-key-shape-quoted"
+      }
+    },
+    {
       "slug": "detector-coverage--deepgram-api-key-key-shape-unicode-crlf",
       "source": {
         "categoryId": "detector-coverage",
@@ -52411,6 +52502,28 @@
       ],
       "provenance": {
         "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--deepgram-api-key-key-shape-unicode-crlf-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-key-shape-unicode-crlf-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-key-shape-unicode-crlf-twin.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--deepgram-api-key-key-shape-unicode-crlf"
       }
     },
     {
@@ -52477,25 +52590,6 @@
         "fixtureId": "deepgram-api-key-reference",
         "corpus": "fixtures/generated/detector-coverage.json",
         "path": "cases/deepgram-api-key-reference.txt"
-      },
-      "familyIds": [
-        "deepgram:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "credential-shape-grammar"
-      ],
-      "provenance": {
-        "categoryId": "detector-coverage"
-      }
-    },
-    {
-      "slug": "detector-coverage--deepgram-api-key-short-token",
-      "source": {
-        "categoryId": "detector-coverage",
-        "fixtureId": "deepgram-api-key-short-token",
-        "corpus": "fixtures/generated/detector-coverage.json",
-        "path": "cases/deepgram-api-key-short-token.txt"
       },
       "familyIds": [
         "deepgram:api-key"
@@ -59109,6 +59203,28 @@
       }
     },
     {
+      "slug": "detector-coverage--mistral-api-key-key-shape-bare-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-key-shape-bare-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-key-shape-bare-twin.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--mistral-api-key-key-shape-bare"
+      }
+    },
+    {
       "slug": "detector-coverage--mistral-api-key-key-shape-quoted",
       "source": {
         "categoryId": "detector-coverage",
@@ -59127,6 +59243,28 @@
       }
     },
     {
+      "slug": "detector-coverage--mistral-api-key-key-shape-quoted-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-key-shape-quoted-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-key-shape-quoted-twin.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--mistral-api-key-key-shape-quoted"
+      }
+    },
+    {
       "slug": "detector-coverage--mistral-api-key-key-shape-unicode-crlf",
       "source": {
         "categoryId": "detector-coverage",
@@ -59142,6 +59280,28 @@
       ],
       "provenance": {
         "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-key-shape-unicode-crlf-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-key-shape-unicode-crlf-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-key-shape-unicode-crlf-twin.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--mistral-api-key-key-shape-unicode-crlf"
       }
     },
     {
@@ -59208,25 +59368,6 @@
         "fixtureId": "mistral-api-key-reference",
         "corpus": "fixtures/generated/detector-coverage.json",
         "path": "cases/mistral-api-key-reference.txt"
-      },
-      "familyIds": [
-        "mistral:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "credential-shape-grammar"
-      ],
-      "provenance": {
-        "categoryId": "detector-coverage"
-      }
-    },
-    {
-      "slug": "detector-coverage--mistral-api-key-short-token",
-      "source": {
-        "categoryId": "detector-coverage",
-        "fixtureId": "mistral-api-key-short-token",
-        "corpus": "fixtures/generated/detector-coverage.json",
-        "path": "cases/mistral-api-key-short-token.txt"
       },
       "familyIds": [
         "mistral:api-key"
@@ -72925,7 +73066,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "ad9252a683a313650f395edfd8370987f2ff35973409021c6a2882653c139ffa",
-    "fixtureCount": 3527
+    "digest": "69c6f746d7a741e8ebe50a960195aa75e9e74f3015f2bc92749ff5cf68ec3030",
+    "fixtureCount": 3533
   }
 }

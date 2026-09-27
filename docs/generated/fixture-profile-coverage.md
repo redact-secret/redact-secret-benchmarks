@@ -27,7 +27,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | Arrival / provisional | 73 | 90 |
 | Stable / documented | 73 | 90 |
 | Stable / empirical | 26 | 90 |
-| Context-constrained empirical | 12 | 90 |
+| Context-constrained empirical | 9 | 90 |
 
 ## Per family
 
@@ -44,7 +44,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | azure-devops-personal-access-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
 | bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
 | cloudflare-token | T1 | stable-documented | 24 | 6 | 10 | 6 | 4 | 5 | 8 | none |
-| cohere-api-key | T2 | context-constrained-empirical | 56 | 3 | 27 | 14 | 10 | 6 | 8 | none |
+| cohere-api-key | T2 | context-constrained-empirical | 58 | 0 | 26 | 17 | 10 | 6 | 8 | positive/context cases 0/1 |
 | confluent-cloud-api-secret | T1 | stable-documented | 31 | 6 | 8 | 10 | 11 | 5 | 9 | none |
 | confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 48 | 1 | 19 | 15 | 12 | 6 | 9 | none |
 | connection-string | T3 | arrival-provisional | 58 | 10 | 16 | 16 | 4 | 3 | 4 | control axes 3/4 |
@@ -52,7 +52,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
 | datadog-application-key-legacy | T2 | context-constrained-empirical | 52 | 10 | 14 | 16 | 18 | 6 | 9 | none |
-| deepgram-api-key | T2 | context-constrained-empirical | 56 | 3 | 27 | 14 | 9 | 6 | 8 | none |
+| deepgram-api-key | T2 | context-constrained-empirical | 58 | 0 | 26 | 17 | 9 | 6 | 8 | positive/context cases 0/1 |
 | digitalocean-token | T1 | stable-documented | 39 | 15 | 10 | 8 | 4 | 4 | 6 | none |
 | discord-bot-token | T2 | stable-empirical | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
 | docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |
@@ -80,7 +80,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 8 | 11 | 6 | 9 | none |
 | mailgun-api-key-triplet | T2 | arrival-provisional | 50 | 0 | 24 | 14 | 10 | 6 | 9 | positive/context cases 0/6 |
 | microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
-| mistral-api-key | T2 | context-constrained-empirical | 56 | 3 | 27 | 14 | 10 | 6 | 8 | none |
+| mistral-api-key | T2 | context-constrained-empirical | 58 | 0 | 26 | 17 | 10 | 6 | 8 | positive/context cases 0/1 |
 | neon-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 10 | none |
 | netlify-token | T1 | stable-documented | 24 | 7 | 8 | 6 | 5 | 6 | 8 | none |
 | new-relic-license-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 7 | 6 | 8 | none |

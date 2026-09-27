@@ -136288,6 +136288,60 @@
       "firstSeenRun": "7a74c909-9438-495b-9fe3-e34449a9aab2",
       "resolvedRun": "7a74c909-9438-495b-9fe3-e34449a9aab2",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by gitleaks flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
+    "9c1384002c137a683e2ff8271a3b27696682c56f4c65297ef936c518d8f0a42c": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 31 vs contracted 32) correctly falls outside the mistral-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([16,47)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to mistral-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input (it has no Mistral rule) — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--mistral-api-key-short-token, which asserted absolute silence and so could not read a same-span generic-token co-detection as anything but a false alarm) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "bab73c3e93ca5585a24f709a014ba51dcd78f2fb4cb2c4e0f0d9deb02feea105": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 31 vs contracted 32) correctly falls outside the mistral-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([23,54)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to mistral-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input (it has no Mistral rule) — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--mistral-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "d98a8550382e0e6ecc3588dc436863c8522fdef03db566fe6db4420a60aba2e5": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 31 vs contracted 32) correctly falls outside the mistral-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([37,68)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to mistral-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input (it has no Mistral rule) — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--mistral-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "52a6fe13dda21dc0d883c9d0d17219b0bc4b259abd784a91ec2d3a79d668825c": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 39 vs contracted 40) correctly falls outside the cohere-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([15,54)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to cohere-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input (it has no Cohere rule) — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--cohere-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "ef0af5b216aca6b9f32d3a5fc437ccac054b896acefe3e2cc1c1f6e6c17abff9": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 39 vs contracted 40) correctly falls outside the cohere-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([22,61)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to cohere-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input (it has no Cohere rule) — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--cohere-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "6aad00453714ec710724c5a22de1cc9ce129f0cf9f6840f1f77ee8312be498c7": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 39 vs contracted 40) correctly falls outside the cohere-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([36,75)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to cohere-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input (it has no Cohere rule) — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--cohere-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "dd3201108525ea1a336bc5c422eb1a666281dda50d99fa7ae6cb5b80b6ea71f7": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 39 vs contracted 40) correctly falls outside the deepgram-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([17,56)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to deepgram-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input on this variant — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--deepgram-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "b3bd347e0cb4407c02b96a69802383ce1bd7c0310eaf7cd8e812480a5623ea51": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 39 vs contracted 40) correctly falls outside the deepgram-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([24,63)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to deepgram-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input on this variant — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--deepgram-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
+    },
+    "3a811d68d58f9ddd6295ba701ca25bfb123f15d630184db58b2cace93e80449f": {
+      "status": "resolved",
+      "firstSeenRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "resolvedRun": "1b6bcee1-f5d9-43fd-917d-d41cb011ce69",
+      "note": "Resolved as authored-expectation-correct: this twin's mutation (length: 39 vs contracted 40) correctly falls outside the deepgram-api-key grammar, so its own target family is not asserted here. redact-secret's finding ([38,77)) is attributed to generic-token instead, a legitimate independent classification this corpus does not exclude; the twin is scoped to deepgram-api-key, so it is recorded as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input on this variant — a peer rule-coverage gap, not a corpus or redact-secret defect. Reclassified from an independent must-not-flag control (detector-coverage--deepgram-api-key-short-token) to this negative twin of key-shape, per the beta.10 promotion follow-up (redact-secret/redact-secret-benchmarks#384). Class: redact-secret-only/trufflehog/co-detection."
     }
   }
 }

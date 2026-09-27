@@ -6,7 +6,7 @@
     "arrival-provisional": 73,
     "stable-documented": 73,
     "stable-empirical": 26,
-    "context-constrained-empirical": 12
+    "context-constrained-empirical": 9
   },
   "families": [
     {
@@ -693,14 +693,12 @@
       "claimed": "context-constrained-empirical",
       "explicit": false,
       "target": "context-constrained-empirical",
-      "cellsMet": [
-        "context-constrained-empirical"
-      ],
+      "cellsMet": [],
       "cells": {
-        "totalFixtures": 56,
-        "positiveCases": 3,
-        "benignControls": 27,
-        "twinPairs": 14,
+        "totalFixtures": 58,
+        "positiveCases": 0,
+        "benignControls": 26,
+        "twinPairs": 17,
         "positiveContextAxes": 10,
         "controlAxes": 6,
         "confusionAxes": 8,
@@ -743,7 +741,14 @@
         "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
-      "debt": []
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 1,
+          "shortfall": 1
+        }
+      ]
     },
     {
       "family": "confluent-cloud-api-secret",
@@ -1190,14 +1195,12 @@
       "claimed": "context-constrained-empirical",
       "explicit": false,
       "target": "context-constrained-empirical",
-      "cellsMet": [
-        "context-constrained-empirical"
-      ],
+      "cellsMet": [],
       "cells": {
-        "totalFixtures": 56,
-        "positiveCases": 3,
-        "benignControls": 27,
-        "twinPairs": 14,
+        "totalFixtures": 58,
+        "positiveCases": 0,
+        "benignControls": 26,
+        "twinPairs": 17,
         "positiveContextAxes": 9,
         "controlAxes": 6,
         "confusionAxes": 8,
@@ -1239,7 +1242,14 @@
         "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
-      "debt": []
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 1,
+          "shortfall": 1
+        }
+      ]
     },
     {
       "family": "digitalocean-token",
@@ -2915,14 +2925,12 @@
       "claimed": "context-constrained-empirical",
       "explicit": false,
       "target": "context-constrained-empirical",
-      "cellsMet": [
-        "context-constrained-empirical"
-      ],
+      "cellsMet": [],
       "cells": {
-        "totalFixtures": 56,
-        "positiveCases": 3,
-        "benignControls": 27,
-        "twinPairs": 14,
+        "totalFixtures": 58,
+        "positiveCases": 0,
+        "benignControls": 26,
+        "twinPairs": 17,
         "positiveContextAxes": 10,
         "controlAxes": 6,
         "confusionAxes": 8,
@@ -2965,7 +2973,14 @@
         "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
-      "debt": []
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 0,
+          "required": 1,
+          "shortfall": 1
+        }
+      ]
     },
     {
       "family": "neon-api-key",

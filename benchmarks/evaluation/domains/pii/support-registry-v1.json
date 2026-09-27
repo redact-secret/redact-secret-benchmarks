@@ -2,13 +2,54 @@
   "schemaVersion": 1,
   "id": "pii-support-registry-v1",
   "version": 1,
-  "contentCommitment": "0655c8ca1b7ed817eb2affaa1e653db3a7d9ceb0a887d9afb530ad7bdab87011",
+  "contentCommitment": "965b4e039ac565a155e34a4764d942ac5402d2769ab68e2e5a1016bd9fcfe80d",
   "source": {
     "repository": "redact-secret/redact-secret",
     "decision": "decision-define-pii-v1-qualification-and-national-id-arrival-gates",
     "mergeCommit": "eb22bdf587e0079e101fc3ab5aeefada58ba438d"
   },
   "families": [
+    {
+      "family": "pii:global:email",
+      "displayName": "Email address",
+      "identityDomain": "email",
+      "familyContractVersion": 1,
+      "scope": "global",
+      "jurisdiction": null,
+      "qualificationProfile": { "id": "pii-v1", "version": 1 },
+      "authority": [
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-5322",
+          "locator": "https://www.rfc-editor.org/rfc/rfc5322",
+          "revision": "RFC5322",
+          "supports": ["lexical", "validation"]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-6531",
+          "locator": "https://www.rfc-editor.org/rfc/rfc6531",
+          "revision": "RFC6531",
+          "supports": ["lexical", "validation"]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-2606",
+          "locator": "https://www.rfc-editor.org/rfc/rfc2606",
+          "revision": "RFC2606",
+          "supports": ["allocation", "reserved-control"]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-6761",
+          "locator": "https://www.rfc-editor.org/rfc/rfc6761",
+          "revision": "RFC6761",
+          "supports": ["allocation", "reserved-control"]
+        }
+      ],
+      "contextObligation": "required-for-sensitive-classification",
+      "validatorApplicable": false
+    },
     {
       "family": "pii:global:network-address",
       "displayName": "IPv4 and IPv6 network address",

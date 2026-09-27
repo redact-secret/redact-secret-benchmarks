@@ -24,6 +24,32 @@
           ]
         }
       ]
+    },
+    {
+      "product": {
+        "sourceCommit": "b73daade943f9dea5f86d90a91aa0332083f728a",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "0cdd435e4752b4e56b0afbf575a9beee05073edeee2c3a3195dbd6c0cb571532"
+      },
+      "activationArtifactCommitment": "1d0c41edccf198a68478a38a24292bc25502b9694c76952f9817627fff33e0b7",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:network-address;vocabulary=pii-context/v1",
+      "availableFamilies": ["pii:global:email", "pii:global:network-address"],
+      "qualifications": [
+        {
+          "family": "pii:global:email",
+          "planCommitment": "aa39f91d00e27d259a70fdb9d1331071f3f7e6556fe2d1d149c502073d239923",
+          "artifactCommitment": "084357c872e3e389beacc602b32adc9f112841ccb104fe77d3d243077cadbe41",
+          "sourceConformanceCommitment": "4e1d73accb5351e720f05b39a82af0c99fd35a3c67d0c94df896346914dafe9a",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-identity-only-classification",
+            "class-protected-partition",
+            "diagnostic-population",
+            "identity-only-classification",
+            "protected-partition"
+          ]
+        }
+      ]
     }
   ]
 }

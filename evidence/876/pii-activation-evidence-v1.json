@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-activation-evidence",
+  "supportClaims": false,
+  "product": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "b73daade943f9dea5f86d90a91aa0332083f728a",
+    "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+    "candidateEvidenceCommitment": "0cdd435e4752b4e56b0afbf575a9beee05073edeee2c3a3195dbd6c0cb571532"
+  },
+  "profile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "requestedSelectors": [
+    "pii:global"
+  ],
+  "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:network-address;vocabulary=pii-context/v1",
+  "availableFamilies": [
+    "pii:global:email",
+    "pii:global:network-address"
+  ],
+  "selectorChecks": [
+    {
+      "selectors": [
+        "pii:global"
+      ],
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:network-address;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:global:email",
+        "pii:global:network-address"
+      ]
+    },
+    {
+      "selectors": [
+        "pii:family:global:email"
+      ],
+      "activationIdentity": "credentials=full;selectors=pii:family:global:email;families=pii:global:email;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:global:email"
+      ]
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "node-addon",
+      "status": "pass",
+      "activationChecks": [
+        {
+          "selectors": [
+            "pii:global"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:network-address;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:email",
+            "pii:global:network-address"
+          ]
+        },
+        {
+          "selectors": [
+            "pii:family:global:email"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:family:global:email;families=pii:global:email;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:email"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-wasm",
+      "status": "pass",
+      "activationChecks": [
+        {
+          "selectors": [
+            "pii:global"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:network-address;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:email",
+            "pii:global:network-address"
+          ]
+        },
+        {
+          "selectors": [
+            "pii:family:global:email"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:family:global:email;families=pii:global:email;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:email"
+          ]
+        }
+      ]
+    }
+  ],
+  "offSurfaces": [
+    {
+      "id": "node-addon",
+      "status": "pass"
+    },
+    {
+      "id": "node-wasm",
+      "status": "pass"
+    }
+  ],
+  "artifactCommitment": "1d0c41edccf198a68478a38a24292bc25502b9694c76952f9817627fff33e0b7"
+}

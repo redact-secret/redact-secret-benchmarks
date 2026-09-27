@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "family": "pii:global:email",
+  "findingType": "pii_global_email",
+  "profile": { "id": "pii-v1", "version": 1 },
+  "canonicalOffsetUnit": "utf8-byte",
+  "sourceConformanceIds": [
+    "rust-native-email-conformance",
+    "python-email-conformance",
+    "cli-email-conformance"
+  ],
+  "activationChecks": [
+    {
+      "selectors": ["pii:global"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:network-address;vocabulary=pii-context/v1"
+    },
+    {
+      "selectors": ["pii:family:global:email"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:family:global:email;families=pii:global:email;vocabulary=pii-context/v1"
+    }
+  ],
+  "fixturePolicy": {
+    "identityControls": "Only RFC 2606/RFC 6761 reserved or documentation namespaces are used for identity-valid, non-sensitive controls.",
+    "sensitiveExamples": "Sensitive examples are deterministic synthetic strings derived from issue 876 and do not identify a real person.",
+    "plaintextPublication": "The qualification artifact records commitments and outcomes, never raw candidate values."
+  },
+  "classAccounting": [
+    { "id": "sensitive-positive", "status": "measured" },
+    { "id": "reserved-documentation-public-absence", "status": "measured" },
+    { "id": "context-negative-public-absence", "status": "measured" },
+    { "id": "semantic-collision", "status": "measured" },
+    { "id": "malformed-unsupported", "status": "measured" },
+    { "id": "whole-candidate-boundary", "status": "measured" },
+    { "id": "identity-only-classification", "status": "unresolved" },
+    { "id": "protected-partition", "status": "unresolved" }
+  ],
+  "piiOffInput": "email: fixture876-q7m9@x4z8v2n6.synthetic",
+  "cases": [
+    {
+      "id": "ascii-sensitive-context",
+      "evidenceRole": "sensitive-positive",
+      "classes": ["sensitive-positive"],
+      "input": "email: fixture876-q7m9@x4z8v2n6.synthetic",
+      "expected": { "publicFinding": true, "start": 7, "end": 41, "sensitive": true }
+    },
+    {
+      "id": "smtputf8-local-sensitive-context",
+      "evidenceRole": "sensitive-positive",
+      "classes": ["sensitive-positive"],
+      "input": "이메일: 고객876@x4z8v2n6.synthetic",
+      "expected": { "publicFinding": true, "start": 11, "end": 39, "sensitive": true }
+    },
+    {
+      "id": "punycode-looking-domain",
+      "evidenceRole": "sensitive-positive",
+      "classes": ["sensitive-positive"],
+      "input": "email: fixture876-q7m9@xn--x4z8v2n6.synthetic",
+      "expected": { "publicFinding": true, "start": 7, "end": 45, "sensitive": true }
+    },
+    {
+      "id": "reserved-resemblance-does-not-suppress",
+      "evidenceRole": "sensitive-positive",
+      "classes": ["sensitive-positive"],
+      "input": "email: fixture876-q7m9@example.com.synthetic",
+      "expected": { "publicFinding": true, "start": 7, "end": 44, "sensitive": true }
+    },
+    {
+      "id": "neutral-context",
+      "evidenceRole": "identity-only-context-control",
+      "classes": ["context-negative-public-absence"],
+      "input": "fixture876-q7m9@x4z8v2n6.synthetic",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "ambiguous-contact-context",
+      "evidenceRole": "identity-only-context-control",
+      "classes": ["context-negative-public-absence"],
+      "input": "contact fixture876-q7m9@x4z8v2n6.synthetic",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "named-negative-context",
+      "evidenceRole": "identity-only-context-control",
+      "classes": ["context-negative-public-absence"],
+      "input": "email documentation fixture876-q7m9@x4z8v2n6.synthetic",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "reserved-example-domain",
+      "evidenceRole": "identity-only-reserved-control",
+      "classes": ["reserved-documentation-public-absence"],
+      "input": "email: identity@example.com",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "reserved-example-subdomain",
+      "evidenceRole": "identity-only-reserved-control",
+      "classes": ["reserved-documentation-public-absence"],
+      "input": "email: identity@sub.example.com",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "reserved-invalid-namespace",
+      "evidenceRole": "identity-only-reserved-control",
+      "classes": ["reserved-documentation-public-absence"],
+      "input": "email: identity@docs.invalid",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "uri-userinfo-collision",
+      "evidenceRole": "semantic-collision-control",
+      "classes": ["semantic-collision"],
+      "input": "email: https://fixture876-q7m9@x4z8v2n6.synthetic/path",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "credential-userinfo-collision",
+      "evidenceRole": "semantic-collision-control",
+      "classes": ["semantic-collision"],
+      "input": "email: postgres://user:pass@x4z8v2n6.synthetic/database",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "source-route-collision",
+      "evidenceRole": "semantic-collision-control",
+      "classes": ["semantic-collision"],
+      "input": "email: @route.synthetic:fixture876@x4z8v2n6.synthetic",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "placeholder-single-label-domain",
+      "evidenceRole": "malformed-or-unsupported-control",
+      "classes": ["malformed-unsupported"],
+      "input": "email: user@domain",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "quoted-local-unsupported",
+      "evidenceRole": "malformed-or-unsupported-control",
+      "classes": ["malformed-unsupported"],
+      "input": "email: \"fixture876\"@x4z8v2n6.synthetic",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "domain-literal-unsupported",
+      "evidenceRole": "malformed-or-unsupported-control",
+      "classes": ["malformed-unsupported"],
+      "input": "email: fixture876@[192.0.2.1]",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "unicode-domain-unsupported",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "email: fixture876@x4z8v2n6.synthetic한글",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "combining-mark-domain-suffix",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "email: fixture876@x4z8v2n6.synthetic⃝",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "variation-selector-domain-suffix",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "email: fixture876@x4z8v2n6.synthetic︀",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "adjacent-at-boundary",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "email: a@fixture876-q7m9@x4z8v2n6.synthetic",
+      "expected": { "publicFinding": false }
+    }
+  ]
+}

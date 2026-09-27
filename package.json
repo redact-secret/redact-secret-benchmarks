@@ -62,6 +62,8 @@
     "ledger:provenance:check": "node --import tsx scripts/check-review-ledger.mjs",
     "queue:check": "node --import tsx scripts/check-review-queue-coverage.mjs",
     "eval:candidate": "node --import tsx benchmarks/candidate.ts",
+    "pii:qualify:candidate": "node --import tsx scripts/qualify-pii-family-candidate.mjs",
+    "pii:support:record": "node --import tsx scripts/record-pii-support-evidence.ts",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
     "eval:dry-run": "node --import tsx scripts/accounting-dry-run.ts",
     "eval:milestone": "node scripts/refresh-evaluation-milestone.mjs",

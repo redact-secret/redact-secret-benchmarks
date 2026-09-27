@@ -8,13 +8,14 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import {
   buildPiiSupportMatrixV2, piiSupportMatrixV2Commitment, piiSupportRegistryCommitment,
-  validatePiiSupportMatrixV2, validatePiiSupportRegistry,
+  validatePiiSupportMatrixV2, validatePiiSupportRegistry, piiSupportRegistry,
 } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
+import { piiBindingArtifactCommitment } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 import { buildEvaluationDomainsV2, domainDescriptorV2, evaluationDomainsV2Problem } from '../src/evaluation-domains-v2.ts';
 import { piiSupportMatrixProblem } from '../src/pii-support-model.ts';
 import { credentialSupportPage, piiSupportPage, piiSupportQueryOf } from '../src/pages/pii-support.ts';
 import { publishArtifactAndIndex } from '../scripts/atomic-publication.ts';
-import { piiSupportRegistryProjection } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
+import { piiSupportRegistryProjection, piiSupportSemanticProblem } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
 import { piiSupportQueryProblem, supportQueryOf } from '../src/pages/pii-support.ts';
 
 const execute = promisify(execFile);
@@ -40,6 +41,96 @@ test('absent product artifact publishes only explicit pending/not-measured famil
   assert.deepEqual(matrix.distribution, { pending: 2, provisional: 0, stable: 0, unsupported: 0 });
   assert.ok(matrix.families.every(row => row.status.reasonCodes.includes('product-activation-not-measured') && row.activation.productArtifactCommitment === null));
   assert.equal(validatePiiSupportMatrixV2(matrix).artifactCommitment, matrix.artifactCommitment);
+});
+
+test('trusted product binding is artifact-derived and still fails closed without population and qualification gates', async () => {
+  const value = piiSupportRegistry;
+  const [candidateEvidence, activationArtifact, qualificationArtifact] = await Promise.all([
+    readFile('evidence/875/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/875/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/875/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+  ]);
+  const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
+  const matrix = buildPiiSupportMatrixV2({ registry: value, product });
+  assert.equal(matrix.activationContract.productArtifact, 'trusted');
+  assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
+    ['pii:global:network-address', 'available', 'pending'],
+  ]);
+  assert.equal(matrix.activationContract.productSourceCommit, '941053baecdc4b99f98e085429ac26bf24fe0bee');
+  assert.equal(matrix.activationContract.productArtifactCommitment, 'ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1');
+  assert.deepEqual(activationArtifact.selectorChecks.map(check => check.selectors), [
+    ['pii:global'], ['pii:family:global:network-address'],
+  ]);
+  assert.ok(activationArtifact.surfaces.every(surface =>
+    JSON.stringify(surface.activationChecks) === JSON.stringify(activationArtifact.selectorChecks)));
+  assert.deepEqual(activationArtifact.offSurfaces, [
+    { id: 'node-addon', status: 'pass' }, { id: 'node-wasm', status: 'pass' },
+  ]);
+  assert.ok(matrix.families[0].status.reasonCodes.includes('protected-partition'));
+  assert.ok(matrix.families[0].status.reasonCodes.includes('diagnostic-population-not-measured'));
+  assert.equal(validatePiiSupportMatrixV2(matrix, { registry: value, product }).artifactCommitment, matrix.artifactCommitment);
+  assert.equal(validatePiiSupportMatrixV2(matrix).artifactCommitment, matrix.artifactCommitment);
+
+  for (const mutation of [
+    candidate => { candidate.activationArtifact.availableFamilies.push('pii:global:unknown'); },
+    candidate => { candidate.candidateEvidence.candidate.sourceState = 'dirty'; },
+    candidate => { candidate.activationArtifact.product.sourceCommit = '9'.repeat(40); candidate.activationArtifact.artifactCommitment = piiBindingArtifactCommitment(candidate.activationArtifact); },
+    candidate => { candidate.qualificationArtifacts[0].status = 'qualified'; candidate.qualificationArtifacts[0].artifactCommitment = piiBindingArtifactCommitment(candidate.qualificationArtifacts[0]); },
+  ]) {
+    const invalid = structuredClone(product); mutation(invalid);
+    assert.throws(() => buildPiiSupportMatrixV2({ registry: value, product: invalid }), /trusted PII|activation evidence|qualification evidence/);
+  }
+});
+
+test('trusted activation or qualification alone cannot forge provisional support', () => {
+  const matrix = buildPiiSupportMatrixV2({ registry: registry() });
+  matrix.activationContract.productArtifact = 'trusted';
+  matrix.activationContract.productSourceCommit = '9'.repeat(40);
+  matrix.activationContract.productArtifactCommitment = 'a'.repeat(64);
+  matrix.activationContract.candidateEvidenceCommitment = 'b'.repeat(64);
+  matrix.activationContract.activationArtifactCommitment = 'c'.repeat(64);
+  const row = matrix.families[0];
+  row.activation = { state: 'available', selector: row.activation.selector,
+    activationIdentity: 'credentials=full;selectors=pii:global;families=pii:ca:sin;vocabulary=pii-context/v1', productArtifactCommitment: 'a'.repeat(64) };
+  row.qualificationArtifactCommitment = 'b'.repeat(64);
+  row.status.state = 'provisional'; row.status.reasonCodes = [];
+  matrix.distribution.pending--; matrix.distribution.provisional++;
+  matrix.artifactCommitment = piiSupportMatrixV2Commitment(matrix);
+  assert.throws(() => validatePiiSupportMatrixV2(matrix), /semantics/);
+});
+
+test('a fully measured no-regression matrix cannot forge a repository-sanctioned product tuple', async () => {
+  const forged = JSON.parse(await readFile('evidence/875/pii-support-matrix-v2.json', 'utf8'));
+  forged.activationContract.productSourceCommit = '9'.repeat(40);
+  forged.activationContract.productArtifactCommitment = 'a'.repeat(64);
+  forged.activationContract.candidateEvidenceCommitment = 'b'.repeat(64);
+  forged.activationContract.activationArtifactCommitment = 'c'.repeat(64);
+  for (const report of forged.populationReports) {
+    report.status = 'measured';
+    report.familyEvidence[0] = { family: 'pii:global:network-address', status: 'measured', strata: 1 };
+  }
+  const benign = { family: 'pii:global:network-address', scope: 'global', contextClass: 'non-sensitive',
+    evidenceClass: 'official-test', accountingAxis: 'test-value', validatorBacked: false, contextDependent: false,
+    baselineRate: 0, candidateRate: 0, delta: 0, limit: 0, regressed: false };
+  const diagnostic = axis => ({ axis, applicable: true, baselineRate: 1, candidateRate: 1, delta: 0,
+    baselineFailed: 0, candidateFailed: 0, failedDelta: 0, regressed: false });
+  for (const comparison of forged.populationComparisons) {
+    const report = forged.populationReports.find(row => row.id === comparison.id);
+    comparison.status = 'compared'; comparison.verdict = 'no-regression';
+    comparison.baselineObservation = { reportCommitment: 'd'.repeat(64), candidateArtifactHash: 'e'.repeat(64) };
+    comparison.candidateObservation = { reportCommitment: report.reportCommitment, candidateArtifactHash: 'f'.repeat(64) };
+    comparison.benignFalseAlarmDeltas = [benign];
+    comparison.diagnosticDeltas = comparison.id === 'diagnostic-balanced' ?
+      ['type-identity', 'validator-correctness', 'context-discrimination'].map(diagnostic) : [];
+  }
+  const row = forged.families[0];
+  row.activation.productArtifactCommitment = 'a'.repeat(64);
+  row.populationEvidence.forEach(evidence => { evidence.reportStatus = 'measured'; evidence.status = 'measured'; evidence.strata = 1; });
+  row.qualificationArtifactCommitment = 'd'.repeat(64); row.status = { state: 'provisional', profile: { id: 'pii-v1', version: 1 }, reasonCodes: [] };
+  forged.distribution = { pending: 0, provisional: 1, stable: 0, unsupported: 0 };
+  forged.artifactCommitment = piiSupportMatrixV2Commitment(forged);
+  assert.match(piiSupportSemanticProblem(forged, { allowBoundPopulationEvidence: true }), /repository-sanctioned/);
+  assert.throws(() => validatePiiSupportMatrixV2(forged), /semantics/);
 });
 
 test('support matrix rejects forged status, unknown identity, extras and raw channels', () => {

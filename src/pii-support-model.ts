@@ -6,7 +6,9 @@ export type PiiSupportStatus = 'pending' | 'provisional' | 'stable' | 'unsupport
 export interface PiiSupportMatrixFile {
   schemaVersion: 2; reportType: 'pii-support-matrix'; supportClaims: false; domain: 'pii'; evaluationProfile: 'pii-v1';
   domainAccountingVersion: 'pii-v1'; qualificationProfile: { id: 'pii-v1'; version: 1 }; registryCommitment: string;
-  activationContract: { repository: string; decision: string; mergeCommit: string; productArtifact: 'not-measured' | 'trusted' };
+  activationContract: { repository: string; decision: string; mergeCommit: string; productArtifact: 'not-measured' | 'trusted';
+    productSourceCommit: string | null; productArtifactCommitment: string | null; candidateEvidenceCommitment: string | null;
+    activationArtifactCommitment: string | null };
   populationReports: { id: string; status: string; contractCommitment: string; corpusCommitment: string; reportCommitment: string }[];
   populationComparisons: Array<{ id: string; status: 'not-measured' | 'compared'; verdict: 'not-measured' | 'no-regression' | 'regression';
     benignFalseAlarmDeltas: Array<{ family: string; scope: string; contextClass: string; evidenceClass: string; delta: number | null; regressed: boolean }>;

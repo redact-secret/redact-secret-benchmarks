@@ -13,6 +13,7 @@ import { piiBenignCollisionEvidence, type PiiBenignCollisionEvidence } from './b
 import type { PiiAccountingRow } from './accounting.ts';
 import type { PiiAuthority, PiiContract } from './types.ts';
 import { PII_SUPPORT_REGISTRY_SOURCE, piiSupportRegistryProjection, piiSupportSemanticProblem } from './support-semantics.ts';
+import { validatePiiProductBinding, type PiiTrustedProductBinding } from './product-binding.ts';
 
 export const PII_ACTIVATION_CONTRACT = Object.freeze({
   repository: 'redact-secret/redact-secret' as const,
@@ -41,11 +42,13 @@ export interface PiiSupportBuildOptions {
   registry?: PiiSupportRegistry;
   populations?: readonly PopulationInput[];
   comparisons?: readonly PopulationComparisonInput[];
+  product?: PiiTrustedProductBinding;
 }
 export interface PiiSupportMatrixV2 {
   schemaVersion: 2; reportType: 'pii-support-matrix'; supportClaims: false; domain: 'pii'; evaluationProfile: 'pii-v1';
   domainAccountingVersion: 'pii-v1'; qualificationProfile: { id: 'pii-v1'; version: 1 }; registryCommitment: string;
-  activationContract: typeof PII_ACTIVATION_CONTRACT & { productArtifact: 'not-measured' | 'trusted' };
+  activationContract: typeof PII_ACTIVATION_CONTRACT & { productArtifact: 'not-measured' | 'trusted'; productSourceCommit: string | null;
+    productArtifactCommitment: string | null; candidateEvidenceCommitment: string | null; activationArtifactCommitment: string | null };
   populationReports: { id: PiiPopulationId; status: 'measured' | 'partial' | 'not-measured'; contractCommitment: string;
     corpusCommitment: string; reportCommitment: string;
     familyEvidence: { family: string; status: 'measured' | 'partial' | 'not-measured' | 'not-applicable'; strata: number }[] }[];
@@ -146,9 +149,8 @@ function matrixProjection(matrix: PiiSupportMatrixV2) { const { artifactCommitme
 export const piiSupportMatrixV2Commitment = (matrix: PiiSupportMatrixV2) => hash(JSON.stringify(canonical(matrixProjection(matrix))));
 
 function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
-  // Product PR855 exposes no sanctioned activation/qualification artifact today. Deliberately accept no caller-authored
-  // substitute: registry arrivals and measured populations remain pending until that product-owned boundary exists.
   const registry = validatePiiSupportRegistry(options.registry ?? piiSupportRegistry), inputs = options.populations ?? defaultPopulations();
+  const product = options.product ? validatePiiProductBinding(options.product, registry.families.map(row => row.family)) : null;
   if (inputs.length !== 2 || new Set(inputs.map(row => row.report.population)).size !== 2) throw new Error('PII support requires both population reports');
   const reports = inputs.map(input => validatePiiPopulationReport(input.report, input.contract ?? piiPopulationContract,
     input.evidence ?? piiBenignCollisionEvidence, input.validation ?? {}, input.rows));
@@ -173,21 +175,36 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
   if (populationComparisons.length !== 2 || new Set(populationComparisons.map(row => row.id)).size !== 2)
     throw new Error('PII support requires one comparison for each population');
   const families = registry.families.map(family => {
-    const activationRow = { state: 'not-measured' as const, selector: selector(family.family),
-      activationIdentity: null, productArtifactCommitment: null };
+    const available = product?.availableFamilies.includes(family.family) ?? false;
+    const activationRow = product ? { state: available ? 'available' as const : 'unavailable' as const, selector: selector(family.family),
+      activationIdentity: product.activationIdentity, productArtifactCommitment: product.artifactCommitment } :
+      { state: 'not-measured' as const, selector: selector(family.family), activationIdentity: null, productArtifactCommitment: null };
     const populationEvidence = reports.map(report => familyPopulation(report, family.family));
     const diagnosticStatus = familyPopulation(diagnostic, family.family).status, stressStatus = familyPopulation(stress, family.family).status;
-    const reasonCodes = ['product-activation-not-measured'];
+    const qualification = product?.qualification.find(row => row.family === family.family);
+    const comparisons = new Map(populationComparisons.map(row => [row.id, row.verdict]));
+    const reasonCodes: string[] = [];
+    if (!product) reasonCodes.push('product-activation-not-measured');
+    else if (!available) reasonCodes.push('product-family-unavailable');
     if (diagnosticStatus !== 'measured') reasonCodes.push('diagnostic-population-not-measured');
     if (stressStatus !== 'measured') reasonCodes.push('benign-heavy-stress-not-measured');
-    return { ...family, activation: activationRow, status: { state: 'pending' as const, profile: { id: 'pii-v1' as const, version: 1 as const },
-      reasonCodes: [...new Set(reasonCodes)].sort() }, populationEvidence, qualificationArtifactCommitment: null };
+    if (comparisons.get('diagnostic-balanced') !== 'no-regression' || comparisons.get('benign-heavy-stress') !== 'no-regression')
+      reasonCodes.push('population-comparison-not-qualified');
+    if (!qualification) reasonCodes.push('qualification-not-measured');
+    else if (qualification.status !== 'qualified') reasonCodes.push(...qualification.reasonCodes);
+    const qualified = available && diagnosticStatus === 'measured' && stressStatus === 'measured' && qualification?.status === 'qualified' &&
+      comparisons.get('diagnostic-balanced') === 'no-regression' && comparisons.get('benign-heavy-stress') === 'no-regression';
+    return { ...family, activation: activationRow, status: { state: qualified ? 'provisional' as const : 'pending' as const,
+      profile: { id: 'pii-v1' as const, version: 1 as const }, reasonCodes: [...new Set(reasonCodes)].sort() }, populationEvidence,
+      qualificationArtifactCommitment: qualification?.artifactCommitment ?? null };
   });
   const distribution = Object.fromEntries(['pending', 'provisional', 'stable', 'unsupported'].map(status =>
     [status, families.filter(row => row.status.state === status).length])) as Record<PiiSupportStatus, number>;
   const matrix: PiiSupportMatrixV2 = { schemaVersion: 2, reportType: 'pii-support-matrix', supportClaims: false, domain: 'pii',
     evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1', qualificationProfile: { id: 'pii-v1', version: 1 },
-    registryCommitment: registry.contentCommitment, activationContract: { ...PII_ACTIVATION_CONTRACT, productArtifact: 'not-measured' },
+    registryCommitment: registry.contentCommitment, activationContract: { ...PII_ACTIVATION_CONTRACT, productArtifact: product ? 'trusted' : 'not-measured',
+      productSourceCommit: product?.sourceCommit ?? null, productArtifactCommitment: product?.artifactCommitment ?? null,
+      candidateEvidenceCommitment: product?.candidateEvidenceCommitment ?? null, activationArtifactCommitment: product?.activationArtifactCommitment ?? null },
     populationReports, populationComparisons, distribution, families, artifactCommitment: '0'.repeat(64) };
   matrix.artifactCommitment = piiSupportMatrixV2Commitment(matrix);
   return matrix;
@@ -198,7 +215,7 @@ export function buildPiiSupportMatrixV2(options: PiiSupportBuildOptions = {}): P
 }
 
 export function validatePiiSupportMatrixV2(value: unknown, bindings?: PiiSupportBuildOptions): PiiSupportMatrixV2 {
-  if (!validateMatrixSchema(value)) throw new Error('Invalid PII support-matrix v2 schema');
+  if (!validateMatrixSchema(value)) throw new Error(`Invalid PII support-matrix v2 schema: ${JSON.stringify(validateMatrixSchema.errors)}`);
   const matrix = structuredClone(value) as unknown as PiiSupportMatrixV2;
   const registry: PiiSupportRegistry = { schemaVersion: 1, id: 'pii-support-registry-v1', version: 1, contentCommitment: matrix.registryCommitment,
     source: { repository: 'redact-secret/redact-secret', decision: REGISTRY_DECISION, mergeCommit: PII_ACTIVATION_CONTRACT.mergeCommit },
@@ -219,15 +236,13 @@ export function validatePiiSupportMatrixV2(value: unknown, bindings?: PiiSupport
       piiSupportSemanticProblem(matrix, { allowBoundPopulationEvidence: Boolean(bindings) || publicComparisonBinding }))
     throw new Error('Inconsistent PII support-matrix v2 semantics');
   validatePiiSupportRegistry(registry);
-  const hasClaim = matrix.families.some(row => row.status.state !== 'pending');
-  if (hasClaim && !bindings) throw new Error('PII support claims require bound trusted inputs');
   if (bindings && JSON.stringify(matrix) !== JSON.stringify(assemble(bindings))) throw new Error('PII support-matrix v2 does not reconcile with bound inputs');
   if (!bindings) {
     const canonicalEmpty = assemble({ registry });
     const withoutComparisons = (candidate: PiiSupportMatrixV2) => {
       const { populationComparisons: _comparisons, artifactCommitment: _commitment, ...rest } = candidate; return rest;
     };
-    if (!publicComparisonBinding && JSON.stringify(matrix) !== JSON.stringify(canonicalEmpty))
+    if (!publicComparisonBinding && matrix.activationContract.productArtifact === 'not-measured' && JSON.stringify(matrix) !== JSON.stringify(canonicalEmpty))
       throw new Error('Unbound PII support matrix is not the exact canonical empty projection');
     if (publicComparisonBinding && JSON.stringify(withoutComparisons(matrix)) !== JSON.stringify(withoutComparisons(canonicalEmpty))) {
       const emptyWithoutPopulationEvidence = withoutComparisons(canonicalEmpty);

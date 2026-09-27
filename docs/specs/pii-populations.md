@@ -71,6 +71,21 @@ bundle is absent, both population comparisons are published explicitly as
 The support page renders the two verdicts separately and preserves any local
 benign or diagnostic regression even when an aggregate improves.
 
+Product activation is trusted only through a repository-reviewed binding. The
+binding names an exact clean, complete, full-suite candidate-evidence
+commitment, its product source commit and npm facade commitment, an activation
+artifact commitment, and each family qualification artifact and plan
+commitment. Runtime callers cannot create a trusted binding by supplying
+well-shaped hashes or booleans: every tuple must match
+`trusted-product-bindings-v1.json`. Activation evidence must also reconcile the
+requested selectors, canonical activation identity, available family closure,
+and at least two product surfaces. Qualification status and reason codes are
+derived from the artifact's gate rows. A family becomes `provisional` only
+when that trusted activation is available, qualification is complete, both
+canonical populations are measured, and both baseline/candidate comparisons
+show no regression. Otherwise it remains `pending` with the exact failed or
+unmeasured gate reasons; this path never emits `stable`.
+
 Tuning selection is fail-closed. Repository tuning manifests bind the file-byte
 hash in the pin manifest, while the current PII population contract binds an
 inner semantic corpus commitment and declares no dedicated tuning category.

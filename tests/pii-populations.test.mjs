@@ -181,7 +181,11 @@ test('authored population roster produces aggregate-only family, jurisdiction, c
     ['benign-heavy-stress', 'measured'], ['diagnostic-balanced', 'measured'],
   ]);
   assert.equal(matrix.families[0].status.state, 'pending');
-  assert.deepEqual(matrix.families[0].status.reasonCodes, ['product-activation-not-measured']);
+  assert.deepEqual(matrix.families[0].status.reasonCodes, [
+    'population-comparison-not-qualified',
+    'product-activation-not-measured',
+    'qualification-not-measured',
+  ]);
   assert.ok(matrix.families[0].populationEvidence.every(row => row.status === 'measured' && row.strata > 0));
   assert.equal(validatePiiSupportMatrixV2(JSON.parse(JSON.stringify(matrix)), measuredBindings).artifactCommitment, matrix.artifactCommitment);
   assert.ok(await piiSupportMatrixProblem(matrix, matrix.artifactCommitment));

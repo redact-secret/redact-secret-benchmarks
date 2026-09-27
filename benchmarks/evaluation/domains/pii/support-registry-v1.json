@@ -2,11 +2,81 @@
   "schemaVersion": 1,
   "id": "pii-support-registry-v1",
   "version": 1,
-  "contentCommitment": "7a95e4e8e22159b1a45384d8adb78a3ad22b231a738dfd0f6f1bb3dd6787a6f9",
+  "contentCommitment": "0655c8ca1b7ed817eb2affaa1e653db3a7d9ceb0a887d9afb530ad7bdab87011",
   "source": {
     "repository": "redact-secret/redact-secret",
     "decision": "decision-define-pii-v1-qualification-and-national-id-arrival-gates",
     "mergeCommit": "eb22bdf587e0079e101fc3ab5aeefada58ba438d"
   },
-  "families": []
+  "families": [
+    {
+      "family": "pii:global:network-address",
+      "displayName": "IPv4 and IPv6 network address",
+      "identityDomain": "network-address",
+      "familyContractVersion": 1,
+      "scope": "global",
+      "jurisdiction": null,
+      "qualificationProfile": { "id": "pii-v1", "version": 1 },
+      "authority": [
+        {
+          "sourceKind": "standard",
+          "sourceId": "rfc-791",
+          "locator": "https://www.rfc-editor.org/rfc/rfc791",
+          "revision": "1981-09",
+          "supports": ["lexical", "validation"]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "rfc-4291",
+          "locator": "https://www.rfc-editor.org/rfc/rfc4291",
+          "revision": "2006-02",
+          "supports": ["lexical", "validation"]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-5737",
+          "locator": "https://www.rfc-editor.org/rfc/rfc5737",
+          "revision": "RFC5737",
+          "supports": ["allocation", "reserved-control"]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-3849",
+          "locator": "https://www.rfc-editor.org/rfc/rfc3849",
+          "revision": "RFC3849",
+          "supports": ["allocation", "reserved-control"]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-2544",
+          "locator": "https://www.rfc-editor.org/rfc/rfc2544",
+          "revision": "RFC2544",
+          "supports": ["allocation", "reserved-control"]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-9637",
+          "locator": "https://www.rfc-editor.org/rfc/rfc9637",
+          "revision": "RFC9637",
+          "supports": ["allocation", "reserved-control"]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "iana-ipv4-special-registry",
+          "locator": "https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml",
+          "revision": "accessed-2026-09-27",
+          "supports": ["allocation", "reserved-control"]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "iana-ipv6-special-registry",
+          "locator": "https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml",
+          "revision": "accessed-2026-09-27",
+          "supports": ["allocation", "reserved-control"]
+        }
+      ],
+      "contextObligation": "required-for-sensitive-classification",
+      "validatorApplicable": false
+    }
+  ]
 }

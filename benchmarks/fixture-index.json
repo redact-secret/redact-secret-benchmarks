@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "56a7f772b1b2fb56bd3c02f777c93e89a405533bce5caffce6bd104dd90bab73"
+      "digest": "b660dd8f1504abcfb29cb4b124bf5e2a9eeb998e0824e182e5b223f66a78a3d8"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -21,7 +21,7 @@
     },
     "taxonomy": {
       "algorithm": "sha256",
-      "digest": "b438adf2eec2b7551358410ce52fdb8f55f73007afe89b0e8f86bd643c763549"
+      "digest": "e1ad17b57333376e4db20235de4a1879b90871efe4ece2955761986d7b616e36"
     }
   },
   "fixtures": [
@@ -32592,6 +32592,138 @@
       }
     },
     {
+      "slug": "beta8-384a--anthropic-token-api03-curl-x-api-key",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "anthropic-token-api03-curl-x-api-key",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/anthropic-token-api03-curl-x-api-key.sh"
+      },
+      "familyIds": [
+        "anthropic:secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384a--anthropic-token-api03-dotenv",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "anthropic-token-api03-dotenv",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/anthropic-token-api03-dotenv.env"
+      },
+      "familyIds": [
+        "anthropic:secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384a--anthropic-token-api03-no-final-hyphen-prefix-twin",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "anthropic-token-api03-no-final-hyphen-prefix-twin",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/anthropic-token-api03-no-final-hyphen-prefix-twin.py"
+      },
+      "familyIds": [
+        "anthropic:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384a--anthropic-token-api03-python-sdk"
+      }
+    },
+    {
+      "slug": "beta8-384a--anthropic-token-api03-python-sdk",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "anthropic-token-api03-python-sdk",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/anthropic-token-api03-python-sdk.py"
+      },
+      "familyIds": [
+        "anthropic:secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384a--anthropic-token-api03-underscore-prefix-twin",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "anthropic-token-api03-underscore-prefix-twin",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/anthropic-token-api03-underscore-prefix-twin.env"
+      },
+      "familyIds": [
+        "anthropic:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384a--anthropic-token-api03-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-384a--anthropic-token-api03-vendor-stem-prefix-twin",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "anthropic-token-api03-vendor-stem-prefix-twin",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/anthropic-token-api03-vendor-stem-prefix-twin.sh"
+      },
+      "familyIds": [
+        "anthropic:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384a--anthropic-token-api03-curl-x-api-key"
+      }
+    },
+    {
       "slug": "beta8-384a--openai-admin-api-key-actions-secret-reference",
       "source": {
         "categoryId": "beta8-384a",
@@ -34440,6 +34572,30 @@
       }
     },
     {
+      "slug": "beta8-384c--elevenlabs-api-key-hyphen-prefix-twin",
+      "source": {
+        "categoryId": "beta8-384c",
+        "fixtureId": "elevenlabs-api-key-hyphen-prefix-twin",
+        "corpus": "fixtures/generated/beta8-384c.json",
+        "path": "cases/elevenlabs-api-key-hyphen-prefix-twin.sh"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384c",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384c--elevenlabs-api-key-curl-xi-api-key"
+      }
+    },
+    {
       "slug": "beta8-384c--elevenlabs-api-key-js-client",
       "source": {
         "categoryId": "beta8-384c",
@@ -34612,6 +34768,30 @@
       }
     },
     {
+      "slug": "beta8-384c--elevenlabs-api-key-pk-prefix-twin",
+      "source": {
+        "categoryId": "beta8-384c",
+        "fixtureId": "elevenlabs-api-key-pk-prefix-twin",
+        "corpus": "fixtures/generated/beta8-384c.json",
+        "path": "cases/elevenlabs-api-key-pk-prefix-twin.env"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384c",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384c--elevenlabs-api-key-dotenv"
+      }
+    },
+    {
       "slug": "beta8-384c--elevenlabs-api-key-python-multi-line",
       "source": {
         "categoryId": "beta8-384c",
@@ -34742,6 +34922,32 @@
       }
     },
     {
+      "slug": "beta8-384c--elevenlabs-api-key-stripe-test-shaped-twin",
+      "source": {
+        "categoryId": "beta8-384c",
+        "fixtureId": "elevenlabs-api-key-stripe-test-shaped-twin",
+        "corpus": "fixtures/generated/beta8-384c.json",
+        "path": "cases/elevenlabs-api-key-stripe-test-shaped-twin.ts"
+      },
+      "familyIds": [
+        "elevenlabs:api-key",
+        "stripe:secret-key-live"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384c",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384c--elevenlabs-api-key-js-client"
+      }
+    },
+    {
       "slug": "beta8-384c--elevenlabs-api-key-tool-call",
       "source": {
         "categoryId": "beta8-384c",
@@ -34842,6 +35048,46 @@
       }
     },
     {
+      "slug": "beta8-384d--tavily-api-key-actions-env",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-actions-env",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-actions-env.yml"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-base64-etag-encoded-value",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-base64-etag-encoded-value",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-base64-etag-encoded-value.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384d--tavily-api-key-cli-and-prefix-prose",
       "source": {
         "categoryId": "beta8-384d",
@@ -34854,6 +35100,66 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-cli-flag",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-cli-flag",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-cli-flag.sh"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-cli-login-reference-reference",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-cli-login-reference-reference",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-cli-login-reference-reference.sh"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-compose-env.yml"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -34902,12 +35208,52 @@
       }
     },
     {
+      "slug": "beta8-384d--tavily-api-key-dev-word-run-near-miss",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-dev-word-run-near-miss",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-dev-word-run-near-miss.md"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384d--tavily-api-key-docs-bearer-placeholder",
       "source": {
         "categoryId": "beta8-384d",
         "fixtureId": "tavily-api-key-docs-bearer-placeholder",
         "corpus": "fixtures/generated/beta8-384d.json",
         "path": "cases/tavily-api-key-docs-bearer-placeholder.sh"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-docs-url-public-id",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-docs-url-public-id",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-docs-url-public-id.md"
       },
       "familyIds": [
         "tavily:api-key"
@@ -35006,6 +35352,30 @@
       }
     },
     {
+      "slug": "beta8-384d--tavily-api-key-hyphen-in-body-twin",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-hyphen-in-body-twin",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-hyphen-in-body-twin.json"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384d--tavily-api-key-mcp-client-env"
+      }
+    },
+    {
       "slug": "beta8-384d--tavily-api-key-js-client",
       "source": {
         "categoryId": "beta8-384d",
@@ -35086,6 +35456,26 @@
       }
     },
     {
+      "slug": "beta8-384d--tavily-api-key-langchain-kwarg",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-langchain-kwarg",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-langchain-kwarg.py"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384d--tavily-api-key-long-body-twin",
       "source": {
         "categoryId": "beta8-384d",
@@ -35127,6 +35517,30 @@
       "provenance": {
         "categoryId": "beta8-384d",
         "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-prefix-absent-twin",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-prefix-absent-twin",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-prefix-absent-twin.json"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384d--tavily-api-key-tool-call"
       }
     },
     {
@@ -35202,6 +35616,26 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-search-log",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "tavily-api-key-search-log",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/tavily-api-key-search-log.log"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -35366,18 +35800,18 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-actions-secret-reference",
+      "slug": "beta8-384d--tavily-api-key-yaml-config",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-actions-secret-reference",
+        "fixtureId": "tavily-api-key-yaml-config",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-actions-secret-reference.yml"
+        "path": "cases/tavily-api-key-yaml-config.yml"
       },
       "familyIds": [
-        "together:api-key"
+        "tavily:api-key"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -35386,32 +35820,12 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-base-url-and-model-public-id",
+      "slug": "beta8-384d--together-ai-api-key-actions-env",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-base-url-and-model-public-id",
+        "fixtureId": "together-ai-api-key-actions-env",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-base-url-and-model-public-id.env"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-curl-bearer",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-curl-bearer",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-curl-bearer.sh"
+        "path": "cases/together-ai-api-key-actions-env.yml"
       },
       "familyIds": [
         "together:api-key"
@@ -35426,12 +35840,12 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-docs-key-placeholder",
+      "slug": "beta8-384d--together-ai-api-key-actions-secret-reference",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-docs-key-placeholder",
+        "fixtureId": "together-ai-api-key-actions-secret-reference",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-docs-key-placeholder.py"
+        "path": "cases/together-ai-api-key-actions-secret-reference.yml"
       },
       "familyIds": [
         "together:api-key"
@@ -35446,80 +35860,12 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-dot-in-body-twin",
+      "slug": "beta8-384d--together-ai-api-key-base-url-and-model-public-id",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-dot-in-body-twin",
+        "fixtureId": "together-ai-api-key-base-url-and-model-public-id",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-dot-in-body-twin.json"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      },
-      "relations": {
-        "twinOf": "beta8-384d--together-api-key-json-config"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-dotenv",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-dotenv",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-dotenv.env"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-embedded-leading-twin",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-embedded-leading-twin",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-embedded-leading-twin.py"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      },
-      "relations": {
-        "twinOf": "beta8-384d--together-api-key-python-environ"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-env-reference-reference",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-env-reference-reference",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-env-reference-reference.env"
+        "path": "cases/together-ai-api-key-base-url-and-model-public-id.env"
       },
       "familyIds": [
         "together:api-key"
@@ -35534,12 +35880,32 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-export",
+      "slug": "beta8-384d--together-ai-api-key-base64url-blob-encoded-value",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-export",
+        "fixtureId": "together-ai-api-key-base64url-blob-encoded-value",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-export.sh"
+        "path": "cases/together-ai-api-key-base64url-blob-encoded-value.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-cli-flag",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-cli-flag",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-cli-flag.sh"
       },
       "familyIds": [
         "together:api-key"
@@ -35554,12 +35920,52 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-hex-digest-encoded-value",
+      "slug": "beta8-384d--together-ai-api-key-compose-env",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-hex-digest-encoded-value",
+        "fixtureId": "together-ai-api-key-compose-env",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-hex-digest-encoded-value.txt"
+        "path": "cases/together-ai-api-key-compose-env.yml"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-curl-bearer",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-curl-bearer",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-curl-bearer.sh"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-docs-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-docs-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-docs-ellipsis-placeholder.md"
       },
       "familyIds": [
         "together:api-key"
@@ -35574,12 +35980,32 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-hyphen-delimiters-twin",
+      "slug": "beta8-384d--together-ai-api-key-docs-key-placeholder",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-hyphen-delimiters-twin",
+        "fixtureId": "together-ai-api-key-docs-key-placeholder",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-hyphen-delimiters-twin.py"
+        "path": "cases/together-ai-api-key-docs-key-placeholder.py"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-dot-in-body-twin",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-dot-in-body-twin",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-dot-in-body-twin.json"
       },
       "familyIds": [
         "together:api-key"
@@ -35594,16 +36020,16 @@
         "milestone": "beta.10"
       },
       "relations": {
-        "twinOf": "beta8-384d--together-api-key-python-together"
+        "twinOf": "beta8-384d--together-ai-api-key-json-config"
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-json-config",
+      "slug": "beta8-384d--together-ai-api-key-dotenv",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-json-config",
+        "fixtureId": "together-ai-api-key-dotenv",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-json-config.json"
+        "path": "cases/together-ai-api-key-dotenv.env"
       },
       "familyIds": [
         "together:api-key"
@@ -35618,12 +36044,12 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-long-body-twin",
+      "slug": "beta8-384d--together-ai-api-key-embedded-leading-twin",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-long-body-twin",
+        "fixtureId": "together-ai-api-key-embedded-leading-twin",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-long-body-twin.sh"
+        "path": "cases/together-ai-api-key-embedded-leading-twin.py"
       },
       "familyIds": [
         "together:api-key"
@@ -35638,16 +36064,16 @@
         "milestone": "beta.10"
       },
       "relations": {
-        "twinOf": "beta8-384d--together-api-key-export"
+        "twinOf": "beta8-384d--together-ai-api-key-python-environ"
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-masked-display-public-id",
+      "slug": "beta8-384d--together-ai-api-key-env-reference-reference",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-masked-display-public-id",
+        "fixtureId": "together-ai-api-key-env-reference-reference",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-masked-display-public-id.js"
+        "path": "cases/together-ai-api-key-env-reference-reference.env"
       },
       "familyIds": [
         "together:api-key"
@@ -35662,12 +36088,12 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-openai-sdk-base-url",
+      "slug": "beta8-384d--together-ai-api-key-export",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-openai-sdk-base-url",
+        "fixtureId": "together-ai-api-key-export",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-openai-sdk-base-url.py"
+        "path": "cases/together-ai-api-key-export.sh"
       },
       "familyIds": [
         "together:api-key"
@@ -35682,12 +36108,12 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-prefix-guidance-prose",
+      "slug": "beta8-384d--together-ai-api-key-hex-digest-encoded-value",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-prefix-guidance-prose",
+        "fixtureId": "together-ai-api-key-hex-digest-encoded-value",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-prefix-guidance-prose.md"
+        "path": "cases/together-ai-api-key-hex-digest-encoded-value.txt"
       },
       "familyIds": [
         "together:api-key"
@@ -35702,112 +36128,12 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-prefix-only-near-miss",
+      "slug": "beta8-384d--together-ai-api-key-hyphen-delimiters-twin",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-prefix-only-near-miss",
+        "fixtureId": "together-ai-api-key-hyphen-delimiters-twin",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-prefix-only-near-miss.txt"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-python-environ",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-python-environ",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-python-environ.py"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-python-together",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-python-together",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-python-together.py"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-router-log",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-router-log",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-router-log.log"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-short-body-near-miss",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-short-body-near-miss",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-short-body-near-miss.log"
-      },
-      "familyIds": [
-        "together:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384d",
-        "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384d--together-api-key-short-body-twin",
-      "source": {
-        "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-short-body-twin",
-        "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-short-body-twin.env"
+        "path": "cases/together-ai-api-key-hyphen-delimiters-twin.py"
       },
       "familyIds": [
         "together:api-key"
@@ -35822,16 +36148,16 @@
         "milestone": "beta.10"
       },
       "relations": {
-        "twinOf": "beta8-384d--together-api-key-dotenv"
+        "twinOf": "beta8-384d--together-ai-api-key-python-together"
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-tool-call",
+      "slug": "beta8-384d--together-ai-api-key-js-client",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-tool-call",
+        "fixtureId": "together-ai-api-key-js-client",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-tool-call.json"
+        "path": "cases/together-ai-api-key-js-client.ts"
       },
       "familyIds": [
         "together:api-key"
@@ -35846,12 +36172,32 @@
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-uppercase-prefix-twin",
+      "slug": "beta8-384d--together-ai-api-key-json-config",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-uppercase-prefix-twin",
+        "fixtureId": "together-ai-api-key-json-config",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-uppercase-prefix-twin.sh"
+        "path": "cases/together-ai-api-key-json-config.json"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-long-body-twin",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-long-body-twin",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-long-body-twin.sh"
       },
       "familyIds": [
         "together:api-key"
@@ -35866,16 +36212,372 @@
         "milestone": "beta.10"
       },
       "relations": {
-        "twinOf": "beta8-384d--together-api-key-curl-bearer"
+        "twinOf": "beta8-384d--together-ai-api-key-export"
       }
     },
     {
-      "slug": "beta8-384d--together-api-key-your-key-here-placeholder",
+      "slug": "beta8-384d--together-ai-api-key-masked-display-public-id",
       "source": {
         "categoryId": "beta8-384d",
-        "fixtureId": "together-api-key-your-key-here-placeholder",
+        "fixtureId": "together-ai-api-key-masked-display-public-id",
         "corpus": "fixtures/generated/beta8-384d.json",
-        "path": "cases/together-api-key-your-key-here-placeholder.env"
+        "path": "cases/together-ai-api-key-masked-display-public-id.js"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-openai-sdk-base-url",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-openai-sdk-base-url",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-openai-sdk-base-url.py"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-pasted-key",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-pasted-key",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-pasted-key.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-plus-in-body-twin",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-plus-in-body-twin",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-plus-in-body-twin.json"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384d--together-ai-api-key-tool-call"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-prefix-guidance-prose",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-prefix-guidance-prose",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-prefix-guidance-prose.md"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-prefix-only-near-miss",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-prefix-only-near-miss",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-prefix-only-near-miss.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-python-environ",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-python-environ",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-python-environ.py"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-python-together",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-python-together",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-python-together.py"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-response-object-id-public-id",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-response-object-id-public-id",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-response-object-id-public-id.json"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-router-log",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-router-log",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-router-log.log"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-short-body-near-miss",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-short-body-near-miss",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-short-body-near-miss.log"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-short-body-twin",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-short-body-twin",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-short-body-twin.env"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384d--together-ai-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-slash-in-body-twin",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-slash-in-body-twin",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-slash-in-body-twin.log"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384d--together-ai-api-key-router-log"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-tool-call",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-tool-call",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-tool-call.json"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-unprefixed-run-near-miss",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-unprefixed-run-near-miss",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-unprefixed-run-near-miss.yml"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-uppercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-uppercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-uppercase-prefix-twin.sh"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384d--together-ai-api-key-curl-bearer"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-yaml-config",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-yaml-config",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-yaml-config.yml"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384d",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384d--together-ai-api-key-your-key-here-placeholder",
+      "source": {
+        "categoryId": "beta8-384d",
+        "fixtureId": "together-ai-api-key-your-key-here-placeholder",
+        "corpus": "fixtures/generated/beta8-384d.json",
+        "path": "cases/together-ai-api-key-your-key-here-placeholder.env"
       },
       "familyIds": [
         "together:api-key"
@@ -47396,6 +48098,155 @@
       }
     },
     {
+      "slug": "detector-coverage--ai21-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-mask.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-missing-keyword",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-missing-keyword",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-missing-keyword.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-reference.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-short-token",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-short-token",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-short-token.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--anthropic-token-label-prose",
       "source": {
         "categoryId": "detector-coverage",
@@ -48066,6 +48917,304 @@
       },
       "familyIds": [
         "aws:iam-user-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-long-term-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-long-term-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-long-term-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-long-term-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-long-term-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-long-term-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-long-term-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-long-term-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-long-term-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-long-term-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-long-term-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-long-term-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-long-term-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-long-term-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-long-term-api-key-mask.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-long-term-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-long-term-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-long-term-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-long-term-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-long-term-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-long-term-api-key-reference.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-long-term-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-long-term-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-long-term-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-short-term-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-short-term-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-short-term-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-short-term-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-short-term-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-short-term-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-short-term-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-short-term-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-short-term-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-short-term-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-short-term-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-short-term-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-short-term-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-short-term-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-short-term-api-key-mask.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-short-term-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-short-term-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-short-term-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-short-term-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-short-term-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-short-term-api-key-reference.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--aws-bedrock-short-term-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "aws-bedrock-short-term-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/aws-bedrock-short-term-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -48768,6 +49917,155 @@
       },
       "familyIds": [
         "cloudflare:api-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-mask.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-missing-keyword",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-missing-keyword",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-missing-keyword.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-reference.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--cohere-api-key-short-token",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "cohere-api-key-short-token",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/cohere-api-key-short-token.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -51062,6 +52360,155 @@
       }
     },
     {
+      "slug": "detector-coverage--deepgram-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--deepgram-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--deepgram-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--deepgram-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--deepgram-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-mask.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--deepgram-api-key-missing-keyword",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-missing-keyword",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-missing-keyword.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--deepgram-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-reference.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--deepgram-api-key-short-token",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "deepgram-api-key-short-token",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/deepgram-api-key-short-token.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--digitalocean-token-dash-identifier-embedding",
       "source": {
         "categoryId": "detector-coverage",
@@ -52311,6 +53758,155 @@
       },
       "familyIds": [
         "docker:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--elevenlabs-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "elevenlabs-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/elevenlabs-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--elevenlabs-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "elevenlabs-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/elevenlabs-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--elevenlabs-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "elevenlabs-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/elevenlabs-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--elevenlabs-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "elevenlabs-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/elevenlabs-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--elevenlabs-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "elevenlabs-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/elevenlabs-api-key-mask.txt"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--elevenlabs-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "elevenlabs-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/elevenlabs-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--elevenlabs-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "elevenlabs-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/elevenlabs-api-key-reference.txt"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--elevenlabs-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "elevenlabs-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/elevenlabs-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "elevenlabs:api-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -57485,6 +59081,155 @@
       },
       "familyIds": [
         "microsoft-entra:application-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-mask.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-missing-keyword",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-missing-keyword",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-missing-keyword.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-reference.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mistral-api-key-short-token",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mistral-api-key-short-token",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mistral-api-key-short-token.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -64572,6 +66317,155 @@
       }
     },
     {
+      "slug": "detector-coverage--tavily-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "tavily-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/tavily-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--tavily-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "tavily-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/tavily-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--tavily-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "tavily-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/tavily-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--tavily-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "tavily-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/tavily-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--tavily-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "tavily-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/tavily-api-key-mask.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--tavily-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "tavily-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/tavily-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--tavily-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "tavily-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/tavily-api-key-reference.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--tavily-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "tavily-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/tavily-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--telegram-bot-token-label-prose",
       "source": {
         "categoryId": "detector-coverage",
@@ -65144,6 +67038,155 @@
       },
       "relations": {
         "twinOf": "detector-coverage--terraform-cloud-token-user-shape-unicode-crlf"
+      }
+    },
+    {
+      "slug": "detector-coverage--together-ai-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "together-ai-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/together-ai-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--together-ai-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "together-ai-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/together-ai-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--together-ai-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "together-ai-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/together-ai-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--together-ai-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "together-ai-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/together-ai-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--together-ai-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "together-ai-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/together-ai-api-key-mask.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--together-ai-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "together-ai-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/together-ai-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--together-ai-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "together-ai-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/together-ai-api-key-reference.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--together-ai-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "together-ai-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/together-ai-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
       }
     },
     {
@@ -70882,7 +72925,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
-    "fixtureCount": 3422
+    "digest": "ad9252a683a313650f395edfd8370987f2ff35973409021c6a2882653c139ffa",
+    "fixtureCount": 3527
   }
 }

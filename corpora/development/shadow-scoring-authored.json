@@ -3861,10 +3861,11 @@
       ],
       "assessment": {
         "kind": "must-redact",
-        "tier": "T2",
+        "tier": "T1",
         "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "aws-bedrock-long-term-api-key",
         "sources": [
+          "https://aws.amazon.com/blogs/security/securing-amazon-bedrock-api-keys-best-practices-for-implementation-and-management/",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
           "https://github.com/awslabs/git-secrets/pull/264",
           "https://www.wiz.io/blog/a-new-type-of-long-lived-key-on-aws-bedrock-api-keys",
@@ -3892,6 +3893,7 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "aws-bedrock-long-term-api-key",
         "sources": [
+          "https://aws.amazon.com/blogs/security/securing-amazon-bedrock-api-keys-best-practices-for-implementation-and-management/",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
           "https://github.com/awslabs/git-secrets/pull/264",
           "https://www.wiz.io/blog/a-new-type-of-long-lived-key-on-aws-bedrock-api-keys",
@@ -3922,10 +3924,11 @@
       ],
       "assessment": {
         "kind": "must-redact",
-        "tier": "T2",
+        "tier": "T1",
         "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "aws-bedrock-short-term-api-key",
         "sources": [
+          "https://github.com/aws/aws-bedrock-token-generator-python/blob/main/aws_bedrock_token_generator/token_generator.py",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
           "https://github.com/awslabs/git-secrets/pull/264",
           "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-reference.html",
@@ -3953,6 +3956,7 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "aws-bedrock-short-term-api-key",
         "sources": [
+          "https://github.com/aws/aws-bedrock-token-generator-python/blob/main/aws_bedrock_token_generator/token_generator.py",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
           "https://github.com/awslabs/git-secrets/pull/264",
           "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-reference.html",
@@ -3983,10 +3987,11 @@
       ],
       "assessment": {
         "kind": "must-redact",
-        "tier": "T2",
+        "tier": "T1",
         "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "elevenlabs-api-key",
         "sources": [
+          "https://github.com/elevenlabs/elevenlabs-python/blob/main/src/elevenlabs/speech_engine/server.py",
           "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/elevenlabs/v2/elevenlabs.go",
           "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/elevenlabs.go",
           "https://elevenlabs.io/docs/api-reference/authentication",
@@ -4017,6 +4022,7 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "elevenlabs-api-key",
         "sources": [
+          "https://github.com/elevenlabs/elevenlabs-python/blob/main/src/elevenlabs/speech_engine/server.py",
           "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/elevenlabs/v2/elevenlabs.go",
           "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/elevenlabs.go",
           "https://elevenlabs.io/docs/api-reference/authentication",
@@ -4033,8 +4039,8 @@
       }
     },
     {
-      "id": "together-api-key-positive",
-      "path": "together-api-key/positive.txt",
+      "id": "together-ai-api-key-positive",
+      "path": "together-ai-api-key/positive.txt",
       "group": "shadow-scoring-authored",
       "content": "TOGETHER_API_KEY=\u0074gp_v1_Review_Alpha7-Beta9ReviewAlpha7Beta9Gamma2R\n",
       "expected": [
@@ -4046,13 +4052,13 @@
         }
       ],
       "detectors": [
-        "together-api-key"
+        "together-ai-api-key"
       ],
       "assessment": {
         "kind": "must-redact",
         "tier": "T2",
         "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
-        "contract": "together-api-key",
+        "contract": "together-ai-api-key",
         "sources": [
           "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/togetherai.go",
           "https://docs.together.ai/docs/quickstart",
@@ -4065,19 +4071,19 @@
       }
     },
     {
-      "id": "together-api-key-negative",
-      "path": "together-api-key/negative.txt",
+      "id": "together-ai-api-key-negative",
+      "path": "together-ai-api-key/negative.txt",
       "group": "shadow-scoring-authored",
       "content": "TOGETHER_API_KEY=${TOGETHER_API_KEY_REFERENCE}\n",
       "expected": [],
       "detectors": [
-        "together-api-key"
+        "together-ai-api-key"
       ],
       "assessment": {
         "kind": "must-not-flag",
         "tier": "T3",
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
-        "contract": "together-api-key",
+        "contract": "together-ai-api-key",
         "sources": [
           "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/togetherai.go",
           "https://docs.together.ai/docs/quickstart",

@@ -10,7 +10,12 @@ const families = ['github-token', 'gitlab-token', 'npm-token', 'sendgrid-token',
   // #207: the two Confluent detector ids, so a twin scoped to the legacy family can tell
   // the product reporting a current cflt secret as its own sibling family (co-detection)
   // from a legacy-family finding; unmapped, every such finding fails the twin closed.
-  'confluent-cloud-api-secret', 'confluent-cloud-api-secret-legacy'];
+  'confluent-cloud-api-secret', 'confluent-cloud-api-secret-legacy',
+  // #384: registry detectors since redact-secret#862-#868 (product PR #869, registry pin cfe2aec); each was measured
+  // as an arrival family (benchmarks/lib/beta8/384b-384e) under the same id, except Together, whose arrival id was
+  // renamed to the detector id.
+  'aws-bedrock-long-term-api-key', 'aws-bedrock-short-term-api-key', 'elevenlabs-api-key', 'together-ai-api-key',
+  'tavily-api-key', 'mistral-api-key', 'cohere-api-key', 'ai21-api-key', 'deepgram-api-key'];
 const gitleaks = {
   'github-pat': 'github-token', 'github-oauth': 'github-token',
   'github-app-token': 'github-token', 'github-refresh-token': 'github-token',
@@ -33,6 +38,12 @@ const gitleaks = {
   // and the prefix-less Mailgun triplet (the #259 context-gated arrival family).
   'travisci-access-token': 'travisci-api-token',
   'mailgun-signing-key': 'mailgun-api-key-triplet',
+  // #384: gitleaks 8.30.1 has one rule per Bedrock key kind (registry detectors since redact-secret#864) and a Cohere rule
+  // (registry detector since redact-secret#868). anthropic-admin-api-key stays unmapped: the product types sk-ant-admin01-
+  // inside anthropic-token, so mapping it would re-attribute the api03 family's findings.
+  'aws-amazon-bedrock-api-key-long-lived': 'aws-bedrock-long-term-api-key',
+  'aws-amazon-bedrock-api-key-short-lived': 'aws-bedrock-short-term-api-key',
+  'cohere-api-token': 'cohere-api-key',
 };
 const trufflehog = {
   Github: 'github-token', Gitlab: 'gitlab-token', Npm: 'npm-token',
@@ -53,6 +64,9 @@ const trufflehog = {
   Pinecone: 'pinecone-api-key',
   // #259: travis keyword + 22 characters, the travisci-api-token contract's shape (redact-secret#523).
   TravisCI: 'travisci-api-token',
+  // #384: trufflehog 3.97.4's elevenlabs/v2 (sk_ + 48 hex, keyword-gated) and deepgram (keyword + 40 [0-9a-z]) detectors
+  // (registry detectors since redact-secret#865 and #868). elevenlabs/v1 (a bare 32-hex legacy shape) reports under the same label.
+  ElevenLabs: 'elevenlabs-api-key', Deepgram: 'deepgram-api-key',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;

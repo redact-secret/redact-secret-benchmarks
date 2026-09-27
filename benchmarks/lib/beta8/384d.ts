@@ -8,8 +8,12 @@ import { field } from '../contract-sources.ts';
 // Both are T2 and pending hands-on corroboration. No Together page states a prefix, length or
 // alphabet; Tavily's docs show the tvly- prefix only in placeholders and truncated samples. Neither
 // family has a pinned trufflehog or gitleaks rule (trufflehog 3.97.4 has no Together or
-// Tavily detector and gitleaks 8.30.1 no rule), so each contract is corroborated by one
-// non-pinned scanner rule plus maintainer-observed samples, and stays an unscored arrival family.
+// Tavily detector and gitleaks 8.30.1 no rule), so each contract is corroborated by non-pinned
+// scanner rules plus maintainer-observed samples.
+//
+// Registry. redact-secret#867 (product PR #869, merge cfe2aec) added both as registry detectors,
+// `together-ai-api-key` and `tavily-api-key`. The Together arrival id `together-api-key` was renamed
+// to the detector id so the family graduates at that re-pin; the taxonomy id is unchanged.
 export const issue = '384d';
 
 const at = '2026-09-26';
@@ -30,17 +34,15 @@ const TV_GITGUARDIAN = 'https://docs.gitguardian.com/secrets-detection/secrets-d
 const R786 = 'https://github.com/redact-secret/redact-secret/issues/786';
 const R867 = 'https://github.com/redact-secret/redact-secret/issues/867';
 
-/** Families measured here that no registry detector targets. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'together-api-key', taxonomy: 'together:api-key', issue,
-    reason: 'No registry detector covers the Together AI project key at the pinned product revision: context-bound and Bearer forms are caught under generic types, and a bare tgp_v1_ key and the call-keyword forms are missed. redact-secret#867 adds a dedicated detector; until that lands the family is measured as an unscored arrival family.' },
-  { id: 'tavily-api-key', taxonomy: 'tavily:api-key', issue,
-    reason: 'No registry detector covers the Tavily key at the pinned product revision: bare values and SDK-call-argument forms are missed today, and only labelled shapes are caught under generic types. redact-secret#867 adds a dedicated detector; until that lands the family is measured as an unscored arrival family.' },
-];
+/** Both families graduated to registry detectors at the cfe2aec pin (redact-secret#867). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
-  'together-api-key': {
+/** No arrival contract remains in this module. */
+export const contracts: Record<string, FormatContract> = {};
+
+/** Contracts for this issue's families, registry detectors since redact-secret#867 (registry pinned at cfe2aec). */
+export const registryContracts: Record<string, FormatContract> = {
+  'together-ai-api-key': {
     tier: 'T2',
     pattern: '^tgp_v1_[A-Za-z0-9_-]{43}$',
     corroboration: [{ tool: 'betterleaks', label: 'togetherai-api-key: tgp_v1_[A-Za-z0-9_-]{43} (Kingfisher aliases it, so it is not independent)', url: TG_BETTERLEAKS }],
@@ -74,6 +76,6 @@ export const contracts: Record<string, FormatContract> = {
 
 /** The Beta.8 profile each target this issue owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = {
-  'together-api-key': 'arrival-24',
+  'together-ai-api-key': 'arrival-24',
   'tavily-api-key': 'arrival-24',
 };

@@ -590,6 +590,21 @@ export const DISPUTED_PROPERTIES: Record<string, { family: string; property: str
     family: 'mailchimp-api-key', property: 'whether a key body may carry g-z letters (the 2009 staff regex and keyhacks admit [0-9a-z])',
     ids: ['beta8-213d--mailchimp-api-key-alphabet-twin'],
   },
+  // #384: redact-secret#862 (product PR #869) makes sk-ant-api01- and sk-ant-admin01- Anthropic credentials of the shared anthropic_api_key
+  // type, and the provider documents both prefixes (platform.claude.com admin-api-keys, compliance-api-access; contracts 384a). These four
+  // twins were authored when both prefixes were unclaimed siblings of sk-ant-api03-, so as negatives they now contradict the contract. The
+  // families they discriminated on are measured under their own arrival ids in beta8-384a; here the property reads unmeasured.
+  'anthropic-sibling-prefixes': {
+    family: 'anthropic-token', property: 'whether sk-ant-api01- and sk-ant-admin01- are Anthropic credentials of the shared type (they are, per the provider pages and redact-secret#862; the twins predate that and assert the opposite)',
+    ids: ['compliance', 'admin'].flatMap(k => ['plain', 'unicode-crlf'].map(c => `common-formats--anthropic-token-api03-${k}-prefix-${c}-twin`)),
+  },
+  // #384: the maintainer ruling of 2026-09-27 (redact-secret#788) makes the sk_ prefix and the _residency_ suffix grammar T1 and keeps the
+  // 48-lowercase-hex body T2 (tool rules and samples only; no provider source states a length or alphabet). The three body twins
+  // (47 and 49 hex, one non-hex byte) therefore assert a T2 property and read unmeasured.
+  'elevenlabs-body': {
+    family: 'elevenlabs-api-key', property: 'the length and alphabet of the sk_ body (48 lowercase hexadecimal characters), which no provider-owned source states',
+    ids: ['short-body', 'long-body', 'non-hex-body'].map(c => `beta8-384c--elevenlabs-api-key-${c}-twin`),
+  },
   'mailchimp-datacenter-literal': {
     family: 'mailchimp-api-key', property: 'whether a data-center suffix other than us<N> (such as eu6) is ever issued',
     ids: ['bare', 'quoted', 'unicode-crlf'].map(c => `detector-coverage--mailchimp-api-key-single-digit-datacenter-${c}-twin`),

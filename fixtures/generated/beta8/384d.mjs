@@ -35,12 +35,12 @@ export function build384d({ fixture, synthetic }) {
   const digest = slug => synthetic(`beta10:384d:digest:${slug}`, 64, HEX);
   const uuid = h => `${h.slice(0, 8)}-${h.slice(8, 12)}-4${h.slice(13, 16)}-a${h.slice(17, 20)}-${h.slice(20, 32)}`;
 
-  // ---------------------------------------------------------------- together-api-key
+  // ---------------------------------------------------------------- together-ai-api-key
   {
-    const T = "together-api-key";
+    const T = "together-ai-api-key";
     const { check, refuse } = guard(T);
     const key = slug => check(`tgp_v1_${synthetic(seed(T, slug), 43, URLSAFE)}`);
-    const k = Object.fromEntries(["dotenv", "export", "curl", "python", "environ", "openai", "json", "tool", "log"].map(s => [s, key(s)]));
+    const k = Object.fromEntries(["dotenv", "export", "curl", "python", "environ", "openai", "json", "tool", "log", "pasted", "js", "yaml", "actions", "compose", "cli"].map(s => [s, key(s)]));
     const body = v => v.slice(7);
 
     const dotenv = v => ["# .env\nTOGETHER_API_KEY=", v, "\nTOGETHER_BASE_URL=https://api.together.xyz/v1\n"];
@@ -62,6 +62,14 @@ export function build384d({ fixture, synthetic }) {
     c.positive(T, "structured-file", "json-config", json({ secret: k.json }), "json");
     c.positive(T, "tool-output", "tool-call", tool({ secret: k.tool }), "json");
     c.positive(T, "log", "router-log", log({ secret: k.log }), "log");
+    // Research #783 positive contexts: JS apiKey, JSON/YAML, CI and container env, and the CLI flag. Each keeps a distinct authored context and has no twin.
+    c.positive(T, "source-code", "js-client", ["import Together from 'together-ai';\n\nconst together = new Together({ apiKey: '", { secret: k.js }, "' });\n"], "ts");
+    c.positive(T, "structured-file", "yaml-config", ["llm:\n  provider: together\n  api_key: ", { secret: k.yaml }, "\n  model: meta-llama/Llama-3.3-70B-Instruct-Turbo\n"], "yml");
+    c.positive(T, "ci-config", "actions-env", ["jobs:\n  eval:\n    runs-on: ubuntu-latest\n    env:\n      TOGETHER_API_KEY: ", { secret: k.actions }, "\n    steps:\n      - run: python eval.py\n"], "yml");
+    c.positive(T, "container-config", "compose-env", ["services:\n  router:\n    image: registry.example.test/router:2.1\n    environment:\n      TOGETHER_API_KEY: ", { secret: k.compose }, "\n"], "yml");
+    c.positive(T, "cli", "cli-flag", ["together --api-key ", { secret: k.cli }, " models list\n"], "sh");
+    // Research #783: "bare in a log line ... body at start/end of line".
+    c.positive(T, "prose", "pasted-key", ["Here is the Together project key for the sandbox, delete it after the demo:\n", { secret: k.pasted }, "\n"], "txt");
 
     c.twin(T, "dotenv", "short-body", dotenv(refuse(k.dotenv.slice(0, -1))), "length: 42 body characters vs the 43 the scanner rule and observed samples agree on", "length", "env");
     c.twin(T, "export", "long-body", exportLine(refuse(`${k.export}${synthetic(seed(T, "extra"), 1, ALNUM)}`)), "length: 44 body characters vs the 43 the scanner rule and observed samples agree on", "length", "sh");
@@ -69,6 +77,9 @@ export function build384d({ fixture, synthetic }) {
     c.twin(T, "python-together", "hyphen-delimiters", python(refuse(`tgp-v1-${body(k.python)}`)), "boundary: hyphens in place of the underscores in tgp_v1_", "boundary", "py");
     c.twin(T, "json-config", "dot-in-body", json(refuse(at(k.json, 30, "."))), "alphabet: one body character replaced by ., outside [A-Za-z0-9_-]", "alphabet", "json");
     c.twin(T, "python-environ", "embedded-leading", environ(refuse(`x${k.environ}`)), "boundary: one identifier character before tgp_v1_, so the key is embedded in a longer token", "boundary", "py");
+    // Research #783 lists a non-alphabet character in the body as one twin; + and / are the two Base64 characters outside base64url.
+    c.twin(T, "tool-call", "plus-in-body", tool(refuse(at(k.tool, 25, "+"))), "alphabet: one body character replaced by +, a standard-Base64 character outside [A-Za-z0-9_-]", "alphabet", "json");
+    c.twin(T, "router-log", "slash-in-body", log(refuse(at(k.log, 32, "/"))), "alphabet: one body character replaced by /, a standard-Base64 character outside [A-Za-z0-9_-]", "alphabet", "log");
 
     c.control(T, "placeholder", "your-key-here", ["TOGETHER_API_KEY=tgp_v1_your_api_key_here\n"], "env");
     c.control(T, "placeholder", "docs-key", ["client = Together(api_key=\"your_api_key\")\n"], "py");
@@ -80,6 +91,11 @@ export function build384d({ fixture, synthetic }) {
     c.control(T, "near-miss", "prefix-only", ["Authorization: Bearer tgp_v1_\n"], "txt");
     c.control(T, "near-miss", "short-body", [`2026-09-26T10:22:01Z llm-router: rejected truncated token tgp_v1_${synthetic(seed(T, "short"), 26, URLSAFE)} from client\n`], "log");
     c.control(T, "encoded-value", "hex-digest", [`sha256: ${digest(T)}\n`], "txt");
+    // Research #783 benign axes: docs text saying "tgp_v1_...", Together response object ids, a prefix-less base64url run.
+    c.control(T, "placeholder", "docs-ellipsis", ["Use your project key: TOGETHER_API_KEY=tgp_v1_...\n"], "md");
+    c.control(T, "public-id", "response-object-id", [`{"id": "${synthetic(seed(T, "response-id"), 12, ALNUM)}-${synthetic(seed(T, "response-id-tail"), 3, "abcdefghijklmnopqrstuvwxyz")}", "object": "chat.completion", "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo"}\n`], "json");
+    c.control(T, "near-miss", "unprefixed-run", [`build_id: ${synthetic(seed(T, "unprefixed"), 43, URLSAFE)}\n`], "yml");
+    c.control(T, "encoded-value", "base64url-blob", [`etag: ${synthetic(seed(T, "etag"), 48, URLSAFE)}\n`], "txt");
   }
 
   // ------------------------------------------------------------------ tavily-api-key
@@ -87,7 +103,7 @@ export function build384d({ fixture, synthetic }) {
     const T = "tavily-api-key";
     const { check, refuse } = guard(T);
     const key = (slug, dev = true) => check(`tvly-${dev ? "dev-" : ""}${synthetic(seed(T, slug), 32, ALNUM)}`);
-    const k = { dotenv: key("dotenv"), export: key("export", false), curl: key("curl"), python: key("python"), js: key("js", false), json: key("json"), mcpUrl: key("mcp-url"), mcpEnv: key("mcp-env", false), tool: key("tool") };
+    const k = { dotenv: key("dotenv"), export: key("export", false), curl: key("curl"), python: key("python"), js: key("js", false), json: key("json"), mcpUrl: key("mcp-url"), mcpEnv: key("mcp-env", false), tool: key("tool"), langchain: key("langchain", false), yaml: key("yaml"), actions: key("actions", false), compose: key("compose"), log: key("log", false), cli: key("cli") };
 
     const dotenv = v => ["# .env\nTAVILY_API_KEY=", v, "\nTAVILY_PROJECT=research-agent\n"];
     const exportLine = v => ["export TAVILY_API_KEY=\"", v, "\"\n"];
@@ -108,6 +124,14 @@ export function build384d({ fixture, synthetic }) {
     c.positive(T, "url", "remote-mcp-query", mcpUrl({ secret: k.mcpUrl }), "json");
     c.positive(T, "container-config", "mcp-client-env", mcpEnv({ secret: k.mcpEnv }), "json");
     c.positive(T, "tool-output", "tool-call", tool({ secret: k.tool }), "json");
+    // Research #786 positive contexts include YAML, CI and container env, a log line and the tvly CLI flag; each keeps a distinct authored context and has no twin.
+    c.positive(T, "structured-file", "yaml-config", ["search:\n  provider: tavily\n  api_key: ", { secret: k.yaml }, "\n  max_results: 5\n"], "yml");
+    c.positive(T, "ci-config", "actions-env", ["jobs:\n  research:\n    runs-on: ubuntu-latest\n    env:\n      TAVILY_API_KEY: ", { secret: k.actions }, "\n    steps:\n      - run: python research.py\n"], "yml");
+    c.positive(T, "container-config", "compose-env", ["services:\n  agent:\n    image: registry.example.test/agent:3.0\n    environment:\n      TAVILY_API_KEY: ", { secret: k.compose }, "\n"], "yml");
+    c.positive(T, "log", "search-log", ["2026-09-26T10:25:40Z search-agent: calling tavily with key ", { secret: k.log }, " query=\"open source ocr\"\n"], "log");
+    c.positive(T, "cli", "cli-flag", ["tvly login --api-key ", { secret: k.cli }, "\n"], "sh");
+    // Research #786 positive contexts include the LangChain TavilySearchResults(tavily_api_key=) keyword argument.
+    c.positive(T, "sdk-config", "langchain-kwarg", ["from langchain_community.tools.tavily_search import TavilySearchResults\n\ntool = TavilySearchResults(max_results=3, tavily_api_key=\"", { secret: k.langchain }, "\")\n"], "py");
 
     c.twin(T, "dotenv-dev", "short-body", dotenv(refuse(k.dotenv.slice(0, -1))), "length: 31 body characters vs the 32 the scanner rule and observed samples agree on", "length", "env");
     c.twin(T, "export-bare", "long-body", exportLine(refuse(`${k.export}${synthetic(seed(T, "extra"), 1, ALNUM)}`)), "length: 33 body characters vs the 32 the scanner rule and observed samples agree on", "length", "sh");
@@ -115,6 +139,9 @@ export function build384d({ fixture, synthetic }) {
     c.twin(T, "python-client", "underscore-delimiter", python(refuse(`tvly_${k.python.slice(5)}`)), "boundary: tvly_ in place of the tvly- delimiter", "boundary", "py");
     c.twin(T, "json-body", "underscore-in-body", json(refuse(at(k.json, 20, "_"))), "alphabet: one body character replaced by _, outside [A-Za-z0-9]", "alphabet", "json");
     c.twin(T, "js-client", "embedded-leading", js(refuse(`a${k.js}`)), "boundary: one identifier character before tvly-, so the key is embedded in a longer token", "boundary", "ts");
+    // Research #786 twins: "-/_ inside body" and "prefix present vs absent".
+    c.twin(T, "mcp-client-env", "hyphen-in-body", mcpEnv(refuse(at(k.mcpEnv, 20, "-"))), "alphabet: one body character replaced by -, outside [A-Za-z0-9]", "alphabet", "json");
+    c.twin(T, "tool-call", "prefix-absent", tool(refuse(k.tool.replace(/^tvly-(?:dev-)?/, ""))), "prefix: the tvly-dev- stem removed, leaving the 32-character run", "prefix", "json");
 
     const requestId = uuid(synthetic(seed(T, "request"), 32, HEX));
     c.control(T, "placeholder", "docs-bearer", ["curl -s -X POST https://api.tavily.com/search -H \"Authorization: Bearer tvly-YOUR_API_KEY\"\n"], "sh");
@@ -127,6 +154,11 @@ export function build384d({ fixture, synthetic }) {
     c.control(T, "near-miss", "prefix-only", ["2026-09-26T10:23:12Z search-agent: key must start with tvly-dev- or tvly-, got an empty value\n"], "log");
     c.control(T, "near-miss", "short-body", [`2026-09-26T10:23:15Z search-agent: rejected truncated token tvly-dev-${synthetic(seed(T, "short"), 8, ALNUM)} from client\n`], "log");
     c.control(T, "encoded-value", "key-digest", [`# audit record\ntavily_api_key_sha256=${digest(T)}\n`], "txt");
+    // Research #786 benign axes: `tvly` CLI commands, key names, request ids, documentation placeholders.
+    c.control(T, "reference", "cli-login-reference", ["tvly login --api-key \"$TAVILY_API_KEY\"\n"], "sh");
+    c.control(T, "public-id", "docs-url", ["See https://docs.tavily.com/documentation/api-reference/introduction for the request format and the api_key body field.\n"], "md");
+    c.control(T, "near-miss", "dev-word-run", ["tvly-dev-notes and tvly-dev-changelog are internal wiki pages, not keys.\n"], "md");
+    c.control(T, "encoded-value", "base64-etag", [`etag: ${synthetic(seed(T, "etag"), 32, ALNUM)}\n`], "txt");
   }
   return c.fixtures;
 }

@@ -20,7 +20,13 @@ SOURCES = {
 
 # A shared provider does not establish equal prefixes, formats, or verification.
 GITLEAKS_FAMILIES = {
-    "anthropic-": "anthropic-token", "aws-": "aws-access-key",
+    "anthropic-": "anthropic-token",
+    # #384: the two Bedrock rules are their own families (registry detectors since redact-secret#864);
+    # prefix lookup is first-match, so they must precede "aws-".
+    "aws-amazon-bedrock-api-key-long-lived": "aws-bedrock-long-term-api-key",
+    "aws-amazon-bedrock-api-key-short-lived": "aws-bedrock-short-term-api-key",
+    "aws-": "aws-access-key",
+    "cohere-": "cohere-api-key",
     "cloudflare-": "cloudflare-token", "digitalocean-": "digitalocean-token",
     "github-": "github-token",
     # prefix lookup is first-match: the runner rules must precede "gitlab-" (redact-secret#730).
@@ -72,6 +78,8 @@ TRUFFLEHOG_FAMILIES = {
     "replicate": "replicate-api-token", "groq": "groq-api-key", "xai": "xai-api-key",
     "openrouter": "openrouter-api-key", "langsmith": "langsmith-api-key", "langfuse": "langfuse-secret-key",
     "pinecone": "pinecone-api-key",
+    # #384 families, registry detectors since redact-secret#865/#868 (registry pin cfe2aec).
+    "elevenlabs": "elevenlabs-api-key", "deepgram": "deepgram-api-key",
     # Travis CI API token, registry detector since redact-secret#523 (pin 3144bb3).
     "travisci": "travisci-api-token",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",

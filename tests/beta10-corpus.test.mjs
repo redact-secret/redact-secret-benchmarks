@@ -15,21 +15,31 @@ const generated = buildCorpora();
 const slices = ['384a', '384b', '384c', '384d', '384e'];
 const corpora = slices.map(key => [`beta8-${key}`, generated[`beta8-${key}`]]);
 const modules = BETA8_MODULES.filter(m => slices.includes(m.issue));
-const families = modules.flatMap(m => m.arrivalFamilies);
+const arrival = modules.flatMap(m => m.arrivalFamilies);
+// Nine of the thirteen graduated to registry detectors at the cfe2aec pin (redact-secret#864-#868); Anthropic x2, OpenAI admin (shared detector types) and Exa (no detector) stay arrival families.
+const graduated = modules.flatMap(m => Object.keys(m.registryContracts ?? {}));
+const targetIds = modules.flatMap(m => Object.keys(m.profiles));
+const targetOf = f => (f.arrivalTargets ?? f.detectors)[0];
 const taxonomy = await read('benchmarks/support/taxonomy.json');
 const secretsOf = f => f.expected.filter(r => (r.role ?? 'secret') === 'secret');
 const valueOf = (f, r) => Buffer.from(f.content).subarray(r.start, r.end).toString();
 
-test('the thirteen Beta.10 families are arrival families, each with a contract, a taxonomy row that maps no detector, and a profile', () => {
-  assert.equal(families.length, 13);
+test('the thirteen Beta.10 families are four arrival families and nine graduated registry detectors, each with a contract, a taxonomy row and a profile', () => {
+  assert.equal(arrival.length + graduated.length, 13);
+  assert.deepEqual(arrival.map(f => f.id).sort(), ['anthropic-admin01-key', 'anthropic-api01-key', 'exa-api-key', 'openai-admin-api-key']);
   const taxonomyIds = new Set(taxonomy.families.map(f => f.id));
-  for (const family of families) {
+  for (const family of arrival) {
     assert.ok(arrivalIds.has(family.id), family.id);
     assert.ok(contracts[family.id], family.id);
     const row = taxonomy.families.find(f => f.id === family.taxonomy);
     assert.ok(row, `${family.id}: taxonomy row ${family.taxonomy}`);
     assert.deepEqual(row.detectors, [], `${family.id}: an unscored arrival family maps no registry detector`);
     assert.ok(taxonomyIds.has(family.taxonomy));
+  }
+  for (const id of graduated) {
+    assert.ok(!arrivalIds.has(id), `${id}: a graduated family is a registry id`);
+    assert.ok(contracts[id], id);
+    assert.ok(taxonomy.families.some(f => f.detectors.includes(id)), `${id}: a taxonomy row maps the detector`);
   }
   // The two research dispositions that stay pending carry no corpus.
   for (const id of ['mistral:realtime-client-token', 'voyage-ai:api-key']) {
@@ -39,19 +49,25 @@ test('the thirteen Beta.10 families are arrival families, each with a contract, 
   }
 });
 
-test('tiers follow the evidence: T1 only on the Anthropic prefixes, T0 where no shape is evidenced, context-gated where no bare value is claimed', () => {
-  const tier = Object.fromEntries(families.map(f => [f.id, contracts[f.id].tier]));
-  assert.deepEqual(Object.entries(tier).filter(([, t]) => t === 'T1').map(([id]) => id).sort(), ['anthropic-admin01-key', 'anthropic-api01-key']);
+test('tiers follow the evidence: T1 on the Anthropic prefixes and, by the 2026-09-27 rulings, Bedrock and ElevenLabs; T0 where no shape is evidenced; context-gated where no bare value is claimed', () => {
+  const tier = Object.fromEntries(targetIds.map(id => [id, contracts[id].tier]));
+  assert.deepEqual(Object.entries(tier).filter(([, t]) => t === 'T1').map(([id]) => id).sort(), ['anthropic-admin01-key', 'anthropic-api01-key', 'aws-bedrock-long-term-api-key', 'aws-bedrock-short-term-api-key', 'elevenlabs-api-key']);
   assert.deepEqual(Object.entries(tier).filter(([, t]) => t === 'T0').map(([id]) => id).sort(), ['ai21-api-key', 'exa-api-key']);
   for (const id of ['mistral-api-key', 'cohere-api-key', 'deepgram-api-key', 'ai21-api-key', 'exa-api-key']) assert.equal(contracts[id].contextGated, true, id);
-  for (const id of ['aws-bedrock-long-term-api-key', 'aws-bedrock-short-term-api-key', 'elevenlabs-api-key']) assert.ok(contracts[id].candidateSource, `${id}: the T1 candidate source is recorded, the tier is not promoted`);
+  // The maintainer rulings (redact-secret#778, #779, #788) promote the prefix and alphabet, not the lengths or the ElevenLabs body.
+  for (const id of ['aws-bedrock-long-term-api-key', 'aws-bedrock-short-term-api-key', 'elevenlabs-api-key']) {
+    assert.ok(contracts[id].providerSource, `${id}: T1 carries its provider source`);
+    assert.equal(contracts[id].candidateSource, undefined, `${id}: no candidate source remains`);
+  }
+  assert.equal(contracts['aws-bedrock-long-term-api-key'].fields.find(f => f.field === 'total-length').basis, 'tool');
+  assert.equal(contracts['elevenlabs-api-key'].fields.find(f => f.field === 'body').basis, 'tool');
   assert.equal(contracts['exa-api-key'].pattern, undefined, 'Exa has no evidenced value grammar');
   // Marker-less sk-admin- bodies are out of contract (redact-secret#863).
   assert.equal(new RegExp(contracts['openai-admin-api-key'].pattern).test(`sk-admin-${'a'.repeat(124)}`), false);
 });
 
 test('every Beta.10 target meets its declared fixture profile', async () => {
-  const counts = (await beta8ProfileCounts()).filter(c => families.some(f => f.id === c.target));
+  const counts = (await beta8ProfileCounts()).filter(c => targetIds.includes(c.target));
   assert.equal(counts.length, 13);
   for (const c of counts) assert.deepEqual(c.debt, [], `${c.target} (${c.profile})`);
 });
@@ -70,7 +86,7 @@ test('every positive satisfies its own contract pattern, and every twin of a pat
   for (const [category, corpus] of corpora) {
     const byId = new Map(corpus.fixtures.map(f => [f.id, f]));
     for (const f of corpus.fixtures) {
-      const target = (f.arrivalTargets ?? f.detectors)[0];
+      const target = targetOf(f);
       const pattern = contracts[target].pattern && new RegExp(contracts[target].pattern);
       if (secretsOf(f).length && pattern) for (const r of secretsOf(f)) assert.ok(pattern.test(valueOf(f, r)), `${category}--${f.id}`);
       if (f.twinOf) {
@@ -92,10 +108,10 @@ test('Bedrock: the 133-character short-term head is derived from the fixed pre-s
   assert.equal(BEDROCK_SHORT_HEAD.length, 133);
   assert.ok(Buffer.from(BEDROCK_SHORT_HEAD, 'base64').toString('utf8').startsWith(BEDROCK_SHORT_HEAD_TEXT.slice(0, 96)));
   const corpus = generated['beta8-384b'];
-  const short = corpus.fixtures.filter(f => f.arrivalTargets[0] === 'aws-bedrock-short-term-api-key' && secretsOf(f).length && !f.twinOf);
+  const short = corpus.fixtures.filter(f => targetOf(f) === 'aws-bedrock-short-term-api-key' && secretsOf(f).length && !f.twinOf);
   assert.ok(short.length >= 6);
   for (const f of short) assert.ok(valueOf(f, secretsOf(f)[0]).startsWith(`bedrock-api-key-${BEDROCK_SHORT_HEAD}`), f.id);
-  const lengths = new Set(corpus.fixtures.filter(f => f.arrivalTargets[0] === 'aws-bedrock-long-term-api-key' && secretsOf(f).length && !f.twinOf).map(f => valueOf(f, secretsOf(f)[0]).length));
+  const lengths = new Set(corpus.fixtures.filter(f => targetOf(f) === 'aws-bedrock-long-term-api-key' && secretsOf(f).length && !f.twinOf).map(f => valueOf(f, secretsOf(f)[0]).length));
   assert.deepEqual([...lengths].sort(), [132, 136], 'long-term positives carry the 132 and 136 character shapes');
 });
 

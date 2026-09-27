@@ -11,6 +11,9 @@ import { contracts } from "../../../benchmarks/lib/assessment.ts";
 // Stripe-shaped literal is committed.
 //
 // Deliberately not authored (see benchmarks/lib/beta8/384c.ts field claims):
+//   - a length or non-hex-alphabet twin of the body: the 2026-09-27 maintainer ruling (redact-secret#788) leaves the 48-hex body
+//     T2, so the three body twins are recorded in DISPUTED_PROPERTIES and read unmeasured; the twins here mutate the T1 prefix or
+//     boundary only;
 //   - uppercase hex as a negative: trufflehog v2 and betterleaks disagree and no provider
 //     source decides it;
 //   - a bare 32-hex legacy key either way, and a Pollinations sk_ + 32 value as a control: the
@@ -67,6 +70,11 @@ export function build384c({ fixture, synthetic }) {
   c.twin(T, "yaml-config", "ak-prefix", yaml(refuse(`ak_${k.yaml.slice(3)}`)), "prefix: ak_ in place of sk_", "prefix", "yml");
   c.twin(T, "js-client", "embedded-leading", js(refuse(`x${k.js}`)), "boundary: one identifier character before sk_, so the key is embedded in a longer token", "boundary", "ts");
   c.twin(T, "tool-call", "missing-underscore", tool(refuse(`sk${k.tool.slice(3)}`)), "prefix: the underscore after sk removed", "prefix", "json");
+  // Research redact-secret#788 lists pk_ (Pollinations' planned publishable prefix), a hyphen in place of the underscore and the Stripe test-key
+  // family as one-property prefix twins. They mutate only the T1 prefix, so they survive the 2026-09-27 ruling that leaves the body T2.
+  c.twin(T, "dotenv", "pk-prefix", dotenv(refuse(`pk_${k.dotenv.slice(3)}`)), "prefix: pk_ in place of sk_ (a publishable-key stem another issuer plans, never an ElevenLabs key)", "prefix", "env");
+  c.twin(T, "curl-xi-api-key", "hyphen-prefix", curl(refuse(`sk-${k.curl.slice(3)}`)), "prefix: sk- in place of sk_ (the OpenAI and Anthropic stem)", "prefix", "sh");
+  c.twin(T, "js-client", "stripe-test-shaped", js(refuse(`sk_test_${synthetic(seed("stripe-test-body"), 24, ALNUM)}`)), "prefix: the Stripe test-key shape (sk_test_ + 24 alphanumerics, a documented Stripe key type) in place of sk_ + 48 hex", "prefix", "ts");
 
   c.control(T, "placeholder", "your-api-key", ["ELEVENLABS_API_KEY=sk_your_api_key_here\n"], "env");
   c.control(T, "placeholder", "docs-ellipsis", ["client = ElevenLabs(api_key=\"sk_...\")\n"], "py");

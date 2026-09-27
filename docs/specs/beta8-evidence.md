@@ -167,13 +167,27 @@ source hash, and so its ledger rows, independent of the others.
 | `384a` | `beta8-384a` | `anthropic-api01-key`, `anthropic-admin01-key`, `openai-admin-api-key` | [#862](https://github.com/redact-secret/redact-secret/issues/862), [#863](https://github.com/redact-secret/redact-secret/issues/863) |
 | `384b` | `beta8-384b` | `aws-bedrock-long-term-api-key`, `aws-bedrock-short-term-api-key` | [#864](https://github.com/redact-secret/redact-secret/issues/864) |
 | `384c` | `beta8-384c` | `elevenlabs-api-key` | [#865](https://github.com/redact-secret/redact-secret/issues/865) |
-| `384d` | `beta8-384d` | `together-api-key`, `tavily-api-key` | [#867](https://github.com/redact-secret/redact-secret/issues/867) |
+| `384d` | `beta8-384d` | `together-ai-api-key`, `tavily-api-key` | [#867](https://github.com/redact-secret/redact-secret/issues/867) |
 | `384e` | `beta8-384e` | `mistral-api-key`, `cohere-api-key`, `deepgram-api-key`, `ai21-api-key`, `exa-api-key` | [#868](https://github.com/redact-secret/redact-secret/issues/868) |
 
-All thirteen are arrival families and stay unscored until the product gives each its own
-finding type (`arrivalFindingTypes` in `scanners/families.mjs`); that mapping is added
-against measured product output, never authored here. Conventions specific to these slices:
+Nine of the thirteen graduated to registry detectors when the registry was re-pinned to product
+`cfe2aec` (redact-secret PR #869: #862-#868): `aws-bedrock-long-term-api-key`,
+`aws-bedrock-short-term-api-key`, `elevenlabs-api-key`, `tavily-api-key`, `mistral-api-key`,
+`cohere-api-key`, `deepgram-api-key`, `ai21-api-key`, and Together, whose arrival id `together-api-key`
+was renamed to the detector id `together-ai-api-key`. Their contracts moved to each module's
+`registryContracts`. Four stay arrival families: `anthropic-api01-key`, `anthropic-admin01-key` and
+`openai-admin-api-key`, because the product types them inside the shared `anthropic-token` and
+`openai-token` detectors under one finding type per detector (`anthropic_api_key`, `openai_api_key`)
+and so gives no per-family attribution, and `exa-api-key`, because the product registered no Exa
+detector. They stay unscored until the product gives each its own finding type or detector. Conventions
+specific to these slices:
 
+- **Maintainer rulings of 2026-09-27 (redact-secret#778, #779, #788).** Bedrock long-term (`ABSK`
+  prefix and standard Base64 with `={0,2}`), Bedrock short-term (`bedrock-api-key-`, the fixed
+  133-character head, standard padded Base64) and ElevenLabs (`sk_` and the `_residency_[a-z0-9]+`
+  suffix grammar) are T1 with a `providerSource` (`documented` route). Total lengths and the ElevenLabs
+  48-hex body stay T2 and are asserted by no fixture: the three ElevenLabs body twins are recorded in
+  `DISPUTED_PROPERTIES` and read unmeasured. The bullet below records the tiers as first authored.
 - **Tier follows the evidence, not the candidate.** `anthropic-api01-key` and
   `anthropic-admin01-key` are T1 on the provider-documented prefix, with the body recorded as
   tool-corroborated or unspecified, as `anthropic-token` already does for `sk-ant-api03-`. The
@@ -195,11 +209,17 @@ against measured product output, never authored here. Conventions specific to th
   Stripe-shaped `sk_live_` value beside an ElevenLabs context and an `sk-ant-api03-` value beside
   an `api01` context are prefix twins, scored as co-detection when another known family reports
   them; a benign control that another detector would flag is a benchmark bug.
-- **Shared-detector reconciliation is deferred to the re-pin.** Four existing common-formats
-  twins use `sk-ant-api01-` and `sk-ant-admin01-` as negatives of `sk-ant-api03-`
-  (`anthropic-token-api03-{compliance,admin}-prefix-{plain,unicode-crlf}-twin`). They stay
-  authored as written; once redact-secret#862 is in the pinned registry they must be re-scoped
-  (`DISPUTED_PROPERTIES` in `benchmarks/lib/assessment.ts`) in the same change.
+- **Shared-detector reconciliation (done at the cfe2aec re-pin).** Four common-formats twins used
+  `sk-ant-api01-` and `sk-ant-admin01-` as negatives of `sk-ant-api03-`
+  (`anthropic-token-api03-{compliance,admin}-prefix-{plain,unicode-crlf}-twin`). With redact-secret#862 in
+  the pinned registry they are re-scoped in `DISPUTED_PROPERTIES` (`anthropic-sibling-prefixes`), and three
+  `beta8-384a` twins of `anthropic-token` on prefixes no source claims (underscore delimiters, another vendor
+  stem, a missing hyphen) keep the documented twin floor met.
+- **The detector-coverage minimum and ledger keys.** Each graduated detector carries the registry-wide
+  `detector-coverage` minimum (`tests/detector-coverage.test.mjs`). A ledger id hashes the whole corpus
+  file, so editing `detector-coverage`, `common-formats` or a `beta8-384*` corpus re-keys that category's
+  rows; they were carried to their new ids mechanically, and rows on changed fixtures were triaged under the
+  decided classes (`benchmarks/ledger-decisions.json`) or recorded open.
 
 The corpus also adds one authored calibration row pair per family to
 `corpora/development/shadow-scoring-authored.json` and lists the five categories as

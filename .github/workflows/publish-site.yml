@@ -193,6 +193,8 @@ jobs:
           WASM_PACKAGE: ${{ steps.candidate.outputs.wasm }}
         run: |
           set -euo pipefail
+          # Only a bundle produced during this run may affect publication.
+          rm -f results-output/pii/population-release-v1.json
           if [ "$TARGET" = staging ]; then
             npm run bench -- --strict \
               --candidate-package="$CORE_PACKAGE" \
@@ -295,9 +297,17 @@ jobs:
           npm run eval:matrix
           npm run eval:publish:matrix
           # Publish the strict domain descriptor only after both referenced
-          # credential artifacts pass their existing validators. PII remains a
-          # schema-only entry until domain evidence is publishable.
+          # credential artifacts pass their existing validators. This v1 index
+          # remains byte-compatible for existing credential consumers.
           npm run eval:publish:domains
+          # PII support is a separate v2 artifact. The publisher validates the
+          # complete credential-v1 + PII set and renames the v2 index last.
+          population_bundle=results-output/pii/population-release-v1.json
+          if [ -s "$population_bundle" ]; then
+            npm run eval:publish:pii-support -- --population-bundle="$population_bundle"
+          else
+            npm run eval:publish:pii-support -- --population-mode=not-measured
+          fi
 
       # The page marks which environment served it and which commit built it
       # (#155); an unset VITE_SITE_ENV builds as "local", never production.
@@ -331,10 +341,19 @@ jobs:
 
           aws s3 sync dist/assets "s3://$bucket/assets" --only-show-errors \
             --cache-control 'public, max-age=31536000, immutable'
+          pii_artifact=$(jq -r '.domains[] | select(.domain=="pii") | .support.href | ltrimstr("/")' dist/results/evaluation-domains-v2.json)
+          test -f "dist/$pii_artifact"
+          # Upload the immutable artifact before anything can point at it.
+          aws s3 cp "dist/$pii_artifact" "s3://$bucket/$pii_artifact" --only-show-errors \
+            --cache-control 'public, max-age=31536000, immutable'
           aws s3 sync dist "s3://$bucket" --only-show-errors --delete \
-            --exclude 'assets/*' --cache-control 'no-cache'
+            --exclude 'assets/*' --exclude 'results/pii-support-matrix-v2-*.json' \
+            --exclude 'results/evaluation-domains-v2.json' --cache-control 'no-cache'
           aws s3 sync dist/assets "s3://$bucket/assets" --only-show-errors --delete \
             --cache-control 'public, max-age=31536000, immutable'
+          # The v2 index is the sole mutable commit marker and is always last.
+          aws s3 cp dist/results/evaluation-domains-v2.json "s3://$bucket/results/evaluation-domains-v2.json" \
+            --only-show-errors --cache-control 'no-cache'
 
           aws cloudfront create-invalidation --distribution-id "$distribution" --paths '/*' \
             --query 'Invalidation.Id' --output text
@@ -352,6 +371,8 @@ jobs:
             echo "- redact-secret measured: $(jq -r '.scannerVersions["redact-secret"] + (if .candidate then " (candidate " + .candidate.sourceCommit[0:7] + ", unreleased)" else " (released)" end)' public/results/run.json)"
             echo "- qualification: $(jq -r '.qualification.status + " with redact-secret " + (.qualification.holdout.scanners[] | select(.id == "redact-secret") | .version)' public/results/evaluation-v1.json)"
             echo "- support matrix: $(jq -r '.distribution.stable|tostring' public/results/support-matrix-v1.json) stable, $(jq -r 'if .sourceReport.product then "candidate " + .sourceReport.product.sourceCommit[0:7] else "released " + (.sourceReport.publishedPackage.version // "package") end' public/results/support-matrix-v1.json)"
+            pii_artifact=$(jq -r '.domains[] | select(.domain=="pii") | .support.href | ltrimstr("/")' public/results/evaluation-domains-v2.json)
+            echo "- PII populations: $(jq -r '[.populationComparisons[] | .id + "=" + .verdict] | join(", ")' "public/$pii_artifact")"
             if [ "$TARGET" = staging ]; then
               echo "- candidate evidence for redact-secret \`$PRODUCT_COMMIT\` ($(jq -r .status public/results/candidate-evidence-v1.json)), artifacts from $QUALIFICATION_RUN_URL"
             else

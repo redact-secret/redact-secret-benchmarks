@@ -1,0 +1,35 @@
+{
+  "$id": "urn:redact-secret:pii-population-comparison:1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schemaVersion", "reportType", "domain", "population", "contractCommitment", "corpusCommitment", "baselineReportCommitment", "candidateReportCommitment", "baselineArtifactHash", "candidateArtifactHash", "verdict", "deltas", "diagnosticDeltas"],
+  "properties": {
+    "schemaVersion": { "const": 1 }, "reportType": { "const": "pii-population-comparison" }, "domain": { "const": "pii" },
+    "population": { "enum": ["diagnostic-balanced", "benign-heavy-stress"] }, "contractCommitment": { "$ref": "#/$defs/digest" }, "corpusCommitment": { "$ref": "#/$defs/digest" },
+    "baselineReportCommitment": { "$ref": "#/$defs/digest" }, "candidateReportCommitment": { "$ref": "#/$defs/digest" },
+    "baselineArtifactHash": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] },
+    "candidateArtifactHash": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] },
+    "verdict": { "enum": ["regression", "no-regression", "not-measured"] },
+    "deltas": { "type": "array", "items": { "$ref": "#/$defs/delta" } },
+    "diagnosticDeltas": { "type": "array", "items": { "$ref": "#/$defs/diagnosticDelta" } }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "rate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] },
+    "deltaRate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": -1, "maximum": 1 }] },
+    "diagnosticDelta": { "type": "object", "additionalProperties": false,
+      "required": ["axis", "baseline", "candidate", "delta", "failedDelta"], "properties": {
+        "axis": { "enum": ["type-identity", "validator-correctness", "context-discrimination"] },
+        "baseline": { "$ref": "#/$defs/rate" }, "candidate": { "$ref": "#/$defs/rate" }, "delta": { "$ref": "#/$defs/deltaRate" },
+        "failedDelta": { "type": "integer" }
+      } },
+    "delta": { "type": "object", "additionalProperties": false,
+      "required": ["family", "scope", "contextClass", "evidenceClass", "accountingAxis", "validatorBacked", "contextDependent", "baseline", "candidate", "delta"], "properties": {
+        "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "scope": { "type": "string", "pattern": "^(?:global|jurisdiction:[A-Z]{2})$" }, "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
+        "evidenceClass": { "enum": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+        "accountingAxis": { "anyOf": [{ "type": "null" }, { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] }] },
+        "validatorBacked": { "type": "boolean" }, "contextDependent": { "type": "boolean" },
+        "baseline": { "$ref": "#/$defs/rate" }, "candidate": { "$ref": "#/$defs/rate" }, "delta": { "$ref": "#/$defs/deltaRate" }
+      } }
+  }
+}

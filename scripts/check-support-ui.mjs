@@ -96,7 +96,7 @@ export async function checkSupportUi() {
   }
 
   const files = await uiFilesRenderingStatuses();
-  const expected = ['src/pages/coverage.ts', 'src/pages/support.ts'];
+  const expected = ['src/pages/coverage.ts', 'src/pages/pii-support.ts', 'src/pages/support.ts'];
   for (const file of files) if (!expected.includes(file)) problems.push(`${file} renders support statuses; this gate only sees ${expected.join(', ')}`);
   for (const file of expected) if (!files.includes(file)) problems.push(`${file} no longer marks rendered statuses with data-support-status, so this gate cannot see them`);
 

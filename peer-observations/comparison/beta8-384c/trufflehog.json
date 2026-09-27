@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T04:37:03.340Z",
+  "sourceRun": {
+    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
+    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+  },
+  "input": {
+    "surface": "comparison/beta8-384c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "aaedadfe0aa864692b2038bbf147315ade3ee0f8e0106cfcc8cc3228ae224754",
+    "fixtureCount": 27,
+    "fixturesDigest": "6e784abb14f43072b1245e5cfe4aca04996d52dc65f0a313b0de456e97a8a2f7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
+      "fixtureCount": 3422
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/elevenlabs-api-key-curl-xi-api-key.sh",
+      "start": 58,
+      "end": 109
+    },
+    {
+      "path": "cases/elevenlabs-api-key-dotenv.env",
+      "start": 26,
+      "end": 77
+    },
+    {
+      "path": "cases/elevenlabs-api-key-export-xi-api-key.sh",
+      "start": 19,
+      "end": 70
+    },
+    {
+      "path": "cases/elevenlabs-api-key-js-client.ts",
+      "start": 110,
+      "end": 161
+    },
+    {
+      "path": "cases/elevenlabs-api-key-python-multi-line.py",
+      "start": 76,
+      "end": 127
+    },
+    {
+      "path": "cases/elevenlabs-api-key-python-single-line.py",
+      "start": 64,
+      "end": 115
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-shaped-twin.py",
+      "start": 64,
+      "end": 104,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-tool-call.json",
+      "start": 103,
+      "end": 154
+    },
+    {
+      "path": "cases/elevenlabs-api-key-yaml-config.yml",
+      "start": 39,
+      "end": 90
+    }
+  ],
+  "digest": "bea9034cc5216544974f1ccb376a891ec69eb8abc016624f8abe22bdcd656ac2"
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T04:37:03.340Z",
+  "sourceRun": {
+    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
+    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+  },
+  "input": {
+    "surface": "comparison/beta8-384d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "357ed426b5f68be21a25278fa8d2a1817a270d280999dba8fa9c24355490620d",
+    "fixtureCount": 50,
+    "fixturesDigest": "a24a699483754512c9b3729673892dda6cfb13e8d47bb979666ad8ed1f44be76",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
+      "fixtureCount": 3422
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/tavily-api-key-curl-bearer.sh",
+      "start": 65,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/tavily-api-key-docs-bearer-placeholder.sh",
+      "start": 65,
+      "end": 89,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/tavily-api-key-tool-call.json",
+      "start": 101,
+      "end": 149,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/tavily-api-key-uppercase-prefix-twin.sh",
+      "start": 65,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/together-api-key-curl-bearer.sh",
+      "start": 62,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/together-api-key-tool-call.json",
+      "start": 115,
+      "end": 172,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/together-api-key-uppercase-prefix-twin.sh",
+      "start": 62,
+      "end": 119,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "18df95b8ae0cc26501d30c5f64102178993f300340693501c7d434b1b96be7ff"
+}

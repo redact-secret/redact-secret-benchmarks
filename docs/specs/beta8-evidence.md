@@ -152,6 +152,60 @@ therefore an upper bound: read it together with the co-detection count and the
 open ledger rows, never on its own. `validateBeta8` and `tests/beta8.test.mjs`
 enforce this.
 
+## Beta.10 slices (#384)
+
+The same layout carries the Beta.10 credential corpus
+([#384](https://github.com/redact-secret/redact-secret-benchmarks/issues/384),
+parent [#283](https://github.com/redact-secret/redact-secret-benchmarks/issues/283);
+product [redact-secret#774](https://github.com/redact-secret/redact-secret/issues/774)).
+The `beta8-` prefix is the shared per-issue corpus layout, not the milestone: the fixture
+index labels these corpora `beta.10`. One corpus key per product issue keeps each slice's
+source hash, and so its ledger rows, independent of the others.
+
+| Key | Category | Families (arrival ids) | Product issue |
+| --- | --- | --- | --- |
+| `384a` | `beta8-384a` | `anthropic-api01-key`, `anthropic-admin01-key`, `openai-admin-api-key` | [#862](https://github.com/redact-secret/redact-secret/issues/862), [#863](https://github.com/redact-secret/redact-secret/issues/863) |
+| `384b` | `beta8-384b` | `aws-bedrock-long-term-api-key`, `aws-bedrock-short-term-api-key` | [#864](https://github.com/redact-secret/redact-secret/issues/864) |
+| `384c` | `beta8-384c` | `elevenlabs-api-key` | [#865](https://github.com/redact-secret/redact-secret/issues/865) |
+| `384d` | `beta8-384d` | `together-api-key`, `tavily-api-key` | [#867](https://github.com/redact-secret/redact-secret/issues/867) |
+| `384e` | `beta8-384e` | `mistral-api-key`, `cohere-api-key`, `deepgram-api-key`, `ai21-api-key`, `exa-api-key` | [#868](https://github.com/redact-secret/redact-secret/issues/868) |
+
+All thirteen are arrival families and stay unscored until the product gives each its own
+finding type (`arrivalFindingTypes` in `scanners/families.mjs`); that mapping is added
+against measured product output, never authored here. Conventions specific to these slices:
+
+- **Tier follows the evidence, not the candidate.** `anthropic-api01-key` and
+  `anthropic-admin01-key` are T1 on the provider-documented prefix, with the body recorded as
+  tool-corroborated or unspecified, as `anthropic-token` already does for `sk-ant-api03-`. The
+  Bedrock and ElevenLabs contracts are T2 with a `candidateSource`: the AWS Security Blog pattern,
+  the AWS token-generator code and the ElevenLabs SDK code are the candidate T1 sources, and a
+  maintainer ruling records the promotion (a tier change plus a `providerSource`, no fixture
+  edit). Together and Tavily are T2 pending hands-on corroboration.
+- **Keyword-gated rows are context-gated arrival families** (`contextGated: true`): no
+  bare-value claim, positives score as project policy, and every positive has a context twin
+  that keeps the value byte-for-byte and removes the gate. `ai21-api-key` and `exa-api-key` carry
+  a pending (T0) contract because no provider or scanner source states a shape; `exa-api-key`
+  has no value grammar at all, so it measures the keyword gate and the SDK-call-argument forms
+  only.
+- **Disputed properties are not asserted.** Where the sources disagree or none decides (uppercase
+  ElevenLabs hex, the Deepgram hex-versus-base36 alphabet, a Tavily `tvly-prod-` prefix, a
+  Together `tgp_v2_`, a head-less Bedrock `ABSK` key, Anthropic `admin02`/`api02`/`oat01`), no
+  fixture asserts silence; each is a recorded `unresolved` field on the contract.
+- **A shape that only exists as another family's credential is a twin, never a control.** The
+  Stripe-shaped `sk_live_` value beside an ElevenLabs context and an `sk-ant-api03-` value beside
+  an `api01` context are prefix twins, scored as co-detection when another known family reports
+  them; a benign control that another detector would flag is a benchmark bug.
+- **Shared-detector reconciliation is deferred to the re-pin.** Four existing common-formats
+  twins use `sk-ant-api01-` and `sk-ant-admin01-` as negatives of `sk-ant-api03-`
+  (`anthropic-token-api03-{compliance,admin}-prefix-{plain,unicode-crlf}-twin`). They stay
+  authored as written; once redact-secret#862 is in the pinned registry they must be re-scoped
+  (`DISPUTED_PROPERTIES` in `benchmarks/lib/assessment.ts`) in the same change.
+
+The corpus also adds one authored calibration row pair per family to
+`corpora/development/shadow-scoring-authored.json` and lists the five categories as
+development-evaluation in `tuning/shadow-scoring-development-v1.json`, as the calibration
+partition requires for every family with a measurable positive.
+
 ## Per-field provenance
 
 `FormatContract.fields` records each structural claim (prefix, total length,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-09-26",
+  "reviewedAt": "2026-09-27",
   "fixtures": [
     {
       "slug": "accuracy--aws-id",
@@ -14873,6 +14873,4197 @@
       ],
       "scenarioIds": [
         "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-actions-secret-reference",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-admin-api-ids-public-id",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-angle-key-placeholder",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-api01-prefix-twin",
+      "familyIds": [
+        "anthropic:admin-api-key",
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-api03-prefix-twin",
+      "familyIds": [
+        "anthropic:admin-api-key",
+        "anthropic:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-body-only-twin",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-compose-env",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-curl-x-api-key",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-docs-ellipsis-placeholder",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-dotenv",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-embedded-leading-twin",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-env-reference-reference",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-export",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-job-log",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-json-config",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-key-digest-encoded-value",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-pasted-key",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-prefix-guidance-prose",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-prefix-only-near-miss",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-python-sdk",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-tool-call",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-underscore-delimiters-twin",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-uppercase-prefix-twin",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-admin01-key-version-and-org-public-id",
+      "familyIds": [
+        "anthropic:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-actions-secret-reference",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-activity-ids-public-id",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-admin01-prefix-twin",
+      "familyIds": [
+        "anthropic:admin-api-key",
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-angle-key-placeholder",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-api03-prefix-twin",
+      "familyIds": [
+        "anthropic:compliance-access-key",
+        "anthropic:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-body-only-twin",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-compose-env",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-curl-x-api-key",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-docs-ellipsis-placeholder",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-dotenv",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-embedded-leading-twin",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-env-reference-reference",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-export",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-job-log",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-json-config",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-key-digest-encoded-value",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-pasted-key",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-prefix-guidance-prose",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-prefix-only-near-miss",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-python-sdk",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-tool-call",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-underscore-delimiters-twin",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-uppercase-prefix-twin",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--anthropic-api01-key-version-and-org-public-id",
+      "familyIds": [
+        "anthropic:compliance-access-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-actions-secret-reference",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-compose-env",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-curl-bearer",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-docs-ellipsis-placeholder",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-dotenv",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-embedded-leading-twin",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-env-reference-reference",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-export-74",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-inside-identifier-near-miss",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-json-config",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-key-digest-encoded-value",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-key-resource-public-id",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-lowercase-marker-twin",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-marker-less-body-twin",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-org-and-project-public-id",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-prefix-guidance-prose",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-prefix-only-near-miss",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-python-sdk",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-short-first-segment-74-twin",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-short-first-segment-twin",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-short-second-segment-74-twin",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-short-second-segment-twin",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-tool-call",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-ts-client",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-underscore-delimiter-twin",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-usage-log",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-your-key-here-placeholder",
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-actions-env",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-actions-secret-reference",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-agent-settings",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-alias-base64-encoded-value",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-curl-bearer",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-docs-ellipsis-placeholder",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-dotenv",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-embedded-leading-twin",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-env-reference-reference",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-export-136",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-iam-alias-public-id",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-key-guidance-prose",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-leading-equals-twin",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-long-base64-blob-encoded-value",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-lowercase-prefix-twin",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-model-and-endpoint-public-id",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-openai-sdk",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-pasted-key",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-prefix-only-near-miss",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-proxy-log",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-python-environ",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-short-prefix-twin",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-tool-call",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-truncated-head-near-miss",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-urlsafe-body-twin",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-wrong-prefix-twin",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-long-term-api-key-your-key-placeholder",
+      "familyIds": [
+        "aws-bedrock:long-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-actions-env",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-agent-settings",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-capitalized-prefix-twin",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-curl-bearer",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-decoded-host-only-encoded-value",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-docs-angle-placeholder",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-dotenv",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-embedded-leading-twin",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-env-reference-reference",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-export-with-session",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-head-one-char-off-twin",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-head-only-twin",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-iam-action-and-arn-public-id",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-key-guidance-prose",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-openai-sdk-mantle",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-pasted-key",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-plural-prefix-twin",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-proxy-log",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-python-environ",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-python-getenv-reference",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-rule-with-body-class-near-miss",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-scanner-rule-anchor-near-miss",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-tool-call",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-unrelated-base64-encoded-value",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-urlsafe-body-twin",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384b--aws-bedrock-short-term-api-key-your-key-here-placeholder",
+      "familyIds": [
+        "aws-bedrock:short-term-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-ak-prefix-twin",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-curl-xi-api-key",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-docs-ellipsis-placeholder",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-dotenv",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-embedded-leading-twin",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-env-reference-reference",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-export-xi-api-key",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-hashed-key-encoded-value",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-js-client",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-key-hint-public-id",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-key-id-public-id",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-long-body-twin",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-masked-stars-placeholder",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-missing-underscore-twin",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-non-hex-body-twin",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-pasted-key",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-python-multi-line",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-python-single-line",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-residency-hosts-prose",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-residency-suffix",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-short-body-twin",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-stripe-shaped-twin",
+      "familyIds": [
+        "elevenlabs:api-key",
+        "stripe:secret-key-live"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-tool-call",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-unprefixed-hex-near-miss",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-voice-id-public-id",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-yaml-config",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384c--elevenlabs-api-key-your-api-key-placeholder",
+      "familyIds": [
+        "elevenlabs:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-cli-and-prefix-prose",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-curl-bearer",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-dev-ellipsis-placeholder",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-docs-bearer-placeholder",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-dotenv-dev",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-embedded-leading-twin",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-env-reference-reference",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-export-bare",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-js-client",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-json-body",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-key-digest-encoded-value",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-key-name-public-id",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-long-body-twin",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-mcp-client-env",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-prefix-only-near-miss",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-python-client",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-remote-mcp-query",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-request-id-public-id",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-short-body-near-miss",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-short-body-twin",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-tool-call",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-underscore-delimiter-twin",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-underscore-in-body-twin",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-uppercase-prefix-twin",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--tavily-api-key-x-run-placeholder",
+      "familyIds": [
+        "tavily:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-actions-secret-reference",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-base-url-and-model-public-id",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-curl-bearer",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-docs-key-placeholder",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-dot-in-body-twin",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-dotenv",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-embedded-leading-twin",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-env-reference-reference",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-export",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-hex-digest-encoded-value",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-hyphen-delimiters-twin",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-json-config",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-long-body-twin",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-masked-display-public-id",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-openai-sdk-base-url",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-prefix-guidance-prose",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-prefix-only-near-miss",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-python-environ",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-python-together",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-router-log",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-short-body-near-miss",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-short-body-twin",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-tool-call",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-uppercase-prefix-twin",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384d--together-api-key-your-key-here-placeholder",
+      "familyIds": [
+        "together:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-angle-key-placeholder",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-bare-in-prose-near-miss",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-bare-line-near-miss",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-curl-header",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-docs-ctor-placeholder",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-dotenv",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-env-reference-reference",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-export",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-env-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-export-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-json-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-kwarg-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-tool-call-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-json-config",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-langchain-kwarg",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-long-value-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-model-id-public-id",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-other-host-curl-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-python-ctor",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-python-environ-reference",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-request-uuid-public-id",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-sha256-digest-encoded-value",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-short-value-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-tool-call",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-ts-ctor",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-unrelated-python-ctor-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-unrelated-ts-ctor-twin",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-your-key-here-placeholder",
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-actions-secret-reference",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-angle-key-placeholder",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-bare-in-prose-near-miss",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-bare-line-near-miss",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-base64-text-encoded-value",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-compose-env",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-curl-header",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-data-uri-encoded-value",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-docs-ctor-placeholder",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-dotenv",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-dotenv-alt",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-embedded-run-near-miss",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-env-reference-reference",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-export",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-id-named-compose-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-id-named-env-alt-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-id-named-env-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-id-named-export-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-id-named-json-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-id-named-kwarg-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-id-named-tool-call-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-json-config",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-key-guidance-prose",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-langchain-kwarg",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-litellm-yaml",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-long-value-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-model-id-public-id",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-model-notes-prose",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-object-id-public-id",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-other-host-curl-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-other-host-log-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-other-provider-model-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-project-uuid-public-id",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-proxy-log",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-python-ctor",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-python-environ-reference",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-request-hex-public-id",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-request-uuid-public-id",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-sha256-digest-encoded-value",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-short-value-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-tool-call",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-ts-ctor",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-unrelated-assignment-near-miss",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-unrelated-python-ctor-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-unrelated-ts-ctor-twin",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-upper-name-placeholder",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-x-ellipsis-placeholder",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-your-key-here-placeholder",
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-actions-secret-reference",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-angle-key-placeholder",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-bare-in-prose-near-miss",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-bare-line-near-miss",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-base64-text-encoded-value",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-compose-env",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-create-client",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-curl-header",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-data-uri-encoded-value",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-docs-ctor-placeholder",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-dotenv",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-dotenv-alt",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-embedded-run-near-miss",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-env-reference-reference",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-export",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-id-named-compose-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-id-named-env-alt-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-id-named-env-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-id-named-export-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-id-named-tool-call-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-json-header-token",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-key-guidance-prose",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-long-value-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-model-id-public-id",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-model-notes-prose",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-object-id-public-id",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-other-host-curl-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-other-host-json-header-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-other-host-log-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-other-host-websocket-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-project-uuid-public-id",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-proxy-log",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-python-ctor",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-python-environ-reference",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-request-hex-public-id",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-request-uuid-public-id",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-sha256-digest-encoded-value",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-short-value-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-tool-call",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-ts-ctor",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-unrelated-assignment-near-miss",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-unrelated-factory-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-unrelated-python-ctor-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-unrelated-ts-ctor-twin",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-upper-name-placeholder",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-websocket-subprotocol",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-x-ellipsis-placeholder",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-your-key-here-placeholder",
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-angle-key-placeholder",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-api-key-id-export-twin",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-bare-in-prose-near-miss",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-bare-line-near-miss",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-bearer-docs-prose",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-content-length-setting-near-miss",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-curl-x-api-key",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-docs-ctor-placeholder",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-dotenv",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-env-reference-reference",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-export",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-hosted-mcp-query",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-js-positional",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-key-id-env-twin",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-langchain-kwarg",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-model-id-public-id",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-other-host-twin",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-python-environ-reference",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-python-kwarg",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-python-positional",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-quickstart-key-placeholder",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-request-id-query-twin",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-request-uuid-public-id",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-sha256-digest-encoded-value",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-team-id-kwarg-twin",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-team-management-ids-public-id",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-unrelated-js-positional-twin",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-unrelated-python-ctor-twin",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-unrelated-python-positional-twin",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--exa-api-key-your-key-here-placeholder",
+      "familyIds": [
+        "exa:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-actions-secret-reference",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-angle-key-placeholder",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-bare-in-prose-near-miss",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-bare-line-near-miss",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-base64-text-encoded-value",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-compose-env",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-curl-header",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-data-uri-encoded-value",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-docs-ctor-placeholder",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-dotenv",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-dotenv-alt",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-embedded-run-near-miss",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-env-reference-reference",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-export",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-id-named-compose-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-id-named-env-alt-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-id-named-env-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-id-named-export-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-id-named-json-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-id-named-kwarg-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-id-named-tool-call-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-json-config",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-key-guidance-prose",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-langchain-kwarg",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-litellm-yaml",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-long-value-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-model-id-public-id",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-model-notes-prose",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-object-id-public-id",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-other-host-curl-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-other-host-log-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-other-provider-model-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-project-uuid-public-id",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-proxy-log",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-python-ctor",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-python-environ-reference",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-request-hex-public-id",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-request-uuid-public-id",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-sha256-digest-encoded-value",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-short-value-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-tool-call",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-ts-ctor",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-unrelated-assignment-near-miss",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-unrelated-python-ctor-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-unrelated-ts-ctor-twin",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-upper-name-placeholder",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-x-ellipsis-placeholder",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-your-key-here-placeholder",
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
         "regression-behavior"
       ]
     },

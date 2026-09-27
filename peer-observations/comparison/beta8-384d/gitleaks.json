@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T04:37:03.340Z",
+  "sourceRun": {
+    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
+    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+  },
+  "input": {
+    "surface": "comparison/beta8-384d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "357ed426b5f68be21a25278fa8d2a1817a270d280999dba8fa9c24355490620d",
+    "fixtureCount": 50,
+    "fixturesDigest": "a24a699483754512c9b3729673892dda6cfb13e8d47bb979666ad8ed1f44be76",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
+      "fixtureCount": 3422
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/tavily-api-key-curl-bearer.sh",
+      "start": 72,
+      "end": 113
+    },
+    {
+      "path": "cases/tavily-api-key-docs-bearer-placeholder.sh",
+      "start": 72,
+      "end": 89
+    },
+    {
+      "path": "cases/tavily-api-key-embedded-leading-twin.ts",
+      "start": 73,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-export-bare.sh",
+      "start": 23,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-js-client.ts",
+      "start": 73,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-key-digest-encoded-value.txt",
+      "start": 37,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-long-body-twin.sh",
+      "start": 23,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-mcp-client-env.json",
+      "start": 130,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-tool-call.json",
+      "start": 108,
+      "end": 149
+    },
+    {
+      "path": "cases/tavily-api-key-uppercase-prefix-twin.sh",
+      "start": 72,
+      "end": 113
+    },
+    {
+      "path": "cases/together-api-key-curl-bearer.sh",
+      "start": 69,
+      "end": 119
+    },
+    {
+      "path": "cases/together-api-key-dot-in-body-twin.json",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-dotenv.env",
+      "start": 24,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-export.sh",
+      "start": 25,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-hyphen-delimiters-twin.py",
+      "start": 58,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-json-config.json",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-long-body-twin.sh",
+      "start": 25,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-openai-sdk-base-url.py",
+      "start": 92,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-python-together.py",
+      "start": 58,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-short-body-twin.env",
+      "start": 24,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-api-key-tool-call.json",
+      "start": 122,
+      "end": 172
+    },
+    {
+      "path": "cases/together-api-key-uppercase-prefix-twin.sh",
+      "start": 69,
+      "end": 119
+    }
+  ],
+  "digest": "942b9f500fb74224a8e897f3fc5ba049af54d31cd117f775a8eb57877f4a7c58"
+}

@@ -3671,6 +3671,771 @@
           "https://github.com/BerriAI/litellm/issues/9291"
         ]
       }
+    },
+    {
+      "id": "anthropic-api01-key-positive",
+      "path": "anthropic-api01-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ANTHROPIC_COMPLIANCE_ACCESS_KEY=\u0073k-ant-api01-Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-BetAA\n",
+      "expected": [
+        {
+          "start": 32,
+          "end": 140,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "anthropic-api01-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "anthropic-api01-key",
+        "sources": [
+          "https://platform.claude.com/docs/en/manage-claude/compliance-api-access",
+          "https://platform.claude.com/docs/en/manage-claude/admin-api-keys",
+          "https://platform.claude.com/docs/en/manage-claude/authentication",
+          "https://github.com/redact-secret/redact-secret/issues/776",
+          "https://github.com/redact-secret/redact-secret/issues/862"
+        ]
+      }
+    },
+    {
+      "id": "anthropic-api01-key-negative",
+      "path": "anthropic-api01-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ANTHROPIC_COMPLIANCE_ACCESS_KEY=${ANTHROPIC_COMPLIANCE_ACCESS_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "anthropic-api01-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "anthropic-api01-key",
+        "sources": [
+          "https://platform.claude.com/docs/en/manage-claude/compliance-api-access",
+          "https://platform.claude.com/docs/en/manage-claude/admin-api-keys",
+          "https://platform.claude.com/docs/en/manage-claude/authentication",
+          "https://github.com/redact-secret/redact-secret/issues/776",
+          "https://github.com/redact-secret/redact-secret/issues/862"
+        ]
+      }
+    },
+    {
+      "id": "anthropic-admin01-key-positive",
+      "path": "anthropic-admin01-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ANTHROPIC_ADMIN_API_KEY=\u0073k-ant-admin01-Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-BetAA\n",
+      "expected": [
+        {
+          "start": 24,
+          "end": 134,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "anthropic-admin01-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "anthropic-admin01-key",
+        "sources": [
+          "https://platform.claude.com/docs/en/manage-claude/admin-api-keys",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/anthropic/anthropic.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/anthropic.go",
+          "https://platform.claude.com/docs/en/manage-claude/admin-api",
+          "https://platform.claude.com/docs/en/manage-claude/authentication",
+          "https://github.com/trufflesecurity/trufflehog/pull/3969",
+          "https://github.com/redact-secret/redact-secret/issues/775",
+          "https://github.com/redact-secret/redact-secret/issues/862",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "anthropic-admin01-key-negative",
+      "path": "anthropic-admin01-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ANTHROPIC_ADMIN_API_KEY=${ANTHROPIC_ADMIN_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "anthropic-admin01-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "anthropic-admin01-key",
+        "sources": [
+          "https://platform.claude.com/docs/en/manage-claude/admin-api-keys",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/anthropic/anthropic.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/anthropic.go",
+          "https://platform.claude.com/docs/en/manage-claude/admin-api",
+          "https://platform.claude.com/docs/en/manage-claude/authentication",
+          "https://github.com/trufflesecurity/trufflehog/pull/3969",
+          "https://github.com/redact-secret/redact-secret/issues/775",
+          "https://github.com/redact-secret/redact-secret/issues/862",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "openai-admin-api-key-positive",
+      "path": "openai-admin-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OPENAI_ADMIN_KEY=\u0073k-admin-ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7T3BlbkFJReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 150,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "openai-admin-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "openai-admin-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openai/openai.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/issues/4698",
+          "https://github.com/redact-secret/redact-secret/issues/777",
+          "https://github.com/redact-secret/redact-secret/issues/863",
+          "https://platform.openai.com/docs/api-reference/admin-api-keys"
+        ]
+      }
+    },
+    {
+      "id": "openai-admin-api-key-negative",
+      "path": "openai-admin-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "OPENAI_ADMIN_KEY=${OPENAI_ADMIN_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "openai-admin-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "openai-admin-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openai/openai.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/issues/4698",
+          "https://github.com/redact-secret/redact-secret/issues/777",
+          "https://github.com/redact-secret/redact-secret/issues/863",
+          "https://platform.openai.com/docs/api-reference/admin-api-keys"
+        ]
+      }
+    },
+    {
+      "id": "aws-bedrock-long-term-api-key-positive",
+      "path": "aws-bedrock-long-term-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_BEARER_TOKEN_BEDROCK=\u0041BSKQmVkcm9ja0FQSUtleSReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9G\n",
+      "expected": [
+        {
+          "start": 25,
+          "end": 157,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "aws-bedrock-long-term-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "aws-bedrock-long-term-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/awslabs/git-secrets/pull/264",
+          "https://www.wiz.io/blog/a-new-type-of-long-lived-key-on-aws-bedrock-api-keys",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-reference.html",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-use.html",
+          "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceSpecificCredential.html",
+          "https://github.com/gitleaks/gitleaks/pull/1935",
+          "https://github.com/redact-secret/redact-secret/issues/778",
+          "https://github.com/redact-secret/redact-secret/issues/864"
+        ]
+      }
+    },
+    {
+      "id": "aws-bedrock-long-term-api-key-negative",
+      "path": "aws-bedrock-long-term-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_BEARER_TOKEN_BEDROCK=${AWS_BEARER_TOKEN_BEDROCK_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "aws-bedrock-long-term-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "aws-bedrock-long-term-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/awslabs/git-secrets/pull/264",
+          "https://www.wiz.io/blog/a-new-type-of-long-lived-key-on-aws-bedrock-api-keys",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-reference.html",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-use.html",
+          "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceSpecificCredential.html",
+          "https://github.com/gitleaks/gitleaks/pull/1935",
+          "https://github.com/redact-secret/redact-secret/issues/778",
+          "https://github.com/redact-secret/redact-secret/issues/864"
+        ]
+      }
+    },
+    {
+      "id": "aws-bedrock-short-term-api-key-positive",
+      "path": "aws-bedrock-short-term-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_BEARER_TOKEN_BEDROCK=\u0062edrock-api-key-YmVkcm9jay5hbWF6b25hd3MuY29tLz9BY3Rpb249Q2FsbFdpdGhCZWFyZXJUb2tlbiZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta\n",
+      "expected": [
+        {
+          "start": 25,
+          "end": 374,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "aws-bedrock-short-term-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "aws-bedrock-short-term-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/awslabs/git-secrets/pull/264",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-reference.html",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-use.html",
+          "https://aws.amazon.com/blogs/security/securing-amazon-bedrock-api-keys-best-practices-for-implementation-and-management/",
+          "https://github.com/aws/aws-bedrock-token-generator-js/blob/main/src/token.ts",
+          "https://github.com/aws/aws-bedrock-token-generator-java/blob/main/src/main/java/software/amazon/bedrock/token/BedrockTokenGenerator.java",
+          "https://github.com/redact-secret/redact-secret/issues/779",
+          "https://github.com/redact-secret/redact-secret/issues/864"
+        ]
+      }
+    },
+    {
+      "id": "aws-bedrock-short-term-api-key-negative",
+      "path": "aws-bedrock-short-term-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_BEARER_TOKEN_BEDROCK=${AWS_BEARER_TOKEN_BEDROCK_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "aws-bedrock-short-term-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "aws-bedrock-short-term-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/awslabs/git-secrets/pull/264",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-reference.html",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys-use.html",
+          "https://aws.amazon.com/blogs/security/securing-amazon-bedrock-api-keys-best-practices-for-implementation-and-management/",
+          "https://github.com/aws/aws-bedrock-token-generator-js/blob/main/src/token.ts",
+          "https://github.com/aws/aws-bedrock-token-generator-java/blob/main/src/main/java/software/amazon/bedrock/token/BedrockTokenGenerator.java",
+          "https://github.com/redact-secret/redact-secret/issues/779",
+          "https://github.com/redact-secret/redact-secret/issues/864"
+        ]
+      }
+    },
+    {
+      "id": "elevenlabs-api-key-positive",
+      "path": "elevenlabs-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ELEVENLABS_API_KEY=\u0073k_1a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d5e6f7089\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 70,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "elevenlabs-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "elevenlabs-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/elevenlabs/v2/elevenlabs.go",
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/elevenlabs.go",
+          "https://elevenlabs.io/docs/api-reference/authentication",
+          "https://elevenlabs.io/docs/overview/administration/workspaces/api-keys",
+          "https://elevenlabs.io/docs/overview/administration/data-residency",
+          "https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/create",
+          "https://github.com/elevenlabs/elevenlabs-python/blob/main/src/elevenlabs/speech_engine/resource.py",
+          "https://github.com/elevenlabs/elevenlabs-js/blob/main/src/wrapper/speech-engine/SpeechEngineResource.ts",
+          "https://docs.stripe.com/keys",
+          "https://github.com/pollinations/pollinations/issues/13183",
+          "https://github.com/redact-secret/redact-secret/issues/788",
+          "https://github.com/redact-secret/redact-secret/issues/865"
+        ]
+      }
+    },
+    {
+      "id": "elevenlabs-api-key-negative",
+      "path": "elevenlabs-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "elevenlabs-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "elevenlabs-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/elevenlabs/v2/elevenlabs.go",
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/elevenlabs.go",
+          "https://elevenlabs.io/docs/api-reference/authentication",
+          "https://elevenlabs.io/docs/overview/administration/workspaces/api-keys",
+          "https://elevenlabs.io/docs/overview/administration/data-residency",
+          "https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/create",
+          "https://github.com/elevenlabs/elevenlabs-python/blob/main/src/elevenlabs/speech_engine/resource.py",
+          "https://github.com/elevenlabs/elevenlabs-js/blob/main/src/wrapper/speech-engine/SpeechEngineResource.ts",
+          "https://docs.stripe.com/keys",
+          "https://github.com/pollinations/pollinations/issues/13183",
+          "https://github.com/redact-secret/redact-secret/issues/788",
+          "https://github.com/redact-secret/redact-secret/issues/865"
+        ]
+      }
+    },
+    {
+      "id": "together-api-key-positive",
+      "path": "together-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TOGETHER_API_KEY=\u0074gp_v1_Review_Alpha7-Beta9ReviewAlpha7Beta9Gamma2R\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 67,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "together-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "together-api-key",
+        "sources": [
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/togetherai.go",
+          "https://docs.together.ai/docs/quickstart",
+          "https://docs.together.ai/docs/api-keys-authentication",
+          "https://github.com/togethercomputer/together-python/blob/main/src/together/client.py",
+          "https://andrewbaker.ninja/2026/08/20/running-sota-open-ai-models-in-opencode-without-paying-frontier-prices/",
+          "https://github.com/redact-secret/redact-secret/issues/783",
+          "https://github.com/redact-secret/redact-secret/issues/867"
+        ]
+      }
+    },
+    {
+      "id": "together-api-key-negative",
+      "path": "together-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TOGETHER_API_KEY=${TOGETHER_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "together-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "together-api-key",
+        "sources": [
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/togetherai.go",
+          "https://docs.together.ai/docs/quickstart",
+          "https://docs.together.ai/docs/api-keys-authentication",
+          "https://github.com/togethercomputer/together-python/blob/main/src/together/client.py",
+          "https://andrewbaker.ninja/2026/08/20/running-sota-open-ai-models-in-opencode-without-paying-frontier-prices/",
+          "https://github.com/redact-secret/redact-secret/issues/783",
+          "https://github.com/redact-secret/redact-secret/issues/867"
+        ]
+      }
+    },
+    {
+      "id": "tavily-api-key-positive",
+      "path": "tavily-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TAVILY_API_KEY=\u0074vly-dev-ReviewAlpha7Beta9Gamma2ReviewAlp\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 56,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "tavily-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "tavily-api-key",
+        "sources": [
+          "https://github.com/praetorian-inc/noseyparker/blob/main/crates/noseyparker/data/default/builtin/rules/tavily.yml",
+          "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/tavily_api_key",
+          "https://docs.tavily.com/documentation/api-reference/introduction",
+          "https://docs.tavily.com/documentation/enterprise/generate-keys",
+          "https://docs.tavily.com/documentation/enterprise/key-info",
+          "https://github.com/tavily-ai/tavily-js/blob/main/src/client.ts",
+          "https://github.com/redact-secret/redact-secret/issues/786",
+          "https://github.com/redact-secret/redact-secret/issues/867"
+        ]
+      }
+    },
+    {
+      "id": "tavily-api-key-negative",
+      "path": "tavily-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TAVILY_API_KEY=${TAVILY_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "tavily-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "tavily-api-key",
+        "sources": [
+          "https://github.com/praetorian-inc/noseyparker/blob/main/crates/noseyparker/data/default/builtin/rules/tavily.yml",
+          "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/tavily_api_key",
+          "https://docs.tavily.com/documentation/api-reference/introduction",
+          "https://docs.tavily.com/documentation/enterprise/generate-keys",
+          "https://docs.tavily.com/documentation/enterprise/key-info",
+          "https://github.com/tavily-ai/tavily-js/blob/main/src/client.ts",
+          "https://github.com/redact-secret/redact-secret/issues/786",
+          "https://github.com/redact-secret/redact-secret/issues/867"
+        ]
+      }
+    },
+    {
+      "id": "mistral-api-key-positive",
+      "path": "mistral-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MISTRAL_API_KEY=\u0052eviewAlpha7Beta9Gamma2ReviewAlp\n",
+      "expected": [
+        {
+          "start": 16,
+          "end": 48,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "mistral-api-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "mistral-api-key",
+        "sources": [
+          "https://github.com/google/osv-scalibr/blob/main/veles/secrets/mistralapikey/detector.go",
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/mistral.go",
+          "https://pkg.go.dev/github.com/plenoai/pleno-dlp/pkg/detectors/mistral",
+          "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
+          "https://docs.mistral.ai/admin/identity-access/api-keys",
+          "https://github.com/mistralai/client-python",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns",
+          "https://github.com/redact-secret/redact-secret/issues/781",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "mistral-api-key-negative",
+      "path": "mistral-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MISTRAL_API_KEY=${MISTRAL_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "mistral-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "mistral-api-key",
+        "sources": [
+          "https://github.com/google/osv-scalibr/blob/main/veles/secrets/mistralapikey/detector.go",
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/mistral.go",
+          "https://pkg.go.dev/github.com/plenoai/pleno-dlp/pkg/detectors/mistral",
+          "https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key",
+          "https://docs.mistral.ai/admin/identity-access/api-keys",
+          "https://github.com/mistralai/client-python",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns",
+          "https://github.com/redact-secret/redact-secret/issues/781",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "cohere-api-key-positive",
+      "path": "cohere-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "COHERE_API_KEY=\u0052eviewAlpha7Beta9Gamma2ReviewAlpha7Beta9\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 55,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "cohere-api-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "cohere-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.cohere.com/docs/rate-limits",
+          "https://docs.cohere.com/reference/check-api-key",
+          "https://github.com/cohere-ai/cohere-python",
+          "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/cohere_apikey",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns",
+          "https://github.com/redact-secret/redact-secret/issues/782",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "cohere-api-key-negative",
+      "path": "cohere-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "COHERE_API_KEY=${COHERE_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "cohere-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "cohere-api-key",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.cohere.com/docs/rate-limits",
+          "https://docs.cohere.com/reference/check-api-key",
+          "https://github.com/cohere-ai/cohere-python",
+          "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/cohere_apikey",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns",
+          "https://github.com/redact-secret/redact-secret/issues/782",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "deepgram-api-key-positive",
+      "path": "deepgram-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DEEPGRAM_API_KEY=\u0031a2b3c4d5e6f70891a2b3c4d5e6f70891a2b3c4d\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 57,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "deepgram-api-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "deepgram-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/deepgram/deepgram.go",
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/deepgram.go",
+          "https://developers.deepgram.com/reference/manage/keys/create",
+          "https://developers.deepgram.com/guides/fundamentals/authenticating",
+          "https://github.com/deepgram/deepgram-python-sdk",
+          "https://github.com/orgs/deepgram/discussions/577",
+          "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/deepgram_api_key",
+          "https://github.com/redact-secret/redact-secret/issues/789",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "deepgram-api-key-negative",
+      "path": "deepgram-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DEEPGRAM_API_KEY=${DEEPGRAM_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "deepgram-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "deepgram-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/deepgram/deepgram.go",
+          "https://github.com/betterleaks/betterleaks/blob/main/cmd/generate/config/rules/deepgram.go",
+          "https://developers.deepgram.com/reference/manage/keys/create",
+          "https://developers.deepgram.com/guides/fundamentals/authenticating",
+          "https://github.com/deepgram/deepgram-python-sdk",
+          "https://github.com/orgs/deepgram/discussions/577",
+          "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/deepgram_api_key",
+          "https://github.com/redact-secret/redact-secret/issues/789",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "ai21-api-key-positive",
+      "path": "ai21-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AI21_API_KEY=\u0052eviewAlpha7Beta9Gamma2ReviewAlp\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 45,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "ai21-api-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "ai21-api-key",
+        "sources": [
+          "https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/ai21_env_config.py",
+          "https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/http_client/base_http_client.py",
+          "https://docs.litellm.ai/docs/providers/ai21",
+          "https://github.com/redact-secret/redact-secret/issues/784",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "ai21-api-key-negative",
+      "path": "ai21-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AI21_API_KEY=${AI21_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "ai21-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "ai21-api-key",
+        "sources": [
+          "https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/ai21_env_config.py",
+          "https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/http_client/base_http_client.py",
+          "https://docs.litellm.ai/docs/providers/ai21",
+          "https://github.com/redact-secret/redact-secret/issues/784",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "exa-api-key-positive",
+      "path": "exa-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "EXA_API_KEY=\u0031a2b3c4d-1a2b-4c3d-8e4f-1a2b3c4d5e6f\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 48,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "exa-api-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "exa-api-key",
+        "sources": [
+          "https://exa.ai/docs/reference/team-management/get-api-key",
+          "https://exa.ai/docs/get-started/quickstart",
+          "https://github.com/exa-labs/exa-py",
+          "https://github.com/exa-labs/exa-mcp-server",
+          "https://github.com/redact-secret/redact-secret/issues/787",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
+    },
+    {
+      "id": "exa-api-key-negative",
+      "path": "exa-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "EXA_API_KEY=${EXA_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "exa-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "exa-api-key",
+        "sources": [
+          "https://exa.ai/docs/reference/team-management/get-api-key",
+          "https://exa.ai/docs/get-started/quickstart",
+          "https://github.com/exa-labs/exa-py",
+          "https://github.com/exa-labs/exa-mcp-server",
+          "https://github.com/redact-secret/redact-secret/issues/787",
+          "https://github.com/redact-secret/redact-secret/issues/868"
+        ]
+      }
     }
   ]
 }

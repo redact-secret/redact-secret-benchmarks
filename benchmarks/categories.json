@@ -175,6 +175,41 @@
     "corpus": "fixtures/generated/beta8-263.json"
   },
   {
+    "id": "beta8-384a",
+    "title": "Beta.10 evidence for the Anthropic api01/admin01 prefixes and the OpenAI admin key (#384, slice a)",
+    "description": "Fixtures for anthropic-api01-key (sk-ant-api01-, research #776), anthropic-admin01-key (sk-ant-admin01-, research #775) and openai-admin-api-key (sk-admin-, research #777), arrival families inside the shared anthropic-token and openai-token detectors (product redact-secret#862, #863). Positives, single-property prefix, boundary and length twins, and independent benign controls. Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384a.json"
+  },
+  {
+    "id": "beta8-384b",
+    "title": "Beta.10 evidence for the Amazon Bedrock long-term and short-term API keys (#384, slice b)",
+    "description": "Fixtures for aws-bedrock-long-term-api-key (ABSK + standard Base64, research #778) and aws-bedrock-short-term-api-key (bedrock-api-key- + Base64 pre-signed URL, research #779), arrival families for product redact-secret#864. Positives across env, header, SDK, log and tool-call contexts, single-property twins and independent benign controls. Values are built from synthetic bytes, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384b.json"
+  },
+  {
+    "id": "beta8-384c",
+    "title": "Beta.10 evidence for the ElevenLabs API key (#384, slice c)",
+    "description": "Fixtures for elevenlabs-api-key (sk_ + 48 lowercase hex with an optional _residency_ suffix, research #788), an arrival family for product redact-secret#865: positives, single-property twins including the Stripe-shaped sk_live_ lookalike, and independent benign controls. Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384c.json"
+  },
+  {
+    "id": "beta8-384d",
+    "title": "Beta.10 evidence for the Together AI and Tavily API keys (#384, slice d)",
+    "description": "Fixtures for together-api-key (tgp_v1_ + 43 base64url, research #783) and tavily-api-key (tvly- + optional dev- + 32 alphanumerics, research #786), arrival families for product redact-secret#867: positives, single-property twins and independent benign controls. Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384d.json"
+  },
+  {
+    "id": "beta8-384e",
+    "title": "Beta.10 evidence for keyword-gated Mistral, Cohere, Deepgram, AI21 and Exa keys (#384, slice e)",
+    "description": "Fixtures for five context-gated arrival families with no documented key format (research #781, #782, #789, #784, #787; product redact-secret#868): positives beside a provider name, host or SDK constructor, context twins that keep the value and remove the gate, and independent benign controls. AI21 and Exa carry pending (T0) contracts. Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384e.json"
+  },
+  {
     "id": "policy-qualified-credentials",
     "title": "Public policy qualification controls for bounded T3 credentials (#365)",
     "description": "Independent deterministic action, exact-span, benign and context-twin controls for bearer credentials, connection-string passwords, OTP seeds and supported assignment literals. These public rows exercise the frozen project-policy contracts and remain separate from protected holdout evidence and PII claims.",

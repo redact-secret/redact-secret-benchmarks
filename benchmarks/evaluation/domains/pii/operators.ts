@@ -19,7 +19,7 @@ export function applyPiiOperator(operator: PiiOperator, c: PiiCase): PiiOperator
   const expectationRow = row.expectation as { type?: unknown; sensitivity?: unknown };
   if (typeof inputRow.id !== 'string' || typeof inputRow.path !== 'string' || typeof inputRow.content !== 'string' ||
       !Number.isInteger(candidateRow.start) || !Number.isInteger(candidateRow.end) ||
-      !['valid', 'invalid'].includes(String(expectationRow.type)) || !['sensitive', 'non-sensitive', 'unresolved'].includes(String(expectationRow.sensitivity)))
+      !['valid', 'invalid'].includes(String(expectationRow.type)) || !['sensitive', 'non-sensitive', 'not-established'].includes(String(expectationRow.sensitivity)))
     throw new Error('Invalid PII operator result');
   const result: PiiOperatorResult = { input: { id: inputRow.id, path: inputRow.path, content: inputRow.content },
     candidate: { start: candidateRow.start as number, end: candidateRow.end as number },

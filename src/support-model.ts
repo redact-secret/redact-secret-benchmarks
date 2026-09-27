@@ -41,7 +41,7 @@ export interface SupportMatrixFile {
   providerCount: number;
   familyCount: number;
   distribution: Record<SupportStatus, number>;
-  stableDistribution: { documented: number; empirical: number };
+  stableDistribution: { documented: number; empirical: number; 'policy-qualified'?: number };
   families: SupportMatrixEntry[];
 }
 
@@ -88,9 +88,11 @@ export function supportMatrixProblem(value: unknown): string | null {
     const stableProfiles = {
       documented: matrix.families.filter(entry => entry.status === 'stable' && entry.qualificationProfile === 'documented').length,
       empirical: matrix.families.filter(entry => entry.status === 'stable' && entry.qualificationProfile === 'empirical').length,
+      'policy-qualified': matrix.families.filter(entry => entry.status === 'stable' && entry.qualificationProfile === 'policy-qualified').length,
     };
     if (matrix.stableDistribution.documented !== stableProfiles.documented || matrix.stableDistribution.empirical !== stableProfiles.empirical ||
-        stableProfiles.documented + stableProfiles.empirical !== counted.stable) return 'Support matrix stable distribution does not recount from its families';
+        (matrix.stableDistribution['policy-qualified'] ?? 0) !== stableProfiles['policy-qualified'] ||
+        stableProfiles.documented + stableProfiles.empirical + stableProfiles['policy-qualified'] !== counted.stable) return 'Support matrix stable distribution does not recount from its families';
     const known = new Map(taxonomy.families.map(f => [f.id, f]));
     if (matrix.families.length !== known.size || matrix.providerCount !== taxonomy.providers.length) return 'Stale support matrix: the taxonomy changed';
     for (const entry of matrix.families) {
@@ -102,7 +104,7 @@ export function supportMatrixProblem(value: unknown): string | null {
       if (entry.status !== 'stable' && !entry.reason) return `Support matrix entry ${entry.family} carries ${entry.status} with no reason`;
       if (entry.detectors.length && !entry.profileCoverage) return `Support matrix entry ${entry.family} has a detector but no fixture profile coverage`;
       if (entry.profileCoverage && entry.profileCoverage.profilesVersion !== fixtureProfiles.profilesVersion) return `Support matrix entry ${entry.family} was measured under different fixture profiles`;
-      if (!entry.detectors.length && (entry.evidenceTier || entry.evidenceBasis !== 'none' || entry.qualificationProfile || entry.twinCoverage || entry.unresolvedCriticalItems || entry.empiricalEvidence || entry.fixtureProfile || entry.profileCoverage)) return `Support matrix entry ${entry.family} has no detector but carries evidence`;
+      if (!entry.detectors.length && (entry.evidenceTier || entry.evidenceBasis !== 'none' || entry.qualificationProfile || entry.twinCoverage || entry.unresolvedCriticalItems || entry.empiricalEvidence || entry.policyQualification || entry.fixtureProfile || entry.profileCoverage)) return `Support matrix entry ${entry.family} has no detector but carries evidence`;
       if (entry.detectors.length && !entry.evidenceTier) return `Support matrix entry ${entry.family} has a detector but no format evidence tier`;
       if (entry.status === 'stable' && !entry.qualificationProfile) return `Support matrix entry ${entry.family} is stable without a qualification profile`;
       if (entry.status !== 'stable' && entry.qualificationProfile) return `Support matrix entry ${entry.family} is not stable but carries a qualification profile`;
@@ -110,6 +112,8 @@ export function supportMatrixProblem(value: unknown): string | null {
       // observations, or independent corroboration (#177 as amended 2026-09-24).
       if (entry.qualificationProfile === 'empirical' && (entry.evidenceTier !== 'T2' || !empiricalBasisHolds(entry))) return `Support matrix entry ${entry.family} masquerades as empirically qualified`;
       if (entry.qualificationProfile === 'documented' && entry.evidenceTier !== 'T1') return `Support matrix entry ${entry.family} masquerades as documented`;
+      if (entry.qualificationProfile === 'policy-qualified' && (entry.evidenceTier !== 'T3' || entry.evidenceBasis !== 'project-policy' ||
+          !entry.policyQualification || entry.policyQualification.failedGates.length)) return `Support matrix entry ${entry.family} masquerades as policy qualified`;
     }
     return null;
   } catch {

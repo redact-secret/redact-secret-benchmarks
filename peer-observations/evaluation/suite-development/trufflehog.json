@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T02:28:09.797Z",
+  "observedAt": "2026-09-27T02:55:42.216Z",
   "sourceRun": {
-    "runId": "a7386a04-1488-4789-a5e7-d4617df56805",
-    "benchmarkRevision": "bd5488df3f6040819a86ac969474d57f059da3c2"
+    "runId": "708d73ec-22c9-4fb6-aa7c-23531ddb542f",
+    "benchmarkRevision": "aa5ff5fc57c47db208bf97b5823cf01c1d9ed68f"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "981f48c83a59fdc6e5a2916c7dc224ac34ef0f0a51c5744b4000b1b721f3993c",
-    "fixtureCount": 24308,
-    "fixturesDigest": "47635949d6454117fa78c9274c4f022232ada74fc99af068b57cd345511c65a4",
+    "corpusHash": "ac5e016e7b46afefa1be47c0a27a08d8282b80a184b23aab4ce1fcc979c6a1f6",
+    "fixtureCount": 24419,
+    "fixturesDigest": "511480c03659f6c3357cd69577786bd2142d14df3d1bbfc7d17b8c9686721380",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801",
-      "fixtureCount": 2996
+      "digest": "95b2123327c4763d3b1fbcebdcea6c5d23b0ae1866197c3b10ab9adfbbc9e955",
+      "fixtureCount": 3015
     }
   },
   "peer": {
@@ -29664,6 +29664,41 @@
       "end": 89
     },
     {
+      "path": "cases/policy-qualified-credentials--connection-string-postgres-userinfo--differential/canonical.txt",
+      "start": 0,
+      "end": 72
+    },
+    {
+      "path": "cases/policy-qualified-credentials--connection-string-postgres-userinfo--metamorphic/canonical.txt",
+      "start": 0,
+      "end": 72
+    },
+    {
+      "path": "cases/policy-qualified-credentials--connection-string-postgres-userinfo--metamorphic/context.indent.txt",
+      "start": 4,
+      "end": 76
+    },
+    {
+      "path": "cases/policy-qualified-credentials--connection-string-postgres-userinfo--metamorphic/context.unicode-prefix.txt",
+      "start": 20,
+      "end": 92
+    },
+    {
+      "path": "cases/policy-qualified-credentials--connection-string-postgres-userinfo--metamorphic/encoding.crlf.txt",
+      "start": 0,
+      "end": 72
+    },
+    {
+      "path": "cases/policy-qualified-credentials--connection-string-postgres-userinfo--mutation/canonical.txt",
+      "start": 0,
+      "end": 72
+    },
+    {
+      "path": "cases/policy-qualified-credentials--connection-string-postgres-userinfo-twin--twin/canonical.txt",
+      "start": 0,
+      "end": 72
+    },
+    {
       "path": "cases/sendgrid-regressions--base62-bare--differential/canonical.txt",
       "start": 0,
       "end": 69,
@@ -32070,5 +32105,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "1fa74f2b6b0ac7d347e080ffe416af8b449045f273ccb2f0dbd0af6f17a7cbee"
+  "digest": "788d39e6008b720d9dc8ccc54783746a81701c2186596f896398f74a4b8152f0"
 }

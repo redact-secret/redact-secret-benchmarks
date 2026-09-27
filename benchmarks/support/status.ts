@@ -1,6 +1,7 @@
 import type { Tier } from '../types.ts';
 import data from './status-criteria.json';
 import { fixtureProfiles, profileFailures as fixtureProfileFailures, type FixtureProfileEvidence, type FixtureProfiles } from './profiles.ts';
+import { policyGateReasons, type PolicyBehaviorAggregate } from './policy-qualified.ts';
 
 /**
  * Family support status (issue #503, part of epic #500). A machine-readable
@@ -21,7 +22,7 @@ import { fixtureProfiles, profileFailures as fixtureProfileFailures, type Fixtur
  */
 export type SupportStatus = 'stable' | 'provisional' | 'pending' | 'unsupported';
 export type EvidenceBasis = 'provider-documented' | 'independently-corroborated' | 'empirically-observed' | 'project-policy' | 'none';
-export type QualificationProfile = 'documented' | 'empirical';
+export type QualificationProfile = 'documented' | 'empirical' | 'policy-qualified';
 
 /** Reader-facing names for each evidence basis; the UI shows the machine value beside it. */
 export const EVIDENCE_BASIS_LABEL: Record<EvidenceBasis, string> = {
@@ -141,6 +142,8 @@ export interface FamilySupportEvidence {
   metamorphicCriticalFailures: number;
   mutationUnresolvedCritical: number;
   differentialUnresolvedContractDisagreements: number;
+  /** Sanitized T3-only context/value/span/action/holdout aggregate. Null for every other family. */
+  policyQualification: PolicyBehaviorAggregate | null;
   /** Corpus-measured evidence cells and the profile this family claims (issue #206). Absent means unmeasured, which fails closed for any binding claim. */
   fixtureProfile?: FixtureProfileEvidence;
   /** Only meaningful when `detectors` is empty; required to ever report `unsupported`. */
@@ -255,7 +258,9 @@ function qualificationFailures(evidence: FamilySupportEvidence, criteria: Status
     } else if (evidence.empiricalMode !== 'shape') reasons.push('empirical.mode: missing — choose shape or context-constrained qualification');
     return { profile: 'empirical', reasons };
   }
-  return { profile: null, reasons: [`qualificationProfile: tier ${evidence.positiveContractTier} is not eligible for documented or empirical stable`] };
+  if (evidence.positiveContractTier === 'T3' && evidence.evidenceBasis === 'project-policy' && evidence.policyQualification)
+    return { profile: 'policy-qualified', reasons: policyGateReasons(evidence.policyQualification) };
+  return { profile: null, reasons: [`qualificationProfile: tier ${evidence.positiveContractTier} has no eligible documented, empirical, or bounded policy-qualified route`] };
 }
 
 /**

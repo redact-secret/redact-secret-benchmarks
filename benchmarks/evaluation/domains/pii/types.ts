@@ -1,26 +1,32 @@
 import type { RuntimeFinding, RuntimeInput, RuntimeObservation, RuntimeScanner } from '../../substrate/runtime.ts';
 
-export type PiiScope = { kind: 'global' } | { kind: 'jurisdictional'; jurisdiction: string };
-export type PiiSensitivityExpectation = 'sensitive' | 'non-sensitive' | 'unresolved';
+export type PiiScope = 'global' | `jurisdiction:${string}`;
+export type PiiSensitivityExpectation = 'sensitive' | 'non-sensitive' | 'not-established';
 export type PiiAssertionStatus = 'pass' | 'fail' | 'review-required' | 'not-measured';
 export type PiiRangeOutcome = 'exact' | 'overbroad' | 'partial' | 'miss' | 'not-applicable';
+export type PiiJurisdiction = string;
+export const PII_IDENTITY_DOMAINS = ['email', 'payment-card', 'network-address', 'iban', 'phone', 'national-id'] as const;
+export type PiiIdentityDomain = (typeof PII_IDENTITY_DOMAINS)[number];
+export const PII_AUTHORITY_SUPPORTS = ['lexical', 'validation', 'allocation', 'reserved-control', 'sensitivity'] as const;
 
 export interface PiiAuthority {
-  kind: 'standard' | 'public-authority' | 'official-test-source';
+  sourceKind: 'standard' | 'public-authority';
+  sourceId: string;
   locator: string;
-  version: string;
-  claim: 'format' | 'allocation' | 'context' | 'test-vector';
-  observedAt: string;
+  revision: string;
+  supports: (typeof PII_AUTHORITY_SUPPORTS)[number][];
 }
 
 export interface PiiContract {
-  category: string;
+  category: 'pii';
   family: string;
+  displayName: string;
+  identityDomain: PiiIdentityDomain;
   scope: PiiScope;
   typeExpectation: { state: 'valid' | 'invalid'; validator: string | null };
   sensitivityExpectation: PiiSensitivityExpectation;
-  context: { obligation: 'required' | 'optional' | 'forbidden'; class: 'sensitive' | 'neutral' | 'non-sensitive'; language: string };
-  authority: PiiAuthority;
+  context: { obligation: 'none' | 'reinforcing' | 'required-for-sensitive-classification'; class: 'sensitive' | 'neutral' | 'non-sensitive'; language: string };
+  authority: PiiAuthority[];
   referenceEvidence: { id: string; version: number } | null;
   qualificationProfile: { id: 'pii-v1'; version: 1 };
 }

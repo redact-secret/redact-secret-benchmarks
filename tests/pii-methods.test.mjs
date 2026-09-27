@@ -8,10 +8,11 @@ function piiCase(id, method, value, overrides = {}) {
   const base = {
     id, method, visibility: 'development', input: { id, path: `pii/${id}.txt`, content: `${prefix}${value}` },
     candidate: { start: Buffer.byteLength(prefix), end: Buffer.byteLength(prefix + value) },
-    contract: { category: 'personal-identifier', family: 'synthetic-id', scope: { kind: 'global' },
+    contract: { category: 'pii', family: 'pii:global:synthetic-id', displayName: 'Synthetic identifier', identityDomain: 'national-id', scope: 'global',
       typeExpectation: { state: 'valid', validator: null }, sensitivityExpectation: 'sensitive',
-      context: { obligation: 'required', class: 'sensitive', language: 'en' },
-      authority: { kind: 'official-test-source', locator: 'benchmark:pii-methods', version: '1', claim: 'test-vector', observedAt: '2026-09-26' },
+      context: { obligation: 'required-for-sensitive-classification', class: 'sensitive', language: 'en' },
+      authority: [{ sourceKind: 'standard', sourceId: 'benchmark-pii-contract', locator: 'section:synthetic-method-tests', revision: '1',
+        supports: ['lexical', 'validation', 'allocation', 'sensitivity'] }],
       referenceEvidence: null, qualificationProfile: { id: 'pii-v1', version: 1 } },
     provenance: { source: 'tests/pii-methods.test.mjs', sourceHash: hash({ id, value }), seed: `${id}/1`,
       rationale: 'Synthetic PII method test.', sources: ['benchmark:pii-methods'] }, metadata: {},
@@ -30,8 +31,8 @@ const scanner = {
       if (input.path.includes('checksum-invalid') || input.path.includes('-mutated')) return [];
       const marker = input.content.includes('value=') ? 'value=' : 'value=';
       const start = Buffer.byteLength(input.content.slice(0, input.content.indexOf(marker) + marker.length));
-      if (input.path.includes('collision')) return [{ path: input.path, start, end: Buffer.byteLength(input.content), family: 'ordinary-numeric-id', jurisdiction: 'ca', sensitive: true }];
-      return [{ path: input.path, start, end: Buffer.byteLength(input.content), family: 'synthetic-id',
+      if (input.path.includes('collision')) return [{ path: input.path, start, end: Buffer.byteLength(input.content), family: 'pii:br:ordinary-numeric-id', jurisdiction: 'BR', sensitive: true }];
+      return [{ path: input.path, start, end: Buffer.byteLength(input.content), family: 'pii:global:synthetic-id',
         sensitive: !input.path.includes('non-sensitive') && !input.path.includes('benign') }];
     });
   },
@@ -44,7 +45,7 @@ test('PII method registry is complete and context trio preserves type while chan
   ]);
   const source = piiCase('context-source', 'context-discrimination', 'SYNTHETIC-0000');
   const variants = methods.get('context-discrimination').generate(source);
-  assert.deepEqual(variants.map(v => v.contract.sensitivityExpectation), ['sensitive', 'unresolved', 'non-sensitive']);
+  assert.deepEqual(variants.map(v => v.contract.sensitivityExpectation), ['sensitive', 'not-established', 'non-sensitive']);
   assert.ok(variants.every(v => v.contract.typeExpectation.state === 'valid'));
   assert.equal(new Set(variants.map(v => Buffer.from(v.fixture.content).subarray(v.candidate.start, v.candidate.end).toString())).size, 1);
   assert.ok(variants.every(v => v.transformation.expectationEffect.type === 'preserve'));
@@ -72,8 +73,8 @@ test('validator invalid negatives remain distinct from benign semantic controls'
 test('context, collision, and mutation methods produce domain-owned non-vacuous evidence', async () => {
   const context = piiCase('context-run', 'context-discrimination', 'SYNTHETIC-0000');
   const collision = piiCase('collision-run', 'jurisdiction-collision', '123456789', {
-    contract: { family: 'us-tax-id', scope: { kind: 'jurisdictional', jurisdiction: 'us' } },
-    metadata: { collision: { targetFamily: 'us-tax-id', competingFamilies: ['ca-sin', 'ordinary-numeric-id'] } },
+    contract: { family: 'pii:us:tax-id', displayName: 'Synthetic US tax identifier', scope: 'jurisdiction:US' },
+    metadata: { collision: { targetFamily: 'pii:us:tax-id', competingFamilies: ['pii:br:ordinary-numeric-id', 'pii:tr:tax-id'] } },
   });
   const mutation = piiCase('mutation-run', 'mutation', 'SYNTHETIC-0000',
     { contract: { typeExpectation: { validator: 'synthetic-mod10' } }, metadata: { operator: 'invalidate-final-digit' } });
@@ -82,8 +83,8 @@ test('context, collision, and mutation methods produce domain-owned non-vacuous 
   assert.equal(contextResult.outcomes.length, 3);
   assert.deepEqual(contextResult.outcomes.map(outcome => outcome.sensitivityContext.state), ['correct', 'unresolved', 'correct']);
   const collisionResult = artifact.results.find(result => result.id === 'collision-run');
-  assert.deepEqual(collisionResult.evidence.collision, { kind: 'jurisdiction-collision', targetFamily: 'us-tax-id',
-    competingFamilies: ['ca-sin', 'ordinary-numeric-id'] });
+  assert.deepEqual(collisionResult.evidence.collision, { kind: 'jurisdiction-collision', targetFamily: 'pii:us:tax-id',
+    competingFamilies: ['pii:br:ordinary-numeric-id', 'pii:tr:tax-id'] });
   assert.equal(collisionResult.outcomes[0].typeIdentity.state, 'wrong-jurisdiction');
   const mutationResult = artifact.results.find(result => result.id === 'mutation-run');
   assert.equal(mutationResult.evidence.mutation.expectation.type, 'invalid');
@@ -111,8 +112,9 @@ test('replay stability includes normalized PII sensitivity and jurisdiction fiel
   let replay = 0;
   const unstable = { ...scanner, id: 'unstable-pii-extras', async scan(_directory, inputs) {
     replay++;
-    return inputs.map(input => ({ path: input.path, start: 6, end: Buffer.byteLength(input.content), family: 'synthetic-id',
-      jurisdiction: replay % 2 ? 'us' : 'ca', sensitive: replay % 2 === 1 }));
+    const jurisdiction = replay % 2 ? 'US' : 'BR';
+    return inputs.map(input => ({ path: input.path, start: 6, end: Buffer.byteLength(input.content), family: `pii:${jurisdiction.toLowerCase()}:synthetic-id`,
+      jurisdiction, sensitive: replay % 2 === 1 }));
   } };
   const c = piiCase('replay-extras', 'pii-benign', 'SYNTHETIC-0000',
     { contract: { sensitivityExpectation: 'non-sensitive', context: { class: 'non-sensitive' } }, metadata: { benignClass: 'documentation' } });

@@ -21,7 +21,7 @@ pure function: same evidence in, same status and reasons out, every time.
 
 | status | meaning |
 | --- | --- |
-| `stable` | Every floor in either the T1 `documented` profile or the T2 `empirical` profile is met. Tier and evidence basis do not change when qualification changes. |
+| `stable` | Every floor in the T1 `documented`, T2 `empirical`, or bounded T3 `policy-qualified` profile is met. Tier and evidence basis do not change when qualification changes. |
 | `provisional` | At least one detector exists for the family, but it does not clear every `stable` floor (typically T2/tool-corroborated, or T1 with evidence still incomplete). |
 | `pending` | The family's positive contract is tier T0, or no detector exists for it and no `unsupportedReason` was recorded. |
 | `unsupported` | No detector exists for the family, and a reason was recorded for why. Never assigned without one — a detectorless family with no reason reports `pending` instead, per fail-closed convention (`benchmarks/lib/assessment.ts`: "Unknown fixtures fail closed into T0"). |
@@ -44,7 +44,10 @@ amending #177):
 
 `empiricalRoute()` in `status.ts` reports which route the records meet and why
 each is short. T3 and T0 are ineligible for empirical qualification regardless
-of fixture volume or corroboration.
+of fixture volume or corroboration. The four issue #365 credential families
+have a separate [`policy-qualified`](policy-qualified-credentials.md) route
+that keeps tier T3 and basis `project-policy`; it never feeds documented or
+empirical counts.
 
 Evidence tier, evidence basis, and qualification profile are separate output
 fields. Empirical stable is represented as tier `T2` and profile `empirical`.

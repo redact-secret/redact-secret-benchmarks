@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "a0c3f393f37b11b181d5f03a5ff913f5c674573b4f60a9109850190dee79f972"
+      "digest": "d8374b6afd06c5dd4ceffe0a07f3021a107b227b754b94429ed607d75708ce58"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -60016,6 +60016,370 @@
       }
     },
     {
+      "slug": "policy-qualified-credentials--bearer-token-authorization-header",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "bearer-token-authorization-header",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/bearer-token-authorization-header.txt"
+      },
+      "familyIds": [
+        "generic:bearer-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--bearer-token-authorization-header-twin",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "bearer-token-authorization-header-twin",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/bearer-token-authorization-header-twin.txt"
+      },
+      "familyIds": [
+        "generic:bearer-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      },
+      "relations": {
+        "twinOf": "policy-qualified-credentials--bearer-token-authorization-header"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--bearer-token-proxy-header",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "bearer-token-proxy-header",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/bearer-token-proxy-header.txt"
+      },
+      "familyIds": [
+        "generic:bearer-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--bearer-token-reference",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "bearer-token-reference",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/bearer-token-reference.txt"
+      },
+      "familyIds": [
+        "generic:bearer-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--connection-string-postgres-userinfo",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "connection-string-postgres-userinfo",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/connection-string-postgres-userinfo.txt"
+      },
+      "familyIds": [
+        "generic:connection-string-password"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--connection-string-postgres-userinfo-twin",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "connection-string-postgres-userinfo-twin",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/connection-string-postgres-userinfo-twin.txt"
+      },
+      "familyIds": [
+        "generic:connection-string-password"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      },
+      "relations": {
+        "twinOf": "policy-qualified-credentials--connection-string-postgres-userinfo"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--connection-string-rediss-password-only",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "connection-string-rediss-password-only",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/connection-string-rediss-password-only.txt"
+      },
+      "familyIds": [
+        "generic:connection-string-password"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--connection-string-reference",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "connection-string-reference",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/connection-string-reference.txt"
+      },
+      "familyIds": [
+        "generic:connection-string-password"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--generic-token-high-signal-redact",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "generic-token-high-signal-redact",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/generic-token-high-signal-redact.txt"
+      },
+      "familyIds": [
+        "generic:unclassified-assignment-literal"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--generic-token-high-signal-redact-twin",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "generic-token-high-signal-redact-twin",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/generic-token-high-signal-redact-twin.txt"
+      },
+      "familyIds": [
+        "generic:unclassified-assignment-literal"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      },
+      "relations": {
+        "twinOf": "policy-qualified-credentials--generic-token-high-signal-redact"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--generic-token-high-signal-warn",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "generic-token-high-signal-warn",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/generic-token-high-signal-warn.txt"
+      },
+      "familyIds": [
+        "generic:unclassified-assignment-literal"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--generic-token-reference",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "generic-token-reference",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/generic-token-reference.txt"
+      },
+      "familyIds": [
+        "generic:unclassified-assignment-literal"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--otpauth-uri-duplicate-first-control",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "otpauth-uri-duplicate-first-control",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/otpauth-uri-duplicate-first-control.txt"
+      },
+      "familyIds": [
+        "generic:otp-seed"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--otpauth-uri-lowercase-control",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "otpauth-uri-lowercase-control",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/otpauth-uri-lowercase-control.txt"
+      },
+      "familyIds": [
+        "generic:otp-seed"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--otpauth-uri-query-order",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "otpauth-uri-query-order",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/otpauth-uri-query-order.txt"
+      },
+      "familyIds": [
+        "generic:otp-seed"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--otpauth-uri-query-order-twin",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "otpauth-uri-query-order-twin",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/otpauth-uri-query-order-twin.txt"
+      },
+      "familyIds": [
+        "generic:otp-seed"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      },
+      "relations": {
+        "twinOf": "policy-qualified-credentials--otpauth-uri-query-order"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--otpauth-uri-quoted-config",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "otpauth-uri-quoted-config",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/otpauth-uri-quoted-config.txt"
+      },
+      "familyIds": [
+        "generic:otp-seed"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--otpauth-uri-reference-control",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "otpauth-uri-reference-control",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/otpauth-uri-reference-control.txt"
+      },
+      "familyIds": [
+        "generic:otp-seed"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
+      "slug": "policy-qualified-credentials--otpauth-uri-unicode-crlf",
+      "source": {
+        "categoryId": "policy-qualified-credentials",
+        "fixtureId": "otpauth-uri-unicode-crlf",
+        "corpus": "fixtures/generated/policy-qualified-credentials.json",
+        "path": "cases/otpauth-uri-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "generic:otp-seed"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "policy-qualified-credentials"
+      }
+    },
+    {
       "slug": "real-world-shapes--api-docs-snippet",
       "source": {
         "categoryId": "real-world-shapes",
@@ -61924,7 +62288,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801",
-    "fixtureCount": 2996
+    "digest": "95b2123327c4763d3b1fbcebdcea6c5d23b0ae1866197c3b10ab9adfbbc9e955",
+    "fixtureCount": 3015
   }
 }

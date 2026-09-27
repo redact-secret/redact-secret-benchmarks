@@ -1,0 +1,25 @@
+{
+  "$id": "urn:redact-secret:pii-support-matrix:1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schemaVersion", "reportType", "supportClaims", "domain", "evaluationProfile", "domainAccountingVersion", "runId", "qualificationProfile", "entries"],
+  "properties": {
+    "schemaVersion": { "const": 1 }, "reportType": { "const": "pii-support-matrix" }, "supportClaims": { "const": false }, "domain": { "const": "pii" },
+    "evaluationProfile": { "const": "pii-schema-v1" }, "domainAccountingVersion": { "const": "pii-observation-v1" },
+    "runId": { "type": "string", "pattern": "^[a-f0-9-]{36}$" },
+    "qualificationProfile": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": { "id": { "const": "pii-v1" }, "version": { "const": 1 } } },
+    "entries": { "type": "array", "items": { "$ref": "#/$defs/entry" } }
+  },
+  "$defs": {
+    "counts": { "type": "object", "additionalProperties": false, "required": ["pass", "fail", "review-required", "not-measured"], "properties": {
+      "pass": { "type": "integer", "minimum": 0 }, "fail": { "type": "integer", "minimum": 0 },
+      "review-required": { "type": "integer", "minimum": 0 }, "not-measured": { "type": "integer", "minimum": 0 }
+    } },
+    "observation": { "type": "object", "additionalProperties": false, "required": ["scanner", "sampleCount", "typeIdentity", "sensitivityContext"], "properties": {
+      "scanner": { "type": "string", "pattern": "^[a-z][a-z0-9.-]+$" }, "sampleCount": { "type": "integer", "minimum": 1 },
+      "typeIdentity": { "$ref": "#/$defs/counts" }, "sensitivityContext": { "$ref": "#/$defs/counts" }
+    } },
+    "entry": { "type": "object", "additionalProperties": false, "required": ["assessment", "observations"], "properties": {
+      "assessment": { "$ref": "urn:redact-secret:pii-assessment:1" }, "observations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/observation" } }
+    } }
+  }
+}

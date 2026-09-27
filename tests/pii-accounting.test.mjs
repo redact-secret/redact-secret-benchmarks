@@ -9,7 +9,8 @@ import { proportion } from '../benchmarks/accounting/shared/primitives.ts';
 
 const digest = character => character.repeat(64);
 const candidateHash = digest('c');
-const authority = { kind: 'official-test-source', locator: 'benchmark:pii-accounting', version: '1', claim: 'format', observedAt: '2026-09-26' };
+const authority = [{ sourceKind: 'standard', sourceId: 'benchmark-pii-contract', locator: 'section:accounting-tests', revision: '1',
+  supports: ['lexical', 'validation', 'allocation', 'reserved-control', 'sensitivity'] }];
 const source = (overrides = {}) => ({ schemaVersion: 1, engineVersion: '1.0.0', domain: 'pii',
   reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-schema-v1', domainAccountingVersion: 'pii-observation-v1',
   runId: '11111111-1111-1111-1111-111111111111', startedAt: '2026-09-26T00:00:00.000Z', finishedAt: '2026-09-26T00:01:00.000Z',
@@ -17,17 +18,17 @@ const source = (overrides = {}) => ({ schemaVersion: 1, engineVersion: '1.0.0', 
   scanner: { id: 'pii-scanner', version: '1.0.0', mode: 'candidate', configurationHash: digest('d'), status: 'complete' }, ...overrides });
 
 function row(id, overrides = {}) {
-  const base = { source: source(), caseId: id, method: 'type-validation', family: 'synthetic-id', scope: { kind: 'global' }, variant: 'authored',
+  const base = { source: source(), caseId: id, method: 'type-validation', family: 'pii:global:synthetic-id', scope: 'global', variant: 'authored',
     strategy: 'authored', scanner: 'pii-scanner', qualificationProfile: { id: 'pii-v1', version: 1 }, authority,
-    expectation: { type: 'valid', sensitivity: 'sensitive', contextObligation: 'optional', contextClass: 'sensitive', validatorApplicable: true, referenceApplicable: false },
+    expectation: { type: 'valid', sensitivity: 'sensitive', contextObligation: 'reinforcing', contextClass: 'sensitive', validatorApplicable: true, referenceApplicable: false },
     methodEvidence: { controlClass: null, validatorState: 'valid', collision: null, referenceState: null },
     outcome: { scanner: 'pii-scanner', variant: 'authored', typeIdentity: { axis: 'type-identity', status: 'pass', state: 'correct', reason: 'correct' },
       sensitivityContext: { axis: 'sensitivity-context', status: 'pass', state: 'correct', reason: 'correct' }, range: 'exact',
-      observed: { findingCount: 1, families: ['synthetic-id'], jurisdictions: [] } } };
+      observed: { findingCount: 1, families: ['pii:global:synthetic-id'], jurisdictions: [] } } };
   const nextSource = { ...base.source, ...overrides.source, provenance: { ...base.source.provenance, ...overrides.source?.provenance },
     scanner: { ...base.source.scanner, ...overrides.source?.scanner } };
   const scanner = overrides.scanner ?? nextSource.scanner.id;
-  return { ...base, ...overrides, source: nextSource, scanner, scope: { ...base.scope, ...overrides.scope }, authority: { ...base.authority, ...overrides.authority },
+  return { ...base, ...overrides, source: nextSource, scanner, scope: overrides.scope ?? base.scope, authority: overrides.authority ?? base.authority,
     expectation: { ...base.expectation, ...overrides.expectation }, methodEvidence: { ...base.methodEvidence, ...overrides.methodEvidence },
     outcome: { ...base.outcome, scanner, variant: overrides.variant ?? base.outcome.variant, ...overrides.outcome,
       typeIdentity: { ...base.outcome.typeIdentity, ...overrides.outcome?.typeIdentity }, sensitivityContext: { ...base.outcome.sensitivityContext, ...overrides.outcome?.sensitivityContext },
@@ -39,20 +40,20 @@ function stableRows() {
   return [
     ...repeat('type-case', 4, id => row(id)),
     ...repeat('context-case', 4, id => [
-      row(id, { method: 'context-discrimination', variant: 'sensitive', strategy: 'derived', authority: { claim: 'context' },
-        expectation: { validatorApplicable: false, contextObligation: 'required', contextClass: 'sensitive', sensitivity: 'sensitive' }, methodEvidence: { validatorState: null } }),
-      row(id, { method: 'context-discrimination', variant: 'neutral', strategy: 'derived', authority: { claim: 'context' },
-        expectation: { validatorApplicable: false, contextObligation: 'required', contextClass: 'neutral', sensitivity: 'unresolved' }, methodEvidence: { validatorState: null },
+      row(id, { method: 'context-discrimination', variant: 'sensitive', strategy: 'derived',
+        expectation: { validatorApplicable: false, contextObligation: 'required-for-sensitive-classification', contextClass: 'sensitive', sensitivity: 'sensitive' }, methodEvidence: { validatorState: null } }),
+      row(id, { method: 'context-discrimination', variant: 'neutral', strategy: 'derived',
+        expectation: { validatorApplicable: false, contextObligation: 'required-for-sensitive-classification', contextClass: 'neutral', sensitivity: 'not-established' }, methodEvidence: { validatorState: null },
         outcome: { sensitivityContext: { status: 'review-required', state: 'unresolved', reason: 'neutral context unresolved' } } }),
-      row(id, { method: 'context-discrimination', variant: 'non-sensitive', strategy: 'derived', authority: { claim: 'context' },
-        expectation: { validatorApplicable: false, contextObligation: 'required', contextClass: 'non-sensitive', sensitivity: 'non-sensitive' }, methodEvidence: { validatorState: null } }),
+      row(id, { method: 'context-discrimination', variant: 'non-sensitive', strategy: 'derived',
+        expectation: { validatorApplicable: false, contextObligation: 'required-for-sensitive-classification', contextClass: 'non-sensitive', sensitivity: 'non-sensitive' }, methodEvidence: { validatorState: null } }),
     ]).flat(),
     ...repeat('benign-case', 6, (id, index) => row(id, { method: 'pii-benign', variant: classes[index], strategy: 'authored',
       expectation: { sensitivity: 'non-sensitive', contextClass: 'non-sensitive', validatorApplicable: false }, methodEvidence: { controlClass: classes[index], validatorState: null } })),
-    ...repeat('collision-case', 4, id => row(id, { method: 'jurisdiction-collision', variant: 'collision', authority: { claim: 'allocation' },
-      scope: { kind: 'jurisdictional', jurisdiction: 'us' }, expectation: { validatorApplicable: false },
-      methodEvidence: { validatorState: null, collision: { targetFamily: 'synthetic-id', competingFamilies: ['synthetic-id-alt'] } },
-      outcome: { observed: { jurisdictions: ['us'] } } })),
+    ...repeat('collision-case', 4, id => row(id, { method: 'jurisdiction-collision', variant: 'collision',
+      scope: 'jurisdiction:US', family: 'pii:us:synthetic-id', expectation: { validatorApplicable: false },
+      methodEvidence: { validatorState: null, collision: { targetFamily: 'pii:us:synthetic-id', competingFamilies: ['pii:br:synthetic-id'] } },
+      outcome: { observed: { families: ['pii:us:synthetic-id'], jurisdictions: ['US'] } } })),
     ...repeat('reference-case', 4, id => row(id, { method: 'reference-differential', variant: 'reference', expectation: { validatorApplicable: false, referenceApplicable: true },
       methodEvidence: { validatorState: null, referenceState: 'valid' } })),
   ];
@@ -71,7 +72,7 @@ function holdout({ run = '2', corpus = 'e', plan = 'f', purpose = 'protected', i
 const completeEvidence = { protected: holdout(), independent: holdout({ run: '6', corpus: '7', plan: '8' }) };
 
 test('PII accounting keeps axes independent, splits identity failures, and publishes benign class rates', () => {
-  const mixed = row('mixed-axis', { scope: { kind: 'jurisdictional', jurisdiction: 'us' }, outcome: { typeIdentity: { status: 'fail', state: 'wrong-jurisdiction' },
+  const mixed = row('mixed-axis', { scope: 'jurisdiction:US', family: 'pii:us:synthetic-id', outcome: { typeIdentity: { status: 'fail', state: 'wrong-jurisdiction' },
     sensitivityContext: { status: 'fail', state: 'miss' } } });
   const report = accountPiiRows([mixed]);
   assert.equal(report.metrics['wrong-family-rate'].counts.numerator, 0);
@@ -82,7 +83,7 @@ test('PII accounting keeps axes independent, splits identity failures, and publi
 });
 
 test('unresolved, not-measured, and not-applicable remain explicit', () => {
-  const unresolved = row('unresolved-row', { expectation: { sensitivity: 'unresolved', validatorApplicable: false }, methodEvidence: { validatorState: null },
+  const unresolved = row('unresolved-row', { expectation: { sensitivity: 'not-established', validatorApplicable: false }, methodEvidence: { validatorState: null },
     outcome: { typeIdentity: { status: 'not-measured', state: 'not-measured', reason: 'scanner unavailable' },
       sensitivityContext: { status: 'review-required', state: 'unresolved', reason: 'authored unresolved' }, range: 'not-applicable', observed: { findingCount: 0, families: [], jurisdictions: [] } } });
   const report = accountPiiRows([unresolved]);
@@ -112,7 +113,7 @@ test('validated holdout projections remain provisional until a trusted resolver 
 
 test('only measurable-share evaluates a partial denominator and uses its lower bound', () => {
   const unresolvedSensitivity = repeat('partial-share', 4, id => row(id, {
-    expectation: { sensitivity: 'unresolved', validatorApplicable: false }, methodEvidence: { validatorState: null },
+    expectation: { sensitivity: 'not-established', validatorApplicable: false }, methodEvidence: { validatorState: null },
     outcome: { sensitivityContext: { status: 'review-required', state: 'unresolved', reason: 'authored unresolved' } },
   }));
   const belowFloor = qualifyPii(accountPiiRows(unresolvedSensitivity), { protected: null, independent: null });
@@ -186,14 +187,15 @@ test('metric labels and evidence tallies are canonical and recomputed from safe 
 
 test('actual PII execution artifacts preserve their source envelope without raw values', async () => {
   const scanner = { id: 'pii-accounting-scanner', mode: 'candidate', capabilities: { ranges: true, classification: true }, async version() { return '1.0.0'; },
-    async scan(_directory, inputs) { return inputs.map(input => ({ path: input.path, start: 11, end: 34, family: 'synthetic-person-id', sensitive: true })); } };
+    async scan(_directory, inputs) { return inputs.flatMap(input => input.id === 'pii-jurisdiction-probe' ? [] :
+      [{ path: input.path, start: 8, end: 30, family: 'pii:global:email', sensitive: false }]); } };
   const artifact = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [scanner],
     provenance: { candidateArtifactHash: candidateHash } });
   const rows = piiAccountingRowsFromEvaluation(artifact), accounting = accountPiiRows(rows);
   assert.equal(rows[0].source.runId, artifact.runId);
   assert.equal(rows[0].source.scanner.version, '1.0.0');
   assert.equal(accounting.sources[0].provenance.candidateArtifactHash, candidateHash);
-  assert.doesNotMatch(JSON.stringify(accounting), /SYNTHETIC-PERSON-ID|"content"|fixtureHash|contentHash/);
+  assert.doesNotMatch(JSON.stringify(accounting), /person@example\.invalid|000-00-0000|"content"|fixtureHash|contentHash/);
   assert.throws(() => piiAccountingRowsFromEvaluation({ ...structuredClone(artifact), evaluationProfile: 'pii-v1' }), /Invalid/);
   const duplicate = structuredClone(artifact); duplicate.results[0].outcomes.push(structuredClone(duplicate.results[0].outcomes[0]));
   assert.throws(() => piiAccountingRowsFromEvaluation(duplicate), /outcome matrix/);
@@ -203,7 +205,7 @@ test('actual PII execution artifacts preserve their source envelope without raw 
   const multi = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [scanner, second],
     provenance: { candidateArtifactHash: candidateHash } });
   assert.throws(() => piiAccountingRowsFromEvaluation(multi), /explicit scanner selector/);
-  assert.equal(piiAccountingRowsFromEvaluation(multi, second.id).length, 1);
+  assert.equal(piiAccountingRowsFromEvaluation(multi, second.id).length, 2);
 });
 
 test('profiles and reports are strict and cross-domain aggregation remains forbidden', () => {

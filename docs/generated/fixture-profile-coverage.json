@@ -254,13 +254,13 @@
         "context-constrained-empirical"
       ],
       "cells": {
-        "totalFixtures": 48,
-        "positiveCases": 4,
-        "benignControls": 18,
-        "twinPairs": 13,
+        "totalFixtures": 52,
+        "positiveCases": 5,
+        "benignControls": 19,
+        "twinPairs": 14,
         "positiveContextAxes": 12,
         "controlAxes": 6,
-        "confusionAxes": 8,
+        "confusionAxes": 9,
         "positiveContextAxisIds": [
           "#207 · bearer-token · ci-config",
           "#207 · bearer-token · cli",
@@ -291,7 +291,8 @@
           "public-identifier",
           "reference",
           "twin:alphabet",
-          "twin:context"
+          "twin:context",
+          "twin:length"
         ]
       },
       "requiredCells": {
@@ -306,9 +307,9 @@
       "debt": [
         {
           "cell": "positiveCases",
-          "actual": 4,
+          "actual": 5,
           "required": 6,
-          "shortfall": 2
+          "shortfall": 1
         }
       ]
     },
@@ -499,10 +500,10 @@
       "target": "arrival-provisional",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 54,
-        "positiveCases": 9,
-        "benignControls": 15,
-        "twinPairs": 15,
+        "totalFixtures": 58,
+        "positiveCases": 10,
+        "benignControls": 16,
+        "twinPairs": 16,
         "positiveContextAxes": 4,
         "controlAxes": 3,
         "confusionAxes": 4,
@@ -1113,10 +1114,10 @@
         "stable-documented"
       ],
       "cells": {
-        "totalFixtures": 128,
-        "positiveCases": 35,
-        "benignControls": 75,
-        "twinPairs": 9,
+        "totalFixtures": 132,
+        "positiveCases": 36,
+        "benignControls": 76,
+        "twinPairs": 10,
         "positiveContextAxes": 12,
         "controlAxes": 4,
         "confusionAxes": 5,
@@ -2973,10 +2974,10 @@
       "target": "arrival-provisional",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 17,
-        "positiveCases": 0,
-        "benignControls": 5,
-        "twinPairs": 6,
+        "totalFixtures": 24,
+        "positiveCases": 2,
+        "benignControls": 8,
+        "twinPairs": 7,
         "positiveContextAxes": 1,
         "controlAxes": 3,
         "confusionAxes": 4,
@@ -3006,22 +3007,10 @@
       "requiredButEmptyAxisIds": [],
       "debt": [
         {
-          "cell": "totalFixtures",
-          "actual": 17,
-          "required": 24,
-          "shortfall": 7
-        },
-        {
           "cell": "positiveCases",
-          "actual": 0,
+          "actual": 2,
           "required": 6,
-          "shortfall": 6
-        },
-        {
-          "cell": "benignControls",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
+          "shortfall": 4
         },
         {
           "cell": "positiveContextAxes",

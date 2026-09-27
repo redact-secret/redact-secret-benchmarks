@@ -167,7 +167,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // documented layout, so they leave policy/T3 again (-3).
   // #259 (registry pin 3144bb3): travisci-api-token's keyword-gated coverage positive in its
   // three detector-coverage contexts (+3).
-  assert.deepEqual(tally['policy/T3'], { files: 208, spans: 208 });
+  assert.deepEqual(tally['policy/T3'], { files: 217, spans: 217 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -222,7 +222,7 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // short-body, mask, reference and label-prose or public-id for each of six new registry detectors);
   // the #212 graduation adds 20 more for four further registry detectors, and the #259 re-pin
   // (3144bb3) 15 more for travisci-api-token, neon-api-key and postman-collection-access-key.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 483);
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 489);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

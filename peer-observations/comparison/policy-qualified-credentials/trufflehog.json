@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T02:54:05.758Z",
+  "sourceRun": {
+    "runId": "2026-09-27T02:54:05.758Z-9988f4",
+    "benchmarkRevision": "aa5ff5fc57c47db208bf97b5823cf01c1d9ed68f"
+  },
+  "input": {
+    "surface": "comparison/policy-qualified-credentials",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "c45a8892853938099443473bdee7fbb9fa470720cb60a1f95921dd7e6ce861df",
+    "fixtureCount": 19,
+    "fixturesDigest": "59f8acf96f61672f64780d1a8f43ae90823380d5060c4447c8332508de119338",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "95b2123327c4763d3b1fbcebdcea6c5d23b0ae1866197c3b10ab9adfbbc9e955",
+      "fixtureCount": 3015
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/connection-string-postgres-userinfo.txt",
+      "start": 0,
+      "end": 72
+    }
+  ],
+  "digest": "72808c6349a3870a315ddacec3ef26dc567f954b0b5ad7ad9aa8b7637004f638"
+}

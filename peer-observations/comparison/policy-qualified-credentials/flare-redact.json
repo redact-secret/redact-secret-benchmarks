@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-27T02:54:05.758Z",
+  "sourceRun": {
+    "runId": "2026-09-27T02:54:05.758Z-9988f4",
+    "benchmarkRevision": "aa5ff5fc57c47db208bf97b5823cf01c1d9ed68f"
+  },
+  "input": {
+    "surface": "comparison/policy-qualified-credentials",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "c45a8892853938099443473bdee7fbb9fa470720cb60a1f95921dd7e6ce861df",
+    "fixtureCount": 19,
+    "fixturesDigest": "59f8acf96f61672f64780d1a8f43ae90823380d5060c4447c8332508de119338",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "95b2123327c4763d3b1fbcebdcea6c5d23b0ae1866197c3b10ab9adfbbc9e955",
+      "fixtureCount": 3015
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/bearer-token-authorization-header-twin.txt",
+      "start": 15,
+      "end": 32,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-authorization-header.txt",
+      "start": 15,
+      "end": 54,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-proxy-header.txt",
+      "start": 21,
+      "end": 60,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/connection-string-postgres-userinfo.txt",
+      "start": 0,
+      "end": 44,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-reference.txt",
+      "start": 0,
+      "end": 34,
+      "family": "connection-string"
+    }
+  ],
+  "digest": "b0425ecafb17f18739336ab13ba2ea73c3205d0d6569bebd73e5d74e1f230304"
+}

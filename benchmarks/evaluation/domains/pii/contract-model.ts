@@ -1,27 +1,40 @@
 import { hash } from '../../substrate/hash.ts';
 import { generatedVariant } from '../../substrate/variant-lifecycle.ts';
-import type { PiiCase, PiiContract, PiiFinding, PiiOutcome, PiiRangeOutcome, PiiVariant } from './types.ts';
+import { isPiiJurisdiction } from './jurisdictions.ts';
+import { PII_AUTHORITY_SUPPORTS, PII_IDENTITY_DOMAINS, type PiiAuthority, type PiiCase, type PiiContract, type PiiFinding, type PiiOutcome, type PiiRangeOutcome, type PiiVariant } from './types.ts';
 
 const slug = (value: unknown) => typeof value === 'string' && /^[a-z][a-z0-9-]{1,79}$/.test(value);
-const date = (value: unknown) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) &&
-  Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
-const locator = (value: unknown) => typeof value === 'string' && (/^https:\/\/[a-z0-9.-]+\/[a-zA-Z0-9._~!$&'()*+,;=:@\/-]+$/.test(value) ||
-  /^(?:urn|benchmark):[a-zA-Z0-9][a-zA-Z0-9._:-]{1,199}$/.test(value));
+const locator = (value: unknown) => typeof value === 'string' && /^(?:https:\/\/[a-z0-9.-]+\/[a-zA-Z0-9._~!$&'()*+,;=:@\/-]+|(?:section|clause|annex):[a-zA-Z0-9][a-zA-Z0-9._:-]{0,119})$/.test(value);
+const family = (value: unknown) => typeof value === 'string' && /^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
+
+export function validatePiiAuthority(authority: PiiAuthority) {
+  if (!authority || !['standard', 'public-authority'].includes(authority.sourceKind) || !slug(authority.sourceId) || !locator(authority.locator) ||
+      typeof authority.revision !== 'string' || !/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/.test(authority.revision) ||
+      !Array.isArray(authority.supports) || authority.supports.length === 0 || new Set(authority.supports).size !== authority.supports.length ||
+      authority.supports.some(item => !PII_AUTHORITY_SUPPORTS.includes(item)))
+    throw new Error('Invalid PII authority provenance');
+  return authority;
+}
 
 export function validatePiiContract(contract: PiiContract) {
-  if (!contract || !slug(contract.category) || !slug(contract.family) ||
+  if (!contract || contract.category !== 'pii' || !family(contract.family) || typeof contract.displayName !== 'string' ||
+      !/^[A-Za-z0-9][A-Za-z0-9 ()/.+-]{0,79}$/.test(contract.displayName) || !PII_IDENTITY_DOMAINS.includes(contract.identityDomain) ||
       !['valid', 'invalid'].includes(contract.typeExpectation?.state) ||
-      !['sensitive', 'non-sensitive', 'unresolved'].includes(contract.sensitivityExpectation) ||
-      !['required', 'optional', 'forbidden'].includes(contract.context?.obligation) ||
+      !['sensitive', 'non-sensitive', 'not-established'].includes(contract.sensitivityExpectation) ||
+      !['none', 'reinforcing', 'required-for-sensitive-classification'].includes(contract.context?.obligation) ||
       !['sensitive', 'neutral', 'non-sensitive'].includes(contract.context?.class) || !slug(contract.context?.language) ||
-      !['standard', 'public-authority', 'official-test-source'].includes(contract.authority?.kind) ||
-      !locator(contract.authority?.locator) || typeof contract.authority?.version !== 'string' || !/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,39}$/.test(contract.authority.version) ||
-      !['format', 'allocation', 'context', 'test-vector'].includes(contract.authority?.claim) || !date(contract.authority.observedAt) ||
+      !Array.isArray(contract.authority) || contract.authority.length === 0 ||
       contract.qualificationProfile?.id !== 'pii-v1' || contract.qualificationProfile.version !== 1)
     throw new Error('Invalid PII contract');
-  if (contract.scope?.kind === 'global') {
-    if ('jurisdiction' in contract.scope) throw new Error('Global PII contract cannot carry a jurisdiction');
-  } else if (contract.scope?.kind !== 'jurisdictional' || !slug(contract.scope.jurisdiction)) throw new Error('Invalid PII scope');
+  for (const authority of contract.authority) validatePiiAuthority(authority);
+  const jurisdiction = contract.scope === 'global' ? null : /^jurisdiction:([A-Z]{2})$/.exec(contract.scope)?.[1] ?? null;
+  if (contract.scope !== 'global' && (!jurisdiction || !isPiiJurisdiction(jurisdiction))) throw new Error('Invalid PII scope');
+  const familyScope = contract.family.split(':')[1];
+  if ((contract.scope === 'global' && familyScope !== 'global') || (jurisdiction && familyScope !== jurisdiction.toLowerCase())) throw new Error('PII family and scope disagree');
+  if (!contract.authority.some(row => row.supports.some(item => ['lexical', 'validation', 'allocation'].includes(item)))) throw new Error('PII identity lacks normative authority');
+  if (jurisdiction && !contract.authority.some(row => row.supports.includes('allocation'))) throw new Error('Jurisdictional PII lacks allocation authority');
+  if (contract.sensitivityExpectation !== 'not-established' && !contract.authority.some(row => row.supports.includes('sensitivity') ||
+      (contract.sensitivityExpectation === 'non-sensitive' && row.supports.includes('reserved-control')))) throw new Error('Resolved PII sensitivity lacks authority');
   if (contract.typeExpectation.validator !== null && !slug(contract.typeExpectation.validator)) throw new Error('Invalid PII validator identity');
   if (contract.referenceEvidence !== null && (!slug(contract.referenceEvidence?.id) || !Number.isInteger(contract.referenceEvidence.version) || contract.referenceEvidence.version < 1))
     throw new Error('Invalid PII reference evidence');
@@ -68,7 +81,7 @@ export function interpretPiiOutcome(variant: PiiVariant, scanner: { id: string; 
   };
   const findings = (scanner.findings ?? []).filter(f => f.path === variant.fixture.path && overlaps(variant.candidate, f));
   const finding = findings[0], expected = variant.contract;
-  const expectedJurisdiction = expected.scope.kind === 'jurisdictional' ? expected.scope.jurisdiction : null;
+  const expectedJurisdiction = expected.scope.startsWith('jurisdiction:') ? expected.scope.slice('jurisdiction:'.length) : null;
   let typeIdentity: PiiOutcome['typeIdentity'];
   if (expected.typeExpectation.state === 'invalid') typeIdentity = findings.length
     ? { axis: 'type-identity', status: 'fail', state: 'invalid-accepted', reason: 'A mechanically invalid candidate was classified.' }
@@ -90,7 +103,7 @@ export function interpretPiiOutcome(variant: PiiVariant, scanner: { id: string; 
   else typeIdentity = { axis: 'type-identity', status: 'pass', state: 'correct', reason: 'The authored PII identity was observed.' };
 
   let sensitivityContext: PiiOutcome['sensitivityContext'];
-  if (expected.sensitivityExpectation === 'unresolved') sensitivityContext = {
+  if (expected.sensitivityExpectation === 'not-established') sensitivityContext = {
     axis: 'sensitivity-context', status: 'review-required', state: 'unresolved', reason: 'Sensitivity is not established by this scaffold.',
   };
   else if (expected.sensitivityExpectation === 'sensitive') sensitivityContext = finding?.sensitive === true

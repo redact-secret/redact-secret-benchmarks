@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T02:28:09.797Z",
+  "observedAt": "2026-09-27T02:55:42.216Z",
   "sourceRun": {
-    "runId": "a7386a04-1488-4789-a5e7-d4617df56805",
-    "benchmarkRevision": "bd5488df3f6040819a86ac969474d57f059da3c2"
+    "runId": "708d73ec-22c9-4fb6-aa7c-23531ddb542f",
+    "benchmarkRevision": "aa5ff5fc57c47db208bf97b5823cf01c1d9ed68f"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "981f48c83a59fdc6e5a2916c7dc224ac34ef0f0a51c5744b4000b1b721f3993c",
-    "fixtureCount": 24308,
-    "fixturesDigest": "47635949d6454117fa78c9274c4f022232ada74fc99af068b57cd345511c65a4",
+    "corpusHash": "ac5e016e7b46afefa1be47c0a27a08d8282b80a184b23aab4ce1fcc979c6a1f6",
+    "fixtureCount": 24419,
+    "fixturesDigest": "511480c03659f6c3357cd69577786bd2142d14df3d1bbfc7d17b8c9686721380",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "66d1dc47f829368e992a23af94e265e1ce5c683540309c89725d16ec7f715801",
-      "fixtureCount": 2996
+      "digest": "95b2123327c4763d3b1fbcebdcea6c5d23b0ae1866197c3b10ab9adfbbc9e955",
+      "fixtureCount": 3015
     }
   },
   "peer": {
@@ -55915,6 +55915,48 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/policy-qualified-credentials--generic-token-high-signal-redact--differential/canonical.txt",
+      "start": 9,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/policy-qualified-credentials--generic-token-high-signal-redact--metamorphic/canonical.txt",
+      "start": 9,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/policy-qualified-credentials--generic-token-high-signal-redact--metamorphic/context.indent.txt",
+      "start": 13,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/policy-qualified-credentials--generic-token-high-signal-redact--metamorphic/context.unicode-prefix.txt",
+      "start": 29,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/policy-qualified-credentials--generic-token-high-signal-redact--metamorphic/encoding.crlf.txt",
+      "start": 9,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/policy-qualified-credentials--generic-token-high-signal-redact--mutation/canonical.txt",
+      "start": 9,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/policy-qualified-credentials--generic-token-high-signal-redact-twin--twin/canonical.txt",
+      "start": 9,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/reference-syntax--api-key--differential/canonical.txt",
       "start": 8,
       "end": 48,
@@ -58675,5 +58717,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "c87fb8d4082b00963474617474118261866b29e2a7baa0a021a5792cff557c56"
+  "digest": "0a079e25e6dcfcea302314967b4aa0a8ab239e6adc29e874bf9ff5df1e7afcce"
 }

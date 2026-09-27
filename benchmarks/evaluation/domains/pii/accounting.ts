@@ -2,15 +2,18 @@ import Ajv from 'ajv';
 import reportSchema from '../../../../schemas/pii-accounting-report-v1.json';
 import { assertCompatibleIdentities, proportion, type AccountingArtifactIdentity, type MechanicalPublished } from '../../../accounting/shared/primitives.ts';
 import { piiIdentity } from './identity.ts';
+import { piiContextEvidence } from './context-evidence.ts';
 import { hash } from '../../substrate/hash.ts';
 import { isPiiJurisdiction } from './jurisdictions.ts';
 import { validatePiiOutcome } from './outcome-validation.ts';
 import type { PiiAuthority, PiiOutcome, PiiScope, PiiSensitivityExpectation } from './types.ts';
 import { validatePiiAuthority } from './contract-model.ts';
 import { PII_METRIC_IDS, piiV1Profile, validatePiiQualificationProfile, type PiiMetricId, type PiiQualificationProfile } from './profile.ts';
+import { PII_BENIGN_ACCOUNTING_CLASSES, PII_BENIGN_COLLISION_EVIDENCE_CLASSES, PII_EVIDENCE_ACCOUNTING_CLASSES,
+  type PiiBenignCollisionEvidenceClass } from './benign-collision-classes.ts';
 
 export const PII_ACCOUNTING_IDENTITY = Object.freeze({ domain: 'pii', evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1' });
-export const PII_CONTROL_CLASSES = Object.freeze(['reserved', 'documentation', 'test-value', 'public-operational', 'placeholder', 'context-negative'] as const);
+export const PII_CONTROL_CLASSES = PII_BENIGN_ACCOUNTING_CLASSES;
 export type PiiControlClass = typeof PII_CONTROL_CLASSES[number];
 type Bucket = 'numerator' | 'other' | 'unresolved' | 'notMeasured' | 'notApplicable';
 
@@ -24,8 +27,10 @@ export interface PiiAccountingRow {
   source: PiiAccountingSource; caseId: string; method: string; family: string; scope: PiiScope; variant: string;
   strategy: 'authored' | 'derived' | 'review-required'; scanner: string; qualificationProfile: { id: 'pii-v1'; version: 1 }; authority: PiiAuthority[];
   expectation: { type: 'valid' | 'invalid'; sensitivity: PiiSensitivityExpectation; contextObligation: 'none' | 'reinforcing' | 'required-for-sensitive-classification';
-    contextClass: 'sensitive' | 'neutral' | 'non-sensitive'; validatorApplicable: boolean; referenceApplicable: boolean };
-  methodEvidence: { controlClass: PiiControlClass | null; validatorState: 'valid' | 'invalid' | 'unavailable' | null;
+    contextClass: 'sensitive' | 'neutral' | 'non-sensitive'; language: string; validatorApplicable: boolean; referenceApplicable: boolean };
+  methodEvidence: { evidenceClass: PiiBenignCollisionEvidenceClass | null; controlClass: PiiControlClass | null;
+    validatorEvidence: { family: string; id: string; version: number; expected: 'valid' | 'invalid' | 'unavailable'; observed: 'valid' | 'invalid' | 'unavailable' }[];
+    validatorState: 'valid' | 'invalid' | 'unavailable' | null;
     collision: { targetFamily: string; competingFamilies: string[] } | null; referenceState: 'valid' | 'invalid' | 'unavailable' | null };
   outcome: PiiOutcome;
 }
@@ -36,11 +41,18 @@ export interface PiiMetric {
   effectiveN: number;
   rate: MechanicalPublished;
 }
+export type PiiContextStatusCounts = { pass: number; fail: number; 'review-required': number; 'not-measured': number };
+export type PiiContextLanguageStrata = Record<string, Record<'sensitive' | 'neutral' | 'non-sensitive', PiiContextStatusCounts>>;
+export type PiiContextRoster = { groupId: string; language: string; frames: { id: string; contextClass: 'sensitive' | 'neutral' | 'non-sensitive';
+  status: 'pass' | 'fail' | 'review-required' | 'not-measured' }[] }[];
 export interface PiiAccountingReport extends AccountingArtifactIdentity {
   schemaVersion: 1; reportType: 'pii-accounting'; profile: { id: 'pii-v1'; version: 1 }; rowCount: number; sourceCaseCount: number;
   inputCommitment: string; commitmentTrust: 'unresolved' | 'trusted';
   sources: PiiAccountingSource[]; metrics: Record<PiiMetricId, PiiMetric>;
   benignByControlClass: Record<PiiControlClass, PiiMetric>;
+  evidenceByClass: Record<PiiBenignCollisionEvidenceClass, { cases: number; accountingClasses: PiiControlClass[] }>;
+  contextByLanguage: PiiContextLanguageStrata;
+  contextRoster: PiiContextRoster;
   evidence: { methods: string[]; authority: { total: number; qualified: number; sources: number };
     validators: { applicable: number; evaluated: number }; benign: { cases: number; axes: PiiControlClass[] }; semanticControls: number;
     context: { applicable: number; evaluated: number }; jurisdiction: { applicable: number; evaluated: number };
@@ -85,9 +97,10 @@ function validateRow(row: PiiAccountingRow) {
   if (!row || !exact(row, ['source', 'caseId', 'method', 'family', 'scope', 'variant', 'strategy', 'scanner', 'qualificationProfile', 'authority', 'expectation', 'methodEvidence', 'outcome']) ||
       !validateSource(row.source) || !slug(row.caseId) || !slug(row.method) || !family(row.family) || !slug(row.variant) || !['authored', 'derived', 'review-required'].includes(row.strategy) ||
       !/^[a-z][a-z0-9.-]+$/.test(row.scanner) || row.scanner !== row.source.scanner.id || row.qualificationProfile?.id !== 'pii-v1' || row.qualificationProfile.version !== 1 ||
-      !exact(row.qualificationProfile, ['id', 'version']) || !exact(row.expectation, ['type', 'sensitivity', 'contextObligation', 'contextClass', 'validatorApplicable', 'referenceApplicable']) ||
+      !exact(row.qualificationProfile, ['id', 'version']) || !exact(row.expectation, ['type', 'sensitivity', 'contextObligation', 'contextClass', 'language', 'validatorApplicable', 'referenceApplicable']) ||
       !['valid', 'invalid'].includes(row.expectation?.type) || !['sensitive', 'non-sensitive', 'not-established'].includes(row.expectation?.sensitivity) ||
       !['none', 'reinforcing', 'required-for-sensitive-classification'].includes(row.expectation?.contextObligation) || !['sensitive', 'neutral', 'non-sensitive'].includes(row.expectation?.contextClass) ||
+      !/^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$/.test(row.expectation?.language) ||
       typeof row.expectation?.validatorApplicable !== 'boolean' || typeof row.expectation?.referenceApplicable !== 'boolean' || !Array.isArray(row.authority) || row.authority.length === 0)
     throw new Error('Invalid PII accounting row');
   for (const authority of row.authority) validatePiiAuthority(authority);
@@ -99,13 +112,21 @@ function validateRow(row: PiiAccountingRow) {
     expectation: { type: row.expectation.type, sensitivity: row.expectation.sensitivity } });
   const states = [row.methodEvidence.validatorState, row.methodEvidence.referenceState];
   const collision = row.methodEvidence.collision;
-  if (!exact(row.methodEvidence, ['controlClass', 'validatorState', 'collision', 'referenceState']) ||
+  if (!exact(row.methodEvidence, ['evidenceClass', 'controlClass', 'validatorEvidence', 'validatorState', 'collision', 'referenceState']) ||
       states.some(state => state !== null && !['valid', 'invalid', 'unavailable'].includes(state)) || ![null, ...PII_CONTROL_CLASSES].includes(row.methodEvidence.controlClass) ||
+      ![null, ...PII_BENIGN_COLLISION_EVIDENCE_CLASSES].includes(row.methodEvidence.evidenceClass) ||
+      !Array.isArray(row.methodEvidence.validatorEvidence) || new Set(row.methodEvidence.validatorEvidence.map(item => `${item.family}/${item.id}@${item.version}`)).size !== row.methodEvidence.validatorEvidence.length ||
+      row.methodEvidence.validatorEvidence.some(item => !exact(item, ['family', 'id', 'version', 'expected', 'observed']) || !family(item.family) || !slug(item.id) ||
+        !Number.isInteger(item.version) || item.version < 1 || !['valid', 'invalid', 'unavailable'].includes(item.expected) || !['valid', 'invalid', 'unavailable'].includes(item.observed)) ||
       (collision !== null && (!exact(collision, ['targetFamily', 'competingFamilies']) || collision.targetFamily !== row.family ||
         !Array.isArray(collision.competingFamilies) || !collision.competingFamilies.length || new Set(collision.competingFamilies).size !== collision.competingFamilies.length ||
         collision.competingFamilies.some(candidate => !family(candidate) || candidate === collision.targetFamily))) ||
       (row.method === 'jurisdiction-collision') !== (collision !== null) ||
-      (row.method === 'pii-benign' && (row.strategy !== 'authored' || row.methodEvidence.controlClass === null)))
+      (row.method === 'pii-benign' && (row.strategy !== 'authored' || row.methodEvidence.controlClass === null)) ||
+      (row.methodEvidence.evidenceClass !== null && (row.methodEvidence.controlClass === null ?
+        PII_EVIDENCE_ACCOUNTING_CLASSES[row.methodEvidence.evidenceClass].length !== 0 :
+        !(PII_EVIDENCE_ACCOUNTING_CLASSES[row.methodEvidence.evidenceClass] as readonly PiiControlClass[]).includes(row.methodEvidence.controlClass))) ||
+      (row.methodEvidence.evidenceClass !== null && row.expectation.validatorApplicable && row.methodEvidence.validatorEvidence.length === 0))
     throw new Error('Invalid PII accounting row');
   return row;
 }
@@ -149,8 +170,14 @@ function contextGroups(rows: PiiAccountingRow[]) {
   for (const row of rows.filter(candidate => candidate.method === 'context-discrimination')) {
     const key = `${row.source.runId}/${row.scanner}/${row.caseId}`; groups.set(key, [...(groups.get(key) ?? []), row]);
   }
-  for (const group of groups.values()) if (group.length !== 3 || canonical(group.map(row => row.expectation.contextClass).sort()) !== canonical(['neutral', 'non-sensitive', 'sensitive']))
-    throw new Error('Incomplete PII context discrimination group');
+  for (const group of groups.values()) {
+    const expected = piiContextEvidence.groups.find(candidate => candidate.id === group[0].caseId);
+    const actualIds = group.map(row => row.variant).sort(), expectedIds = expected?.frames.map(frame => frame.id).sort();
+    if (!expected || canonical(actualIds) !== canonical(expectedIds) || new Set(actualIds).size !== actualIds.length ||
+        group.some(row => { const frame = expected.frames.find(candidate => candidate.id === row.variant); return !frame ||
+          row.expectation.language !== expected.language || row.expectation.contextClass !== frame.contextClass || row.expectation.sensitivity !== frame.sensitivity; }))
+      throw new Error('Incomplete or mismatched PII context evidence roster');
+  }
   return [...groups.values()];
 }
 
@@ -199,6 +226,19 @@ function buildAccounting(input: PiiAccountingRow[], profile: PiiQualificationPro
     metricBuckets(groups.map(group => group[0].method !== 'pii-benign' || group[0].methodEvidence.controlClass !== controlClass ? 'notApplicable' :
       groupBucket(group, 'sensitivityContext', row => row.outcome.sensitivityContext.status === 'pass')), profile.metrics['benign-suppression-rate'].direction,
     `scanner-source × distinct authored ${controlClass} benign case`, 'non-sensitive assertion passes', `resolved authored ${controlClass} benign cases`, profile)])) as Record<PiiControlClass, PiiMetric>;
+  const evidenceByClass = Object.fromEntries(PII_BENIGN_COLLISION_EVIDENCE_CLASSES.map(evidenceClass => [evidenceClass, {
+    cases: groups.filter(group => group[0].methodEvidence.evidenceClass === evidenceClass).length,
+    accountingClasses: [...PII_EVIDENCE_ACCOUNTING_CLASSES[evidenceClass]],
+  }])) as PiiAccountingReport['evidenceByClass'];
+  const contextRows = rows.filter(row => row.method === 'context-discrimination');
+  const statuses = ['pass', 'fail', 'review-required', 'not-measured'] as const;
+  const contextByLanguage = Object.fromEntries([...new Set(contextRows.map(row => row.expectation.language))].sort().map(language => [language,
+    Object.fromEntries((['sensitive', 'neutral', 'non-sensitive'] as const).map(contextClass => [contextClass,
+      Object.fromEntries(statuses.map(status => [status, contextRows.filter(row => row.expectation.language === language &&
+        row.expectation.contextClass === contextClass && row.outcome.sensitivityContext.status === status).length]))]))])) as PiiContextLanguageStrata;
+  const contextRoster: PiiContextRoster = contexts.map(group => ({ groupId: group[0].caseId, language: group[0].expectation.language,
+    frames: group.map(row => ({ id: row.variant, contextClass: row.expectation.contextClass, status: row.outcome.sensitivityContext.status }))
+      .sort((a, b) => a.id.localeCompare(b.id)) })).sort((a, b) => a.groupId.localeCompare(b.groupId));
   const occurrences = unique(rows, row => `${row.caseId}/${row.variant}`), benign = occurrences.filter(row => row.method === 'pii-benign');
   if (new Set(benign.map(row => row.caseId)).size !== benign.length) throw new Error('PII benign controls must be distinct authored cases');
   const requiredSupport = (row: PiiAccountingRow): PiiAuthority['supports'][number] => row.expectation.sensitivity !== 'not-established' ||
@@ -220,7 +260,7 @@ function buildAccounting(input: PiiAccountingRow[], profile: PiiQualificationPro
   return { schemaVersion: 1, reportType: 'pii-accounting', ...PII_ACCOUNTING_IDENTITY, profile: { id: profile.id, version: profile.version }, rowCount: rows.length,
     sourceCaseCount: groups.length, inputCommitment: hash(rows), commitmentTrust: 'unresolved',
     sources: unique(rows.map(row => row.source), source => `${source.runId}/${source.scanner.id}`).sort((a, b) => a.scanner.id.localeCompare(b.scanner.id)),
-    metrics, benignByControlClass, evidence };
+    metrics, benignByControlClass, evidenceByClass, contextByLanguage, contextRoster, evidence };
 }
 
 export function accountPiiRows(input: PiiAccountingRow[], profile: PiiQualificationProfile = piiV1Profile): PiiAccountingReport {
@@ -249,6 +289,41 @@ export function validatePiiAccountingReport(value: unknown): PiiAccountingReport
       metric.direction !== piiV1Profile.metrics['benign-suppression-rate'].direction || metric.status !== expectedStatus ||
       JSON.stringify(metric.rate) !== JSON.stringify(proportion(counts.numerator, counts.measured, metric.direction, piiV1Profile.mechanics)))
       throw new Error('Inconsistent PII benign accounting metric'); }
+  if (Object.keys(report.evidenceByClass).sort().join(',') !== [...PII_BENIGN_COLLISION_EVIDENCE_CLASSES].sort().join(',') ||
+      PII_BENIGN_COLLISION_EVIDENCE_CLASSES.some(evidenceClass => {
+        const stratum = report.evidenceByClass[evidenceClass];
+        return !stratum || !Number.isInteger(stratum.cases) || stratum.cases < 0 || stratum.cases > report.sourceCaseCount ||
+          canonical(stratum.accountingClasses) !== canonical(PII_EVIDENCE_ACCOUNTING_CLASSES[evidenceClass]);
+      }) || Object.values(report.evidenceByClass).reduce((sum, row) => sum + row.cases, 0) > report.sourceCaseCount)
+    throw new Error('Inconsistent PII evidence-class strata');
+  const languageClasses = ['sensitive', 'neutral', 'non-sensitive'] as const, statuses = ['pass', 'fail', 'review-required', 'not-measured'] as const;
+  const rosterGroups = new Set<string>();
+  for (const group of report.contextRoster) {
+    if (rosterGroups.has(group.groupId)) throw new Error('Inconsistent PII context roster');
+    rosterGroups.add(group.groupId);
+    const expected = piiContextEvidence.groups.find(candidate => candidate.id === group.groupId);
+    if (!expected || group.language !== expected.language || canonical(group.frames.map(frame => frame.id).sort()) !== canonical(expected.frames.map(frame => frame.id).sort()) ||
+        new Set(group.frames.map(frame => frame.id)).size !== group.frames.length || group.frames.some(frame => {
+          const expectedFrame = expected.frames.find(candidate => candidate.id === frame.id);
+          return !expectedFrame || frame.contextClass !== expectedFrame.contextClass;
+        })) throw new Error('Inconsistent PII context roster');
+  }
+  const rosterRows = report.contextRoster.flatMap(group => group.frames.map(frame => ({ ...frame, language: group.language })));
+  const projectedContextByLanguage = Object.fromEntries([...new Set(report.contextRoster.map(group => group.language))].sort().map(language => [language,
+    Object.fromEntries(languageClasses.map(contextClass => [contextClass, Object.fromEntries(statuses.map(status => [status,
+      rosterRows.filter(frame => frame.language === language && frame.contextClass === contextClass && frame.status === status).length]))]))]));
+  if (canonical(projectedContextByLanguage) !== canonical(report.contextByLanguage)) throw new Error('Inconsistent PII context language strata');
+  for (const [language, classes] of Object.entries(report.contextByLanguage)) {
+    if (!/^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$/.test(language) || !exact(classes, [...languageClasses])) throw new Error('Inconsistent PII context language strata');
+    for (const contextClass of languageClasses) if (!exact(classes[contextClass], [...statuses]) ||
+        Object.values(classes[contextClass]).some(value => !Number.isInteger(value) || value < 0) ||
+        Object.values(classes[contextClass]).reduce((sum, value) => sum + value, 0) === 0) throw new Error('Inconsistent PII context language strata');
+  }
+  const contextClassTotals = Object.fromEntries(languageClasses.map(contextClass => [contextClass,
+    Object.values(report.contextByLanguage).reduce((sum, classes) => sum + Object.values(classes[contextClass]).reduce((a, b) => a + b, 0), 0)]));
+  if (Object.values(contextClassTotals).some(total => total < Object.keys(report.contextByLanguage).length) ||
+      contextClassTotals.sensitive + contextClassTotals.neutral + contextClassTotals['non-sensitive'] > report.rowCount)
+    throw new Error('Inconsistent PII context language strata');
   const evidence = report.evidence;
   if ((report.rowCount === 0 ? report.sources.length !== 0 : report.sources.length !== 1) || report.commitmentTrust !== 'unresolved' ||
       report.sourceCaseCount > report.rowCount || evidence.authority.qualified > evidence.authority.total || evidence.authority.total > report.rowCount ||
@@ -295,9 +370,18 @@ export function piiAccountingRowsFromEvaluation(artifact: unknown, scannerId?: s
       const matches = raw.variants.filter((candidate: any) => candidate.id === outcome.variant), source = sources.get(outcome.scanner);
       if (matches.length !== 1 || !matches[0]?.expectation || !source) throw new Error('Missing PII accounting expectation or scanner');
       const variant = matches[0], evidence = raw.evidence ?? {};
+      const validatorEvidence = evidence.collision?.validators?.map((item: any) => ({ family: item.family, id: item.validator,
+        version: item.version, expected: item.expected, observed: item.observed })) ?? (evidence.validation?.evidenceId === undefined ?
+        (evidence.control?.validator ? [{ family: raw.family, id: evidence.control.validator.id, version: evidence.control.validator.version,
+          expected: evidence.control.validator.expected, observed: evidence.control.validator.observed }] : []) :
+        [{ family: raw.family, id: evidence.validation.validator, version: evidence.validation.validatorVersion,
+          expected: evidence.validation.expected, observed: evidence.validation.state }]);
       return validateRow({ source, caseId: raw.id, method: raw.method, family: raw.family, scope: raw.scope, variant: outcome.variant,
         strategy: variant.strategy, scanner: outcome.scanner, qualificationProfile: raw.qualificationProfile, authority: raw.authority, expectation: variant.expectation,
-        methodEvidence: { controlClass: evidence.control?.controlClass ?? null, validatorState: evidence.validation?.state ?? null,
+        methodEvidence: { evidenceClass: evidence.control?.evidenceClass ?? evidence.validation?.evidenceClass ?? evidence.collision?.evidenceClass ?? null,
+          controlClass: evidence.control?.controlClass ?? null, validatorEvidence,
+          validatorState: evidence.validation?.state ?? evidence.control?.validator?.observed ??
+            evidence.collision?.validators?.find((row: any) => row.family === raw.family)?.observed ?? null,
           collision: evidence.collision?.kind === 'jurisdiction-collision' ? { targetFamily: evidence.collision.targetFamily,
             competingFamilies: evidence.collision.competingFamilies } : null, referenceState: evidence.reference?.reference?.state ?? null }, outcome });
     });

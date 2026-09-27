@@ -52,12 +52,13 @@ export function validatePiiCase(c: PiiCase) {
 }
 
 export function piiVariant(c: PiiCase, id = 'authored', input = c.input, contract = c.contract, strategy: PiiVariant['strategy'] = 'authored',
-  options: { candidate?: PiiCase['candidate']; operator?: string; operatorVersion?: number; typeEffect?: PiiVariant['transformation']['expectationEffect']['type'];
+  options: { candidate?: PiiCase['candidate']; methodVersion?: number; operator?: string; operatorVersion?: number; typeEffect?: PiiVariant['transformation']['expectationEffect']['type'];
     sensitivityEffect?: PiiVariant['transformation']['expectationEffect']['sensitivity']; evidence?: Record<string, unknown> } = {}): PiiVariant {
   validatePiiCase(c);
+  if (!Number.isInteger(options.methodVersion ?? 1) || (options.methodVersion ?? 1) < 1) throw new Error('Invalid PII method version');
   const candidate = { ...(options.candidate ?? c.candidate) };
   validatePiiCase({ ...structuredClone(c), input: structuredClone(input), contract: structuredClone(contract), candidate });
-  const transformation = { method: c.method, methodVersion: 1, operator: options.operator ?? 'authored', operatorVersion: options.operatorVersion ?? 1,
+  const transformation = { method: c.method, methodVersion: options.methodVersion ?? 1, operator: options.operator ?? 'authored', operatorVersion: options.operatorVersion ?? 1,
     expectationEffect: { type: options.typeEffect ?? 'preserve', sensitivity: options.sensitivityEffect ?? 'preserve' } };
   const base = generatedVariant({ caseId: c.id, id, fixture: structuredClone(input), strategy, transformation,
     seed: c.provenance.seed, sourceHash: c.provenance.sourceHash, identity: hash });

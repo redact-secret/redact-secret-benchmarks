@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "pii-benign-collision-v1",
+  "version": 1,
+  "contentCommitment": "f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff",
+  "accountingProfile": { "id": "pii-v1", "version": 1, "benignAxes": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] },
+  "reporting": {
+    "evidenceClasses": "evidenceByClass",
+    "validatorCorrectness": "evidence.validators",
+    "familyDiscrimination": "metrics.wrong-family-rate",
+    "jurisdictionDiscrimination": "metrics.wrong-jurisdiction-rate",
+    "sensitivity": ["metrics.sensitive-miss-rate", "metrics.non-sensitive-flag-rate"]
+  },
+  "classes": [
+    { "id": "reserved-documentation", "kind": "benign", "accountingClasses": ["reserved", "documentation"], "qualifies": ["sensitivity"] },
+    { "id": "official-test", "kind": "benign", "accountingClasses": ["test-value"], "qualifies": ["sensitivity"] },
+    { "id": "public-identifier", "kind": "benign", "accountingClasses": ["public-operational"], "qualifies": ["sensitivity"] },
+    { "id": "ordinary-reference-account", "kind": "benign", "accountingClasses": ["public-operational"], "qualifies": ["sensitivity"] },
+    { "id": "near-miss", "kind": "mechanical-control", "accountingClasses": [], "qualifies": ["type-identity", "validator"] },
+    { "id": "placeholder", "kind": "benign", "accountingClasses": ["placeholder"], "qualifies": ["sensitivity"] },
+    { "id": "context-negative", "kind": "benign", "accountingClasses": ["context-negative"], "qualifies": ["sensitivity"] },
+    { "id": "cross-family-collision", "kind": "collision", "accountingClasses": [], "qualifies": ["family-discrimination", "jurisdiction-discrimination", "sensitivity"] }
+  ],
+  "families": [],
+  "entries": []
+}

@@ -90,7 +90,7 @@ export async function executePiiEvaluation({ cases, methods, scanners, provenanc
         scope: g.case.contract.scope, qualificationProfile: g.case.contract.qualificationProfile, authority: g.case.contract.authority,
         variants: g.variants.map(v => ({ id: v.id, strategy: v.strategy, transformation: v.transformation,
           expectation: { type: v.contract.typeExpectation.state, sensitivity: v.contract.sensitivityExpectation,
-            contextObligation: v.contract.context.obligation, contextClass: v.contract.context.class,
+            contextObligation: v.contract.context.obligation, contextClass: v.contract.context.class, language: v.contract.context.language,
             validatorApplicable: v.contract.typeExpectation.validator !== null, referenceApplicable: v.contract.referenceEvidence !== null } })),
         generation: g.attempts, ...evaluated },
         reviewEntries: evaluated.reviews.map(review => ({ ...review, caseId: g.case.id, method: g.case.method })) };

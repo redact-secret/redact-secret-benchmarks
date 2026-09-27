@@ -6,6 +6,7 @@ import { accountPiiRows, assertPiiAccountingIdentities, piiAccountingRowsFromEva
 import { qualifyPii, validatePiiQualificationReport } from '../benchmarks/evaluation/domains/pii/qualification.ts';
 import { credentialAccountingIdentity } from '../benchmarks/evaluation/domains/credential/accounting.ts';
 import { proportion } from '../benchmarks/accounting/shared/primitives.ts';
+import { piiContextEvidence } from '../benchmarks/evaluation/domains/pii/context-evidence.ts';
 
 const digest = character => character.repeat(64);
 const candidateHash = digest('c');
@@ -20,8 +21,8 @@ const source = (overrides = {}) => ({ schemaVersion: 1, engineVersion: '1.0.0', 
 function row(id, overrides = {}) {
   const base = { source: source(), caseId: id, method: 'type-validation', family: 'pii:global:synthetic-id', scope: 'global', variant: 'authored',
     strategy: 'authored', scanner: 'pii-scanner', qualificationProfile: { id: 'pii-v1', version: 1 }, authority,
-    expectation: { type: 'valid', sensitivity: 'sensitive', contextObligation: 'reinforcing', contextClass: 'sensitive', validatorApplicable: true, referenceApplicable: false },
-    methodEvidence: { controlClass: null, validatorState: 'valid', collision: null, referenceState: null },
+    expectation: { type: 'valid', sensitivity: 'sensitive', contextObligation: 'reinforcing', contextClass: 'sensitive', language: 'en', validatorApplicable: true, referenceApplicable: false },
+    methodEvidence: { evidenceClass: null, controlClass: null, validatorEvidence: [], validatorState: 'valid', collision: null, referenceState: null },
     outcome: { scanner: 'pii-scanner', variant: 'authored', typeIdentity: { axis: 'type-identity', status: 'pass', state: 'correct', reason: 'correct' },
       sensitivityContext: { axis: 'sensitivity-context', status: 'pass', state: 'correct', reason: 'correct' }, range: 'exact',
       observed: { findingCount: 1, families: ['pii:global:synthetic-id'], jurisdictions: [] } } };
@@ -35,19 +36,19 @@ function row(id, overrides = {}) {
       observed: { ...base.outcome.observed, ...overrides.outcome?.observed } } };
 }
 const repeat = (prefix, count, build) => Array.from({ length: count }, (_, index) => build(`${prefix}-${index}`, index));
+function contextRows(groupId) {
+  const group = piiContextEvidence.groups.find(candidate => candidate.id === groupId);
+  return group.frames.map(frame => row(group.id, { method: 'context-discrimination', variant: frame.id, strategy: 'derived',
+    family: 'pii:global:email', expectation: { validatorApplicable: false, contextObligation: 'required-for-sensitive-classification',
+      contextClass: frame.contextClass, sensitivity: frame.sensitivity, language: group.language }, methodEvidence: { validatorState: null },
+    outcome: frame.contextClass === 'neutral' ? { sensitivityContext: { status: 'review-required', state: 'unresolved', reason: 'neutral context unresolved' } } : {} }));
+}
 function stableRows() {
   const classes = ['reserved', 'documentation', 'test-value', 'public-operational', 'placeholder', 'context-negative'];
   return [
     ...repeat('type-case', 4, id => row(id)),
-    ...repeat('context-case', 4, id => [
-      row(id, { method: 'context-discrimination', variant: 'sensitive', strategy: 'derived',
-        expectation: { validatorApplicable: false, contextObligation: 'required-for-sensitive-classification', contextClass: 'sensitive', sensitivity: 'sensitive' }, methodEvidence: { validatorState: null } }),
-      row(id, { method: 'context-discrimination', variant: 'neutral', strategy: 'derived',
-        expectation: { validatorApplicable: false, contextObligation: 'required-for-sensitive-classification', contextClass: 'neutral', sensitivity: 'not-established' }, methodEvidence: { validatorState: null },
-        outcome: { sensitivityContext: { status: 'review-required', state: 'unresolved', reason: 'neutral context unresolved' } } }),
-      row(id, { method: 'context-discrimination', variant: 'non-sensitive', strategy: 'derived',
-        expectation: { validatorApplicable: false, contextObligation: 'required-for-sensitive-classification', contextClass: 'non-sensitive', sensitivity: 'non-sensitive' }, methodEvidence: { validatorState: null } }),
-    ]).flat(),
+    ...contextRows('en-email-core'),
+    ...contextRows('ko-email-core'),
     ...repeat('benign-case', 6, (id, index) => row(id, { method: 'pii-benign', variant: classes[index], strategy: 'authored',
       expectation: { sensitivity: 'non-sensitive', contextClass: 'non-sensitive', validatorApplicable: false }, methodEvidence: { controlClass: classes[index], validatorState: null } })),
     ...repeat('collision-case', 4, id => row(id, { method: 'jurisdiction-collision', variant: 'collision',
@@ -153,14 +154,33 @@ test('duplicate, mixed-run, mixed-profile, and mixed-scanner samples fail closed
   assert.throws(() => accountPiiRows([original, row('second-scanner', { source: { scanner: { id: 'second-scanner' } } })]), /Mixed PII scanner population/);
 });
 
-test('context discrimination counts complete correlated trios rather than endpoints', () => {
-  const trio = stableRows().filter(item => item.caseId === 'context-case-0');
-  const report = accountPiiRows(trio);
+test('context discrimination counts exact committed frame rosters rather than endpoints', () => {
+  const roster = contextRows('en-email-core');
+  const report = accountPiiRows(roster);
   assert.equal(report.metrics['context-discrimination-rate'].counts.total, 1);
   assert.equal(report.metrics['context-discrimination-rate'].counts.numerator, 1);
   assert.equal(report.metrics['type-miss-rate'].counts.total, 1);
   assert.equal(report.metrics['measurable-share'].counts.total, 2);
-  assert.throws(() => accountPiiRows(trio.slice(0, 2)), /Incomplete PII context/);
+  assert.equal(report.contextByLanguage.en.sensitive.pass, 4);
+  assert.equal(report.contextByLanguage.en.neutral['review-required'], 3);
+  assert.throws(() => accountPiiRows(roster.slice(0, -1)), /context evidence roster/);
+  assert.throws(() => accountPiiRows([...roster, row('en-email-core', { method: 'context-discrimination', variant: 'extra-frame', strategy: 'derived',
+    family: 'pii:global:email', expectation: { validatorApplicable: false, contextObligation: 'required-for-sensitive-classification' }, methodEvidence: { validatorState: null } })]), /context evidence roster/);
+});
+
+test('context accounting separates language from jurisdiction and reconciles English and Korean strata', () => {
+  const english = contextRows('en-email-core');
+  const korean = contextRows('ko-email-core');
+  const report = accountPiiRows([...english, ...korean]);
+  assert.deepEqual(Object.keys(report.contextByLanguage), ['en', 'ko']);
+  assert.equal(report.contextByLanguage.ko.sensitive.pass, 7);
+  assert.equal(report.contextByLanguage.ko.neutral['review-required'], 3);
+  assert.equal(report.contextByLanguage.ko['non-sensitive'].pass, 1);
+  assert.equal(Object.hasOwn(report, 'jurisdiction'), false);
+  const forged = structuredClone(report); forged.contextByLanguage.ko.sensitive.pass++;
+  assert.throws(() => validatePiiAccountingReport(forged), /context language strata/);
+  const reassigned = structuredClone(report); reassigned.contextRoster[0].frames[0].status = 'fail';
+  assert.throws(() => validatePiiAccountingReport(reassigned), /context language strata/);
 });
 
 test('metric labels and evidence tallies are canonical and recomputed from safe rows', () => {
@@ -205,7 +225,7 @@ test('actual PII execution artifacts preserve their source envelope without raw 
   const multi = await piiDomain.execute({ cases: piiDomain.loadCases(), methods: piiDomain.createMethods(), scanners: [scanner, second],
     provenance: { candidateArtifactHash: candidateHash } });
   assert.throws(() => piiAccountingRowsFromEvaluation(multi), /explicit scanner selector/);
-  assert.equal(piiAccountingRowsFromEvaluation(multi, second.id).length, 2);
+  assert.equal(piiAccountingRowsFromEvaluation(multi, second.id).length, multi.variantCount);
 });
 
 test('profiles and reports are strict and cross-domain aggregation remains forbidden', () => {

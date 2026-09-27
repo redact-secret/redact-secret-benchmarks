@@ -25,17 +25,17 @@ const count = (outcomes: any[], axis: 'typeIdentity' | 'sensitivityContext'): Co
 
 type ProjectionExpectation = { type: 'valid' | 'invalid'; sensitivity: 'sensitive' | 'non-sensitive' | 'not-established';
   contextObligation: 'none' | 'reinforcing' | 'required-for-sensitive-classification'; contextClass: 'sensitive' | 'neutral' | 'non-sensitive';
-  validatorApplicable: boolean; referenceApplicable: boolean };
+  language: string; validatorApplicable: boolean; referenceApplicable: boolean };
 type ProjectionVariant = { id: string; expectation: ProjectionExpectation };
 
 function validateProjectionVariant(value: any): ProjectionVariant {
   const expectation = value?.expectation;
   if (!exact(value, ['id', 'strategy', 'transformation', 'expectation']) || !slug(value.id) ||
       !['authored', 'derived', 'review-required'].includes(value.strategy) ||
-      !exact(expectation, ['type', 'sensitivity', 'contextObligation', 'contextClass', 'validatorApplicable', 'referenceApplicable']) ||
+      !exact(expectation, ['type', 'sensitivity', 'contextObligation', 'contextClass', 'language', 'validatorApplicable', 'referenceApplicable']) ||
       !['valid', 'invalid'].includes(expectation?.type) || !['sensitive', 'non-sensitive', 'not-established'].includes(expectation?.sensitivity) ||
       !['none', 'reinforcing', 'required-for-sensitive-classification'].includes(expectation?.contextObligation) ||
-      !['sensitive', 'neutral', 'non-sensitive'].includes(expectation?.contextClass) ||
+      !['sensitive', 'neutral', 'non-sensitive'].includes(expectation?.contextClass) || !/^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$/.test(expectation?.language) ||
       typeof expectation?.validatorApplicable !== 'boolean' || typeof expectation?.referenceApplicable !== 'boolean')
     throw new Error('Invalid PII support projection variant');
   return { id: value.id, expectation };

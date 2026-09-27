@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T04:37:03.340Z",
+  "observedAt": "2026-09-27T14:15:34.299Z",
   "sourceRun": {
-    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
-    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+    "runId": "2026-09-27T14:15:34.299Z-1b80a8",
+    "benchmarkRevision": "1f21fe92eee7174310c06ec10fc3cbf86a6c06c2"
   },
   "input": {
     "surface": "comparison/detector-coverage",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "f96bb5023ee8a5aae9426fef3cde4033986fc281ef2ce1b8634b6681d9347e11",
-    "fixtureCount": 979,
-    "fixturesDigest": "06c9d135bfe213383eda47876aa8802568b9f1ccfc2d49073f189f3807bb23dc",
+    "corpusHash": "9f3407cd303c9abcead012032090487650dc3761e322098b675e439f825e9f3b",
+    "fixtureCount": 1057,
+    "fixturesDigest": "28877d8f068bd6fb6a875d6baefee595e80a72a0e61dcf556d54e4971427ec5a",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
-      "fixtureCount": 3422
+      "digest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
+      "fixtureCount": 3533
     }
   },
   "peer": {
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+    "adapterDigest": "a2c5b65cb851e1e8efbbb7ecdd4fa8c39b08c9779563ee20b9ac4fa3154933c2"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -60,6 +60,30 @@
     "agreed": true
   },
   "findings": [
+    {
+      "path": "cases/ai21-api-key-key-shape-bare.txt",
+      "start": 13,
+      "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-key-shape-quoted.txt",
+      "start": 20,
+      "end": 52,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-key-shape-unicode-crlf.txt",
+      "start": 34,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-short-token.txt",
+      "start": 13,
+      "end": 44,
+      "family": "generic-token"
+    },
     {
       "path": "cases/aws-access-key-shape-1-bare.txt",
       "start": 0,
@@ -77,6 +101,96 @@
       "start": 21,
       "end": 41,
       "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-key-shape-bare.txt",
+      "start": 25,
+      "end": 157,
+      "family": "aws-bedrock-long-term-api-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-key-shape-quoted.txt",
+      "start": 32,
+      "end": 164,
+      "family": "aws-bedrock-long-term-api-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-key-shape-unicode-crlf.txt",
+      "start": 46,
+      "end": 178,
+      "family": "aws-bedrock-long-term-api-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-short-body.txt",
+      "start": 25,
+      "end": 47,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-key-shape-bare.txt",
+      "start": 25,
+      "end": 69,
+      "family": "aws-bedrock-short-term-api-key"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-key-shape-quoted.txt",
+      "start": 32,
+      "end": 76,
+      "family": "aws-bedrock-short-term-api-key"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-key-shape-unicode-crlf.txt",
+      "start": 46,
+      "end": 90,
+      "family": "aws-bedrock-short-term-api-key"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-short-body.txt",
+      "start": 25,
+      "end": 69,
+      "family": "aws-bedrock-short-term-api-key"
+    },
+    {
+      "path": "cases/aws-bedrock-short-term-api-key-short-body.txt",
+      "start": 25,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-key-shape-bare-twin.txt",
+      "start": 15,
+      "end": 54,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-key-shape-bare.txt",
+      "start": 15,
+      "end": 55,
+      "family": "cohere-api-key"
+    },
+    {
+      "path": "cases/cohere-api-key-key-shape-quoted-twin.txt",
+      "start": 22,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-key-shape-quoted.txt",
+      "start": 22,
+      "end": 62,
+      "family": "cohere-api-key"
+    },
+    {
+      "path": "cases/cohere-api-key-key-shape-unicode-crlf-twin.txt",
+      "start": 36,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-key-shape-unicode-crlf.txt",
+      "start": 36,
+      "end": 76,
+      "family": "cohere-api-key"
     },
     {
       "path": "cases/confluent-cloud-api-secret-public-id.txt",
@@ -219,6 +333,42 @@
       "path": "cases/datadog-application-key-prefixed-env-marker-unicode-crlf-twin.txt",
       "start": 40,
       "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-key-shape-bare-twin.txt",
+      "start": 17,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-key-shape-bare.txt",
+      "start": 17,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-key-shape-quoted-twin.txt",
+      "start": 24,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-key-shape-quoted.txt",
+      "start": 24,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-key-shape-unicode-crlf-twin.txt",
+      "start": 38,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-key-shape-unicode-crlf.txt",
+      "start": 38,
+      "end": 78,
       "family": "generic-token"
     },
     {
@@ -811,6 +961,42 @@
       "path": "cases/microsoft-entra-client-secret-digit-q-tilde-unicode-crlf.txt",
       "start": 21,
       "end": 60
+    },
+    {
+      "path": "cases/mistral-api-key-key-shape-bare-twin.txt",
+      "start": 16,
+      "end": 47,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-key-shape-bare.txt",
+      "start": 16,
+      "end": 48,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-key-shape-quoted-twin.txt",
+      "start": 23,
+      "end": 54,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-key-shape-quoted.txt",
+      "start": 23,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-key-shape-unicode-crlf-twin.txt",
+      "start": 37,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mistral-api-key-key-shape-unicode-crlf.txt",
+      "start": 37,
+      "end": 69,
+      "family": "generic-token"
     },
     {
       "path": "cases/netlify-token-keyword-context-bare.txt",
@@ -1476,5 +1662,5 @@
       "family": "travisci-api-token"
     }
   ],
-  "digest": "46ac562674788a3e0b5d174edbadec55e96fbb86fd2042a31e0b14226c12de6d"
+  "digest": "f7d3286224a4322336a94103830ff3d7a533c86b3ec06041ddee683dd6172497"
 }

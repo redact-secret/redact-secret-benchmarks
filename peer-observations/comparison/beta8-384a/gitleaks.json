@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T04:37:03.340Z",
+  "observedAt": "2026-09-27T14:15:34.299Z",
   "sourceRun": {
-    "runId": "2026-09-27T04:37:03.340Z-4fbca7",
-    "benchmarkRevision": "45931d0fb81057120a2a399c42df85a717bd4f5f"
+    "runId": "2026-09-27T14:15:34.299Z-1b80a8",
+    "benchmarkRevision": "1f21fe92eee7174310c06ec10fc3cbf86a6c06c2"
   },
   "input": {
     "surface": "comparison/beta8-384a",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "d12772370ffa7a2f1488aa9716c3c539a2b1e094cdd779d015922bec26dc52f7",
-    "fixtureCount": 75,
-    "fixturesDigest": "8173a810f72a93d68293f5c9aa1b9e0f0f66d8214acd7ebd104f77bdc7b3c89b",
+    "corpusHash": "7dec7c164af6dc72eceb7acdbd88d1d8aad79caf9f58c82b8fed55d23cf7bf1e",
+    "fixtureCount": 81,
+    "fixturesDigest": "eed46ec2a77ee325b2a87fefd3ebd05dbbb3fe55605005dd8cbb579bed0304c0",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "71a907a21d39796cd8d1d04dc4591e503930cb92a2444c7ffeb575715f266b70",
-      "fixtureCount": 3422
+      "digest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
+      "fixtureCount": 3533
     }
   },
   "peer": {
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+    "adapterDigest": "a2c5b65cb851e1e8efbbb7ecdd4fa8c39b08c9779563ee20b9ac4fa3154933c2"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -165,6 +165,34 @@
       "end": 182
     },
     {
+      "path": "cases/anthropic-token-api03-curl-x-api-key.sh",
+      "start": 61,
+      "end": 169
+    },
+    {
+      "path": "cases/anthropic-token-api03-curl-x-api-key.sh",
+      "start": 61,
+      "end": 169,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-dotenv.env",
+      "start": 25,
+      "end": 133,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-python-sdk.py",
+      "start": 56,
+      "end": 164,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-vendor-stem-prefix-twin.sh",
+      "start": 61,
+      "end": 169
+    },
+    {
       "path": "cases/openai-admin-api-key-compose-env.yml",
       "start": 117,
       "end": 250,
@@ -240,5 +268,5 @@
       "family": "openai-token"
     }
   ],
-  "digest": "5681e4bcd0c9bcbbbd15300c8383d1a9f09970172055afdc75bec333c9573c13"
+  "digest": "1432166dc93a2aa58de5fbb39daf190c2302573bbff8efce7e0d5c45a277053d"
 }

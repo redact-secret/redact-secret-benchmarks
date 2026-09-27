@@ -1,0 +1,27 @@
+{
+  "$id": "urn:redact-secret:pii-qualification:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "status", "evidence", "gates", "accounting"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "reportType": { "const": "pii-qualification" },
+    "domain": { "const": "pii" },
+    "evaluationProfile": { "const": "pii-v1" },
+    "domainAccountingVersion": { "const": "pii-v1" },
+    "profile": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": { "id": { "const": "pii-v1" }, "version": { "const": 1 } } },
+    "status": { "enum": ["stable", "provisional", "not-applicable"] },
+    "evidence": {
+      "type": "object", "additionalProperties": false, "required": ["protected", "independent"],
+      "properties": {
+        "protected": { "$ref": "#/$defs/external" },
+        "independent": { "$ref": "#/$defs/external" }
+      }
+    },
+    "gates": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["id", "status", "population", "requirement"], "properties": { "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]+$" }, "status": { "enum": ["met", "not-met", "unresolved", "not-applicable"] }, "population": { "type": "string" }, "requirement": { "type": "string", "minLength": 1 } } } },
+    "accounting": { "$ref": "urn:redact-secret:pii-accounting:1" }
+  },
+  "$defs": {
+    "external": { "type": "object", "additionalProperties": false, "required": ["status", "artifactHash"], "properties": { "status": { "enum": ["complete", "incomplete", "not-measured"] }, "artifactHash": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^[a-f0-9]{64}$" }] } } }
+  }
+}

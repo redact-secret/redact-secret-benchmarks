@@ -1,0 +1,52 @@
+{
+  "$id": "urn:redact-secret:pii-accounting:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "profile", "rowCount", "metrics", "evidence"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "reportType": { "const": "pii-accounting" },
+    "domain": { "const": "pii" },
+    "evaluationProfile": { "const": "pii-v1" },
+    "domainAccountingVersion": { "const": "pii-v1" },
+    "profile": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": { "id": { "const": "pii-v1" }, "version": { "const": 1 } } },
+    "rowCount": { "type": "integer", "minimum": 0 },
+    "metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type-miss-rate", "wrong-identity-rate", "sensitive-miss-rate", "non-sensitive-flag-rate", "context-discrimination-rate", "benign-suppression-rate", "jurisdiction-collision-rate", "range-collateral-rate", "measurable-share"],
+      "properties": {
+        "type-miss-rate": { "$ref": "#/$defs/metric" },
+        "wrong-identity-rate": { "$ref": "#/$defs/metric" },
+        "sensitive-miss-rate": { "$ref": "#/$defs/metric" },
+        "non-sensitive-flag-rate": { "$ref": "#/$defs/metric" },
+        "context-discrimination-rate": { "$ref": "#/$defs/metric" },
+        "benign-suppression-rate": { "$ref": "#/$defs/metric" },
+        "jurisdiction-collision-rate": { "$ref": "#/$defs/metric" },
+        "range-collateral-rate": { "$ref": "#/$defs/metric" },
+        "measurable-share": { "$ref": "#/$defs/metric" }
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["methods", "authority", "validators", "benign", "semanticControls", "context", "jurisdiction", "reference"],
+      "properties": {
+        "methods": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]+$" } },
+        "authority": { "$ref": "#/$defs/tally" },
+        "validators": { "$ref": "#/$defs/applicable" },
+        "benign": { "type": "object", "additionalProperties": false, "required": ["cases", "axes"], "properties": { "cases": { "type": "integer", "minimum": 0 }, "axes": { "type": "array", "uniqueItems": true, "items": { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] } } } },
+        "semanticControls": { "type": "integer", "minimum": 0 },
+        "context": { "$ref": "#/$defs/applicable" },
+        "jurisdiction": { "$ref": "#/$defs/applicable" },
+        "reference": { "$ref": "#/$defs/applicableUnavailable" }
+      }
+    }
+  },
+  "$defs": {
+    "counts": { "type": "object", "additionalProperties": false, "required": ["eligible", "measured", "numerator", "unresolved", "notMeasured", "notApplicable", "total"], "properties": { "eligible": { "type": "integer", "minimum": 0 }, "measured": { "type": "integer", "minimum": 0 }, "numerator": { "type": "integer", "minimum": 0 }, "unresolved": { "type": "integer", "minimum": 0 }, "notMeasured": { "type": "integer", "minimum": 0 }, "notApplicable": { "type": "integer", "minimum": 0 }, "total": { "type": "integer", "minimum": 0 } } },
+    "rate": { "anyOf": [{ "type": "null" }, { "const": "insufficient-evidence" }, { "type": "object", "additionalProperties": false, "required": ["point", "bound", "n", "direction"], "properties": { "point": { "type": "number", "minimum": 0, "maximum": 1 }, "bound": { "type": "number", "minimum": 0, "maximum": 1 }, "n": { "type": "integer", "minimum": 1 }, "direction": { "enum": ["upper", "lower"] } } }] },
+    "metric": { "type": "object", "additionalProperties": false, "required": ["population", "numerator", "denominator", "direction", "status", "counts", "rate"], "properties": { "population": { "type": "string", "minLength": 1 }, "numerator": { "type": "string", "minLength": 1 }, "denominator": { "type": "string", "minLength": 1 }, "direction": { "enum": ["upper", "lower"] }, "status": { "enum": ["measured", "partial", "unresolved", "not-measured", "not-applicable"] }, "counts": { "$ref": "#/$defs/counts" }, "rate": { "$ref": "#/$defs/rate" } } },
+    "tally": { "type": "object", "additionalProperties": false, "required": ["total", "qualified"], "properties": { "total": { "type": "integer", "minimum": 0 }, "qualified": { "type": "integer", "minimum": 0 } } },
+    "applicable": { "type": "object", "additionalProperties": false, "required": ["applicable", "evaluated"], "properties": { "applicable": { "type": "integer", "minimum": 0 }, "evaluated": { "type": "integer", "minimum": 0 } } },
+    "applicableUnavailable": { "type": "object", "additionalProperties": false, "required": ["applicable", "evaluated", "unavailable"], "properties": { "applicable": { "type": "integer", "minimum": 0 }, "evaluated": { "type": "integer", "minimum": 0 }, "unavailable": { "type": "integer", "minimum": 0 } } }
+  }
+}

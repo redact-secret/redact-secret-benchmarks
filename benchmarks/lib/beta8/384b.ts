@@ -45,7 +45,7 @@ const R864 = 'https://github.com/redact-secret/redact-secret/issues/864';
  * encodes the top six bits of that `=`, which is fixed, so the head is stable.
  */
 export const BEDROCK_SHORT_HEAD_TEXT = 'bedrock.amazonaws.com/?Action=CallWithBearerToken&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential';
-export const BEDROCK_SHORT_HEAD = Buffer.from(`${BEDROCK_SHORT_HEAD_TEXT}=`, 'utf8').toString('base64').slice(0, 133);
+export const BEDROCK_SHORT_HEAD = btoa(`${BEDROCK_SHORT_HEAD_TEXT}=`).slice(0, 133);
 /** The 18 Base64 characters that follow `ABSK` when the IAM user name starts `BedrockAPIKey-` (console-created keys). */
 export const BEDROCK_LONG_HEAD = 'QmVkcm9ja0FQSUtleS';
 const escape = (value: string) => value.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');

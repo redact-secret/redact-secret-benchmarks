@@ -124,6 +124,8 @@ export function build211({ fixture, synthetic }) {
       tpl: (slot, v) => ["from slack_bolt.adapter.socket_mode import SocketModeHandler\n\nSocketModeHandler(app, app_token=\"", slot(v), "\").start()\n"],
       twins: [{ slug: "bolt-python-handler-separator", kind: "alphabet", mutate: v => `${v.slice(0, 18)}_${v.slice(19)}`,
         mutation: "alphabet: the separator between the second and third sections is '_' instead of '-' (no cited source puts '_' in an xapp- value; widths unchanged)" }] },
+    { axis: "sdk-config", slug: "bolt-js-app-token", ext: "mjs",
+      tpl: (slot, v) => ["import { App } from '@slack/bolt';\n\nconst app = new App({\n  token: process.env.SLACK_BOT_TOKEN,\n  appToken: '", slot(v), "',\n  socketMode: true,\n});\nawait app.start();\n"] },
     { axis: "structured-file", slug: "cli-install-json", variant: true, ext: "json",
       tpl: (slot, v) => ["{\n  \"app_id\": \"A0", s(SL, "cli-json", "appid", 9, UPPER_ALNUM), "\",\n  \"api_access_tokens\": {\n    \"app_level\": \"", slot(v), "\"\n  }\n}\n"],
       twins: [{ slug: "cli-install-json-digit-section", kind: "alphabet", mutate: v => `${v.slice(0, 25)}Q${v.slice(26)}`,

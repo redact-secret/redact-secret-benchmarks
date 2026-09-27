@@ -12,6 +12,17 @@ Agent skills that carry a piece of work end to end, in `.agents/skills/`
 | --- | --- | --- |
 | [`release-regression-check`](.agents/skills/release-regression-check/SKILL.md) | pinned product RC commit → regression view | a fixture-level before/after evidence report ahead of a release decision |
 | [`promote-finding`](.agents/skills/promote-finding/SKILL.md) | observed known-gap → product issue | a `reviewed` → `promoted` `benchmarks/known-gaps.json` record and a product-repo issue carrying the handoff |
+| [`owasp-review`](.agents/skills/owasp-review/SKILL.md) | this repo's own eval/CI/ledger code → OWASP findings | a pass/fail/n/a table against `docs/specs/threat-model.md`'s surfaces; read-only |
+| [`vulnerability-test`](.agents/skills/vulnerability-test/SKILL.md) | this repo's own eval/CI/ledger code → confirmed exploit probes | a reproduction table of confirmed issues, synthetic data only |
+| [`ci-hardening`](.agents/skills/ci-hardening/SKILL.md) | `.github/workflows/*.yml` → zizmor/Scorecard findings | a severity-ranked patch table for the publish pipeline's own CI abuse surface |
+| [`dependency-audit`](.agents/skills/dependency-audit/SKILL.md) | `package-lock.json` → OSV/signature findings | a vulnerability table separating peer/candidate scanner packages from build tooling |
+| [`scan-secrets-in-history`](.agents/skills/scan-secrets-in-history/SKILL.md) | full git history → gitleaks findings | a triaged fixture-vs-real disposition table, no matched plaintext |
+| [`sast-sweep`](.agents/skills/sast-sweep/SKILL.md) | `scripts/`/`scanners/`/`benchmarks/lib/` → semgrep findings | an injection/path-traversal/unsafe-dynamic-exec table checked against the threat model's accepted patterns |
+| [`scorecard-check`](.agents/skills/scorecard-check/SKILL.md) | this repo → OpenSSF Scorecard score | a per-check table routing each low score to the owning skill above |
+
+All seven read `docs/specs/threat-model.md` first and, per the
+[Boundary rule](#boundary-rule), review this repository's own attack surface —
+never a scanned product's detection quality.
 
 Issue-to-implementation and PR-review work uses the user-global `resolve-gh-issue`
 and `pr-review` Claude Code skills instead of a repo-local copy; the local

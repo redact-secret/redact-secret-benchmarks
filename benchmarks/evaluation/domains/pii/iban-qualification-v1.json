@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "family": "pii:global:iban",
+  "findingType": "pii_global_iban",
+  "familyContractVersion": 1,
+  "profile": { "id": "pii-v1", "version": 1 },
+  "canonicalOffsetUnit": "utf8-byte",
+  "authorityBinding": {
+    "countryRegistry": {
+      "sourceKind": "registration-authority",
+      "sourceId": "swift-iso-13616-iban-registry",
+      "locator": "https://www.swift.com/swift-resource/9606/download",
+      "revision": "Release 103 (2026-09-17)",
+      "derivedCountryLengthRows": 89
+    },
+    "validator": {
+      "id": "iban-mod97",
+      "version": 1,
+      "normativeSource": "ISO 13616-1:2020",
+      "maxCandidateBytes": 34
+    }
+  },
+  "sourceConformanceIds": [
+    "rust-native-iban-conformance",
+    "python-iban-conformance",
+    "cli-iban-conformance"
+  ],
+  "activationChecks": [
+    {
+      "selectors": ["pii:global"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1"
+    },
+    {
+      "selectors": ["pii:family:global:iban"],
+      "expectedActivationIdentity": "credentials=full;selectors=pii:family:global:iban;families=pii:global:iban;vocabulary=pii-context/v1"
+    }
+  ],
+  "fixturePolicy": {
+    "positiveConstruction": "Checksum-valid values use the recorded issue-878 generator and an unmistakable SYNX-plus-zero BBAN with no real-world account provenance.",
+    "semanticSeparation": "Validator correctness, country-length rejection, and checksum-valid identity-only context are accounted independently.",
+    "plaintextPublication": "The qualification plan and installed-artifact observations contain only the recorded synthetic value; public support projections contain commitments and aggregate states only."
+  },
+  "classAccounting": [
+    { "id": "validator-valid-sensitive", "status": "measured" },
+    { "id": "validator-checksum-invalid", "status": "measured" },
+    { "id": "country-length-invalid", "status": "measured" },
+    { "id": "unknown-country", "status": "measured" },
+    { "id": "checksum-valid-semantic-collision", "status": "measured" },
+    { "id": "documentation-example-public-absence", "status": "measured" },
+    { "id": "reference-syntax", "status": "measured" },
+    { "id": "unsupported-format", "status": "measured" },
+    { "id": "whole-candidate-boundary", "status": "measured" },
+    { "id": "identity-only-classification", "status": "unresolved" },
+    { "id": "protected-partition", "status": "unresolved" }
+  ],
+  "piiOffInput": "iban: GB18SYNX00000000000000",
+  "cases": [
+    {
+      "id": "compact-english-sensitive-context",
+      "evidenceRole": "validator-valid-sensitive",
+      "classes": ["validator-valid-sensitive"],
+      "input": "iban: GB18SYNX00000000000000",
+      "expected": { "publicFinding": true, "start": 6, "end": 28, "sensitive": true }
+    },
+    {
+      "id": "print-korean-astral-sensitive-context",
+      "evidenceRole": "validator-valid-sensitive",
+      "classes": ["validator-valid-sensitive"],
+      "input": "🔒 국제_계좌번호 = GB18 SYNX 0000 0000 0000 00",
+      "expected": { "publicFinding": true, "start": 27, "end": 54, "sensitive": true }
+    },
+    {
+      "id": "checksum-valid-neutral-context",
+      "evidenceRole": "checksum-valid-semantic-collision",
+      "classes": ["checksum-valid-semantic-collision"],
+      "input": "GB18SYNX00000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "checksum-valid-wrong-country-length",
+      "evidenceRole": "country-length-invalid",
+      "classes": ["country-length-invalid"],
+      "input": "iban: GB18SYNX0000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "checksum-mismatch",
+      "evidenceRole": "validator-checksum-invalid",
+      "classes": ["validator-checksum-invalid"],
+      "input": "iban: GB00SYNX00000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "unknown-country",
+      "evidenceRole": "unknown-country",
+      "classes": ["unknown-country"],
+      "input": "iban: ZZ75SYNTHETIC878X4Z9Q7",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "documentation-context",
+      "evidenceRole": "documentation-example-control",
+      "classes": ["documentation-example-public-absence"],
+      "input": "documentation iban: GB18SYNX00000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "korean-example-context",
+      "evidenceRole": "documentation-example-control",
+      "classes": ["documentation-example-public-absence"],
+      "input": "예시 iban: GB18SYNX00000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "template-reference",
+      "evidenceRole": "reference-control",
+      "classes": ["reference-syntax"],
+      "input": "iban: {{GB18SYNX00000000000000}}",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "environment-reference",
+      "evidenceRole": "reference-control",
+      "classes": ["reference-syntax"],
+      "input": "iban: ${GB18SYNX00000000000000}",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "angle-placeholder",
+      "evidenceRole": "reference-control",
+      "classes": ["reference-syntax"],
+      "input": "iban: <GB18SYNX00000000000000>",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "lowercase-unsupported",
+      "evidenceRole": "unsupported-format-control",
+      "classes": ["unsupported-format"],
+      "input": "iban: gb18synx00000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "hyphen-separator-unsupported",
+      "evidenceRole": "unsupported-format-control",
+      "classes": ["unsupported-format"],
+      "input": "iban: GB18-SYNX-0000-0000-0000-00",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "repeated-space-unsupported",
+      "evidenceRole": "unsupported-format-control",
+      "classes": ["unsupported-format"],
+      "input": "iban: GB18  SYNX 0000 0000 0000 00",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "tab-separator-unsupported",
+      "evidenceRole": "unsupported-format-control",
+      "classes": ["unsupported-format"],
+      "input": "iban: GB18\tSYNX00000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "alnum-left-adjacency",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "iban: AGB18SYNX00000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "underscore-right-adjacency",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "iban: GB18SYNX00000000000000_suffix",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "percent-right-adjacency",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "iban: GB18SYNX00000000000000%32",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "unicode-mark-right-adjacency",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "iban: GB18SYNX00000000000000⃝",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "governed-invisible-inside",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "iban: GB18SYNX‍00000000000000",
+      "expected": { "publicFinding": false }
+    },
+    {
+      "id": "governed-invisible-right-adjacency",
+      "evidenceRole": "whole-candidate-boundary-control",
+      "classes": ["whole-candidate-boundary"],
+      "input": "iban: GB18SYNX00000000000000‍",
+      "expected": { "publicFinding": false }
+    }
+  ]
+}

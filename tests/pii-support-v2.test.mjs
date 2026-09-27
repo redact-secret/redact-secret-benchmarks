@@ -54,7 +54,8 @@ test('trusted product binding is artifact-derived and still fails closed without
   const matrix = buildPiiSupportMatrixV2({ registry: value, product });
   assert.equal(matrix.activationContract.productArtifact, 'trusted');
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
-    ['pii:global:email', 'unavailable', 'pending'], ['pii:global:network-address', 'available', 'pending'],
+    ['pii:global:email', 'unavailable', 'pending'], ['pii:global:iban', 'unavailable', 'pending'],
+    ['pii:global:network-address', 'available', 'pending'],
   ]);
   assert.equal(matrix.activationContract.productSourceCommit, '941053baecdc4b99f98e085429ac26bf24fe0bee');
   assert.equal(matrix.activationContract.productArtifactCommitment, 'ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1');
@@ -93,7 +94,8 @@ test('email binding keeps installed offsets and exact-source conformance separat
   const matrix = buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product });
   assert.equal(matrix.activationContract.productSourceCommit, 'b73daade943f9dea5f86d90a91aa0332083f728a');
   assert.deepEqual(matrix.families.map(row => [row.family, row.activation.state, row.status.state]), [
-    ['pii:global:email', 'available', 'pending'], ['pii:global:network-address', 'available', 'pending'],
+    ['pii:global:email', 'available', 'pending'], ['pii:global:iban', 'unavailable', 'pending'],
+    ['pii:global:network-address', 'available', 'pending'],
   ]);
   assert.deepEqual(qualificationArtifact.sourceConformance.lanes.map(row => row.id), [
     'rust-native-email-conformance', 'python-email-conformance', 'cli-email-conformance',
@@ -119,6 +121,45 @@ test('email binding keeps installed offsets and exact-source conformance separat
     invalid.qualificationArtifacts[0].artifactCommitment = piiBindingArtifactCommitment(invalid.qualificationArtifacts[0]);
     assert.throws(() => buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product: invalid }), /trusted PII|qualification evidence|product binding/);
   }
+});
+
+test('IBAN binding pins authority and validator provenance while unresolved evidence stays pending', async () => {
+  const [candidateEvidence, activationArtifact, qualificationArtifact, plan] = await Promise.all([
+    readFile('evidence/878/candidate-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/878/pii-activation-evidence-v1.json', 'utf8').then(JSON.parse),
+    readFile('evidence/878/pii-family-qualification-v1.json', 'utf8').then(JSON.parse),
+    readFile('benchmarks/evaluation/domains/pii/iban-qualification-v1.json', 'utf8').then(JSON.parse),
+  ]);
+  const product = { candidateEvidence, activationArtifact, qualificationArtifacts: [qualificationArtifact] };
+  const matrix = buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product });
+  const iban = matrix.families.find(row => row.family === 'pii:global:iban');
+  assert.equal(plan.familyContractVersion, 1);
+  assert.deepEqual(plan.authorityBinding, {
+    countryRegistry: { sourceKind: 'registration-authority', sourceId: 'swift-iso-13616-iban-registry',
+      locator: 'https://www.swift.com/swift-resource/9606/download', revision: 'Release 103 (2026-09-17)', derivedCountryLengthRows: 89 },
+    validator: { id: 'iban-mod97', version: 1, normativeSource: 'ISO 13616-1:2020', maxCandidateBytes: 34 },
+  });
+  assert.equal(iban.familyContractVersion, 1);
+  assert.equal(iban.validatorApplicable, true);
+  assert.ok(iban.authority.some(row => row.sourceId === 'swift-iban-registry' && row.revision === 'Release-103-2026-09-17'));
+  assert.deepEqual(activationArtifact.availableFamilies,
+    ['pii:global:email', 'pii:global:iban', 'pii:global:network-address']);
+  assert.deepEqual(qualificationArtifact.sourceConformance.lanes.map(row => row.id),
+    ['rust-native-iban-conformance', 'python-iban-conformance', 'cli-iban-conformance']);
+  assert.equal(qualificationArtifact.status, 'not-qualified');
+  assert.equal(iban.status.state, 'pending');
+  for (const reason of ['identity-only-classification', 'diagnostic-population-not-measured',
+    'benign-heavy-stress-not-measured', 'population-comparison-not-qualified', 'protected-partition'])
+    assert.ok(iban.status.reasonCodes.includes(reason));
+  assert.ok(iban.populationEvidence.every(row => row.status === 'not-measured' && row.strata === 0));
+  assert.equal(validatePiiSupportMatrixV2(matrix, { registry: piiSupportRegistry, product }).artifactCommitment, matrix.artifactCommitment);
+
+  const hostile = structuredClone(product);
+  hostile.qualificationArtifacts[0].sourceConformance.lanes[0].fixture = 'conformance/fixtures/pii-email-v1.json';
+  hostile.qualificationArtifacts[0].sourceConformance.artifactCommitment =
+    piiBindingArtifactCommitment(hostile.qualificationArtifacts[0].sourceConformance);
+  hostile.qualificationArtifacts[0].artifactCommitment = piiBindingArtifactCommitment(hostile.qualificationArtifacts[0]);
+  assert.throws(() => buildPiiSupportMatrixV2({ registry: piiSupportRegistry, product: hostile }), /trusted PII qualification evidence/);
 });
 
 test('trusted activation or qualification alone cannot forge provisional support', () => {

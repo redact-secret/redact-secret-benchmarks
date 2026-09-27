@@ -73,6 +73,8 @@ export function build211({ fixture, synthetic }) {
         mutation: "alphabet: one character in the middle of segment 2 replaced with '!', outside every cited alphabet ([A-Za-z0-9], \\w, [A-Za-z0-9_]); length unchanged" }] },
     { axis: "cli", slug: "gh-auth-login", ext: "sh",
       tpl: (slot, v) => ["$ echo \"", slot(v), "\" | gh auth login --hostname github.com --with-token\n"] },
+    { axis: "tool-output", slug: "git-credential-fill", ext: "txt",
+      tpl: (slot, v) => ["$ printf 'protocol=https\\nhost=github.com\\n\\n' | git credential fill\nprotocol=https\nhost=github.com\nusername=octocat\npassword=", slot(v), "\n"] },
     { axis: "log", slug: "octokit-debug-log", variant: true, ext: "log",
       tpl: (slot, v) => ["2026-09-24T10:15:02.114Z DEBUG octokit:request GET https://api.github.com/user headers={\"authorization\":\"token ", slot(v), "\",\"user-agent\":\"octokit-rest.js/21.0.2\"}\n"] },
     { axis: "container-config", slug: "compose-renovate", ext: "yml",

@@ -17,18 +17,20 @@ import type { SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
 import { fixtureProfileReport, fixtureProfiles } from './support/profiles.ts';
 import fixtureIndex from './fixture-index.json';
+import { validatePolicyHoldoutReceipt, type PolicyHoldoutReceipt } from './support/policy-qualified.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const CANDIDATE_KEYS = ['candidate-package', 'candidate-node-package', 'candidate-wasm-package', 'candidate-source-commit'] as const;
 const usage = 'Usage: npm run eval:classify -- [--domain=credential] [--output=results-output/support-status.json] '
   + '[--refresh-peer-snapshots|--live-peers] '
+  + '[--policy-holdout-report=<aggregate.json>] '
   + '[--candidate-package=<core.tgz> --candidate-node-package=<node.tgz> --candidate-wasm-package=<wasm.tgz> --candidate-source-commit=<40-hex>]';
 const sha256File = async (file: string) => createHash('sha256').update(await readFile(file)).digest('hex');
 
 async function main() {
   const options: Record<string, string | boolean> = {};
   for (const arg of process.argv.slice(2)) {
-    const match = /^--(domain|output|candidate-package|candidate-node-package|candidate-wasm-package|candidate-source-commit)=(.+)$/.exec(arg);
+    const match = /^--(domain|output|candidate-package|candidate-node-package|candidate-wasm-package|candidate-source-commit|policy-holdout-report)=(.+)$/.exec(arg);
     const key = match?.[1] ?? arg.slice(2);
     if ((!match && !['refresh-peer-snapshots', 'live-peers'].includes(key)) || key in options) throw new Error(usage);
     options[key] = match?.[2] ?? true;
@@ -43,6 +45,10 @@ async function main() {
   if (useCandidate && !/^[a-f0-9]{40}$/.test(options['candidate-source-commit'] as string)) throw new Error(usage);
 
   const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));
+  const policyHoldout: PolicyHoldoutReceipt | undefined = typeof options['policy-holdout-report'] === 'string'
+    ? validatePolicyHoldoutReceipt(JSON.parse(await readFile(path.resolve(options['policy-holdout-report']), 'utf8'))) : undefined;
+  if (policyHoldout && !useCandidate) throw new Error('A policy holdout receipt can only qualify an immutable candidate run.');
+  if (policyHoldout && policyHoldout.productRevision !== options['candidate-source-commit']) throw new Error('Policy holdout receipt names a different product candidate.');
   const ledger: ReviewLedger = JSON.parse(await readFile(path.join(root, 'benchmarks/review-ledger.json'), 'utf8'));
   // A classification is a claim: refuse before evaluating, and before writing anything, unless every peer is the pinned version.
   if (options['refresh-peer-snapshots'] || options['live-peers']) await assertPinnedPeers(available, suite, root);
@@ -57,7 +63,10 @@ async function main() {
         node: path.resolve(options['candidate-node-package'] as string),
         wasm: path.resolve(options['candidate-wasm-package'] as string),
       });
-      const candidate = await loadCandidate(installation);
+      // Policy qualification compares the product's resolved action with the
+      // independently authored fixture action. Candidate mode must therefore
+      // opt into the adapter's action-preserving shape, just like bench mode.
+      const candidate = await loadCandidate(installation, undefined, { actions: true });
       productScanner = {
         id: 'redact-secret', mode: 'Candidate build · isolated npm tarballs with overrides',
         capabilities: { ranges: true, classification: true }, configuration: candidateConfiguration,
@@ -88,6 +97,7 @@ async function main() {
       revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
       dirty = Boolean(execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim());
     } catch {}
+    if (policyHoldout && policyHoldout.benchmarkRevision !== revision) throw new Error('Policy holdout receipt names a different benchmark revision.');
     const surface = 'evaluation/suite-development';
     const fixtures = evaluationInputs(cases, methods, operators).fixtures;
     const semanticIndex = await semanticIndexIdentity(root);
@@ -118,7 +128,7 @@ async function main() {
     // Every other Beta.8 arrival family carries no support status here.
     const families = [...scoredContractIds].sort();
     const results = families.map(family => {
-      const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger, cases);
+      const evidence = familyEvidence(family, report.byDetector, report.axesByDetector, report.reviewQueue, ledger, cases, report.results, policyHoldout);
       const assessment = classifyFamilySupport(evidence);
       // Un-probeable (#33) is carried alongside the status, never folded silently
       // into a bare "not enough twins" reading: zero twin pairs reads differently
@@ -138,6 +148,7 @@ async function main() {
     const stableDistribution = {
       documented: results.filter(result => result.status === 'stable' && result.qualificationProfile === 'documented').length,
       empirical: results.filter(result => result.status === 'stable' && result.qualificationProfile === 'empirical').length,
+      policyQualified: results.filter(result => result.status === 'stable' && result.qualificationProfile === 'policy-qualified').length,
     };
     const output = {
       schemaVersion: 1, generatedAt: new Date().toISOString(), runId: report.runId,

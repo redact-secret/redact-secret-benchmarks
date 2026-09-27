@@ -34,7 +34,7 @@ test('credential evaluator has one explicit internal identity and composition ro
 });
 
 test('the keyed domain registry validates names without CLI semantic branches', () => {
-  assert.deepEqual(evaluationDomainIds(), ['credential', 'pii']);
+  assert.deepEqual(evaluationDomainIds(), ['credential', 'credential-policy', 'pii']);
   assert.equal(resolveEvaluationDomain('credential'), credentialDomain);
   assert.throws(() => resolveEvaluationDomain('pii-not-registered'), /Unknown evaluation domain/);
 });

@@ -1,5 +1,6 @@
 import { credentialDomain } from './credential/contract.ts';
 import { piiDomain } from './pii/contract.ts';
+import { credentialPolicyDomain } from './credential-policy/contract.ts';
 
 export interface EvaluationDomainDescriptor {
   domain: string; domainAccountingVersion: string;
@@ -9,7 +10,7 @@ export interface EvaluationDomainDescriptor {
 export const defineEvaluationDomains = <T extends Record<string, EvaluationDomainDescriptor>>(entries: T) => Object.freeze(entries);
 
 /** Closed keyed contract map. Adding a public entry point registers it once. */
-const domains = defineEvaluationDomains({ credential: credentialDomain, pii: piiDomain });
+const domains = defineEvaluationDomains({ credential: credentialDomain, 'credential-policy': credentialPolicyDomain, pii: piiDomain });
 export type EvaluationDomainContracts = typeof domains;
 export type EvaluationDomainId = keyof typeof domains;
 

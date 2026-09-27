@@ -5,6 +5,7 @@ import { buildClosedMilestone } from "./closed-milestone.mjs";
 import { buildCommonFormats } from "./common-formats.mjs";
 import { buildContextFamilies } from "./context-families.mjs";
 import { buildBeta8 } from "./beta8/index.mjs";
+import { buildPolicyQualifiedCredentials } from "./policy-qualified-credentials.mjs";
 import { classifyFixture } from "../../benchmarks/lib/assessment.ts";
 
 // Public, deterministic benchmark seed. These values were never provider-issued.
@@ -281,6 +282,7 @@ export function buildCorpora() {
     ...buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, ENVELOPES }),
     ...buildCommonFormats({ fixture, synthetic, wrap }),
     ...buildBeta8({ fixture, synthetic, wrap }),
+    "policy-qualified-credentials": buildPolicyQualifiedCredentials({ fixture, synthetic, wrap, ENVELOPES }),
   };
   for (const [category, corpus] of Object.entries(corpora))
     for (const f of corpus.fixtures) f.assessment = classifyFixture(category, f);

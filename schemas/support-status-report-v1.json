@@ -94,7 +94,7 @@
     },
     "stableDistribution": {
       "type": "object", "additionalProperties": false, "required": ["documented", "empirical"],
-      "properties": { "documented": { "type": "integer", "minimum": 0 }, "empirical": { "type": "integer", "minimum": 0 } }
+      "properties": { "documented": { "type": "integer", "minimum": 0 }, "empirical": { "type": "integer", "minimum": 0 }, "policyQualified": { "type": "integer", "minimum": 0 } }
     },
     "families": {
       "type": "array",
@@ -105,7 +105,7 @@
         "properties": {
           "family": { "type": "string" },
           "status": { "enum": ["stable", "provisional", "pending", "unsupported"] },
-          "qualificationProfile": { "enum": ["documented", "empirical", null] },
+          "qualificationProfile": { "enum": ["documented", "empirical", "policy-qualified", null] },
           "evidenceTier": { "enum": ["T0", "T1", "T2", "T3", null] },
           "evidenceBasis": { "enum": ["provider-documented", "independently-corroborated", "empirically-observed", "project-policy", "none"] },
           "reasons": { "type": "array", "items": { "type": "string" } },
@@ -148,6 +148,7 @@
               "metamorphicCriticalFailures": { "type": "integer", "minimum": 0 },
               "mutationUnresolvedCritical": { "type": "integer", "minimum": 0 },
               "differentialUnresolvedContractDisagreements": { "type": "integer", "minimum": 0 },
+              "policyQualification": { "type": ["object", "null"] },
               "unsupportedReason": { "type": "string" }
             }
           },

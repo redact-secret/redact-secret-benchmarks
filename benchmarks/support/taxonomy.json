@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceNote": "Provider x credential-family taxonomy (issue #502). Grounded in benchmarks/lib/assessment.ts contract review text and benchmarks/detectors.json; every entry with an empty detectors list carries a source or note explaining why it is not detector-covered. Consumed by A2 (#503) and A3 (#504); zero-detector families become `unsupported` candidates in A8's support-matrix.json (#509).",
+  "sourceNote": "Provider x credential-family taxonomy (issue #502). Grounded in benchmarks/lib/assessment.ts contract review text and benchmarks/detectors.json; every entry with an empty detectors list carries a source or note explaining why it is not detector-covered. Consumed by A2 (#503) and A3 (#504); zero-detector families default to `unsupported` in A8's support-matrix.json (#509), while an explicit supportStatus records a reviewed pending disposition.",
   "providers": [
     {
       "id": "aws",
@@ -657,12 +657,79 @@
     {
       "id": "vercel:access-token",
       "provider": "vercel",
-      "name": "Access token",
-      "description": "Vercel REST API access token.",
+      "name": "Compatibility aggregate (unreviewed Vercel token shapes)",
+      "description": "Legacy benchmark routing for the runtime vercel-token detector; not a modern credential-family support claim.",
       "detectors": [
         "vercel-token"
       ],
-      "note": "vercel-token is T0/pending: the REST API reference documents no token prefix, and the corpus's five candidate vcp_/vci_/vca_/vcr_/vck_ shapes are unconfirmed against provider documentation, so they are not split into separate families here."
+      "note": "Bounded by product #858 and benchmark #373. This row preserves the existing aggregate detector/fixture routing while runtime behavior and finding types remain unchanged. Its T0 profile cells combine five implementation hypotheses and must not be copied to, or read as evidence for, any modern Vercel credential family. Opaque unprefixed examples are also outside the modern positive contract."
+    },
+    {
+      "id": "vercel:personal-access-token",
+      "provider": "vercel",
+      "name": "Personal access token",
+      "description": "Modern personal access token identified by the provider-documented vcp_ marker.",
+      "detectors": [],
+      "supportStatus": "pending",
+      "sources": [
+        "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+        "https://vercel.com/docs/accounts/access-tokens",
+        "https://vercel.com/docs/rest-api/authentication/create-an-auth-token"
+      ],
+      "note": "Product #858 records this semantic contract as pending/T0. The class and vcp_ marker are provider-backed, but no reviewed source establishes a complete body grammar or boundary. The REST response's unprefixed bearerToken example beside prefix metadata remains unresolved. No scored fixture/profile cells exist, and the aggregate vercel-token detector is not attributed to this family."
+    },
+    {
+      "id": "vercel:integration-token",
+      "provider": "vercel",
+      "name": "Integration token",
+      "description": "Modern integration token identified only by the provider-documented vci stem.",
+      "detectors": [],
+      "supportStatus": "pending",
+      "sources": [
+        "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+        "https://vercel.com/docs/integrations/create-integration/vercel-api-integrations"
+      ],
+      "note": "Product #858 records this semantic contract as pending/T0. Provider evidence establishes the vci stem but not the underscore, body grammar, or boundary; the current detector's vci_ branch is an implementation hypothesis. No scored fixture/profile cells exist, and the aggregate vercel-token detector is not attributed to this family."
+    },
+    {
+      "id": "vercel:app-access-token",
+      "provider": "vercel",
+      "name": "App access token",
+      "description": "Modern Vercel App access token identified by the provider-documented vca_ marker.",
+      "detectors": [],
+      "supportStatus": "pending",
+      "sources": [
+        "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+        "https://vercel.com/docs/sign-in-with-vercel/tokens"
+      ],
+      "note": "Product #858 records this semantic contract as pending/T0. The class and vca_ marker are provider-backed, but one opaque example does not establish a universal body grammar or boundary. No scored fixture/profile cells exist, and the aggregate vercel-token detector is not attributed to this family."
+    },
+    {
+      "id": "vercel:app-refresh-token",
+      "provider": "vercel",
+      "name": "App refresh token",
+      "description": "Modern Vercel App refresh token identified by the provider-documented vcr_ marker.",
+      "detectors": [],
+      "supportStatus": "pending",
+      "sources": [
+        "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+        "https://vercel.com/docs/sign-in-with-vercel/tokens"
+      ],
+      "note": "Product #858 records this semantic contract as pending/T0. The class and vcr_ marker are provider-backed, but the documentation reuses the app-access example body and establishes no universal body grammar or boundary. No scored fixture/profile cells exist, and the aggregate vercel-token detector is not attributed to this family."
+    },
+    {
+      "id": "vercel:api-key",
+      "provider": "vercel",
+      "name": "API key",
+      "description": "Modern Vercel API key identified by the provider-documented vck_ marker.",
+      "detectors": [],
+      "supportStatus": "pending",
+      "sources": [
+        "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+        "https://vercel.com/docs/ai-gateway/authentication-and-byok/api-keys",
+        "https://github.com/vercel/vercel/blob/c628be7835e03a965b93e9cf9e2bd5ac2acbf5eb/packages/cli/test/unit/commands/ai-gateway/coding-agents-setup.test.ts"
+      ],
+      "note": "Product #858 records this semantic contract as pending/T0. The class and vck_ marker are provider-backed, but no reviewed source establishes a complete body grammar or boundary. No scored fixture/profile cells exist, and the aggregate vercel-token detector is not attributed to this family."
     },
     {
       "id": "npm:granular-access-token",

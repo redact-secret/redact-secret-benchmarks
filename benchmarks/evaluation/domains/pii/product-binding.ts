@@ -70,13 +70,20 @@ function validInstalledConformance(value: PiiInstalledArtifactConformance | unde
         validRange(row.nativeRange) && validRange(row.canonicalRange) : row.type === null && row.action === null && row.nativeRange === null && row.canonicalRange === null)));
 }
 
-function validSourceConformance(value: PiiSourceConformance | undefined, sourceCommit: string) {
-  const expected = ['cli-email-conformance', 'python-email-conformance', 'rust-native-email-conformance'];
+function validSourceConformance(value: PiiSourceConformance | undefined, sourceCommit: string, qualificationFamily: string) {
+  const contracts: Record<string, { ids: string[]; fixture: string }> = {
+    'pii:global:email': { ids: ['cli-email-conformance', 'python-email-conformance', 'rust-native-email-conformance'],
+      fixture: 'conformance/fixtures/pii-email-v1.json' },
+    'pii:global:iban': { ids: ['cli-iban-conformance', 'python-iban-conformance', 'rust-native-iban-conformance'],
+      fixture: 'conformance/fixtures/pii-iban-v1.json' },
+  };
+  const contract = contracts[qualificationFamily];
+  if (!contract) return false;
   if (!value || !exact(value, ['sourceCommit', 'sourceState', 'lanes', 'artifactCommitment']) || value.sourceCommit !== sourceCommit ||
       value.sourceState !== 'clean' || value.artifactCommitment !== commitment(value) ||
-      JSON.stringify(value.lanes.map(row => row.id).sort()) !== JSON.stringify(expected)) return false;
+      JSON.stringify(value.lanes.map(row => row.id).sort()) !== JSON.stringify(contract.ids)) return false;
   return value.lanes.every(lane => exact(lane, ['id', 'status', 'fixture', 'fixtureCommitment', 'commandDefinitionCommitment', 'toolchain']) &&
-    lane.status === 'pass' && lane.fixture === 'conformance/fixtures/pii-email-v1.json' && digest(lane.fixtureCommitment) &&
+    lane.status === 'pass' && lane.fixture === contract.fixture && digest(lane.fixtureCommitment) &&
     digest(lane.commandDefinitionCommitment) && Array.isArray(lane.toolchain) && lane.toolchain.length > 0 && lane.toolchain.every(tool =>
       exact(tool, ['executable', 'version']) && slug(tool.executable) && typeof tool.version === 'string' && tool.version.length > 0));
 }
@@ -165,7 +172,7 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
       new Set(row.classAccounting.map(entry => entry.id)).size !== row.classAccounting.length || row.classAccounting.some(entry =>
         !slug(entry.id) || !['measured', 'unresolved'].includes(entry.status) || !Number.isInteger(entry.observations) || entry.observations < 0 ||
         (entry.status === 'measured' ? entry.observations === 0 : entry.observations !== 0)) ||
-      (extended && (!validInstalledConformance(row.installedArtifactConformance) || !validSourceConformance(row.sourceConformance, row.product.sourceCommit) ||
+      (extended && (!validInstalledConformance(row.installedArtifactConformance) || !validSourceConformance(row.sourceConformance, row.product.sourceCommit, row.family) ||
         !row.gates.some(gate => gate.id === 'exact-source-conformance' && gate.status === 'met'))) ||
       row.status !== (failed.length ? 'not-qualified' : 'qualified') || JSON.stringify(row.reasonCodes) !== JSON.stringify(failed) ||
       row.artifactCommitment !== commitment(row);

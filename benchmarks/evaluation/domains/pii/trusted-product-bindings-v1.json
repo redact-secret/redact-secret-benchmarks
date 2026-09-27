@@ -50,6 +50,32 @@
           ]
         }
       ]
+    },
+    {
+      "product": {
+        "sourceCommit": "c810623a3348da3b15cb06dc4e13bf5c39113154",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "83bda533b5657d1073d8f291f6d56228896d9541eae02e6082f9207b2bda3789"
+      },
+      "activationArtifactCommitment": "87bd16b4d7f3e1c072fc25e4ba7d9928f0faafc80f29a61defd3ea0badebc3c9",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+      "availableFamilies": ["pii:global:email", "pii:global:iban", "pii:global:network-address"],
+      "qualifications": [
+        {
+          "family": "pii:global:iban",
+          "planCommitment": "9ead94bd2da5df320d8a7fa44a8838c6449769bfc6d4e9fad69732b2bb400f6e",
+          "artifactCommitment": "5c987f1acf75d0d3d70ef1b948a899a380811f144be9b69aaef4a7d85c493437",
+          "sourceConformanceCommitment": "facbc55cc3270c19ffb1501409cf12d9469fab1aa769d25970e30371438c8372",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-identity-only-classification",
+            "class-protected-partition",
+            "diagnostic-population",
+            "identity-only-classification",
+            "protected-partition"
+          ]
+        }
+      ]
     }
   ]
 }

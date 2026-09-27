@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 2,
+  "reportType": "pii-support-matrix",
+  "supportClaims": false,
+  "domain": "pii",
+  "evaluationProfile": "pii-v1",
+  "domainAccountingVersion": "pii-v1",
+  "qualificationProfile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "registryCommitment": "1c918972b753feede2f2afeb2ee81787d2bddf410ae70b51eb7bc5cabb7833a2",
+  "activationContract": {
+    "repository": "redact-secret/redact-secret",
+    "decision": "decision-define-the-pii-domain-scope-arbitration-and-activation-contract",
+    "mergeCommit": "eb22bdf587e0079e101fc3ab5aeefada58ba438d",
+    "productArtifact": "trusted",
+    "productSourceCommit": "c810623a3348da3b15cb06dc4e13bf5c39113154",
+    "productArtifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+    "candidateEvidenceCommitment": "83bda533b5657d1073d8f291f6d56228896d9541eae02e6082f9207b2bda3789",
+    "activationArtifactCommitment": "87bd16b4d7f3e1c072fc25e4ba7d9928f0faafc80f29a61defd3ea0badebc3c9"
+  },
+  "populationReports": [
+    {
+      "id": "benign-heavy-stress",
+      "status": "not-measured",
+      "contractCommitment": "6bcd6db3f1779f81b8b0f976797c16bcca6e63a563d2888223c58ff87213d162",
+      "corpusCommitment": "f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff",
+      "reportCommitment": "9e237095ffa483b80c2894432330555dc93fb1418d61f51b5f89d05e7bd1945c",
+      "familyEvidence": [
+        {
+          "family": "pii:global:email",
+          "status": "not-measured",
+          "strata": 0
+        },
+        {
+          "family": "pii:global:iban",
+          "status": "not-measured",
+          "strata": 0
+        },
+        {
+          "family": "pii:global:network-address",
+          "status": "not-measured",
+          "strata": 0
+        }
+      ]
+    },
+    {
+      "id": "diagnostic-balanced",
+      "status": "not-measured",
+      "contractCommitment": "6bcd6db3f1779f81b8b0f976797c16bcca6e63a563d2888223c58ff87213d162",
+      "corpusCommitment": "f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff",
+      "reportCommitment": "e87ce05e3a59a98e0eb32a16ab7773dbd3758dda93ac8cf59c65161b829b65c9",
+      "familyEvidence": [
+        {
+          "family": "pii:global:email",
+          "status": "not-measured",
+          "strata": 0
+        },
+        {
+          "family": "pii:global:iban",
+          "status": "not-measured",
+          "strata": 0
+        },
+        {
+          "family": "pii:global:network-address",
+          "status": "not-measured",
+          "strata": 0
+        }
+      ]
+    }
+  ],
+  "populationComparisons": [
+    {
+      "id": "benign-heavy-stress",
+      "status": "not-measured",
+      "contractCommitment": "6bcd6db3f1779f81b8b0f976797c16bcca6e63a563d2888223c58ff87213d162",
+      "corpusCommitment": "f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff",
+      "baselineObservation": null,
+      "candidateObservation": null,
+      "verdict": "not-measured",
+      "benignFalseAlarmDeltas": [],
+      "diagnosticDeltas": []
+    },
+    {
+      "id": "diagnostic-balanced",
+      "status": "not-measured",
+      "contractCommitment": "6bcd6db3f1779f81b8b0f976797c16bcca6e63a563d2888223c58ff87213d162",
+      "corpusCommitment": "f027c8a63b6356932e759bae52037a2862e331bcc37e578c19dbbf816e06eeff",
+      "baselineObservation": null,
+      "candidateObservation": null,
+      "verdict": "not-measured",
+      "benignFalseAlarmDeltas": [],
+      "diagnosticDeltas": []
+    }
+  ],
+  "distribution": {
+    "pending": 3,
+    "provisional": 0,
+    "stable": 0,
+    "unsupported": 0
+  },
+  "families": [
+    {
+      "family": "pii:global:email",
+      "displayName": "Email address",
+      "identityDomain": "email",
+      "familyContractVersion": 1,
+      "scope": "global",
+      "jurisdiction": null,
+      "qualificationProfile": {
+        "id": "pii-v1",
+        "version": 1
+      },
+      "authority": [
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-5322",
+          "locator": "https://www.rfc-editor.org/rfc/rfc5322",
+          "revision": "RFC5322",
+          "supports": [
+            "lexical",
+            "validation"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-6531",
+          "locator": "https://www.rfc-editor.org/rfc/rfc6531",
+          "revision": "RFC6531",
+          "supports": [
+            "lexical",
+            "validation"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-2606",
+          "locator": "https://www.rfc-editor.org/rfc/rfc2606",
+          "revision": "RFC2606",
+          "supports": [
+            "allocation",
+            "reserved-control"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-6761",
+          "locator": "https://www.rfc-editor.org/rfc/rfc6761",
+          "revision": "RFC6761",
+          "supports": [
+            "allocation",
+            "reserved-control"
+          ]
+        }
+      ],
+      "contextObligation": "required-for-sensitive-classification",
+      "validatorApplicable": false,
+      "activation": {
+        "state": "available",
+        "selector": "pii:family:global:email",
+        "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+        "productArtifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1"
+      },
+      "status": {
+        "state": "pending",
+        "profile": {
+          "id": "pii-v1",
+          "version": 1
+        },
+        "reasonCodes": [
+          "benign-heavy-stress-not-measured",
+          "diagnostic-population-not-measured",
+          "population-comparison-not-qualified",
+          "qualification-not-measured"
+        ]
+      },
+      "populationEvidence": [
+        {
+          "id": "benign-heavy-stress",
+          "reportStatus": "not-measured",
+          "status": "not-measured",
+          "strata": 0,
+          "reportCommitment": "9e237095ffa483b80c2894432330555dc93fb1418d61f51b5f89d05e7bd1945c"
+        },
+        {
+          "id": "diagnostic-balanced",
+          "reportStatus": "not-measured",
+          "status": "not-measured",
+          "strata": 0,
+          "reportCommitment": "e87ce05e3a59a98e0eb32a16ab7773dbd3758dda93ac8cf59c65161b829b65c9"
+        }
+      ],
+      "qualificationArtifactCommitment": null
+    },
+    {
+      "family": "pii:global:iban",
+      "displayName": "International Bank Account Number",
+      "identityDomain": "iban",
+      "familyContractVersion": 1,
+      "scope": "global",
+      "jurisdiction": null,
+      "qualificationProfile": {
+        "id": "pii-v1",
+        "version": 1
+      },
+      "authority": [
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "swift-iban-registry",
+          "locator": "https://www.swift.com/swift-resource/9606/download",
+          "revision": "Release-103-2026-09-17",
+          "supports": [
+            "allocation",
+            "validation"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "iso-13616-1",
+          "locator": "https://www.iso.org/standard/81090.html",
+          "revision": "2020",
+          "supports": [
+            "lexical",
+            "validation"
+          ]
+        }
+      ],
+      "contextObligation": "required-for-sensitive-classification",
+      "validatorApplicable": true,
+      "activation": {
+        "state": "available",
+        "selector": "pii:family:global:iban",
+        "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+        "productArtifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1"
+      },
+      "status": {
+        "state": "pending",
+        "profile": {
+          "id": "pii-v1",
+          "version": 1
+        },
+        "reasonCodes": [
+          "benign-heavy-population",
+          "benign-heavy-stress-not-measured",
+          "class-identity-only-classification",
+          "class-protected-partition",
+          "diagnostic-population",
+          "diagnostic-population-not-measured",
+          "identity-only-classification",
+          "population-comparison-not-qualified",
+          "protected-partition"
+        ]
+      },
+      "populationEvidence": [
+        {
+          "id": "benign-heavy-stress",
+          "reportStatus": "not-measured",
+          "status": "not-measured",
+          "strata": 0,
+          "reportCommitment": "9e237095ffa483b80c2894432330555dc93fb1418d61f51b5f89d05e7bd1945c"
+        },
+        {
+          "id": "diagnostic-balanced",
+          "reportStatus": "not-measured",
+          "status": "not-measured",
+          "strata": 0,
+          "reportCommitment": "e87ce05e3a59a98e0eb32a16ab7773dbd3758dda93ac8cf59c65161b829b65c9"
+        }
+      ],
+      "qualificationArtifactCommitment": "5c987f1acf75d0d3d70ef1b948a899a380811f144be9b69aaef4a7d85c493437"
+    },
+    {
+      "family": "pii:global:network-address",
+      "displayName": "IPv4 and IPv6 network address",
+      "identityDomain": "network-address",
+      "familyContractVersion": 1,
+      "scope": "global",
+      "jurisdiction": null,
+      "qualificationProfile": {
+        "id": "pii-v1",
+        "version": 1
+      },
+      "authority": [
+        {
+          "sourceKind": "standard",
+          "sourceId": "rfc-791",
+          "locator": "https://www.rfc-editor.org/rfc/rfc791",
+          "revision": "1981-09",
+          "supports": [
+            "lexical",
+            "validation"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "rfc-4291",
+          "locator": "https://www.rfc-editor.org/rfc/rfc4291",
+          "revision": "2006-02",
+          "supports": [
+            "lexical",
+            "validation"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-5737",
+          "locator": "https://www.rfc-editor.org/rfc/rfc5737",
+          "revision": "RFC5737",
+          "supports": [
+            "allocation",
+            "reserved-control"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-3849",
+          "locator": "https://www.rfc-editor.org/rfc/rfc3849",
+          "revision": "RFC3849",
+          "supports": [
+            "allocation",
+            "reserved-control"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-2544",
+          "locator": "https://www.rfc-editor.org/rfc/rfc2544",
+          "revision": "RFC2544",
+          "supports": [
+            "allocation",
+            "reserved-control"
+          ]
+        },
+        {
+          "sourceKind": "standard",
+          "sourceId": "ietf-rfc-9637",
+          "locator": "https://www.rfc-editor.org/rfc/rfc9637",
+          "revision": "RFC9637",
+          "supports": [
+            "allocation",
+            "reserved-control"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "iana-ipv4-special-registry",
+          "locator": "https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml",
+          "revision": "accessed-2026-09-27",
+          "supports": [
+            "allocation",
+            "reserved-control"
+          ]
+        },
+        {
+          "sourceKind": "public-authority",
+          "sourceId": "iana-ipv6-special-registry",
+          "locator": "https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml",
+          "revision": "accessed-2026-09-27",
+          "supports": [
+            "allocation",
+            "reserved-control"
+          ]
+        }
+      ],
+      "contextObligation": "required-for-sensitive-classification",
+      "validatorApplicable": false,
+      "activation": {
+        "state": "available",
+        "selector": "pii:family:global:network-address",
+        "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+        "productArtifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1"
+      },
+      "status": {
+        "state": "pending",
+        "profile": {
+          "id": "pii-v1",
+          "version": 1
+        },
+        "reasonCodes": [
+          "benign-heavy-stress-not-measured",
+          "diagnostic-population-not-measured",
+          "population-comparison-not-qualified",
+          "qualification-not-measured"
+        ]
+      },
+      "populationEvidence": [
+        {
+          "id": "benign-heavy-stress",
+          "reportStatus": "not-measured",
+          "status": "not-measured",
+          "strata": 0,
+          "reportCommitment": "9e237095ffa483b80c2894432330555dc93fb1418d61f51b5f89d05e7bd1945c"
+        },
+        {
+          "id": "diagnostic-balanced",
+          "reportStatus": "not-measured",
+          "status": "not-measured",
+          "strata": 0,
+          "reportCommitment": "e87ce05e3a59a98e0eb32a16ab7773dbd3758dda93ac8cf59c65161b829b65c9"
+        }
+      ],
+      "qualificationArtifactCommitment": null
+    }
+  ],
+  "artifactCommitment": "72ba2360c096b66a6869b65b39fbcdca17a4931587887053ebda8f471d37b8c0"
+}

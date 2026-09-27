@@ -21,6 +21,7 @@ if (await digestFile(args.core) !== artifact('package') || await digestFile(args
   throw new Error('candidate component identity mismatch');
 const plan = JSON.parse(await readFile(args.plan, 'utf8'));
 if (plan.schemaVersion !== 1 || !/^pii:(?:global|[a-z]{2}):/.test(plan.family) || !/^pii_[a-z0-9_]+$/.test(plan.findingType) ||
+    !Number.isInteger(plan.familyContractVersion ?? 1) || (plan.familyContractVersion ?? 1) < 1 ||
     typeof plan.piiOffInput !== 'string' || !plan.piiOffInput || !Array.isArray(plan.activationChecks) || plan.activationChecks.length < 2 ||
     plan.activationChecks.some(check => !Array.isArray(check.selectors) || !check.selectors.length || typeof check.expectedActivationIdentity !== 'string') ||
     !Array.isArray(plan.cases) || !plan.cases.length || !Array.isArray(plan.classAccounting) || !plan.classAccounting.length) throw new Error('invalid PII qualification plan');
@@ -49,6 +50,25 @@ const sourceDefinitions = Object.freeze({
   },
   'python-email-conformance': {
     fixture: 'conformance/fixtures/pii-email-v1.json',
+    commands: [{ executable: 'python3', args: ['-m', 'venv', '--system-site-packages', '{venv}'] },
+      { executable: 'maturin', args: ['develop', '--release', '--manifest-path', 'bindings/python/Cargo.toml'], venv: true },
+      { executable: '{python}', args: ['-c', 'from tests.test_pii_activation import test_pii_runtime_fixture; test_pii_runtime_fixture()'],
+        venv: true, pythonPath: 'bindings/python' }],
+    toolchains: [{ executable: 'python3', args: ['--version'] }, { executable: 'maturin', args: ['--version'] },
+      { executable: 'rustc', args: ['--version'] }],
+  },
+  'rust-native-iban-conformance': {
+    fixture: 'conformance/fixtures/pii-iban-v1.json',
+    commands: [{ executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret', '--test', 'pii_iban_conformance'] }],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'cli-iban-conformance': {
+    fixture: 'conformance/fixtures/pii-iban-v1.json',
+    commands: [{ executable: 'cargo', args: ['test', '--locked', '-p', 'redact-secret-cli', 'pii_family_fixtures_match_cli_utf8_metadata_for_exact_selection'] }],
+    toolchains: [{ executable: 'rustc', args: ['--version'] }, { executable: 'cargo', args: ['--version'] }],
+  },
+  'python-iban-conformance': {
+    fixture: 'conformance/fixtures/pii-iban-v1.json',
     commands: [{ executable: 'python3', args: ['-m', 'venv', '--system-site-packages', '{venv}'] },
       { executable: 'maturin', args: ['develop', '--release', '--manifest-path', 'bindings/python/Cargo.toml'], venv: true },
       { executable: '{python}', args: ['-c', 'from tests.test_pii_activation import test_pii_runtime_fixture; test_pii_runtime_fixture()'],

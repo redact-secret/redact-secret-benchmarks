@@ -98,6 +98,16 @@ recorded; normalization never overwrites the native observation. Public absence
 does not establish an identity-only result, so that gate remains unresolved
 unless separately bound evidence measures it.
 
+The IBAN family binding pins family contract v1, SWIFT ISO 13616 IBAN Registry
+Release 103 (89 derived country/length rows), and the bounded `iban-mod97` v1
+validator. Its safe plan uses only the recorded `SYNX`-marked issue-878
+synthetic construction and accounts validator correctness separately from
+wrong-country-length rejection and checksum-valid context collisions. Installed
+addon/Wasm and exact-source Rust/Python/CLI lanes are measured, while
+identity-only classification, both population views and comparisons, and the
+protected partition remain unresolved. The generated row is therefore
+`pending`; no absent population mass is inferred or renormalized.
+
 Tuning selection is fail-closed. Repository tuning manifests bind the file-byte
 hash in the pin manifest, while the current PII population contract binds an
 inner semantic corpus commitment and declares no dedicated tuning category.

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-activation-evidence",
+  "supportClaims": false,
+  "product": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "c810623a3348da3b15cb06dc4e13bf5c39113154",
+    "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+    "candidateEvidenceCommitment": "83bda533b5657d1073d8f291f6d56228896d9541eae02e6082f9207b2bda3789"
+  },
+  "profile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "requestedSelectors": [
+    "pii:global"
+  ],
+  "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+  "availableFamilies": [
+    "pii:global:email",
+    "pii:global:iban",
+    "pii:global:network-address"
+  ],
+  "selectorChecks": [
+    {
+      "selectors": [
+        "pii:global"
+      ],
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:global:email",
+        "pii:global:iban",
+        "pii:global:network-address"
+      ]
+    },
+    {
+      "selectors": [
+        "pii:family:global:iban"
+      ],
+      "activationIdentity": "credentials=full;selectors=pii:family:global:iban;families=pii:global:iban;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:global:iban"
+      ]
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "node-addon",
+      "status": "pass",
+      "activationChecks": [
+        {
+          "selectors": [
+            "pii:global"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:email",
+            "pii:global:iban",
+            "pii:global:network-address"
+          ]
+        },
+        {
+          "selectors": [
+            "pii:family:global:iban"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:family:global:iban;families=pii:global:iban;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:iban"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-wasm",
+      "status": "pass",
+      "activationChecks": [
+        {
+          "selectors": [
+            "pii:global"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:email",
+            "pii:global:iban",
+            "pii:global:network-address"
+          ]
+        },
+        {
+          "selectors": [
+            "pii:family:global:iban"
+          ],
+          "activationIdentity": "credentials=full;selectors=pii:family:global:iban;families=pii:global:iban;vocabulary=pii-context/v1",
+          "availableFamilies": [
+            "pii:global:iban"
+          ]
+        }
+      ]
+    }
+  ],
+  "offSurfaces": [
+    {
+      "id": "node-addon",
+      "status": "pass"
+    },
+    {
+      "id": "node-wasm",
+      "status": "pass"
+    }
+  ],
+  "artifactCommitment": "87bd16b4d7f3e1c072fc25e4ba7d9928f0faafc80f29a61defd3ea0badebc3c9"
+}

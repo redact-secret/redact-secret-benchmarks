@@ -153,5 +153,28 @@
     },
     "decidedAt": "2026-09-27",
     "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 credential-detector latency tradeoff, redact-secret#774)"
+  },
+  {
+    "id": "beta10-node-scale-logs-medium-credential-detector-pack",
+    "triggerId": "latency/node/scale-logs-medium-fixed4096/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
+    "measured": { "baseline": 1, "candidate": 1.102, "unit": "ratio" },
+    "rationale": "This surface cleared budget on the two dispatches used to judge the candidate overall (1.089, 1.097) but a third, later dispatch at the same source commit measured 1.102, just over the 10% budget. Same root cause and remediation history as the other Beta.10 rows in this file: the seven redact-secret#862-#868 detectors' fixed per-line cost through the incremental dispatch path, right at the noise boundary on this surface rather than clearly over it like cli. Recorded rather than re-dispatched for a favorable sample, since every surface at this commit is hovering within noise of the 10% line and picking a lucky run would not be honest. Tracked in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Same seven-family Beta.10 credential-detector addition as the other rows in this file.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-27",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 credential-detector latency tradeoff, redact-secret#774)"
   }
 ]

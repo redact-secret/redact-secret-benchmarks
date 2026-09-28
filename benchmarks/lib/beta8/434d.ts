@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { th, provider, field } from '../contract-sources.ts';
-import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, B434, product, at, src, reason } from './434-sources.ts';
+import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, B434, product, at, src, scoredReason, splitGraduated } from './434-sources.ts';
 
 // Issue #434, slice d: Beta.11 contracts for the PostHog personal API key (phx_) and project secret
 // API key (phs_) (#860 Tier A, READY; handoff docs/audits/evidence/860/posthog.md; product
@@ -23,12 +23,10 @@ const HANDOFF = handoff('posthog.md');
 const TH_POSTHOG = th('posthog/posthog', 'PostHog: \\b(phx_[a-zA-Z0-9_]{43,48})\\b (no phs_; misses 42- and 49-byte bodies; admits _)');
 const REFS = [DOCS_KEYS, DOCS_API, UTILS, UTILS_BASE62, UTILS_130, PR_52495, HANDOFF, HANDOFF_INDEX, R860, RULINGS_R1_R3, product(906), B434];
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 1127bf9 re-pin. */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'posthog-token', taxonomy: 'posthog:personal-api-key', issue,
-    reason: reason('posthog-token', 'posthog_personal_api_key', 906, 'The detector id is also this family\'s arrival id, so the personal key graduates when the registry is re-pinned; the detector never claims phc_.') },
   { id: 'posthog-project-secret-api-key', taxonomy: 'posthog:project-secret-api-key', issue,
-    reason: reason('posthog-token', 'posthog_project_secret_api_key', 906, 'phs_ shares the posthog-token detector, so after the re-pin it stays an arrival family scored by finding type.') },
+    reason: scoredReason('posthog-token', 'posthog_project_secret_api_key', 906) },
 ];
 
 const shared = (prefix: string, role: string, peer: string) => [
@@ -42,8 +40,8 @@ const shared = (prefix: string, role: string, peer: string) => [
   field({ field: 'peer-lag', claim: peer, basis: 'tool', status: 'frozen', sources: [src(TH_POSTHOG.url), src('https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml', 'no posthog rule')], note: 'Corroboration only; never used to narrow or widen the contract.' }),
 ];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'posthog-token': {
     tier: 'T1',
     pattern: '^phx_[0-9A-Za-z]{42,49}$',
@@ -63,6 +61,12 @@ export const contracts: Record<string, FormatContract> = {
     fields: shared('phs_', 'project secret API key', 'no rule in trufflehog 3.97.4 (phx_ only) or gitleaks 8.30.1'),
   },
 };
+
+const split = splitGraduated(authored, ['posthog-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = {

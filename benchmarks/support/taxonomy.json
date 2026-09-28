@@ -1747,290 +1747,338 @@
       "provider": "convex",
       "name": "Deployment, project and admin key (hex body)",
       "description": "An optional prod:/dev: + cloud name or preview:/project: + two slugs lead, the deployment or instance name, one |, then 01 + an even 74–96 lowercase hex body; the whole key is the credential. The cloud eyJ2 deploy-key body is issuance-gated and not claimed.",
-      "detectors": [],
+      "detectors": [
+        "convex-deployment-key"
+      ],
       "sources": [
         "https://docs.convex.dev/cli/deploy-key-types",
         "https://github.com/get-convex/convex-backend/blob/032e81e264a8b23b8d566d8f83f773d2bfbedb88/crates/common/src/types/admin_key.rs"
       ],
-      "note": "Beta.11 arrival family convex-deployment-key (#436, product redact-secret#912), contract in benchmarks/lib/beta8/436a.ts from the #860 handoff convex.md. T1 on provider backend code (R1); neither pinned scanner has a Convex rule."
+      "note": "Registry detector convex-deployment-key since redact-secret#912 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#436), contract in benchmarks/lib/beta8/436a.ts. T1 on provider backend code (R1); neither pinned scanner has a Convex rule."
     },
     {
       "id": "onepassword:service-account-token",
       "provider": "onepassword",
       "name": "Service account token (ops_)",
       "description": "ops_ + the Base64url encoding of a serialized JSON object (so ops_eyJ), variable length; the 250-byte floor after the lead is project policy.",
-      "detectors": [],
+      "detectors": [
+        "onepassword-service-account-token"
+      ],
       "sources": [
         "https://developer.1password.com/docs/service-accounts/security/"
       ],
-      "note": "Beta.11 arrival family onepassword-service-account-token (#436, product redact-secret#913), contract in benchmarks/lib/beta8/436b.ts from the #860 handoff onepassword.md. T1 on provider documentation; gitleaks 8.30.1 has a rule, trufflehog 3.97.4 none."
+      "note": "Registry detector onepassword-service-account-token since redact-secret#913 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#436), contract in benchmarks/lib/beta8/436b.ts. T1 on provider documentation; gitleaks 8.30.1 has a rule, trufflehog 3.97.4 none."
     },
     {
       "id": "inngest:signing-key",
       "provider": "inngest",
       "name": "Signing key (signkey-)",
       "description": "signkey-prod-, signkey-test- or signkey-branch- + exactly 64 lowercase hex; the raw key, the rotation fallback and the hashed wire form share the shape.",
-      "detectors": [],
+      "detectors": [
+        "inngest-signing-key"
+      ],
       "sources": [
         "https://www.inngest.com/docs/self-hosting",
         "https://github.com/inngest/inngest/blob/dabb03f9e093672aaef2ee77eb7accdf0cd00ca3/pkg/authn/signing_key_strategy.go#L15-L25"
       ],
-      "note": "Beta.11 arrival family inngest-signing-key (#436, product redact-secret#914), contract in benchmarks/lib/beta8/436c.ts from the #860 handoff inngest.md. T1 on provider code constants and docs; neither pinned scanner has an Inngest rule."
+      "note": "Registry detector inngest-signing-key since redact-secret#914 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#436), contract in benchmarks/lib/beta8/436c.ts. T1 on provider code constants and docs; neither pinned scanner has an Inngest rule."
     },
     {
       "id": "resend:api-key",
       "provider": "resend",
       "name": "API key (re_)",
       "description": "re_ + 8 alphanumerics + _ + 24 alphanumerics, 36 in all; full_access and sending_access keys share the shape.",
-      "detectors": [],
+      "detectors": [
+        "resend-api-key"
+      ],
       "sources": [
         "https://resend.com/docs/api-reference/api-keys/create-api-key",
         "https://github.com/resend/resend-cli#authentication"
       ],
-      "note": "Beta.11 arrival family resend-api-key (#436, product redact-secret#915), contract in benchmarks/lib/beta8/436d.ts from the #860 handoff resend.md. T1 on the provider CLI prefix and the docs/SDK example layout (R5); neither pinned scanner has a Resend rule."
+      "note": "Registry detector resend-api-key since redact-secret#915 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#436), contract in benchmarks/lib/beta8/436d.ts. T1 on the provider CLI prefix and the docs/SDK example layout (R5); neither pinned scanner has a Resend rule."
     },
     {
       "id": "apify:api-token",
       "provider": "apify",
       "name": "API token (apify_api_)",
       "description": "apify_api_ + at least 20 alphanumerics, open-ended (the provider's own leak linter); apify_ui_ Console tokens are a separate, unshaped credential.",
-      "detectors": [],
+      "detectors": [
+        "apify-api-token"
+      ],
       "sources": [
         "https://docs.apify.com/platform/integrations/api",
         "https://github.com/apify/awesome-skills/blob/main/scripts/lint_references.py"
       ],
-      "note": "Beta.11 arrival family apify-api-token (#436, product redact-secret#916), contract in benchmarks/lib/beta8/436e.ts from the #860 handoff apify.md. T1 on the docs placeholder (R4) and the provider-authored linter (R2); trufflehog 3.97.4 has an exact-36 rule."
+      "note": "Registry detector apify-api-token since redact-secret#916 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#436), contract in benchmarks/lib/beta8/436e.ts. T1 on the docs placeholder (R4) and the provider-authored linter (R2); trufflehog 3.97.4 has an exact-36 rule."
     },
     {
       "id": "wandb:api-key",
       "provider": "wandb",
       "name": "API key (wandb_v1_)",
       "description": "wandb_v1_ + [A-Za-z0-9_] to about 86 characters in all (86 in every provider fixture); the legacy 40-hex key stays with generic context.",
-      "detectors": [],
+      "detectors": [
+        "wandb-api-key"
+      ],
       "sources": [
         "https://docs.wandb.ai/support/models/articles/why-does-my-api-key-fail-with-must-be-40-characters",
         "https://github.com/wandb/wandb/blob/98f93d636e523bf6e195a2a154f23ba8775623a9/wandb/sdk/lib/wbauth/validation.py#L26-L63"
       ],
-      "note": "Beta.11 arrival family wandb-api-key (#436, product redact-secret#917), contract in benchmarks/lib/beta8/436f.ts from the #860 handoff wandb.md. T1 on the provider test constant (R5) and SDK validator (R1); length measured around 86 with no length asserted. trufflehog 3.97.4 registers only the keyword-gated legacy rule by default."
+      "note": "Registry detector wandb-api-key since redact-secret#917 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#436), contract in benchmarks/lib/beta8/436f.ts. T1 on the provider test constant (R5) and SDK validator (R1); length measured around 86 with no length asserted. trufflehog 3.97.4 registers only the keyword-gated legacy rule by default."
     },
     {
       "id": "doppler:service-token",
       "provider": "doppler",
       "name": "Service token (dp.st.)",
       "description": "dp.st. with an optional [a-z0-9_-]{2,35} environment segment then 40–44 bytes of [A-Za-z0-9] (reads one config); per-type regex on the provider page.",
-      "detectors": [],
+      "detectors": [
+        "doppler-token"
+      ],
       "sources": [
         "https://docs.doppler.com/reference/auth-token-formats",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md"
       ],
-      "note": "Beta.11 arrival family doppler-token (#434 slice a, #860 Tier A handoff, product redact-secret#903); contract in benchmarks/lib/beta8/434a.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Registry detector doppler-token since redact-secret#903 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#434 slice a, #860 Tier A handoff), contract in benchmarks/lib/beta8/434a.ts. T1."
     },
     {
       "id": "doppler:personal-token",
       "provider": "doppler",
       "name": "Personal token (dp.pt.)",
       "description": "dp.pt. then 40–44 bytes of [A-Za-z0-9] (user-wide); per-type regex on the provider page.",
-      "detectors": [],
+      "detectors": [
+        "doppler-personal-token"
+      ],
       "sources": [
         "https://docs.doppler.com/reference/auth-token-formats",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md"
       ],
-      "note": "Beta.11 arrival family doppler-personal-token (#434 slice a, #860 Tier A handoff, product redact-secret#903); contract in benchmarks/lib/beta8/434a.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass. Peers lag: trufflehog 3.97.4 has no said, gitleaks 8.30.1 covers dp.pt. + 43 only."
+      "note": "Scored arrival family doppler-personal-token: the product types it inside the shared doppler-token detector as doppler_personal_token since redact-secret#903 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice a, #860 Tier A handoff), contract in benchmarks/lib/beta8/434a.ts. T1. Peers lag: trufflehog 3.97.4 has no said, gitleaks 8.30.1 covers dp.pt. + 43 only."
     },
     {
       "id": "doppler:cli-token",
       "provider": "doppler",
       "name": "CLI token (dp.ct.)",
       "description": "dp.ct. then 40–44 bytes of [A-Za-z0-9] (user-wide); per-type regex on the provider page.",
-      "detectors": [],
+      "detectors": [
+        "doppler-cli-token"
+      ],
       "sources": [
         "https://docs.doppler.com/reference/auth-token-formats",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md"
       ],
-      "note": "Beta.11 arrival family doppler-cli-token (#434 slice a, #860 Tier A handoff, product redact-secret#903); contract in benchmarks/lib/beta8/434a.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family doppler-cli-token: the product types it inside the shared doppler-token detector as doppler_cli_token since redact-secret#903 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice a, #860 Tier A handoff), contract in benchmarks/lib/beta8/434a.ts. T1."
     },
     {
       "id": "doppler:service-account-token",
       "provider": "doppler",
       "name": "Service account token (dp.sa.)",
       "description": "dp.sa. then 40–44 bytes of [A-Za-z0-9] (service account); per-type regex on the provider page.",
-      "detectors": [],
+      "detectors": [
+        "doppler-service-account-token"
+      ],
       "sources": [
         "https://docs.doppler.com/reference/auth-token-formats",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md"
       ],
-      "note": "Beta.11 arrival family doppler-service-account-token (#434 slice a, #860 Tier A handoff, product redact-secret#903); contract in benchmarks/lib/beta8/434a.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family doppler-service-account-token: the product types it inside the shared doppler-token detector as doppler_service_account_token since redact-secret#903 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice a, #860 Tier A handoff), contract in benchmarks/lib/beta8/434a.ts. T1."
     },
     {
       "id": "doppler:service-account-identity-token",
       "provider": "doppler",
       "name": "Service account identity token (dp.said.)",
       "description": "dp.said. then 40–44 bytes of [A-Za-z0-9] (short-lived, minted by OIDC exchange); per-type regex on the provider page.",
-      "detectors": [],
+      "detectors": [
+        "doppler-service-account-identity-token"
+      ],
       "sources": [
         "https://docs.doppler.com/reference/auth-token-formats",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md"
       ],
-      "note": "Beta.11 arrival family doppler-service-account-identity-token (#434 slice a, #860 Tier A handoff, product redact-secret#903); contract in benchmarks/lib/beta8/434a.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass. Peers lag: trufflehog 3.97.4 has no said, gitleaks 8.30.1 covers dp.pt. + 43 only."
+      "note": "Scored arrival family doppler-service-account-identity-token: the product types it inside the shared doppler-token detector as doppler_service_account_identity_token since redact-secret#903 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice a, #860 Tier A handoff), contract in benchmarks/lib/beta8/434a.ts. T1. Peers lag: trufflehog 3.97.4 has no said, gitleaks 8.30.1 covers dp.pt. + 43 only."
     },
     {
       "id": "doppler:scim-token",
       "provider": "doppler",
       "name": "SCIM token (dp.scim.)",
       "description": "dp.scim. then 40–44 bytes of [A-Za-z0-9] (SCIM provisioning); per-type regex on the provider page.",
-      "detectors": [],
+      "detectors": [
+        "doppler-scim-token"
+      ],
       "sources": [
         "https://docs.doppler.com/reference/auth-token-formats",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md"
       ],
-      "note": "Beta.11 arrival family doppler-scim-token (#434 slice a, #860 Tier A handoff, product redact-secret#903); contract in benchmarks/lib/beta8/434a.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family doppler-scim-token: the product types it inside the shared doppler-token detector as doppler_scim_token since redact-secret#903 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice a, #860 Tier A handoff), contract in benchmarks/lib/beta8/434a.ts. T1."
     },
     {
       "id": "doppler:audit-token",
       "provider": "doppler",
       "name": "Audit token (dp.audit.)",
       "description": "dp.audit. then 40–44 bytes of [A-Za-z0-9] (audit log access); per-type regex on the provider page.",
-      "detectors": [],
+      "detectors": [
+        "doppler-audit-token"
+      ],
       "sources": [
         "https://docs.doppler.com/reference/auth-token-formats",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md"
       ],
-      "note": "Beta.11 arrival family doppler-audit-token (#434 slice a, #860 Tier A handoff, product redact-secret#903); contract in benchmarks/lib/beta8/434a.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family doppler-audit-token: the product types it inside the shared doppler-token detector as doppler_audit_token since redact-secret#903 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice a, #860 Tier A handoff), contract in benchmarks/lib/beta8/434a.ts. T1."
     },
     {
       "id": "trigger-dev:secret-api-key",
       "provider": "trigger-dev",
       "name": "Environment secret key (tr_<env>_ / tr_<env>_sk_)",
       "description": "tr_ + dev|stg|prod|preview + _sk_ + 24 [0-9A-Za-z] (additional), or tr_<env>_ + 24 or legacy 20 (root); pk_<env>_ public keys are not secrets.",
-      "detectors": [],
+      "detectors": [
+        "trigger-dev-token"
+      ],
       "sources": [
         "https://trigger.dev/docs/apikeys",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md"
       ],
-      "note": "Beta.11 arrival family trigger-dev-token (#434 slice b, #860 Tier A handoff, product redact-secret#904); contract in benchmarks/lib/beta8/434b.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass. tr_oat_ organization tokens are unshaped (T0) and not claimed."
+      "note": "Registry detector trigger-dev-token since redact-secret#904 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#434 slice b, #860 Tier A handoff), contract in benchmarks/lib/beta8/434b.ts. T1. tr_oat_ organization tokens are unshaped (T0) and not claimed."
     },
     {
       "id": "trigger-dev:personal-access-token",
       "provider": "trigger-dev",
       "name": "Personal access token (tr_pat_)",
       "description": "tr_pat_ + 40 of [1-9a-km-z] (lowercase, no 0, no l).",
-      "detectors": [],
+      "detectors": [
+        "trigger-dev-personal-access-token"
+      ],
       "sources": [
         "https://trigger.dev/docs/apikeys",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md"
       ],
-      "note": "Beta.11 arrival family trigger-dev-personal-access-token (#434 slice b, #860 Tier A handoff, product redact-secret#904); contract in benchmarks/lib/beta8/434b.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family trigger-dev-personal-access-token: the product types it inside the shared trigger-dev-token detector as trigger_dev_personal_access_token since redact-secret#904 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice b, #860 Tier A handoff), contract in benchmarks/lib/beta8/434b.ts. T1."
     },
     {
       "id": "e2b:api-key",
       "provider": "e2b",
       "name": "Team API key (e2b_)",
       "description": "e2b_ + 40 lowercase hex (20 random bytes); the retired sk_e2b_ user token is a different class.",
-      "detectors": [],
+      "detectors": [
+        "e2b-api-key"
+      ],
       "sources": [
         "https://docs.e2b.dev/api-key",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/e2b.md"
       ],
-      "note": "Beta.11 arrival family e2b-api-key (#434 slice c, #860 Tier A handoff, product redact-secret#905); contract in benchmarks/lib/beta8/434c.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Registry detector e2b-api-key since redact-secret#905 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#434 slice c, #860 Tier A handoff), contract in benchmarks/lib/beta8/434c.ts. T1."
     },
     {
       "id": "posthog:personal-api-key",
       "provider": "posthog",
       "name": "Personal API key (phx_)",
       "description": "phx_ + 42–49 of [0-9A-Za-z] (base57 since 2026-03-30, base62 before); the phc_ project token is public and never claimed.",
-      "detectors": [],
+      "detectors": [
+        "posthog-token"
+      ],
       "sources": [
         "https://posthog.com/docs/api/personal-api-keys",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md"
       ],
-      "note": "Beta.11 arrival family posthog-token (#434 slice d, #860 Tier A handoff, product redact-secret#906); contract in benchmarks/lib/beta8/434d.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass. Peers lag: trufflehog 3.97.4 reads phx_ + 43–48 over [a-zA-Z0-9_], missing 42- and 49-byte keys."
+      "note": "Registry detector posthog-token since redact-secret#906 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#434 slice d, #860 Tier A handoff), contract in benchmarks/lib/beta8/434d.ts. T1. Peers lag: trufflehog 3.97.4 reads phx_ + 43–48 over [a-zA-Z0-9_], missing 42- and 49-byte keys."
     },
     {
       "id": "posthog:project-secret-api-key",
       "provider": "posthog",
       "name": "Project secret API key (phs_)",
       "description": "phs_ + 42–49 of [0-9A-Za-z], the personal-key generator and body.",
-      "detectors": [],
+      "detectors": [
+        "posthog-project-secret-api-key"
+      ],
       "sources": [
         "https://posthog.com/docs/api/personal-api-keys",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md"
       ],
-      "note": "Beta.11 arrival family posthog-project-secret-api-key (#434 slice d, #860 Tier A handoff, product redact-secret#906); contract in benchmarks/lib/beta8/434d.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family posthog-project-secret-api-key: the product types it inside the shared posthog-token detector as posthog_project_secret_api_key since redact-secret#906 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice d, #860 Tier A handoff), contract in benchmarks/lib/beta8/434d.ts. T1."
     },
     {
       "id": "helicone:api-key",
       "provider": "helicone",
       "name": "Read-write key (sk-helicone-)",
       "description": "sk-helicone- with optional -eu and -rl, then four 7-byte [a-z0-9] groups; or sk-helicone-proxy- + the groups + a lowercase UUID.",
-      "detectors": [],
+      "detectors": [
+        "helicone-api-key"
+      ],
       "sources": [
         "https://docs.helicone.ai/helicone-headers/helicone-auth",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md"
       ],
-      "note": "Beta.11 arrival family helicone-api-key (#434 slice e, #860 Tier A handoff, product redact-secret#907); contract in benchmarks/lib/beta8/434e.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Registry detector helicone-api-key since redact-secret#907 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#434 slice e, #860 Tier A handoff), contract in benchmarks/lib/beta8/434e.ts. T1."
     },
     {
       "id": "helicone:write-api-key",
       "provider": "helicone",
       "name": "Write-only key (pk-helicone-)",
       "description": "pk-helicone- with optional -eu and -rl, then four 7-byte [a-z0-9] groups; a write credential, not a public identifier.",
-      "detectors": [],
+      "detectors": [
+        "helicone-write-api-key"
+      ],
       "sources": [
         "https://docs.helicone.ai/helicone-headers/helicone-auth",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md"
       ],
-      "note": "Beta.11 arrival family helicone-write-api-key (#434 slice e, #860 Tier A handoff, product redact-secret#907); contract in benchmarks/lib/beta8/434e.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family helicone-write-api-key: the product types it inside the shared helicone-api-key detector as helicone_write_api_key since redact-secret#907 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice e, #860 Tier A handoff), contract in benchmarks/lib/beta8/434e.ts. T1."
     },
     {
       "id": "firecrawl:api-key",
       "provider": "firecrawl",
       "name": "API key (fc-)",
       "description": "fc- + 32 lowercase hex, a dashless random UUIDv4 (version 4, variant 8/9/a/b); legacy dashed-UUID keys are not attributable.",
-      "detectors": [],
+      "detectors": [
+        "firecrawl-api-key"
+      ],
       "sources": [
         "https://docs.firecrawl.dev/api-reference/v2-introduction",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/firecrawl.md"
       ],
-      "note": "Beta.11 arrival family firecrawl-api-key (#434 slice f, #860 Tier A handoff, product redact-secret#908); contract in benchmarks/lib/beta8/434f.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Registry detector firecrawl-api-key since redact-secret#908 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#434 slice f, #860 Tier A handoff), contract in benchmarks/lib/beta8/434f.ts. T1."
     },
     {
       "id": "composio:project-api-key",
       "provider": "composio",
       "name": "Project API key (ak_)",
       "description": "ak_ + 20 URL-safe nanoid [A-Za-z0-9_-] with at least one upper- and one lower-case letter (the short-prefix guard).",
-      "detectors": [],
+      "detectors": [
+        "composio-api-key"
+      ],
       "sources": [
         "https://docs.composio.dev/reference/authenticating-to-composio",
         "https://github.com/trufflesecurity/trufflehog/issues/5321",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md"
       ],
-      "note": "Beta.11 arrival family composio-api-key (#434 slice g, #860 Tier A handoff, product redact-secret#909); contract in benchmarks/lib/beta8/434g.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Registry detector composio-api-key since redact-secret#909 (registry pinned at 1127bf9); graduated from a Beta.11 arrival family (#434 slice g, #860 Tier A handoff), contract in benchmarks/lib/beta8/434g.ts. T1."
     },
     {
       "id": "composio:org-api-key",
       "provider": "composio",
       "name": "Org API key (oak_)",
       "description": "oak_ + 20 URL-safe nanoid [A-Za-z0-9_-].",
-      "detectors": [],
+      "detectors": [
+        "composio-org-api-key"
+      ],
       "sources": [
         "https://docs.composio.dev/reference/authenticating-to-composio",
         "https://github.com/trufflesecurity/trufflehog/issues/5321",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md"
       ],
-      "note": "Beta.11 arrival family composio-org-api-key (#434 slice g, #860 Tier A handoff, product redact-secret#909); contract in benchmarks/lib/beta8/434g.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family composio-org-api-key: the product types it inside the shared composio-api-key detector as composio_org_api_key since redact-secret#909 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice g, #860 Tier A handoff), contract in benchmarks/lib/beta8/434g.ts. T1."
     },
     {
       "id": "composio:user-api-key",
       "provider": "composio",
       "name": "User API key (uak_)",
       "description": "uak_ + 43 URL-safe nanoid [A-Za-z0-9_-] per the 2026-09-17 staff statement; a code comment's 20 is T2 (R6).",
-      "detectors": [],
+      "detectors": [
+        "composio-user-api-key"
+      ],
       "sources": [
         "https://docs.composio.dev/reference/authenticating-to-composio",
         "https://github.com/trufflesecurity/trufflehog/issues/5321",
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md"
       ],
-      "note": "Beta.11 arrival family composio-user-api-key (#434 slice g, #860 Tier A handoff, product redact-secret#909); contract in benchmarks/lib/beta8/434g.ts. T1; no support status until the product detector is in the pinned registry and the arrival/profile gates pass."
+      "note": "Scored arrival family composio-user-api-key: the product types it inside the shared composio-api-key detector as composio_user_api_key since redact-secret#909 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice g, #860 Tier A handoff), contract in benchmarks/lib/beta8/434g.ts. T1."
     }
   ]
 }

@@ -15,7 +15,13 @@ const families = ['github-token', 'gitlab-token', 'npm-token', 'sendgrid-token',
   // as an arrival family (benchmarks/lib/beta8/384b-384e) under the same id, except Together, whose arrival id was
   // renamed to the detector id.
   'aws-bedrock-long-term-api-key', 'aws-bedrock-short-term-api-key', 'elevenlabs-api-key', 'together-ai-api-key',
-  'tavily-api-key', 'mistral-api-key', 'cohere-api-key', 'ai21-api-key', 'deepgram-api-key'];
+  'tavily-api-key', 'mistral-api-key', 'cohere-api-key', 'ai21-api-key', 'deepgram-api-key',
+  // #434/#436: registry detectors since redact-secret#903-#909 and #912-#917 (product PR #938, registry pin 1127bf9); each
+  // was measured as an arrival family (benchmarks/lib/beta8/434a-434g, 436a-436f) under the same id. Their sibling types
+  // are labelled by finding type (arrivalFindingTypes below).
+  'doppler-token', 'trigger-dev-token', 'e2b-api-key', 'posthog-token', 'helicone-api-key', 'firecrawl-api-key',
+  'composio-api-key', 'convex-deployment-key', 'onepassword-service-account-token', 'inngest-signing-key',
+  'resend-api-key', 'apify-api-token', 'wandb-api-key'];
 const gitleaks = {
   'github-pat': 'github-token', 'github-oauth': 'github-token',
   'github-app-token': 'github-token', 'github-refresh-token': 'github-token',
@@ -47,6 +53,11 @@ const gitleaks = {
   // #434: gitleaks 8.30.1 doppler-api-token is dp\.pt\.(?i)[a-z0-9]{43}, the personal token only (one width of the
   // documented 40-44 band), so it maps to that arrival family and to no other Doppler type.
   'doppler-api-token': 'doppler-personal-token',
+  // #436 (deferred to graduation): gitleaks 8.30.1 1password-service-account-token is ops_eyJ + standard Base64, the same
+  // credential as the onepassword-service-account-token family over a different alphabet (it misses the Base64url
+  // positives; peer lag, not a family difference). 1password-secret-key is the account Secret Key, never this family,
+  // and stays unmapped.
+  '1password-service-account-token': 'onepassword-service-account-token',
 };
 const trufflehog = {
   Github: 'github-token', Gitlab: 'gitlab-token', Npm: 'npm-token',
@@ -75,6 +86,11 @@ const trufflehog = {
   // family doppler-token (as Github maps to github-token) and a sibling-type finding reads as co-detection; its
   // posthog detector (label PosthogApp) reads phx_ + 43-48 of [a-zA-Z0-9_] only, the personal key.
   Doppler: 'doppler-token', PosthogApp: 'posthog-token',
+  // #436 (deferred to graduation): trufflehog 3.97.4's apify detector reads apify_api_ + exactly 36 alphanumerics, the
+  // apify-api-token credential over a narrower width (it misses the 20- and 128-byte positives). Its weightsandbiases
+  // detectors report under one label: v2 (wandb_v1_ keys, the wandb-api-key family) and v1 (the legacy keyword-gated
+  // 40-hex key, which the family does not claim) -- the same one-label, two-shape case as ElevenLabs above.
+  Apify: 'apify-api-token', WeightsAndBiases: 'wandb-api-key',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;
@@ -144,6 +160,20 @@ export const arrivalFindingTypes = Object.freeze({
   // #384/#774: the same PR splits sk-admin- out of the shared openai_api_key type; the
   // sk-/sk-proj-/sk-svcacct- widths keep openai_api_key.
   'openai-token': Object.freeze({ openai_admin_api_key: 'openai-admin-api-key' }),
+  // #434: product PR #938 (redact-secret#903, #904, #906, #907, #909) gives each sibling type its own finding type
+  // inside the new shared detector (redact-secret docs/reference/detection.md at 1127bf9); the detector-id family keeps
+  // the detector id (doppler_service_token, trigger_dev_secret_api_key, posthog_personal_api_key, helicone_api_key,
+  // composio_project_api_key).
+  'doppler-token': Object.freeze({
+    doppler_personal_token: 'doppler-personal-token', doppler_cli_token: 'doppler-cli-token',
+    doppler_service_account_token: 'doppler-service-account-token',
+    doppler_service_account_identity_token: 'doppler-service-account-identity-token',
+    doppler_scim_token: 'doppler-scim-token', doppler_audit_token: 'doppler-audit-token',
+  }),
+  'trigger-dev-token': Object.freeze({ trigger_dev_personal_access_token: 'trigger-dev-personal-access-token' }),
+  'posthog-token': Object.freeze({ posthog_project_secret_api_key: 'posthog-project-secret-api-key' }),
+  'helicone-api-key': Object.freeze({ helicone_write_api_key: 'helicone-write-api-key' }),
+  'composio-api-key': Object.freeze({ composio_org_api_key: 'composio-org-api-key', composio_user_api_key: 'composio-user-api-key' }),
 });
 // The arrival families with a recorded finding-type mapping. eval:classify scores
 // these like registry families, each on its own contract, profile and ledger rows

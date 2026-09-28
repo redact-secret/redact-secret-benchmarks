@@ -76,6 +76,11 @@ families graduated this way at the product pin dad7868 (redact-secret#727,
 #728), and four #212 families (Perplexity, Fireworks AI, Pinecone `pcsk_`,
 GitLab runner authentication token) at f2082ab (redact-secret#730).
 
+The seven #434 detector-id families (`doppler-token`, `trigger-dev-token`, `e2b-api-key`, `posthog-token`,
+`helicone-api-key`, `firecrawl-api-key`, `composio-api-key`) and the six #436 families graduated the same way when
+the registry was re-pinned to product main `1127bf9` (redact-secret PR #938 added the detectors, #903–#909 and
+#912–#917; PR #947 followed). Their eleven sibling types stay arrival families scored by finding type (below).
+
 #259 skipped the arrival stage: redact-secret#773 had merged before its
 evidence was authored, so the registry was pinned to 3144bb3 in the same
 change, and `travisci-api-token`, `neon-api-key` and
@@ -106,6 +111,11 @@ never from scanner output:
 | `stripe-token` | `stripe_webhook_signing_secret` | `stripe-webhook-signing-secret` |
 | `slack-token` | `slack_app_level_token` | `slack-app-level-token` |
 | `slack-token` | `slack_user_token` | `slack-user-token` |
+| `doppler-token` | `doppler_personal_token`, `doppler_cli_token`, `doppler_service_account_token`, `doppler_service_account_identity_token`, `doppler_scim_token`, `doppler_audit_token` | the six Doppler sibling families (#434) |
+| `trigger-dev-token` | `trigger_dev_personal_access_token` | `trigger-dev-personal-access-token` |
+| `posthog-token` | `posthog_project_secret_api_key` | `posthog-project-secret-api-key` |
+| `helicone-api-key` | `helicone_write_api_key` | `helicone-write-api-key` |
+| `composio-api-key` | `composio_org_api_key`, `composio_user_api_key` | `composio-org-api-key`, `composio-user-api-key` |
 
 A coarser type keeps the detector id. The published 0.1.0-beta.7 reports
 `whsec_` as `stripe_credential` and `xoxp-`/`xapp-` as `slack_token`, so its
@@ -291,6 +301,22 @@ to `posthog-token` and gitleaks `doppler-api-token` to `doppler-personal-token`.
 | PostHog | `phx_` + 43–48 of `[a-zA-Z0-9_]`: misses 42- and 49-byte keys, admits `_`, no `phs_` | none |
 | Trigger.dev, E2B, Helicone, Firecrawl, Composio | none (the staff-authored Composio PR #5322 is still open) | none |
 
+### Graduation at the 1127bf9 re-pin
+
+`benchmarks/detectors.json` is pinned to product main `1127bf9`, whose registry carries the thirteen #860 detectors.
+Each slice module keeps its authored contracts in one object and splits them with `splitGraduated`
+(`434-sources.ts`): the detector-id family's contract moves to `registryContracts`, the sibling types' contracts stay
+in `contracts` with their arrival ids. The taxonomy row of every family maps to its own id (the registry detector, or
+the scored arrival id), `scanners/families.mjs` lists the thirteen detector ids and the eleven sibling finding types,
+and each detector has the registry-wide `detector-coverage` minimum. The peer mappings #434 recorded (trufflehog
+`Doppler` and `PosthogApp`, gitleaks `doppler-api-token`) are unchanged; #436's deferred ones are added at graduation:
+gitleaks `1password-service-account-token` → `onepassword-service-account-token`, trufflehog `Apify` →
+`apify-api-token` and trufflehog `WeightsAndBiases` → `wandb-api-key` (its v1 legacy 40-hex key reports under the same
+label, as ElevenLabs v1 does). The graduation changed the beta8-434/436 fixture objects (`detectors` instead of
+`arrivalTargets`), so their ledger rows were carried to their new ids by structural identity, and the open
+differential rows were re-triaged against candidate `1127bf9` under the established classes (see
+`evidence/860/1127bf9/README.md`).
+
 ## Beta.11 Tier B slices (#436)
 
 The same layout carries the #860 Tier B READY credential families
@@ -310,8 +336,8 @@ detector code; `benchmarks/lib/beta8/436-sources.ts` carries the shared citation
 | `436e` | `beta8-436e` | `apify-api-token` | [apify.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/apify.md) | [#916](https://github.com/redact-secret/redact-secret/issues/916) |
 | `436f` | `beta8-436f` | `wandb-api-key` | [wandb.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/wandb.md) | [#917](https://github.com/redact-secret/redact-secret/issues/917) |
 
-All six are T1 arrival families declared `documented-24`, unscored until the product detector with the
-same id is in the pinned registry (then they graduate as above). Conventions specific to these slices:
+All six are T1 families declared `documented-24`, authored as arrival families and registry detectors since the
+`1127bf9` re-pin (graduated as above). Conventions specific to these slices:
 
 - **Every positive in every probe context.** Each family has a positive in the nine contexts of the Tier B
   re-rank probe (bare prose, `ENV=`, `export`, Bearer, `X-API-Key`, JSON `"token"`, JSON `"api_key"`, an SDK

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "reviewedAt": "2026-09-22",
   "redactSecretVersion": "0.1.0-beta.10",
-  "redactSecretRevision": "f26dee26a9c2aa3cfff3543d784c02de5054de09",
+  "redactSecretRevision": "1db8ff38b16e50c51229eb27025452952bf621e1",
   "redactSecretReleaseRevision": "f726f2ffb0fd854cc3eeb4c35798695fde3161d3",
-  "method": "Explicit provider-family mapping against the 79 registered beta.10 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+  "method": "Explicit provider-family mapping against the 92 registered beta.10 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
   "sources": {
     "gitleaks": {
       "version": "8.30.1",
@@ -690,8 +690,8 @@
       "id": "1password-service-account-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L79",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "onepassword-service-account-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -1090,8 +1090,8 @@
       "id": "doppler-api-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L441",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "doppler-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -2765,8 +2765,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L943",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "apify-api-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -4646,8 +4646,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1158",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "doppler-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -7859,8 +7859,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1527",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "posthog-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -10199,8 +10199,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1793",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "wandb-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -10208,8 +10208,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1794",
       "activation": "feature-gated",
       "featureFlag": "WeightsAndBiasesV2DetectorEnabled",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "wandb-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",

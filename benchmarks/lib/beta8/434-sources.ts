@@ -19,6 +19,20 @@ export const product = (n: number) => `https://github.com/redact-secret/redact-s
 export const at = '2026-09-28';
 export const src = (url: string, note?: string) => ({ url, observedAt: at, ...(note ? { note } : {}) });
 
-/** The shared reason for a #434 arrival family: no registry detector exists at the pinned product revision. */
-export const reason = (detector: string, findingType: string, issue: number, note = '') =>
-  `No registry detector covers this family at the pinned product revision. redact-secret#${issue} adds a new ${detector} detector that reports it as ${findingType} (handoff ${HANDOFF_REVISION.slice(0, 7)}); until that detector is in the pinned registry the family is measured as an unscored arrival family.${note ? ` ${note}` : ''}`;
+/** The product main commit the registry is pinned to when the #434/#436 detector-id families graduate: redact-secret PR #938 added the detectors (#903–#909, #912–#917), PR #947 followed. */
+export const REGISTRY_PIN = '1127bf91323797be89b4413c8051f9a9a85da43b';
+
+/** The reason for a sibling type that stays an arrival family after the re-pin, scored by its own finding type. */
+export const scoredReason = (detector: string, findingType: string, issue: number, note = '') =>
+  `The product types this family inside the shared ${detector} detector as ${findingType} since redact-secret#${issue} (registry pinned at ${REGISTRY_PIN.slice(0, 7)}), so it stays an arrival family scored by its finding type (scanners/families.mjs arrivalFindingTypes, docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md).${note ? ` ${note}` : ''}`;
+
+type Contracts = Record<string, import('../../types.ts').FormatContract>;
+/** Split a slice's authored contracts: `graduated` ids become registry contracts at the re-pin, the rest stay arrival contracts. */
+export function splitGraduated(authored: Contracts, graduated: string[], note = `Graduated to a registry detector at the ${REGISTRY_PIN.slice(0, 7)} re-pin (redact-secret PR #938).`) {
+  for (const id of graduated) if (!Object.hasOwn(authored, id)) throw new Error(`no authored contract for ${id}`);
+  const registryContracts: Contracts = {}, contracts: Contracts = {};
+  for (const [id, c] of Object.entries(authored))
+    if (graduated.includes(id)) registryContracts[id] = { ...c, review: c.review ? `${c.review} ${note}` : note };
+    else contracts[id] = c;
+  return { registryContracts, contracts };
+}

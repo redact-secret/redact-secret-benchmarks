@@ -15,12 +15,18 @@
  * commit, is an error: the evaluation then marks the wasm size rows
  * invalid-measurement instead of silently skipping them.
  *
+ * The `pii` variants (redact-secret#937: `<outName>_pii_bg.wasm` beside each
+ * profile's default build, loaded only when `initialize()` selects PII) are
+ * measured as profiles `full-pii` and `common-pii` when the checkout built
+ * them. Both or neither: one without the other is an error. A commit from
+ * before the split builds neither, and the evidence says so (`piiBuilds`).
+ *
  * Compression matches scripts/collect-operational-evidence.mjs: gzip level 9,
  * brotli quality 11. Only gzip is budgeted; raw and brotli are recorded.
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { brotliCompressSync, constants, gzipSync } from 'node:zlib';
@@ -28,6 +34,12 @@ import { brotliCompressSync, constants, gzipSync } from 'node:zlib';
 export const WASM_ARTIFACTS = [
   { profile: 'full', artifact: 'wasm-web', dir: 'bindings/wasm/pkg', file: 'redact_secret_wasm_bg.wasm' },
   { profile: 'common', artifact: 'wasm-web-common', dir: 'bindings/wasm/pkg-common', file: 'redact_secret_wasm_common_bg.wasm' },
+];
+
+/** The optional PII-runtime variants (redact-secret#937), measured only when the checkout built them. */
+export const WASM_PII_ARTIFACTS = [
+  { profile: 'full-pii', artifact: 'wasm-web', dir: 'bindings/wasm/pkg', file: 'redact_secret_wasm_pii_bg.wasm' },
+  { profile: 'common-pii', artifact: 'wasm-web-common', dir: 'bindings/wasm/pkg-common', file: 'redact_secret_wasm_common_pii_bg.wasm' },
 ];
 
 export function measureWasm(bytes) {
@@ -43,7 +55,7 @@ export function renderMarkdown(evidence) {
   return [
     '## WebAssembly artifact sizes (candidate build)',
     '',
-    `Core \`${evidence.sourceCommit}\`. gzip is budgeted (\`size/wasm/<profile>/gzip\`); raw and brotli are recorded.`,
+    `Core \`${evidence.sourceCommit}\`. gzip is budgeted (\`size/wasm/<profile>/gzip\`); raw and brotli are recorded. PII-runtime builds: ${evidence.piiBuilds ?? 'absent'}.`,
     '',
     '| Profile | File | sha256 | raw | gzip | brotli |',
     '| --- | --- | --- | ---: | ---: | ---: |',
@@ -79,7 +91,18 @@ function main() {
     }
     return { profile, artifact, file, path: path.join(dir, file), ...measureWasm(bytes) };
   });
-  const evidence = { schemaVersion: '1', kind: 'wasm-artifact-sizes', sourceCommit: head, artifacts };
+  const pii = WASM_PII_ARTIFACTS.map(entry => ({ ...entry, location: path.join(args.core, entry.dir, entry.file) }))
+    .map(entry => ({ ...entry, present: existsSync(entry.location) }));
+  if (pii.some(e => e.present) && !pii.every(e => e.present)) {
+    throw new Error(`measure-wasm-sizes: ${pii.find(e => !e.present).location} is missing while another pii build exists; build both profiles' pii variants`);
+  }
+  const piiBuilds = pii.every(e => e.present) ? 'present' : 'absent';
+  if (piiBuilds === 'present') {
+    for (const { profile, artifact, dir, file, location } of pii) {
+      artifacts.push({ profile, artifact, file, path: path.join(dir, file), ...measureWasm(readFileSync(location)) });
+    }
+  }
+  const evidence = { schemaVersion: '1', kind: 'wasm-artifact-sizes', sourceCommit: head, piiBuilds, artifacts };
   mkdirSync(path.dirname(args.out), { recursive: true });
   writeFileSync(args.out, `${JSON.stringify(evidence, null, 2)}\n`);
   if (args['markdown-out']) writeFileSync(args['markdown-out'], renderMarkdown(evidence));

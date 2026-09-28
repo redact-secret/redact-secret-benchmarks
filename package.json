@@ -75,6 +75,8 @@
     "pii:ledger:check": "node --import tsx scripts/check-pii-gap-ledger.mjs",
     "pii:parity:plan": "node --import tsx scripts/generate-pii-mixed-parity.mjs",
     "pii:parity:measure": "node --import tsx scripts/measure-pii-mixed-parity.mjs",
+    "credential-parity:plan": "node --import tsx scripts/generate-credential-mixed-parity.mjs",
+    "credential-parity:measure": "node --import tsx scripts/measure-credential-mixed-parity.mjs",
     "pii:beta11": "node --import tsx scripts/pii-beta11.mjs",
     "pii:beta11:plans": "node --import tsx scripts/generate-pii-beta11-population-v2.mjs",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",

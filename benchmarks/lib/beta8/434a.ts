@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { th, gl, provider, field } from '../contract-sources.ts';
-import { handoff, HANDOFF_INDEX, R860, B434, product, at, src, reason } from './434-sources.ts';
+import { handoff, HANDOFF_INDEX, R860, B434, product, at, src, scoredReason, splitGraduated } from './434-sources.ts';
 
 // Issue #434, slice a: Beta.11 contracts for the seven Doppler token types (#860 Tier A, READY;
 // handoff docs/audits/evidence/860/doppler.md; product redact-secret#903). Owned by this slice only;
@@ -35,12 +35,10 @@ export const DOPPLER_TYPES: DopplerType[] = [
 export const dopplerPattern = (code: string) =>
   code === 'st' ? '^dp\\.st\\.(?:[a-z0-9_-]{2,35}\\.)?[A-Za-z0-9]{40,44}$' : `^dp\\.${code}\\.[A-Za-z0-9]{40,44}$`;
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = DOPPLER_TYPES.map(t => ({
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 1127bf9 re-pin. */
+export const arrivalFamilies: ArrivalFamily[] = DOPPLER_TYPES.filter(t => t.code !== 'st').map(t => ({
   id: t.id, taxonomy: t.taxonomy, issue,
-  reason: reason('doppler-token', t.findingType, 903, t.code === 'st'
-    ? 'The detector id is also this family\'s arrival id, so the service token graduates when the registry is re-pinned.'
-    : 'The type shares the doppler-token detector, so after the re-pin it stays an arrival family scored by finding type.'),
+  reason: scoredReason('doppler-token', t.findingType, 903),
 }));
 
 const lag = (code: string) => {
@@ -51,8 +49,8 @@ const lag = (code: string) => {
   return notes.join('; ');
 };
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = Object.fromEntries(DOPPLER_TYPES.map(t => [t.id, {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = Object.fromEntries(DOPPLER_TYPES.map(t => [t.id, {
   tier: 'T1',
   pattern: dopplerPattern(t.code),
   providerSource: provider(DOCS, `auth-token-formats regex for dp.${t.code}. (page dateModified 2025-05-29, re-checked 2026-09-28)`, `the provider states the dp.${t.code}. prefix, ${t.code === 'st' ? 'the optional [a-z0-9_-]{2,35} environment segment, ' : ''}a 40–44 byte [A-Za-z0-9] body and the . separators as a regex; no checksum is documented`, at),
@@ -71,6 +69,12 @@ export const contracts: Record<string, FormatContract> = Object.fromEntries(DOPP
     field({ field: 'non-secrets', claim: 'the dp.st… preview, service-token slugs and token names are not credentials', basis: 'provider-documentation', status: 'frozen', sources: [src(HANDOFF, 'excluded shapes')] }),
   ],
 } satisfies FormatContract]));
+
+const split = splitGraduated(authored, ['doppler-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward: every field is T1 provider documentation. */
 export const profiles: Record<string, FixtureProfile> = Object.fromEntries(DOPPLER_TYPES.map(t => [t.id, 'documented-24' as FixtureProfile]));

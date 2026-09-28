@@ -21,6 +21,4 @@ export const product = (n: number) => `https://github.com/redact-secret/redact-s
 export const at = '2026-09-28';
 export const src = (url: string, note?: string) => ({ url, observedAt: at, ...(note ? { note } : {}) });
 
-/** The shared reason for a #436 arrival family: no registry detector exists at the pinned product revision. */
-export const reason = (detector: string, findingType: string, issue: number, note = '') =>
-  `No registry detector covers this family at the pinned product revision. redact-secret#${issue} adds a new ${detector} detector that reports it as ${findingType} (handoff ${HANDOFF_REVISION.slice(0, 7)}); until that detector is in the pinned registry the family is measured as an unscored arrival family.${note ? ` ${note}` : ''}`;
+export { REGISTRY_PIN, splitGraduated } from './434-sources.ts';

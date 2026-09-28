@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field, gl } from '../contract-sources.ts';
-import { handoff, RERANK, R860, RULINGS_R2_R8, B436, product, at, src, reason } from './436-sources.ts';
+import { handoff, RERANK, R860, RULINGS_R2_R8, B436, product, at, src, splitGraduated } from './436-sources.ts';
 
 // Issue #436, slice b: Beta.11 contract for the 1Password service-account token (#860 Tier B, READY;
 // handoff docs/audits/evidence/860/onepassword.md; product redact-secret#913). Owned by this slice only;
@@ -23,13 +23,11 @@ const HANDOFF = handoff('onepassword.md');
 /** ops_eyJ + at least 250 Base64url bytes, optional = padding inside the span. */
 export const ONEPASSWORD_PATTERN = '^ops_eyJ[A-Za-z0-9_-]{250,}={0,2}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'onepassword-service-account-token', taxonomy: 'onepassword:service-account-token', issue, reason: reason('onepassword-service-account-token', 'onepassword_service_account_token', 913) },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 1127bf9 re-pin (redact-secret PR #938). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'onepassword-service-account-token': {
     tier: 'T1',
     pattern: ONEPASSWORD_PATTERN,
@@ -51,6 +49,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['onepassword-service-account-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'onepassword-service-account-token': 'documented-24' };

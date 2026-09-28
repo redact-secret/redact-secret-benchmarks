@@ -987,6 +987,36 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("ai21-api-key", "reference", ["AI21_API_KEY=${AI21_API_KEY}\n"]);
   add("ai21-api-key", "label-prose", ["Documentation mentions an AI21 API key without embedding the key value."]);
 
+  // Beta.11 #434/#436 families, registry detectors since the 1127bf9 re-pin (redact-secret#903-#909, #912-#917,
+  // product PR #938). Full evidence lives in the beta8-434a..434g and beta8-436a..436f corpora and their contracts
+  // (benchmarks/lib/beta8/434a..436f.ts); these are the registry-wide minimum, one detector-id shape each. Values are
+  // built here from public synthetic seeds in each contract's shape, never copied from a provider or scanner example.
+  const URLSAFE = `${AI_ALNUM}_-`;
+  const beta11 = [
+    // [detector, value, prefix, env name, provider label]
+    ["doppler-token", `dp.st.${synthetic("coverage:doppler:service-token:body", 43, AI_ALNUM)}`, "dp.st.", "DOPPLER_TOKEN", "Doppler service token (dp.st. prefix)"],
+    ["trigger-dev-token", `tr_prod_${synthetic("coverage:trigger-dev:secret-key:body", 24, AI_ALNUM)}`, "tr_prod_", "TRIGGER_SECRET_KEY", "Trigger.dev secret key (tr_prod_ prefix)"],
+    ["e2b-api-key", `e2b_${synthetic("coverage:e2b:api-key:body", 40, AI_HEX)}`, "e2b_", "E2B_API_KEY", "E2B API key (e2b_ prefix)"],
+    ["posthog-token", `phx_${synthetic("coverage:posthog:personal-api-key:body", 47, AI_ALNUM)}`, "phx_", "POSTHOG_PERSONAL_API_KEY", "PostHog personal API key (phx_ prefix)"],
+    ["helicone-api-key", `sk-helicone-${[0, 1, 2, 3].map(i => synthetic(`coverage:helicone:api-key:g${i}`, 7, LOWER_ALNUM)).join("-")}`, "sk-helicone-", "HELICONE_API_KEY", "Helicone API key (sk-helicone- prefix)"],
+    ["firecrawl-api-key", (h => `fc-${h.slice(0, 12)}4${h.slice(13, 16)}a${h.slice(17, 32)}`)(synthetic("coverage:firecrawl:api-key:body", 32, AI_HEX)), "fc-", "FIRECRAWL_API_KEY", "Firecrawl API key (fc- prefix)"],
+    ["composio-api-key", `ak_Qz${synthetic("coverage:composio:project-api-key:body", 18, URLSAFE)}`, "ak_", "COMPOSIO_API_KEY", "Composio project API key (ak_ prefix)"],
+    ["convex-deployment-key", `prod:${synthetic("coverage:convex:adj", 6, "abcdefghijklmnopqrstuvwxyz")}-${synthetic("coverage:convex:noun", 5, "abcdefghijklmnopqrstuvwxyz")}-${synthetic("coverage:convex:n", 3, "0123456789")}|01${synthetic("coverage:convex:body", 74, AI_HEX)}`, "prod:", "CONVEX_DEPLOY_KEY", "Convex deploy key (prod: lead, name|01 body)"],
+    ["onepassword-service-account-token", `ops_eyJ${synthetic("coverage:onepassword:service-account-token:body", 627, URLSAFE)}`, "ops_eyJ", "OP_SERVICE_ACCOUNT_TOKEN", "1Password service account token (ops_ prefix)"],
+    ["inngest-signing-key", `signkey-prod-${synthetic("coverage:inngest:signing-key:body", 64, AI_HEX)}`, "signkey-prod-", "INNGEST_SIGNING_KEY", "Inngest signing key (signkey- prefix)"],
+    ["resend-api-key", `re_Ab${synthetic("coverage:resend:api-key:id", 6, AI_ALNUM)}_Cd${synthetic("coverage:resend:api-key:secret", 22, AI_ALNUM)}`, "re_", "RESEND_API_KEY", "Resend API key (re_ prefix)"],
+    ["apify-api-token", `apify_api_${synthetic("coverage:apify:api-token:body", 36, AI_ALNUM)}`, "apify_api_", "APIFY_TOKEN", "Apify API token (apify_api_ prefix)"],
+    ["wandb-api-key", `wandb_v1_${synthetic("coverage:wandb:api-key:id", 27, AI_ALNUM)}_${synthetic("coverage:wandb:api-key:secret", 49, AI_ALNUM)}`, "wandb_v1_", "WANDB_API_KEY", "W&B API key (wandb_v1_ prefix)"],
+  ];
+  for (const [detector, value, prefix, env, label] of beta11) {
+    positive(detector, "key-shape", [{ secret: value }]);
+    add(detector, "prefix-only", [prefix]);
+    add(detector, "short-body", [value.slice(0, prefix.length + 8)]);
+    add(detector, "mask", [`${prefix}${"*".repeat(value.length - prefix.length)}`]);
+    add(detector, "reference", [`${env}=\${${env}}\n`]);
+    add(detector, "label-prose", [`Documentation mentions a ${label} without embedding the key value.`]);
+  }
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

@@ -154,8 +154,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #384 graduation: 15 more detector-coverage positives (key-shape × bare, quoted, unicode-crlf) for the five T1/T2 pattern-contracted families
   // (aws-bedrock-long-term-api-key, aws-bedrock-short-term-api-key, elevenlabs-api-key, together-ai-api-key, tavily-api-key); the four keyword-gated
   // families score policy or T0 and are not in this tally.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 440);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 446);
+  // #434/#436 graduation (registry pin 1127bf9): 39 more detector-coverage positives (key-shape × bare, quoted,
+  // unicode-crlf) for the thirteen new T1 registry detectors (doppler-token … wandb-api-key).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 479);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 485);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -232,7 +234,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // mistral-api-key, cohere-api-key and deepgram-api-key (detector-coverage's short-token, an
   // absolute-silence claim on a genuine near-miss beside the credential name) with three negative
   // length twins of key-shape each (netted out via -twins.length): -3.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 527);
+  // The #434/#436 re-pin (1127bf9) adds 65 for the thirteen new registry detectors (prefix-only, short-body, mask,
+  // reference, label-prose each).
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 592);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

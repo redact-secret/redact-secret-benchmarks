@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, B434, product, at, src, reason } from './434-sources.ts';
+import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, B434, product, at, src, splitGraduated } from './434-sources.ts';
 
 // Issue #434, slice f: Beta.11 contract for the Firecrawl API key (#860 Tier A, READY; handoff
 // docs/audits/evidence/860/firecrawl.md; product redact-secret#908). Owned by this slice only; see
@@ -20,13 +20,11 @@ const SDK = 'https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f9474
 const DOCS = 'https://docs.firecrawl.dev/api-reference/v2-introduction';
 const HANDOFF = handoff('firecrawl.md');
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'firecrawl-api-key', taxonomy: 'firecrawl:api-key', issue, reason: reason('firecrawl-api-key', 'firecrawl_api_key', 908, 'The detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 1127bf9 re-pin (redact-secret PR #938). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'firecrawl-api-key': {
     tier: 'T1',
     pattern: '^fc-[0-9a-f]{12}4[0-9a-f]{3}[89ab][0-9a-f]{15}$',
@@ -46,6 +44,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['firecrawl-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'firecrawl-api-key': 'documented-24' };

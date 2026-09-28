@@ -166,7 +166,32 @@ export interface BudgetReport {
   readonly triggers: readonly TriggerResult[];
   /** Absolute timings compared with the frozen snapshot across jobs: reported, never judged (#303). */
   readonly informational?: readonly InformationalTiming[];
+  /**
+   * Measured size rows no baseline snapshot carries yet (e.g. the #937 pii
+   * builds): reported with their value, never judged, until a baseline that
+   * measured them is promoted and `derive` gives them a trigger.
+   */
+  readonly pending?: readonly PendingRow[];
+  /** Measured but never budgeted (e.g. every asset a bundle emits, fetched or not). */
+  readonly diagnostics?: readonly DiagnosticRow[];
   readonly detection: { readonly baseline: Record<string, number> | null; readonly candidate: Record<string, number> | null };
+}
+
+export interface PendingRow {
+  readonly id: string;
+  readonly dimension: Dimension;
+  readonly unit: string;
+  readonly candidate: number;
+  readonly role?: 'default' | 'optional';
+  readonly verdict: 'baseline-pending';
+  readonly reason: string;
+}
+
+export interface DiagnosticRow {
+  readonly id: string;
+  readonly unit: string;
+  readonly value: number;
+  readonly note: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -339,7 +364,7 @@ interface OperationalEvidence {
       readonly wasm: readonly { profile: string; gzipBytes: number }[];
       readonly npmPackages: readonly { label: string; packedBytes: number }[];
     };
-    readonly browserBundle: { readonly totals: { readonly allGzipBytes: number } };
+    readonly browserBundle: { readonly totals: { readonly allGzipBytes: number; readonly fetchedGzipBytes?: number } };
   };
 }
 
@@ -361,7 +386,9 @@ export function metricsFromOperational(evidence: OperationalEvidence): Metric[] 
   const size = sizeMetric;
   return [
     ...artifacts.wasm.map(wasmSizeMetric),
-    size('browser-bundle/quickstart/gzip', browserBundle.totals.allGzipBytes, 'default'),
+    // #937: the row is what a default quickstart fetches. The beta.7 evidence predates lazily
+    // loaded assets, so every file it emitted was fetched and its all-assets total is that number.
+    size('browser-bundle/quickstart/gzip', browserBundle.totals.fetchedGzipBytes ?? browserBundle.totals.allGzipBytes, 'default'),
     ...artifacts.npmPackages.map(p => size(`npm/${p.label}/packed`, p.packedBytes)),
     ...artifacts.nativeAddons.map(a => size(`node-addon/${a.target}`, a.bytes)),
     ...artifacts.pythonWheels.map(w => size(`python-wheel/${w.target}`, w.bytes)),
@@ -380,12 +407,18 @@ export const SIZE_COVERAGE_KEY = 'coverage';
 export const WASM_SIZE_PROFILES = ['full', 'common'] as const;
 
 /**
+ * The optional PII-runtime builds (redact-secret#937), loaded only when
+ * `initialize()` selects PII. Present in pairs from the split onward, absent before.
+ */
+export const WASM_PII_SIZE_PROFILES = ['full-pii', 'common-pii'] as const;
+
+/**
  * Size-trigger prefixes a performance run (`evaluate --summary`) must cover.
  * A candidate that omits their source gets `invalid-measurement`, never a
  * silent `not-evaluated` (redact-secret#929: a common-profile growth shipped
  * because no size source was supplied).
  */
-export const PERFORMANCE_RUN_REQUIRED_TRIGGERS: readonly string[] = ['size/wasm/'];
+export const PERFORMANCE_RUN_REQUIRED_TRIGGERS: readonly string[] = ['size/wasm/', 'size/browser-bundle/'];
 
 export const WASM_SIZES_KIND = 'wasm-artifact-sizes';
 
@@ -409,6 +442,8 @@ export interface WasmSizeEvidence {
   readonly schemaVersion: '1';
   readonly kind: typeof WASM_SIZES_KIND;
   readonly sourceCommit: string;
+  /** Whether the checkout built the #937 pii variants; absent in evidence from before the split. */
+  readonly piiBuilds?: 'present' | 'absent';
   readonly artifacts: readonly WasmSizeArtifact[];
 }
 
@@ -419,7 +454,14 @@ export function wasmSizesProblem(evidence: WasmSizeEvidence, sourceCommit: strin
   if (sourceCommit !== null && evidence.sourceCommit !== sourceCommit) {
     return `measured core ${evidence.sourceCommit}, but the candidate is ${sourceCommit}`;
   }
-  for (const profile of WASM_SIZE_PROFILES) {
+  const known: readonly string[] = [...WASM_SIZE_PROFILES, ...WASM_PII_SIZE_PROFILES];
+  const unknown = (evidence.artifacts ?? []).find(a => !known.includes(a.profile));
+  if (unknown) return `unknown WebAssembly profile ${unknown.profile}`;
+  const pii = (evidence.artifacts ?? []).filter(a => (WASM_PII_SIZE_PROFILES as readonly string[]).includes(a.profile));
+  const piiPresent = (evidence.piiBuilds ?? 'absent') === 'present';
+  if (!piiPresent && pii.length > 0) return 'piiBuilds is absent but pii artifacts are listed';
+  const expected = piiPresent ? known : WASM_SIZE_PROFILES;
+  for (const profile of expected) {
     const rows = (evidence.artifacts ?? []).filter(a => a.profile === profile);
     if (rows.length !== 1) return `expected one ${profile} WebAssembly artifact, found ${rows.length}`;
     const [row] = rows;
@@ -434,6 +476,68 @@ export function wasmSizesProblem(evidence: WasmSizeEvidence, sourceCommit: strin
 /** The budgeted rows of a wasm size source: compressed (gzip) bytes per profile. */
 export function metricsFromWasmSizes(evidence: WasmSizeEvidence): Metric[] {
   return evidence.artifacts.map(wasmSizeMetric);
+}
+
+export const QUICKSTART_BUNDLE_KIND = 'quickstart-bundle-sizes';
+
+export interface QuickstartBundleFile {
+  /** Path under the build output, content hash replaced by `<hash>`. */
+  readonly file: string;
+  readonly kind: string;
+  readonly bytes: number;
+  readonly gzipBytes: number;
+  /** Whether loading the default quickstart in a browser requested it. */
+  readonly fetched: boolean;
+}
+
+/**
+ * The documented browser quickstart built by the bundler it names, against
+ * the candidate's own packed npm packages, then loaded in a browser
+ * (`scripts/measure-quickstart-bundle.mjs`, redact-secret#937). `fetched`
+ * totals are what a default quickstart downloads; `emitted` totals are every
+ * asset the bundler wrote, lazily loaded ones included.
+ */
+export interface QuickstartBundleEvidence {
+  readonly schemaVersion: '1';
+  readonly kind: typeof QUICKSTART_BUNDLE_KIND;
+  readonly sourceCommit: string;
+  readonly tool: string;
+  readonly pageText: string;
+  readonly files: readonly QuickstartBundleFile[];
+  readonly totals: {
+    readonly fetched: { readonly bytes: number; readonly gzipBytes: number };
+    readonly emitted: { readonly bytes: number; readonly gzipBytes: number };
+  };
+}
+
+/** Why a quickstart bundle source cannot stand for this candidate, or null. */
+export function quickstartBundleProblem(evidence: QuickstartBundleEvidence, sourceCommit: string | null): string | null {
+  if (evidence?.schemaVersion !== '1' || evidence.kind !== QUICKSTART_BUNDLE_KIND) return `not a ${QUICKSTART_BUNDLE_KIND} v1 document`;
+  if (!/^[0-9a-f]{40}$/.test(evidence.sourceCommit ?? '')) return 'sourceCommit must be a 40-hex commit';
+  if (sourceCommit !== null && evidence.sourceCommit !== sourceCommit) {
+    return `measured core ${evidence.sourceCommit}, but the candidate is ${sourceCommit}`;
+  }
+  const files = evidence.files ?? [];
+  if (!files.some(f => f.fetched && f.kind === 'wasm')) return 'the quickstart fetched no WebAssembly asset';
+  const sum = (rows: readonly QuickstartBundleFile[], key: 'bytes' | 'gzipBytes') => rows.reduce((total, f) => total + f[key], 0);
+  const fetched = files.filter(f => f.fetched);
+  if (evidence.totals?.fetched?.gzipBytes !== sum(fetched, 'gzipBytes') || evidence.totals?.fetched?.bytes !== sum(fetched, 'bytes')) {
+    return 'fetched totals do not add up to the fetched files';
+  }
+  if (evidence.totals?.emitted?.gzipBytes !== sum(files, 'gzipBytes') || evidence.totals?.emitted?.bytes !== sum(files, 'bytes')) {
+    return 'emitted totals do not add up to the emitted files';
+  }
+  return null;
+}
+
+/** The budgeted row (what a default quickstart fetches) and the never-budgeted all-assets diagnostic. */
+export function metricsFromQuickstartBundle(evidence: QuickstartBundleEvidence): { metrics: Metric[]; diagnostics: DiagnosticRow[] } {
+  const lazy = evidence.files.filter(f => !f.fetched).length;
+  return {
+    metrics: [sizeMetric('browser-bundle/quickstart/gzip', evidence.totals.fetched.gzipBytes, 'default')],
+    diagnostics: [{ id: 'size/browser-bundle/quickstart/emitted-gzip', unit: 'bytes', value: evidence.totals.emitted.gzipBytes,
+      note: `every asset the bundler emitted, ${lazy} not fetched by a default quickstart included; diagnostic, not budgeted` }],
+  };
 }
 
 /**
@@ -636,6 +740,8 @@ export interface CandidateMeasurement {
    * under one of them is `invalid-measurement` (exit 2), not `not-evaluated`.
    */
   readonly required?: readonly string[];
+  /** Measured, never judged; copied into the report as-is. */
+  readonly diagnostics?: readonly DiagnosticRow[];
 }
 
 /** The baseline's adapter language (`javascript`, `python`) whose profile this trigger belongs to. */
@@ -703,7 +809,7 @@ export function evaluateBudgets(
       const required = (candidate.required ?? []).some(prefix => trigger.id.startsWith(prefix));
       results.push(required
         ? { ...common, ...empty, verdict: 'invalid-measurement',
-          reason: 'required source missing: a performance run must measure this from the candidate build (--wasm-sizes); rerun with it' }
+          reason: `required source missing: a performance run must measure this from the candidate build (${trigger.id.startsWith('size/browser-bundle/') ? '--quickstart-bundle' : '--wasm-sizes'}); rerun with it` }
         : { ...common, ...empty, verdict: 'not-evaluated', reason: 'no candidate source for this dimension was supplied' });
       continue;
     }
@@ -751,10 +857,19 @@ export function evaluateBudgets(
   const status = results.some(r => r.verdict === 'regression') ? 'regression'
     : results.some(r => r.verdict === 'invalid-measurement') ? 'invalid-measurement' : 'accepted';
   const informational = informationalTiming(baseline, candidate.metrics);
+  const triggered = new Set(budgets.triggers.map(t => t.id));
+  const pending: PendingRow[] = Object.values(candidate.metrics)
+    .filter(metric => metric.dimension === 'size' && !triggered.has(metric.id))
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map(metric => ({ id: metric.id, dimension: metric.dimension, unit: metric.unit, candidate: metric.value,
+      ...(metric.role ? { role: metric.role } : {}), verdict: 'baseline-pending' as const,
+      reason: `baseline-pending: baseline ${baseline.id} did not measure this row, so it has no trigger; it gets one (rules.size) only when a baseline snapshot that carries it is promoted` }));
   return {
     schemaVersion: '1', budgetsId: budgets.budgetsId, baselineId: baseline.id,
     candidate: { sourceCommit: candidate.sourceCommit, sources: candidate.sources },
     status, dimensions, triggers: results, ...(informational.length > 0 ? { informational } : {}),
+    ...(pending.length > 0 ? { pending } : {}),
+    ...(candidate.diagnostics && candidate.diagnostics.length > 0 ? { diagnostics: candidate.diagnostics } : {}),
     detection: { baseline: baseline.detection ?? null, candidate: candidate.detection ?? null },
   };
 }
@@ -792,6 +907,16 @@ export function renderReportMarkdown(report: BudgetReport): string {
       'These compare with the frozen snapshot measured in another job, possibly on another runner machine class; timing verdicts come from the same-job paired ratios above.', '',
       '| Metric | Snapshot | This run | Change |', '| --- | ---: | ---: | ---: |',
       ...report.informational.map(row => `| \`${row.id}\` | ${row.baseline.toFixed(3)} | ${row.candidate.toFixed(3)} | ${pct(row.relativeChange)} |`), '');
+  }
+  if (report.pending && report.pending.length > 0) {
+    lines.push('## Measured rows with no baseline yet (baseline-pending, not judged)', '',
+      '| Row | Candidate | Note |', '| --- | ---: | --- |',
+      ...report.pending.map(row => `| \`${row.id}\`${row.role ? ` (${row.role})` : ''} | ${row.candidate} ${row.unit} | ${row.reason} |`), '');
+  }
+  if (report.diagnostics && report.diagnostics.length > 0) {
+    lines.push('## Diagnostics (measured, never budgeted)', '',
+      '| Row | Value | Note |', '| --- | ---: | --- |',
+      ...report.diagnostics.map(row => `| \`${row.id}\` | ${row.value} ${row.unit} | ${row.note} |`), '');
   }
   if (report.detection.baseline || report.detection.candidate) {
     lines.push('## Detection (reported, not budgeted)', '', `Baseline ${JSON.stringify(report.detection.baseline)}; candidate ${JSON.stringify(report.detection.candidate)}.`, '');

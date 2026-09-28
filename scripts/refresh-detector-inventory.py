@@ -53,6 +53,9 @@ GITLEAKS_FAMILIES = {
     "okta-": "okta-api-token",
     # Travis CI API token, registry detector since redact-secret#523 (pin 3144bb3).
     "travisci-": "travisci-api-token",
+    # #434/#436 families, registry detectors since redact-secret#903/#913 (registry pin 1127bf9). 1password-secret-key is
+    # the account Secret Key, another credential, and stays unmapped.
+    "doppler-": "doppler-token", "1password-service-account-token": "onepassword-service-account-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -82,6 +85,10 @@ TRUFFLEHOG_FAMILIES = {
     "elevenlabs": "elevenlabs-api-key", "deepgram": "deepgram-api-key",
     # Travis CI API token, registry detector since redact-secret#523 (pin 3144bb3).
     "travisci": "travisci-api-token",
+    # #434/#436 families, registry detectors since redact-secret#903/#906/#916/#917 (registry pin 1127bf9).
+    # weightsandbiases/v1 is the legacy 40-hex key under the same label, as elevenlabs/v1 above.
+    "doppler": "doppler-token", "posthog": "posthog-token", "apify": "apify-api-token",
+    "weightsandbiases": "wandb-api-key",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",

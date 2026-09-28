@@ -263,5 +263,123 @@
     },
     "decidedAt": "2026-09-28",
     "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 final candidate af7f863f phone-detection wasm-initialization tradeoff)"
+  },
+  {
+    "id": "beta11-wasm-full-gzip-provider-detectors",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1" },
+    "measured": { "baseline": 137639, "candidate": 179388, "unit": "bytes" },
+    "rationale": "Maintainer decision of 2026-09-28: the full-profile WASM gzip size growth is accepted as the cost of the provider-detector additions across Beta.9 to Beta.11 (Beta.11 adds 13 provider detectors, redact-secret#903-#909 and #912-#917). The size has already been reduced where it could be without a contract change: the PII runtime moved to separate pii WASM artifacts (redact-secret#937) and provider detectors no longer link into the common profile (redact-secret#929). Stripping the WASM name section was considered and rejected to keep debuggability. Measured by performance-evaluation.yml run 36480340241 at candidate 1db8ff3 (scripts/measure-wasm-sizes.mjs in the candidate checkout). Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (Doppler, Trigger.dev, E2B, PostHog, Helicone, Firecrawl, Composio, Convex, 1Password service accounts, Inngest, Resend, Apify, W&B) with 24 scored families, 22 of them documented-stable in benchmark candidate mode.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/issues/937",
+        "https://github.com/redact-secret/redact-secret/issues/929"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: WASM gzip size rows accepted for the Beta.11 detector additions)"
+  },
+  {
+    "id": "beta11-wasm-common-gzip-provider-detectors",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1" },
+    "measured": { "baseline": 100058, "candidate": 122544, "unit": "bytes" },
+    "rationale": "Maintainer decision of 2026-09-28: the common-profile WASM gzip size growth is accepted as the cost of the provider-detector additions across Beta.9 to Beta.11 (Beta.11 adds 13 provider detectors, redact-secret#903-#909 and #912-#917). The size has already been reduced where it could be without a contract change: the PII runtime moved to separate pii WASM artifacts (redact-secret#937) and provider detectors no longer link into the common profile (redact-secret#929). Stripping the WASM name section was considered and rejected to keep debuggability. Measured by performance-evaluation.yml run 36480340241 at candidate 1db8ff3 (scripts/measure-wasm-sizes.mjs in the candidate checkout). Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (Doppler, Trigger.dev, E2B, PostHog, Helicone, Firecrawl, Composio, Convex, 1Password service accounts, Inngest, Resend, Apify, W&B) with 24 scored families, 22 of them documented-stable in benchmark candidate mode.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/issues/937",
+        "https://github.com/redact-secret/redact-secret/issues/929"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: WASM gzip size rows accepted for the Beta.11 detector additions)"
+  },
+  {
+    "id": "beta11-quickstart-bundle-gzip-provider-detectors",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1" },
+    "measured": { "baseline": 144501, "candidate": 186761, "unit": "bytes" },
+    "rationale": "Maintainer decision of 2026-09-28: the quickstart browser bundle grows with the full-profile WASM module, which carries the provider detectors added across Beta.9 to Beta.11 (Beta.11 adds 13, redact-secret#903-#909 and #912-#917). The PII runtime already moved to separate, lazily loaded pii builds (redact-secret#937) and provider detectors no longer link into the common profile (redact-secret#929); stripping the WASM name section was considered and rejected to keep debuggability. Measured with the redact-secret#937 quickstart method (vite 7.3.6 build of docs/quickstart.md served to Chromium) on the 1db8ff3 build: 186,761 gzip bytes fetched by a default quickstart (179,383 of them the full wasm); the lazy pii files are emitted but never fetched (489,101 gzip bytes emitted in all, a diagnostic). Evidence: evidence/860/1db8ff3-verified/quickstart-bundle.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) and keeps the PII runtime in separate lazily loaded pii WASM builds, so a default browser initialize() never fetches it.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/issues/937",
+        "https://github.com/redact-secret/redact-secret/pull/958"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: WASM gzip and npm Wasm tarball size rows accepted for the Beta.11 detector additions and the #937 pii split)"
+  },
+  {
+    "id": "beta11-npm-wasm-packed-pii-split-and-detectors",
+    "triggerId": "size/npm/wasm/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1" },
+    "measured": { "baseline": 254413, "candidate": 871030, "unit": "bytes" },
+    "rationale": "Maintainer decision of 2026-09-28: the @redact-secret/wasm npm tarball now ships four WASM builds, the default full and common builds plus the full and common _pii builds that redact-secret#937 split out so a default initialize() never loads the PII runtime, and every build carries the provider detectors added across Beta.9 to Beta.11. Packed with the product benchmark:candidate recipe at 1db8ff3: 871,030 bytes against the 0.1.0-beta.8 baseline of 254,413 (largest payloads: _pii full 807,882 raw, _pii common 627,338, full 521,777, common 341,255). Evidence: evidence/860/1db8ff3-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) and keeps the PII runtime in separate lazily loaded pii WASM builds, so a default browser initialize() never fetches it.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/issues/937",
+        "https://github.com/redact-secret/redact-secret/pull/958"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: WASM gzip and npm Wasm tarball size rows accepted for the Beta.11 detector additions and the #937 pii split)"
+  },
+  {
+    "id": "beta11-npm-node-darwin-arm64-packed-detectors",
+    "triggerId": "size/npm/node-darwin-arm64/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1" },
+    "measured": { "baseline": 424514, "candidate": 629779, "unit": "bytes" },
+    "rationale": "Maintainer decision of 2026-09-28: the @redact-secret/node-darwin-arm64 npm tarball grows with the provider detectors added across Beta.9 to Beta.11 (Beta.11 adds 13, redact-secret#903-#909 and #912-#917) and the PII runtime compiled into the addon. Packed size 629,779 bytes against the 0.1.0-beta.8 baseline of 424,514. Native builds keep the PII runtime by design; only the WASM builds split it out (redact-secret#937). Measured on the product benchmark:candidate build at 1db8ff3 (darwin-arm64 host); evidence/860/1db8ff3-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (24 scored families, all documented-stable in benchmark candidate mode at 1db8ff3) on top of the Beta.9 and Beta.10 detector packs; native builds carry the PII runtime so PII selection works without a separate artifact.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/pull/958"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: npm Node addon tarball size accepted for the Beta.9 to Beta.11 detector additions; native builds keep the PII runtime by design)"
+  },
+  {
+    "id": "beta11-node-addon-aarch64-apple-darwin-detectors",
+    "triggerId": "size/node-addon/aarch64-apple-darwin",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1" },
+    "measured": { "baseline": 1004128, "candidate": 1421552, "unit": "bytes" },
+    "rationale": "Maintainer decision of 2026-09-28, same grounds as the node-darwin-arm64 tarball row: the redact-secret.darwin-arm64.node binary inside that tarball is 1,421,552 bytes against the 0.1.0-beta.8 baseline of 1,004,128, from the Beta.9 to Beta.11 detector additions and the PII runtime. Native builds keep the PII runtime by design; only the WASM builds split it out (redact-secret#937). Measured on the product benchmark:candidate build at 1db8ff3 (darwin-arm64 host); evidence/860/1db8ff3-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (24 scored families, all documented-stable in benchmark candidate mode at 1db8ff3) on top of the Beta.9 and Beta.10 detector packs; native builds carry the PII runtime so PII selection works without a separate artifact.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/pull/958"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: npm Node addon tarball size accepted for the Beta.9 to Beta.11 detector additions; native builds keep the PII runtime by design)"
   }
 ]

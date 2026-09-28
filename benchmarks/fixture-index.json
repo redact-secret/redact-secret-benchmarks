@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "4a62d29a3192df02618fdcbde5e2f9ff787d5802b7927a14a2525991fecb6ff3"
+      "digest": "9dadd3505e8c41b26a64e376756aff11442e66023a6f84dde2e7a13d3dbca6a3"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -21,7 +21,7 @@
     },
     "taxonomy": {
       "algorithm": "sha256",
-      "digest": "b8c2b9d7bf9cb76670a61da787243f5f67fafd80d6e9cd8295519aa24ff8bb08"
+      "digest": "86380e3596b4aa7ffc79a2c0d95fbae846c87101b5cde5ccb2712529becd60dc"
     }
   },
   "fixtures": [
@@ -69966,6 +69966,155 @@
       }
     },
     {
+      "slug": "detector-coverage--apify-api-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "apify-api-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/apify-api-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "apify:api-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--apify-api-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "apify-api-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/apify-api-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "apify:api-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--apify-api-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "apify-api-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/apify-api-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "apify:api-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--apify-api-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "apify-api-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/apify-api-token-label-prose.txt"
+      },
+      "familyIds": [
+        "apify:api-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--apify-api-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "apify-api-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/apify-api-token-mask.txt"
+      },
+      "familyIds": [
+        "apify:api-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--apify-api-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "apify-api-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/apify-api-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "apify:api-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--apify-api-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "apify-api-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/apify-api-token-reference.txt"
+      },
+      "familyIds": [
+        "apify:api-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--apify-api-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "apify-api-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/apify-api-token-short-body.txt"
+      },
+      "familyIds": [
+        "apify:api-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--atlassian-api-token-label-prose",
       "source": {
         "categoryId": "detector-coverage",
@@ -71693,6 +71842,155 @@
       }
     },
     {
+      "slug": "detector-coverage--composio-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "composio-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/composio-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--composio-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "composio-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/composio-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--composio-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "composio-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/composio-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--composio-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "composio-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/composio-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--composio-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "composio-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/composio-api-key-mask.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--composio-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "composio-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/composio-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--composio-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "composio-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/composio-api-key-reference.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--composio-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "composio-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/composio-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--confluent-cloud-api-secret-label-prose",
       "source": {
         "categoryId": "detector-coverage",
@@ -72843,6 +73141,155 @@
       },
       "relations": {
         "twinOf": "detector-coverage--connection-string-redis-unicode-crlf"
+      }
+    },
+    {
+      "slug": "detector-coverage--convex-deployment-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "convex-deployment-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/convex-deployment-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "convex:deployment-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--convex-deployment-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "convex-deployment-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/convex-deployment-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "convex:deployment-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--convex-deployment-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "convex-deployment-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/convex-deployment-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "convex:deployment-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--convex-deployment-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "convex-deployment-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/convex-deployment-key-label-prose.txt"
+      },
+      "familyIds": [
+        "convex:deployment-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--convex-deployment-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "convex-deployment-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/convex-deployment-key-mask.txt"
+      },
+      "familyIds": [
+        "convex:deployment-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--convex-deployment-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "convex-deployment-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/convex-deployment-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "convex:deployment-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--convex-deployment-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "convex-deployment-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/convex-deployment-key-reference.txt"
+      },
+      "familyIds": [
+        "convex:deployment-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--convex-deployment-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "convex-deployment-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/convex-deployment-key-short-body.txt"
+      },
+      "familyIds": [
+        "convex:deployment-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
       }
     },
     {
@@ -75432,6 +75879,304 @@
       }
     },
     {
+      "slug": "detector-coverage--doppler-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "doppler-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/doppler-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "doppler:service-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--doppler-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "doppler-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/doppler-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "doppler:service-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--doppler-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "doppler-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/doppler-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "doppler:service-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--doppler-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "doppler-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/doppler-token-label-prose.txt"
+      },
+      "familyIds": [
+        "doppler:service-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--doppler-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "doppler-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/doppler-token-mask.txt"
+      },
+      "familyIds": [
+        "doppler:service-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--doppler-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "doppler-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/doppler-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "doppler:service-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--doppler-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "doppler-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/doppler-token-reference.txt"
+      },
+      "familyIds": [
+        "doppler:service-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--doppler-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "doppler-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/doppler-token-short-body.txt"
+      },
+      "familyIds": [
+        "doppler:service-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--e2b-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "e2b-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/e2b-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--e2b-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "e2b-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/e2b-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--e2b-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "e2b-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/e2b-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--e2b-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "e2b-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/e2b-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--e2b-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "e2b-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/e2b-api-key-mask.txt"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--e2b-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "e2b-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/e2b-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--e2b-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "e2b-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/e2b-api-key-reference.txt"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--e2b-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "e2b-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/e2b-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--elevenlabs-api-key-key-shape-bare",
       "source": {
         "categoryId": "detector-coverage",
@@ -75786,6 +76531,155 @@
       },
       "familyIds": [
         "firebase:server-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--firecrawl-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "firecrawl-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/firecrawl-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--firecrawl-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "firecrawl-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/firecrawl-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--firecrawl-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "firecrawl-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/firecrawl-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--firecrawl-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "firecrawl-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/firecrawl-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--firecrawl-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "firecrawl-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/firecrawl-api-key-mask.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--firecrawl-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "firecrawl-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/firecrawl-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--firecrawl-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "firecrawl-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/firecrawl-api-key-reference.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--firecrawl-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "firecrawl-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/firecrawl-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -77897,6 +78791,155 @@
       }
     },
     {
+      "slug": "detector-coverage--helicone-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "helicone-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/helicone-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--helicone-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "helicone-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/helicone-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--helicone-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "helicone-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/helicone-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--helicone-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "helicone-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/helicone-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--helicone-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "helicone-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/helicone-api-key-mask.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--helicone-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "helicone-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/helicone-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--helicone-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "helicone-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/helicone-api-key-reference.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--helicone-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "helicone-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/helicone-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--heroku-api-key-label-prose",
       "source": {
         "categoryId": "detector-coverage",
@@ -78655,6 +79698,155 @@
       },
       "familyIds": [
         "huggingface:api-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--inngest-signing-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "inngest-signing-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/inngest-signing-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "inngest:signing-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--inngest-signing-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "inngest-signing-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/inngest-signing-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "inngest:signing-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--inngest-signing-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "inngest-signing-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/inngest-signing-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "inngest:signing-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--inngest-signing-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "inngest-signing-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/inngest-signing-key-label-prose.txt"
+      },
+      "familyIds": [
+        "inngest:signing-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--inngest-signing-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "inngest-signing-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/inngest-signing-key-mask.txt"
+      },
+      "familyIds": [
+        "inngest:signing-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--inngest-signing-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "inngest-signing-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/inngest-signing-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "inngest:signing-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--inngest-signing-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "inngest-signing-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/inngest-signing-key-reference.txt"
+      },
+      "familyIds": [
+        "inngest:signing-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--inngest-signing-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "inngest-signing-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/inngest-signing-key-short-body.txt"
+      },
+      "familyIds": [
+        "inngest:signing-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -82901,6 +84093,155 @@
       }
     },
     {
+      "slug": "detector-coverage--onepassword-service-account-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "onepassword-service-account-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/onepassword-service-account-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "onepassword:service-account-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--onepassword-service-account-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "onepassword-service-account-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/onepassword-service-account-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "onepassword:service-account-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--onepassword-service-account-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "onepassword-service-account-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/onepassword-service-account-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "onepassword:service-account-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--onepassword-service-account-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "onepassword-service-account-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/onepassword-service-account-token-label-prose.txt"
+      },
+      "familyIds": [
+        "onepassword:service-account-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--onepassword-service-account-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "onepassword-service-account-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/onepassword-service-account-token-mask.txt"
+      },
+      "familyIds": [
+        "onepassword:service-account-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--onepassword-service-account-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "onepassword-service-account-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/onepassword-service-account-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "onepassword:service-account-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--onepassword-service-account-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "onepassword-service-account-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/onepassword-service-account-token-reference.txt"
+      },
+      "familyIds": [
+        "onepassword:service-account-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--onepassword-service-account-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "onepassword-service-account-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/onepassword-service-account-token-short-body.txt"
+      },
+      "familyIds": [
+        "onepassword:service-account-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--openai-token-dash-identifier-embedding",
       "source": {
         "categoryId": "detector-coverage",
@@ -83968,6 +85309,155 @@
       },
       "familyIds": [
         "pinecone:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--posthog-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "posthog-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/posthog-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--posthog-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "posthog-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/posthog-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--posthog-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "posthog-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/posthog-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--posthog-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "posthog-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/posthog-token-label-prose.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--posthog-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "posthog-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/posthog-token-mask.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--posthog-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "posthog-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/posthog-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--posthog-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "posthog-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/posthog-token-reference.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--posthog-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "posthog-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/posthog-token-short-body.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -85931,6 +87421,155 @@
         "replicate:api-token"
       ],
       "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--resend-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "resend-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/resend-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--resend-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "resend-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/resend-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--resend-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "resend-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/resend-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--resend-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "resend-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/resend-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--resend-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "resend-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/resend-api-key-mask.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--resend-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "resend-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/resend-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--resend-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "resend-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/resend-api-key-reference.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--resend-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "resend-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/resend-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
         "credential-shape-grammar"
       ],
       "provenance": {
@@ -89050,6 +90689,155 @@
       }
     },
     {
+      "slug": "detector-coverage--trigger-dev-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "trigger-dev-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/trigger-dev-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--trigger-dev-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "trigger-dev-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/trigger-dev-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--trigger-dev-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "trigger-dev-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/trigger-dev-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--trigger-dev-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "trigger-dev-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/trigger-dev-token-label-prose.txt"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--trigger-dev-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "trigger-dev-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/trigger-dev-token-mask.txt"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--trigger-dev-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "trigger-dev-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/trigger-dev-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--trigger-dev-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "trigger-dev-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/trigger-dev-token-reference.txt"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--trigger-dev-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "trigger-dev-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/trigger-dev-token-short-body.txt"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--twilio-api-key-secret-label-prose",
       "source": {
         "categoryId": "detector-coverage",
@@ -89969,6 +91757,155 @@
       },
       "familyIds": [
         "vercel:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--wandb-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "wandb-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/wandb-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "wandb:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--wandb-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "wandb-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/wandb-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "wandb:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--wandb-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "wandb-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/wandb-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "wandb:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--wandb-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "wandb-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/wandb-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "wandb:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--wandb-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "wandb-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/wandb-api-key-mask.txt"
+      },
+      "familyIds": [
+        "wandb:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--wandb-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "wandb-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/wandb-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "wandb:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--wandb-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "wandb-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/wandb-api-key-reference.txt"
+      },
+      "familyIds": [
+        "wandb:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--wandb-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "wandb-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/wandb-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "wandb:api-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -96526,7 +98463,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
-    "fixtureCount": 4664
+    "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+    "fixtureCount": 4768
   }
 }

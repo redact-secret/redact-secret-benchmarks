@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 
 import {
   allowedChange, candidateFromSnapshot, ceilToFivePercent, deriveTriggers, evaluateBudgets, exitCodeFor, historyProblems,
-  ledgerProblems, metricsFromAdapterOverhead, metricsFromOperational, metricsFromPaired, pairedRatios, ratioDeviation, roundOrder, RULES, sha256OfText,
+  ledgerProblems, metricsFromAdapterOverhead, metricsFromOperational, metricsFromPaired, metricsFromWasmSizes, pairedRatios,
+  PERFORMANCE_RUN_REQUIRED_TRIGGERS, ratioDeviation, roundOrder, RULES, sha256OfText, wasmSizesProblem,
 } from '../benchmarks/lib/regression-budgets.ts';
 
 const readJson = file => JSON.parse(readFileSync(file, 'utf8'));
@@ -317,6 +318,132 @@ test('size metrics mark the default bundle and optional profiles separately', ()
   assert.equal(metrics.find(m => m.id === 'size/wasm/full/gzip').role, 'default');
   assert.equal(metrics.find(m => m.id === 'size/wasm/common/gzip').role, 'optional');
   assert.equal(metrics.find(m => m.id === 'size/browser-bundle/quickstart/gzip').role, 'default');
+});
+
+// redact-secret#929: a performance run judged no wasm size row because no size
+// source was supplied, so a common-profile growth shipped without a verdict.
+function wasmSizes(overrides = {}, sourceCommit = COMMIT_B) {
+  const row = (profile, gzipBytes) => ({ profile, artifact: `wasm-${profile}`, file: `${profile}.wasm`, sha256: 'c'.repeat(64),
+    rawBytes: gzipBytes * 3, gzipBytes, brotliBytes: Math.round(gzipBytes * 0.8) });
+  return { schemaVersion: '1', kind: 'wasm-artifact-sizes', sourceCommit,
+    artifacts: [row('full', overrides.full ?? 100_000), row('common', overrides.common ?? 80_000)] };
+}
+
+function wasmSizeCandidate(evidence, required = PERFORMANCE_RUN_REQUIRED_TRIGGERS) {
+  const metrics = Object.fromEntries(metricsFromWasmSizes(evidence).map(m => [m.id, m]));
+  return { sourceCommit: COMMIT_B, sources: ['wasm-sizes.json'], metrics, profiles: { size: { coverage: 'wasm' } }, required };
+}
+
+test('a performance run with no wasm size source fails loudly (invalid-measurement, exit 2), not silently not-evaluated', () => {
+  const noSize = candidate(withValues(baseline, {}));
+  noSize.profiles = { memory: LATENCY_PROFILE };
+  noSize.required = PERFORMANCE_RUN_REQUIRED_TRIGGERS;
+  const report = evaluateBudgets(budgets, baseline, noSize, []);
+  for (const id of ['size/wasm/full/gzip', 'size/wasm/common/gzip']) {
+    const row = report.triggers.find(t => t.id === id);
+    assert.equal(row.verdict, 'invalid-measurement', id);
+    assert.match(row.reason, /required source missing/);
+  }
+  assert.equal(report.status, 'invalid-measurement');
+  assert.equal(exitCodeFor(report), 2);
+  // Without the requirement (not a performance run) the same gap stays an explicit not-evaluated.
+  const optional = { ...noSize, required: [] };
+  assert.equal(verdictOf(evaluateBudgets(budgets, baseline, optional, []), 'size/wasm/common/gzip'), 'not-evaluated');
+});
+
+test('a wasm size source judges both profiles and leaves the other size families not evaluated', () => {
+  const sizeTriggers = [...triggers, { ...byId('size/wasm/full/gzip'), id: 'size/npm/core/packed', role: undefined }];
+  const extended = { budgetsId: 'test', triggers: sizeTriggers };
+  const within = evaluateBudgets(extended, baseline, wasmSizeCandidate(wasmSizes()), []);
+  assert.equal(verdictOf(within, 'size/wasm/full/gzip'), 'within-budget');
+  assert.equal(verdictOf(within, 'size/wasm/common/gzip'), 'within-budget');
+  assert.equal(verdictOf(within, 'size/npm/core/packed'), 'not-evaluated');
+  // The #929 shape: the optional common profile grows well past its budget while full is unchanged.
+  const grown = evaluateBudgets(extended, baseline, wasmSizeCandidate(wasmSizes({ common: 200_000 })), []);
+  const common = grown.triggers.find(t => t.id === 'size/wasm/common/gzip');
+  assert.equal(common.verdict, 'regression');
+  assert.equal(common.role, 'optional');
+  assert.equal(verdictOf(grown, 'size/wasm/full/gzip'), 'within-budget');
+  assert.equal(exitCodeFor(grown), 1);
+});
+
+test('a wasm size source must name the candidate commit and carry both profiles', () => {
+  assert.equal(wasmSizesProblem(wasmSizes(), COMMIT_B), null);
+  assert.match(wasmSizesProblem(wasmSizes({}, COMMIT_A), COMMIT_B), /measured core a{40}, but the candidate is b{40}/);
+  const onlyFull = wasmSizes();
+  onlyFull.artifacts = onlyFull.artifacts.filter(a => a.profile === 'full');
+  assert.match(wasmSizesProblem(onlyFull, COMMIT_B), /one common WebAssembly artifact, found 0/);
+  assert.match(wasmSizesProblem({ ...wasmSizes(), kind: 'operational' }, COMMIT_B), /not a wasm-artifact-sizes v1/);
+  const metrics = metricsFromWasmSizes(wasmSizes());
+  assert.equal(metrics.find(m => m.id === 'size/wasm/full/gzip').role, 'default');
+  assert.equal(metrics.find(m => m.id === 'size/wasm/common/gzip').role, 'optional');
+});
+
+test('evaluate --summary without --wasm-sizes exits 2 and names the wasm size rows; with a measured build it judges them', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { mkdtempSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const path = await import('node:path');
+  const dir = mkdtempSync(path.join(tmpdir(), 'wasm-sizes-'));
+  const summary = readJson('evidence/603/summary.json');
+  const evaluateCli = extra => spawnSync(process.execPath, ['--import', 'tsx', 'scripts/regression-budgets.mjs', 'evaluate',
+    '--summary', 'evidence/603/summary.json', '--source-commit', summary.sourceCommit, '--json-out', path.join(dir, 'r.json'),
+    '--markdown-out', path.join(dir, 'r.md'), ...extra], { encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: '' } });
+
+  const missing = evaluateCli([]);
+  assert.equal(missing.status, 2, missing.stderr);
+  assert.match(missing.stderr, /INVALID size\/wasm\/full\/gzip: required source missing/);
+  assert.match(missing.stderr, /INVALID size\/wasm\/common\/gzip: required source missing/);
+
+  // The committed #141 values at the baseline commit: judged, within budget.
+  const operational = readJson('benchmarks/operational-evidence.json').measurements.artifacts.wasm;
+  const sizes = { schemaVersion: '1', kind: 'wasm-artifact-sizes', sourceCommit: summary.sourceCommit, artifacts: operational.map(w =>
+    ({ profile: w.profile, artifact: w.artifact, file: w.file, sha256: w.sha256, rawBytes: w.rawBytes, gzipBytes: w.gzipBytes, brotliBytes: w.brotliBytes })) };
+  const file = path.join(dir, 'wasm-sizes.json');
+  writeFileSync(file, JSON.stringify(sizes));
+  const judged = evaluateCli(['--wasm-sizes', file]);
+  assert.equal(judged.status, 0, judged.stderr);
+  const report = readJson(path.join(dir, 'r.json'));
+  assert.equal(verdictOf(report, 'size/wasm/full/gzip'), 'within-budget');
+  assert.equal(verdictOf(report, 'size/wasm/common/gzip'), 'within-budget');
+  assert.equal(verdictOf(report, 'size/npm/core/packed'), 'not-evaluated');
+
+  // Sizes measured at another commit are not this candidate's: exit 2.
+  writeFileSync(file, JSON.stringify({ ...sizes, sourceCommit: COMMIT_B }));
+  const wrong = evaluateCli(['--wasm-sizes', file]);
+  assert.equal(wrong.status, 2);
+  assert.match(wrong.stderr, /wasm-sizes: measured core b{40}/);
+});
+
+test('measure-wasm-sizes measures both profiles of a checkout and refuses a missing profile or another commit', async () => {
+  const { execFileSync, spawnSync } = await import('node:child_process');
+  const { mkdirSync, mkdtempSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const path = await import('node:path');
+  const { gzipSync } = await import('node:zlib');
+  const core = mkdtempSync(path.join(tmpdir(), 'core-'));
+  const git = (...args) => execFileSync('git', ['-C', core, ...args], { encoding: 'utf8' }).trim();
+  git('init', '-q');
+  git('-c', 'user.name=t', '-c', 'user.email=t@example.invalid', 'commit', '-q', '--allow-empty', '-m', 'core');
+  const head = git('rev-parse', 'HEAD');
+  mkdirSync(path.join(core, 'bindings/wasm/pkg'), { recursive: true });
+  const full = Buffer.from('\0asm synthetic full '.repeat(64));
+  writeFileSync(path.join(core, 'bindings/wasm/pkg/redact_secret_wasm_bg.wasm'), full);
+  const out = path.join(core, 'out/wasm-sizes.json');
+  const measure = commit => spawnSync(process.execPath, ['scripts/measure-wasm-sizes.mjs', '--core', core, '--source-commit', commit, '--out', out], { encoding: 'utf8' });
+  const noCommon = measure(head);
+  assert.notEqual(noCommon.status, 0);
+  assert.match(noCommon.stderr, /pkg-common\/redact_secret_wasm_common_bg\.wasm is missing/);
+  mkdirSync(path.join(core, 'bindings/wasm/pkg-common'), { recursive: true });
+  writeFileSync(path.join(core, 'bindings/wasm/pkg-common/redact_secret_wasm_common_bg.wasm'), Buffer.from('\0asm synthetic common '.repeat(32)));
+  assert.match(measure(COMMIT_A).stderr, /not the candidate a{40}/);
+  const ok = measure(head);
+  assert.equal(ok.status, 0, ok.stderr);
+  const evidence = readJson(out);
+  assert.equal(wasmSizesProblem(evidence, head), null);
+  const row = evidence.artifacts.find(a => a.profile === 'full');
+  assert.equal(row.rawBytes, full.length);
+  assert.equal(row.gzipBytes, gzipSync(full, { level: 9 }).length);
 });
 
 test('the committed budgets cover every dimension from the committed baseline, and the history and ledger are consistent', () => {

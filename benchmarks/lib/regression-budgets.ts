@@ -350,18 +350,90 @@ interface OperationalEvidence {
  * growth is reported as its own, optional row and never hidden in the
  * default bundle's number.
  */
+const sizeMetric = (id: string, value: number, role?: 'default' | 'optional'): Metric =>
+  ({ id: `size/${id}`, dimension: 'size', profile: SIZE_PROFILE, unit: 'bytes', value, samples: 1, ...(role ? { role } : {}) });
+
+const wasmSizeMetric = (w: { profile: string; gzipBytes: number }): Metric =>
+  sizeMetric(`wasm/${w.profile}/gzip`, w.gzipBytes, w.profile === 'full' ? 'default' : 'optional');
+
 export function metricsFromOperational(evidence: OperationalEvidence): Metric[] {
   const { artifacts, browserBundle } = evidence.measurements;
-  const size = (id: string, value: number, role?: 'default' | 'optional'): Metric =>
-    ({ id: `size/${id}`, dimension: 'size', profile: SIZE_PROFILE, unit: 'bytes', value, samples: 1, ...(role ? { role } : {}) });
+  const size = sizeMetric;
   return [
-    ...artifacts.wasm.map(w => size(`wasm/${w.profile}/gzip`, w.gzipBytes, w.profile === 'full' ? 'default' : 'optional')),
+    ...artifacts.wasm.map(wasmSizeMetric),
     size('browser-bundle/quickstart/gzip', browserBundle.totals.allGzipBytes, 'default'),
     ...artifacts.npmPackages.map(p => size(`npm/${p.label}/packed`, p.packedBytes)),
     ...artifacts.nativeAddons.map(a => size(`node-addon/${a.target}`, a.bytes)),
     ...artifacts.pythonWheels.map(w => size(`python-wheel/${w.target}`, w.bytes)),
     ...artifacts.cli.map(c => size(`cli/${c.target}`, c.bytes)),
   ];
+}
+
+/**
+ * The `size` coverage key: which size-trigger family (`size/<family>/...`) a
+ * size source measured. A size profile without it (the #141 operational
+ * evidence) covers every size trigger.
+ */
+export const SIZE_COVERAGE_KEY = 'coverage';
+
+/** The WebAssembly profiles every performance run must size (redact-secret#929). */
+export const WASM_SIZE_PROFILES = ['full', 'common'] as const;
+
+/**
+ * Size-trigger prefixes a performance run (`evaluate --summary`) must cover.
+ * A candidate that omits their source gets `invalid-measurement`, never a
+ * silent `not-evaluated` (redact-secret#929: a common-profile growth shipped
+ * because no size source was supplied).
+ */
+export const PERFORMANCE_RUN_REQUIRED_TRIGGERS: readonly string[] = ['size/wasm/'];
+
+export const WASM_SIZES_KIND = 'wasm-artifact-sizes';
+
+export interface WasmSizeArtifact {
+  readonly profile: string;
+  readonly artifact: string;
+  readonly file: string;
+  readonly sha256: string;
+  readonly rawBytes: number;
+  readonly gzipBytes: number;
+  readonly brotliBytes: number;
+}
+
+/**
+ * Sizes of the candidate's own WebAssembly build outputs, measured in the
+ * performance job from the checkout it evaluates
+ * (`scripts/measure-wasm-sizes.mjs`, redact-secret#929). gzip level 9 and
+ * brotli quality 11, the same method as the #141 operational evidence.
+ */
+export interface WasmSizeEvidence {
+  readonly schemaVersion: '1';
+  readonly kind: typeof WASM_SIZES_KIND;
+  readonly sourceCommit: string;
+  readonly artifacts: readonly WasmSizeArtifact[];
+}
+
+/** Why a wasm size source cannot stand for this candidate, or null. */
+export function wasmSizesProblem(evidence: WasmSizeEvidence, sourceCommit: string | null): string | null {
+  if (evidence?.schemaVersion !== '1' || evidence.kind !== WASM_SIZES_KIND) return `not a ${WASM_SIZES_KIND} v1 document`;
+  if (!/^[0-9a-f]{40}$/.test(evidence.sourceCommit ?? '')) return 'sourceCommit must be a 40-hex commit';
+  if (sourceCommit !== null && evidence.sourceCommit !== sourceCommit) {
+    return `measured core ${evidence.sourceCommit}, but the candidate is ${sourceCommit}`;
+  }
+  for (const profile of WASM_SIZE_PROFILES) {
+    const rows = (evidence.artifacts ?? []).filter(a => a.profile === profile);
+    if (rows.length !== 1) return `expected one ${profile} WebAssembly artifact, found ${rows.length}`;
+    const [row] = rows;
+    for (const key of ['rawBytes', 'gzipBytes', 'brotliBytes'] as const) {
+      if (!Number.isInteger(row[key]) || row[key] <= 0) return `${profile} ${key} must be a positive integer`;
+    }
+    if (!/^[0-9a-f]{64}$/.test(row.sha256 ?? '')) return `${profile} sha256 must be 64 hex`;
+  }
+  return null;
+}
+
+/** The budgeted rows of a wasm size source: compressed (gzip) bytes per profile. */
+export function metricsFromWasmSizes(evidence: WasmSizeEvidence): Metric[] {
+  return evidence.artifacts.map(wasmSizeMetric);
 }
 
 /**
@@ -559,6 +631,11 @@ export interface CandidateMeasurement {
   /** Per dimension, the candidate's profile identity; a dimension absent here was not measured. */
   readonly profiles: Partial<Record<Dimension, Record<string, string>>>;
   readonly detection?: Record<string, number> | null;
+  /**
+   * Trigger-id prefixes this candidate must measure. An unsupplied trigger
+   * under one of them is `invalid-measurement` (exit 2), not `not-evaluated`.
+   */
+  readonly required?: readonly string[];
 }
 
 /** The baseline's adapter language (`javascript`, `python`) whose profile this trigger belongs to. */
@@ -571,6 +648,10 @@ function adapterLanguage(baseline: Snapshot, trigger: Trigger): string | undefin
 function supplied(baseline: Snapshot, candidate: CandidateMeasurement, trigger: Trigger): boolean {
   const got = candidate.profiles[trigger.dimension];
   if (got === undefined) return false;
+  if (trigger.dimension === 'size') {
+    const coverage = got[SIZE_COVERAGE_KEY];
+    return coverage === undefined || coverage.split(',').some(family => trigger.id.startsWith(`size/${family}/`));
+  }
   if (trigger.dimension !== 'adapter-overhead') return true;
   const language = adapterLanguage(baseline, trigger);
   return language !== undefined && got[language] !== undefined;
@@ -619,7 +700,11 @@ export function evaluateBudgets(
       allowedChange: allowed, ...(trigger.role ? { role: trigger.role } : {}) };
     const empty = { candidate: null, change: null, relativeChange: null };
     if (!supplied(baseline, candidate, trigger)) {
-      results.push({ ...common, ...empty, verdict: 'not-evaluated', reason: 'no candidate source for this dimension was supplied' });
+      const required = (candidate.required ?? []).some(prefix => trigger.id.startsWith(prefix));
+      results.push(required
+        ? { ...common, ...empty, verdict: 'invalid-measurement',
+          reason: 'required source missing: a performance run must measure this from the candidate build (--wasm-sizes); rerun with it' }
+        : { ...common, ...empty, verdict: 'not-evaluated', reason: 'no candidate source for this dimension was supplied' });
       continue;
     }
     const problem = profileProblem(trigger.dimension, baseline, candidate, trigger);

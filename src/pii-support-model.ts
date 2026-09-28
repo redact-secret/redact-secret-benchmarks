@@ -3,6 +3,8 @@ import schema from '../schemas/pii-support-matrix-v2.json';
 import { piiSupportRegistryProjection, piiSupportSemanticProblem } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
 
 export type PiiSupportStatus = 'pending' | 'provisional' | 'stable' | 'unsupported';
+export type PiiAuthoritySupport = 'lexical' | 'validation' | 'allocation' | 'reserved-control' | 'sensitivity';
+export interface PiiAuthority { sourceKind: 'standard' | 'public-authority'; sourceId: string; locator: string; revision: string; supports: PiiAuthoritySupport[] }
 export interface PiiSupportMatrixFile {
   schemaVersion: 2; reportType: 'pii-support-matrix'; supportClaims: false; domain: 'pii'; evaluationProfile: 'pii-v1';
   domainAccountingVersion: 'pii-v1'; qualificationProfile: { id: 'pii-v1'; version: 1 }; registryCommitment: string;
@@ -15,10 +17,10 @@ export interface PiiSupportMatrixFile {
     diagnosticDeltas: Array<{ axis: string; delta: number | null; baselineFailed: number; candidateFailed: number; failedDelta: number; regressed: boolean }> }>;
   distribution: Record<PiiSupportStatus, number>;
   families: Array<{ family: string; displayName: string; identityDomain: string; familyContractVersion: number; scope: string; jurisdiction: string | null;
-    qualificationProfile: { id: 'pii-v1'; version: 1 }; authority: unknown[]; contextObligation: string; validatorApplicable: boolean;
+    qualificationProfile: { id: 'pii-v1'; version: 1 }; authority: PiiAuthority[]; contextObligation: string; validatorApplicable: boolean;
     activation: { state: string; selector: string; activationIdentity: string | null; productArtifactCommitment: string | null };
     status: { state: PiiSupportStatus; profile: { id: 'pii-v1'; version: 1 }; reasonCodes: string[] };
-    populationEvidence: unknown[]; qualificationArtifactCommitment: string | null }>;
+    populationEvidence: Array<{ id: string; reportStatus: string; status: string; strata: number; reportCommitment: string }>; qualificationArtifactCommitment: string | null }>;
   artifactCommitment: string;
 }
 

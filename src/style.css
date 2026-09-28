@@ -425,3 +425,67 @@ details > summary { cursor: pointer; font: var(--text-small-strong); padding: va
 .peer-cell, .peer-cell small { color: var(--ink-muted); }
 .peer-cell small { white-space: nowrap; }
 .h1-evidence { font: var(--text-h1-narrow); overflow-wrap: anywhere; }
+
+/* ---------- PII domain (beta.10) ---------- */
+/* DomainBar: the switch is a control, the identity beside it is read. */
+.domain-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6); border-top: var(--rule-strong) solid var(--ink); padding-top: var(--space-3); margin-bottom: var(--space-8); }
+.domain-ids { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin: 0 0 0 auto; font: var(--text-small); }
+.domain-ids dt { font: var(--text-eyebrow); letter-spacing: var(--track-eyebrow); color: var(--ink-muted); }
+.domain-ids dd { margin: 0; color: var(--ink); }
+@media (max-width: 720px) { .domain-ids { margin-left: 0; } }
+/* CommitmentChip: a precondition, not a status; neutral border, dashed when there is nothing to bind. */
+.commitments { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0 0; }
+.commit { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2); border: var(--hairline) solid var(--ink-muted); border-radius: var(--radius-sm); padding: var(--space-1) var(--space-2); font: var(--text-small); color: var(--ink-muted); }
+.commit b { font: var(--text-eyebrow); letter-spacing: var(--track-eyebrow); color: var(--ink); }
+.commit code { color: var(--ink); }
+.commit.absent { border-style: dashed; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); margin: 0; }
+.chip { display: inline-block; font: var(--text-mono-small); border: var(--hairline) solid var(--ink-muted); border-radius: var(--radius-sm); padding: var(--rule-strong) var(--space-2); color: var(--ink-muted); white-space: nowrap; }
+.chip code { font-size: 1em; }
+.chip.on { border-color: var(--status-success); color: var(--status-success); background: var(--status-success-fill); }
+a.chip.on:hover { text-decoration: underline; }
+.chip.void { border-color: var(--status-danger); color: var(--status-danger); }
+/* A structural absence (no validator, not in the product): neutral, solid, never a status colour. */
+.st-none { border: var(--hairline) solid var(--ink-muted); color: var(--ink-muted); }
+/* PiiFamilyRow: scope, status + profile, authority, context obligation, activation. */
+.pii-families { border-top: var(--rule-strong) solid var(--ink); margin-top: var(--space-4); }
+.pii-family-head, .pii-family > summary { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, 1.4fr); gap: var(--space-4); }
+.pii-family-head { font: var(--text-eyebrow); letter-spacing: var(--track-eyebrow); color: var(--ink-muted); padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--line); }
+.pii-family { border-bottom: var(--hairline) solid var(--line); }
+.pii-family > summary { padding: var(--space-4) 0; align-items: start; font: var(--text-small); list-style-position: outside; word-break: keep-all; }
+.pii-family > summary .nm { font: var(--text-body-strong); }
+.pii-family > summary small { display: block; color: var(--ink-muted); font: var(--text-small); margin-top: var(--space-1); overflow-wrap: anywhere; }
+.pii-family > summary .reasons { font: var(--text-mono-small); }
+.pii-family[open] > summary { border-bottom: var(--hairline) solid var(--ink); }
+.pii-family-detail { border-left: var(--rule-strong) solid var(--ink); margin: 0 0 var(--space-4) var(--space-4); padding: var(--space-4) 0 var(--space-2) var(--space-4); display: grid; gap: var(--space-6); }
+.pii-family-detail .h3 { margin-bottom: var(--space-2); }
+.plain { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); font: var(--text-small); }
+@media (max-width: 1079px) {
+  .pii-family-head { display: none; }
+  .pii-family > summary { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .pii-family > summary .nm { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) { .pii-family > summary { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); } }
+.pii-jurisdictions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); margin-top: var(--space-4); }
+.pii-jurisdictions > div { display: grid; gap: var(--space-2); align-content: start; min-width: 0; }
+@media (max-width: 860px) { .pii-jurisdictions { grid-template-columns: minmax(0, 1fr); } }
+/* PopulationComparison: one card per population, never a shared axis. Not measured is the absence of a verdict: dashed. */
+.popcmps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-4); }
+.popcmp { border: var(--hairline) solid var(--line); border-left: var(--space-1) solid var(--ink-muted); padding: var(--space-4); display: grid; gap: var(--space-2); align-content: start; min-width: 0; }
+.popcmp.ok { border-left-color: var(--status-success); }
+.popcmp.bad { border-left-color: var(--status-danger); }
+.popcmp.nm { border-left-style: dashed; }
+.popcmp-head { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: baseline; }
+.popcmp-head small { color: var(--ink-muted); font: var(--text-small); }
+.popcmp ul { margin: 0; padding-left: var(--space-6); display: grid; gap: var(--space-1); font: var(--text-small); color: var(--ink-muted); }
+@media (max-width: 860px) { .popcmps { grid-template-columns: minmax(0, 1fr); } }
+/* OutcomeMatrix and ContextLanguageStrata: an unreachable cell is hatched so it can never read as zero. */
+.outcome-axis { margin: var(--space-6) 0 var(--space-2); }
+.outcome-grid, .strata { border-top: var(--hairline) solid var(--ink); overflow-x: auto; margin-top: var(--space-2); }
+.outcome-grid > div, .strata > div { display: grid; grid-template-columns: calc(var(--space-16) * 2.5) repeat(var(--cols), minmax(calc(var(--space-16) * 1.5), 1fr)); min-width: min-content; }
+.outcome-grid span[role], .strata span[role] { padding: var(--space-3) var(--space-3) var(--space-3) 0; border-bottom: var(--hairline) solid var(--line); font: var(--text-small); display: grid; gap: var(--space-1); align-content: start; justify-items: start; }
+.outcome-grid .hd, .strata .hd { font: var(--text-eyebrow); letter-spacing: var(--track-eyebrow); color: var(--ink-muted); }
+.outcome-grid .rh, .strata .rh { font: var(--text-small-strong); }
+.outcome-grid .gated { background: repeating-linear-gradient(135deg, var(--line) 0 var(--rule-strong), transparent var(--rule-strong) calc(var(--space-1) + var(--hairline))); color: var(--ink-muted); padding-left: var(--space-2); }
+.outcome-grid .derives { color: var(--ink-muted); font: var(--text-small); }
+.strata-note { margin-top: var(--space-4); }

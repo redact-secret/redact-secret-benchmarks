@@ -3,7 +3,7 @@ import schema from '../../../../schemas/pii-benign-collision-evidence-v1.json';
 import data from './benign-collision-evidence-v1.json';
 import { hash } from '../../substrate/hash.ts';
 import {
-  PII_BENIGN_ACCOUNTING_CLASSES, PII_BENIGN_COLLISION_EVIDENCE_CLASSES, PII_EVIDENCE_ACCOUNTING_CLASSES,
+  PII_BENIGN_ACCOUNTING_CLASSES, PII_BENIGN_COLLISION_EVIDENCE_CLASSES, PII_EVIDENCE_ACCOUNTING_CLASSES, PII_EVIDENCE_CLASS_ROLES,
   type PiiBenignAccountingClass, type PiiBenignCollisionEvidenceClass,
 } from './benign-collision-classes.ts';
 import { piiContextEvidence, type PiiContextEvidence } from './context-evidence.ts';
@@ -55,11 +55,7 @@ export interface PiiBenignCollisionValidationOptions {
 }
 
 const expectedClasses: PiiEvidenceClass[] = PII_BENIGN_COLLISION_EVIDENCE_CLASSES.map(id => ({
-  id,
-  kind: id === 'near-miss' ? 'mechanical-control' : id === 'cross-family-collision' ? 'collision' : 'benign',
-  accountingClasses: [...PII_EVIDENCE_ACCOUNTING_CLASSES[id]],
-  qualifies: id === 'near-miss' ? ['type-identity', 'validator'] : id === 'cross-family-collision'
-    ? ['family-discrimination', 'jurisdiction-discrimination', 'sensitivity'] : ['sensitivity'],
+  id, kind: PII_EVIDENCE_CLASS_ROLES[id].kind, accountingClasses: [...PII_EVIDENCE_ACCOUNTING_CLASSES[id]], qualifies: [...PII_EVIDENCE_CLASS_ROLES[id].qualifies],
 }));
 const canonicalContentCommitment = '7b63d65db012a15e0a6ec9ba9390c45d21bbc0a5d92ca720c72e33365940c966';
 const validateSchema = new Ajv({ strict: true }).compile(schema);
@@ -190,8 +186,7 @@ export function loadPiiBenignCollisionCases(value: unknown = piiBenignCollisionE
   return corpus.entries.map(entry => {
     const family = families.get(entry.family)!;
     const candidate = materializePiiEvidenceCandidate(entry), content = `${entry.fixture.prefix}${candidate}${entry.fixture.suffix}`;
-    const method = entry.evidenceClass === 'near-miss' ? 'type-validation' :
-      entry.evidenceClass === 'cross-family-collision' ? 'jurisdiction-collision' : 'pii-benign';
+    const method = PII_EVIDENCE_CLASS_ROLES[entry.evidenceClass as PiiBenignCollisionEvidenceClass].method;
     const metadata = { evidenceId: entry.id, evidenceClass: entry.evidenceClass, accountingClass: entry.accountingClass,
       validatorExpectation: entry.validator, contextGroup: entry.contextGroup,
       ...(entry.collision === null ? {} : { collision: structuredClone(entry.collision) }) };

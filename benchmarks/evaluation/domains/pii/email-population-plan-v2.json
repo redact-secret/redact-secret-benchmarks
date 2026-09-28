@@ -1,0 +1,3636 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-family-population-plan",
+  "id": "pii-email-population-plan-v2",
+  "supportClaims": false,
+  "issue": "redact-secret/redact-secret-benchmarks#424",
+  "productIssue": "redact-secret/redact-secret#901",
+  "supersedes": {
+    "id": "pii-email-population-plan-v1",
+    "file": "benchmarks/evaluation/domains/pii/email-population-plan-v1.json",
+    "fileSha256": "9f1a0d0dc548fc08ea9f3cf0bac912eadd4752b489998905a21707fe377f2d09",
+    "planCommitment": "e6f3bc27633c0a7b504ee8e97528e3bb535d85b5de566bf308548f53bcf0daa8",
+    "reason": "authored-candidate-not-whole-contract-candidate",
+    "contractRule": "email-v1: a candidate is bounded on the left by something other than local-part atom syntax; RFC 5322 atext includes =, so key=addr is one candidate that starts at the key.",
+    "detectedBy": "first-run-disagreement-adjudicated-against-contract-text",
+    "firstRun": {
+      "benchmarkRevision": "50ce54e3daba736c93355c71a4730f8c89a8a1a5",
+      "runId": "78b5b693-5b5c-468f-b15d-10ccc1e9624a",
+      "reportCommitment": "873948db3e23834b94e5cfef07dfd8d20868e713d3e69ec0c86bd810cc858b16"
+    },
+    "corrections": [
+      {
+        "v1CaseId": "email-p-snake-field",
+        "v1Label": "valid/sensitive",
+        "v2CaseId": "email-j-snake-field-joined",
+        "v2Label": "valid/not-established",
+        "twinAdded": "email-p-snake-field-colon"
+      },
+      {
+        "v1CaseId": "email-p-log-line",
+        "v1Label": "valid/sensitive",
+        "v2CaseId": "email-j-logfmt-joined",
+        "v2Label": "valid/not-established",
+        "twinAdded": "email-p-logfmt-colon"
+      },
+      {
+        "v1CaseId": "email-r-log-to",
+        "v1Label": "valid/non-sensitive",
+        "v2CaseId": "email-r-log-to",
+        "v2Label": "valid/non-sensitive",
+        "rangeCorrected": true
+      }
+    ]
+  },
+  "family": "pii:global:email",
+  "findingType": "pii_global_email",
+  "familyContractVersion": 1,
+  "contextVocabulary": "pii-context/v1",
+  "familyContract": {
+    "repository": "redact-secret/redact-secret",
+    "commit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314",
+    "document": "docs/contracts/pii/email-v1.md",
+    "sha256": "203f4fcfc7b949803f0b5593a104ef4f540bff7b1223df3e87af4d843047f383",
+    "contextContractSha256": "b0036fb2281d8c9de197429009e9eb0315ad3ee11bb71a4148200ca48cb863da"
+  },
+  "ledger": {
+    "file": "evidence/901/pii-gap-ledger-v1.json",
+    "contentCommitment": "7fcbba702d93849ce1452ee5a9adf3d20e493179107ec0c6bbda36cb9e5fd116",
+    "axes": [
+      "email-independent-sensitive-positives",
+      "email-reserved-documentation-controls",
+      "email-public-contact-addresses",
+      "email-example-label-context-negatives",
+      "email-userinfo-credential-collisions",
+      "email-smtputf8-boundary-twins"
+    ]
+  },
+  "fixturePolicy": {
+    "plaintextPublication": "Evidence records carry commitments, case ids and outcome counts only, never candidate values, spans or sanitized text.",
+    "expectations": "Identity, sensitivity and action are authored from the frozen family contract and pii-context/v1 before any scan; detector output never edits them.",
+    "massAssumption": "Declared base-rate mass is an explicit assumption per stratum, not an operational prevalence claim; it is never renormalized.",
+    "sensitiveExamples": "Independent hand-authored local parts and invented non-delegated domains (.synthetic, .fixture) with no real-world provenance; they assert nothing about any mailbox, person or domain.",
+    "reservedControls": "Non-sensitive controls use only RFC 2606 documentation domains and RFC 6761 special-use names.",
+    "publicRole": "Public role/contact addresses are synthetic role mailboxes under invented domains, not real organizations.",
+    "credentials": "Credential overlap uses placeholder connection-string passwords only; no provider token or real credential is stored."
+  },
+  "strata": [
+    {
+      "id": "email-positive-independent",
+      "axis": "email-independent-sensitive-positives",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "email-positive-smtputf8-boundary",
+      "axis": "email-smtputf8-boundary-twins",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "email-boundary-rejected",
+      "axis": "email-smtputf8-boundary-twins",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "benignAxis": "unsupported-syntax",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "email-grammar-invalid",
+      "axis": "email-smtputf8-boundary-twins",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "benignAxis": "unsupported-syntax",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "email-unsupported-form",
+      "axis": "email-smtputf8-boundary-twins",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "benignAxis": "unsupported-syntax",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "email-field-gap-unassociated",
+      "axis": "email-smtputf8-boundary-twins",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "context-negative",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "email-atext-joined-context",
+      "axis": "email-smtputf8-boundary-twins",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "context-negative",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "email-reserved-labelled",
+      "axis": "email-reserved-documentation-controls",
+      "identity": "valid",
+      "sensitivity": "non-sensitive",
+      "benignAxis": "reserved-documentation",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "email-reserved-unlabelled",
+      "axis": "email-reserved-documentation-controls",
+      "identity": "valid",
+      "sensitivity": "non-sensitive",
+      "benignAxis": "reserved-documentation",
+      "views": [
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "email-reserved-resemblance",
+      "axis": "email-reserved-documentation-controls",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "email-public-role-ambiguous",
+      "axis": "email-public-contact-addresses",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "public-identifier",
+      "views": [
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "email-public-role-high-signal",
+      "axis": "email-public-contact-addresses",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "email-context-negative",
+      "axis": "email-example-label-context-negatives",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "context-negative",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "email-equidistant-unassociated",
+      "axis": "email-example-label-context-negatives",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "context-negative",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "email-userinfo-collision",
+      "axis": "email-userinfo-credential-collisions",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "benignAxis": "collision",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "email-unlabelled-collision",
+      "axis": "email-userinfo-credential-collisions",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "collision",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "email-credential-adjacent-positive",
+      "axis": "email-userinfo-credential-collisions",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    }
+  ],
+  "plan": {
+    "family": "pii:global:email",
+    "findingType": "pii_global_email",
+    "familyContractVersion": 1,
+    "canonicalOffsetUnit": "utf8-byte",
+    "cases": [
+      {
+        "id": "email-p-plain-label",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: dara.venn@q3v9k.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 32,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-plus-tag-hyphen-label",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "e-mail: m.okafor+billing@post.k7m2q.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 8,
+          "end": 45,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-quoted-equals",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "Email = \"t_lindqvist42@relay.w8n4x.fixture\"",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 9,
+          "end": 42,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-lower-base",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: anika.ross@b9t2z.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 33,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-upper-label",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-p-lower-base",
+        "twinProperty": "letter-case",
+        "input": "EMAIL: anika.ross@b9t2z.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 33,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-snake-field-colon",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "user_email: k-ito@x2r7f.fixture",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 12,
+          "end": 31,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-json-field",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "{\"email\": \"noor.haddad@d4k8s.synthetic\"}",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 38,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-contact-details",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "contact details: priya.natarajan@z6j1q.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 17,
+          "end": 48,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-multi-label-domain",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: 3f9a.x@a1.b2.c3.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 32,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-ko-customer-label",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "고객 이메일: minjun_07@v5c3n.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 18,
+          "end": 43,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-ko-no-colon",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "이메일 hana.yoon@r2t6w.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 10,
+          "end": 35,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-ko-hangul-local",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "이메일: 수아.김@j4b7x.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 37,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-second-line",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "name: Q. Arden\nemail: q.arden@p7x3c.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 22,
+          "end": 45,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-tove-base",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: tove.aas@u8c5p.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 31,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-example-comma",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "For example, email: tove.aas@u8c5p.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 20,
+          "end": 44,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-lina-base",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: lina.moss@w2k7v.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 32,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-tool-result",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "{\"tool\":\"crm.lookup\",\"result\":{\"name\":\"R. Ilves\",\"email\":\"r.ilves@crm.h8w3q.synthetic\",\"tier\":\"gold\"}}",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 58,
+          "end": 85,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-logfmt-colon",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "2026-09-28 12:00:03 user=42 email: sanna.berg@auth.v7c2x.synthetic action=login ok",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 35,
+          "end": 66,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-json-array-second",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "lineCandidates": [
+          {
+            "start": 11,
+            "end": 37,
+            "domain": "email",
+            "sensitivity": "sensitive"
+          }
+        ],
+        "input": "[{\"email\":\"p.one@list.q8r2t.synthetic\"},{\"email\":\"p.two@list.q8r2t.synthetic\"}]",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 50,
+          "end": 76,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-p-dense-comma",
+        "axis": "email-independent-sensitive-positives",
+        "stratum": "email-positive-independent",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "lineCandidates": [
+          {
+            "start": 7,
+            "end": 30,
+            "domain": "email",
+            "sensitivity": "sensitive"
+          }
+        ],
+        "input": "email: a.north@z9k4m.synthetic, email: b.south@z9k4m.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 39,
+          "end": 62,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-hangul-local",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "이메일: 서연.박@h2p8r.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 37,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-latin-nfc",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: élodie.fabre@m3w8d.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 36,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-cyrillic-local",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: дарья.волкова@c8n2j.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 48,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-ko-spaced-suffix",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "이메일: 지우@r8k2m.synthetic 입니다",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 33,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-local-64-bytes",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: 가가가가가가가가가가가가가가가가가가가가가a@q2w9e.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 87,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-label-63-bytes",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb@ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 144,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-comma-right",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: lars.ek@w5v1n.synthetic, backup pending",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 30,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-quoted",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: \"ines.moura@t3k8q.synthetic\"",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 8,
+          "end": 34,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-u-semicolon-right",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-positive-smtputf8-boundary",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: olu.bello@g5n2d.synthetic; verified",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 32,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-b-trailing-dot",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-boundary-rejected",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-p-plain-label",
+        "twinProperty": "boundary-character",
+        "input": "email: dara.venn@q3v9k.synthetic.",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-b-leading-dot",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-boundary-rejected",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-p-plain-label",
+        "twinProperty": "boundary-character",
+        "input": "email: .dara.venn@q3v9k.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-b-trailing-at",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-boundary-rejected",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-p-plain-label",
+        "twinProperty": "boundary-character",
+        "input": "email: dara.venn@q3v9k.synthetic@relay",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-b-ko-joined-suffix",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-boundary-rejected",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-u-ko-spaced-suffix",
+        "twinProperty": "boundary-character",
+        "input": "이메일: 지우@r8k2m.synthetic입니다",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-b-nfd-combining",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-boundary-rejected",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-u-latin-nfc",
+        "twinProperty": "normalization-form",
+        "input": "email: élodie.fabre@m3w8d.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-b-hangul-domain",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-boundary-rejected",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-u-ko-spaced-suffix",
+        "twinProperty": "domain-script",
+        "input": "이메일: 지우@도메인.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-i-double-dot",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-grammar-invalid",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-p-plain-label",
+        "twinProperty": "spelling",
+        "input": "email: dara..venn@q3v9k.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-i-local-65-bytes",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-grammar-invalid",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-u-local-64-bytes",
+        "twinProperty": "length-bound",
+        "input": "email: 가가가가가가가가가가가가가가가가가가가가가ab@q2w9e.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-i-label-64-bytes",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-grammar-invalid",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "email-u-label-63-bytes",
+        "twinProperty": "length-bound",
+        "input": "email: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb@cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-i-single-label",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-grammar-invalid",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "email: dara.venn@intranet",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-f-quoted-local",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-unsupported-form",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "email: \"dara venn\"@q3v9k.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-f-domain-literal",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-unsupported-form",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "lineCandidates": [
+          {
+            "start": 13,
+            "end": 26,
+            "domain": "network-address",
+            "sensitivity": "non-sensitive"
+          }
+        ],
+        "input": "email: dara@[198.51.100.12]",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-f-comment",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-unsupported-form",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "email: dara(work)@q3v9k.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-j-snake-field-joined",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-atext-joined-context",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-p-snake-field-colon",
+        "twinProperty": "delimiter",
+        "input": "user_email=k-ito@x2r7f.fixture",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-j-logfmt-joined",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-atext-joined-context",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-p-logfmt-colon",
+        "twinProperty": "delimiter",
+        "input": "2026-09-28 12:00:03 user=42 email=sanna.berg@auth.v7c2x.synthetic action=login ok",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-g-angle",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-field-gap-unassociated",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-u-quoted",
+        "twinProperty": "bracket",
+        "input": "email: <ines.moura@t3k8q.synthetic>",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-g-display-name",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-field-gap-unassociated",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: Ines Moura <ines.moura@t3k8q.synthetic>",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-g-email-address-label",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-field-gap-unassociated",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-p-multi-label-domain",
+        "twinProperty": "context-label",
+        "input": "email address: 3f9a.x@a1.b2.c3.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-g-ko-address-label",
+        "axis": "email-smtputf8-boundary-twins",
+        "stratum": "email-field-gap-unassociated",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-u-hangul-local",
+        "twinProperty": "context-label",
+        "input": "이메일 주소: 서연.박@h2p8r.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-example-com",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "email: jordan@example.com",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-example-net-sub",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "e-mail: ops@mail.example.net",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-example-org-upper",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "email: billing@EXAMPLE.ORG",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-test-sub",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "email: qa@build.test",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-localhost",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "email: svc@localhost",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-invalid-sub",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "email: noreply@alerts.invalid",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-example-single",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "email: dev@example",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-log-to",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-unlabelled",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "2026-09-28T10:00:01Z INFO mailer queued message to=user1@example.com id=7f3a",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-config-from",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-unlabelled",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "smtp_from = alerts@example.org",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-git-author",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-unlabelled",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "Author: CI Bot <ci-bot@test>",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-r-tool-dry-run",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-unlabelled",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "{\"tool\":\"send_mail\",\"dry_run\":true,\"to\":\"recipient@example.net\"}",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-x-example-com-prefix",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-resemblance",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-r-example-com",
+        "twinProperty": "reserved-domain",
+        "input": "email: jordan@example.com.q3v9k.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 41,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-x-example-net-hyphen",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-resemblance",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-r-example-net-sub",
+        "twinProperty": "reserved-domain",
+        "input": "e-mail: ops@mail.example-net.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 8,
+          "end": 38,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-x-test-inner",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-resemblance",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-r-test-sub",
+        "twinProperty": "reserved-domain",
+        "input": "email: qa@build.test.w2k7v.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 36,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-x-notlocalhost",
+        "axis": "email-reserved-documentation-controls",
+        "stratum": "email-reserved-resemblance",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-r-localhost",
+        "twinProperty": "reserved-domain",
+        "input": "email: svc@notlocalhost.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 33,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-c-contact-support",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-ambiguous",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "input": "contact support@helpdesk.r4m9t.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-c-contact-press",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-ambiguous",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "input": "Contact: press@newsroom.b7q2w.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-c-ko-contact",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-ambiguous",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "input": "연락처: help@center.n5v8k.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-c-feedback-prose",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-ambiguous",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "input": "Send feedback to feedback@forum.t8d2m.synthetic anytime",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-c-footer-noreply",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-ambiguous",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "input": "-- Sent by noreply@notify.c9w4h.synthetic (automated)",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-c-ko-prose",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-ambiguous",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "input": "문의는 info@shop.g6h1z.synthetic 으로 보내 주세요",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-h-contact-details-support",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-high-signal",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "twinOf": "email-c-contact-support",
+        "twinProperty": "context-label",
+        "input": "contact details support@helpdesk.r4m9t.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 16,
+          "end": 48,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-h-email-press",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-high-signal",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "twinOf": "email-c-contact-press",
+        "twinProperty": "context-label",
+        "input": "Email: press@newsroom.b7q2w.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 37,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-h-ko-email-help",
+        "axis": "email-public-contact-addresses",
+        "stratum": "email-public-role-high-signal",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "synthetic-public-role",
+        "tier": "public-development",
+        "semanticRole": "public-role",
+        "twinOf": "email-c-ko-contact",
+        "twinProperty": "context-label",
+        "input": "이메일: help@center.n5v8k.synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 38,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-n-email-example",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-context-negative",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-p-lina-base",
+        "twinProperty": "context-negative",
+        "input": "email example: lina.moss@w2k7v.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-n-documentation-email",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-context-negative",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "documentation email: lina.moss@w2k7v.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-n-ko-email-example",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-context-negative",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-p-ko-hangul-local",
+        "twinProperty": "context-negative",
+        "input": "이메일 예시: 수아.김@j4b7x.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-n-ko-example-email",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-context-negative",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "예시 이메일: 수아.김@j4b7x.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-n-value-neutral",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-context-negative",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "value: omar.reyes@f6q1d.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-n-ko-value-neutral",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-context-negative",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "값: omar.reyes@f6q1d.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-n-for-example",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-context-negative",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-p-tove-base",
+        "twinProperty": "context-negative",
+        "input": "For example: email: tove.aas@u8c5p.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-n-bare",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-context-negative",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "lina.moss@w2k7v.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-e-dense-space",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-equidistant-unassociated",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "email-p-dense-comma",
+        "twinProperty": "delimiter",
+        "lineCandidates": [
+          {
+            "start": 7,
+            "end": 30,
+            "domain": "email",
+            "sensitivity": "sensitive"
+          }
+        ],
+        "input": "email: a.north@z9k4m.synthetic email: b.south@z9k4m.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-e-bare-then-label",
+        "axis": "email-example-label-context-negatives",
+        "stratum": "email-equidistant-unassociated",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "lineCandidates": [
+          {
+            "start": 0,
+            "end": 22,
+            "domain": "email",
+            "sensitivity": "not-established"
+          }
+        ],
+        "input": "c.west@z9k4m.synthetic email: d.east@z9k4m.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-k-https-userinfo",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-userinfo-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "twinOf": "email-p-plus-tag-hyphen-label",
+        "twinProperty": "url-wrapping",
+        "input": "email: https://m.okafor+billing@post.k7m2q.synthetic/",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-k-postgres-url",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-userinfo-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "DATABASE_URL=postgres://svc_app:synthetic-pw-7Q@db.q3v9k.synthetic:5432/app",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-k-ssh-url",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-userinfo-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "git clone ssh://git@code.k7m2q.synthetic/team/repo.git",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-k-proxy-url",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-userinfo-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "proxy: http://relay-user:not-a-real-pass@proxy.w8n4x.fixture:3128",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-m-scp-remote",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-unlabelled-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "git remote add origin git@code.k7m2q.synthetic:team/repo.git",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-m-scp-target",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-unlabelled-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "scp build.tar.gz deploy@build.v5c3n.synthetic:/srv/releases/",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-m-mailto",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-unlabelled-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "twinOf": "email-p-plain-label",
+        "twinProperty": "url-wrapping",
+        "input": "email: mailto:dara.venn@q3v9k.synthetic",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-m-ssh-target",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-unlabelled-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "ssh ops@bastion.x2r7f.fixture -p 2222",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "email-z-beside-db-url",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-credential-adjacent-positive",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: ravi.menon@k3p9t.synthetic db=postgres://svc:synthetic-pw-4R@db.k3p9t.synthetic/app",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 33,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-z-json-password",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-credential-adjacent-positive",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "{\"email\": \"ada.ferreira@b2m8v.synthetic\", \"password\": \"synthetic-password-9\"}",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 39,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "email-z-password-field",
+        "axis": "email-userinfo-credential-collisions",
+        "stratum": "email-credential-adjacent-positive",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "email: ada.ferreira@b2m8v.synthetic password=correct-horse-synthetic",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 7,
+          "end": 35,
+          "action": "redact"
+        }
+      }
+    ]
+  },
+  "oracle": {
+    "family": "pii:global:email",
+    "findingType": "pii_global_email",
+    "familyContractVersion": 1,
+    "plan": "benchmarks/evaluation/domains/pii/email-population-plan-v2.json#plan",
+    "planCommitment": "690474fd7f061c4fdaff1ce69b93fa0b73f5f34f3b0de4c58d564cf556f6ccbd",
+    "referenceValidator": null,
+    "labels": [
+      {
+        "caseId": "email-p-plain-label",
+        "candidate": {
+          "start": 7,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-plus-tag-hyphen-label",
+        "candidate": {
+          "start": 8,
+          "end": 45
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-quoted-equals",
+        "candidate": {
+          "start": 9,
+          "end": 42
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-lower-base",
+        "candidate": {
+          "start": 7,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-upper-label",
+        "candidate": {
+          "start": 7,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-snake-field-colon",
+        "candidate": {
+          "start": 12,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-json-field",
+        "candidate": {
+          "start": 11,
+          "end": 38
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-contact-details",
+        "candidate": {
+          "start": 17,
+          "end": 48
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-multi-label-domain",
+        "candidate": {
+          "start": 7,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-ko-customer-label",
+        "candidate": {
+          "start": 18,
+          "end": 43
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-ko-no-colon",
+        "candidate": {
+          "start": 10,
+          "end": 35
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-ko-hangul-local",
+        "candidate": {
+          "start": 11,
+          "end": 37
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-second-line",
+        "candidate": {
+          "start": 22,
+          "end": 45
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-tove-base",
+        "candidate": {
+          "start": 7,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-example-comma",
+        "candidate": {
+          "start": 20,
+          "end": 44
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-lina-base",
+        "candidate": {
+          "start": 7,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-tool-result",
+        "candidate": {
+          "start": 58,
+          "end": 85
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-logfmt-colon",
+        "candidate": {
+          "start": 35,
+          "end": 66
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-json-array-second",
+        "candidate": {
+          "start": 50,
+          "end": 76
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-p-dense-comma",
+        "candidate": {
+          "start": 39,
+          "end": 62
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-hangul-local",
+        "candidate": {
+          "start": 11,
+          "end": 37
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-latin-nfc",
+        "candidate": {
+          "start": 7,
+          "end": 36
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-cyrillic-local",
+        "candidate": {
+          "start": 7,
+          "end": 48
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-ko-spaced-suffix",
+        "candidate": {
+          "start": 11,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-local-64-bytes",
+        "candidate": {
+          "start": 7,
+          "end": 87
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-label-63-bytes",
+        "candidate": {
+          "start": 7,
+          "end": 144
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-comma-right",
+        "candidate": {
+          "start": 7,
+          "end": 30
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-quoted",
+        "candidate": {
+          "start": 8,
+          "end": 34
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-u-semicolon-right",
+        "candidate": {
+          "start": 7,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-b-trailing-dot",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-b-leading-dot",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-b-trailing-at",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-b-ko-joined-suffix",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-b-nfd-combining",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-b-hangul-domain",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-i-double-dot",
+        "candidate": {
+          "start": 7,
+          "end": 33
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-i-local-65-bytes",
+        "candidate": {
+          "start": 7,
+          "end": 88
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-i-label-64-bytes",
+        "candidate": {
+          "start": 7,
+          "end": 145
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-i-single-label",
+        "candidate": {
+          "start": 7,
+          "end": 25
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-f-quoted-local",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-f-domain-literal",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-f-comment",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-j-snake-field-joined",
+        "candidate": {
+          "start": 0,
+          "end": 30
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-j-logfmt-joined",
+        "candidate": {
+          "start": 28,
+          "end": 65
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-g-angle",
+        "candidate": {
+          "start": 8,
+          "end": 34
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-g-display-name",
+        "candidate": {
+          "start": 19,
+          "end": 45
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-g-email-address-label",
+        "candidate": {
+          "start": 15,
+          "end": 40
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-g-ko-address-label",
+        "candidate": {
+          "start": 18,
+          "end": 44
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-r-example-com",
+        "candidate": {
+          "start": 7,
+          "end": 25
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-example-net-sub",
+        "candidate": {
+          "start": 8,
+          "end": 28
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-example-org-upper",
+        "candidate": {
+          "start": 7,
+          "end": 26
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-test-sub",
+        "candidate": {
+          "start": 7,
+          "end": 20
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-localhost",
+        "candidate": {
+          "start": 7,
+          "end": 20
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-invalid-sub",
+        "candidate": {
+          "start": 7,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-example-single",
+        "candidate": {
+          "start": 7,
+          "end": 18
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-log-to",
+        "candidate": {
+          "start": 48,
+          "end": 68
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-config-from",
+        "candidate": {
+          "start": 12,
+          "end": 30
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-git-author",
+        "candidate": {
+          "start": 16,
+          "end": 27
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-r-tool-dry-run",
+        "candidate": {
+          "start": 41,
+          "end": 62
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "email-x-example-com-prefix",
+        "candidate": {
+          "start": 7,
+          "end": 41
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-x-example-net-hyphen",
+        "candidate": {
+          "start": 8,
+          "end": 38
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-x-test-inner",
+        "candidate": {
+          "start": 7,
+          "end": 36
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-x-notlocalhost",
+        "candidate": {
+          "start": 7,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-c-contact-support",
+        "candidate": {
+          "start": 8,
+          "end": 40
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-c-contact-press",
+        "candidate": {
+          "start": 9,
+          "end": 39
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-c-ko-contact",
+        "candidate": {
+          "start": 11,
+          "end": 38
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-c-feedback-prose",
+        "candidate": {
+          "start": 17,
+          "end": 47
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-c-footer-noreply",
+        "candidate": {
+          "start": 11,
+          "end": 41
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-c-ko-prose",
+        "candidate": {
+          "start": 10,
+          "end": 35
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-h-contact-details-support",
+        "candidate": {
+          "start": 16,
+          "end": 48
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-h-email-press",
+        "candidate": {
+          "start": 7,
+          "end": 37
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-h-ko-email-help",
+        "candidate": {
+          "start": 11,
+          "end": 38
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-n-email-example",
+        "candidate": {
+          "start": 15,
+          "end": 40
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-n-documentation-email",
+        "candidate": {
+          "start": 21,
+          "end": 46
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-n-ko-email-example",
+        "candidate": {
+          "start": 18,
+          "end": 44
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-n-ko-example-email",
+        "candidate": {
+          "start": 18,
+          "end": 44
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-n-value-neutral",
+        "candidate": {
+          "start": 7,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-n-ko-value-neutral",
+        "candidate": {
+          "start": 5,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-n-for-example",
+        "candidate": {
+          "start": 20,
+          "end": 44
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-n-bare",
+        "candidate": {
+          "start": 0,
+          "end": 25
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-e-dense-space",
+        "candidate": {
+          "start": 38,
+          "end": 61
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-e-bare-then-label",
+        "candidate": {
+          "start": 30,
+          "end": 52
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-k-https-userinfo",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-k-postgres-url",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-k-ssh-url",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-k-proxy-url",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-m-scp-remote",
+        "candidate": {
+          "start": 22,
+          "end": 46
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-m-scp-target",
+        "candidate": {
+          "start": 17,
+          "end": 45
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-m-mailto",
+        "candidate": {
+          "start": 14,
+          "end": 39
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-m-ssh-target",
+        "candidate": {
+          "start": 4,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "email-z-beside-db-url",
+        "candidate": {
+          "start": 7,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-z-json-password",
+        "candidate": {
+          "start": 11,
+          "end": 39
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "email-z-password-field",
+        "candidate": {
+          "start": 7,
+          "end": 35
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    ]
+  },
+  "populations": [
+    {
+      "id": "diagnostic-balanced",
+      "role": "development-only",
+      "denominatorUnit": "declared-assumption-unit",
+      "totalMass": 10000,
+      "rationale": [
+        "equal-mass-per-present-stratum",
+        "assumption-not-prevalence"
+      ],
+      "strata": [
+        {
+          "stratum": "email-atext-joined-context",
+          "mass": 715,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 715
+        },
+        {
+          "stratum": "email-boundary-rejected",
+          "mass": 715,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 715
+        },
+        {
+          "stratum": "email-context-negative",
+          "mass": 715,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 715
+        },
+        {
+          "stratum": "email-credential-adjacent-positive",
+          "mass": 715,
+          "sensitiveMass": 715,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-equidistant-unassociated",
+          "mass": 714,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 714
+        },
+        {
+          "stratum": "email-field-gap-unassociated",
+          "mass": 714,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 714
+        },
+        {
+          "stratum": "email-grammar-invalid",
+          "mass": 714,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 714
+        },
+        {
+          "stratum": "email-positive-independent",
+          "mass": 714,
+          "sensitiveMass": 714,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-positive-smtputf8-boundary",
+          "mass": 714,
+          "sensitiveMass": 714,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-reserved-labelled",
+          "mass": 714,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 714,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-reserved-resemblance",
+          "mass": 714,
+          "sensitiveMass": 714,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-unlabelled-collision",
+          "mass": 714,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 714
+        },
+        {
+          "stratum": "email-unsupported-form",
+          "mass": 714,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 714
+        },
+        {
+          "stratum": "email-userinfo-collision",
+          "mass": 714,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 714
+        }
+      ]
+    },
+    {
+      "id": "benign-heavy-stress",
+      "role": "evaluation-only",
+      "denominatorUnit": "declared-assumption-unit",
+      "totalMass": 10000,
+      "rationale": [
+        "benign-dominant-stress-assumption",
+        "sensitive-mass-two-percent",
+        "assumption-not-prevalence"
+      ],
+      "strata": [
+        {
+          "stratum": "email-context-negative",
+          "mass": 1400,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 1400
+        },
+        {
+          "stratum": "email-credential-adjacent-positive",
+          "mass": 100,
+          "sensitiveMass": 100,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-equidistant-unassociated",
+          "mass": 1400,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 1400
+        },
+        {
+          "stratum": "email-public-role-ambiguous",
+          "mass": 1400,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 1400
+        },
+        {
+          "stratum": "email-public-role-high-signal",
+          "mass": 100,
+          "sensitiveMass": 100,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-reserved-labelled",
+          "mass": 1400,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 1400,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-reserved-unlabelled",
+          "mass": 1400,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 1400,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "email-unlabelled-collision",
+          "mass": 1400,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 1400
+        },
+        {
+          "stratum": "email-userinfo-collision",
+          "mass": 1400,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 1400
+        }
+      ]
+    }
+  ]
+}

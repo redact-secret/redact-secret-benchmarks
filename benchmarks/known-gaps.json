@@ -5824,6 +5824,16 @@
           ]
         }
       },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/931",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-931",
+        "canonicalFixtureIds": [
+          "mailchimp-api-key-positive-bare-suffix-shape",
+          "mailchimp-api-key-positive-keyword-on-another-line",
+          "mailchimp-api-key-positive-hostname-label-with-keyword"
+        ]
+      },
       "evidence": [
         {
           "fixture": "beta8-379--mailchimp-api-key-python-requests-auth",
@@ -5901,6 +5911,16 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/932",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-932",
+        "canonicalFixtureIds": [
+          "deepgram-api-key-positive-httpie-token-header",
+          "deepgram-api-key-positive-go-last-positional-argument",
+          "cohere-api-key-positive-java-builder-token"
+        ]
       },
       "evidence": [
         {
@@ -5990,6 +6010,16 @@
           ]
         }
       },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/933",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-933",
+        "canonicalFixtureIds": [
+          "heroku-api-key-legacy-positive-authorizations-table",
+          "twilio-auth-token-positive-cli-table-auth-token-column",
+          "confluent-cloud-api-secret-legacy-positive-registry-user-info"
+        ]
+      },
       "evidence": [
         {
           "fixture": "beta8-379--heroku-api-key-legacy-authorizations-info",
@@ -6066,6 +6096,15 @@
           ]
         }
       },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/934",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-934",
+        "canonicalFixtureIds": [
+          "heroku-api-key-legacy-negative-zero-uuid-placeholder",
+          "stripe-negative-repeated-filler-placeholder"
+        ]
+      },
       "evidence": [
         {
           "fixture": "beta8-379--heroku-api-key-legacy-zero-uuid-placeholder",
@@ -6135,6 +6174,14 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/935",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-935",
+        "canonicalFixtureIds": [
+          "connection-positive-sqlalchemy-driver-ipv6-host"
+        ]
       },
       "evidence": [
         {
@@ -6370,7 +6417,7 @@
         "beta8-436d--resend-api-key-your-key-placeholder"
       ],
       "kind": "false-positive",
-      "status": "observed",
+      "status": "reviewed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -6390,7 +6437,24 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/949"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/inngest.md",
+            "https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/resend.md"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/949",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-949",
+        "canonicalFixtureIds": [
+          "contextual-negative-vendor-prefix-counting-digits",
+          "contextual-negative-vendor-prefix-sdk-counting-digits",
+          "contextual-negative-vendor-prefix-glued-your-word"
+        ]
       },
       "evidence": [
         {

@@ -91,19 +91,6 @@
       }
     },
     {
-      "fixtureId": "beta8-379--cohere-api-key-litellm-proxy-debug",
-      "corpusSection": "expanded-corpus",
-      "kind": "policy",
-      "tier": "T3",
-      "expectedSpans": 1,
-      "actualFindings": 0,
-      "outcome": "MISS",
-      "baseline": {
-        "version": "0.1.0-beta.10",
-        "outcome": null
-      }
-    },
-    {
       "fixtureId": "beta8-379--cohere-api-key-java-builder-token",
       "corpusSection": "expanded-corpus",
       "kind": "policy",
@@ -116,5 +103,23 @@
         "outcome": null
       }
     }
-  ]
+  ],
+  "splitToPolicyRecord": {
+    "knownGapRecord": "product-932-masked-key-policy",
+    "results": [
+      {
+        "fixtureId": "beta8-379--cohere-api-key-litellm-proxy-debug",
+        "corpusSection": "expanded-corpus",
+        "kind": "policy",
+        "tier": "T3",
+        "expectedSpans": 1,
+        "actualFindings": 0,
+        "outcome": "MISS",
+        "baseline": {
+          "version": "0.1.0-beta.10",
+          "outcome": null
+        }
+      }
+    ]
+  }
 }

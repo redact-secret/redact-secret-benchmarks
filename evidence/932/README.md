@@ -1,6 +1,6 @@
 # Evidence: redact-secret#932: fixed-candidate rerun of its benchmark fixtures
 
-**Result:** PASS for the fixed forms. On the fixed candidate `1db8ff3`, 3 of this gap's 4 benchmark fixtures meet their expectation. The remaining policy row stays unreported by product policy (below).
+**Result:** PASS. On the fixed candidate `1db8ff3` all 3 of this gap's benchmark fixtures meet their expectation (observed: missed). The LiteLLM row first filed under this gap is now its own `policy-decision` record (below).
 
 Gap: [redact-secret#932](https://github.com/redact-secret/redact-secret/issues/932), Deepgram/Cohere keyword-gated keys missed in same-line forms the gate does not recognise (HTTPie Token header, Go/Java SDK calls, LiteLLM log). Known-gap record
 `product-932`, fixed by [`127260c`](https://github.com/redact-secret/redact-secret/commit/127260c1bec71c181e043839a76607abbd72c6f3).
@@ -14,10 +14,9 @@ requires before `verified`. It keeps no fixture content and no matched value.
 | --- | --- | --- | --- |
 | `beta8-379--deepgram-api-key-httpie-token` | policy | missed | exact span |
 | `beta8-379--deepgram-api-key-go-client-literal` | policy | missed | exact span |
-| `beta8-379--cohere-api-key-litellm-proxy-debug` | policy | missed | missed |
 | `beta8-379--cohere-api-key-java-builder-token` | policy | missed | exact span |
 
-`beta8-379--cohere-api-key-litellm-proxy-debug` is a `policy`-kind row and stays unreported at the candidate. That is the product policy the fix recorded, not a defect of this fix: the value sits under a `masked_`-led key, which [`decision-redact-provider-named-credential-assignments`](https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md) section 2 does not treat as a credential name, and product manifest record `benchmark-gap-932` records it as a policy note. The fixture's expectation is unchanged.
+`beta8-379--cohere-api-key-litellm-proxy-debug` was first filed under this gap. It stays unreported at the candidate (outcome `MISS`, same run), and that is product policy, not a defect of this fix: the value sits under a `masked_`-led key, which [`decision-redact-provider-named-credential-assignments`](https://github.com/redact-secret/redact-secret/blob/main/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md) section 2 does not treat as a credential name, and product manifest record `benchmark-gap-932` records it as a policy note. It is split out of `product-932` into the `policy-decision` record `product-932-masked-key-policy`, so `product-932` is verified on the three fixtures the fix covers. The fixture's expectation is unchanged.
 
 Raw outcome rows for these fixtures with the run identities: [`candidate-rerun.json`](candidate-rerun.json).
 

@@ -56,6 +56,30 @@ recomputed. No prior official measurement exists to invalidate — all six
 prior dispatches failed before producing a usable report — so this amendment
 carries no historical-evidence risk.
 
+## Root cause found
+
+The added diagnostic detail (above) surfaced the real cause on the very next
+dispatch: `scripts/pii-profile-cost/cli-sample.mjs`'s `run()` writes to the
+spawned `redact-secret` binary's stdin via `child.stdin.end(payload)` with no
+`'error'` listener on that stream. `--print-pii-activation` is documented and
+tested (in the product repo) to exit without reading stdin at all. When the
+child closes its end of the pipe before the parent's write lands — a timing
+race, more likely to land under CI's scheduling jitter after 20+ minutes of
+sustained subprocess churn than on a quiet machine — the write raises `EPIPE`
+as an unhandled `'error'` event on the stream, which crashes the whole
+adapter process. This is orthogonal to `transientRetryLimit`: retrying the
+identical write hits the identical race whenever timing conditions still
+hold, which is exactly why all three retries failed identically instead of
+one succeeding.
+
+Fixed by adding `child.stdin.on('error', () => {})` before the write.
+`EPIPE` here says nothing about the sample's outcome — the child's own exit
+code, signal, and stderr (checked immediately after) remain the only
+determinant of success — so swallowing it changes no correctness check, only
+stops a harmless pipe-close race from crashing the process. Re-hashes
+`scripts/pii-profile-cost/cli-sample.mjs`; plan `contentCommitment`
+recomputed again.
+
 ## Consequences
 
 A single flaky launch no longer discards an otherwise-complete run. A

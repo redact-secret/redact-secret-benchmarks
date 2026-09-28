@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import test from 'node:test';
-import { B11_EXPECTED_ACTIVATION, B11_FAMILIES, B11_SELECTIONS, b11CaseTables, b11Commitment, b11EvidenceCommitment, b11NamedNegative,
-  b11ObservedRanges, b11Revisions, b11Selectors, expectedFamilies, validateB11Revision } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
-import { B11_FREEZE_FILES, buildB11Disposition, buildB11Report } from '../benchmarks/evaluation/domains/pii/beta11-disposition.ts';
+import { B11_EXPECTED_ACTIVATION, B11_FAMILIES, B11_PLAN_SETS, B11_SELECTIONS, b11CaseTables, b11Commitment, b11EvidenceCommitment, b11NamedNegative,
+  b11ObservedRanges, b11PlanSetOf, b11Revisions, b11Selectors, expectedFamilies, validateB11Revision } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
+import { b11FreezeFiles, buildB11Disposition, buildB11Report } from '../benchmarks/evaluation/domains/pii/beta11-disposition.ts';
 import { PII_ORACLE_PLANS, piiIdentityOracle } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -109,29 +109,34 @@ test('a public-finding disagreement between the seam and the artifact fails clos
   assert.throws(() => buildB11Report({ freeze: syntheticFreeze(), observation, operational: syntheticOperational(true), parity: null }));
 });
 
-for (const directory of candidateDirs) {
+// Every committed record, for every population plan set: `pii-beta11-*-<file version>.json` next to its freeze.
+const records = candidateDirs.flatMap(directory => Object.values(B11_PLAN_SETS).map(row => row.fileVersion)
+  .filter(version => existsSync(new URL(`evidence/901/428/${directory}/pii-beta11-freeze-${version}.json`, root))).map(version => ({ directory, version })));
+for (const { directory, version } of records) {
   const base = `evidence/901/428/${directory}/`;
-  test(`${directory}: the freeze still binds its frozen files`, () => {
-    const freeze = json(`${base}pii-beta11-freeze-v1.json`);
+  test(`${directory} (${version}): the freeze still binds its frozen files`, () => {
+    const freeze = json(`${base}pii-beta11-freeze-${version}.json`);
     assert.equal(freeze.freezeCommitment, b11Commitment({ ...freeze, freezeCommitment: undefined }));
-    assert.deepEqual(freeze.frozenInputs.map(row => row.path), B11_FREEZE_FILES.benchmarkInputs);
+    assert.equal(B11_PLAN_SETS[b11PlanSetOf(freeze)].fileVersion, version);
+    assert.deepEqual(freeze.frozenInputs.map(row => row.path), b11FreezeFiles(b11PlanSetOf(freeze)).benchmarkInputs);
     for (const row of freeze.frozenInputs) assert.equal(sha256(readFileSync(new URL(row.path, root))), row.sha256, row.path);
   });
-  if (!existsSync(new URL(`${base}pii-beta11-observation-v1.json`, root))) continue;
-  test(`${directory}: report and disposition re-score byte for byte and carry no case text`, () => {
-    const freeze = json(`${base}pii-beta11-freeze-v1.json`), observation = json(`${base}pii-beta11-observation-v1.json`),
-      operational = json(`${base}pii-beta11-operational-v1.json`);
+  if (!existsSync(new URL(`${base}pii-beta11-observation-${version}.json`, root))) continue;
+  test(`${directory} (${version}): report and disposition re-score byte for byte and carry no case text`, () => {
+    const freeze = json(`${base}pii-beta11-freeze-${version}.json`), observation = json(`${base}pii-beta11-observation-${version}.json`),
+      operational = json(`${base}pii-beta11-operational-${version}.json`);
+    const planSet = b11PlanSetOf(freeze);
     const parityFile = `evidence/901/427/mixed-parity-core-${directory.slice(5)}-plan-v2-report-v1.json`;
     const parity = existsSync(new URL(parityFile, root)) ? { file: parityFile, report: json(parityFile) } : null;
     // Scoring code may be fixed after an observation only through a new freeze; the committed report must re-derive exactly.
     const report = buildB11Report({ freeze, observation, operational, parity });
-    assert.equal(`${JSON.stringify(report, null, 2)}\n`, readFileSync(new URL(`${base}pii-beta11-report-v1.json`, root), 'utf8'));
-    assert.equal(`${JSON.stringify(buildB11Disposition(report), null, 2)}\n`, readFileSync(new URL(`${base}pii-beta11-disposition-v1.json`, root), 'utf8'));
-    const texts = B11_FAMILIES.flatMap(family => b11CaseTables(family).frozen.flatMap(row => {
+    assert.equal(`${JSON.stringify(report, null, 2)}\n`, readFileSync(new URL(`${base}pii-beta11-report-${version}.json`, root), 'utf8'));
+    assert.equal(`${JSON.stringify(buildB11Disposition(report), null, 2)}\n`, readFileSync(new URL(`${base}pii-beta11-disposition-${version}.json`, root), 'utf8'));
+    const texts = B11_FAMILIES.flatMap(family => b11CaseTables(family, planSet).frozen.flatMap(row => {
       const bytes = Buffer.from(row.input, 'utf8');
       return [row.input, ...(row.target ? [bytes.subarray(row.target.start, row.target.end).toString('utf8')] : [])];
     })).filter(text => text.length >= 8);
-    for (const file of ['pii-beta11-observation-v1.json', 'pii-beta11-report-v1.json', 'pii-beta11-disposition-v1.json', 'pii-beta11-operational-v1.json']) {
+    for (const file of ['observation', 'report', 'disposition', 'operational'].map(kind => `pii-beta11-${kind}-${version}.json`)) {
       const content = readFileSync(new URL(`${base}${file}`, root), 'utf8');
       for (const text of texts) assert.ok(!content.includes(JSON.stringify(text).slice(1, -1)), `${file} carries case text`);
     }

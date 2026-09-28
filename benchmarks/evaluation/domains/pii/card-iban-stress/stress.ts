@@ -11,18 +11,25 @@
 import { hash } from '../../../substrate/hash.ts';
 import {
   PII_ORACLE_UNAVAILABLE_REASON, piiIdentityOracleCommitment, piiOraclePlanCommitment,
-  validatePiiIdentityOracle, type PiiIdentityOracle, type PiiOraclePlan,
+  validatePiiIdentityOracle, validatePiiOracleFamily, type PiiIdentityOracle, type PiiOraclePlan,
 } from '../identity-oracle.ts';
-import { CONSTRUCTIONS, STRESS_PLAN_FILES, buildStressPlan, type StressCase, type StressView } from './authoring.ts';
+import { CONSTRUCTIONS, STRESS_PLAN_FILES, STRESS_PLAN_FILES_V2, buildStressPlan, type StressCase, type StressView } from './authoring.ts';
 import { ibanIdentity, paymentCardIdentity } from './contract-model.ts';
 import cardPlanData from './payment-card-stress-v1.json';
 import ibanPlanData from './iban-stress-v1.json';
+import cardPlanDataV2 from './payment-card-stress-v2.json';
+import ibanPlanDataV2 from './iban-stress-v2.json';
 
 export type StressFamily = keyof typeof STRESS_PLAN_FILES;
 export type StressPlan = ReturnType<typeof buildStressPlan>;
 export const STRESS_FAMILIES = Object.keys(STRESS_PLAN_FILES) as StressFamily[];
 export const stressPlans: Readonly<Record<StressFamily, StressPlan>> = Object.freeze({
   'pii:global:payment-card': cardPlanData as unknown as StressPlan, 'pii:global:iban': ibanPlanData as unknown as StressPlan,
+});
+
+/** The pii-context/v2 successors (#428). Validated by the same checks, against the v2 forms. */
+export const stressPlansV2: Readonly<Record<StressFamily, StressPlan>> = Object.freeze({
+  'pii:global:payment-card': cardPlanDataV2 as unknown as StressPlan, 'pii:global:iban': ibanPlanDataV2 as unknown as StressPlan,
 });
 
 const canonical = (value: unknown): unknown => Array.isArray(value) ? value.map(canonical) : value && typeof value === 'object' ?
@@ -53,6 +60,12 @@ export function stressOracle(plans: Readonly<Record<StressFamily, StressPlan>> =
 // ---------------------------------------------------------------------------------------------------------------
 // Plan validation
 // ---------------------------------------------------------------------------------------------------------------
+/** pii-context/v2 (#927) adds the unspaced Korean payment-card forms; IBAN is unchanged. */
+const POSITIVE_FORMS_V2: Record<StressFamily, { en: string[]; ko: string[] }> = {
+  'pii:global:payment-card': { en: ['payment card', 'card number', 'credit card number', 'debit card number', 'pan'],
+    ko: ['결제 카드', '카드 번호', '신용 카드 번호', '직불 카드 번호', '카드번호', '신용카드번호', '직불카드번호'] },
+  'pii:global:iban': { en: ['iban', 'international bank account number'], ko: ['iban', '국제 계좌번호'] },
+};
 const POSITIVE_FORMS: Record<StressFamily, { en: string[]; ko: string[] }> = {
   'pii:global:payment-card': { en: ['payment card', 'card number', 'credit card number', 'debit card number', 'pan'],
     ko: ['결제 카드', '카드 번호', '신용 카드 번호', '직불 카드 번호'] },
@@ -91,9 +104,13 @@ export function stressIndependence(plan: StressPlan): StressIndependence {
 
 export function validateStressPlan(plan: StressPlan) {
   const family = plan.family as StressFamily;
+  const v2 = (plan as { planVersion?: number }).planVersion === 2;
   if (!STRESS_FAMILIES.includes(family) || plan.schemaVersion !== 1 || plan.reportType !== 'pii-validator-collision-stress-plan' ||
-      plan.supportClaims !== false || plan.canonicalOffsetUnit !== 'utf8-byte' || plan.contract.contextVocabulary !== 'pii-context/v1')
+      plan.supportClaims !== false || plan.canonicalOffsetUnit !== 'utf8-byte' ||
+      plan.contract.contextVocabulary !== (v2 ? 'pii-context/v2' : 'pii-context/v1') ||
+      plan.issue !== (v2 ? 'redact-secret/redact-secret-benchmarks#428' : 'redact-secret/redact-secret-benchmarks#425'))
     throw new Error('Invalid #425 stress plan header');
+  const forms = v2 ? POSITIVE_FORMS_V2 : POSITIVE_FORMS;
   const identity = family === 'pii:global:payment-card' ? paymentCardIdentity : ibanIdentity;
   const ids = new Set<string>();
   const byId = new Map(plan.cases.map(row => [row.id, row] as const));
@@ -117,7 +134,7 @@ export function validateStressPlan(plan: StressPlan) {
       throw new Error(`public-finding expectation does not follow identity and sensitivity: ${row.id}`);
     if (row.sensitivity === 'sensitive') {
       const view = contextView(row.prefix);
-      if (!POSITIVE_FORMS[family][row.language].some(form => view.includes(form))) throw new Error(`sensitive case has no reviewed ${row.language} field form: ${row.id}`);
+      if (!forms[family][row.language].some(form => view.includes(form))) throw new Error(`sensitive case has no reviewed ${row.language} field form: ${row.id}`);
     }
     if (row.sensitivity === 'non-sensitive' && !model.authorityTestValue) throw new Error(`non-sensitive case is not an authority-reserved value: ${row.id}`);
     if (row.language === 'ko' && !/[가-힣]/.test(row.input)) throw new Error(`Korean case has no Korean text: ${row.id}`);
@@ -151,6 +168,19 @@ export function validateStressPlan(plan: StressPlan) {
       independence.declaredTwins < need.minDeclaredTwins)
     throw new Error(`independence requirement not met for ${family}: ${JSON.stringify(independence)}`);
   return { plan, independence, commitment: stressCommitment(plan) };
+}
+
+/** #423-format oracle families for the v2 plans, each validated by the shared family validator (same label rules). */
+export function stressOracleFamiliesV2(plans: Readonly<Record<StressFamily, StressPlan>> = stressPlansV2) {
+  return STRESS_FAMILIES.map(family => {
+    const plan = plans[family];
+    const entry = { family, findingType: plan.findingType, familyContractVersion: plan.familyContractVersion, plan: STRESS_PLAN_FILES_V2[family],
+      planCommitment: piiOraclePlanCommitment(oraclePlan(plan)),
+      referenceValidator: family === 'pii:global:payment-card' ? { id: 'luhn', version: 1 } : { id: 'iban-mod97', version: 1 },
+      labels: plan.cases.map(row => ({ caseId: row.id, ...row.oracle })) };
+    validatePiiOracleFamily(entry, oraclePlan(plan));
+    return entry;
+  });
 }
 
 export function validateStressPlans(plans: Readonly<Record<StressFamily, StressPlan>> = stressPlans) {

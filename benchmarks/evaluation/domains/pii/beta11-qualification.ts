@@ -19,9 +19,10 @@
 import { hash } from '../../substrate/hash.ts';
 import { proportion, type MechanicalAccountingConfig, type MechanicalPublished } from '../../../accounting/shared/primitives.ts';
 import { PII_ORACLE_PLANS, evaluatePiiIdentityOracle, piiIdentityOracle, piiOraclePlanCommitment } from './identity-oracle.ts';
-import { C1_POPULATION_PLANS, type C1PopulationPlan } from './email-network-population.ts';
-import { stressPlans } from './card-iban-stress/stress.ts';
-import { materializeC3Case, type C3File } from './ssn-phone-stress.ts';
+import { C1_POPULATION_PLANS, C1_POPULATION_PLANS_V2, type C1PopulationPlan } from './email-network-population.ts';
+import { stressPlans, stressPlansV2 } from './card-iban-stress/stress.ts';
+import { c3FilesV3, materializeC3Case, type C3File } from './ssn-phone-stress.ts';
+import { B11_V2_PLAN_FILES } from './beta11-population-v2.ts';
 import usSsnStress from './us-ssn-stress-v2.json';
 import phoneStress from './phone-stress-v2.json';
 import revisionData from './pii-context-v2-expectation-revisions-v1.json';
@@ -46,6 +47,24 @@ export const B11_POPULATION_PLAN_FILES: Readonly<Record<B11Family, string>> = Ob
   'pii:us:ssn': 'benchmarks/evaluation/domains/pii/us-ssn-stress-v2.json',
   'pii:global:phone': 'benchmarks/evaluation/domains/pii/phone-stress-v2.json',
 });
+/**
+ * Population plan sets. `b11-population-v1` is the frozen #424/#425/#426 plans plus the two reviewed overlays (the
+ * #426 corrections and the pii-context/v2 revisions); every record written before plan set v2 (a freeze without a
+ * `populationPlanSet` field) re-scores under it. `b11-population-v2` is the #428 successor plans
+ * (`beta11-population-v2.ts`): the overlays are native authored truth there, so no overlay is applied.
+ */
+export const B11_PLAN_SETS = Object.freeze({
+  'b11-population-v1': { populationPlanFiles: B11_POPULATION_PLAN_FILES, reviewedOverlays: true, fileVersion: 'v1' },
+  'b11-population-v2': { populationPlanFiles: B11_V2_PLAN_FILES as Readonly<Record<B11Family, string>>, reviewedOverlays: false, fileVersion: 'v2' },
+});
+export type B11PlanSet = keyof typeof B11_PLAN_SETS;
+/** The plan set a new freeze binds. */
+export const B11_CURRENT_PLAN_SET: B11PlanSet = 'b11-population-v2';
+export const b11PlanSetOf = (freeze: { populationPlanSet?: string } | null | undefined): B11PlanSet => {
+  const planSet = (freeze?.populationPlanSet ?? 'b11-population-v1') as B11PlanSet;
+  if (!Object.hasOwn(B11_PLAN_SETS, planSet)) throw new Error(`unknown population plan set ${planSet}`);
+  return planSet;
+};
 export const B11_POPULATION_OWNER: Readonly<Record<B11Family, string>> = Object.freeze({
   'pii:global:network-address': '#424', 'pii:global:email': '#424', 'pii:global:payment-card': '#425', 'pii:global:iban': '#425',
   'pii:us:ssn': '#426', 'pii:global:phone': '#426',
@@ -118,9 +137,10 @@ function oracleCases(family: B11Family): B11Case[] {
     twinOf: null, scored: true, lineSensitive: [], revision: null }));
 }
 
-function populationCases(family: B11Family): B11Case[] {
+function populationCases(family: B11Family, planSet: B11PlanSet): B11Case[] {
+  const v2 = planSet === 'b11-population-v2';
   if (family === 'pii:global:email' || family === 'pii:global:network-address') {
-    const plan: C1PopulationPlan = C1_POPULATION_PLANS[family].plan;
+    const plan: C1PopulationPlan = (v2 ? C1_POPULATION_PLANS_V2 : C1_POPULATION_PLANS)[family].plan;
     const labels = new Map(plan.oracle.labels.map(row => [row.caseId, row] as const));
     const strata = new Map(plan.strata.map(row => [row.id, row] as const));
     return plan.plan.cases.map(row => {
@@ -134,12 +154,12 @@ function populationCases(family: B11Family): B11Case[] {
     });
   }
   if (family === 'pii:global:payment-card' || family === 'pii:global:iban') {
-    return (stressPlans[family].cases as any[]).map(row => ({ id: row.id, source: 'population-plan' as const, views: [...row.views],
+    return ((v2 ? stressPlansV2 : stressPlans)[family].cases as any[]).map(row => ({ id: row.id, source: 'population-plan' as const, views: [...row.views],
       language: row.language, input: row.input, identity: row.oracle.identity, sensitivity: row.oracle.sensitivity,
       candidate: row.oracle.candidate, target: row.oracle.candidate, expectedFinding: row.expected.publicFinding,
       axis: row.evidenceClass, twinOf: row.twinOf ?? null, scored: true, lineSensitive: [], revision: null }));
   }
-  const file = (family === 'pii:us:ssn' ? usSsnStress : phoneStress) as unknown as C3File;
+  const file = (v2 ? c3FilesV3[family].file : family === 'pii:us:ssn' ? usSsnStress : phoneStress) as unknown as C3File;
   return file.cases.map(row => {
     const built = materializeC3Case(row);
     return { id: row.id, source: 'population-plan' as const, views: [row.view], language: row.language, input: built.input,
@@ -214,9 +234,29 @@ interface C3CorrectionRow { family: string; caseId: string; reasonCode: string;
   corrected: { publicFinding: boolean; oracle: { identity: string; sensitivity: string } } }
 export const b11C3Corrections = (c3CorrectionData as unknown as { corrections: C3CorrectionRow[] }).corrections;
 
-/** The two case tables for one family. `reviewed` = frozen + #426 corrections + v2 contract revisions. */
-export function b11CaseTables(family: B11Family) {
-  const frozen = [...oracleCases(family), ...populationCases(family)];
+/** Relabelled predecessor cases a plan-set-v2 plan records in its `derivedFrom` (native truth, not an overlay). */
+function v2Relabels(family: B11Family): Map<string, string> {
+  const file = B11_V2_PLAN_FILES[family];
+  const plan = family === 'pii:global:email' || family === 'pii:global:network-address' ? C1_POPULATION_PLANS_V2[family].plan :
+    family === 'pii:global:payment-card' || family === 'pii:global:iban' ? stressPlansV2[family] : c3FilesV3[family].file;
+  const derived = (plan as { derivedFrom?: { relabeled: Array<{ caseId: string; basis: string }> } }).derivedFrom;
+  if (!derived) throw new Error(`${file} has no derivation record`);
+  return new Map(derived.relabeled.map(row => [row.caseId, row.basis] as const));
+}
+
+/**
+ * The two case tables for one family. Plan set v1: `reviewed` = frozen + #426 corrections + v2 contract revisions.
+ * Plan set v2: the plans already carry that truth, so `reviewed` equals `frozen`; a relabelled predecessor case
+ * names its basis in `revision` on both tables.
+ */
+export function b11CaseTables(family: B11Family, planSet: B11PlanSet = 'b11-population-v1') {
+  if (!B11_PLAN_SETS[planSet].reviewedOverlays) {
+    const relabels = v2Relabels(family);
+    const frozen = [...oracleCases(family), ...populationCases(family, planSet).map(row => ({ ...row, revision: relabels.get(row.id) ?? null }))];
+    const reviewed = frozen.map(row => ({ ...row, views: [...row.views], lineSensitive: [...row.lineSensitive] }));
+    return { frozen, reviewed };
+  }
+  const frozen = [...oracleCases(family), ...populationCases(family, planSet)];
   const reviewed = frozen.map(row => ({ ...row, views: [...row.views], lineSensitive: [...row.lineSensitive] }));
   for (const correction of b11C3Corrections.filter(row => row.family === family)) {
     const row = reviewed.find(item => item.source === 'population-plan' && item.id === correction.caseId);
@@ -236,8 +276,8 @@ export function b11CaseTables(family: B11Family) {
 }
 
 /** Every distinct range the observation must report `inOutput` for: frozen and reviewed targets plus line spans. */
-export function b11ObservedRanges(family: B11Family) {
-  const { frozen, reviewed } = b11CaseTables(family);
+export function b11ObservedRanges(family: B11Family, planSet: B11PlanSet = 'b11-population-v1') {
+  const { frozen, reviewed } = b11CaseTables(family, planSet);
   return frozen.map((row, index) => {
     const ranges = [row.target, reviewed[index].target, ...row.lineSensitive].filter((range): range is B11Range => range !== null);
     return [...new Map(ranges.map(range => [`${range.start}-${range.end}`, range])).values()].sort((a, b) => a.start - b.start || a.end - b.end);
@@ -413,5 +453,5 @@ export function b11IdentityOnly(family: B11Family, input: { evidence: Record<str
     failingCases: outcomes.filter(row => !['correct', 'identity-only-compared'].includes(row.outcome)), gateStatus: gate as 'met' | 'not-met' };
 }
 
-export const b11PlanCommitments = () => Object.fromEntries(B11_FAMILIES.map(family => [family, {
-  oraclePlan: piiOraclePlanCommitment(PII_ORACLE_PLANS[family]), populationPlanFile: B11_POPULATION_PLAN_FILES[family] }]));
+export const b11PlanCommitments = (planSet: B11PlanSet = 'b11-population-v1') => Object.fromEntries(B11_FAMILIES.map(family => [family, {
+  oraclePlan: piiOraclePlanCommitment(PII_ORACLE_PLANS[family]), populationPlanFile: B11_PLAN_SETS[planSet].populationPlanFiles[family] }]));

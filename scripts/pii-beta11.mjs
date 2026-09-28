@@ -7,11 +7,14 @@
  * 1. No committed freeze for that commit yet: build the candidate from a temporary detached worktree (the core
  *    `benchmark-candidate` recipe plus the maintainer-local identity example of redact-secret#910), build the
  *    evidence/879 operational baseline, fetch the commit's CI artifact-qualification inventory when it exists, and
- *    write `evidence/901/428/core-<sha12>/pii-beta11-freeze-v1.json`. It then stops: commit the freeze.
+ *    write `evidence/901/428/core-<sha12>/pii-beta11-freeze-<v>.json`. It then stops: commit the freeze.
  * 2. Freeze committed and the tree clean: verify every frozen hash, observe every frozen case on the installed Node
  *    addon and forced Wasm under every selection (candidate and the lockfile beta.10 release), run the identity seam
  *    on the six oracle plans, measure runtime and artifact size, and write the observation, operational and report
  *    files plus the six-row disposition next to the freeze.
+ *
+ * `<v>` is the file version of the population plan set the run binds (`--plan-set`, default the current set):
+ * `v1` for `b11-population-v1` (the interim record), `v2` for `b11-population-v2` (the #428 successor plans).
  *
  * Nothing written carries an input, candidate value or sanitized text: case ids, UTF-8 ranges, booleans, counts and
  * digests only. The protected partition is never read here.
@@ -25,9 +28,9 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { brotliCompressSync, constants as zlibConstants, gzipSync } from 'node:zlib';
-import { B11_CANDIDATE, B11_FAMILIES, B11_SELECTIONS, activationProblem, b11CaseTables, b11ObservedRanges, b11Selectors,
-  b11EvidenceCommitment, b11Commitment } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
-import { B11_FREEZE_FILES, B11_BASELINE_879, b11ProtectedEpochs, buildB11Report, buildB11Disposition, b11WasmRole,
+import { B11_CANDIDATE, B11_CURRENT_PLAN_SET, B11_FAMILIES, B11_PLAN_SETS, B11_SELECTIONS, activationProblem, b11CaseTables, b11ObservedRanges,
+  b11PlanSetOf, b11Selectors, b11EvidenceCommitment, b11Commitment } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
+import { b11FreezeFiles, B11_BASELINE_879, b11ProtectedEpochs, buildB11Report, buildB11Disposition, b11WasmRole,
   b11SizeBudgetRows } from '../benchmarks/evaluation/domains/pii/beta11-disposition.ts';
 import { PII_PRODUCT_IDENTITY_FORMAT, PII_ORACLE_PLANS } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
 import { piiArrivalCommitment } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
@@ -38,16 +41,21 @@ const exec = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const args = Object.fromEntries(process.argv.slice(2).map(argument => {
-  const match = /^--(core-commit|core-repo|role|work|samples)=(.+)$/.exec(argument);
+  const match = /^--(core-commit|core-repo|role|work|samples|plan-set)=(.+)$/.exec(argument);
   if (!match) throw new Error(`Unknown argument ${argument}`); return [match[1], match[2]];
 }));
 if (!/^[0-9a-f]{40}$/.test(args['core-commit'] ?? '') || !path.isAbsolute(args['core-repo'] ?? '') || !['interim', 'final'].includes(args.role))
-  throw new Error('Usage: npm run pii:beta11 -- --core-commit=<40-hex> --core-repo=<absolute path> --role=interim|final [--work=<absolute dir>]');
+  throw new Error('Usage: npm run pii:beta11 -- --core-commit=<40-hex> --core-repo=<absolute path> --role=interim|final [--work=<absolute dir>] [--plan-set=<id>]');
+// The population plan set this run binds (default: the current one). Its file version names every record it writes.
+const planSet = args['plan-set'] ?? B11_CURRENT_PLAN_SET;
+if (!Object.hasOwn(B11_PLAN_SETS, planSet)) throw new Error(`Unknown --plan-set ${planSet}`);
+const fileVersion = B11_PLAN_SETS[planSet].fileVersion;
+const freezeFiles = b11FreezeFiles(planSet);
 const commit = args['core-commit'], sha12 = commit.slice(0, 12);
 const workRoot = path.resolve(args.work ?? path.join(root, 'results-output/pii-beta11'));
 const work = path.join(workRoot, `core-${sha12}`);
 const evidenceDir = path.join(root, 'evidence/901/428', `core-${sha12}`);
-const freezeFile = path.join(evidenceDir, 'pii-beta11-freeze-v1.json');
+const freezeFile = path.join(evidenceDir, `pii-beta11-freeze-${fileVersion}.json`);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const fileSha256 = async file => sha256(await readFile(file));
 const run = async (command, argv, options = {}) => (await exec(command, argv, { maxBuffer: 64 * 1024 * 1024, timeout: 30 * 60_000,
@@ -144,7 +152,7 @@ async function ciQualification() {
 async function contractHashes() {
   const show = async (ref, file) => sha256(Buffer.from(await run('git', ['-C', args['core-repo'], 'show', `${ref}:${file}`]).catch(() => ''), 'utf8'));
   const beta10 = 'af7f863f29f9fe482dd233c8b7bc5b77dc427314';
-  return Promise.all(B11_FREEZE_FILES.productContracts.map(async file => {
+  return Promise.all(freezeFiles.productContracts.map(async file => {
     const [atCandidate, atBeta10] = await Promise.all([show(commit, file), show(beta10, file)]);
     return { path: file, sha256: atCandidate, sha256AtBeta10: atBeta10 === sha256('') ? null : atBeta10,
       changedSinceBeta10: atBeta10 !== atCandidate };
@@ -166,7 +174,7 @@ async function freeze() {
   const hashed = async list => Promise.all(list.map(async file => ({ path: file, sha256: await fileSha256(path.join(root, file)) })));
   const value = {
     schemaVersion: 1, reportType: 'pii-beta11-freeze', issue: 'redact-secret/redact-secret-benchmarks#428', productIssue: 'redact-secret/redact-secret#901',
-    supportClaims: false, role: args.role,
+    supportClaims: false, ...(planSet === 'b11-population-v1' ? {} : { populationPlanSet: planSet }), role: args.role,
     roleNote: args.role === 'interim' ? 'Interim evidence: not the final exact beta.11 candidate. redact-secret#937 (PII runtime split out of the default Wasm builds, on #929) changes the Wasm artifact set after this commit.' :
       'Declared final exact beta.11 candidate by the orchestrator.',
     candidate: { repository: B11_CANDIDATE.repository, sourceCommit: commit, versionString: candidate.version, released: false,
@@ -184,8 +192,8 @@ async function freeze() {
       verification: 'package-lock.json sha512 integrity' },
     benchmark: { repository: 'redact-secret/redact-secret-benchmarks', baseRevision: await git('rev-parse', 'HEAD'), lockfileSha256 },
     contracts: await contractHashes(),
-    frozenInputs: await hashed(B11_FREEZE_FILES.benchmarkInputs),
-    evaluationSchema: await hashed(B11_FREEZE_FILES.evaluationSchema),
+    frozenInputs: await hashed(freezeFiles.benchmarkInputs),
+    evaluationSchema: await hashed(freezeFiles.evaluationSchema),
     activation: (await import('../benchmarks/evaluation/domains/pii/beta11-qualification.ts')).B11_EXPECTED_ACTIVATION,
     protectedEpochs: [],
     freezeCommitment: '',
@@ -203,7 +211,8 @@ async function verifyFreeze() {
   if (await git('status', '--porcelain')) throw new Error('benchmark tree is not clean; measure only from the committed freeze');
   await git('ls-files', '--error-unmatch', path.relative(root, freezeFile));
   const frozen = JSON.parse(await readFile(freezeFile, 'utf8'));
-  if (frozen.freezeCommitment !== b11Commitment({ ...frozen, freezeCommitment: undefined }) || frozen.candidate.sourceCommit !== commit)
+  if (frozen.freezeCommitment !== b11Commitment({ ...frozen, freezeCommitment: undefined }) || frozen.candidate.sourceCommit !== commit ||
+      b11PlanSetOf(frozen) !== planSet)
     throw new Error('freeze commitment mismatch');
   for (const row of [...frozen.frozenInputs, ...frozen.evaluationSchema])
     if (await fileSha256(path.join(root, row.path)) !== row.sha256) throw new Error(`frozen file changed after the freeze: ${row.path}`);
@@ -273,7 +282,7 @@ function observeCases(module, family, table, rangesPerCase) {
 async function observeSide(side, tarballs) {
   const families = [];
   for (const family of B11_FAMILIES) {
-    const { frozen } = b11CaseTables(family), ranges = b11ObservedRanges(family);
+    const { frozen } = b11CaseTables(family, planSet), ranges = b11ObservedRanges(family, planSet);
     const lanes = [];
     for (const lane of ['node-addon', 'node-wasm']) for (const selection of B11_SELECTIONS(family)) {
       const selectors = b11Selectors(family, selection);
@@ -294,7 +303,7 @@ async function seam(example, frozen, tarballs, candidateFamilies) {
   const artifactSetCommitment = piiArrivalCommitment(components);
   const rows = [];
   for (const family of B11_FAMILIES) {
-    const cases = b11CaseTables(family).frozen.filter(row => row.source === 'oracle-plan');
+    const cases = b11CaseTables(family, planSet).frozen.filter(row => row.source === 'oracle-plan');
     const jsonl = cases.map(row => JSON.stringify({ id: row.id, family, text: row.input, candidate: row.candidate })).join('\n') + '\n';
     const stdout = await new Promise((resolve, reject) => {
       const child = execFile(example, ['--family', family], { maxBuffer: 16 * 1024 * 1024 }, (error, out) => error ? reject(error) : resolve(out));
@@ -379,14 +388,14 @@ async function measure() {
   const operationalEvidence = { schemaVersion: 1, reportType: 'pii-beta11-operational', supportClaims: false, issue: 'redact-secret/redact-secret-benchmarks#428',
     role: frozen.role, sourceCommit: commit, freezeCommitment: frozen.freezeCommitment, ...cost, artifactCommitment: '' };
   operationalEvidence.artifactCommitment = b11EvidenceCommitment(operationalEvidence);
-  await writeJson(path.join(evidenceDir, 'pii-beta11-observation-v1.json'), observation);
-  await writeJson(path.join(evidenceDir, 'pii-beta11-operational-v1.json'), operationalEvidence);
+  await writeJson(path.join(evidenceDir, `pii-beta11-observation-${fileVersion}.json`), observation);
+  await writeJson(path.join(evidenceDir, `pii-beta11-operational-${fileVersion}.json`), operationalEvidence);
   const parityFile = path.join(root, 'evidence/901/427', `mixed-parity-core-${sha12}-plan-v2-report-v1.json`);
   const parity = existsSync(parityFile) ? { file: path.relative(root, parityFile), report: JSON.parse(await readFile(parityFile, 'utf8')) } : null;
   const report = buildB11Report({ freeze: frozen, observation, operational: operationalEvidence, parity });
-  await writeJson(path.join(evidenceDir, 'pii-beta11-report-v1.json'), report);
+  await writeJson(path.join(evidenceDir, `pii-beta11-report-${fileVersion}.json`), report);
   const disposition = buildB11Disposition(report);
-  await writeJson(path.join(evidenceDir, 'pii-beta11-disposition-v1.json'), disposition);
+  await writeJson(path.join(evidenceDir, `pii-beta11-disposition-${fileVersion}.json`), disposition);
   for (const row of disposition.families) console.log(`${row.family}: ${row.status} (${row.failedOrWithheldGates.map(gate => gate.gate).join(', ')})`);
   console.log(`protected eligibility: ${disposition.protectedPartition.eligibleFamilies.length ? disposition.protectedPartition.eligibleFamilies.join(', ') : 'none'}`);
 }

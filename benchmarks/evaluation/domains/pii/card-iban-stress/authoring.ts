@@ -659,3 +659,106 @@ export function buildStressPlan(family: 'pii:global:payment-card' | 'pii:global:
   };
   return { ...plan, planSeed: hash(`redact-secret-benchmarks-425-${card ? 'card' : 'iban'}`) };
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+// Plan v2 (benchmarks #428): the pii-context/v2 successor of each frozen #425 plan.
+//
+// The v1 plans stay committed and unchanged. A v2 plan keeps every v1 case (same id, construction and input), carries
+// the pre-registered pii-context/v2 expectation revisions of `pii-context-v2-expectation-revisions-v1.json` as native
+// authored truth, and appends new independent cases:
+// - IBAN: four context twin pairs on the documentation-control axis (21, diagnostic and benign-heavy) so the benign-heavy
+//   view has a measurable sensitive side (pii-v1 minDenominator 4) and a context-discrimination denominator;
+// - payment card: the #927 unspaced Korean forms (`카드번호`, `신용카드번호`, `직불카드번호`) with a Korean example twin.
+// Every appended value is a fresh `425` marker construction at a serial no v1 case uses; nothing reads detector output.
+// ---------------------------------------------------------------------------------------------------------------
+export const STRESS_PLAN_FILES_V2 = Object.freeze({
+  'pii:global:payment-card': 'benchmarks/evaluation/domains/pii/card-iban-stress/payment-card-stress-v2.json',
+  'pii:global:iban': 'benchmarks/evaluation/domains/pii/card-iban-stress/iban-stress-v2.json',
+});
+export const STRESS_V2_CONTRACT = Object.freeze({ repository: 'redact-secret/redact-secret', sourceCommit: '79c0a66119fb72931fda9adddbe2973a52bb4833' });
+
+type V2Revision = { family: string; caseId: string; issue: string; rule: string; v2: { candidate: { start: number; end: number } } };
+function applyV2Revisions(specs: StressSpec[], revisions: readonly V2Revision[]) {
+  return specs.map(spec => {
+    const revision = revisions.find(row => row.caseId === spec.id);
+    if (!revision) return spec;
+    const start = bytes(spec.prefix), end = start + bytes(spec.display);
+    if (revision.v2.candidate.start !== start || revision.v2.candidate.end !== end) throw new Error(`v2 revision range is not the authored display: ${spec.id}`);
+    // A benign evidence class cannot hold a sensitive case: a revised context negative becomes a sensitive synthetic.
+    const evidenceClass: StressEvidenceClass = spec.evidenceClass === 'context-negative' ? 'sensitive-synthetic' : spec.evidenceClass;
+    return { ...spec, evidenceClass, classes: [...spec.classes, `pii-context-v2:${revision.rule}`], identity: 'valid' as const, sensitivity: 'sensitive' as const };
+  });
+}
+
+function cardCasesV2Extra(): StressSpec[] {
+  const A18 = 'card-korean-field-and-example-context';
+  const unspaced = cardTail('4', 16, 70);
+  return [
+    pos({ id: 'card-ko-v2-pos-unspaced-card-number', axis: A18, language: 'ko', construction: { id: TAIL, serial: 70 }, prefix: '카드번호=', display: unspaced,
+      classes: ['validator-valid-sensitive', 'pii-context-v2-added-form'] }),
+    pos({ id: 'card-ko-v2-pos-unspaced-credit-card-number', axis: A18, language: 'ko', construction: { id: HEAD, serial: 71 }, prefix: '신용카드번호: ',
+      display: cardHead('5104', 16, 71), classes: ['validator-valid-sensitive', 'pii-context-v2-added-form'] }),
+    pos({ id: 'card-ko-v2-pos-unspaced-debit-card-number', axis: A18, language: 'ko', construction: { id: TAIL, serial: 72 }, prefix: '직불카드번호 = ',
+      display: groupDisplay(cardTail('37', 15, 72), [4, 6, 5], ' '), classes: ['validator-valid-sensitive', 'pii-context-v2-added-form'] }),
+    { id: 'card-ko-v2-example-before-unspaced-label', axis: A18, evidenceClass: 'context-negative', classes: ['named-negative-context'], language: 'ko',
+      construction: { id: TAIL, serial: 70 }, prefix: '예시 카드번호=', display: unspaced, identity: 'valid', sensitivity: 'not-established', crossFamily: 'none-expected',
+      twinOf: 'card-ko-v2-pos-unspaced-card-number', varies: 'context' },
+  ];
+}
+
+function ibanCasesV2Extra(): StressSpec[] {
+  const A21 = 'iban-reference-documentation-controls';
+  const pair = (id: string, prefix: string, display: string, construction: { id: string; serial: number }, language: 'en' | 'ko',
+    negative: { prefix: string; suffix?: string }): StressSpec[] => [
+    pos({ id: `iban-v2-control-pos-${id}`, axis: A21, language, construction, prefix, display, classes: ['validator-valid-sensitive', 'documentation-control-twin-base'] }),
+    { id: `iban-v2-control-neg-${id}`, axis: A21, evidenceClass: 'context-negative', classes: ['documentation-example-public-absence'], language, construction,
+      prefix: negative.prefix, display, ...(negative.suffix ? { suffix: negative.suffix } : {}), identity: 'valid', sensitivity: 'not-established',
+      crossFamily: 'none-expected', twinOf: `iban-v2-control-pos-${id}`, varies: 'context' },
+  ];
+  const se = ibanSynx('SE', 24, 60), ch = ibanNumeric('CH', 21, 61), be = ibanSynx('BE', 16, 62), ie = ibanNumeric('IE', 22, 63);
+  return [
+    ...pair('se24-example-before', 'iban: ', se, { id: SYNX, serial: 60 }, 'en', { prefix: 'example iban: ' }),
+    ...pair('ch21-documentation-after', 'IBAN = ', ch, { id: NUM, serial: 61 }, 'en', { prefix: 'IBAN = ', suffix: ' documentation' }),
+    ...pair('be16-documentation-before', 'international bank account number: ', be, { id: SYNX, serial: 62 }, 'en',
+      { prefix: 'documentation international bank account number: ' }),
+    ...pair('ie22-korean-example-after', '국제 계좌번호 = ', printIban(ie), { id: NUM, serial: 63 }, 'ko', { prefix: '국제 계좌번호 = ', suffix: ' 예시' }),
+  ];
+}
+
+/** Build a v2 stress plan. `v1Plan` is the committed frozen v1 plan (its commitment is recorded, never recomputed from code). */
+export function buildStressPlanV2(family: 'pii:global:payment-card' | 'pii:global:iban', input: { revisions: readonly V2Revision[];
+  v1FileSha256: string; v1PlanCommitment: string }) {
+  const card = family === 'pii:global:payment-card';
+  const v1 = buildStressPlan(family);
+  const revisions = input.revisions.filter(row => row.family === family);
+  const baseSpecs = card ? cardCases() : ibanCases();
+  if (baseSpecs.length !== v1.cases.length) throw new Error('v1 authoring drift');
+  const extra = card ? cardCasesV2Extra() : ibanCasesV2Extra();
+  const specs = [...applyV2Revisions(baseSpecs, revisions), ...extra];
+  const axes = card ? CARD_AXES : IBAN_AXES;
+  const cases = specs.map(spec => materialize(spec, axes, card ? 'card' : 'iban'));
+  const nonGoals = v1.nonGoals.filter(row => row.id !== 'korean-unspaced-label');
+  const contractNotes = [
+    { id: 'context-equidistance-v2', basis: 'pii-context/v2 (#924): a field label is compared only with the candidates that follow it, so a field label right after an earlier same-line value still associates with the value after it. The v1 equidistance cases are relabelled sensitive.' },
+    ...v1.contractNotes.filter(row => row.id !== 'context-equidistance').map(row => ({ ...row, basis: row.basis.replace('pii-context/v1', 'pii-context/v2 (unchanged from v1)') })),
+    ...(card ? [{ id: 'korean-unspaced-label-v2', basis: 'pii-context/v2 (#927) adds 카드번호, 신용카드번호 and 직불카드번호 to ko-payment-card-field; payment-card-v1 is amended in place to name them.' }] : []),
+  ];
+  const plan = {
+    schemaVersion: 1, reportType: 'pii-validator-collision-stress-plan', planVersion: 2, supportClaims: false,
+    issue: 'redact-secret/redact-secret-benchmarks#428', parentLedger: LEDGER, family,
+    findingType: v1.findingType, familyContractVersion: 1,
+    contract: { ...STRESS_V2_CONTRACT, file: v1.contract.file, contextVocabulary: 'pii-context/v2' },
+    derivedFrom: { id: `${card ? 'payment-card' : 'iban'}-stress-v1`, file: STRESS_PLAN_FILES[family], fileSha256: input.v1FileSha256,
+      planCommitment: input.v1PlanCommitment,
+      method: 'Every v1 case is kept with its id, construction and input. The pre-registered pii-context/v2 expectation revisions become native authored truth; new independent cases are appended. No case was added, removed or relabelled from a scan.',
+      relabeled: revisions.map(row => ({ caseId: row.caseId, from: 'valid/not-established', to: 'valid/sensitive', basis: `${row.issue}:${row.rule}` })),
+      addedCases: extra.map(row => row.id) },
+    profile: v1.profile, canonicalOffsetUnit: 'utf8-byte', authority: v1.authority, authorityGaps: v1.authorityGaps,
+    constructions: Object.entries(CONSTRUCTIONS).filter(([id]) => cases.some(row => row.construction.id === id)).map(([id, method]) => ({ id, method })),
+    axes, nonGoals, contractNotes,
+    independenceRequirements: v1.independenceRequirements,
+    populations: populations(cases),
+    cases,
+  };
+  return { ...plan, planSeed: hash(`redact-secret-benchmarks-428-${card ? 'card' : 'iban'}`) };
+}

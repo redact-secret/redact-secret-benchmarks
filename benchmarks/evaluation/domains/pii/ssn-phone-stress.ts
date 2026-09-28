@@ -4,6 +4,8 @@ import { PII_ORACLE_CONTEXT_VOCABULARY, piiOraclePlanCommitment, validatePiiOrac
   type PiiOracleIdentity, type PiiOracleSensitivity } from './identity-oracle.ts';
 import usSsnStress from './us-ssn-stress-v2.json';
 import phoneStress from './phone-stress-v2.json';
+import usSsnStressV3 from './us-ssn-stress-v3.json';
+import phoneStressV3 from './phone-stress-v3.json';
 import usSsnPlanV1 from './us-ssn-qualification-v1.json';
 import phonePlanV1 from './phone-qualification-v1.json';
 
@@ -45,12 +47,18 @@ export interface C3Population {
   baseRate: { kind: 'declared-assumption'; totalMass: number; sensitiveMass: number; nonSensitiveMass: number; notEstablishedMass: number; rationale: string };
 }
 export interface C3File {
-  schemaVersion: 1; id: string; issue: 426; family: string; findingType: string; familyContractVersion: number;
+  schemaVersion: 1; id: string; issue: 426 | 428; family: string; findingType: string; familyContractVersion: number;
   contextVocabulary: string; contract: { repository: string; commit: string; file: string };
   referenceValidator: { id: string; version: number } | null;
   constructionPolicy: Record<string, string>; nonGoals: string[];
   populations: C3Population[]; cases: C3Case[]; frozen: { planCommitment: string };
+  /** v3 plans (#428) only: the frozen predecessor, the #426 corrections carried as native truth, and the appended cases. */
+  derivedFrom?: { id: string; file: string; fileSha256: string; planCommitment: string; method: string;
+    relabeled: Array<{ caseId: string; from: string; to: string; basis: string }>; addedCases: string[] };
 }
+/** The pii-context/v2 plan version: #428, v2 vocabulary, a `derivedFrom` record. */
+export const C3_V2_ISSUE = 428;
+export const C3_V2_CONTEXT_VOCABULARY = 'pii-context/v2';
 
 // -----------------------------------------------------------------------------------------------------------
 // Deterministic synthetic constructions. They are derived from a seed only; nothing is looked up.
@@ -166,10 +174,22 @@ const exactKeys = (value: unknown, keys: string[]) => value !== null && typeof v
   Object.keys(value).sort().join(',') === [...keys].sort().join(',');
 
 export function validateC3File(file: C3File, backlog: Array<{ order: number; family: string; owner: string; views: string[]; languages: string[] }>, planPath: string) {
+  const v3 = file.issue === C3_V2_ISSUE;
   if (!exactKeys(file, ['schemaVersion', 'id', 'issue', 'family', 'findingType', 'familyContractVersion', 'contextVocabulary', 'contract',
-    'referenceValidator', 'constructionPolicy', 'nonGoals', 'populations', 'cases', 'frozen']) || file.schemaVersion !== 1 || file.issue !== 426 ||
-      !C3_BACKLOG[file.family] || file.contextVocabulary !== PII_ORACLE_CONTEXT_VOCABULARY || !/^[a-f0-9]{40}$/.test(file.contract?.commit ?? ''))
+    'referenceValidator', 'constructionPolicy', 'nonGoals', 'populations', 'cases', 'frozen', ...(v3 ? ['derivedFrom'] : [])]) ||
+      file.schemaVersion !== 1 || (file.issue !== 426 && !v3) ||
+      !C3_BACKLOG[file.family] || file.contextVocabulary !== (v3 ? C3_V2_CONTEXT_VOCABULARY : PII_ORACLE_CONTEXT_VOCABULARY) ||
+      !/^[a-f0-9]{40}$/.test(file.contract?.commit ?? ''))
     throw new Error('Invalid #426 stress plan');
+  if (v3) {
+    const prior = Object.values(c3Files).find(entry => entry.path === file.derivedFrom?.file);
+    if (!prior || prior.file.family !== file.family || prior.file.frozen.planCommitment !== file.derivedFrom!.planCommitment ||
+        !/^[a-f0-9]{64}$/.test(file.derivedFrom!.fileSha256) ||
+        file.derivedFrom!.addedCases.some(id => !file.cases.some(row => row.id === id) || prior.file.cases.some(row => row.id === id)) ||
+        prior.file.cases.some(row => !file.cases.some(item => item.id === row.id && JSON.stringify(item.candidate) === JSON.stringify(row.candidate) &&
+          item.prefix === row.prefix && item.suffix === row.suffix)))
+      throw new Error('The #428 stress plan does not keep its frozen predecessor');
+  }
   const ids = new Set<string>();
   for (const row of file.cases) {
     if (!exactKeys(row, ['id', 'axis', 'view', 'language', 'construction', 'prefix', 'candidate', 'suffix', 'twinOf', 'expected', 'oracle']) ||
@@ -231,6 +251,11 @@ export function validateC3File(file: C3File, backlog: Array<{ order: number; fam
 export const c3Files = Object.freeze({
   'pii:us:ssn': { file: usSsnStress as unknown as C3File, path: 'benchmarks/evaluation/domains/pii/us-ssn-stress-v2.json' },
   'pii:global:phone': { file: phoneStress as unknown as C3File, path: 'benchmarks/evaluation/domains/pii/phone-stress-v2.json' },
+});
+/** The pii-context/v2 successors (#428), derived by `beta11-population-v2.ts`. */
+export const c3FilesV3 = Object.freeze({
+  'pii:us:ssn': { file: usSsnStressV3 as unknown as C3File, path: 'benchmarks/evaluation/domains/pii/us-ssn-stress-v3.json' },
+  'pii:global:phone': { file: phoneStressV3 as unknown as C3File, path: 'benchmarks/evaluation/domains/pii/phone-stress-v3.json' },
 });
 
 // -----------------------------------------------------------------------------------------------------------

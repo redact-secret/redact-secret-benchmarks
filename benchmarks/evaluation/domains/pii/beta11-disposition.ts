@@ -8,15 +8,16 @@
  * public gates and reported, and an ineligible family's epoch is recorded `not-run` / unspent with its fixed reason.
  * Credential findings are counted apart and never enter a PII numerator or denominator.
  */
-import { B11_FAMILIES, B11_POPULATION_OWNER, B11_POPULATION_PLAN_FILES, B11_SELECTIONS, activationProblem, b11CaseTables, b11Commitment,
-  b11IdentityOnly, b11ScoreTable, b11ViewGate, b11Revisions, type B11Family, type B11Lane } from './beta11-qualification.ts';
-import { C1_POPULATION_PLANS } from './email-network-population.ts';
+import { B11_FAMILIES, B11_PLAN_SETS, B11_POPULATION_OWNER, B11_POPULATION_PLAN_FILES, B11_SELECTIONS, activationProblem, b11CaseTables, b11Commitment,
+  b11IdentityOnly, b11PlanSetOf, b11ScoreTable, b11ViewGate, b11Revisions, type B11Family, type B11Lane, type B11PlanSet } from './beta11-qualification.ts';
+import { C1_POPULATION_PLANS, C1_POPULATION_PLANS_V2 } from './email-network-population.ts';
 import { PII_ORACLE_PLANS } from './identity-oracle.ts';
 import regressionBudgets from '../../../regression-budgets.json';
 import operational879 from '../../../../evidence/879/pii-operational-evidence-v1.json';
 import arrivalContract from '../../../../qualification/pii-national-id-arrival-v1.json';
 
 export const B11_BASELINE_879 = Object.freeze({ sourceCommit: '63a834e0a2b44c11f307ece8c539b933dabb68f1' });
+/** Files every freeze hashes, for plan set v1 (the #428 interim record) — unchanged since that freeze. */
 export const B11_FREEZE_FILES = Object.freeze({
   productContracts: ['docs/contracts/pii/email-v1.md', 'docs/contracts/pii/iban-v1.md', 'docs/contracts/pii/payment-card-v1.md',
     'docs/contracts/pii/phone-v1.md', 'docs/contracts/pii/us-ssn-v1.md', 'docs/contracts/pii/pii-context-v1.json',
@@ -34,6 +35,22 @@ export const B11_FREEZE_FILES = Object.freeze({
     'scripts/pii-beta11.mjs', 'benchmarks/evaluation/domains/pii/identity-oracle.ts', 'benchmarks/evaluation/domains/pii/email-network-population.ts',
     'benchmarks/evaluation/domains/pii/card-iban-stress/stress.ts', 'benchmarks/evaluation/domains/pii/ssn-phone-stress.ts', 'scanners/candidate.mjs'],
 });
+
+/**
+ * Files a freeze hashes for a plan set. Plan set v2 hashes its own population plans, the module that derives them, the
+ * family validators it relies on, and the predecessor plans and overlays it derives from.
+ */
+export function b11FreezeFiles(planSet: B11PlanSet) {
+  if (planSet === 'b11-population-v1') return B11_FREEZE_FILES;
+  const v2Plans = Object.values(B11_PLAN_SETS[planSet].populationPlanFiles);
+  return Object.freeze({
+    productContracts: B11_FREEZE_FILES.productContracts,
+    // The six oracle plans and the identity oracle, then the v2 plans, then every v1 input (predecessors, overlays, profile, budgets).
+    benchmarkInputs: [...B11_FREEZE_FILES.benchmarkInputs.slice(0, 7), ...v2Plans, ...B11_FREEZE_FILES.benchmarkInputs.slice(7)],
+    evaluationSchema: [...B11_FREEZE_FILES.evaluationSchema, 'benchmarks/evaluation/domains/pii/beta11-population-v2.ts',
+      'benchmarks/evaluation/domains/pii/card-iban-stress/authoring.ts', 'benchmarks/evaluation/domains/pii/card-iban-stress/contract-model.ts'],
+  });
+}
 
 /** Wasm payload roles. A payload that is neither default artifact and names PII is the split-out PII artifact (#937). */
 export function b11WasmRole(file: string) {
@@ -121,6 +138,7 @@ export const B11_COST_GATES = ['runtime-and-package-cost', 'size-regression-budg
 
 export function buildB11Report(input: { freeze: any; observation: any; operational: any; parity: { file: string; report: any } | null }) {
   const { freeze, observation, operational, parity } = input;
+  const planSet = b11PlanSetOf(freeze);
   if (observation.freeze.freezeCommitment !== freeze.freezeCommitment || operational.freezeCommitment !== freeze.freezeCommitment)
     throw new Error('observation and operational evidence are not bound to this freeze');
   const bytes = byteBudgets(operational);
@@ -152,7 +170,7 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
       `${parity.file}: surfaces disagree or miss an expectation`, { file: parity.file, sameBuildComponents: sameBuild });
   })();
   const families = B11_FAMILIES.map(family => {
-    const { frozen, reviewed } = b11CaseTables(family);
+    const { frozen, reviewed } = b11CaseTables(family, planSet);
     const lanes: B11Lane[] = observation.candidate.families.find((row: any) => row.family === family).lanes;
     const lane = (surface: string, selection: string) => lanes.find(row => row.lane === surface && row.selection === selection)!;
     const foreign = family === 'pii:us:ssn' ? lane('node-addon', 'foreign') : null;
@@ -181,7 +199,8 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
     // Declared population mass whose authored truth the v2 revisions moved out of its stratum (C1 plans declare mass per stratum).
     const emptiedMass = (() => {
       if (family !== 'pii:global:email' && family !== 'pii:global:network-address') return [];
-      const plan = C1_POPULATION_PLANS[family].plan, revised = new Set(b11Revisions.revisions.filter(row => row.family === family).map(row => row.caseId));
+      const plan = (planSet === 'b11-population-v1' ? C1_POPULATION_PLANS : C1_POPULATION_PLANS_V2)[family].plan;
+      const revised = new Set(planSet === 'b11-population-v1' ? b11Revisions.revisions.filter(row => row.family === family).map(row => row.caseId) : []);
       return plan.populations.flatMap(population => population.strata.filter(row => row.mass > 0 &&
         plan.plan.cases.filter(item => item.stratum === row.stratum && item.views.includes(population.id)).every(item => revised.has(item.id)))
         .map(row => `${population.id}/${row.stratum}`));
@@ -213,7 +232,9 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
       parityGate,
       ...costGates,
       gate('trusted-accounting-source', 'met', `observations bound to the committed freeze ${observation.freeze.commit} on a clean benchmark tree ${observation.benchmark.revision}`),
-      gate('independent-evidence', 'met', `population plan independence recorded by ${B11_POPULATION_OWNER[family]} (no reuse of v1 plan positives, no duplicate inputs); plans unchanged since`),
+      gate('independent-evidence', 'met', planSet === 'b11-population-v1' ?
+        `population plan independence recorded by ${B11_POPULATION_OWNER[family]} (no reuse of v1 plan positives, no duplicate inputs); plans unchanged since` :
+        `population plan ${B11_PLAN_SETS[planSet].populationPlanFiles[family]} derived by #428 from the ${B11_POPULATION_OWNER[family]} plan and re-validated by its family independence check (no reuse of v1 plan positives, no duplicate inputs); regenerated byte for byte from its authored truth`),
     ];
     const publicFailing = gates.filter(row => row.status !== 'met');
     const eligible = publicFailing.length === 0;
@@ -224,7 +245,7 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
       `public-gates-failed: ${publicFailing.map(row => row.id).join(', ')}. Epoch ${epoch.epochCommitment.slice(0, 12)} stays unspent (0/1).`));
     return {
       family, findingType: PII_ORACLE_PLANS[family].findingType,
-      plans: { oraclePlanCases: frozen.filter(row => row.source === 'oracle-plan').length, populationPlanFile: B11_POPULATION_PLAN_FILES[family],
+      plans: { oraclePlanCases: frozen.filter(row => row.source === 'oracle-plan').length, populationPlanFile: B11_PLAN_SETS[planSet].populationPlanFiles[family],
         populationCases: frozen.filter(row => row.source === 'population-plan').length,
         revisedCases: reviewed.filter(row => row.revision).map(row => ({ id: row.id, revision: row.revision })) },
       activation, identityOnly: { ...identity, rawProjection: { gateStatus: identity.rawProjection.gateStatus, artifactCommitment: identity.rawProjection.artifactCommitment,
@@ -241,7 +262,7 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
     };
   });
   const report = { schemaVersion: 1, reportType: 'pii-beta11-report', supportClaims: false, issue: 'redact-secret/redact-secret-benchmarks#428',
-    role: freeze.role, roleNote: freeze.roleNote, candidate: { sourceCommit: freeze.candidate.sourceCommit, versionString: freeze.candidate.versionString,
+    ...(planSet === 'b11-population-v1' ? {} : { populationPlanSet: planSet }), role: freeze.role, roleNote: freeze.roleNote, candidate: { sourceCommit: freeze.candidate.sourceCommit, versionString: freeze.candidate.versionString,
       released: false, artifactSetCommitment: observation.candidate.artifactSetCommitment, components: observation.candidate.components },
     freeze: observation.freeze, benchmark: observation.benchmark, platform: observation.platform,
     profile: 'pii-v1', cost: { runtimeComparisons: operational.runtimeComparisons, byteBudgets: bytes, sizeBudgetRows: sizeRows,
@@ -277,7 +298,8 @@ export function buildB11Disposition(report: ReturnType<typeof buildB11Report>) {
     };
   });
   const disposition = { schemaVersion: 1, reportType: 'pii-beta11-disposition', supportClaims: false, issue: 'redact-secret/redact-secret-benchmarks#428',
-    productIssue: 'redact-secret/redact-secret#901', role: report.role, roleNote: report.roleNote,
+    productIssue: 'redact-secret/redact-secret#901', ...((report as { populationPlanSet?: string }).populationPlanSet ?
+      { populationPlanSet: (report as { populationPlanSet?: string }).populationPlanSet } : {}), role: report.role, roleNote: report.roleNote,
     candidate: report.candidate, freeze: report.freeze, benchmark: report.benchmark, reportCommitment: report.artifactCommitment,
     domainSeparation: 'PII numerators and denominators only; no credential count is merged, and no combined credential+PII score exists.',
     protectedPartition: { run: false, eligibleFamilies: families.filter(row => row.protected.eligible).map(row => row.family),

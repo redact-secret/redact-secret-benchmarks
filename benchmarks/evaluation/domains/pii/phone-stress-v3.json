@@ -1,0 +1,2231 @@
+{
+  "schemaVersion": 1,
+  "issue": 428,
+  "family": "pii:global:phone",
+  "findingType": "pii_global_phone",
+  "familyContractVersion": 1,
+  "contextVocabulary": "pii-context/v2",
+  "contract": {
+    "repository": "redact-secret/redact-secret",
+    "commit": "79c0a66119fb72931fda9adddbe2973a52bb4833",
+    "file": "docs/contracts/pii/phone-v1.md"
+  },
+  "referenceValidator": {
+    "id": "nanp-structure",
+    "version": 1
+  },
+  "id": "pii-c3-phone-stress-v3",
+  "constructionPolicy": {
+    "positive": "nanp-n9x-sha256-v1: SHA-256 of the case seed picks an N9X area code (NANPA reserves every N9X NPA for future expansion, so no subscriber holds one), a central-office code NXX without N11 or 555, and a line number. Allocation is never inferred by the product; the reserved NPA only keeps the fixture free of real subscribers.",
+    "reserved": "NANPA 555-0100 through 555-0199 as the whole normalized exchange plus line are authority-reserved non-sensitive controls; 555-0099 and 555-0200 are their candidate twins with no negative authority.",
+    "exclusions": "Actual N11 area and central-office codes are structural exclusions; they are one-component overrides of a generated value.",
+    "unsupported": "Country codes other than +1 (+82, +44 Ofcom drama range), dot displays, x/# markers, line-broken, repeated or seven-digit extensions are authored as not-established identities with no finding; nothing about allocation or other plans is inferred.",
+    "context": "Sensitivity follows phone-v1 and pii-context/v1 only: en phone / phone number / telephone / telephone number, ko 전화번호 / 휴대전화번호, and the natural-language contact details; contact / 연락처 are ambiguous, example / documentation / 예시 are occurrence exclusions, other labels have no authority."
+  },
+  "nonGoals": [
+    "local seven-digit NXX-XXXX forms (medium-confidence semantics are not an oracle identity)",
+    "any country code other than +1",
+    "number allocation, carrier or subscriber inference",
+    "product identity-only observation (core #910)"
+  ],
+  "populations": [
+    {
+      "id": "diagnostic-balanced",
+      "caseCount": 21,
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "sensitiveMass": 4000,
+        "nonSensitiveMass": 2000,
+        "notEstablishedMass": 4000,
+        "rationale": "Balanced diagnosis of displays, extensions, reserved controls and context."
+      }
+    },
+    {
+      "id": "benign-heavy-stress",
+      "caseCount": 34,
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "sensitiveMass": 200,
+        "nonSensitiveMass": 1500,
+        "notEstablishedMass": 8300,
+        "rationale": "Operational text dominated by phone-shaped references, reserved 555 controls and unlisted or ambiguous labels, with a small declared sensitive share."
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "qp-en-dash-phone",
+      "axis": 29,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-1",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-en-paren-telephone-number",
+      "axis": 29,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "telephone number: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-2",
+        "display": "paren"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-en-plus-space",
+      "axis": 29,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone_number=",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-3",
+        "display": "plus-space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-en-plus-dash",
+      "axis": 29,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "Telephone = ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-4",
+        "display": "plus-dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-en-space",
+      "axis": 29,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-5",
+        "display": "space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-en-compact",
+      "axis": 29,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone number=",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-6",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ko-mobile-field",
+      "axis": 29,
+      "view": "qualification-plan",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "휴대전화번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-7",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ko-field-plus-compact",
+      "axis": 29,
+      "view": "qualification-plan",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "전화번호 = ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-8",
+        "display": "plus-compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ext-base",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-9",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ext-one-digit",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "supported-extension",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-9",
+        "display": "dash",
+        "extension": "ext 4"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ext-dot-six-digits",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "supported-extension",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-9",
+        "display": "dash",
+        "extension": "ext. 918273"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ext-word-marker",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "supported-extension",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-9",
+        "display": "dash",
+        "extension": "extension 52"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ext-seven-digits",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "extension-malformed",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-9",
+        "display": "dash",
+        "extension": "ext 1234567"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-ext-repeated",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "extension-malformed",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-9",
+        "display": "dash",
+        "extension": "ext 12 ext 3"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-ext-repeated-word",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "extension-malformed",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-9",
+        "display": "dash",
+        "extension": "ext 12 extension 3"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-ext-x-marker",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "extension-malformed",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-10",
+        "display": "dash",
+        "extension": "x55"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-ext-prose-suffix",
+      "axis": 32,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "ordinary-prose-suffix",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/qp-9",
+        "display": "dash"
+      },
+      "suffix": " extended hours",
+      "twinOf": {
+        "case": "qp-ext-base",
+        "property": "boundary"
+      },
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-en-json-field",
+      "axis": 29,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "{\"phone\": \"",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-1",
+        "display": "dash"
+      },
+      "suffix": "\"}",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-en-contact-details-before",
+      "axis": 29,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "contact details: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-2",
+        "display": "paren"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-en-contact-details-after",
+      "axis": 29,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-3",
+        "display": "dash"
+      },
+      "suffix": " (contact details)",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-ko-field-space",
+      "axis": 29,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "전화번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-4",
+        "display": "space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-ko-mobile-plus-space",
+      "axis": 29,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "휴대전화번호 = ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-5",
+        "display": "plus-space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-555-lower",
+      "axis": 30,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-6",
+        "display": "dash",
+        "set": {
+          "nxx": "555",
+          "line": "0100"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "db-555-mid-paren",
+      "axis": 30,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "telephone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-7",
+        "display": "paren",
+        "set": {
+          "nxx": "555",
+          "line": "0157"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "db-555-upper-extension",
+      "axis": 30,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-8",
+        "display": "plus-dash",
+        "set": {
+          "nxx": "555",
+          "line": "0199"
+        },
+        "extension": "ext 21"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "db-555-above-range",
+      "axis": 30,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-6",
+        "display": "dash",
+        "set": {
+          "nxx": "555",
+          "line": "0200"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "db-555-lower",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-555-below-range",
+      "axis": 30,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-6",
+        "display": "dash",
+        "set": {
+          "nxx": "555",
+          "line": "0099"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "db-555-lower",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-n11-area",
+      "axis": 30,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "n11-exclusion",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-9",
+        "display": "dash",
+        "set": {
+          "npa": "611"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-n11-office",
+      "axis": 30,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "n11-exclusion",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-10",
+        "display": "dash",
+        "set": {
+          "nxx": "411"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-ext-base",
+      "axis": 32,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone number: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-11",
+        "display": "space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-ext-two-digits",
+      "axis": 32,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "supported-extension",
+      "prefix": "phone number: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-11",
+        "display": "space",
+        "extension": "ext 90"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "db-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-ext-line-break",
+      "axis": 32,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "extension-malformed",
+      "prefix": "phone number: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-11",
+        "display": "space",
+        "extension": "ext\n90"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "db-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-ext-second-hash",
+      "axis": 32,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "extension-malformed",
+      "prefix": "phone number: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-11",
+        "display": "space",
+        "extension": "ext 90 #4"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "db-ext-base",
+        "property": "extension"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-ko-contact-ambiguous",
+      "axis": 33,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "ambiguous-context",
+      "prefix": "연락처: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-12",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-ko-example-label",
+      "axis": 33,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "context-negative",
+      "prefix": "전화번호 예시: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/db-13",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-555-dash",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-1",
+        "display": "dash",
+        "set": {
+          "nxx": "555",
+          "line": "0123"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "bh-555-compact",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "phone=",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-2",
+        "display": "compact",
+        "set": {
+          "nxx": "555",
+          "line": "0188"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "bh-555-plus-space",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "telephone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-3",
+        "display": "plus-space",
+        "set": {
+          "nxx": "555",
+          "line": "0111"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "bh-n11-area-plus",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "n11-exclusion",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-4",
+        "display": "plus-compact",
+        "set": {
+          "npa": "911"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-n11-office-paren",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "n11-exclusion",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-5",
+        "display": "paren",
+        "set": {
+          "nxx": "211"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-example-label",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "context-negative",
+      "prefix": "phone example: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-6",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-order-number",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "order_number: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-7",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-reference",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "reference = ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-8",
+        "display": "space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-version",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "version ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-9",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-sku",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "sku=",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-10",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-dot-display",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "unsupported-format",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-11",
+        "display": "dot"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-tracking-plus",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "tracking: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-12",
+        "display": "plus-compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-order-number",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "ordinary-reference",
+      "prefix": "주문번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-13",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-invoice-number",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "ordinary-reference",
+      "prefix": "송장번호 = ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-14",
+        "display": "space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-reference-number",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "ordinary-reference",
+      "prefix": "참조번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-15",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-contact-ambiguous",
+      "axis": 33,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "ambiguous-context",
+      "prefix": "연락처 ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-16",
+        "display": "paren"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-unlisted-main-line",
+      "axis": 33,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "unlisted-label",
+      "prefix": "대표번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-17",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-fax",
+      "axis": 33,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "unlisted-label",
+      "prefix": "팩스: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-18",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-example-suffix",
+      "axis": 33,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "context-negative",
+      "prefix": "전화번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-19",
+        "display": "dash"
+      },
+      "suffix": " (예시)",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "bh-ko-unsupported-country-code",
+      "axis": 33,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "unsupported-country-code",
+      "prefix": "전화번호: ",
+      "candidate": {
+        "literal": "+82 10 0000 0000",
+        "authority": "phone-v1-plus-one-only"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-field-plus-dash",
+      "axis": 33,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "전화번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-20",
+        "display": "plus-dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "bh-en-telephone-field",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "telephone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-21",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "bh-en-fax",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "unlisted-label",
+      "prefix": "fax: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-22",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-mobile",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "unlisted-label",
+      "prefix": "mobile: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-23",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-contact-ambiguous",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ambiguous-context",
+      "prefix": "contact: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/phone/bh-24",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-uk-drama-number",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "unsupported-country-code",
+      "prefix": "phone: ",
+      "candidate": {
+        "literal": "+44 20 7946 0123",
+        "authority": "ofcom-drama-numbers-020-7946-0xxx"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "d428-plus-space-base",
+      "axis": 29,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/d-1",
+        "display": "plus-space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "d428-plus-space-555-twin",
+      "axis": 30,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/d-1",
+        "display": "plus-space",
+        "set": {
+          "nxx": "555",
+          "line": "0142"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "d428-plus-space-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "d428-ko-555-control",
+      "axis": 33,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "nanpa-555-control",
+      "prefix": "전화번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/d-2",
+        "display": "dash",
+        "set": {
+          "nxx": "555",
+          "line": "0163"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "b428-plus-space-base",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone number: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/b-1",
+        "display": "plus-space"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "b428-plus-space-555-twin",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "phone number: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/b-1",
+        "display": "plus-space",
+        "set": {
+          "nxx": "555",
+          "line": "0104"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "b428-plus-space-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "b428-paren-base",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "telephone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/b-2",
+        "display": "paren"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "b428-paren-555-twin",
+      "axis": 30,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "telephone: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/b-2",
+        "display": "paren",
+        "set": {
+          "nxx": "555",
+          "line": "0175"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "b428-paren-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "b428-ko-mobile-base",
+      "axis": 33,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "휴대전화번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/b-3",
+        "display": "dash"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "b428-ko-mobile-555-twin",
+      "axis": 33,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "nanpa-555-control",
+      "prefix": "휴대전화번호: ",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/b-3",
+        "display": "dash",
+        "set": {
+          "nxx": "555",
+          "line": "0138"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "b428-ko-mobile-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    },
+    {
+      "id": "b428-compact-base",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "phone=",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/b-4",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "b428-compact-555-twin",
+      "axis": 31,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "nanpa-555-control",
+      "prefix": "phone=",
+      "candidate": {
+        "generator": "nanp-n9x-sha256-v1",
+        "seed": "redact-secret-benchmarks-428/phone/b-4",
+        "display": "compact",
+        "set": {
+          "nxx": "555",
+          "line": "0190"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "b428-compact-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "authority-published-value",
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      }
+    }
+  ],
+  "derivedFrom": {
+    "id": "pii-c3-phone-stress-v2",
+    "file": "benchmarks/evaluation/domains/pii/phone-stress-v2.json",
+    "fileSha256": "a1a3b0c8a2435d3bd7d0d39f623d92bb1eabb3840c2d747e6a70d9e7117a33ab",
+    "planCommitment": "83e87d3eccafc84291abe8987a0f1272d6bfe1fd3397db89da76026f3a5335aa",
+    "method": "Every predecessor case is kept with its id, candidate and context. The three #426 parenthesized-label corrections (evidence/901/426/pii-c3-reviewed-corrections-v1.json) become native authored truth; no US SSN or phone case changes under pii-context/v2; new independent cases are appended. No case was added, removed or relabelled from a scan.",
+    "relabeled": [
+      {
+        "caseId": "db-en-contact-details-after",
+        "from": "sensitive",
+        "to": "not-established",
+        "basis": "redact-secret/redact-secret-benchmarks#426:parenthesized-label-is-not-a-whole-token"
+      },
+      {
+        "caseId": "bh-ko-example-suffix",
+        "from": "not-established",
+        "to": "sensitive",
+        "basis": "redact-secret/redact-secret-benchmarks#426:parenthesized-label-is-not-a-whole-token"
+      }
+    ],
+    "addedCases": [
+      "d428-plus-space-base",
+      "d428-plus-space-555-twin",
+      "d428-ko-555-control",
+      "b428-plus-space-base",
+      "b428-plus-space-555-twin",
+      "b428-paren-base",
+      "b428-paren-555-twin",
+      "b428-ko-mobile-base",
+      "b428-ko-mobile-555-twin",
+      "b428-compact-base",
+      "b428-compact-555-twin"
+    ]
+  },
+  "frozen": {
+    "planCommitment": "2d4a4a87adc00fcea1405066e77077e66ab1d9edd6b37e8140f70a12cfa8e8b6"
+  }
+}

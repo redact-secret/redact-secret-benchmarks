@@ -1,0 +1,1264 @@
+{
+  "schemaVersion": 1,
+  "reportType": "untargeted-benign-corpus-378",
+  "issue": "https://github.com/redact-secret/redact-secret-benchmarks/issues/378",
+  "unit": "file-level: one must-not-flag/T3 control is one file; flagged = any finding; gating = at least one redact/block finding",
+  "actionSplit": {
+    "schemaVersion": 1,
+    "reportType": "untargeted-action-split",
+    "frozenSubset": {
+      "id": "real-world-shapes-frozen-v1",
+      "digest": "64841e0d52c829b9a6a50037c1d871daa53799e120510af253e6420d0ff05b4f",
+      "fixtures": 60
+    },
+    "baseline": {
+      "label": "published",
+      "mode": "published",
+      "identity": {
+        "runId": "2026-09-28T13:58:21.154Z-bddd0d",
+        "benchmarkRevision": "a50645833545489cfdb2b1dfc76c8d440313ee04",
+        "benchmarkDirty": false,
+        "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+        "lockHash": "97692c4cd77c448583d28ea071290d574a7cbf71ef6962853e490732f4af5aec",
+        "fixtureCount": 120,
+        "candidate": null
+      },
+      "scanners": [
+        {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.9",
+          "mode": "Published npm package \u00b7 default detectors",
+          "status": "complete",
+          "subsets": {
+            "frozen": {
+              "controls": 60,
+              "clean": 57,
+              "flagged": 3,
+              "gating": 3,
+              "warnOnly": 0,
+              "actionUnknown": 0,
+              "findingsByAction": {
+                "redact": 6,
+                "warn": 1
+              },
+              "flaggedFixtures": [
+                {
+                  "id": "helm-values-search-api",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "k8s-billing-externalsecret",
+                  "group": "realworld-config",
+                  "findings": 3,
+                  "actionCounts": {
+                    "warn": 1,
+                    "redact": 2
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "swift-keychain-wrapper",
+                  "group": "realworld-source",
+                  "findings": 3,
+                  "actionCounts": {
+                    "redact": 3
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            },
+            "added": {
+              "controls": 60,
+              "clean": 55,
+              "flagged": 5,
+              "gating": 4,
+              "warnOnly": 1,
+              "actionUnknown": 0,
+              "findingsByAction": {
+                "redact": 4,
+                "warn": 3
+              },
+              "flaggedFixtures": [
+                {
+                  "id": "ansible-group-vars-gameservers",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "terraform-apply-sensitive",
+                  "group": "realworld-logs",
+                  "findings": 1,
+                  "actionCounts": {
+                    "warn": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "pytest-fake-fixtures",
+                  "group": "realworld-source",
+                  "findings": 3,
+                  "actionCounts": {
+                    "warn": 2,
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "lua-openresty-hmac",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "agent-summary-korean-rotation",
+                  "group": "realworld-agent-output",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            },
+            "full": {
+              "controls": 120,
+              "clean": 112,
+              "flagged": 8,
+              "gating": 7,
+              "warnOnly": 1,
+              "actionUnknown": 0,
+              "findingsByAction": {
+                "redact": 10,
+                "warn": 4
+              },
+              "flaggedFixtures": [
+                {
+                  "id": "helm-values-search-api",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "k8s-billing-externalsecret",
+                  "group": "realworld-config",
+                  "findings": 3,
+                  "actionCounts": {
+                    "warn": 1,
+                    "redact": 2
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "ansible-group-vars-gameservers",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "terraform-apply-sensitive",
+                  "group": "realworld-logs",
+                  "findings": 1,
+                  "actionCounts": {
+                    "warn": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "swift-keychain-wrapper",
+                  "group": "realworld-source",
+                  "findings": 3,
+                  "actionCounts": {
+                    "redact": 3
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "pytest-fake-fixtures",
+                  "group": "realworld-source",
+                  "findings": 3,
+                  "actionCounts": {
+                    "warn": 2,
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "lua-openresty-hmac",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "agent-summary-korean-rotation",
+                  "group": "realworld-agent-output",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gitleaks",
+          "version": "8.30.1",
+          "mode": "Directory scan \u00b7 default rules",
+          "status": "complete",
+          "subsets": {
+            "frozen": {
+              "controls": 60,
+              "clean": 57,
+              "flagged": 3,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 3,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "k8s-billing-externalsecret",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "pino-checkout-ndjson",
+                  "group": "realworld-logs",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "spring-value-injection",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            },
+            "added": {
+              "controls": 60,
+              "clean": 59,
+              "flagged": 1,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 1,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "podfile-lock-ios-wallet",
+                  "group": "realworld-lockfile",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            },
+            "full": {
+              "controls": 120,
+              "clean": 116,
+              "flagged": 4,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 4,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "k8s-billing-externalsecret",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "pino-checkout-ndjson",
+                  "group": "realworld-logs",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "podfile-lock-ios-wallet",
+                  "group": "realworld-lockfile",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "spring-value-injection",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "trufflehog",
+          "version": "3.97.4",
+          "mode": "Filesystem scan \u00b7 verification disabled",
+          "status": "complete",
+          "subsets": {
+            "frozen": {
+              "controls": 60,
+              "clean": 60,
+              "flagged": 0,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 0,
+              "findingsByAction": {},
+              "flaggedFixtures": []
+            },
+            "added": {
+              "controls": 60,
+              "clean": 59,
+              "flagged": 1,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 1,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "spring-application-prod-yml",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "unattributed"
+                  ]
+                }
+              ]
+            },
+            "full": {
+              "controls": 120,
+              "clean": 119,
+              "flagged": 1,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 1,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "spring-application-prod-yml",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "unattributed"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "mode": "Published npm package \u00b7 secrets-only (pii, generic_assignment disabled) \u00b7 JavaScript engine",
+          "status": "complete",
+          "subsets": {
+            "frozen": {
+              "controls": 60,
+              "clean": 59,
+              "flagged": 1,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 1,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "openapi-security-components",
+                  "group": "realworld-docs",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                }
+              ]
+            },
+            "added": {
+              "controls": 60,
+              "clean": 58,
+              "flagged": 2,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 2,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "alertmanager-routing",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                },
+                {
+                  "id": "pytest-fake-fixtures",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                }
+              ]
+            },
+            "full": {
+              "controls": 120,
+              "clean": 117,
+              "flagged": 3,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 3,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "alertmanager-routing",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                },
+                {
+                  "id": "pytest-fake-fixtures",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                },
+                {
+                  "id": "openapi-security-components",
+                  "group": "realworld-docs",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "candidate": {
+      "label": "candidate 9ab0fa02f2ae",
+      "mode": "candidate",
+      "identity": {
+        "runId": "2026-09-28T13:58:57.038Z-398a8f",
+        "benchmarkRevision": "a50645833545489cfdb2b1dfc76c8d440313ee04",
+        "benchmarkDirty": false,
+        "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+        "lockHash": "97692c4cd77c448583d28ea071290d574a7cbf71ef6962853e490732f4af5aec",
+        "fixtureCount": 120,
+        "candidate": {
+          "sourceCommit": "9ab0fa02f2aeeda16a2c99e04862ebb0f0e9b5e7",
+          "packageName": "@redact-secret/core",
+          "declaredVersion": "0.1.0-beta.10"
+        }
+      },
+      "scanners": [
+        {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.10",
+          "mode": "Candidate build \u00b7 redact-secret main 9ab0fa0 \u00b7 unreleased \u00b7 default detectors",
+          "status": "complete",
+          "subsets": {
+            "frozen": {
+              "controls": 60,
+              "clean": 57,
+              "flagged": 3,
+              "gating": 3,
+              "warnOnly": 0,
+              "actionUnknown": 0,
+              "findingsByAction": {
+                "redact": 6,
+                "warn": 1
+              },
+              "flaggedFixtures": [
+                {
+                  "id": "helm-values-search-api",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "k8s-billing-externalsecret",
+                  "group": "realworld-config",
+                  "findings": 3,
+                  "actionCounts": {
+                    "warn": 1,
+                    "redact": 2
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "swift-keychain-wrapper",
+                  "group": "realworld-source",
+                  "findings": 3,
+                  "actionCounts": {
+                    "redact": 3
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            },
+            "added": {
+              "controls": 60,
+              "clean": 55,
+              "flagged": 5,
+              "gating": 4,
+              "warnOnly": 1,
+              "actionUnknown": 0,
+              "findingsByAction": {
+                "redact": 4,
+                "warn": 3
+              },
+              "flaggedFixtures": [
+                {
+                  "id": "ansible-group-vars-gameservers",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "terraform-apply-sensitive",
+                  "group": "realworld-logs",
+                  "findings": 1,
+                  "actionCounts": {
+                    "warn": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "pytest-fake-fixtures",
+                  "group": "realworld-source",
+                  "findings": 3,
+                  "actionCounts": {
+                    "warn": 2,
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "lua-openresty-hmac",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "agent-summary-korean-rotation",
+                  "group": "realworld-agent-output",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            },
+            "full": {
+              "controls": 120,
+              "clean": 112,
+              "flagged": 8,
+              "gating": 7,
+              "warnOnly": 1,
+              "actionUnknown": 0,
+              "findingsByAction": {
+                "redact": 10,
+                "warn": 4
+              },
+              "flaggedFixtures": [
+                {
+                  "id": "helm-values-search-api",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "k8s-billing-externalsecret",
+                  "group": "realworld-config",
+                  "findings": 3,
+                  "actionCounts": {
+                    "warn": 1,
+                    "redact": 2
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "ansible-group-vars-gameservers",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "terraform-apply-sensitive",
+                  "group": "realworld-logs",
+                  "findings": 1,
+                  "actionCounts": {
+                    "warn": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "swift-keychain-wrapper",
+                  "group": "realworld-source",
+                  "findings": 3,
+                  "actionCounts": {
+                    "redact": 3
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "pytest-fake-fixtures",
+                  "group": "realworld-source",
+                  "findings": 3,
+                  "actionCounts": {
+                    "warn": 2,
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "lua-openresty-hmac",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "agent-summary-korean-rotation",
+                  "group": "realworld-agent-output",
+                  "findings": 1,
+                  "actionCounts": {
+                    "redact": 1
+                  },
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "gitleaks",
+          "version": "8.30.1",
+          "mode": "Directory scan \u00b7 default rules",
+          "status": "complete",
+          "subsets": {
+            "frozen": {
+              "controls": 60,
+              "clean": 57,
+              "flagged": 3,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 3,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "k8s-billing-externalsecret",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "pino-checkout-ndjson",
+                  "group": "realworld-logs",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "spring-value-injection",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            },
+            "added": {
+              "controls": 60,
+              "clean": 59,
+              "flagged": 1,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 1,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "podfile-lock-ios-wallet",
+                  "group": "realworld-lockfile",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            },
+            "full": {
+              "controls": 120,
+              "clean": 116,
+              "flagged": 4,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 4,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "k8s-billing-externalsecret",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "pino-checkout-ndjson",
+                  "group": "realworld-logs",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "podfile-lock-ios-wallet",
+                  "group": "realworld-lockfile",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                },
+                {
+                  "id": "spring-value-injection",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "generic-token"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "trufflehog",
+          "version": "3.97.4",
+          "mode": "Filesystem scan \u00b7 verification disabled",
+          "status": "complete",
+          "subsets": {
+            "frozen": {
+              "controls": 60,
+              "clean": 60,
+              "flagged": 0,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 0,
+              "findingsByAction": {},
+              "flaggedFixtures": []
+            },
+            "added": {
+              "controls": 60,
+              "clean": 59,
+              "flagged": 1,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 1,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "spring-application-prod-yml",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "unattributed"
+                  ]
+                }
+              ]
+            },
+            "full": {
+              "controls": 120,
+              "clean": 119,
+              "flagged": 1,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 1,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "spring-application-prod-yml",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "unattributed"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "mode": "Published npm package \u00b7 secrets-only (pii, generic_assignment disabled) \u00b7 JavaScript engine",
+          "status": "complete",
+          "subsets": {
+            "frozen": {
+              "controls": 60,
+              "clean": 59,
+              "flagged": 1,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 1,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "openapi-security-components",
+                  "group": "realworld-docs",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                }
+              ]
+            },
+            "added": {
+              "controls": 60,
+              "clean": 58,
+              "flagged": 2,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 2,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "alertmanager-routing",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                },
+                {
+                  "id": "pytest-fake-fixtures",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                }
+              ]
+            },
+            "full": {
+              "controls": 120,
+              "clean": 117,
+              "flagged": 3,
+              "gating": 0,
+              "warnOnly": 0,
+              "actionUnknown": 3,
+              "findingsByAction": {},
+              "flaggedFixtures": [
+                {
+                  "id": "alertmanager-routing",
+                  "group": "realworld-config",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                },
+                {
+                  "id": "pytest-fake-fixtures",
+                  "group": "realworld-source",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                },
+                {
+                  "id": "openapi-security-components",
+                  "group": "realworld-docs",
+                  "findings": 1,
+                  "actionCounts": null,
+                  "families": [
+                    "bearer-token"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "comparison": [
+      {
+        "scanner": "redact-secret",
+        "regressions": [],
+        "improvements": [],
+        "reclassified": []
+      },
+      {
+        "scanner": "gitleaks",
+        "regressions": [],
+        "improvements": [],
+        "reclassified": []
+      },
+      {
+        "scanner": "trufflehog",
+        "regressions": [],
+        "improvements": [],
+        "reclassified": []
+      },
+      {
+        "scanner": "flare-redact",
+        "regressions": [],
+        "improvements": [],
+        "reclassified": []
+      }
+    ]
+  },
+  "candidateEvidence": {
+    "runId": "e5092e9c-3681-4b08-83dc-06f29eab899f",
+    "status": "complete",
+    "candidate": {
+      "sourceCommit": "9ab0fa02f2aeeda16a2c99e04862ebb0f0e9b5e7",
+      "sourceState": "clean",
+      "packageName": "@redact-secret/core",
+      "declaredVersion": "0.1.0-beta.10",
+      "artifactSha256": "4c1a81b0a96e9d3343a696a7d2e60e9080ed95ccff20ec9acbe140619324aebf",
+      "artifacts": [
+        {
+          "role": "package",
+          "sha256": "4c1a81b0a96e9d3343a696a7d2e60e9080ed95ccff20ec9acbe140619324aebf"
+        },
+        {
+          "role": "node",
+          "sha256": "0627b0fcb06f59c8cc1cb5621f19af341c9aa1df19bdfaa7b128ad1832a856bb"
+        },
+        {
+          "role": "wasm",
+          "sha256": "5508eec4473b30aba98c967b8fd31c677280db9dd506e680e206bdef085fea0c"
+        }
+      ]
+    },
+    "benchmark": {
+      "sourceCommit": "a50645833545489cfdb2b1dfc76c8d440313ee04",
+      "dirty": false,
+      "lockfileSha256": "97692c4cd77c448583d28ea071290d574a7cbf71ef6962853e490732f4af5aec"
+    },
+    "corpus": {
+      "protocol": "measurement-v4",
+      "hash": "b6b5472709ac99ef1bdafdbf141a30fe8d7bbef36aba07b3c56e43a7ddaccb15",
+      "realWorldShapes": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3"
+    },
+    "scanner": {
+      "id": "redact-secret-candidate",
+      "configurationHash": "c1af1eee97cce08f227e7a07ef3338f8de48b9e37dd771f014c8f6cf1b79d783"
+    },
+    "completeness": {
+      "selectedFixtures": 3638,
+      "scannedFixtures": 3638,
+      "writtenFixtures": 3638
+    },
+    "realWorldShapes": {
+      "rows": 120,
+      "flagged": [
+        "real-world-shapes--agent-summary-korean-rotation",
+        "real-world-shapes--ansible-group-vars-gameservers",
+        "real-world-shapes--helm-values-search-api",
+        "real-world-shapes--k8s-billing-externalsecret",
+        "real-world-shapes--lua-openresty-hmac",
+        "real-world-shapes--pytest-fake-fixtures",
+        "real-world-shapes--swift-keychain-wrapper",
+        "real-world-shapes--terraform-apply-sensitive"
+      ]
+    }
+  },
+  "familyMovement": {
+    "published": {
+      "before": {
+        "revision": "0a73b7db198c628dde74fb815d3029eb6c0acf42",
+        "dirty": false,
+        "runId": "3fd667b7-6831-48b6-8bd9-f60653b4c385",
+        "distribution": {
+          "stable": 61,
+          "provisional": 23,
+          "pending": 2,
+          "unsupported": 0
+        },
+        "stableDistribution": {
+          "documented": 37,
+          "empirical": 24,
+          "policyQualified": 0
+        },
+        "familyCount": 86,
+        "product": null,
+        "fixtureIndex": {
+          "schemaVersion": 1,
+          "algorithm": "sha256",
+          "digest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
+          "fixtureCount": 3533
+        }
+      },
+      "after": {
+        "revision": "a50645833545489cfdb2b1dfc76c8d440313ee04",
+        "dirty": false,
+        "runId": "66f0f521-0e77-4fb3-a61a-03fc3f11ca55",
+        "distribution": {
+          "stable": 61,
+          "provisional": 23,
+          "pending": 2,
+          "unsupported": 0
+        },
+        "stableDistribution": {
+          "documented": 37,
+          "empirical": 24,
+          "policyQualified": 0
+        },
+        "familyCount": 86,
+        "product": null,
+        "fixtureIndex": {
+          "schemaVersion": 1,
+          "algorithm": "sha256",
+          "digest": "4e82ac020b4e9cc0ed9710491a21627aa23c5444ffff49b22cf40bee7410c81e",
+          "fixtureCount": 3638
+        }
+      },
+      "familyMovements": []
+    },
+    "candidate": {
+      "before": {
+        "revision": "0a73b7db198c628dde74fb815d3029eb6c0acf42",
+        "dirty": false,
+        "runId": "18abb5d5-6072-4a5a-9e33-307ba0d7f4a5",
+        "distribution": {
+          "stable": 64,
+          "provisional": 20,
+          "pending": 2,
+          "unsupported": 0
+        },
+        "stableDistribution": {
+          "documented": 39,
+          "empirical": 25,
+          "policyQualified": 0
+        },
+        "familyCount": 86,
+        "product": {
+          "sourceCommit": "9ab0fa02f2aeeda16a2c99e04862ebb0f0e9b5e7",
+          "packageName": "@redact-secret/core",
+          "declaredVersion": "0.1.0-beta.10",
+          "artifacts": [
+            {
+              "role": "package",
+              "sha256": "4c1a81b0a96e9d3343a696a7d2e60e9080ed95ccff20ec9acbe140619324aebf"
+            },
+            {
+              "role": "node",
+              "sha256": "0627b0fcb06f59c8cc1cb5621f19af341c9aa1df19bdfaa7b128ad1832a856bb"
+            },
+            {
+              "role": "wasm",
+              "sha256": "5508eec4473b30aba98c967b8fd31c677280db9dd506e680e206bdef085fea0c"
+            }
+          ]
+        },
+        "fixtureIndex": {
+          "schemaVersion": 1,
+          "algorithm": "sha256",
+          "digest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
+          "fixtureCount": 3533
+        }
+      },
+      "after": {
+        "revision": "a50645833545489cfdb2b1dfc76c8d440313ee04",
+        "dirty": false,
+        "runId": "15e7cfe5-9712-42a9-a690-6a32dde403ee",
+        "distribution": {
+          "stable": 64,
+          "provisional": 20,
+          "pending": 2,
+          "unsupported": 0
+        },
+        "stableDistribution": {
+          "documented": 39,
+          "empirical": 25,
+          "policyQualified": 0
+        },
+        "familyCount": 86,
+        "product": {
+          "sourceCommit": "9ab0fa02f2aeeda16a2c99e04862ebb0f0e9b5e7",
+          "packageName": "@redact-secret/core",
+          "declaredVersion": "0.1.0-beta.10",
+          "artifacts": [
+            {
+              "role": "package",
+              "sha256": "4c1a81b0a96e9d3343a696a7d2e60e9080ed95ccff20ec9acbe140619324aebf"
+            },
+            {
+              "role": "node",
+              "sha256": "0627b0fcb06f59c8cc1cb5621f19af341c9aa1df19bdfaa7b128ad1832a856bb"
+            },
+            {
+              "role": "wasm",
+              "sha256": "5508eec4473b30aba98c967b8fd31c677280db9dd506e680e206bdef085fea0c"
+            }
+          ]
+        },
+        "fixtureIndex": {
+          "schemaVersion": 1,
+          "algorithm": "sha256",
+          "digest": "4e82ac020b4e9cc0ed9710491a21627aa23c5444ffff49b22cf40bee7410c81e",
+          "fixtureCount": 3638
+        }
+      },
+      "familyMovements": []
+    }
+  }
+}

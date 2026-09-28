@@ -68,11 +68,18 @@ merged into or validated against `pii-profile-cost-v1`.
 
 3. **Measure each tool's actual redact call, not a position-only scan.**
    Confirmed by reading each package's published type declarations
-   (`@openredaction/core@1.1.5`'s `dist/index.d.ts`, `flare-redact@1.6.1`'s
+   (`@redact-secret/core@0.1.0-beta.9`'s `dist/index.d.ts`,
+   `@openredaction/core@1.1.5`'s `dist/index.d.ts`, `flare-redact@1.6.1`'s
    `dist/index.d.ts`):
-   - redact-secret: `core.scan()` — the same call
-     `scripts/pii-profile-cost/node-sample.mjs` already times for the
-     `wholeInput` metric; it performs full sanitize, not detection-only.
+   - redact-secret: `scanAndRedact(input, options?): ScanResult`
+     (synchronous) — not `scan()`, which only returns findings and never
+     builds the redacted text. `scripts/pii-profile-cost/node-sample.mjs`
+     times `core.scan()` for its `wholeInput` metric, but that plan is
+     measuring detector cost specifically (per #286, the PII regression is
+     in the validators `scan()` runs), not a cross-tool redact comparison;
+     this plan needs the call that does the same amount of work as the
+     other two tools' calls below, which `scanAndRedact` is and `scan` is
+     not.
    - flare-redact: `redact<T>(input, opts): T` (synchronous) — not the
      `scan(input, opts): Finding[]` the accuracy adapter uses, which only
      returns match positions and never redacts.
@@ -80,10 +87,10 @@ merged into or validated against `pii-profile-cost-v1`.
      (asynchronous), whose `DetectionResult.redacted` is the redacted
      output — not `#scan()`, which classifies by severity but does not
      redact.
-   Using each library's own `scan`-named function here (where "scan" means
-   three different things across the three packages) would silently compare
-   unequal amounts of work; the plan document must name the exact function
-   symbol per tool for this reason.
+   Each library names its detect-only call `scan`; using that name here
+   would silently compare unequal amounts of work across all three tools.
+   The plan document names the exact function symbol per tool for this
+   reason.
 
 4. **The async/sync split is a measured fact, stated in the report, not
    normalized away.** OpenRedaction's `detect()` is Promise-returning;

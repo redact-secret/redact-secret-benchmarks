@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T15:25:55.253Z",
+  "sourceRun": {
+    "runId": "2026-09-28T15:25:55.253Z-914211",
+    "benchmarkRevision": "24528edcb605fba4310baac6393cfc343f2a1c70"
+  },
+  "input": {
+    "surface": "comparison/beta8-436b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "6732157eed9a5062986d047b8387efaef85d95f6f0e9b0cf1ac766d0da673304",
+    "fixtureCount": 31,
+    "fixturesDigest": "8b46b3ea2dc2efe152b491f506768e86509f0c8145453f8057cb94508b42daec",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e1d3c9888d2d4c4329c8cbfac5eb31d663653c05fb62669da7f79016144512e2",
+      "fixtureCount": 3824
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2c5b65cb851e1e8efbbb7ecdd4fa8c39b08c9779563ee20b9ac4fa3154933c2"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/onepassword-service-account-token-connect-jwt-twin.py",
+      "start": 36,
+      "end": 682,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/onepassword-service-account-token-connect-jwt-twin.py",
+      "start": 120,
+      "end": 595,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "6afc8df729e74a7725cf325374d5d0870d555720f901d421c40aabe6ebfb4bb6"
+}

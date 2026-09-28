@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T15:25:55.253Z",
+  "sourceRun": {
+    "runId": "2026-09-28T15:25:55.253Z-914211",
+    "benchmarkRevision": "24528edcb605fba4310baac6393cfc343f2a1c70"
+  },
+  "input": {
+    "surface": "comparison/beta8-436e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "1ab3a7ea16fef98f776f12be3672a6db30598ba83d640892739d412bbc167c50",
+    "fixtureCount": 30,
+    "fixturesDigest": "5600bd62dbd6a55ce9f190e7c18bf5cc802d752587d3d4e023e67806f9617e36",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e1d3c9888d2d4c4329c8cbfac5eb31d663653c05fb62669da7f79016144512e2",
+      "fixtureCount": 3824
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "a2c5b65cb851e1e8efbbb7ecdd4fa8c39b08c9779563ee20b9ac4fa3154933c2"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/apify-api-token-bearer-header.http",
+      "start": 59,
+      "end": 112,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/apify-api-token-curl-bearer.sh",
+      "start": 82,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/apify-api-token-trailing-underscore-twin.http",
+      "start": 59,
+      "end": 114,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "173a9f32cc10a8e9660c50ad2a3da5c6f77d829a352d3ef81b37d2988b11fcec"
+}

@@ -5616,7 +5616,7 @@
         "real-world-shapes--agent-summary-korean-rotation"
       ],
       "kind": "false-positive",
-      "status": "observed",
+      "status": "verified",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -5638,7 +5638,59 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/052cfc8a0b0b9f5a27dbc4c784461436492cdbd3/docs/reports/2026-09-28/378-untargeted-benign-corpus.md",
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/052cfc8a0b0b9f5a27dbc4c784461436492cdbd3/docs/reports/2026-09-28/378-untargeted-benign-corpus.json"
           ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/3cee43ced37f188f8f76ab42cca11efef37f55a1/fixtures/real-world-shapes/corpus.json",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/3cee43ced37f188f8f76ab42cca11efef37f55a1/fixtures/real-world-shapes/frozen-baseline-v1.json",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/3cee43ced37f188f8f76ab42cca11efef37f55a1/docs/decisions/2026-09-21-add-untargeted-benign-corpus.md",
+            "https://github.com/redact-secret/redact-secret/issues/911#issuecomment-5874082034"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/911",
+            "https://github.com/redact-secret/redact-secret/pull/967"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/938",
+            "https://github.com/redact-secret/redact-secret/commit/12a984ebf62dd1f8640058b8290421f6cc72baf7"
+          ]
+        },
+        "verified": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/c745aec1c162bfa7e8c245f281cfa02b87ab5988/evidence/911/README.md",
+            "https://github.com/redact-secret/redact-secret/pull/967",
+            "https://github.com/redact-secret/redact-secret/actions/runs/36480272622"
+          ]
         }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/911",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-911",
+        "canonicalFixtureIds": [
+          "generic-token-negative-helm-existing-secret",
+          "generic-token-negative-external-secret-key-name",
+          "generic-token-negative-reverse-dns-keychain-item",
+          "generic-token-negative-templated-vault-lookup-path",
+          "generic-token-negative-lua-method-call",
+          "generic-token-negative-constant-keyword-argument",
+          "generic-token-positive-literal-under-webhook-secret",
+          "generic-token-positive-literal-under-secret-key",
+          "generic-token-positive-literal-keychain-case",
+          "generic-token-positive-literal-lookup-term",
+          "generic-token-positive-literal-keyword-argument"
+        ]
+      },
+      "fix": {
+        "commit": "12a984ebf62dd1f8640058b8290421f6cc72baf7"
       },
       "evidence": [
         {
@@ -5781,7 +5833,43 @@
             }
           ]
         }
-      ]
+      ],
+      "verification": {
+        "canonicalProductRegression": {
+          "manifestRecordId": "benchmark-gap-911",
+          "fixtureIds": [
+            "generic-token-negative-helm-existing-secret",
+            "generic-token-negative-external-secret-key-name",
+            "generic-token-negative-reverse-dns-keychain-item",
+            "generic-token-negative-templated-vault-lookup-path",
+            "generic-token-negative-lua-method-call",
+            "generic-token-negative-constant-keyword-argument",
+            "generic-token-positive-literal-under-webhook-secret",
+            "generic-token-positive-literal-under-secret-key",
+            "generic-token-positive-literal-keychain-case",
+            "generic-token-positive-literal-lookup-term",
+            "generic-token-positive-literal-keyword-argument"
+          ]
+        },
+        "fixingCommitOrVersion": "12a984ebf62dd1f8640058b8290421f6cc72baf7",
+        "productConformanceEvidence": [
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124030868",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124030771",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124030741",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124030023",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124029999",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124030119",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124030073",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124030324",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36480272622/job/109124187479",
+          "https://github.com/redact-secret/redact-secret/pull/967"
+        ],
+        "benchmarkRerunEvidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/c745aec1c162bfa7e8c245f281cfa02b87ab5988/evidence/911/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/c745aec1c162bfa7e8c245f281cfa02b87ab5988/evidence/911/candidate-rerun.json"
+        ]
+      }
     },
     {
       "id": "product-931",

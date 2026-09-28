@@ -1,0 +1,1909 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-identity-oracle",
+  "oracleVersion": 1,
+  "supportClaims": false,
+  "evidenceKind": "authored-truth",
+  "contextVocabulary": "pii-context/v1",
+  "rationale": "Authored identity and sensitivity truth per qualification-plan case, from the frozen family contract and named authority only. Reference validators are applied to the authored candidate, never to detector output. Sensitivity is established only by the contract context rule or an authority-reserved value; a validator hit, a context keyword or public absence alone never establishes it.",
+  "families": [
+    {
+      "family": "pii:global:email",
+      "findingType": "pii_global_email",
+      "familyContractVersion": 1,
+      "plan": "benchmarks/evaluation/domains/pii/email-qualification-v1.json",
+      "planCommitment": "aa39f91d00e27d259a70fdb9d1331071f3f7e6556fe2d1d149c502073d239923",
+      "referenceValidator": null,
+      "labels": [
+        {
+          "caseId": "ascii-sensitive-context",
+          "candidate": {
+            "start": 7,
+            "end": 41
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "smtputf8-local-sensitive-context",
+          "candidate": {
+            "start": 11,
+            "end": 39
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "punycode-looking-domain",
+          "candidate": {
+            "start": 7,
+            "end": 45
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "reserved-resemblance-does-not-suppress",
+          "candidate": {
+            "start": 7,
+            "end": 44
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "neutral-context",
+          "candidate": {
+            "start": 0,
+            "end": 34
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ambiguous-contact-context",
+          "candidate": {
+            "start": 8,
+            "end": 42
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "named-negative-context",
+          "candidate": {
+            "start": 20,
+            "end": 54
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "reserved-example-domain",
+          "candidate": {
+            "start": 7,
+            "end": 27
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "reserved-example-subdomain",
+          "candidate": {
+            "start": 7,
+            "end": 31
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "reserved-invalid-namespace",
+          "candidate": {
+            "start": 7,
+            "end": 28
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "uri-userinfo-collision",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "credential-userinfo-collision",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "source-route-collision",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "placeholder-single-label-domain",
+          "candidate": {
+            "start": 7,
+            "end": 18
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "quoted-local-unsupported",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "domain-literal-unsupported",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unicode-domain-unsupported",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "combining-mark-domain-suffix",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "variation-selector-domain-suffix",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "adjacent-at-boundary",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        }
+      ]
+    },
+    {
+      "family": "pii:global:iban",
+      "findingType": "pii_global_iban",
+      "familyContractVersion": 1,
+      "plan": "benchmarks/evaluation/domains/pii/iban-qualification-v1.json",
+      "planCommitment": "9ead94bd2da5df320d8a7fa44a8838c6449769bfc6d4e9fad69732b2bb400f6e",
+      "referenceValidator": {
+        "id": "iban-mod97",
+        "version": 1
+      },
+      "labels": [
+        {
+          "caseId": "compact-english-sensitive-context",
+          "candidate": {
+            "start": 6,
+            "end": 28
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "print-korean-astral-sensitive-context",
+          "candidate": {
+            "start": 27,
+            "end": 54
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "checksum-valid-neutral-context",
+          "candidate": {
+            "start": 0,
+            "end": 22
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "checksum-valid-wrong-country-length",
+          "candidate": {
+            "start": 6,
+            "end": 27
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "checksum-mismatch",
+          "candidate": {
+            "start": 6,
+            "end": 28
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unknown-country",
+          "candidate": {
+            "start": 6,
+            "end": 28
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "documentation-context",
+          "candidate": {
+            "start": 20,
+            "end": 42
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "korean-example-context",
+          "candidate": {
+            "start": 13,
+            "end": 35
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "template-reference",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "environment-reference",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "angle-placeholder",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "lowercase-unsupported",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "hyphen-separator-unsupported",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "repeated-space-unsupported",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "tab-separator-unsupported",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "alnum-left-adjacency",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "underscore-right-adjacency",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "percent-right-adjacency",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unicode-mark-right-adjacency",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "governed-invisible-inside",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "governed-invisible-right-adjacency",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        }
+      ]
+    },
+    {
+      "family": "pii:global:network-address",
+      "findingType": "pii_global_network_address",
+      "familyContractVersion": 1,
+      "plan": "benchmarks/evaluation/domains/pii/network-address-qualification-v1.json",
+      "planCommitment": "1700856f519f2921f39fe706abda9e4d0b15e2fdb67469ac397b77bfd02d746e",
+      "referenceValidator": {
+        "id": "ip-address-syntax",
+        "version": 1
+      },
+      "labels": [
+        {
+          "caseId": "ipv4-private-context",
+          "candidate": {
+            "start": 10,
+            "end": 18
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ipv6-ula-context",
+          "candidate": {
+            "start": 15,
+            "end": 22
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ipv4-link-local-context",
+          "candidate": {
+            "start": 10,
+            "end": 21
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ipv6-link-local-context",
+          "candidate": {
+            "start": 15,
+            "end": 22
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ipv4-shared-context",
+          "candidate": {
+            "start": 10,
+            "end": 20
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ipv6-teredo-context",
+          "candidate": {
+            "start": 15,
+            "end": 31
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ipv6-translation-context",
+          "candidate": {
+            "start": 15,
+            "end": 33
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ipv6-orchid-context",
+          "candidate": {
+            "start": 15,
+            "end": 25
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ipv4-unspecified",
+          "candidate": {
+            "start": 10,
+            "end": 17
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv4-loopback",
+          "candidate": {
+            "start": 10,
+            "end": 19
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv6-loopback",
+          "candidate": {
+            "start": 15,
+            "end": 18
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv4-multicast",
+          "candidate": {
+            "start": 10,
+            "end": 19
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv6-multicast",
+          "candidate": {
+            "start": 15,
+            "end": 22
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv4-documentation",
+          "candidate": {
+            "start": 10,
+            "end": 19
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv6-documentation",
+          "candidate": {
+            "start": 15,
+            "end": 26
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv4-rfc2544",
+          "candidate": {
+            "start": 10,
+            "end": 20
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv6-bmwg",
+          "candidate": {
+            "start": 15,
+            "end": 24
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv6-rfc9637",
+          "candidate": {
+            "start": 15,
+            "end": 22
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv4-mapped-docs",
+          "candidate": {
+            "start": 15,
+            "end": 31
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "ipv4-url-neutral",
+          "candidate": {
+            "start": 17,
+            "end": 25
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ipv4-leading-zero",
+          "candidate": {
+            "start": 10,
+            "end": 19
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ipv6-zone-id",
+          "candidate": {
+            "start": 15,
+            "end": 27
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ipv4-version-collision",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ipv4-right-boundary",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ipv6-right-boundary",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        }
+      ]
+    },
+    {
+      "family": "pii:global:payment-card",
+      "findingType": "pii_global_payment_card",
+      "familyContractVersion": 1,
+      "plan": "benchmarks/evaluation/domains/pii/payment-card-qualification-v1.json",
+      "planCommitment": "a56d0f7c35b7c6dfbb6eb0d2f7c6f4e857192d7be85866ef278f0f7b532a23f3",
+      "referenceValidator": {
+        "id": "luhn",
+        "version": 1
+      },
+      "labels": [
+        {
+          "caseId": "compact-sensitive-context",
+          "candidate": {
+            "start": 12,
+            "end": 28
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "astral-prefix-sensitive-context",
+          "candidate": {
+            "start": 17,
+            "end": 33
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "amex-supported-layout",
+          "candidate": {
+            "start": 12,
+            "end": 29
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "minimum-pan-length",
+          "candidate": {
+            "start": 4,
+            "end": 14
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "maximum-pan-length",
+          "candidate": {
+            "start": 13,
+            "end": 32
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "outside-frozen-iin-boundary",
+          "candidate": {
+            "start": 12,
+            "end": 28
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "contract-grammar"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "luhn-failure-neighbor",
+          "candidate": {
+            "start": 12,
+            "end": 28
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "official-test-whole-value-negative",
+          "candidate": {
+            "start": 12,
+            "end": 28
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "authority-published-value",
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "order-reference-collision",
+          "candidate": {
+            "start": 16,
+            "end": 32
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "account-number-collision",
+          "candidate": {
+            "start": 15,
+            "end": 31
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "phone-like-collision",
+          "candidate": {
+            "start": 6,
+            "end": 16
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "random-number-collision",
+          "candidate": {
+            "start": 14,
+            "end": 30
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "cooking-pan-prose-collision",
+          "candidate": {
+            "start": 33,
+            "end": 49
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "named-negative-context-wins",
+          "candidate": {
+            "start": 26,
+            "end": 42
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "mixed-display-separators",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "identifier-suffix-boundary",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unicode-mark-boundary",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "governed-invisible-interior",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "url-query-collision",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        }
+      ]
+    },
+    {
+      "family": "pii:us:ssn",
+      "findingType": "pii_jurisdiction_us_ssn",
+      "familyContractVersion": 1,
+      "plan": "benchmarks/evaluation/domains/pii/us-ssn-qualification-v1.json",
+      "planCommitment": "1cb335d0fbd74581adb0dc89e7d928c0d6b399b6d7c6bdcd7f9e7cb4fd8652ba",
+      "referenceValidator": {
+        "id": "us-ssn-allocation",
+        "version": 1
+      },
+      "labels": [
+        {
+          "caseId": "compact-sensitive-context",
+          "candidate": {
+            "start": 4,
+            "end": 13
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "display-sensitive-context",
+          "candidate": {
+            "start": 23,
+            "end": 34
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "astral-prefix-sensitive-context",
+          "candidate": {
+            "start": 9,
+            "end": 20
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "identity-without-context",
+          "candidate": {
+            "start": 0,
+            "end": 11
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "area-zero",
+          "candidate": {
+            "start": 4,
+            "end": 15
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "area-666",
+          "candidate": {
+            "start": 4,
+            "end": 15
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "area-high",
+          "candidate": {
+            "start": 4,
+            "end": 15
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "group-zero",
+          "candidate": {
+            "start": 4,
+            "end": 15
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "serial-zero",
+          "candidate": {
+            "start": 4,
+            "end": 15
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ssa-display-control",
+          "candidate": {
+            "start": 4,
+            "end": 15
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "authority-published-value",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "order-reference",
+          "candidate": {
+            "start": 16,
+            "end": 25
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "invoice-reference",
+          "candidate": {
+            "start": 15,
+            "end": 24
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "payment-card-field",
+          "candidate": {
+            "start": 12,
+            "end": 21
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "documentation-negative",
+          "candidate": {
+            "start": 18,
+            "end": 27
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "negation-negative",
+          "candidate": {
+            "start": 8,
+            "end": 19
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unicode-dash",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unicode-space",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "identifier-suffix",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "percent-suffix",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unicode-mark-suffix",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        }
+      ]
+    },
+    {
+      "family": "pii:global:phone",
+      "findingType": "pii_global_phone",
+      "familyContractVersion": 1,
+      "plan": "benchmarks/evaluation/domains/pii/phone-qualification-v1.json",
+      "planCommitment": "8e00a1029d2eef67fbbddc705362a7e4f61d8a8cca54bbba8436f9c00dbc5c18",
+      "referenceValidator": {
+        "id": "nanp-structure",
+        "version": 1
+      },
+      "labels": [
+        {
+          "caseId": "national-sensitive-context",
+          "candidate": {
+            "start": 13,
+            "end": 25
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "plus-one-sensitive-context",
+          "candidate": {
+            "start": 10,
+            "end": 22
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "korean-sensitive-context",
+          "candidate": {
+            "start": 15,
+            "end": 27
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "korean-nfd-sensitive-context",
+          "candidate": {
+            "start": 33,
+            "end": 45
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "korean-governed-invisible-context",
+          "candidate": {
+            "start": 21,
+            "end": 33
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "extension-one-digit",
+          "candidate": {
+            "start": 6,
+            "end": 24
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "extension-six-digits",
+          "candidate": {
+            "start": 13,
+            "end": 37
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "astral-prefix-offset",
+          "candidate": {
+            "start": 11,
+            "end": 23
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "bare-identity",
+          "candidate": {
+            "start": 0,
+            "end": 12
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ambiguous-english-contact",
+          "candidate": {
+            "start": 8,
+            "end": 20
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ambiguous-korean-contact",
+          "candidate": {
+            "start": 10,
+            "end": 22
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "negative-context-wins",
+          "candidate": {
+            "start": 20,
+            "end": 32
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "reserved-555-control-lower",
+          "candidate": {
+            "start": 6,
+            "end": 18
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "authority-published-value",
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "reserved-555-control-upper-extension",
+          "candidate": {
+            "start": 6,
+            "end": 26
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "authority-published-value",
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "non-sensitive",
+          "sensitivityBasis": [
+            "authority-reserved-value"
+          ]
+        },
+        {
+          "caseId": "reserved-substring-no-authority",
+          "candidate": {
+            "start": 6,
+            "end": 18
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "n11-area-code",
+          "candidate": {
+            "start": 6,
+            "end": 18
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "n11-central-office",
+          "candidate": {
+            "start": 6,
+            "end": 18
+          },
+          "identity": "invalid",
+          "identityBasis": [
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "accepted-988-exchange",
+          "candidate": {
+            "start": 6,
+            "end": 18
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "version-collision",
+          "candidate": {
+            "start": 8,
+            "end": 20
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "order-reference-collision",
+          "candidate": {
+            "start": 16,
+            "end": 28
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ipv4-collision",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "date-collision",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "mixed-separators",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unsupported-country-code",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unsupported-tel-uri",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unsupported-vanity",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "unsupported-x-extension",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "extension-zero-digits",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "extension-seven-digits",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "extension-line-break",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "repeated-extension",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "repeated-extension-spaced",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "second-x-extension",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "ordinary-extra-suffix",
+          "candidate": {
+            "start": 6,
+            "end": 18
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "ordinary-xylophone-suffix",
+          "candidate": {
+            "start": 6,
+            "end": 18
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "adjacent-identifier-prefix",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "adjacent-identifier-suffix",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "governed-invisible-interior",
+          "candidate": null,
+          "identity": "not-established",
+          "identityBasis": [],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "shared-contact-details",
+          "candidate": {
+            "start": 16,
+            "end": 28
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        },
+        {
+          "caseId": "equidistant-contact-details",
+          "candidate": {
+            "start": 0,
+            "end": 12
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "not-established",
+          "sensitivityBasis": []
+        },
+        {
+          "caseId": "context-stops-at-candidate",
+          "candidate": {
+            "start": 16,
+            "end": 28
+          },
+          "identity": "valid",
+          "identityBasis": [
+            "contract-grammar",
+            "reference-validator"
+          ],
+          "sensitivity": "sensitive",
+          "sensitivityBasis": [
+            "contract-context-rule"
+          ]
+        }
+      ]
+    }
+  ]
+}

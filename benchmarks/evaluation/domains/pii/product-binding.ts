@@ -1,6 +1,7 @@
 import { validateEvidence } from '../credential/evidence.ts';
 import { hash } from '../../substrate/hash.ts';
 import trustedBindings from './trusted-product-bindings-v1.json';
+import { validatePiiIdentityOracleProjection, type PiiIdentityOracleProjection } from './identity-oracle.ts';
 
 type GateStatus = 'met' | 'not-met' | 'unresolved' | 'not-applicable';
 export interface PiiActivationEvidence {
@@ -14,10 +15,12 @@ export interface PiiActivationEvidence {
 }
 interface PiiActivationCheck { selectors: string[]; activationIdentity: string; availableFamilies: string[] }
 export interface PiiFamilyQualificationEvidence {
-  schemaVersion: 1; reportType: 'pii-family-qualification'; supportClaims: false; family: string;
+  /** 1: frozen beta.10 records. 2 (#423): independent gates plus the evaluation-only identity oracle projection. */
+  schemaVersion: 1 | 2; reportType: 'pii-family-qualification'; supportClaims: false; family: string;
   product: PiiActivationEvidence['product']; activationArtifactCommitment: string; planCommitment: string;
   profile: { id: 'pii-v1'; version: 1 }; gates: Array<{ id: string; status: GateStatus }>;
   classAccounting: Array<{ id: string; status: 'measured' | 'unresolved'; observations: number }>;
+  identityOracle?: PiiIdentityOracleProjection;
   installedArtifactConformance?: PiiInstalledArtifactConformance;
   sourceConformance?: PiiSourceConformance;
   arrivalEvidence?: { contractCommitment: string; identitySourceCommitment: string; populationBundleCommitment: string;
@@ -212,11 +215,12 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
     const extended = row.installedArtifactConformance !== undefined || row.sourceConformance !== undefined;
     const arrivalEvidence = row.arrivalEvidence, arrival = arrivalEvidence !== undefined;
     const keys = ['schemaVersion', 'reportType', 'supportClaims', 'family', 'product', 'activationArtifactCommitment', 'planCommitment', 'profile', 'gates', 'classAccounting',
+      ...(row.schemaVersion === 2 ? ['identityOracle'] : []),
       ...(extended ? ['installedArtifactConformance', 'sourceConformance'] : []), ...(arrival ? ['arrivalEvidence'] : []),
       'status', 'reasonCodes', 'artifactCommitment'];
     const validArrival = validatePiiQualificationArrivalBinding(row);
     return !exact(row, keys) ||
-      row.schemaVersion !== 1 || row.reportType !== 'pii-family-qualification' || row.supportClaims !== false || !registryFamilies.includes(row.family) ||
+      (row.schemaVersion !== 1 && row.schemaVersion !== 2) || (row.schemaVersion === 2 && !validQualificationIdentityOracle(row)) || row.reportType !== 'pii-family-qualification' || row.supportClaims !== false || !registryFamilies.includes(row.family) ||
       JSON.stringify(row.product) !== JSON.stringify(activation.product) || row.activationArtifactCommitment !== activation.artifactCommitment ||
       !digest(row.planCommitment) || row.profile?.id !== 'pii-v1' || row.profile.version !== 1 || !Array.isArray(row.gates) || row.gates.length === 0 ||
       new Set(row.gates.map(gate => gate.id)).size !== row.gates.length || row.gates.some(gate => !slug(gate.id) || !['met', 'not-met', 'unresolved', 'not-applicable'].includes(gate.status)) ||
@@ -243,3 +247,15 @@ export function validatePiiProductBinding(input: PiiTrustedProductBinding, regis
 }
 
 export const piiBindingArtifactCommitment = commitment;
+
+/** A schemaVersion 2 qualification's oracle projection must bind the same family, plan and candidate, and drive its gate. */
+export function validQualificationIdentityOracle(row: Pick<PiiFamilyQualificationEvidence, 'family' | 'planCommitment' | 'product' | 'gates' | 'identityOracle'>) {
+  try {
+    const projection = validatePiiIdentityOracleProjection(row.identityOracle);
+    return projection.family === row.family && projection.binding.planCommitment === row.planCommitment &&
+      projection.binding.productSourceCommit === row.product.sourceCommit &&
+      projection.binding.candidateArtifactCommitment === row.product.artifactCommitment &&
+      row.gates.filter(gate => gate.id === 'identity-only-classification').length === 1 &&
+      row.gates.find(gate => gate.id === 'identity-only-classification')!.status === projection.gateStatus;
+  } catch { return false; }
+}

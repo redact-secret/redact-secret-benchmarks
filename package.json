@@ -45,6 +45,7 @@
     "pins:manifest:check": "node --import tsx scripts/generate-pin-manifest.mjs --check",
     "baseline": "node --import tsx scripts/baseline.mjs",
     "baseline:report": "node --import tsx scripts/baseline.mjs --report",
+    "baseline:check-t3": "node --import tsx scripts/check-t3-comparison.mjs",
     "typecheck": "tsc --noEmit",
     "eval:holdout": "node --import tsx benchmarks/holdout.ts",
     "eval:qualify": "node --import tsx benchmarks/qualify.ts",

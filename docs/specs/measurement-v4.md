@@ -229,6 +229,20 @@ structural argument (malformed-by-construction negatives are naturally T2).
 - `T3` = this project's masking policy. Honest and unchanged in meaning.
 - `T0` = pending, unscored.
 
+**T3 carries no peer column by default (#404).** A T3 positive is, by
+construction, a case a peer cannot match by design — a generic literal in a
+sensitive field, a value recognized only beside a same-line vendor marker —
+not a defect a peer failed to find. `npm run baseline:report` therefore
+renders every `Must not flag · T3` and `Policy · T3` section as this
+project's own row only, and the `/report?level=T3` dashboard view hides its
+peer table the same way; both hand the reader a fixed caption saying why. The
+peer columns are an explicit opt-in — `npm run baseline:report --
+--include-t3-peers` for the generated comparison, `?peers=1` for the
+dashboard — and `npm run baseline:check-t3` fails the build if a
+default-mode comparison ever reintroduces a T3 peer row. Only rendering
+changes: no existing `baselines/*.json` is rewritten, and T1/T2 groups are
+unaffected.
+
 Consequence worth stating plainly: **a format all three tools miss can now be a
 scored T1 positive.** That is the point. It also means tier assignment is a
 research task with an owner — the 25-family provider pass (§5, phase 5) — and

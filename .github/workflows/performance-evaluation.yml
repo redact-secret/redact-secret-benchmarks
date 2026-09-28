@@ -166,7 +166,7 @@ jobs:
         run: |
           set -euo pipefail
           cargo install wasm-bindgen-cli --version "$WASM_BINDGEN_VERSION" --locked
-          python -m pip install 'maturin>=1.10,<2'
+          python -m pip install --require-hashes --no-deps -r benchmarks-repo/.github/ci-locks/requirements-maturin.txt
 
       - name: Compute the baseline build cache key (#307)
         id: build-cache

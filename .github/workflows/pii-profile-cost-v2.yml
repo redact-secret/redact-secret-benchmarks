@@ -97,7 +97,9 @@ jobs:
           set -euo pipefail
           python -m venv "$RUNNER_TEMP/python"
           "$RUNNER_TEMP/python/bin/python" -m pip install --no-index --no-deps --only-binary :all: "$RUNNER_TEMP"/python-wheel/*.whl
-          npm install --prefix "$RUNNER_TEMP/playwright" --no-save playwright@1.55.0
+          mkdir -p "$RUNNER_TEMP/playwright"
+          cp benchmarks/.github/ci-locks/playwright/package.json .github/ci-locks/playwright/package-lock.json "$RUNNER_TEMP/playwright/"
+          npm ci --ignore-scripts --prefix "$RUNNER_TEMP/playwright"
           "$RUNNER_TEMP/playwright/node_modules/.bin/playwright" install --with-deps chromium
           cargo init --bin --name pii-profile-cost-rust-sample "$RUNNER_TEMP/rust-helper"
           cp benchmarks/scripts/pii-profile-cost/rust-sample.rs "$RUNNER_TEMP/rust-helper/src/main.rs"

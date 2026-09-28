@@ -176,5 +176,92 @@
     },
     "decidedAt": "2026-09-27",
     "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 credential-detector latency tradeoff, redact-secret#774)"
+  },
+  {
+    "id": "beta10-final-cli-scale-logs-medium-credential-detector-pack",
+    "triggerId": "latency/cli/scale-logs-medium-fixed4096/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314" },
+    "measured": { "baseline": 1, "candidate": 1.103, "unit": "ratio" },
+    "rationale": "The credential-detector-pack code accepted for this trigger at f26dee26 (redact-secret-benchmarks accepted-regressions row beta10-cli-scale-logs-medium-credential-detector-pack) is unchanged through af7f863f: the intervening commits are documentation/README fixes (38bfe639), an unrelated new PII family (2e1bdcf0, phone detection), and version-bump/audit-record commits (7213dea5, 9269e9d8, c359569e), none of which touch the CLI's per-line dispatch path. A dispatch at the final candidate (redact-secret-benchmarks run 36370525959) measured processing-ratio 1.103 against the 10% budget, consistent with the previously accepted magnitude. Root cause and remediation history remain as recorded in the original row; the redesign remains tracked in redact-secret#883 and not committed to this release. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Seven new or corrected LLM/developer-credential provider families researched in redact-secret#774-#789 with T1 evidence for the Anthropic admin/enterprise prefixes, the Amazon Bedrock key shapes and the ElevenLabs prefix/suffix, and an honest T2 empirical contract for the rest.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 final candidate af7f863f requalification, redact-secret#774)"
+  },
+  {
+    "id": "beta10-final-node-scale-logs-medium-credential-detector-pack",
+    "triggerId": "latency/node/scale-logs-medium-fixed4096/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314" },
+    "measured": { "baseline": 1, "candidate": 1.120, "unit": "ratio" },
+    "rationale": "Same unchanged credential-detector-pack code and root cause as beta10-node-scale-logs-medium-credential-detector-pack (accepted at f26dee26); no commit between f26dee26 and af7f863f touches Node's dispatch path (see the CLI row above for the intervening commit list). A dispatch at the final candidate (redact-secret-benchmarks run 36370525959) measured processing-ratio 1.120 against the 10% budget; this surface hovers at the noise boundary as previously documented. Tracked in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Same seven-family Beta.10 credential-detector addition as the CLI row above.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 final candidate af7f863f requalification, redact-secret#774)"
+  },
+  {
+    "id": "beta10-final-browser-wasm-scale-logs-medium-credential-detector-pack",
+    "triggerId": "latency/browser-wasm/scale-logs-medium-fixed4096/processing-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314" },
+    "measured": { "baseline": 1, "candidate": 1.101, "unit": "ratio" },
+    "rationale": "Same unchanged credential-detector-pack code and root cause as beta10-browser-wasm-scale-logs-medium-credential-detector-pack (accepted at f26dee26); no commit between f26dee26 and af7f863f touches the shared wasm32 core's dispatch path (see the CLI row above for the intervening commit list). A dispatch at the final candidate (redact-secret-benchmarks run 36370525959) measured processing-ratio 1.101 against the 10% budget; a second dispatch (run 36371400453) cleared budget on this trigger, consistent with this surface hovering at the noise boundary as previously documented. Tracked in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Same seven-family Beta.10 credential-detector addition as the CLI row above.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/774",
+        "https://github.com/redact-secret/redact-secret/pull/869",
+        "https://github.com/redact-secret/redact-secret/pull/870",
+        "https://github.com/redact-secret/redact-secret/pull/871",
+        "https://github.com/redact-secret/redact-secret/pull/872",
+        "https://github.com/redact-secret/redact-secret/pull/882",
+        "https://github.com/redact-secret/redact-secret/issues/883"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 final candidate af7f863f requalification, redact-secret#774)"
+  },
+  {
+    "id": "beta10-browser-wasm-scale-logs-small-whole-phone-detector-init",
+    "triggerId": "initialization/browser-wasm/scale-logs-small-whole/initialization-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314" },
+    "measured": { "baseline": 1, "candidate": 1.488, "unit": "ratio" },
+    "rationale": "New at this release: not present in any prior Beta.10 candidate's accepted-regressions rows (including f26dee26), and absent from every other performance-evaluation dispatch run against `develop` on 2026-09-27. Two interleaved dispatches at the final candidate (redact-secret-benchmarks runs 36370525959 and 36371400453) measured initialization-ratio 1.412 and 1.565 (median 1.488 shown here) against the row's 25%-relative, noise-adjusted budget (calibrated from an 11.2% A/A median deviation). A third dispatch isolated to the phone-detection commit alone (2e1bdcf0, redact-secret-benchmarks run 36371926215, measured 1.389) reproduces the same breach with every other commit between f26dee26 and af7f863f excluded, confirming redact-secret#895 (constrained-context phone detection) as the sole cause. Root-cause investigation found no fixable defect: the new `pii_phone.rs` detector is a ~450-line hand-written byte scanner with no regex or eager static initialization, its one import (`unicode_normalization::char::is_combining_mark`) was already a dependency used by five existing PII detectors, and the workspace's wasm release profile already uses `lto = \"fat\"` and `codegen-units = 1` with no `wasm-opt` post-processing step to add. The measured cost is the wasm module's own compiled-size growth (both the `full` and `common` profile `.wasm` artifacts grew ~12.2 KB, +1.67%, entirely attributable to this commit) increasing one-time module-instantiation cost, amplified into a large relative ratio only because this row's workload (`scale-logs-small-whole`) has the smallest absolute initialization baseline of any measured profile. PII family activation is a runtime `PiiSelection` choice layered identically onto both the `full` and `common` compiled profiles (crates/secret-scan-core/src/registry.rs `with_profile_and_pii`), not a compile-time feature gate like the secret-detector packs, so this cost is paid by both profiles regardless of whether a given consumer activates phone detection; folding PII behind the full/common compile-time split would remove PII capability from the common profile entirely and is a public-contract change out of scope for this release. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Adds the `pii:global:phone` family: conservative E.164/NANP phone-number identity structure (`+1` and NANP display forms only), gated by the same required-context sensitivity policy as every other PII family, with English and Korean field-label/context entries and conformance fixtures.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/895",
+        "https://github.com/redact-secret/redact-secret/issues/880"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 final candidate af7f863f phone-detection wasm-initialization tradeoff)"
   }
 ]

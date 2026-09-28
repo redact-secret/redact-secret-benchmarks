@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-436d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "71143ca92ca57b526b8d6301f367cf4c2a7fe6003298b7358c873fc4014e29b0",
+    "fixtureCount": 33,
+    "fixturesDigest": "62e199468fadfe357e9f610125715d7b7d77a912bf26abbef3b9e0f17c3f11a7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/resend-api-key-curl-bearer.sh",
+      "start": 72,
+      "end": 108
+    },
+    {
+      "path": "cases/resend-api-key-digits-placeholder.env",
+      "start": 15,
+      "end": 27,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-dotenv.env",
+      "start": 22,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-export.sh",
+      "start": 23,
+      "end": 59,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-json-api-key.json",
+      "start": 16,
+      "end": 52,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-json-token.json",
+      "start": 14,
+      "end": 50,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-mcp-env.json",
+      "start": 130,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-python-module.py",
+      "start": 33,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-sdk-kwarg.py",
+      "start": 25,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-second-underscore-twin.http",
+      "start": 55,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-segment1-7-twin.env",
+      "start": 22,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-segment1-9-twin.sh",
+      "start": 23,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-segment2-23-twin.json",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-segment2-25-twin.json",
+      "start": 16,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-trailing-glue-twin.sh",
+      "start": 72,
+      "end": 110
+    },
+    {
+      "path": "cases/resend-api-key-uppercase-prefix-twin.py",
+      "start": 25,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-webhook-secret-twin.json",
+      "start": 130,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 91,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "e80e0012e06de29ff87f6cd0ef86b0c13bf05284b93be65e7b8d2fc7e5f74479"
+}

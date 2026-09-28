@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-434d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "580a2cb41baae08a0bcf9910be7e50ce58de1a8e2e5cf63d4fbef476b7f10886",
+    "fixtureCount": 66,
+    "fixturesDigest": "d482e1ddd1bb34f0729dc65545c13b872d4ab25fa4b26d9323692810b9dd59f9",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/posthog-project-secret-api-key-body-41-twin.env",
+      "start": 38,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-body-50-twin.sh",
+      "start": 39,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-curl-projects.sh",
+      "start": 71,
+      "end": 118
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-dotenv.env",
+      "start": 38,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-export.sh",
+      "start": 39,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-hyphen-in-body-twin.json",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-json-api-key.json",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-json-token.json",
+      "start": 14,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-project-token-prefix-twin.sh",
+      "start": 71,
+      "end": 118
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-sdk-kwarg.py",
+      "start": 26,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-short-prefix-twin.py",
+      "start": 26,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-underscore-in-body-twin.json",
+      "start": 14,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-uppercase-prefix-twin.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-body-41-twin.env",
+      "start": 32,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-body-50-twin.sh",
+      "start": 33,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-curl-projects.sh",
+      "start": 71,
+      "end": 118
+    },
+    {
+      "path": "cases/posthog-token-dotenv.env",
+      "start": 32,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-export.sh",
+      "start": 33,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-hyphen-in-body-twin.json",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-json-api-key.json",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-json-token.json",
+      "start": 14,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-project-token-prefix-twin.sh",
+      "start": 71,
+      "end": 118
+    },
+    {
+      "path": "cases/posthog-token-sdk-kwarg.py",
+      "start": 26,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-short-prefix-twin.py",
+      "start": 26,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-underscore-in-body-twin.json",
+      "start": 14,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-uppercase-prefix-twin.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-x-api-key-header.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "c086b0818549d4721dc92431aeb119633421c58d77d8030b4265ceb6e0821570"
+}

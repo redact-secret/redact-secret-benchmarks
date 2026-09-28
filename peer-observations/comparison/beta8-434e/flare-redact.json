@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-434e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "b50ce43436803b1205cd86a79e0ad1547295286375bf222d5cf060cf07b1c9a9",
+    "fixtureCount": 71,
+    "fixturesDigest": "9c25266dd9a8166379d540af7982f2916c96cd57e3c3725e61a96511913849ef",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/helicone-api-key-bare-prose.md",
+      "start": 62,
+      "end": 105,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-bearer-header.http",
+      "start": 68,
+      "end": 124,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-api-key-chat-paste.txt",
+      "start": 24,
+      "end": 73,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-customer-portal-twin.sh",
+      "start": 25,
+      "end": 62,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-dot-in-group-twin.py",
+      "start": 33,
+      "end": 69,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-dotenv.env",
+      "start": 24,
+      "end": 70,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-export.sh",
+      "start": 25,
+      "end": 71,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-five-groups-twin.http",
+      "start": 68,
+      "end": 132,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-api-key-group-of-6-twin.md",
+      "start": 62,
+      "end": 104,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-group-of-8-twin.env",
+      "start": 24,
+      "end": 71,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-helicone-auth.sh",
+      "start": 79,
+      "end": 172,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-api-key-json-api-key.json",
+      "start": 16,
+      "end": 62,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-json-token.json",
+      "start": 14,
+      "end": 57,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-leading-glue-twin.py",
+      "start": 126,
+      "end": 177,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-api-key-legacy-bare-twin.env",
+      "start": 24,
+      "end": 58,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-openai-default-headers.py",
+      "start": 126,
+      "end": 176,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-api-key-provider-segment-glued-twin.sh",
+      "start": 79,
+      "end": 173,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-api-key-proxy-malformed-uuid-twin.http",
+      "start": 63,
+      "end": 127,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-sdk-kwarg.py",
+      "start": 33,
+      "end": 79,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-segment-order-twin.http",
+      "start": 68,
+      "end": 124,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-api-key-three-groups-twin.sh",
+      "start": 25,
+      "end": 63,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-trailing-glue-twin.md",
+      "start": 62,
+      "end": 107,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-underscore-separators-twin.json",
+      "start": 14,
+      "end": 57,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-uppercase-byte-twin.json",
+      "start": 16,
+      "end": 62,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-word-groups-near-miss.txt",
+      "start": 14,
+      "end": 39,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-word-groups-near-miss.txt",
+      "start": 44,
+      "end": 73,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-api-key-x-api-key-header.http",
+      "start": 63,
+      "end": 127,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/helicone-write-api-key-bearer-header.http",
+      "start": 68,
+      "end": 124,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-write-api-key-five-groups-twin.http",
+      "start": 68,
+      "end": 132,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-write-api-key-helicone-auth.sh",
+      "start": 79,
+      "end": 132,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-write-api-key-leading-glue-twin.py",
+      "start": 126,
+      "end": 180,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-write-api-key-openai-default-headers.py",
+      "start": 126,
+      "end": 179,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-write-api-key-provider-segment-glued-twin.sh",
+      "start": 79,
+      "end": 133,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/helicone-write-api-key-segment-order-twin.http",
+      "start": 68,
+      "end": 124,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "919f72e9f155a719378cf3aac0eb27ae48d62591d4a5c1dbecde772b08780603"
+}

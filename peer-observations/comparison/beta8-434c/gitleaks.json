@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-434c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "2588c322f0ac1dae5b3fb91af12d1d767172672c3137eef1f6b6a253d791db5d",
+    "fixtureCount": 34,
+    "fixturesDigest": "eebe0ce15bec0f7748f583b11134bf21f114fc7be50b713c94b798201f744f58",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/e2b-api-key-body-39-twin.env",
+      "start": 19,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-body-41-twin.sh",
+      "start": 20,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-curl-x-api-key.sh",
+      "start": 53,
+      "end": 97
+    },
+    {
+      "path": "cases/e2b-api-key-dotenv.env",
+      "start": 19,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-export.sh",
+      "start": 20,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-g-in-body-twin.json",
+      "start": 16,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-hyphen-in-body-twin.py",
+      "start": 33,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-hyphen-separator-twin.http",
+      "start": 52,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-js-sandbox.ts",
+      "start": 94,
+      "end": 138,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-json-api-key.json",
+      "start": 16,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-json-token.json",
+      "start": 14,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-mcp-env.json",
+      "start": 129,
+      "end": 173,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-python-sandbox.py",
+      "start": 72,
+      "end": 116,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-retired-user-token-twin.py",
+      "start": 72,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-sdk-kwarg.py",
+      "start": 33,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-trailing-glue-twin.sh",
+      "start": 53,
+      "end": 99
+    },
+    {
+      "path": "cases/e2b-api-key-uppercase-hex-byte-twin.json",
+      "start": 14,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-x-api-key-header.http",
+      "start": 52,
+      "end": 96,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "26a5463c5176a0e669edaf5c75cb85f2cdf8dd60fd0ebb5e229594828f2c74b9"
+}

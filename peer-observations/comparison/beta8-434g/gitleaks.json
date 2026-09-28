@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-434g",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "16b3324339a84d528d0e8307287b0404e1c6a29934f4f16b225903d44d8143f6",
+    "fixtureCount": 103,
+    "fixturesDigest": "bfc2d160e13c5d06de1ef74dfd69ab9a86fb14d3d905b7c9b493a52c60b1d49a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/composio-api-key-all-lowercase-body-twin.env",
+      "start": 24,
+      "end": 47,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-bkend-ak-64-hex-twin.json",
+      "start": 16,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-body-short-twin.sh",
+      "start": 25,
+      "end": 47,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-digest-encoded-value.txt",
+      "start": 26,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-dot-in-body-twin.http",
+      "start": 61,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-dotenv.env",
+      "start": 24,
+      "end": 47,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-end-of-input.env",
+      "start": 17,
+      "end": 40,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-export.sh",
+      "start": 25,
+      "end": 48,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-hyphen-prefix-twin.json",
+      "start": 16,
+      "end": 39,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-inside-uak-twin.env",
+      "start": 17,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-inside-xak-twin.sh",
+      "start": 68,
+      "end": 92
+    },
+    {
+      "path": "cases/composio-api-key-json-api-key.json",
+      "start": 16,
+      "end": 39,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-json-token.json",
+      "start": 14,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-mcp-config.json",
+      "start": 144,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-provider-header.sh",
+      "start": 68,
+      "end": 91
+    },
+    {
+      "path": "cases/composio-api-key-sdk-kwarg.py",
+      "start": 27,
+      "end": 50,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-trailing-glue-twin.json",
+      "start": 144,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-uppercase-prefix-twin.json",
+      "start": 14,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-x-api-key-header.http",
+      "start": 61,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-body-19-twin.env",
+      "start": 28,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-body-short-twin.sh",
+      "start": 29,
+      "end": 52,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-digest-encoded-value.txt",
+      "start": 26,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-dot-in-body-twin.http",
+      "start": 61,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-dotenv.env",
+      "start": 28,
+      "end": 52,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-end-of-input.env",
+      "start": 21,
+      "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-export.sh",
+      "start": 29,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-hyphen-prefix-twin.json",
+      "start": 16,
+      "end": 40,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-json-api-key.json",
+      "start": 16,
+      "end": 40,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-json-token.json",
+      "start": 14,
+      "end": 38,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-mcp-config.json",
+      "start": 148,
+      "end": 172,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-provider-header.sh",
+      "start": 72,
+      "end": 96
+    },
+    {
+      "path": "cases/composio-org-api-key-sdk-kwarg.py",
+      "start": 27,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-trailing-glue-twin.json",
+      "start": 148,
+      "end": 173,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-uppercase-prefix-twin.json",
+      "start": 14,
+      "end": 38,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-x-api-key-header.http",
+      "start": 61,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-body-short-twin.sh",
+      "start": 30,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-digest-encoded-value.txt",
+      "start": 26,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-dot-in-body-twin.http",
+      "start": 61,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-dotenv.env",
+      "start": 29,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-end-of-input.env",
+      "start": 22,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-export.sh",
+      "start": 30,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-hyphen-prefix-twin.json",
+      "start": 16,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-json-api-key.json",
+      "start": 16,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-json-token.json",
+      "start": 14,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-legacy-width-20-twin.env",
+      "start": 29,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-mcp-config.json",
+      "start": 149,
+      "end": 196,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-provider-header.sh",
+      "start": 73,
+      "end": 120
+    },
+    {
+      "path": "cases/composio-user-api-key-sdk-kwarg.py",
+      "start": 27,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-trailing-glue-twin.json",
+      "start": 149,
+      "end": 197,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-uppercase-prefix-twin.json",
+      "start": 14,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-x-api-key-header.http",
+      "start": 61,
+      "end": 108,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "c1b4ca5273c05eae41beecdbeac6fdddd0c1a5d22c01aafc3b4ff95ee0a20653"
+}

@@ -134,7 +134,8 @@ const T1_DIMENSIONS = {
   'gitlab-token': ['length', 'prefix'],
   'shopify-token': ['prefix', 'boundary'],
   'vault-token': ['length', 'prefix', 'boundary'],
-  'stripe-token': ['public-prefix', 'boundary'],
+  // #379 adds a prefix twin on the documented sk_live_ separator (sk-live-).
+  'stripe-token': ['public-prefix', 'boundary', 'prefix'],
   'slack-token': ['boundary', 'prefix'],
   // #107: docs.pypi.org/api/secrets documents the pypi- prefix, an {85,}
   // length floor and an [A-Za-z0-9-_] character class, backing length and
@@ -188,7 +189,8 @@ const T1_DIMENSIONS = {
   'docker-token': ['length', 'prefix'],
   'huggingface-token': ['length', 'prefix'],
   'microsoft-entra-client-secret': ['length', 'boundary'],
-  'new-relic-license-key': ['length', 'boundary'],
+  // #379 adds a prefix-kind twin on the provider-documented NRAL literal (FFFFNRAL -> FFFFNRAI).
+  'new-relic-license-key': ['length', 'boundary', 'prefix'],
   // Beta.8 #208 families, registry detectors since redact-secret#727 (graduated from arrival
   // families): Replicate states the r8_ prefix and 40-character total, OpenRouter the sk-or-v1-
   // prefix and 64-lowercase-hex body; their beta8-208 twins mutate those plus a non-word body

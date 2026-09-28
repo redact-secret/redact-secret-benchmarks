@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-436c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "3661be1348e706c04216ac9442af188dcb41381d914db573bf62ff4e39ba0b66",
+    "fixtureCount": 32,
+    "fixturesDigest": "6c79bd4e76d8f1dd54251700e51773223784796d773286ab1502b146c5bd9e8a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/inngest-signing-key-bearer-header.http",
+      "start": 61,
+      "end": 145,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-curl-hashed-bearer.sh",
+      "start": 93,
+      "end": 177,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-docs-angle-placeholder.sh",
+      "start": 58,
+      "end": 78,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-underscore-delimiters-twin.http",
+      "start": 61,
+      "end": 145,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "d8abc166fdccdbfc1343abe1b7106a190eaf249169813a37759449f0c4a4963b"
+}

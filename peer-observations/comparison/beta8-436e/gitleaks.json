@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-436e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "1ab3a7ea16fef98f776f12be3672a6db30598ba83d640892739d412bbc167c50",
+    "fixtureCount": 30,
+    "fixturesDigest": "5600bd62dbd6a55ce9f190e7c18bf5cc802d752587d3d4e023e67806f9617e36",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/apify-api-token-body-19-twin.json",
+      "start": 14,
+      "end": 43,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-curl-bearer.sh",
+      "start": 89,
+      "end": 135
+    },
+    {
+      "path": "cases/apify-api-token-dotenv.env",
+      "start": 19,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-export.sh",
+      "start": 20,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-hyphen-prefix-twin.sh",
+      "start": 20,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-js-client.ts",
+      "start": 86,
+      "end": 132,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-json-api-key.json",
+      "start": 16,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-json-token.json",
+      "start": 14,
+      "end": 44,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-mcp-env.json",
+      "start": 152,
+      "end": 290,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-sdk-kwarg.py",
+      "start": 30,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-underscore-in-body-twin.py",
+      "start": 30,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-uppercase-prefix-twin.env",
+      "start": 19,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-x-api-key-header.http",
+      "start": 54,
+      "end": 100,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "dd53e67504819adda4460ad6b4f06d9ed192442f55dee6a5afe6f2630430464f"
+}

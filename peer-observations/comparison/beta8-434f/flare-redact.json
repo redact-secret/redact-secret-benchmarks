@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-434f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "e4849543c3cda23c349aa51d37f7f364e36723c7aa5e521842b2309cd9f40cdf",
+    "fixtureCount": 37,
+    "fixturesDigest": "49391d00d57de266976a8b8d38042ca0af72854f7d575ec9f185a0f1bd9f2a1c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/firecrawl-api-key-bearer-header.http",
+      "start": 63,
+      "end": 105,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-curl-bearer.sh",
+      "start": 71,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-uppercase-prefix-twin.sh",
+      "start": 71,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-version-1-twin.http",
+      "start": 63,
+      "end": 105,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "efa8302b0ffa1815352f1b84a237804c424253ffa185d3f49dca813837ccd7ce"
+}

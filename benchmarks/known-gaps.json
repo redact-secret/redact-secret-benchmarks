@@ -5782,6 +5782,547 @@
           ]
         }
       ]
+    },
+    {
+      "id": "product-931",
+      "title": "mailchimp-api-key misses a complete -us<dc> key with no Mailchimp keyword on the value line (Basic-auth tuple, prose, apikey header)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/931",
+      "number": 931,
+      "fixtures": [
+        "beta8-379--mailchimp-api-key-python-requests-auth",
+        "beta8-379--mailchimp-api-key-ticket-paragraph",
+        "beta8-379--mailchimp-api-key-debug-request-headers"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939",
+        "sourceCommit": "b0be64b0b3636dda5f0167ea9ee6aa64a3112ec0"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
+            "https://github.com/redact-secret/redact-secret/issues/931"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-379--mailchimp-api-key-python-requests-auth",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 110,
+              "end": 147
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-379--mailchimp-api-key-ticket-paragraph",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 75,
+              "end": 111
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-379--mailchimp-api-key-debug-request-headers",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 85,
+              "end": 122
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-932",
+      "title": "Deepgram/Cohere keyword-gated keys missed in same-line forms the gate does not recognise (HTTPie Token header, Go/Java SDK calls, LiteLLM log)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/932",
+      "number": 932,
+      "fixtures": [
+        "beta8-379--deepgram-api-key-httpie-token",
+        "beta8-379--deepgram-api-key-go-client-literal",
+        "beta8-379--cohere-api-key-litellm-proxy-debug",
+        "beta8-379--cohere-api-key-java-builder-token"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939",
+        "sourceCommit": "b0be64b0b3636dda5f0167ea9ee6aa64a3112ec0"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
+            "https://github.com/redact-secret/redact-secret/issues/932"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-379--deepgram-api-key-httpie-token",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 90,
+              "end": 130
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-379--deepgram-api-key-go-client-literal",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 161,
+              "end": 201
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-379--cohere-api-key-litellm-proxy-debug",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 99,
+              "end": 139
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-379--cohere-api-key-java-builder-token",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 40,
+              "end": 80
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-933",
+      "title": "Context-gated legacy keys missed when the provider context is on the previous line (heroku authorizations:info, Schema Registry basic.auth.user.info, twilio profiles:list)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/933",
+      "number": 933,
+      "fixtures": [
+        "beta8-379--heroku-api-key-legacy-authorizations-info",
+        "beta8-379--confluent-cloud-api-secret-legacy-schema-registry-user-info",
+        "beta8-379--twilio-auth-token-profiles-auth-token"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939",
+        "sourceCommit": "b0be64b0b3636dda5f0167ea9ee6aa64a3112ec0"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
+            "https://github.com/redact-secret/redact-secret/issues/933"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-379--heroku-api-key-legacy-authorizations-info",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 114,
+              "end": 150
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-379--confluent-cloud-api-secret-legacy-schema-registry-user-info",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 147,
+              "end": 211
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-379--twilio-auth-token-profiles-auth-token",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 71,
+              "end": 103
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-934",
+      "title": "heroku-api-key-legacy and stripe-token redact repeated-filler documentation placeholders (all-zero UUID, sk_test_ + x run)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/934",
+      "number": 934,
+      "fixtures": [
+        "beta8-379--heroku-api-key-legacy-zero-uuid-placeholder",
+        "beta8-379--stripe-token-docs-x-body-placeholder"
+      ],
+      "kind": "false-positive",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939",
+        "sourceCommit": "b0be64b0b3636dda5f0167ea9ee6aa64a3112ec0"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
+            "https://github.com/redact-secret/redact-secret/issues/934"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-379--heroku-api-key-legacy-zero-uuid-placeholder",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [],
+          "actual": [
+            {
+              "start": 43,
+              "end": 79,
+              "type": "heroku_api_key_legacy",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-379--stripe-token-docs-x-body-placeholder",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [],
+          "actual": [
+            {
+              "start": 46,
+              "end": 78,
+              "type": "stripe_credential",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-935",
+      "title": "connection-string misses the password in dialect+driver:// URLs (postgresql+psycopg://)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/935",
+      "number": 935,
+      "fixtures": [
+        "beta8-379--connection-string-sqlalchemy-ipv6"
+      ],
+      "kind": "false-negative",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939",
+        "sourceCommit": "b0be64b0b3636dda5f0167ea9ee6aa64a3112ec0"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
+            "https://github.com/redact-secret/redact-secret/issues/935"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-379--connection-string-sqlalchemy-ipv6",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 52,
+              "end": 74
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-936",
+      "title": "Policy: keyword co-occurrence spans in the Beta.11 family evidence warn instead of redact (confidence-gated context families)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/936",
+      "number": 936,
+      "fixtures": [
+        "beta8-379--new-relic-license-key-python-newrelic-ini",
+        "beta8-379--new-relic-license-key-terraform-tfvars-eu",
+        "beta8-379--new-relic-license-key-agent-startup-json",
+        "beta8-379--deepgram-api-key-worker-json-log",
+        "beta8-379--heroku-api-key-legacy-platform-api-ruby",
+        "beta8-379--heroku-api-key-legacy-git-config-remote",
+        "beta8-379--confluent-cloud-api-secret-legacy-client-config-create",
+        "beta8-379--twilio-auth-token-validator-debug"
+      ],
+      "kind": "false-negative",
+      "status": "policy-decision",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939",
+        "sourceCommit": "b0be64b0b3636dda5f0167ea9ee6aa64a3112ec0"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
+            "https://github.com/redact-secret/redact-secret/issues/936"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/79c0a66119fb72931fda9adddbe2973a52bb4833/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md",
+            "https://github.com/redact-secret/redact-secret/blob/79c0a66119fb72931fda9adddbe2973a52bb4833/crates/secret-scan-core/src/policy.rs"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-379--new-relic-license-key-python-newrelic-ini",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 25,
+              "end": 65
+            }
+          ],
+          "actual": [
+            {
+              "start": 25,
+              "end": 65,
+              "type": "new_relic_license_key",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-379--new-relic-license-key-terraform-tfvars-eu",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 104,
+              "end": 144
+            }
+          ],
+          "actual": [
+            {
+              "start": 104,
+              "end": 144,
+              "type": "new_relic_license_key",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-379--new-relic-license-key-agent-startup-json",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 124,
+              "end": 164
+            }
+          ],
+          "actual": [
+            {
+              "start": 124,
+              "end": 164,
+              "type": "new_relic_license_key",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-379--deepgram-api-key-worker-json-log",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 83,
+              "end": 123
+            }
+          ],
+          "actual": [
+            {
+              "start": 83,
+              "end": 123,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-379--heroku-api-key-legacy-platform-api-ruby",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 60,
+              "end": 96
+            }
+          ],
+          "actual": [
+            {
+              "start": 60,
+              "end": 96,
+              "type": "heroku_api_key_legacy",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-379--heroku-api-key-legacy-git-config-remote",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 38,
+              "end": 74
+            }
+          ],
+          "actual": [
+            {
+              "start": 38,
+              "end": 74,
+              "type": "heroku_api_key_legacy",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-379--confluent-cloud-api-secret-legacy-client-config-create",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 84,
+              "end": 148
+            }
+          ],
+          "actual": [
+            {
+              "start": 84,
+              "end": 148,
+              "type": "confluent_cloud_api_secret_legacy",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-379--twilio-auth-token-validator-debug",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 45,
+              "end": 77
+            }
+          ],
+          "actual": [
+            {
+              "start": 45,
+              "end": 77,
+              "type": "twilio_auth_token",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ],
+      "disposition": {
+        "reason": "Documented confidence-gated policy, not a defect: each span is detected exactly at medium confidence because the provider keyword is elsewhere on the line (or on an earlier line) and the value is not assigned to a provider-named or high-signal key, and policy.rs warns at medium for these confidence-gated types (decision-redact-provider-named-credential-assignments section 1). None of the eight is under a provider-named key. redact-secret#936 asks the maintainers to confirm the one open point (the twilio row sits under auth_token, which generic-token treats as ambiguous while a text.rs doc comment names it as high-signal); a changed answer is a new observation, not an edit of this record.",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/blob/79c0a66119fb72931fda9adddbe2973a52bb4833/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md",
+          "https://github.com/redact-secret/redact-secret/blob/79c0a66119fb72931fda9adddbe2973a52bb4833/crates/secret-scan-core/src/policy.rs",
+          "https://github.com/redact-secret/redact-secret/issues/936"
+        ]
+      }
     }
   ]
 }

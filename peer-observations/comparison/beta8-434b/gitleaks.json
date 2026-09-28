@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:41:43.328Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:41:43.328Z-5aa215",
+    "benchmarkRevision": "8e77b92b6ecc081ecaf04d60d291daf64ad3146f"
+  },
+  "input": {
+    "surface": "comparison/beta8-434b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "c27b72427eb95e8d6c603243d7b76a90a6850ec8d6526387fb874ce43cd9a6f6",
+    "fixtureCount": 67,
+    "fixturesDigest": "b889230e1bf28d79e82e6aa892b6d59f7da9e95822b414d74b24d851771bab75",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "f3e6b79b0c047ee8cb5b3a8c7a511de7a801bf1c3214b9c25164156d55ef8a82",
+      "fixtureCount": 4664
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 53,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-body-39-twin.env",
+      "start": 28,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-body-41-twin.sh",
+      "start": 29,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-dotenv.env",
+      "start": 28,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-export.sh",
+      "start": 29,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-json-api-key.json",
+      "start": 16,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-json-token.json",
+      "start": 14,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 56,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-leading-glue-twin.py",
+      "start": 32,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-sdk-kwarg.py",
+      "start": 32,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-uppercase-in-body-twin.json",
+      "start": 14,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-uppercase-prefix-twin.json",
+      "start": 16,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 56,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-json-api-key.json",
+      "start": 16,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-json-token.json",
+      "start": 14,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-21-twin.json",
+      "start": 14,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-22-twin.py",
+      "start": 32,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 56,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-sdk-kwarg.py",
+      "start": 32,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-sk-body-21-twin.json",
+      "start": 16,
+      "end": 48,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 56,
+      "end": 87,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "4688e5c6962113f26aa7649bd656ce69efe4dc625cbee44b33fa247e1de4f8e0"
+}

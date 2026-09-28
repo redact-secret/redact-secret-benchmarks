@@ -5794,7 +5794,7 @@
         "beta8-379--mailchimp-api-key-debug-request-headers"
       ],
       "kind": "false-negative",
-      "status": "reviewed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -5822,6 +5822,20 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
+        },
+        "promoted": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/1db8ff38b16e50c51229eb27025452952bf621e1/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/issues/931"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/958",
+            "https://github.com/redact-secret/redact-secret/commit/03d6a2b2bbb75ade4c991977a9e122cb6c603303"
+          ]
         }
       },
       "promotion": {
@@ -5833,6 +5847,9 @@
           "mailchimp-api-key-positive-keyword-on-another-line",
           "mailchimp-api-key-positive-hostname-label-with-keyword"
         ]
+      },
+      "fix": {
+        "commit": "03d6a2b2bbb75ade4c991977a9e122cb6c603303"
       },
       "evidence": [
         {
@@ -5882,7 +5899,7 @@
         "beta8-379--cohere-api-key-java-builder-token"
       ],
       "kind": "false-negative",
-      "status": "reviewed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -5910,6 +5927,20 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
+        },
+        "promoted": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/1db8ff38b16e50c51229eb27025452952bf621e1/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/issues/932"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/958",
+            "https://github.com/redact-secret/redact-secret/commit/127260c1bec71c181e043839a76607abbd72c6f3"
+          ]
         }
       },
       "promotion": {
@@ -5921,6 +5952,9 @@
           "deepgram-api-key-positive-go-last-positional-argument",
           "cohere-api-key-positive-java-builder-token"
         ]
+      },
+      "fix": {
+        "commit": "127260c1bec71c181e043839a76607abbd72c6f3"
       },
       "evidence": [
         {
@@ -5980,7 +6014,7 @@
         "beta8-379--twilio-auth-token-profiles-auth-token"
       ],
       "kind": "false-negative",
-      "status": "reviewed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -6008,6 +6042,20 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
+        },
+        "promoted": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/1db8ff38b16e50c51229eb27025452952bf621e1/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/issues/933"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/958",
+            "https://github.com/redact-secret/redact-secret/commit/03d6a2b2bbb75ade4c991977a9e122cb6c603303"
+          ]
         }
       },
       "promotion": {
@@ -6019,6 +6067,9 @@
           "twilio-auth-token-positive-cli-table-auth-token-column",
           "confluent-cloud-api-secret-legacy-positive-registry-user-info"
         ]
+      },
+      "fix": {
+        "commit": "03d6a2b2bbb75ade4c991977a9e122cb6c603303"
       },
       "evidence": [
         {
@@ -6066,7 +6117,7 @@
         "beta8-379--stripe-token-docs-x-body-placeholder"
       ],
       "kind": "false-positive",
-      "status": "reviewed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -6094,6 +6145,20 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
+        },
+        "promoted": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/1db8ff38b16e50c51229eb27025452952bf621e1/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/issues/934"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/958",
+            "https://github.com/redact-secret/redact-secret/commit/c5760402b43b31e49be0bc61498cb8c2db4764fd"
+          ]
         }
       },
       "promotion": {
@@ -6104,6 +6169,9 @@
           "heroku-api-key-legacy-negative-zero-uuid-placeholder",
           "stripe-negative-repeated-filler-placeholder"
         ]
+      },
+      "fix": {
+        "commit": "c5760402b43b31e49be0bc61498cb8c2db4764fd"
       },
       "evidence": [
         {
@@ -6145,7 +6213,7 @@
         "beta8-379--connection-string-sqlalchemy-ipv6"
       ],
       "kind": "false-negative",
-      "status": "reviewed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -6173,6 +6241,20 @@
             "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
+        },
+        "promoted": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/1db8ff38b16e50c51229eb27025452952bf621e1/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/issues/935"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/958",
+            "https://github.com/redact-secret/redact-secret/commit/4e865058e94bb0ead2d39f73d607a0b8e31a43f5"
+          ]
         }
       },
       "promotion": {
@@ -6182,6 +6264,9 @@
         "canonicalFixtureIds": [
           "connection-positive-sqlalchemy-driver-ipv6-host"
         ]
+      },
+      "fix": {
+        "commit": "4e865058e94bb0ead2d39f73d607a0b8e31a43f5"
       },
       "evidence": [
         {
@@ -6417,7 +6502,7 @@
         "beta8-436d--resend-api-key-your-key-placeholder"
       ],
       "kind": "false-positive",
-      "status": "reviewed",
+      "status": "fixed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -6444,6 +6529,20 @@
             "https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/inngest.md",
             "https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/resend.md"
           ]
+        },
+        "promoted": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/1db8ff38b16e50c51229eb27025452952bf621e1/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/issues/949"
+          ]
+        },
+        "fixed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/958",
+            "https://github.com/redact-secret/redact-secret/commit/9605eb5d7094fc8a408a42e6bf7bd419299e13bf"
+          ]
         }
       },
       "promotion": {
@@ -6455,6 +6554,9 @@
           "contextual-negative-vendor-prefix-sdk-counting-digits",
           "contextual-negative-vendor-prefix-glued-your-word"
         ]
+      },
+      "fix": {
+        "commit": "9605eb5d7094fc8a408a42e6bf7bd419299e13bf"
       },
       "evidence": [
         {

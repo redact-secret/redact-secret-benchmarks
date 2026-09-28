@@ -210,6 +210,22 @@ const T1_DIMENSIONS = {
   // not on any total length, which the ruling leaves T2.
   'aws-bedrock-short-term-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
   'elevenlabs-api-key': ['boundary', 'prefix'],
+  // Beta.11 #434/#436 families, registry detectors since the 1127bf9 re-pin (redact-secret#903-#909, #912-#917). Each T1
+  // contract states a prefix, a width and an alphabet, and the handoff bounds a match on both sides, so its beta8-434*/436*
+  // twins mutate all four. W&B has no length twin: the documented length is "about 86" and no length is asserted (#917).
+  'doppler-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'trigger-dev-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'e2b-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'posthog-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'helicone-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'firecrawl-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'composio-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'convex-deployment-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'onepassword-service-account-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'inngest-signing-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'resend-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'apify-api-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'wandb-api-key': ['alphabet', 'boundary', 'prefix'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -232,5 +248,5 @@ test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
   assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts['not-measured'], 78);
+  assert.equal(probe.counts['not-measured'], 91);
 });

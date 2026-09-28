@@ -16,7 +16,9 @@ const slices = ['434a', '434b', '434c', '434d', '434e', '434f', '434g'];
 const corpora = slices.map(key => [`beta8-${key}`, generated[`beta8-${key}`]]);
 const modules = BETA8_MODULES.filter(m => slices.includes(m.issue));
 const families = modules.flatMap(m => m.arrivalFamilies);
-const ids = families.map(f => f.id);
+/** The seven detector-id families graduated to registry contracts at the 1127bf9 re-pin; the eleven siblings stay arrival families. */
+const graduated = modules.flatMap(m => Object.keys(m.registryContracts ?? {}));
+const ids = [...families.map(f => f.id), ...graduated];
 const taxonomy = await read('benchmarks/support/taxonomy.json');
 const targetOf = f => (f.arrivalTargets ?? f.detectors)[0];
 const secretsOf = f => f.expected.filter(r => (r.role ?? 'secret') === 'secret');
@@ -25,28 +27,33 @@ const handoffFile = { '434a': 'doppler.md', '434b': 'trigger-dev.md', '434c': 'e
 /** An unanchored form of a contract pattern, bounded the way every handoff bounds a match: no [A-Za-z0-9_-] on either side. */
 const unanchored = pattern => new RegExp(`(?<![A-Za-z0-9_.-])(?:${pattern.slice(1, -1)})(?![A-Za-z0-9_-])`);
 
-test('the eighteen #434 families are T1 arrival families with a provider source, a taxonomy row, a documented-24 profile and their handoff', () => {
-  assert.deepEqual(ids.sort(), [
+test('the eighteen #434 families are T1 with a provider source, a taxonomy row, a documented-24 profile and their handoff; seven graduated at the 1127bf9 re-pin, eleven are scored by finding type', async () => {
+  assert.deepEqual([...ids].sort(), [
     'composio-api-key', 'composio-org-api-key', 'composio-user-api-key',
     'doppler-audit-token', 'doppler-cli-token', 'doppler-personal-token', 'doppler-scim-token',
     'doppler-service-account-identity-token', 'doppler-service-account-token', 'doppler-token',
     'e2b-api-key', 'firecrawl-api-key', 'helicone-api-key', 'helicone-write-api-key',
     'posthog-project-secret-api-key', 'posthog-token', 'trigger-dev-personal-access-token', 'trigger-dev-token',
   ]);
+  assert.deepEqual([...graduated].sort(), ['composio-api-key', 'doppler-token', 'e2b-api-key', 'firecrawl-api-key', 'helicone-api-key', 'posthog-token', 'trigger-dev-token']);
+  const registry = new Set((await read('benchmarks/detectors.json')).detectors.map(d => d.id));
+  const taxonomyOf = { 'doppler-token': 'doppler:service-token', 'trigger-dev-token': 'trigger-dev:secret-api-key', 'e2b-api-key': 'e2b:api-key', 'posthog-token': 'posthog:personal-api-key', 'helicone-api-key': 'helicone:api-key', 'firecrawl-api-key': 'firecrawl:api-key', 'composio-api-key': 'composio:project-api-key' };
   for (const m of modules)
-    for (const f of m.arrivalFamilies) {
-      assert.ok(arrivalIds.has(f.id), f.id);
-      const c = contracts[f.id];
-      assert.equal(c.tier, 'T1', f.id);
-      assert.ok(c.providerSource?.url, `${f.id}: T1 carries its provider source`);
-      assert.ok(c.pattern?.startsWith('^') && c.pattern.endsWith('$'), `${f.id}: anchored value grammar`);
-      assert.ok(c.references.includes(`https://github.com/redact-secret/redact-secret/blob/${HANDOFF_REVISION}/docs/audits/evidence/860/${handoffFile[m.issue]}`), `${f.id}: cites its frozen handoff`);
-      assert.ok(c.fields.some(x => x.field === 'peer-lag'), `${f.id}: records where the pinned peers stand`);
-      assert.equal(m.profiles[f.id], 'documented-24', f.id);
-      const row = taxonomy.families.find(t => t.id === f.taxonomy);
-      assert.ok(row, `${f.id}: taxonomy row ${f.taxonomy}`);
-      assert.deepEqual(row.detectors, [], `${f.id}: an unscored arrival family maps no registry detector`);
-      assert.equal(row.supportStatus, undefined, `${f.id}: no hand-edited support status`);
+    for (const id of [...m.arrivalFamilies.map(f => f.id), ...Object.keys(m.registryContracts ?? {})]) {
+      const arrival = m.arrivalFamilies.find(f => f.id === id);
+      assert.equal(arrivalIds.has(id), Boolean(arrival), id);
+      assert.equal(registry.has(id), !arrival, `${id}: a graduated family is a registry detector, a sibling is not`);
+      const c = contracts[id];
+      assert.equal(c.tier, 'T1', id);
+      assert.ok(c.providerSource?.url, `${id}: T1 carries its provider source`);
+      assert.ok(c.pattern?.startsWith('^') && c.pattern.endsWith('$'), `${id}: anchored value grammar`);
+      assert.ok(c.references.includes(`https://github.com/redact-secret/redact-secret/blob/${HANDOFF_REVISION}/docs/audits/evidence/860/${handoffFile[m.issue]}`), `${id}: cites its frozen handoff`);
+      assert.ok(c.fields.some(x => x.field === 'peer-lag'), `${id}: records where the pinned peers stand`);
+      assert.equal(m.profiles[id], 'documented-24', id);
+      const row = taxonomy.families.find(t => t.id === (arrival?.taxonomy ?? taxonomyOf[id]));
+      assert.ok(row, `${id}: taxonomy row`);
+      assert.deepEqual(row.detectors, [id], `${id}: the taxonomy row maps to the family's own id (registry detector or scored arrival id)`);
+      assert.equal(row.supportStatus, undefined, `${id}: no hand-edited support status`);
     }
 });
 

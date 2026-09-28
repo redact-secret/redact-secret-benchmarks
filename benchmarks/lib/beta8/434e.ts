@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, HANDOFF_INDEX, R860, RULINGS_R2_R8, RULINGS_R1_R3, B434, product, at, src, reason } from './434-sources.ts';
+import { handoff, HANDOFF_INDEX, R860, RULINGS_R2_R8, RULINGS_R1_R3, B434, product, at, src, scoredReason, splitGraduated } from './434-sources.ts';
 
 // Issue #434, slice e: Beta.11 contracts for the Helicone read-write (sk-) and write-only (pk-)
 // keys (#860 Tier A, READY; handoff docs/audits/evidence/860/helicone.md; product
@@ -22,12 +22,10 @@ const DOCS_AUTH = 'https://docs.helicone.ai/helicone-headers/helicone-auth';
 const HANDOFF = handoff('helicone.md');
 const REFS = [DOCS_AUTH, TREE, REGEX, WEB_GEN, KEY_MANAGER, HANDOFF, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R2_R8, product(907), B434];
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 1127bf9 re-pin. */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'helicone-api-key', taxonomy: 'helicone:api-key', issue,
-    reason: reason('helicone-api-key', 'helicone_api_key', 907, 'The detector id is also this family\'s arrival id, so the read-write key graduates when the registry is re-pinned.') },
   { id: 'helicone-write-api-key', taxonomy: 'helicone:write-api-key', issue,
-    reason: reason('helicone-api-key', 'helicone_write_api_key', 907, 'pk- shares the helicone-api-key detector, so after the re-pin it stays an arrival family scored by finding type.') },
+    reason: scoredReason('helicone-api-key', 'helicone_write_api_key', 907) },
 ];
 
 const GROUPS = '[a-z0-9]{7}(?:-[a-z0-9]{7}){3}';
@@ -45,8 +43,8 @@ const shared = (role: 'sk' | 'pk') => [
   field({ field: 'peer-lag', claim: 'no rule in trufflehog 3.97.4 or gitleaks 8.30.1', basis: 'tool', status: 'frozen', sources: [src('https://github.com/trufflesecurity/trufflehog/tree/v3.97.4/pkg/detectors', 'no helicone detector directory'), src('https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml', 'no helicone rule')] }),
 ];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'helicone-api-key': {
     tier: 'T1',
     pattern: `^sk-helicone-(?:(?:eu-)?(?:rl-)?${GROUPS}|proxy-${GROUPS}-${UUID})$`,
@@ -72,6 +70,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['helicone-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = {

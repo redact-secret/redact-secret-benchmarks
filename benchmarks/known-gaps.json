@@ -5794,7 +5794,7 @@
         "beta8-379--mailchimp-api-key-debug-request-headers"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "reviewed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -5814,6 +5814,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
             "https://github.com/redact-secret/redact-secret/issues/931"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
         }
       },
@@ -5865,7 +5872,7 @@
         "beta8-379--cohere-api-key-java-builder-token"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "reviewed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -5885,6 +5892,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
             "https://github.com/redact-secret/redact-secret/issues/932"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
         }
       },
@@ -5946,7 +5960,7 @@
         "beta8-379--twilio-auth-token-profiles-auth-token"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "reviewed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -5966,6 +5980,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
             "https://github.com/redact-secret/redact-secret/issues/933"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
         }
       },
@@ -6015,7 +6036,7 @@
         "beta8-379--stripe-token-docs-x-body-placeholder"
       ],
       "kind": "false-positive",
-      "status": "observed",
+      "status": "reviewed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -6035,6 +6056,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
             "https://github.com/redact-secret/redact-secret/issues/934"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
         }
       },
@@ -6078,7 +6106,7 @@
         "beta8-379--connection-string-sqlalchemy-ipv6"
       ],
       "kind": "false-negative",
-      "status": "observed",
+      "status": "reviewed",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.10",
@@ -6098,6 +6126,13 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
             "https://github.com/redact-secret/redact-secret/issues/935"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
           ]
         }
       },
@@ -6323,6 +6358,84 @@
           "https://github.com/redact-secret/redact-secret/issues/936"
         ]
       }
+    },
+    {
+      "id": "product-949",
+      "title": "generic-token warns on provider-prefixed placeholders (signkey-test-<digits>, re_<digits>, re_your<word>)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/949",
+      "number": 949,
+      "fixtures": [
+        "beta8-436c--inngest-signing-key-sdk-short-placeholder",
+        "beta8-436d--resend-api-key-digits-placeholder",
+        "beta8-436d--resend-api-key-your-key-placeholder"
+      ],
+      "kind": "false-positive",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939",
+        "sourceCommit": "1127bf91323797be89b4413c8051f9a9a85da43b"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/inngest.md",
+          "https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/resend.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/949"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-436c--inngest-signing-key-sdk-short-placeholder",
+          "corpusHash": "4aed4e9db10d1140766f34455ec639253a14ff90f441267fc88320b685b69781",
+          "expected": [],
+          "actual": [
+            {
+              "start": 55,
+              "end": 73,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-436d--resend-api-key-digits-placeholder",
+          "corpusHash": "7f349443bb7e4f4feafba6fc7235c8c988770a5b451904210f2b637e9a30b2a1",
+          "expected": [],
+          "actual": [
+            {
+              "start": 15,
+              "end": 27,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-436d--resend-api-key-your-key-placeholder",
+          "corpusHash": "7f349443bb7e4f4feafba6fc7235c8c988770a5b451904210f2b637e9a30b2a1",
+          "expected": [],
+          "actual": [
+            {
+              "start": 18,
+              "end": 28,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

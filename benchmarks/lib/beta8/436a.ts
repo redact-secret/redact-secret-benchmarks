@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, RERANK, R860, RULINGS_R1_R3, RULINGS_R2_R8, B436, product, at, src, reason } from './436-sources.ts';
+import { handoff, RERANK, R860, RULINGS_R1_R3, RULINGS_R2_R8, B436, product, at, src, splitGraduated } from './436-sources.ts';
 
 // Issue #436, slice a: Beta.11 contract for Convex deployment and admin keys with a hex body (#860
 // Tier B, READY for the hex body only; handoff docs/audits/evidence/860/convex.md; product
@@ -29,13 +29,11 @@ const HANDOFF = handoff('convex.md');
 const NAME = '[a-z0-9][a-z0-9-]{0,62}';
 export const CONVEX_PATTERN = `^(?:(?:prod|dev):[a-z]+-[a-z]+-[0-9]+|(?:preview|project):${NAME}:${NAME}|${NAME})\\|01(?:[0-9a-f]{2}){36,47}$`;
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'convex-deployment-key', taxonomy: 'convex:deployment-key', issue, reason: reason('convex-deployment-key', 'convex_deployment_key', 912, 'Only the hex-body keys are in scope; the cloud eyJ2 body is issuance-gated.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 1127bf9 re-pin (redact-secret PR #938). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'convex-deployment-key': {
     tier: 'T1',
     pattern: CONVEX_PATTERN,
@@ -58,6 +56,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['convex-deployment-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'convex-deployment-key': 'documented-24' };

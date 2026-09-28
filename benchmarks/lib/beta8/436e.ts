@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field, th } from '../contract-sources.ts';
-import { handoff, RERANK, R860, RULINGS_R2_R8, B436, product, at, src, reason } from './436-sources.ts';
+import { handoff, RERANK, R860, RULINGS_R2_R8, B436, product, at, src, splitGraduated } from './436-sources.ts';
 
 // Issue #436, slice e: Beta.11 contract for the Apify API token (#860 Tier B, READY with an open-ended
 // body; handoff docs/audits/evidence/860/apify.md; product redact-secret#916). Owned by this slice only;
@@ -22,13 +22,11 @@ const HANDOFF = handoff('apify.md');
 
 export const APIFY_PATTERN = '^apify_api_[A-Za-z0-9]{20,}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'apify-api-token', taxonomy: 'apify:api-token', issue, reason: reason('apify-api-token', 'apify_api_token', 916) },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 1127bf9 re-pin (redact-secret PR #938). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'apify-api-token': {
     tier: 'T1',
     pattern: APIFY_PATTERN,
@@ -48,6 +46,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['apify-api-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'apify-api-token': 'documented-24' };

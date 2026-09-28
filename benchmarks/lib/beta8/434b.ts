@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R2_R8, B434, product, at, src, reason } from './434-sources.ts';
+import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R2_R8, B434, product, at, src, scoredReason, splitGraduated } from './434-sources.ts';
 
 // Issue #434, slice b: Beta.11 contracts for the Trigger.dev environment secret key and personal
 // access token (#860 Tier A, READY; handoff docs/audits/evidence/860/trigger-dev.md; product
@@ -22,18 +22,16 @@ const DOCS_KEYS = 'https://trigger.dev/docs/apikeys';
 const HANDOFF = handoff('trigger-dev.md');
 const REFS = [DOCS_KEYS, TREE, SDK_KEYS, GEN, LEGACY_GEN, PAT_GEN, HANDOFF, HANDOFF_INDEX, R860, RULINGS_R1_R3, product(904), B434];
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 1127bf9 re-pin. */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'trigger-dev-token', taxonomy: 'trigger-dev:secret-api-key', issue,
-    reason: reason('trigger-dev-token', 'trigger_dev_secret_api_key', 904, 'Root and additional environment keys are one type; the detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned.') },
   { id: 'trigger-dev-personal-access-token', taxonomy: 'trigger-dev:personal-access-token', issue,
-    reason: reason('trigger-dev-token', 'trigger_dev_personal_access_token', 904, 'The PAT shares the trigger-dev-token detector, so after the re-pin it stays an arrival family scored by finding type.') },
+    reason: scoredReason('trigger-dev-token', 'trigger_dev_personal_access_token', 904) },
 ];
 
 const noPeer = field({ field: 'peer-lag', claim: 'no rule in trufflehog 3.97.4 or gitleaks 8.30.1', basis: 'tool', status: 'frozen', sources: [src('https://github.com/trufflesecurity/trufflehog/tree/v3.97.4/pkg/detectors', 'no trigger detector directory'), src('https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml', 'no trigger rule')], note: 'Both pinned peers are silent on the whole family.' });
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'trigger-dev-token': {
     tier: 'T1',
     pattern: '^tr_(?:dev|stg|prod|preview)_(?:sk_[0-9A-Za-z]{24}|[0-9A-Za-z]{24}|[0-9A-Za-z]{20})$',
@@ -69,6 +67,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['trigger-dev-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = {

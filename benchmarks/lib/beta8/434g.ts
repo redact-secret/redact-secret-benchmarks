@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R2_R8, B434, product, at, src, reason } from './434-sources.ts';
+import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R2_R8, B434, product, at, src, scoredReason, splitGraduated } from './434-sources.ts';
 
 // Issue #434, slice g: Beta.11 contracts for the Composio project (ak_), org (oak_) and user (uak_)
 // API keys (#860 Tier A, READY; handoff docs/audits/evidence/860/composio.md; product
@@ -27,14 +27,12 @@ const DOCS_AUTH = 'https://docs.composio.dev/reference/authenticating-to-composi
 const HANDOFF = handoff('composio.md');
 const REFS = [DOCS_AUTH, STAFF_TH, STAFF_GL, TH_PR, OPENAPI, CLI_REDACT, SDK_CONST, CLI_COMMENT, HANDOFF, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R2_R8, product(909), B434];
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 1127bf9 re-pin. */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'composio-api-key', taxonomy: 'composio:project-api-key', issue,
-    reason: reason('composio-api-key', 'composio_project_api_key', 909, 'The detector id is also this family\'s arrival id, so the project key graduates when the registry is re-pinned.') },
   { id: 'composio-org-api-key', taxonomy: 'composio:org-api-key', issue,
-    reason: reason('composio-api-key', 'composio_org_api_key', 909, 'oak_ shares the composio-api-key detector, so after the re-pin it stays an arrival family scored by finding type.') },
+    reason: scoredReason('composio-api-key', 'composio_org_api_key', 909) },
   { id: 'composio-user-api-key', taxonomy: 'composio:user-api-key', issue,
-    reason: reason('composio-api-key', 'composio_user_api_key', 909, 'uak_ shares the composio-api-key detector, so after the re-pin it stays an arrival family scored by finding type.') },
+    reason: scoredReason('composio-api-key', 'composio_user_api_key', 909) },
 ];
 
 const shared = (prefix: string, width: number, header: string) => [
@@ -46,8 +44,8 @@ const shared = (prefix: string, width: number, header: string) => [
   field({ field: 'peer-lag', claim: 'no rule in trufflehog 3.97.4 or gitleaks 8.30.1; the staff-authored trufflehog PR #5322 (20/20/43 over [A-Za-z0-9_-]) is still open', basis: 'tool', status: 'frozen', sources: [src(TH_PR, 'open, updated 2026-09-28'), src('https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml', 'no composio rule')] }),
 ];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'composio-api-key': {
     tier: 'T1',
     pattern: '^ak_(?=[A-Za-z0-9_-]*[A-Z])(?=[A-Za-z0-9_-]*[a-z])[A-Za-z0-9_-]{20}$',
@@ -85,6 +83,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['composio-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = {

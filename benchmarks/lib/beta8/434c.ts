@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, B434, product, at, src, reason } from './434-sources.ts';
+import { handoff, HANDOFF_INDEX, R860, RULINGS_R1_R3, B434, product, at, src, splitGraduated } from './434-sources.ts';
 
 // Issue #434, slice c: Beta.11 contract for the E2B team API key (#860 Tier A, READY; handoff
 // docs/audits/evidence/860/e2b.md; product redact-secret#905). Owned by this slice only; see
@@ -19,13 +19,11 @@ const DOCS = 'https://docs.e2b.dev/api-key';
 const DEPRECATION = 'https://docs.e2b.dev/migration/access-token-deprecation';
 const HANDOFF = handoff('e2b.md');
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'e2b-api-key', taxonomy: 'e2b:api-key', issue, reason: reason('e2b-api-key', 'e2b_api_key', 905, 'The detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 1127bf9 re-pin (redact-secret PR #938). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'e2b-api-key': {
     tier: 'T1',
     pattern: '^e2b_[0-9a-f]{40}$',
@@ -45,6 +43,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['e2b-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'e2b-api-key': 'documented-24' };

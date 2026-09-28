@@ -28,24 +28,24 @@ const secretsOf = f => f.expected.filter(r => (r.role ?? 'secret') === 'secret')
 const valueOf = (f, r) => Buffer.from(f.content).subarray(r.start, r.end).toString();
 const positivesOf = (corpus, target) => corpus.fixtures.filter(f => targetOf(f) === target && secretsOf(f).length && !f.twinOf);
 
-test('the six Tier B families are T1 arrival families, one slice each, with a taxonomy row, a contract and a profile', async () => {
+test('the six Tier B families are T1 registry families since the 1127bf9 re-pin, one slice each, with a taxonomy row, a contract and a profile', async () => {
   const taxonomy = await read('benchmarks/support/taxonomy.json');
-  const arrival = modules.flatMap(m => m.arrivalFamilies);
-  assert.deepEqual(arrival.map(f => f.id).sort(), Object.keys(families).sort());
-  assert.deepEqual(modules.map(m => m.arrivalFamilies.length), [1, 1, 1, 1, 1, 1]);
-  for (const family of arrival) {
-    const [taxonomyId, productIssue] = families[family.id];
-    assert.ok(arrivalIds.has(family.id), family.id);
-    assert.equal(family.taxonomy, taxonomyId);
-    assert.match(family.reason, new RegExp(`redact-secret#${productIssue}\\b`));
+  const registry = new Set((await read('benchmarks/detectors.json')).detectors.map(d => d.id));
+  assert.deepEqual(modules.map(m => m.arrivalFamilies.length), [0, 0, 0, 0, 0, 0]);
+  const graduated = modules.flatMap(m => Object.keys(m.registryContracts));
+  assert.deepEqual(graduated.sort(), Object.keys(families).sort());
+  for (const id of graduated) {
+    const [taxonomyId] = families[id];
+    assert.ok(!arrivalIds.has(id) && registry.has(id), `${id}: graduated to a registry detector`);
     const row = taxonomy.families.find(f => f.id === taxonomyId);
-    assert.ok(row, `${family.id}: taxonomy row ${taxonomyId}`);
-    assert.deepEqual(row.detectors, [], `${family.id}: an unscored arrival family maps no registry detector`);
-    const contract = contracts[family.id];
-    assert.equal(contract.tier, 'T1', family.id);
-    assert.ok(contract.providerSource, `${family.id}: T1 cites its provider source`);
-    assert.ok(contract.fields.some(f => f.basis === 'provider-documentation' && f.status === 'frozen'), family.id);
-    assert.equal(contract.contextGated, undefined, `${family.id}: a bare-value claim`);
+    assert.ok(row, `${id}: taxonomy row ${taxonomyId}`);
+    assert.deepEqual(row.detectors, [id], `${id}: the taxonomy row maps to its registry detector`);
+    assert.equal(row.supportStatus, undefined, `${id}: no hand-edited support status`);
+    const contract = contracts[id];
+    assert.equal(contract.tier, 'T1', id);
+    assert.ok(contract.providerSource, `${id}: T1 cites its provider source`);
+    assert.ok(contract.fields.some(f => f.basis === 'provider-documentation' && f.status === 'frozen'), id);
+    assert.equal(contract.contextGated, undefined, `${id}: a bare-value claim`);
   }
   for (const m of modules) assert.deepEqual(Object.values(m.profiles), ['documented-24'], m.issue);
 });

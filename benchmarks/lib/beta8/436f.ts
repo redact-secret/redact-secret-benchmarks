@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field, th } from '../contract-sources.ts';
-import { handoff, RERANK, R860, RULINGS_R1_R3, RULINGS_R2_R8, B436, product, at, src, reason } from './436-sources.ts';
+import { handoff, RERANK, R860, RULINGS_R1_R3, RULINGS_R2_R8, B436, product, at, src, splitGraduated } from './436-sources.ts';
 
 // Issue #436, slice f: Beta.11 contract for the Weights & Biases wandb_v1_ API key (#860 Tier B, READY
 // for wandb_v1_ only; handoff docs/audits/evidence/860/wandb.md; product redact-secret#917). Owned by
@@ -26,13 +26,11 @@ const R917 = product(917);
 /** wandb_v1_ + a 76–78-byte [A-Za-z0-9_] body: the authored positives' totals 85–87, around the documented "about 86". */
 export const WANDB_PATTERN = '^wandb_v1_[A-Za-z0-9_]{76,78}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'wandb-api-key', taxonomy: 'wandb:api-key', issue, reason: reason('wandb-api-key', 'wandb_api_key', 917, 'Only the wandb_v1_ key is in scope; the legacy 40-hex key stays with generic context.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 1127bf9 re-pin (redact-secret PR #938). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'wandb-api-key': {
     tier: 'T1',
     pattern: WANDB_PATTERN,
@@ -53,6 +51,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['wandb-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 1127bf9 re-pin (redact-secret PR #938). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'wandb-api-key': 'documented-24' };

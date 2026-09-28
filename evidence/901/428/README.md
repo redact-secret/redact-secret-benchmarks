@@ -1,5 +1,7 @@
 # Beta.11 PII E: protected qualification and six-family disposition (benchmarks #428)
 
+**Final disposition:** see [`final-core-1127bf91.md`](final-core-1127bf91.md) (core `1127bf91`, all six `pending` on cost only). What follows is the interim record.
+
 **Interim record.** It measures core `79c0a661`, which is not the final beta.11 candidate. [redact-secret#937](https://github.com/redact-secret/redact-secret/issues/937) (built on #929) will move the PII runtime out of the default Wasm builds, so the Wasm artifact set and its cost change after this commit. Rerun this record on the post-#937 commit before any release decision (see [Rerun](#rerun-on-a-new-core-commit)).
 
 All six families stay `pending`. The protected partition was not run, and every epoch is unspent at 0/1. Payment card is the one family where every public gate passes except cost. Under the brief, that family was stopped before any protected run and reported for the orchestrator to decide.

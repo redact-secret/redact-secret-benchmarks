@@ -680,7 +680,7 @@ export function build379({ fixture, synthetic }) {
     P(T_, "source-code", "sqlalchemy-ipv6", "py",
       "engine = create_engine(\"", pw("sqlalchemy-ipv6"), "\")\n",
       "SQLAlchemy create_engine() literal with an IPv6 host in brackets.",
-      U("postgresql+psycopg://report:", "@[2001:db8::15]:5432/reports"));
+      U("postgresql+psycopg://report:", "@[2001:db8:4::15]:5432/reports"));
     P(T_, "log", "orm-connection-error", "log",
       "2026-09-28 06:30:12 ERROR sequelize: connection refused for ", pw("orm-connection-error"), " (ECONNREFUSED)\n",
       "ORM connection error log printing the full DSN.",

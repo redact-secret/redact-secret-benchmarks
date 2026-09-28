@@ -44,6 +44,9 @@ const gitleaks = {
   'aws-amazon-bedrock-api-key-long-lived': 'aws-bedrock-long-term-api-key',
   'aws-amazon-bedrock-api-key-short-lived': 'aws-bedrock-short-term-api-key',
   'cohere-api-token': 'cohere-api-key',
+  // #434: gitleaks 8.30.1 doppler-api-token is dp\.pt\.(?i)[a-z0-9]{43}, the personal token only (one width of the
+  // documented 40-44 band), so it maps to that arrival family and to no other Doppler type.
+  'doppler-api-token': 'doppler-personal-token',
 };
 const trufflehog = {
   Github: 'github-token', Gitlab: 'gitlab-token', Npm: 'npm-token',
@@ -67,6 +70,11 @@ const trufflehog = {
   // #384: trufflehog 3.97.4's elevenlabs/v2 (sk_ + 48 hex, keyword-gated) and deepgram (keyword + 40 [0-9a-z]) detectors
   // (registry detectors since redact-secret#865 and #868). elevenlabs/v1 (a bare 32-hex legacy shape) reports under the same label.
   ElevenLabs: 'elevenlabs-api-key', Deepgram: 'deepgram-api-key',
+  // #434 arrival families (benchmarks/lib/beta8/434a.ts, 434d.ts): trufflehog 3.97.4's doppler detector reads
+  // dp.(ct|pt|st[.segment]|sa|scim|audit). + 40-44 alphanumerics under one label, so it maps to the detector-level
+  // family doppler-token (as Github maps to github-token) and a sibling-type finding reads as co-detection; its
+  // posthog detector (label PosthogApp) reads phx_ + 43-48 of [a-zA-Z0-9_] only, the personal key.
+  Doppler: 'doppler-token', PosthogApp: 'posthog-token',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;

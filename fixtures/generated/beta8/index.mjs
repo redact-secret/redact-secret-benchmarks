@@ -17,12 +17,19 @@ import { build384b } from "./384b.mjs";
 import { build384c } from "./384c.mjs";
 import { build384d } from "./384d.mjs";
 import { build384e } from "./384e.mjs";
+import { build434a } from "./434a.mjs";
+import { build434b } from "./434b.mjs";
+import { build434c } from "./434c.mjs";
+import { build434d } from "./434d.mjs";
+import { build434e } from "./434e.mjs";
+import { build434f } from "./434f.mjs";
+import { build434g } from "./434g.mjs";
 
 // One corpus per Beta.8 consumer issue (#207–#212), so one issue's edits never
 // change another corpus's source hash (and so never re-key its ledger rows).
 // A corpus with no fixtures yet is omitted; its category is registered in
 // benchmarks/categories.json and corpora/development/manifest.json with its first fixture.
-const BUILDERS = { 207: build207, 208: build208, 209: build209, 210: build210, 211: build211, 212: build212, "213a": build213a, "213c": build213c, "213b": build213b, "213d": build213d, "213e": build213e, "213f": build213f, 259: build259, 263: build263, "384a": build384a, "384b": build384b, "384c": build384c, "384d": build384d, "384e": build384e };
+const BUILDERS = { 207: build207, 208: build208, 209: build209, 210: build210, 211: build211, 212: build212, "213a": build213a, "213c": build213c, "213b": build213b, "213d": build213d, "213e": build213e, "213f": build213f, 259: build259, 263: build263, "384a": build384a, "384b": build384b, "384c": build384c, "384d": build384d, "384e": build384e, "434a": build434a, "434b": build434b, "434c": build434c, "434d": build434d, "434e": build434e, "434f": build434f, "434g": build434g };
 
 export function buildBeta8(tools) {
   const corpora = {};

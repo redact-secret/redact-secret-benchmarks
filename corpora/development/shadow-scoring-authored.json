@@ -4442,6 +4442,1226 @@
           "https://github.com/redact-secret/redact-secret/issues/868"
         ]
       }
+    },
+    {
+      "id": "doppler-token-positive",
+      "path": "doppler-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_TOKEN=\u0064p.st.ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 14,
+          "end": 63,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "doppler-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "doppler-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-token-negative",
+      "path": "doppler-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_TOKEN=${DOPPLER_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "doppler-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "doppler-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-personal-token-positive",
+      "path": "doppler-personal-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_PERSONAL_TOKEN=\u0064p.pt.ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 23,
+          "end": 72,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "doppler-personal-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "doppler-personal-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-personal-token-negative",
+      "path": "doppler-personal-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_PERSONAL_TOKEN=${DOPPLER_PERSONAL_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "doppler-personal-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "doppler-personal-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-cli-token-positive",
+      "path": "doppler-cli-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_CLI_TOKEN=\u0064p.ct.ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 67,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "doppler-cli-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "doppler-cli-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-cli-token-negative",
+      "path": "doppler-cli-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_CLI_TOKEN=${DOPPLER_CLI_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "doppler-cli-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "doppler-cli-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-service-account-token-positive",
+      "path": "doppler-service-account-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_SERVICE_ACCOUNT_TOKEN=\u0064p.sa.ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 30,
+          "end": 79,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "doppler-service-account-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "doppler-service-account-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-service-account-token-negative",
+      "path": "doppler-service-account-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_SERVICE_ACCOUNT_TOKEN=${DOPPLER_SERVICE_ACCOUNT_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "doppler-service-account-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "doppler-service-account-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-service-account-identity-token-positive",
+      "path": "doppler-service-account-identity-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_IDENTITY_TOKEN=\u0064p.said.ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 23,
+          "end": 74,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "doppler-service-account-identity-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "doppler-service-account-identity-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-service-account-identity-token-negative",
+      "path": "doppler-service-account-identity-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_IDENTITY_TOKEN=${DOPPLER_IDENTITY_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "doppler-service-account-identity-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "doppler-service-account-identity-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-scim-token-positive",
+      "path": "doppler-scim-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_SCIM_TOKEN=\u0064p.scim.ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 70,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "doppler-scim-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "doppler-scim-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-scim-token-negative",
+      "path": "doppler-scim-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_SCIM_TOKEN=${DOPPLER_SCIM_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "doppler-scim-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "doppler-scim-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-audit-token-positive",
+      "path": "doppler-audit-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_AUDIT_TOKEN=\u0064p.audit.ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gam\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 72,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "doppler-audit-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "doppler-audit-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "doppler-audit-token-negative",
+      "path": "doppler-audit-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DOPPLER_AUDIT_TOKEN=${DOPPLER_AUDIT_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "doppler-audit-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "doppler-audit-token",
+        "sources": [
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/doppler/doppler.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.doppler.com/reference/auth-token-formats",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/903",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434",
+          "https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns"
+        ]
+      }
+    },
+    {
+      "id": "trigger-dev-token-positive",
+      "path": "trigger-dev-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TRIGGER_SECRET_KEY=\u0074r_prod_sk_ReviewAlpha7Beta9Gamma2R\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 54,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "trigger-dev-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "trigger-dev-token",
+        "sources": [
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/packages/core/src/v3/apiKeys.ts",
+          "https://trigger.dev/docs/apikeys",
+          "https://github.com/triggerdotdev/trigger.dev/tree/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/packages/core/src/v3/apiKeys.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/utils/apiKeys.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/0b35cc35e053bc4a38cbe80ff4d7d543e8cca7d3/apps/webapp/app/models/api-key.server.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/services/personalAccessToken.server.ts",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/904",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "trigger-dev-token-negative",
+      "path": "trigger-dev-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TRIGGER_SECRET_KEY=${TRIGGER_SECRET_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "trigger-dev-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "trigger-dev-token",
+        "sources": [
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/packages/core/src/v3/apiKeys.ts",
+          "https://trigger.dev/docs/apikeys",
+          "https://github.com/triggerdotdev/trigger.dev/tree/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/packages/core/src/v3/apiKeys.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/utils/apiKeys.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/0b35cc35e053bc4a38cbe80ff4d7d543e8cca7d3/apps/webapp/app/models/api-key.server.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/services/personalAccessToken.server.ts",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/904",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "trigger-dev-personal-access-token-positive",
+      "path": "trigger-dev-personal-access-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TRIGGER_ACCESS_TOKEN=\u0074r_pat_reviewbeta7gamma9reviewbeta7gamma9review\n",
+      "expected": [
+        {
+          "start": 21,
+          "end": 68,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "trigger-dev-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "trigger-dev-personal-access-token",
+        "sources": [
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/services/personalAccessToken.server.ts",
+          "https://trigger.dev/docs/apikeys",
+          "https://github.com/triggerdotdev/trigger.dev/tree/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/packages/core/src/v3/apiKeys.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/utils/apiKeys.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/0b35cc35e053bc4a38cbe80ff4d7d543e8cca7d3/apps/webapp/app/models/api-key.server.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/services/personalAccessToken.server.ts",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/904",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "trigger-dev-personal-access-token-negative",
+      "path": "trigger-dev-personal-access-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "TRIGGER_ACCESS_TOKEN=${TRIGGER_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "trigger-dev-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "trigger-dev-personal-access-token",
+        "sources": [
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/services/personalAccessToken.server.ts",
+          "https://trigger.dev/docs/apikeys",
+          "https://github.com/triggerdotdev/trigger.dev/tree/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/packages/core/src/v3/apiKeys.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/utils/apiKeys.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/0b35cc35e053bc4a38cbe80ff4d7d543e8cca7d3/apps/webapp/app/models/api-key.server.ts",
+          "https://github.com/triggerdotdev/trigger.dev/blob/c2b7a72180bbb2dcbc31caa8539e0ca8f8e9e9b8/apps/webapp/app/services/personalAccessToken.server.ts",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/904",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "e2b-api-key-positive",
+      "path": "e2b-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "E2B_API_KEY=\u00652b_a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 56,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "e2b-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "e2b-api-key",
+        "sources": [
+          "https://github.com/e2b-dev/infra/blob/132dadd2ef55bbac301528500e8a4538caf4b163/packages/shared/pkg/keys/key.go#L15-L74",
+          "https://docs.e2b.dev/api-key",
+          "https://docs.e2b.dev/migration/access-token-deprecation",
+          "https://github.com/e2b-dev/infra/tree/132dadd2ef55bbac301528500e8a4538caf4b163",
+          "https://github.com/e2b-dev/infra/blob/132dadd2ef55bbac301528500e8a4538caf4b163/packages/shared/pkg/keys/constants.go#L3",
+          "https://github.com/e2b-dev/infra/blob/132dadd2ef55bbac301528500e8a4538caf4b163/packages/shared/pkg/keys/key.go#L15-L74",
+          "https://github.com/e2b-dev/infra/blob/132dadd2ef55bbac301528500e8a4538caf4b163/packages/local-dev/seed-local-database_test.go#L307",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/e2b.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/905",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "e2b-api-key-negative",
+      "path": "e2b-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "E2B_API_KEY=${E2B_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "e2b-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "e2b-api-key",
+        "sources": [
+          "https://github.com/e2b-dev/infra/blob/132dadd2ef55bbac301528500e8a4538caf4b163/packages/shared/pkg/keys/key.go#L15-L74",
+          "https://docs.e2b.dev/api-key",
+          "https://docs.e2b.dev/migration/access-token-deprecation",
+          "https://github.com/e2b-dev/infra/tree/132dadd2ef55bbac301528500e8a4538caf4b163",
+          "https://github.com/e2b-dev/infra/blob/132dadd2ef55bbac301528500e8a4538caf4b163/packages/shared/pkg/keys/constants.go#L3",
+          "https://github.com/e2b-dev/infra/blob/132dadd2ef55bbac301528500e8a4538caf4b163/packages/shared/pkg/keys/key.go#L15-L74",
+          "https://github.com/e2b-dev/infra/blob/132dadd2ef55bbac301528500e8a4538caf4b163/packages/local-dev/seed-local-database_test.go#L307",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/e2b.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/905",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "posthog-token-positive",
+      "path": "posthog-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POSTHOG_PERSONAL_API_KEY=\u0070hx_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2Re\n",
+      "expected": [
+        {
+          "start": 25,
+          "end": 77,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "posthog-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "posthog-token",
+        "sources": [
+          "https://github.com/PostHog/posthog/blob/658715dd3b434e0a5ada471981d4053b70e72034/posthog/models/utils.py",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/posthog/posthog.go",
+          "https://posthog.com/docs/api/personal-api-keys",
+          "https://posthog.com/docs/api",
+          "https://github.com/PostHog/posthog/blob/658715dd3b434e0a5ada471981d4053b70e72034/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/blob/d610b45e4c72/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/blob/1.43.0/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/pull/52495",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/906",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "posthog-token-negative",
+      "path": "posthog-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POSTHOG_PERSONAL_API_KEY=${POSTHOG_PERSONAL_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "posthog-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "posthog-token",
+        "sources": [
+          "https://github.com/PostHog/posthog/blob/658715dd3b434e0a5ada471981d4053b70e72034/posthog/models/utils.py",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/posthog/posthog.go",
+          "https://posthog.com/docs/api/personal-api-keys",
+          "https://posthog.com/docs/api",
+          "https://github.com/PostHog/posthog/blob/658715dd3b434e0a5ada471981d4053b70e72034/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/blob/d610b45e4c72/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/blob/1.43.0/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/pull/52495",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/906",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "posthog-project-secret-api-key-positive",
+      "path": "posthog-project-secret-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POSTHOG_PROJECT_SECRET_API_KEY=\u0070hs_ReviewAlpha7Beta9Gamma2ReviewAlpha7Beta9Gamma2Re\n",
+      "expected": [
+        {
+          "start": 31,
+          "end": 83,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "posthog-project-secret-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "posthog-project-secret-api-key",
+        "sources": [
+          "https://github.com/PostHog/posthog/blob/658715dd3b434e0a5ada471981d4053b70e72034/posthog/models/utils.py",
+          "https://posthog.com/docs/api/personal-api-keys",
+          "https://posthog.com/docs/api",
+          "https://github.com/PostHog/posthog/blob/658715dd3b434e0a5ada471981d4053b70e72034/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/blob/d610b45e4c72/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/blob/1.43.0/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/pull/52495",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/906",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "posthog-project-secret-api-key-negative",
+      "path": "posthog-project-secret-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POSTHOG_PROJECT_SECRET_API_KEY=${POSTHOG_PROJECT_SECRET_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "posthog-project-secret-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "posthog-project-secret-api-key",
+        "sources": [
+          "https://github.com/PostHog/posthog/blob/658715dd3b434e0a5ada471981d4053b70e72034/posthog/models/utils.py",
+          "https://posthog.com/docs/api/personal-api-keys",
+          "https://posthog.com/docs/api",
+          "https://github.com/PostHog/posthog/blob/658715dd3b434e0a5ada471981d4053b70e72034/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/blob/d610b45e4c72/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/blob/1.43.0/posthog/models/utils.py",
+          "https://github.com/PostHog/posthog/pull/52495",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/906",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "helicone-api-key-positive",
+      "path": "helicone-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HELICONE_API_KEY=\u0073k-helicone-review7-alphab9-betaaa2-gammaa3\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 60,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "helicone-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "helicone-api-key",
+        "sources": [
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/worker/src/lib/util/apiKeyRegex.ts",
+          "https://docs.helicone.ai/helicone-headers/helicone-auth",
+          "https://github.com/Helicone/helicone/tree/067d9290acb4f1fc9320e902fc67b4b399b50363",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/worker/src/lib/util/apiKeyRegex.ts",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/web/utils/generateAPIKeyHelper.ts",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/valhalla/jawn/src/managers/apiKeys/KeyManager.ts",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/907",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "helicone-api-key-negative",
+      "path": "helicone-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HELICONE_API_KEY=${HELICONE_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "helicone-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "helicone-api-key",
+        "sources": [
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/worker/src/lib/util/apiKeyRegex.ts",
+          "https://docs.helicone.ai/helicone-headers/helicone-auth",
+          "https://github.com/Helicone/helicone/tree/067d9290acb4f1fc9320e902fc67b4b399b50363",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/worker/src/lib/util/apiKeyRegex.ts",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/web/utils/generateAPIKeyHelper.ts",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/valhalla/jawn/src/managers/apiKeys/KeyManager.ts",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/907",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "helicone-write-api-key-positive",
+      "path": "helicone-write-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HELICONE_WRITE_API_KEY=\u0070k-helicone-review7-alphab9-betaaa2-gammaa3\n",
+      "expected": [
+        {
+          "start": 23,
+          "end": 66,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "helicone-write-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "helicone-write-api-key",
+        "sources": [
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/worker/src/lib/util/apiKeyRegex.ts",
+          "https://docs.helicone.ai/helicone-headers/helicone-auth",
+          "https://github.com/Helicone/helicone/tree/067d9290acb4f1fc9320e902fc67b4b399b50363",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/worker/src/lib/util/apiKeyRegex.ts",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/web/utils/generateAPIKeyHelper.ts",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/valhalla/jawn/src/managers/apiKeys/KeyManager.ts",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/907",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "helicone-write-api-key-negative",
+      "path": "helicone-write-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HELICONE_WRITE_API_KEY=${HELICONE_WRITE_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "helicone-write-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "helicone-write-api-key",
+        "sources": [
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/worker/src/lib/util/apiKeyRegex.ts",
+          "https://docs.helicone.ai/helicone-headers/helicone-auth",
+          "https://github.com/Helicone/helicone/tree/067d9290acb4f1fc9320e902fc67b4b399b50363",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/worker/src/lib/util/apiKeyRegex.ts",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/web/utils/generateAPIKeyHelper.ts",
+          "https://github.com/Helicone/helicone/blob/067d9290acb4f1fc9320e902fc67b4b399b50363/valhalla/jawn/src/managers/apiKeys/KeyManager.ts",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/907",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "firecrawl-api-key-positive",
+      "path": "firecrawl-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "FIRECRAWL_API_KEY=\u0066c-a1b2c3d4e5f64a1b82c3d4e5f6a1b2c3\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 53,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "firecrawl-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "firecrawl-api-key",
+        "sources": [
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/api/src/lib/parseApi.ts",
+          "https://docs.firecrawl.dev/api-reference/v2-introduction",
+          "https://github.com/firecrawl/firecrawl/tree/f75a8d40b103129f56f947418bfa06a04a9ad5b0",
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/api/src/lib/parseApi.ts",
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/api/src/db/schema/public.ts#L68-L72",
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/api/src/controllers/auth.ts#L757-L795",
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/js-sdk/firecrawl/src/v2/client.ts#L154",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/firecrawl.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/908",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "firecrawl-api-key-negative",
+      "path": "firecrawl-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "firecrawl-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "firecrawl-api-key",
+        "sources": [
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/api/src/lib/parseApi.ts",
+          "https://docs.firecrawl.dev/api-reference/v2-introduction",
+          "https://github.com/firecrawl/firecrawl/tree/f75a8d40b103129f56f947418bfa06a04a9ad5b0",
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/api/src/lib/parseApi.ts",
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/api/src/db/schema/public.ts#L68-L72",
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/api/src/controllers/auth.ts#L757-L795",
+          "https://github.com/firecrawl/firecrawl/blob/f75a8d40b103129f56f947418bfa06a04a9ad5b0/apps/js-sdk/firecrawl/src/v2/client.ts#L154",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/firecrawl.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/908",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "composio-api-key-positive",
+      "path": "composio-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "COMPOSIO_API_KEY=\u0061k_Review_Alpha7-Beta9R\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 40,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "composio-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "composio-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://docs.composio.dev/reference/authenticating-to-composio",
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://github.com/gitleaks/gitleaks/issues/2276",
+          "https://github.com/trufflesecurity/trufflehog/pull/5322",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/docs/public/openapi.json",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/analytics/dispatch.ts#L426-L427",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/core/src/utils/sdk.ts#L23",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/commands/login.cmd.ts#L801",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/909",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "composio-api-key-negative",
+      "path": "composio-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "COMPOSIO_API_KEY=${COMPOSIO_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "composio-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "composio-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://docs.composio.dev/reference/authenticating-to-composio",
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://github.com/gitleaks/gitleaks/issues/2276",
+          "https://github.com/trufflesecurity/trufflehog/pull/5322",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/docs/public/openapi.json",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/analytics/dispatch.ts#L426-L427",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/core/src/utils/sdk.ts#L23",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/commands/login.cmd.ts#L801",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/909",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "composio-org-api-key-positive",
+      "path": "composio-org-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "COMPOSIO_ORG_API_KEY=\u006fak_Review_Alpha7-Beta9R\n",
+      "expected": [
+        {
+          "start": 21,
+          "end": 45,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "composio-org-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "composio-org-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://docs.composio.dev/reference/authenticating-to-composio",
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://github.com/gitleaks/gitleaks/issues/2276",
+          "https://github.com/trufflesecurity/trufflehog/pull/5322",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/docs/public/openapi.json",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/analytics/dispatch.ts#L426-L427",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/core/src/utils/sdk.ts#L23",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/commands/login.cmd.ts#L801",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/909",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "composio-org-api-key-negative",
+      "path": "composio-org-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "COMPOSIO_ORG_API_KEY=${COMPOSIO_ORG_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "composio-org-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "composio-org-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://docs.composio.dev/reference/authenticating-to-composio",
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://github.com/gitleaks/gitleaks/issues/2276",
+          "https://github.com/trufflesecurity/trufflehog/pull/5322",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/docs/public/openapi.json",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/analytics/dispatch.ts#L426-L427",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/core/src/utils/sdk.ts#L23",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/commands/login.cmd.ts#L801",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/909",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "composio-user-api-key-positive",
+      "path": "composio-user-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "COMPOSIO_USER_API_KEY=\u0075ak_Review_Alpha7-Beta9Review_Alpha7-Beta9Revie\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 69,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "composio-user-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "composio-user-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://docs.composio.dev/reference/authenticating-to-composio",
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://github.com/gitleaks/gitleaks/issues/2276",
+          "https://github.com/trufflesecurity/trufflehog/pull/5322",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/docs/public/openapi.json",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/analytics/dispatch.ts#L426-L427",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/core/src/utils/sdk.ts#L23",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/commands/login.cmd.ts#L801",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/909",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
+    },
+    {
+      "id": "composio-user-api-key-negative",
+      "path": "composio-user-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "COMPOSIO_USER_API_KEY=${COMPOSIO_USER_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "composio-user-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "composio-user-api-key",
+        "sources": [
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://docs.composio.dev/reference/authenticating-to-composio",
+          "https://github.com/trufflesecurity/trufflehog/issues/5321",
+          "https://github.com/gitleaks/gitleaks/issues/2276",
+          "https://github.com/trufflesecurity/trufflehog/pull/5322",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/docs/public/openapi.json",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/analytics/dispatch.ts#L426-L427",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/core/src/utils/sdk.ts#L23",
+          "https://github.com/ComposioHQ/composio/blob/34484551843e575e79cca244d9fca3e4459f59e9/ts/packages/cli/src/commands/login.cmd.ts#L801",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md",
+          "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/909",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
+        ]
+      }
     }
   ]
 }

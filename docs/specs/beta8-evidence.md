@@ -226,6 +226,71 @@ The corpus also adds one authored calibration row pair per family to
 development-evaluation in `tuning/shadow-scoring-development-v1.json`, as the calibration
 partition requires for every family with a measurable positive.
 
+## Beta.11 slices (#434)
+
+The same layout carries the Beta.11 corpus for the seven READY #860 Tier A credential families
+([#434](https://github.com/redact-secret/redact-secret-benchmarks/issues/434), counterpart of
+[#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376); product
+[redact-secret#860](https://github.com/redact-secret/redact-secret/issues/860)). The fixture index
+labels these corpora `beta.11`. One corpus key per product issue:
+
+| Key | Category | Families (arrival ids) | Handoff | Product issue |
+| --- | --- | --- | --- | --- |
+| `434a` | `beta8-434a` | `doppler-token` (`dp.st.`), `doppler-personal-token`, `doppler-cli-token`, `doppler-service-account-token`, `doppler-service-account-identity-token`, `doppler-scim-token`, `doppler-audit-token` | [doppler.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md) | [#903](https://github.com/redact-secret/redact-secret/issues/903) |
+| `434b` | `beta8-434b` | `trigger-dev-token`, `trigger-dev-personal-access-token` | [trigger-dev.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md) | [#904](https://github.com/redact-secret/redact-secret/issues/904) |
+| `434c` | `beta8-434c` | `e2b-api-key` | [e2b.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/e2b.md) | [#905](https://github.com/redact-secret/redact-secret/issues/905) |
+| `434d` | `beta8-434d` | `posthog-token` (`phx_`), `posthog-project-secret-api-key` | [posthog.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md) | [#906](https://github.com/redact-secret/redact-secret/issues/906) |
+| `434e` | `beta8-434e` | `helicone-api-key` (`sk-`), `helicone-write-api-key` | [helicone.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md) | [#907](https://github.com/redact-secret/redact-secret/issues/907) |
+| `434f` | `beta8-434f` | `firecrawl-api-key` | [firecrawl.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/firecrawl.md) | [#908](https://github.com/redact-secret/redact-secret/issues/908) |
+| `434g` | `beta8-434g` | `composio-api-key` (`ak_`), `composio-org-api-key`, `composio-user-api-key` | [composio.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md) | [#909](https://github.com/redact-secret/redact-secret/issues/909) |
+
+Conventions specific to these slices:
+
+- **Independent of the product code.** Contracts and fixtures come from the frozen step-3 handoffs
+  (product commit `270faf8`) and the provider sources they cite, never from the product detector
+  branch. `benchmarks/lib/beta8/434-sources.ts` holds the shared citations.
+- **Arrival ids follow the handoff's detector ids.** Each handoff names one new detector per
+  provider. The family that detector's id describes (`doppler-token` for `dp.st.`,
+  `trigger-dev-token` for the environment secret key, `posthog-token` for `phx_`,
+  `helicone-api-key` for `sk-`, `composio-api-key` for `ak_`, and the three single-type families)
+  takes it as its arrival id and graduates on the registry re-pin. The eleven sibling types
+  share that detector under their own finding type, so after the re-pin they stay arrival
+  families scored by finding type (the GitHub model above), once `arrivalFindingTypes` records
+  the product's documented types.
+- **All eighteen are T1** with a `providerSource` and a `documented-24` profile: the per-type
+  Doppler regex page, provider generator and validator code and tests (ruling R1), and for
+  Composio a dated provider-staff statement (ruling R3). Rulings R6 (a code comment is T2, so
+  `uak_` + 20 is a length twin) and R8 (no alphabet narrowing from a third-party library, so
+  Helicone's base32 is a generator hint only) are applied as the handoffs record them.
+- **The nine index contexts.** Every family has a positive in each context of the handoff
+  index probe (bare prose, `ENV=`, `export`, `Authorization: Bearer`, `X-API-Key`, JSON
+  `"token"`, JSON `"api_key"`, an SDK keyword argument and a chat sentence;
+  `fixtures/generated/beta8/434-shared.mjs`), plus the family-specific contexts its handoff
+  lists.
+- **Public siblings are controls; other credentials are twins.** The PostHog `phc_` project
+  token, the Trigger.dev `pk_<env>_` public key, the `dp.st…` preview, `fc-` placeholders, CSS
+  classes and snake_case `ak_` identifiers are benign controls, authored outside
+  credential-named assignments so no generic detector would flag them. The retired `sk_e2b_`
+  token, bkend.ai's `ak_` + 64 hex, the legacy bare Helicone `sk-` and `-cp-` keys, a `pk_`
+  public key or `phc_` token in a secret's position, and `oak_`/`uak_`/`cak_` around an `ak_`
+  body are twins, scored as co-detection when another known family reports them.
+- **Accepted false positives are not authored.** An exact-width placeholder made only of
+  alphabet bytes (for example Helicone's all-`x` key) is claimed by the contract, so it is
+  neither a positive nor a benign control.
+
+### Peer lag at the pinned peers
+
+Recorded in each contract's `peer-lag` field and read from the pinned rule sources
+(trufflehog 3.97.4, gitleaks 8.30.1); corroboration only, never used to narrow or widen a contract.
+`scanners/families.mjs` maps trufflehog `Doppler` to `doppler-token`, trufflehog `PosthogApp`
+to `posthog-token` and gitleaks `doppler-api-token` to `doppler-personal-token`.
+
+| Family | trufflehog 3.97.4 | gitleaks 8.30.1 |
+| --- | --- | --- |
+| Doppler | `dp.(ct\|pt\|st[.segment]\|sa\|scim\|audit).` + 40–44: no `said` (GitHub secret scanning lists no `said` either) | `doppler-api-token`: `dp.pt.` + 43 only, case-insensitive |
+| PostHog | `phx_` + 43–48 of `[a-zA-Z0-9_]`: misses 42- and 49-byte keys, admits `_`, no `phs_` | none |
+| Trigger.dev, E2B, Helicone, Firecrawl, Composio | none (the staff-authored Composio PR #5322 is still open) | none |
+
 ## Per-field provenance
 
 `FormatContract.fields` records each structural claim (prefix, total length,

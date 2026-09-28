@@ -117,13 +117,13 @@ function fixture() {
   return { corpus, cases, contract: validatePiiPopulationContract(contract, corpus, { canonical: false, cases }) };
 }
 
-async function observedRows(source, flagged, artifactHash, runId, sensitive = true) {
+async function observedRows(source, flagged, artifactHash, runId, sensitive = true, version = '1.0.0') {
   const values = new Map(source.corpus.entries.map(entry => [materializePiiEvidenceCandidate(entry), entry.validator?.expected]));
   const validators = createPiiValidators([{ id: 'luhn', version: 1, validate(value) { return { state: values.get(value) ?? 'invalid' }; } }]);
   const domain = piiDomain.configure({ evidence: source.corpus, evidenceValidation: validationOptions, validators });
   const byPath = new Map(source.cases.map(row => [row.input.path, row]));
   const scanner = { id: `population-${runId.at(-1)}`, mode: 'candidate', capabilities: { ranges: true, classification: true }, configuration: { fixture: true },
-    async version() { return '1.0.0'; }, async scan(_directory, inputs) { return inputs.flatMap(input => {
+    async version() { return version; }, async scan(_directory, inputs) { return inputs.flatMap(input => {
       const row = byPath.get(input.path); return row && flagged.has(row.id) ? [{ path: input.path, ...row.candidate, family: row.contract.family,
         ...(row.contract.scope === 'global' ? {} : { jurisdiction: row.contract.scope.slice('jurisdiction:'.length) }), sensitive }] : [];
     }); } };
@@ -215,6 +215,20 @@ test('authored population roster produces aggregate-only family, jurisdiction, c
   partialForgery.populationReports.find(row => row.id === 'diagnostic-balanced').status = 'not-measured';
   partialForgery.artifactCommitment = piiSupportMatrixV2Commitment(partialForgery);
   assert.ok(await piiSupportMatrixProblem(partialForgery, partialForgery.artifactCommitment));
+});
+
+test('comparison tolerates a baseline and candidate that declare different scanner versions, as a real release comparison always does', async () => {
+  const source = fixture();
+  const flagged = new Set(source.corpus.entries.filter(row => row.id.startsWith('diagnostic-') && row.typeExpectation === 'valid').map(row => row.id));
+  const baselineRows = await observedRows(source, flagged, '8'.repeat(64), '00000000-0000-4000-8000-000000008285', false, '0.1.0-beta.9');
+  const candidateRows = await observedRows(source, flagged, '9'.repeat(64), '00000000-0000-4000-8000-000000009285', false, '0.1.0-beta.10');
+  const options = { canonical: false, cases: source.cases };
+  const baseline = buildPiiPopulationReport(source.contract, source.corpus, baselineRows, 'diagnostic-balanced', options);
+  const candidate = buildPiiPopulationReport(source.contract, source.corpus, candidateRows, 'diagnostic-balanced', options);
+  assert.equal(baseline.observation.scanner.version, '0.1.0-beta.9');
+  assert.equal(candidate.observation.scanner.version, '0.1.0-beta.10');
+  const comparison = comparePiiPopulationReports(baseline, candidate, { contract: source.contract, evidence: source.corpus, baselineRows, candidateRows, options });
+  assert.equal(comparison.verdict, 'no-regression');
 });
 
 test('diagnostic type, validator, and context regressions remain separate while benign-heavy false alarms stay unchanged', async () => {

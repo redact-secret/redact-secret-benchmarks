@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  auditTwin, auditTwins, duplicateContentClusters, editHunks, familyIndependence, formatOverlaps, positiveSourceClass,
-  rowFailures, sharedValueClusters, skeleton, summarizeFailures, templateClusters,
+  auditTwin, auditTwins, duplicateContentClusters, editHunks, failureCell, familyIndependence, formatOverlaps, positiveSourceClass,
+  renderFamilyTable, rowFailures, sharedValueClusters, skeleton, summarizeFailures, templateClusters,
 } from '../benchmarks/lib/fixture-independence.ts';
 
 // Synthetic, obviously fake values; the module never needs a real format.
@@ -125,4 +125,25 @@ test('row failures split leaks, warn-only, false alarms and co-detection, and co
   assert.equal(summary.find(s => s.type === 'false-alarm').action, 'redact');
   assert.equal(summary.find(s => s.type === 'co-detection').action, 'warn');
   assert.equal(summary.find(s => s.type === 'warn-only').kind, 'policy');
+});
+
+test('the family table renders one row per family, keeps modes apart and has no overall score column', () => {
+  const env = wrap(positive('env', `API_KEY=${VALUE_A}\n`, VALUE_A, { contextAxis: 'env' }));
+  const fam = familyIndependence('test-family', [env], contracts, [], [], []);
+  const measured = status => ({ families: { 'test-family': { status, tier: 'T1', target: 'stable-documented', debt: [{ cell: 'positiveCases', actual: 1, required: 6 }],
+    twinPairs: 0, twinFailures: 0, benignFalseAlarms: 0, metamorphicCriticalFailures: 0, mutationUnresolvedCritical: 0, differentialUnresolvedContractDisagreements: 2,
+    supportedContexts: [], empiricalMode: null, benchSpans: { spans: 1, leaked: 0, collateralBytes: 0 } } },
+    failures: status === 'provisional' ? [{ family: 'test-family', type: 'leak', kind: 'must-redact', action: 'none', rawRows: 1, uniqueAxes: 1, uniqueTemplates: 1, axes: ['env'] }] : [] });
+  const table = renderFamilyTable({ families: [fam], knownGaps: { 'test-family': [{ id: 'g-1', status: 'verified' }, { id: 'g-0', status: 'fixed' }] },
+    published: measured('provisional'), candidate: measured('stable') });
+  const rows = table.trim().split('\n');
+  assert.equal(rows.length, 3);
+  assert.match(rows[2], /provisional → stable/);
+  assert.match(rows[2], /leak MR 1f\/1ax \| — \|/);
+  assert.match(rows[2], /positiveCases 1\/6/);
+  assert.match(rows[2], /g-1 \(verified\)/);
+  assert.ok(!rows[2].includes('g-0'));
+  assert.ok(!/score|precision|recall|f1/i.test(rows[0]));
+  assert.ok(!table.includes(VALUE_A));
+  assert.equal(failureCell([], 'x'), '—');
 });

@@ -201,23 +201,26 @@ export function scoreLane(plan: StressPlan, lane: ObservedLane) {
   const byLanguage = Object.fromEntries(['en', 'ko'].map(language => [language, Object.fromEntries(STRESS_GROUPS.map(name =>
     [name, tally(rows.filter(row => row.group === name && row.language === language))]).filter(([, value]) => (value as { cases: number }).cases))]));
   const crossFamilyTypes = rows.flatMap(row => row.otherPii).reduce<Record<string, number>>((acc, type) => ({ ...acc, [type]: (acc[type] ?? 0) + 1 }), {});
+  // Declared masses weight each evidence-class stratum. Misses are rated over a stratum's sensitive members and false
+  // alarms over its non-sensitive members, so a stratum that mixes both (cross-family) never blends the two rates.
   const views = plan.populations.map(population => {
     const members = rows.filter(row => row.views.includes(population.id as StressView));
     const strata = population.baseRate.strata.map(stratum => {
       const list = members.filter(row => row.evidenceClass === stratum.evidenceClass);
-      const errors = list.filter(row => !['detected', 'absent'].includes(row.outcome)).length;
-      return { evidenceClass: stratum.evidenceClass, mass: stratum.mass, cases: list.length, errors };
+      const sensitive = list.filter(row => row.group === 'sensitive'), other = list.filter(row => row.group !== 'sensitive');
+      return { evidenceClass: stratum.evidenceClass, mass: stratum.mass, cases: list.length,
+        sensitiveCases: sensitive.length, notDetected: sensitive.filter(row => row.outcome !== 'detected').length,
+        nonSensitiveCases: other.length, falseAlarms: other.filter(row => row.outcome === 'false-alarm').length };
     });
-    const benign = strata.filter(row => row.evidenceClass !== 'sensitive-synthetic');
-    const benignMass = benign.reduce((sum, row) => sum + row.mass, 0);
-    const sensitiveMembers = members.filter(row => row.group === 'sensitive');
-    const nonSensitiveMembers = members.filter(row => row.group !== 'sensitive');
+    const weighted = (key: 'sensitiveCases' | 'nonSensitiveCases', errors: 'notDetected' | 'falseAlarms') => {
+      const eligible = strata.filter(row => row[key] > 0), mass = eligible.reduce((sum, row) => sum + row.mass, 0);
+      return mass ? Number((eligible.reduce((sum, row) => sum + row.mass * (row[errors] / row[key]), 0) / mass).toFixed(6)) : null;
+    };
     return {
       id: population.id, denominator: members.length, strata,
-      weightedErrorRate: Number((strata.reduce((sum, row) => sum + row.mass * (row.errors / row.cases), 0) / population.baseRate.totalMass).toFixed(6)),
-      weightedBenignStratumErrorRate: benignMass ? Number((benign.reduce((sum, row) => sum + row.mass * (row.errors / row.cases), 0) / benignMass).toFixed(6)) : null,
-      sensitive: { cases: sensitiveMembers.length, detected: sensitiveMembers.filter(row => row.outcome === 'detected').length },
-      nonSensitive: { cases: nonSensitiveMembers.length, falseAlarms: nonSensitiveMembers.filter(row => row.outcome === 'false-alarm').length },
+      weightedMissRate: weighted('sensitiveCases', 'notDetected'), weightedFalseAlarmRate: weighted('nonSensitiveCases', 'falseAlarms'),
+      sensitive: { cases: members.filter(row => row.group === 'sensitive').length, detected: members.filter(row => row.group === 'sensitive' && row.outcome === 'detected').length },
+      nonSensitive: { cases: members.filter(row => row.group !== 'sensitive').length, falseAlarms: members.filter(row => row.group !== 'sensitive' && row.outcome === 'false-alarm').length },
     };
   });
   return {

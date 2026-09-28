@@ -174,7 +174,7 @@ try {
     baselineVerification: 'package-lock.json sha512 integrity', sides,
   };
   await mkdir(path.dirname(observationFile), { recursive: true });
-  await writeFile(observationFile, `${JSON.stringify(observation, null, 1)}\n`);
+  await writeFile(observationFile, `${JSON.stringify(observation)}\n`);
   const report = buildStressReport(observation);
   await writeFile(reportFile, `${JSON.stringify(report, null, 2)}\n`);
   for (const row of report.summary) console.log(JSON.stringify(row));

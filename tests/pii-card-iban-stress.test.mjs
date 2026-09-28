@@ -124,3 +124,24 @@ test('scoring keeps validator correctness, semantic collision, leakage, collater
   assert.deepEqual(scored.crossFamily.findingsByType, { pii_global_phone: 1 });
   assert.throws(() => scoreLane(plan, { lane: 'node-addon', selection: 'pii-global-and-us', activationIdentity: null, cases: perfect.slice(1) }), /one-to-one/);
 });
+
+test('#425 evidence re-scores byte for byte from its observation and carries no case value', async () => {
+  const { buildStressReport } = await import('../benchmarks/evaluation/domains/pii/card-iban-stress/report.ts');
+  const observationText = await readFile('evidence/901/425/card-iban-stress-observation-v1.json', 'utf8');
+  const reportText = await readFile('evidence/901/425/card-iban-stress-report-v1.json', 'utf8');
+  assert.equal(`${JSON.stringify(buildStressReport(JSON.parse(observationText)), null, 2)}\n`, reportText);
+  const report = JSON.parse(reportText);
+  assert.equal(report.supportClaims, false);
+  assert.equal(report.statusPromotion, false);
+  const candidate = report.sides.find(side => side.side === 'candidate');
+  assert.equal(candidate.identity.sourceCommit, 'af7f863f29f9fe482dd233c8b7bc5b77dc427314');
+  for (const family of candidate.families) assert.equal(family.identityOracle.identityOnly.status, 'not-measured');
+  for (const plan of Object.values(stressPlans)) for (const row of plan.cases) {
+    const value = row.display.replace(/[^0-9A-Za-z]/g, '');
+    if (value.length < 10) continue;
+    for (const text of [observationText, reportText]) {
+      assert.ok(!text.includes(row.display), `${row.id} display leaked into evidence`);
+      assert.ok(!text.includes(value), `${row.id} value leaked into evidence`);
+    }
+  }
+});

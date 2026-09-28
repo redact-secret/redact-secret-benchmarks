@@ -48,6 +48,7 @@ export function buildStressReport(observation: Observation) {
       officialTest: `${groups['official-test'].absent ?? 0}/${groups['official-test'].cases}`,
       unsupportedShape: `${groups['unsupported-shape'].absent ?? 0}/${groups['unsupported-shape'].cases}`,
       nonRedactAction: lane.action.nonRedact, valueLeaked: lane.outputLeakage.valueLeakedAfterRedaction,
+      sensitiveLeftInOutput: lane.outputLeakage.sensitiveLeftInOutput,
       collateralOutsideModified: lane.collateral.casesWithOutsideModification, credentialFindings: lane.collateral.credentialFindings,
       crossFamilyNoneExpectedViolations: lane.crossFamily.noneExpectedViolations, crossFamilyFindings: lane.crossFamily.findingsByType,
       surfaceDisagreements: Object.values(scored.parity.surfaceDisagreements).flat().length,
@@ -59,6 +60,10 @@ export function buildStressReport(observation: Observation) {
     oracleCommitment: observation.oracleCommitment, platform: observation.platform, node: observation.node,
     candidateManifestVerification: observation.candidateManifestVerification, baselineVerification: observation.baselineVerification,
     independence: Object.fromEntries(STRESS_FAMILIES.map(family => [family, stressIndependence(stressPlans[family])])),
-    summary, comparison, sides,
+    summary, comparison,
+    // Per-lane case lists keep only exceptions (not detected/absent, or with other findings); the observation file
+    // holds every case.
+    sides: sides.map(side => ({ ...side, families: side.families.map(family => ({ ...family, lanes: family.lanes.map(({ caseOutcomes, ...lane }) => ({
+      ...lane, exceptions: caseOutcomes.filter(row => !correct(row.outcome) || Object.keys(row).length > 2) })) })) })),
   };
 }

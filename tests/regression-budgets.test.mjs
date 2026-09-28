@@ -2,10 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
+import { browserLane, bundleFiles, normalizeAsset } from '../scripts/measure-quickstart-bundle.mjs';
+
 import {
   allowedChange, candidateFromSnapshot, ceilToFivePercent, deriveTriggers, evaluateBudgets, exitCodeFor, historyProblems,
-  ledgerProblems, metricsFromAdapterOverhead, metricsFromOperational, metricsFromPaired, metricsFromWasmSizes, pairedRatios,
-  PERFORMANCE_RUN_REQUIRED_TRIGGERS, ratioDeviation, roundOrder, RULES, sha256OfText, wasmSizesProblem,
+  ledgerProblems, metricsFromAdapterOverhead, metricsFromOperational, metricsFromPaired, metricsFromQuickstartBundle, metricsFromWasmSizes,
+  pairedRatios, PERFORMANCE_RUN_REQUIRED_TRIGGERS, quickstartBundleProblem, ratioDeviation, renderReportMarkdown, roundOrder, RULES,
+  sha256OfText, wasmSizesProblem,
 } from '../benchmarks/lib/regression-budgets.ts';
 
 const readJson = file => JSON.parse(readFileSync(file, 'utf8'));
@@ -394,6 +397,12 @@ test('evaluate --summary without --wasm-sizes exits 2 and names the wasm size ro
   assert.equal(missing.status, 2, missing.stderr);
   assert.match(missing.stderr, /INVALID size\/wasm\/full\/gzip: required source missing/);
   assert.match(missing.stderr, /INVALID size\/wasm\/common\/gzip: required source missing/);
+  assert.match(missing.stderr, /INVALID size\/browser-bundle\/quickstart\/gzip: required source missing: .*--quickstart-bundle/);
+
+  // The beta.7 quickstart build (#141): every emitted file was fetched, so fetched = emitted = the baseline.
+  const bundle = quickstartFromOperational(summary.sourceCommit);
+  const bundleFile = path.join(dir, 'quickstart-bundle.json');
+  writeFileSync(bundleFile, JSON.stringify(bundle));
 
   // The committed #141 values at the baseline commit: judged, within budget.
   const operational = readJson('benchmarks/operational-evidence.json').measurements.artifacts.wasm;
@@ -401,16 +410,21 @@ test('evaluate --summary without --wasm-sizes exits 2 and names the wasm size ro
     ({ profile: w.profile, artifact: w.artifact, file: w.file, sha256: w.sha256, rawBytes: w.rawBytes, gzipBytes: w.gzipBytes, brotliBytes: w.brotliBytes })) };
   const file = path.join(dir, 'wasm-sizes.json');
   writeFileSync(file, JSON.stringify(sizes));
-  const judged = evaluateCli(['--wasm-sizes', file]);
+  const onlyWasm = evaluateCli(['--wasm-sizes', file]);
+  assert.equal(onlyWasm.status, 2, 'the quickstart bundle row is required too');
+  const judged = evaluateCli(['--wasm-sizes', file, '--quickstart-bundle', bundleFile]);
   assert.equal(judged.status, 0, judged.stderr);
   const report = readJson(path.join(dir, 'r.json'));
   assert.equal(verdictOf(report, 'size/wasm/full/gzip'), 'within-budget');
   assert.equal(verdictOf(report, 'size/wasm/common/gzip'), 'within-budget');
+  assert.equal(verdictOf(report, 'size/browser-bundle/quickstart/gzip'), 'within-budget');
+  assert.equal(report.triggers.find(t => t.id === 'size/browser-bundle/quickstart/gzip').candidate, 144501);
   assert.equal(verdictOf(report, 'size/npm/core/packed'), 'not-evaluated');
+  assert.equal(report.diagnostics[0].id, 'size/browser-bundle/quickstart/emitted-gzip');
 
   // Sizes measured at another commit are not this candidate's: exit 2.
   writeFileSync(file, JSON.stringify({ ...sizes, sourceCommit: COMMIT_B }));
-  const wrong = evaluateCli(['--wasm-sizes', file]);
+  const wrong = evaluateCli(['--wasm-sizes', file, '--quickstart-bundle', bundleFile]);
   assert.equal(wrong.status, 2);
   assert.match(wrong.stderr, /wasm-sizes: measured core b{40}/);
 });
@@ -444,6 +458,142 @@ test('measure-wasm-sizes measures both profiles of a checkout and refuses a miss
   const row = evidence.artifacts.find(a => a.profile === 'full');
   assert.equal(row.rawBytes, full.length);
   assert.equal(row.gzipBytes, gzipSync(full, { level: 9 }).length);
+});
+
+// redact-secret#937: the pii builds are separate, lazily loaded artifacts.
+function quickstartFromOperational(sourceCommit) {
+  const { files } = readJson('benchmarks/operational-evidence.json').measurements.browserBundle;
+  const rows = files.map(f => ({ ...f, fetched: true }));
+  const total = list => ({ bytes: list.reduce((n, f) => n + f.bytes, 0), gzipBytes: list.reduce((n, f) => n + f.gzipBytes, 0) });
+  return { schemaVersion: '1', kind: 'quickstart-bundle-sizes', sourceCommit, tool: 'vite 7.3.6', pageText: 'x', files: rows,
+    totals: { fetched: total(rows), emitted: total(rows) } };
+}
+
+function splitBundle() {
+  const rows = [
+    { file: 'index.html', kind: 'html', bytes: 187, gzipBytes: 166, fetched: true },
+    { file: 'assets/index-<hash>.js', kind: 'js', bytes: 11_000, gzipBytes: 4_000, fetched: true },
+    { file: 'assets/redact_secret_wasm-<hash>.js', kind: 'js', bytes: 11_000, gzipBytes: 3_000, fetched: true },
+    { file: 'assets/redact_secret_wasm_bg-<hash>.wasm', kind: 'wasm', bytes: 400_000, gzipBytes: 130_000, fetched: true },
+    { file: 'assets/redact_secret_wasm_pii-<hash>.js', kind: 'js', bytes: 11_000, gzipBytes: 3_000, fetched: false },
+    { file: 'assets/redact_secret_wasm_pii_bg-<hash>.wasm', kind: 'wasm', bytes: 700_000, gzipBytes: 270_000, fetched: false },
+  ];
+  const total = list => ({ bytes: list.reduce((n, f) => n + f.bytes, 0), gzipBytes: list.reduce((n, f) => n + f.gzipBytes, 0) });
+  return { schemaVersion: '1', kind: 'quickstart-bundle-sizes', sourceCommit: COMMIT_B, tool: 'vite 7.3.6', pageText: 'x', files: rows,
+    totals: { fetched: total(rows.filter(f => f.fetched)), emitted: total(rows) } };
+}
+
+test('the quickstart bundle row is what a default quickstart fetches; every emitted asset stays visible as a diagnostic', () => {
+  const evidence = splitBundle();
+  assert.equal(quickstartBundleProblem(evidence, COMMIT_B), null);
+  const { metrics, diagnostics } = metricsFromQuickstartBundle(evidence);
+  assert.deepEqual(metrics.map(m => [m.id, m.value, m.role]), [['size/browser-bundle/quickstart/gzip', 137_166, 'default']]);
+  assert.equal(diagnostics[0].value, 410_166);
+  assert.match(diagnostics[0].note, /2 not fetched/);
+
+  const report = evaluateBudgets(
+    { budgetsId: 'test', triggers: [{ ...byId('size/wasm/full/gzip'), id: 'size/browser-bundle/quickstart/gzip', baselineValue: 135_000 }] },
+    { ...baseline, metrics: { ...baseline.metrics, 'size/browser-bundle/quickstart/gzip': { ...baseline.metrics['size/wasm/full/gzip'], id: 'size/browser-bundle/quickstart/gzip', value: 135_000 } } },
+    { sourceCommit: COMMIT_B, sources: ['q'], metrics: Object.fromEntries(metrics.map(m => [m.id, m])), profiles: { size: { coverage: 'browser-bundle' } }, diagnostics }, []);
+  assert.equal(verdictOf(report, 'size/browser-bundle/quickstart/gzip'), 'within-budget', 'the lazy pii assets do not count against the fetched row');
+  assert.match(renderReportMarkdown(report), /Diagnostics \(measured, never budgeted\)[\s\S]*emitted-gzip` \| 410166 bytes/);
+
+  assert.match(quickstartBundleProblem({ ...evidence, sourceCommit: COMMIT_A }, COMMIT_B), /measured core a{40}/);
+  assert.match(quickstartBundleProblem({ ...evidence, totals: { ...evidence.totals, fetched: evidence.totals.emitted } }, COMMIT_B), /fetched totals do not add up/);
+  const noWasm = { ...evidence, files: evidence.files.map(f => (f.kind === 'wasm' ? { ...f, fetched: false } : f)) };
+  assert.match(quickstartBundleProblem(noWasm, COMMIT_B), /fetched no WebAssembly/);
+});
+
+test('operational evidence keeps its beta.7 bundle value: fetched when recorded, else every emitted file (all fetched before #937)', () => {
+  const operational = readJson('benchmarks/operational-evidence.json');
+  const row = id => metricsFromOperational(operational).find(m => m.id === id).value;
+  assert.equal(row('size/browser-bundle/quickstart/gzip'), operational.measurements.browserBundle.totals.allGzipBytes);
+  const withFetched = structuredClone(operational);
+  withFetched.measurements.browserBundle.totals.fetchedGzipBytes = 1234;
+  assert.equal(metricsFromOperational(withFetched).find(m => m.id === 'size/browser-bundle/quickstart/gzip').value, 1234);
+});
+
+test('pii wasm builds are optional rows reported baseline-pending, never given an invented budget', () => {
+  const evidence = wasmSizes();
+  evidence.piiBuilds = 'present';
+  const pii = (profile, gzipBytes) => ({ profile, artifact: 'wasm-web', file: `${profile}.wasm`, sha256: 'd'.repeat(64), rawBytes: gzipBytes * 3, gzipBytes, brotliBytes: gzipBytes });
+  evidence.artifacts = [...evidence.artifacts, pii('full-pii', 270_000), pii('common-pii', 220_000)];
+  assert.equal(wasmSizesProblem(evidence, COMMIT_B), null);
+  const metrics = metricsFromWasmSizes(evidence);
+  assert.equal(metrics.find(m => m.id === 'size/wasm/full-pii/gzip').role, 'optional');
+  assert.equal(metrics.find(m => m.id === 'size/wasm/common-pii/gzip').role, 'optional');
+
+  const report = evaluateBudgets(budgets, baseline, wasmSizeCandidate(evidence), []);
+  assert.ok(!report.triggers.some(t => t.id.includes('-pii/')), 'no trigger is invented for a row the baseline never measured');
+  assert.deepEqual(report.pending.map(r => [r.id, r.candidate, r.verdict, r.role]), [
+    ['size/wasm/common-pii/gzip', 220_000, 'baseline-pending', 'optional'],
+    ['size/wasm/full-pii/gzip', 270_000, 'baseline-pending', 'optional'],
+  ]);
+  assert.equal(report.status, 'accepted', 'a pending row is reported, not judged');
+  assert.match(renderReportMarkdown(report), /baseline-pending, not judged[\s\S]*full-pii\/gzip` \(optional\) \| 270000 bytes/);
+
+  const onlyOne = { ...evidence, artifacts: evidence.artifacts.filter(a => a.profile !== 'common-pii') };
+  assert.match(wasmSizesProblem(onlyOne, COMMIT_B), /one common-pii WebAssembly artifact, found 0/);
+  assert.match(wasmSizesProblem({ ...evidence, piiBuilds: 'absent' }, COMMIT_B), /piiBuilds is absent but pii artifacts are listed/);
+  assert.match(wasmSizesProblem({ ...evidence, artifacts: [...evidence.artifacts, pii('full-x', 1)] }, COMMIT_B), /unknown WebAssembly profile full-x/);
+});
+
+test('measure-quickstart-bundle reads the documented browser lane and marks lazily loaded assets unfetched', () => {
+  const doc = [
+    '```sh qualify=browser:setup', 'npm install @redact-secret/core@0.1.0 vite@7.3.6', '```', '',
+    '```html qualify=browser:file:index.html', '<script type="module" src="/main.js"></script>', '```', '',
+    '```js qualify=browser:file:main.js', 'import { initialize } from "@redact-secret/core";', '```', '',
+    '```text qualify=browser:expect', 'loaded wasm', 'findings: 1', '```',
+  ].join('\n');
+  const lane = browserLane(doc);
+  assert.equal(lane.vite, '7.3.6');
+  assert.deepEqual(lane.files.map(f => f.name), ['index.html', 'main.js']);
+  assert.equal(lane.expect, 'loaded wasm\nfindings: 1');
+  assert.throws(() => browserLane(doc.replace('vite@7.3.6', 'vite')), /no complete browser lane/);
+  assert.throws(() => browserLane(doc.replace('file:main.js', 'file:../main.js')), /unsafe quickstart file name/);
+
+  assert.equal(normalizeAsset('assets/redact_secret_wasm_bg-Ab_9-xYz.wasm'), 'assets/redact_secret_wasm_bg-<hash>.wasm');
+  const entries = [
+    { file: 'index.html', bytes: Buffer.from('<html>') },
+    { file: 'assets/redact_secret_wasm_bg-AAAAAAAA.wasm', bytes: Buffer.alloc(2000, 1) },
+    { file: 'assets/redact_secret_wasm_pii_bg-BBBBBBBB.wasm', bytes: Buffer.alloc(5000, 2) },
+  ];
+  const { files, totals } = bundleFiles(entries, new Set(['index.html', 'assets/redact_secret_wasm_bg-AAAAAAAA.wasm']));
+  assert.deepEqual(files.map(f => [f.file, f.fetched]), [
+    ['assets/redact_secret_wasm_bg-<hash>.wasm', true], ['assets/redact_secret_wasm_pii_bg-<hash>.wasm', false], ['index.html', true]]);
+  assert.equal(totals.fetched.bytes, 2006);
+  assert.equal(totals.emitted.bytes, 7006);
+});
+
+test('measure-wasm-sizes measures the pii variants when both are built and refuses only one', async () => {
+  const { execFileSync, spawnSync } = await import('node:child_process');
+  const { mkdirSync, mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const path = await import('node:path');
+  const core = mkdtempSync(path.join(tmpdir(), 'core-pii-'));
+  const git = (...args) => execFileSync('git', ['-C', core, ...args], { encoding: 'utf8' }).trim();
+  git('init', '-q');
+  git('-c', 'user.name=t', '-c', 'user.email=t@example.invalid', 'commit', '-q', '--allow-empty', '-m', 'core');
+  const head = git('rev-parse', 'HEAD');
+  const put = (dir, file, text) => { mkdirSync(path.join(core, dir), { recursive: true }); writeFileSync(path.join(core, dir, file), Buffer.from(text.repeat(40))); };
+  put('bindings/wasm/pkg', 'redact_secret_wasm_bg.wasm', 'synthetic full ');
+  put('bindings/wasm/pkg-common', 'redact_secret_wasm_common_bg.wasm', 'synthetic common ');
+  const out = path.join(core, 'out.json');
+  const measure = () => spawnSync(process.execPath, ['scripts/measure-wasm-sizes.mjs', '--core', core, '--source-commit', head, '--out', out], { encoding: 'utf8' });
+  assert.equal(measure().status, 0);
+  assert.equal(readJson(out).piiBuilds, 'absent');
+  assert.equal(wasmSizesProblem(readJson(out), head), null);
+  put('bindings/wasm/pkg', 'redact_secret_wasm_pii_bg.wasm', 'synthetic full pii ');
+  const half = measure();
+  assert.notEqual(half.status, 0);
+  assert.match(half.stderr, /redact_secret_wasm_common_pii_bg\.wasm is missing while another pii build exists/);
+  put('bindings/wasm/pkg-common', 'redact_secret_wasm_common_pii_bg.wasm', 'synthetic common pii ');
+  assert.equal(measure().status, 0);
+  const evidence = readJson(out);
+  assert.equal(evidence.piiBuilds, 'present');
+  assert.deepEqual(evidence.artifacts.map(a => a.profile), ['full', 'common', 'full-pii', 'common-pii']);
+  assert.equal(wasmSizesProblem(evidence, head), null);
+  rmSync(core, { recursive: true, force: true });
 });
 
 test('the committed budgets cover every dimension from the committed baseline, and the history and ledger are consistent', () => {

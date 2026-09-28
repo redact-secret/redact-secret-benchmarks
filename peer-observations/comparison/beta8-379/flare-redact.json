@@ -1,0 +1,374 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T15:26:56.724Z",
+  "sourceRun": {
+    "runId": "2026-09-28T15:26:56.724Z-b55203",
+    "benchmarkRevision": "3e69638a324e12cc88cbb6ea3fb3be6822413adb"
+  },
+  "input": {
+    "surface": "comparison/beta8-379",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "3e35b2818aad5845f57e0a479afbb65d603248759c2b51d306adaaaac3a7baf0",
+    "fixtureCount": 202,
+    "fixturesDigest": "dc7ccbce4e8af88fba2dab96fbf2857eb49ded6e9272c54cf378e5a92378e214",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "731d104e6c6a079af7ace17595b61c59f9a30b4861c1990d6126732b45327800",
+      "fixtureCount": 3840
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "a2c5b65cb851e1e8efbbb7ecdd4fa8c39b08c9779563ee20b9ac4fa3154933c2"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-admin01-key-admim-letter-twin.yml",
+      "start": 116,
+      "end": 226,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-audit-stderr-headers.log",
+      "start": 54,
+      "end": 164,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-circleci-environment.yml",
+      "start": 116,
+      "end": 226,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-fish-set-gx.fish",
+      "start": 28,
+      "end": 138,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-httpie-admin-api.sh",
+      "start": 68,
+      "end": 178,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-org-admin-provider-block.tf",
+      "start": 47,
+      "end": 157,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-ts-fetch-literal.ts",
+      "start": 108,
+      "end": 218,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-underscore-after-version-twin.sh",
+      "start": 68,
+      "end": 178,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-apl-letter-twin.py",
+      "start": 83,
+      "end": 191,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-buildkite-env.yml",
+      "start": 107,
+      "end": 215,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-compliance-export-yaml.yml",
+      "start": 54,
+      "end": 87,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-go-const-long.go",
+      "start": 43,
+      "end": 176,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-httpx-client.py",
+      "start": 83,
+      "end": 191,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-secretsmanager-get.json",
+      "start": 148,
+      "end": 241,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-ticket-paren.md",
+      "start": 46,
+      "end": 123,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-access-log-authorization.log",
+      "start": 119,
+      "end": 258,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-java-httpclient.java",
+      "start": 129,
+      "end": 268,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/connection-string-celery-amqps.py",
+      "start": 14,
+      "end": 52,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-database-url-query.env",
+      "start": 13,
+      "end": 53,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-docs-uppercase-placeholder.md",
+      "start": 23,
+      "end": 48,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-interpolated-password-reference.env",
+      "start": 13,
+      "end": 45,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-orm-connection-error.log",
+      "start": 60,
+      "end": 102,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-percent-template-encoded-value.py",
+      "start": 16,
+      "end": 35,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-psql-history.sh",
+      "start": 13,
+      "end": 57,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-rails-database-yml.yml",
+      "start": 41,
+      "end": 81,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-sqlalchemy-ipv6.py",
+      "start": 24,
+      "end": 75,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/deepgram-api-key-bearer-scheme-twin.sh",
+      "start": 84,
+      "end": 131,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/github-token-gh-auth-status-token.txt",
+      "start": 143,
+      "end": 183,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-gh-login-herestring.sh",
+      "start": 53,
+      "end": 93,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-installation-clone-url.sh",
+      "start": 10,
+      "end": 74,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/github-token-npmrc-authtoken.npmrc",
+      "start": 82,
+      "end": 122,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-short-body-35-twin.sh",
+      "start": 10,
+      "end": 73,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/mailchimp-api-key-userinfo-url.txt",
+      "start": 0,
+      "end": 56,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/openai-admin-api-key-actions-usage-export.yml",
+      "start": 82,
+      "end": 132,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-admn-prefix-twin.go",
+      "start": 35,
+      "end": 80,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-first-segment-57-twin.yml",
+      "start": 82,
+      "end": 132,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-go-const-74.go",
+      "start": 35,
+      "end": 81,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-markerless-test-name-near-miss.ts",
+      "start": 12,
+      "end": 79,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-powershell-env.ps1",
+      "start": 25,
+      "end": 60,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-requests-debug.log",
+      "start": 120,
+      "end": 260,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/stripe-token-compose-restricted.yml",
+      "start": 112,
+      "end": 152,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-docs-x-body-placeholder.env",
+      "start": 46,
+      "end": 78,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-env-with-publishable.env",
+      "start": 125,
+      "end": 165,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-httpie-bearer.sh",
+      "start": 59,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/stripe-token-hyphen-separators-twin.sh",
+      "start": 59,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/stripe-token-rails-credentials.yml",
+      "start": 22,
+      "end": 62,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-stripe-config-list.txt",
+      "start": 88,
+      "end": 128,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-stripe-node-debug.log",
+      "start": 73,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/twilio-auth-token-api-key-sid-masked-public-id.txt",
+      "start": 86,
+      "end": 120
+    },
+    {
+      "path": "cases/twilio-auth-token-csharp-init.cs",
+      "start": 34,
+      "end": 68
+    },
+    {
+      "path": "cases/twilio-auth-token-incident-chat.md",
+      "start": 57,
+      "end": 91
+    },
+    {
+      "path": "cases/twilio-auth-token-message-resource-public-id.json",
+      "start": 62,
+      "end": 96
+    },
+    {
+      "path": "cases/twilio-auth-token-serverless-yml.yml",
+      "start": 61,
+      "end": 95
+    },
+    {
+      "path": "cases/twilio-auth-token-userinfo-url.txt",
+      "start": 0,
+      "end": 76,
+      "family": "connection-string"
+    }
+  ],
+  "digest": "b80e12d8f6be1d69f7ac198c4884fe6e11bcc0d49b5cfb99128d7ec19d0040bd"
+}

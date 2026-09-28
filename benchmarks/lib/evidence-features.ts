@@ -23,7 +23,7 @@
 export const CORE_FEATURE_SCHEMA = {
   id: 'evidence-features/v2',
   repository: 'redact-secret/redact-secret',
-  sourceRevision: '7b522679a6b1d1d46c2de5f19fbc9be3e62ed871',
+  sourceRevision: '21509e903e540ece5966e4ed4d6d1a77a0a14ce8',
   sources: [
     { path: 'docs/specs/engine.md', sha256: '89a0293bb4a1145bff203e453d2fb67e166fb15146916a621ff5907ea99de306' },
     { path: 'crates/secret-scan-core/src/evidence/features.rs', sha256: '1a9abfd0ff8c8fbddb23f5ecc81be533742a96dd7af999011e49f4bd247b5c02' },

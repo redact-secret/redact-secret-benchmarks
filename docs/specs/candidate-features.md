@@ -94,14 +94,14 @@ generated-heavy categories as `development-evaluation`
 **`evidence-features/v2`**: 30 unsigned integers in a fixed order. There is
 one definition, redact-secret's `docs/specs/engine.md`: features 0 to 26
 are the `v1` vector of
-["Shadow evidence feature schema"](https://github.com/redact-secret/redact-secret/blob/7b522679a6b1d1d46c2de5f19fbc9be3e62ed871/docs/specs/engine.md#shadow-evidence-feature-schema)
+["Shadow evidence feature schema"](https://github.com/redact-secret/redact-secret/blob/21509e903e540ece5966e4ed4d6d1a77a0a14ce8/docs/specs/engine.md#shadow-evidence-feature-schema)
 (redact-secret#769), and features 27 to 29 are the residual features of
-["Shadow evidence residual features"](https://github.com/redact-secret/redact-secret/blob/7b522679a6b1d1d46c2de5f19fbc9be3e62ed871/docs/specs/engine.md#shadow-evidence-residual-features)
+["Shadow evidence residual features"](https://github.com/redact-secret/redact-secret/blob/21509e903e540ece5966e4ed4d6d1a77a0a14ce8/docs/specs/engine.md#shadow-evidence-residual-features)
 (redact-secret#829).
 [`benchmarks/lib/evidence-features.ts`](../../benchmarks/lib/evidence-features.ts)
 reproduces both. The dataset records that identity in `featureSchema`: the
 schema id, the core source revision
-(`7b522679a6b1d1d46c2de5f19fbc9be3e62ed871`), the SHA-256 of the core spec
+(`21509e903e540ece5966e4ed4d6d1a77a0a14ce8`), the SHA-256 of the core spec
 page and of `features.rs`, `residual.rs` and `fixed_point.rs` at that
 revision, the 256-symbol bound and the 30 names in vector order. The tests
 reproduce the spec's eight golden vectors (features 0 to 26 and the

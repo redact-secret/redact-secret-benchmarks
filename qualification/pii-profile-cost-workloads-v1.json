@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "pii-profile-cost-workloads-v1",
+  "safety": {
+    "classification": "reviewed-synthetic-plan",
+    "realPersonOrAccountProvenance": false,
+    "rawInputPublication": "plan-only",
+    "evidenceProjection": "commitment-only"
+  },
+  "generator": {
+    "algorithm": "repeat-lines-v1",
+    "lineCount": 4096,
+    "chunkCodeUnits": 127,
+    "lineSeparator": "LF"
+  },
+  "workloads": [
+    {
+      "id": "validator-heavy",
+      "purpose": "Exercise every beta.10 structured validator and near-miss path without real-world identifiers.",
+      "lines": [
+        "client_ip=192.0.2.1",
+        "email=test@example.com",
+        "payment_card=4111111111111111",
+        "iban=GB82WEST12345698765432",
+        "ssn=890-62-6879",
+        "phone=+1 202-555-0142",
+        "payment_card=4111111111111112",
+        "ssn=000-00-0000"
+      ]
+    },
+    {
+      "id": "multilingual-context",
+      "purpose": "Exercise English, Korean NFC/NFD, ambiguous, and named-negative context vocabulary paths.",
+      "lines": [
+        "customer email=test@example.com",
+        "고객 이메일=test@example.com",
+        "고객 이메일=test@example.com",
+        "client phone=+1 202-555-0142",
+        "고객 전화번호=+1 202-555-0142",
+        "contact details: test@example.com +1 202-555-0142",
+        "example ssn=890-62-6879",
+        "documentation client_ip=192.0.2.1"
+      ]
+    }
+  ],
+  "contentCommitment": "4d3f64079cd0278b2aa042bdc1bdf3f3b5357099057a886f45a1747c64d284e9"
+}

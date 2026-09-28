@@ -46,13 +46,13 @@ npm run calibration:run -- --product=<candidate identity json>   # bind the froz
 
 ## 2. Evidence model
 
-Every signal is an integer measure over `evidence-features/v1` (or over the
+Every signal is an integer measure over `evidence-features/v2` (or over the
 dataset's benchmark-only context and negative classes), oriented so that
 larger means more evidence of a credential:
 
 | Group | Signals |
 | --- | --- |
-| randomness | Shannon entropy per symbol; min-entropy per symbol; class balance (`alphabet_efficiency_permille`); non-repetition (1000 minus the strongest of adjacent-repeat, repeated-bigram and autocorrelation permille, 0 for a periodic value) |
+| randomness | Shannon entropy per symbol; min-entropy per symbol; class balance (`alphabet_efficiency_permille`); non-repetition (1000 minus the strongest of adjacent-repeat, repeated-bigram and autocorrelation permille, 0 for a periodic value); residual entropy (`residual_entropy_q16`, Shannon entropy of the symbols no repeat, constant step or earlier copy predicts); residual min-entropy (`residual_min_entropy_q16`, comparison only) |
 | lexical | analysed length; classes present; class transitions per adjacent pair |
 | contextual | credential-bearing context class (`credential-name`, `authorization-header`, `url-userinfo`); `other-name` and `bare` contribute nothing |
 | validation | none: neither the feature schema nor the dataset has a checksum or parser signal yet, so the group contributes 0 everywhere |
@@ -75,7 +75,18 @@ Configurations compared (each gets its own band thresholds, section 3):
 | `grouped-halving-negative-all` / `-none` | negative gate variants (section 5) | |
 | `lookup-2d` | randomness is one integer table indexed by entropy bucket × length bucket, made monotone in both axes | the information-density model |
 | `logistic-research` | floating-point logistic regression over all features | research reference only; not expressible in the core's fixed-point arithmetic |
+| `compare-shannon-r30-l0-c50`, `compare-residual-min-entropy-r30-l0-c50` | the contract's rule at the #300 caps with Shannon entropy or residual min-entropy as the only randomness signal | local comparisons for redact-secret#829; never selectable |
 | `halving-<signals>-<caps>` | the contract's rule over a signal-subset × cap grid | the candidates the selection chooses from |
+
+**Randomness in the grid (`calibration-experiments/2`).** redact-secret#829
+replaces Shannon entropy per symbol in the randomness group with the
+residual entropy of `evidence-features/v2`, rather than adding to it: Shannon
+entropy rates benign sequences (`abcdefghijklmnopqrstuvwxyz`) as random and
+falls when repetition or padding is inserted into real material. Every grid
+candidate (`halving-q1-…`) therefore has the residual entropy as its only
+randomness signal; the lexical subsets and the cap grid are unchanged. The
+`calibration-experiments/1` grid, whose randomness subsets were built on
+Shannon entropy, selected the #300 configuration and is superseded.
 
 Across groups, positive group contributions add and the negative group is
 subtracted, saturating at 0 (the contract's §3). A configuration is
@@ -124,7 +135,7 @@ isotonic transforms fitted on development rows. Those transforms are
 score is ordinal and is never called a probability.
 
 **Selection** (deterministic, `selection.method`
-`calibration-experiments/1:…`): among conformant grid configurations, each
+`calibration-experiments/2:…`): among conformant grid configurations, each
 is judged by its *neighbourhood* development balanced error at `medium`,
 the mean over itself and its one-step cap neighbours, so a cap setting that
 works at one grid point only is penalised. Admissible: within 0.01 of the

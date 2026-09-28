@@ -36,7 +36,7 @@ export const ALLOWED_KEYS = new Set([
 /** Keys whose presence alone would publish a decision-boundary detail, whatever the value. */
 const FORBIDDEN_KEY = /threshold|weight|cap|ramp|score(?!Identity)|contribution|lookup|feature(?!Dataset|Schema)|logistic|platt|isotonic|brier|calibrat|distribution|signal|delta|lo$|hi$|points|recipe|mutation/i;
 /** Values that name a grid configuration (its id encodes caps) or a row. */
-const FORBIDDEN_VALUE = [/\bhalving-r\d/, /-r\d+-l\d+-c\d+/, /#\d+$/];
+const FORBIDDEN_VALUE = [/\bhalving-[a-z]\d/, /-r\d+-l\d+-c\d+/, /#\d+$/];
 
 function walk(value, at, problems, strataKey = false) {
   if (Array.isArray(value)) { value.forEach((item, i) => walk(item, `${at}[${i}]`, problems)); return; }

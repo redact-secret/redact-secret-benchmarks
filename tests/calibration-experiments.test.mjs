@@ -26,7 +26,7 @@ const evaluation = dataset.rows.filter(r => r.partition === 'regression' || (r.p
 // A small, representative spec set keeps the suite fast; the CLI runs the whole grid.
 const all = experimentSpecs();
 const SUBSET = all.filter(s => !s.id.startsWith('halving-') && s.kind !== 'logistic' && s.kind !== 'lookup-2d')
-  .concat(all.filter(s => /^halving-r1-l0-r(50|60)-l0-c(30|40|50)$/.test(s.id)));
+  .concat(all.filter(s => /^halving-q1-l0-r(50|60)-l0-c(30|40|50)$/.test(s.id)));
 const result = runExperiments(dataset, { specs: SUBSET, sensitivity: false, tuningCategories: partition.tuningCategories });
 
 // Synthetic values only; none resembles an issued credential.
@@ -62,7 +62,7 @@ test('ramps are integer, clamped and non-decreasing', () => {
   assert.equal(ramp(6, 5, 5, 60), 60);
 });
 
-test('every signal is an integer measure over evidence-features/v1', () => {
+test('every signal is an integer measure over evidence-features/v2', () => {
   for (const [id, signal] of Object.entries(SIGNALS)) {
     for (const name of signal.features) assert.ok(FEATURE_NAMES.includes(name), `${id} reads ${name}`);
     for (const value of ['', 'ab', 'aaaaaaaaaaaaaaaa', 'abcabcabcabcabcabc', RANDOMISH]) {
@@ -72,7 +72,22 @@ test('every signal is an integer measure over evidence-features/v1', () => {
   }
 });
 
-const selectedLike = () => fitConfig(all.find(s => s.id === 'halving-r1-l0-r60-l0-c40'), development);
+test('the residual entropy replaces Shannon entropy in every selectable configuration (redact-secret#829)', () => {
+  const grid = all.filter(s => s.id.startsWith('halving-'));
+  assert.ok(grid.length > 0);
+  for (const spec of grid) assert.deepEqual(spec.signals.randomness, ['residual-entropy'], spec.id);
+  // The #300 shape and the min-entropy variant are kept as local comparisons, never selectable.
+  for (const id of ['compare-shannon-r30-l0-c50', 'compare-residual-min-entropy-r30-l0-c50']) {
+    const spec = all.find(s => s.id === id);
+    assert.ok(spec && !spec.id.startsWith('halving-'), id);
+  }
+  // A benign sequence reads as random under Shannon entropy and as structured under the residual.
+  const sequence = row('abcdefghijklmnopqrstuvwxyz');
+  assert.ok(SIGNALS['shannon-entropy'].measure(sequence) > 4 * 65536);
+  assert.ok(SIGNALS['residual-entropy'].measure(sequence) <= 65536);
+});
+
+const selectedLike = () => fitConfig(all.find(s => s.id === 'halving-q1-l0-r60-l0-c40'), development);
 
 test('the aggregation is monotone (contract §4)', () => {
   const config = selectedLike();
@@ -122,7 +137,7 @@ test('the selectable configurations meet the contract cap inequalities; the forb
 });
 
 test('tuning reads development rows only: evaluation rows cannot move a fitted value', () => {
-  const spec = all.find(s => s.id === 'halving-r1-l0-r60-l0-c40');
+  const spec = all.find(s => s.id === 'halving-q1-l0-r60-l0-c40');
   const base = runConfig(spec, development, evaluation);
   const scrambled = evaluation.map(r => ({ ...r, role: r.role === 'none' ? 'secret' : 'none', kind: r.kind === 'must-not-flag' ? 'must-redact' : 'must-not-flag', features: r.features.map(() => 0) }));
   const other = runConfig(spec, development, scrambled);
@@ -155,9 +170,9 @@ test('the experiment result is deterministic and selects a conformant grid confi
 
 test('cap neighbours are one grid step away with the same signals', () => {
   const pool = result.configurations.filter(c => c.id.startsWith('halving-')).map(c => ({ id: c.id, fitted: { spec: c.spec } }));
-  const target = pool.find(c => c.id === 'halving-r1-l0-r60-l0-c40');
+  const target = pool.find(c => c.id === 'halving-q1-l0-r60-l0-c40');
   const ids = capNeighbours(target, pool).map(c => c.id).sort();
-  assert.deepEqual(ids, ['halving-r1-l0-r50-l0-c40', 'halving-r1-l0-r60-l0-c30', 'halving-r1-l0-r60-l0-c50']);
+  assert.deepEqual(ids, ['halving-q1-l0-r50-l0-c40', 'halving-q1-l0-r60-l0-c30', 'halving-q1-l0-r60-l0-c50']);
   assert.deepEqual(CAP_GRID.randomness, [30, 40, 50, 60]);
 });
 
@@ -192,7 +207,7 @@ test('the authored tuning partition covers every applicable family and needs no 
   assert.ok(manifest.corpora.evaluation.some(source => source.role === 'development-evaluation'));
   // The manifest carries hashes and counts only: no configuration id (which encodes caps), no threshold, no weight.
   const text = JSON.stringify(manifest);
-  assert.ok(!/halving-r\d|"thresholds"|"ramps"|"caps"/.test(text));
+  assert.ok(!/halving-[a-z]\d|"thresholds"|"ramps"|"caps"/.test(text));
   assert.equal(manifest.holdoutAccess, 'none');
   assert.ok(manifest.corpora.tuning.every(s => repo.developmentCategories.includes(s.category)));
   assert.ok(manifest.corpora.evaluation.every(s => s.role === 'regression'

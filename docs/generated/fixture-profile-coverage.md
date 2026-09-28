@@ -24,10 +24,10 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 73 | 90 |
-| Stable / documented | 73 | 90 |
-| Stable / empirical | 26 | 90 |
-| Context-constrained empirical | 9 | 90 |
+| Arrival / provisional | 73 | 108 |
+| Stable / documented | 73 | 108 |
+| Stable / empirical | 26 | 108 |
+| Context-constrained empirical | 9 | 108 |
 
 ## Per family
 
@@ -45,6 +45,9 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
 | cloudflare-token | T1 | stable-documented | 24 | 6 | 10 | 6 | 4 | 5 | 8 | none |
 | cohere-api-key | T2 | context-constrained-empirical | 58 | 0 | 26 | 17 | 10 | 6 | 8 | positive/context cases 0/1 |
+| composio-api-key | T1 | stable-documented | 37 | 0 | 10 | 14 | 7 | 6 | 10 | positive/context cases 0/6 |
+| composio-org-api-key | T1 | stable-documented | 33 | 3 | 10 | 10 | 7 | 6 | 10 | positive/context cases 3/6 |
+| composio-user-api-key | T1 | stable-documented | 33 | 3 | 10 | 10 | 7 | 6 | 10 | positive/context cases 3/6 |
 | confluent-cloud-api-secret | T1 | stable-documented | 31 | 6 | 8 | 10 | 11 | 5 | 9 | none |
 | confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 48 | 1 | 19 | 15 | 12 | 6 | 9 | none |
 | connection-string | T3 | arrival-provisional | 58 | 10 | 16 | 16 | 4 | 3 | 4 | control axes 3/4 |
@@ -56,9 +59,18 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | digitalocean-token | T1 | stable-documented | 39 | 15 | 10 | 8 | 4 | 4 | 6 | none |
 | discord-bot-token | T2 | stable-empirical | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
 | docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |
+| doppler-audit-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-cli-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-personal-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-scim-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-service-account-identity-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-service-account-token | T1 | stable-documented | 37 | 1 | 10 | 13 | 9 | 6 | 10 | positive/context cases 1/6 |
+| doppler-token | T1 | stable-documented | 43 | 3 | 10 | 15 | 9 | 6 | 10 | positive/context cases 3/6 |
+| e2b-api-key | T1 | stable-documented | 34 | 2 | 10 | 11 | 9 | 6 | 10 | positive/context cases 2/6 |
 | elevenlabs-api-key | T1 | stable-documented | 35 | 7 | 15 | 7 | 9 | 6 | 8 | none |
 | exa-api-key | T0 | arrival-provisional | 30 | 0 | 14 | 8 | 6 | 6 | 7 | positive/context cases 0/6 |
 | firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
+| firecrawl-api-key | T1 | stable-documented | 37 | 0 | 10 | 14 | 9 | 6 | 10 | positive/context cases 0/6 |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
 | generic-token | T3 | arrival-provisional | 132 | 36 | 76 | 10 | 12 | 4 | 5 | none |
 | github-fine-grained-pat | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 11 | 6 | 9 | none |
@@ -69,6 +81,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | grafana-cloud-access-policy-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | grafana-service-account-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | groq-api-key | T2 | stable-empirical | 41 | 11 | 14 | 8 | 16 | 6 | 10 | none |
+| helicone-api-key | T1 | stable-documented | 35 | 1 | 10 | 14 | 6 | 6 | 10 | positive/context cases 1/6 |
+| helicone-write-api-key | T1 | stable-documented | 36 | 2 | 10 | 14 | 7 | 6 | 10 | positive/context cases 2/6 |
 | heroku-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
 | heroku-api-key-legacy | T2 | context-constrained-empirical | 49 | 3 | 20 | 13 | 13 | 6 | 8 | none |
 | huggingface-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 4 | 6 | none |
@@ -96,6 +110,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | perplexity-api-key | T2 | stable-empirical | 41 | 10 | 15 | 8 | 15 | 6 | 10 | none |
 | pinecone-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 9 | none |
 | pinecone-api-key-legacy | T3 | arrival-provisional | 48 | 0 | 24 | 12 | 9 | 6 | 7 | positive/context cases 0/6 |
+| posthog-project-secret-api-key | T1 | stable-documented | 33 | 0 | 11 | 11 | 8 | 6 | 10 | positive/context cases 0/6 |
+| posthog-token | T1 | stable-documented | 33 | 0 | 11 | 11 | 8 | 6 | 10 | positive/context cases 0/6 |
 | postman-api-key | T2 | stable-empirical | 40 | 11 | 17 | 9 | 12 | 6 | 9 | none |
 | postman-collection-access-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 9 | none |
 | private-key | T1 | stable-documented | 36 | 18 | 8 | 5 | 4 | 6 | 8 | none |
@@ -118,6 +134,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | terraform-cloud-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
 | together-ai-api-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 13 | 6 | 10 | none |
 | travisci-api-token | T2 | context-constrained-empirical | 48 | 6 | 16 | 13 | 17 | 6 | 9 | none |
+| trigger-dev-personal-access-token | T1 | stable-documented | 28 | 2 | 10 | 8 | 7 | 6 | 10 | positive/context cases 2/6 |
+| trigger-dev-token | T1 | stable-documented | 39 | 0 | 11 | 16 | 8 | 6 | 10 | positive/context cases 0/6 |
 | twilio-api-key-secret | T2 | context-constrained-empirical | 49 | 13 | 16 | 10 | 18 | 6 | 7 | none |
 | twilio-auth-token | T2 | context-constrained-empirical | 49 | 12 | 17 | 10 | 18 | 6 | 7 | none |
 | vault-token | T1 | stable-documented | 28 | 12 | 8 | 6 | 4 | 6 | 9 | none |

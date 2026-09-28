@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T15:30:26.806Z",
+  "sourceRun": {
+    "runId": "2026-09-28T15:30:26.806Z-1b599f",
+    "benchmarkRevision": "464bf40d672d0efbda63e2b4bf55aed774129807"
+  },
+  "input": {
+    "surface": "comparison/beta8-434g",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "16b3324339a84d528d0e8307287b0404e1c6a29934f4f16b225903d44d8143f6",
+    "fixtureCount": 103,
+    "fixturesDigest": "bfc2d160e13c5d06de1ef74dfd69ab9a86fb14d3d905b7c9b493a52c60b1d49a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "de68c54bbbfde8cb3d184f738bd620ad11d9488046167ba00c2b8a08dc62ed0f",
+      "fixtureCount": 4276
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/composio-api-key-bearer-header.http",
+      "start": 66,
+      "end": 96,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/composio-api-key-body-long-twin.http",
+      "start": 66,
+      "end": 97,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-bearer-header.http",
+      "start": 66,
+      "end": 97,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-body-long-twin.http",
+      "start": 66,
+      "end": 98,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-bearer-header.http",
+      "start": 66,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-body-long-twin.http",
+      "start": 66,
+      "end": 121,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "0d4c0a23270b09f6a4fb950efb1bff1bcae48a4419a4cd15d494eec6db3f3f38"
+}

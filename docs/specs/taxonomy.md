@@ -74,6 +74,16 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
   never borrow the status of `anthropic:secret-api-key` or `openai:secret-api-key`.
   Two further rows, `mistral:realtime-client-token` and `voyage-ai:api-key`, record the
   research dispositions that stay `pending` with no corpus (redact-secret#780, #785).
+- **Beta.11 #860 Tier A families (#434).** Eighteen zero-detector rows for seven new
+  providers are measured arrival families whose contracts and corpora live in
+  `benchmarks/lib/beta8/434a.ts`–`434g.ts` (see [beta8-evidence.md](beta8-evidence.md)):
+  the seven `doppler:` token types, `trigger-dev:secret-api-key` and
+  `:personal-access-token`, `e2b:api-key`, `posthog:personal-api-key` and
+  `:project-secret-api-key`, `helicone:api-key` and `:write-api-key`, `firecrawl:api-key`,
+  and `composio:project-api-key`, `:org-api-key` and `:user-api-key`. Every row is T1 and
+  maps no detector until the product detectors (redact-secret#903–#909) are in the pinned
+  registry; none carries a hand-edited status. The PostHog `phc_` project token and the
+  Trigger.dev `pk_<env>_` public key are public by design and get no row.
 - **`families[].provider: null`** marks a family that is not provider-specific
   at all: `private-key`, `jwt`, `bearer-token`, `connection-string`,
   `otpauth-uri` and `generic-token` are structural or protocol-level formats
@@ -119,8 +129,8 @@ without one.
 
 ## Current counts
 
-128 families total: 122 across 63 providers plus 6 non-provider-specific
-formats; 91 carry at least one detector, 37 currently do not (counts as of 2026-09-27;
+146 families total: 140 across 70 providers plus 6 non-provider-specific
+formats; 103 carry at least one detector, 43 currently do not (counts as of 2026-09-28;
 `benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or

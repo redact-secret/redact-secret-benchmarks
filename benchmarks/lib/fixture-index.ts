@@ -127,12 +127,15 @@ export function buildFixtureIndex(input: {
     }
     // beta8-384a..384e hold the Beta.10 credential corpus (#384); the beta8- prefix is the shared per-issue corpus layout, not the milestone.
     const beta10 = /^beta8-384/.test(category.id);
-    const beta8 = /^beta8-/.test(category.id) && !beta10;
+    // beta8-434a..434g hold the Beta.11 #860 Tier A credential corpus (#434), in the same per-issue layout.
+    const beta11 = /^beta8-434/.test(category.id);
+    const beta8 = /^beta8-/.test(category.id) && !beta10 && !beta11;
     const provenance: FixtureIndexEntry['provenance'] = {
       categoryId: category.id,
       ...(fixture.issue ? { issue: fixture.issue } : {}),
       ...(beta8 ? { milestone: 'beta.8', release: '0.1.0-beta.8' } : {}),
       ...(beta10 ? { milestone: 'beta.10' } : {}),
+      ...(beta11 ? { milestone: 'beta.11' } : {}),
     };
     return {
       slug,

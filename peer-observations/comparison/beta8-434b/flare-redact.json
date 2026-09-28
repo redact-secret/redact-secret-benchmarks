@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T15:30:26.806Z",
+  "sourceRun": {
+    "runId": "2026-09-28T15:30:26.806Z-1b599f",
+    "benchmarkRevision": "464bf40d672d0efbda63e2b4bf55aed774129807"
+  },
+  "input": {
+    "surface": "comparison/beta8-434b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "c27b72427eb95e8d6c603243d7b76a90a6850ec8d6526387fb874ce43cd9a6f6",
+    "fixtureCount": 67,
+    "fixturesDigest": "b889230e1bf28d79e82e6aa892b6d59f7da9e95822b414d74b24d851771bab75",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "de68c54bbbfde8cb3d184f738bd620ad11d9488046167ba00c2b8a08dc62ed0f",
+      "fixtureCount": 4276
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/trigger-dev-personal-access-token-bearer-header.http",
+      "start": 61,
+      "end": 115,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-zero-in-body-twin.http",
+      "start": 61,
+      "end": 115,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-25-twin.http",
+      "start": 61,
+      "end": 103,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-bearer-header.http",
+      "start": 61,
+      "end": 102,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "57c38af41bedbbb938c3e7f1814f71496f26b51d769e2a857ab8f476ce9f0fd8"
+}

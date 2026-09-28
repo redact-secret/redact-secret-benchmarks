@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-28T13:54:36.055Z",
+  "observedAt": "2026-09-28T15:33:50.146Z",
   "sourceRun": {
-    "runId": "1c2584fd-24b7-4401-8674-b63019d86701",
-    "benchmarkRevision": "3cee43ced37f188f8f76ab42cca11efef37f55a1"
+    "runId": "c0029b1c-bb74-4b3a-9b7f-86224e49662a",
+    "benchmarkRevision": "464bf40d672d0efbda63e2b4bf55aed774129807"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "773d05bb7f37c6b40ce3960773f51b4e9e39c0105eae4d4639808c38fe172e57",
-    "fixtureCount": 28985,
-    "fixturesDigest": "d15b7ecc4bdcd838bb8187f982bc366f2d8a934ded66cef83866c237bb48dccd",
+    "corpusHash": "889215b8da84c9314caaf530b21ccabaf71376dadd30ba7dd12127f73c70c077",
+    "fixtureCount": 33956,
+    "fixturesDigest": "ea405590429d10c7466ff0966dda2e0f702be7f83cd950abcb109a91dd25586a",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "4e82ac020b4e9cc0ed9710491a21627aa23c5444ffff49b22cf40bee7410c81e",
-      "fixtureCount": 3638
+      "digest": "de68c54bbbfde8cb3d184f738bd620ad11d9488046167ba00c2b8a08dc62ed0f",
+      "fixtureCount": 4276
     }
   },
   "peer": {
@@ -48,7 +48,7 @@
       "platform": "darwin-arm64",
       "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
     },
-    "adapterDigest": "a2c5b65cb851e1e8efbbb7ecdd4fa8c39b08c9779563ee20b9ac4fa3154933c2"
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -16010,6 +16010,5646 @@
       "start": 42,
       "end": 82,
       "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--differential/canonical.txt",
+      "start": 61,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 133,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 61,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--mutation/canonical.txt",
+      "start": 61,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--mutation/lexical.invalid-alphabet.txt",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--mutation/lexical.length-minus-one.txt",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--mutation/lexical.length-plus-one.txt",
+      "start": 61,
+      "end": 114,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--differential/canonical.txt",
+      "start": 68,
+      "end": 120,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--metamorphic/canonical.txt",
+      "start": 68,
+      "end": 120,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 72,
+      "end": 124,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 88,
+      "end": 140,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--mutation/canonical.txt",
+      "start": 68,
+      "end": 120,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--mutation/lexical.invalid-alphabet.txt",
+      "start": 68,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--mutation/lexical.length-minus-one.txt",
+      "start": 68,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--mutation/lexical.length-plus-one.txt",
+      "start": 68,
+      "end": 121,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 68,
+      "end": 120,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-body-39-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-body-45-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--differential/canonical.txt",
+      "start": 23,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 80,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 96,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--mutation/canonical.txt",
+      "start": 23,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--mutation/lexical.invalid-alphabet.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--differential/canonical.txt",
+      "start": 52,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--metamorphic/canonical.txt",
+      "start": 52,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--metamorphic/context.indent.txt",
+      "start": 56,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--metamorphic/context.unicode-prefix.txt",
+      "start": 72,
+      "end": 125,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--metamorphic/encoding.crlf.txt",
+      "start": 52,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--mutation/canonical.txt",
+      "start": 52,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--mutation/lexical.invalid-alphabet.txt",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--mutation/lexical.length-minus-one.txt",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-ci-log--mutation/lexical.replace-last.txt",
+      "start": 52,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-code-fence--differential/canonical.txt",
+      "start": 45,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-code-fence--metamorphic/canonical.txt",
+      "start": 45,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-code-fence--metamorphic/context.indent.txt",
+      "start": 49,
+      "end": 98,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-code-fence--metamorphic/context.unicode-prefix.txt",
+      "start": 65,
+      "end": 114,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-code-fence--metamorphic/encoding.crlf.txt",
+      "start": 48,
+      "end": 97,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-code-fence--mutation/canonical.txt",
+      "start": 45,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-code-fence--mutation/lexical.length-plus-one.txt",
+      "start": 45,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-code-fence--mutation/lexical.replace-last.txt",
+      "start": 45,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-dotenv--differential/canonical.txt",
+      "start": 21,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-dotenv--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-dotenv--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-dotenv--mutation/canonical.txt",
+      "start": 21,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 21,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-dotenv--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--differential/canonical.txt",
+      "start": 22,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 79,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--mutation/canonical.txt",
+      "start": 22,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--mutation/lexical.invalid-alphabet.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-export--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 88,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--mutation/lexical.invalid-alphabet.txt",
+      "start": 16,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 14,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--differential/canonical.txt",
+      "start": 101,
+      "end": 153,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--metamorphic/canonical.txt",
+      "start": 101,
+      "end": 153,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--metamorphic/context.indent.txt",
+      "start": 105,
+      "end": 157,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--metamorphic/context.unicode-prefix.txt",
+      "start": 121,
+      "end": 173,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--metamorphic/encoding.crlf.txt",
+      "start": 107,
+      "end": 159,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--mutation/canonical.txt",
+      "start": 101,
+      "end": 153,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--mutation/lexical.invalid-alphabet.txt",
+      "start": 101,
+      "end": 152,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--mutation/lexical.length-minus-one.txt",
+      "start": 101,
+      "end": 152,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--mutation/lexical.length-plus-one.txt",
+      "start": 101,
+      "end": 154,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-k8s-string-data--mutation/lexical.replace-last.txt",
+      "start": 101,
+      "end": 153,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-leading-glue-twin--twin/canonical.txt",
+      "start": 61,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-leading-underscore-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-missing-first-dot-twin--twin/canonical.txt",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-missing-type-dot-twin--twin/canonical.txt",
+      "start": 38,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sdk-kwarg--differential/canonical.txt",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 82,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 98,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 29,
+      "end": 79,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sentence-period--differential/canonical.txt",
+      "start": 25,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sentence-period--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sentence-period--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sentence-period--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sentence-period--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sentence-period--mutation/canonical.txt",
+      "start": 25,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sentence-period--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-sentence-period--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-trailing-glue-twin--twin/canonical.txt",
+      "start": 52,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-underscore-in-body-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-unknown-type-twin--twin/canonical.txt",
+      "start": 45,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 68,
+      "end": 120,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-uppercase-type-twin--twin/canonical.txt",
+      "start": 56,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-x-api-key-header--differential/canonical.txt",
+      "start": 56,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 125,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 58,
+      "end": 107,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-x-api-key-header--mutation/canonical.txt",
+      "start": 56,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--differential/canonical.txt",
+      "start": 38,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--metamorphic/canonical.txt",
+      "start": 38,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--metamorphic/context.indent.txt",
+      "start": 42,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--metamorphic/context.unicode-prefix.txt",
+      "start": 58,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--metamorphic/encoding.crlf.txt",
+      "start": 40,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--mutation/canonical.txt",
+      "start": 38,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--mutation/lexical.invalid-alphabet.txt",
+      "start": 38,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--mutation/lexical.length-minus-one.txt",
+      "start": 38,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--mutation/lexical.length-plus-one.txt",
+      "start": 38,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-audit-token-yaml--mutation/lexical.replace-last.txt",
+      "start": 38,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--differential/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 114,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 130,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--mutation/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--mutation/lexical.invalid-alphabet.txt",
+      "start": 61,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--mutation/lexical.length-minus-one.txt",
+      "start": 61,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--mutation/lexical.length-plus-one.txt",
+      "start": 61,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--differential/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--metamorphic/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 72,
+      "end": 121,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 88,
+      "end": 137,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--mutation/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--mutation/lexical.invalid-alphabet.txt",
+      "start": 68,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--mutation/lexical.length-minus-one.txt",
+      "start": 68,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--mutation/lexical.length-plus-one.txt",
+      "start": 68,
+      "end": 118,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-body-39-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-body-45-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--differential/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--mutation/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--mutation/lexical.invalid-alphabet.txt",
+      "start": 23,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--differential/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--metamorphic/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--metamorphic/context.indent.txt",
+      "start": 56,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--metamorphic/context.unicode-prefix.txt",
+      "start": 72,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--metamorphic/encoding.crlf.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--mutation/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--mutation/lexical.invalid-alphabet.txt",
+      "start": 52,
+      "end": 101,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--mutation/lexical.length-minus-one.txt",
+      "start": 52,
+      "end": 101,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-ci-log--mutation/lexical.replace-last.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-code-fence--differential/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-code-fence--metamorphic/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-code-fence--metamorphic/context.indent.txt",
+      "start": 49,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-code-fence--metamorphic/context.unicode-prefix.txt",
+      "start": 65,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-code-fence--metamorphic/encoding.crlf.txt",
+      "start": 48,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-code-fence--mutation/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-code-fence--mutation/lexical.length-plus-one.txt",
+      "start": 45,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-code-fence--mutation/lexical.replace-last.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-dotenv--differential/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-dotenv--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-dotenv--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-dotenv--mutation/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 21,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-dotenv--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--differential/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--mutation/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--mutation/lexical.invalid-alphabet.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-export--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 85,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--mutation/lexical.invalid-alphabet.txt",
+      "start": 16,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 84,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 14,
+      "end": 63,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 63,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--differential/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--metamorphic/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--metamorphic/context.indent.txt",
+      "start": 105,
+      "end": 154,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--metamorphic/context.unicode-prefix.txt",
+      "start": 121,
+      "end": 170,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--metamorphic/encoding.crlf.txt",
+      "start": 107,
+      "end": 156,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--mutation/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--mutation/lexical.invalid-alphabet.txt",
+      "start": 101,
+      "end": 149,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--mutation/lexical.length-minus-one.txt",
+      "start": 101,
+      "end": 149,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--mutation/lexical.length-plus-one.txt",
+      "start": 101,
+      "end": 151,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-k8s-string-data--mutation/lexical.replace-last.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-leading-glue-twin--twin/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-leading-underscore-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-missing-first-dot-twin--twin/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-missing-type-dot-twin--twin/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sdk-kwarg--differential/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 79,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 29,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sentence-period--differential/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sentence-period--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sentence-period--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sentence-period--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sentence-period--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sentence-period--mutation/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sentence-period--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-sentence-period--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-trailing-glue-twin--twin/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-underscore-in-body-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-unknown-type-twin--twin/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-uppercase-type-twin--twin/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-x-api-key-header--differential/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 58,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-x-api-key-header--mutation/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 103,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--differential/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--metamorphic/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--metamorphic/context.indent.txt",
+      "start": 42,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--metamorphic/context.unicode-prefix.txt",
+      "start": 58,
+      "end": 107,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--metamorphic/encoding.crlf.txt",
+      "start": 40,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--mutation/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--mutation/lexical.invalid-alphabet.txt",
+      "start": 38,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--mutation/lexical.length-minus-one.txt",
+      "start": 38,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--mutation/lexical.length-plus-one.txt",
+      "start": 38,
+      "end": 88,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-cli-token-yaml--mutation/lexical.replace-last.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--differential/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 114,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 130,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--mutation/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--mutation/lexical.invalid-alphabet.txt",
+      "start": 61,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--mutation/lexical.length-minus-one.txt",
+      "start": 61,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--mutation/lexical.length-plus-one.txt",
+      "start": 61,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--differential/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--metamorphic/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 72,
+      "end": 121,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 88,
+      "end": 137,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--mutation/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--mutation/lexical.invalid-alphabet.txt",
+      "start": 68,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--mutation/lexical.length-minus-one.txt",
+      "start": 68,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--mutation/lexical.length-plus-one.txt",
+      "start": 68,
+      "end": 118,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-body-39-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-body-45-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--differential/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--mutation/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--mutation/lexical.invalid-alphabet.txt",
+      "start": 23,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--differential/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--metamorphic/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--metamorphic/context.indent.txt",
+      "start": 56,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--metamorphic/context.unicode-prefix.txt",
+      "start": 72,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--metamorphic/encoding.crlf.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--mutation/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--mutation/lexical.invalid-alphabet.txt",
+      "start": 52,
+      "end": 101,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--mutation/lexical.length-minus-one.txt",
+      "start": 52,
+      "end": 101,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-ci-log--mutation/lexical.replace-last.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-code-fence--differential/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-code-fence--metamorphic/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-code-fence--metamorphic/context.indent.txt",
+      "start": 49,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-code-fence--metamorphic/context.unicode-prefix.txt",
+      "start": 65,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-code-fence--metamorphic/encoding.crlf.txt",
+      "start": 48,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-code-fence--mutation/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-code-fence--mutation/lexical.length-plus-one.txt",
+      "start": 45,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-code-fence--mutation/lexical.replace-last.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-dotenv--differential/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-dotenv--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-dotenv--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-dotenv--mutation/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 21,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-dotenv--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--differential/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--mutation/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--mutation/lexical.invalid-alphabet.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-export--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 85,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--mutation/lexical.invalid-alphabet.txt",
+      "start": 16,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 84,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 14,
+      "end": 63,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 63,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--differential/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--metamorphic/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--metamorphic/context.indent.txt",
+      "start": 105,
+      "end": 154,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--metamorphic/context.unicode-prefix.txt",
+      "start": 121,
+      "end": 170,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--metamorphic/encoding.crlf.txt",
+      "start": 107,
+      "end": 156,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--mutation/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--mutation/lexical.invalid-alphabet.txt",
+      "start": 101,
+      "end": 149,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--mutation/lexical.length-minus-one.txt",
+      "start": 101,
+      "end": 149,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--mutation/lexical.length-plus-one.txt",
+      "start": 101,
+      "end": 151,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-k8s-string-data--mutation/lexical.replace-last.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-leading-glue-twin--twin/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-leading-underscore-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-missing-first-dot-twin--twin/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-missing-type-dot-twin--twin/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sdk-kwarg--differential/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 79,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 29,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sentence-period--differential/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sentence-period--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sentence-period--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sentence-period--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sentence-period--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sentence-period--mutation/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sentence-period--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-sentence-period--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-trailing-glue-twin--twin/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-underscore-in-body-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-unknown-type-twin--twin/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-uppercase-type-twin--twin/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-x-api-key-header--differential/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 58,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-x-api-key-header--mutation/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 103,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--differential/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--metamorphic/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--metamorphic/context.indent.txt",
+      "start": 42,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--metamorphic/context.unicode-prefix.txt",
+      "start": 58,
+      "end": 107,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--metamorphic/encoding.crlf.txt",
+      "start": 40,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--mutation/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--mutation/lexical.invalid-alphabet.txt",
+      "start": 38,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--mutation/lexical.length-minus-one.txt",
+      "start": 38,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--mutation/lexical.length-plus-one.txt",
+      "start": 38,
+      "end": 88,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-personal-token-yaml--mutation/lexical.replace-last.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--differential/canonical.txt",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 132,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--mutation/canonical.txt",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--mutation/lexical.invalid-alphabet.txt",
+      "start": 61,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--mutation/lexical.length-minus-one.txt",
+      "start": 61,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--mutation/lexical.length-plus-one.txt",
+      "start": 61,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--differential/canonical.txt",
+      "start": 68,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--metamorphic/canonical.txt",
+      "start": 68,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 72,
+      "end": 123,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 88,
+      "end": 139,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 121,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--mutation/canonical.txt",
+      "start": 68,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--mutation/lexical.invalid-alphabet.txt",
+      "start": 68,
+      "end": 118,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--mutation/lexical.length-minus-one.txt",
+      "start": 68,
+      "end": 118,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--mutation/lexical.length-plus-one.txt",
+      "start": 68,
+      "end": 120,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 68,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-body-39-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-body-45-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--differential/canonical.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 79,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--mutation/canonical.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--mutation/lexical.invalid-alphabet.txt",
+      "start": 23,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--differential/canonical.txt",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--metamorphic/canonical.txt",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--metamorphic/context.indent.txt",
+      "start": 56,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--metamorphic/context.unicode-prefix.txt",
+      "start": 72,
+      "end": 124,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--metamorphic/encoding.crlf.txt",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--mutation/canonical.txt",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--mutation/lexical.invalid-alphabet.txt",
+      "start": 52,
+      "end": 103,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--mutation/lexical.length-minus-one.txt",
+      "start": 52,
+      "end": 103,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-ci-log--mutation/lexical.replace-last.txt",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-code-fence--differential/canonical.txt",
+      "start": 45,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-code-fence--metamorphic/canonical.txt",
+      "start": 45,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-code-fence--metamorphic/context.indent.txt",
+      "start": 49,
+      "end": 97,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-code-fence--metamorphic/context.unicode-prefix.txt",
+      "start": 65,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-code-fence--metamorphic/encoding.crlf.txt",
+      "start": 48,
+      "end": 96,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-code-fence--mutation/canonical.txt",
+      "start": 45,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-code-fence--mutation/lexical.length-plus-one.txt",
+      "start": 45,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-code-fence--mutation/lexical.replace-last.txt",
+      "start": 45,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-dotenv--differential/canonical.txt",
+      "start": 21,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-dotenv--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-dotenv--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-dotenv--mutation/canonical.txt",
+      "start": 21,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 21,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-dotenv--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--differential/canonical.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--mutation/canonical.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--mutation/lexical.invalid-alphabet.txt",
+      "start": 22,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-export--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--mutation/lexical.invalid-alphabet.txt",
+      "start": 16,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 14,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--differential/canonical.txt",
+      "start": 101,
+      "end": 152,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--metamorphic/canonical.txt",
+      "start": 101,
+      "end": 152,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--metamorphic/context.indent.txt",
+      "start": 105,
+      "end": 156,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--metamorphic/context.unicode-prefix.txt",
+      "start": 121,
+      "end": 172,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--metamorphic/encoding.crlf.txt",
+      "start": 107,
+      "end": 158,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--mutation/canonical.txt",
+      "start": 101,
+      "end": 152,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--mutation/lexical.invalid-alphabet.txt",
+      "start": 101,
+      "end": 151,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--mutation/lexical.length-minus-one.txt",
+      "start": 101,
+      "end": 151,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--mutation/lexical.length-plus-one.txt",
+      "start": 101,
+      "end": 153,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-k8s-string-data--mutation/lexical.replace-last.txt",
+      "start": 101,
+      "end": 152,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-leading-glue-twin--twin/canonical.txt",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-leading-underscore-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-missing-first-dot-twin--twin/canonical.txt",
+      "start": 29,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-missing-type-dot-twin--twin/canonical.txt",
+      "start": 38,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sdk-kwarg--differential/canonical.txt",
+      "start": 29,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 81,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 97,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 29,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 29,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sentence-period--differential/canonical.txt",
+      "start": 25,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sentence-period--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sentence-period--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sentence-period--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sentence-period--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sentence-period--mutation/canonical.txt",
+      "start": 25,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sentence-period--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-sentence-period--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-trailing-glue-twin--twin/canonical.txt",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-underscore-in-body-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-unknown-type-twin--twin/canonical.txt",
+      "start": 45,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 68,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-uppercase-type-twin--twin/canonical.txt",
+      "start": 56,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-x-api-key-header--differential/canonical.txt",
+      "start": 56,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 124,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 58,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-x-api-key-header--mutation/canonical.txt",
+      "start": 56,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--differential/canonical.txt",
+      "start": 38,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--metamorphic/canonical.txt",
+      "start": 38,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--metamorphic/context.indent.txt",
+      "start": 42,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--metamorphic/context.unicode-prefix.txt",
+      "start": 58,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--metamorphic/encoding.crlf.txt",
+      "start": 40,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--mutation/canonical.txt",
+      "start": 38,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--mutation/lexical.invalid-alphabet.txt",
+      "start": 38,
+      "end": 88,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--mutation/lexical.length-minus-one.txt",
+      "start": 38,
+      "end": 88,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--mutation/lexical.length-plus-one.txt",
+      "start": 38,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-scim-token-yaml--mutation/lexical.replace-last.txt",
+      "start": 38,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--differential/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 114,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 130,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--mutation/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--mutation/lexical.invalid-alphabet.txt",
+      "start": 61,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--mutation/lexical.length-minus-one.txt",
+      "start": 61,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--mutation/lexical.length-plus-one.txt",
+      "start": 61,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--differential/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--metamorphic/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 72,
+      "end": 121,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 88,
+      "end": 137,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--mutation/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--mutation/lexical.invalid-alphabet.txt",
+      "start": 68,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--mutation/lexical.length-minus-one.txt",
+      "start": 68,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--mutation/lexical.length-plus-one.txt",
+      "start": 68,
+      "end": 118,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-body-39-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-body-45-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--differential/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--mutation/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--mutation/lexical.invalid-alphabet.txt",
+      "start": 23,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--differential/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--metamorphic/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--metamorphic/context.indent.txt",
+      "start": 56,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--metamorphic/context.unicode-prefix.txt",
+      "start": 72,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--metamorphic/encoding.crlf.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--mutation/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--mutation/lexical.invalid-alphabet.txt",
+      "start": 52,
+      "end": 101,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--mutation/lexical.length-minus-one.txt",
+      "start": 52,
+      "end": 101,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-ci-log--mutation/lexical.replace-last.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-code-fence--differential/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-code-fence--metamorphic/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-code-fence--metamorphic/context.indent.txt",
+      "start": 49,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-code-fence--metamorphic/context.unicode-prefix.txt",
+      "start": 65,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-code-fence--metamorphic/encoding.crlf.txt",
+      "start": 48,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-code-fence--mutation/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-code-fence--mutation/lexical.length-plus-one.txt",
+      "start": 45,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-code-fence--mutation/lexical.replace-last.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-dotenv--differential/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-dotenv--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-dotenv--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-dotenv--mutation/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 21,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-dotenv--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--differential/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--mutation/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--mutation/lexical.invalid-alphabet.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-export--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 85,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--mutation/lexical.invalid-alphabet.txt",
+      "start": 16,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 84,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 14,
+      "end": 63,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 63,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--differential/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--metamorphic/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--metamorphic/context.indent.txt",
+      "start": 105,
+      "end": 154,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--metamorphic/context.unicode-prefix.txt",
+      "start": 121,
+      "end": 170,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--metamorphic/encoding.crlf.txt",
+      "start": 107,
+      "end": 156,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--mutation/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--mutation/lexical.invalid-alphabet.txt",
+      "start": 101,
+      "end": 149,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--mutation/lexical.length-minus-one.txt",
+      "start": 101,
+      "end": 149,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--mutation/lexical.length-plus-one.txt",
+      "start": 101,
+      "end": 151,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-k8s-string-data--mutation/lexical.replace-last.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-leading-glue-twin--twin/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-leading-underscore-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-missing-first-dot-twin--twin/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-missing-type-dot-twin--twin/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sa-then-id-dot-twin--twin/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sdk-kwarg--differential/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 79,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 29,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sentence-period--differential/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sentence-period--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sentence-period--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sentence-period--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sentence-period--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sentence-period--mutation/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sentence-period--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-sentence-period--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-trailing-glue-twin--twin/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-underscore-in-body-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-unknown-type-twin--twin/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-uppercase-type-twin--twin/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-x-api-key-header--differential/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 58,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-x-api-key-header--mutation/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 103,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--differential/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--metamorphic/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--metamorphic/context.indent.txt",
+      "start": 42,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--metamorphic/context.unicode-prefix.txt",
+      "start": 58,
+      "end": 107,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--metamorphic/encoding.crlf.txt",
+      "start": 40,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--mutation/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--mutation/lexical.invalid-alphabet.txt",
+      "start": 38,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--mutation/lexical.length-minus-one.txt",
+      "start": 38,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--mutation/lexical.length-plus-one.txt",
+      "start": 38,
+      "end": 88,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-service-account-token-yaml--mutation/lexical.replace-last.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--differential/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 114,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 130,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--mutation/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--mutation/lexical.invalid-alphabet.txt",
+      "start": 61,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--mutation/lexical.length-minus-one.txt",
+      "start": 61,
+      "end": 109,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--mutation/lexical.length-plus-one.txt",
+      "start": 61,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--differential/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--metamorphic/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 72,
+      "end": 121,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 88,
+      "end": 137,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--mutation/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--mutation/lexical.invalid-alphabet.txt",
+      "start": 68,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--mutation/lexical.length-minus-one.txt",
+      "start": 68,
+      "end": 116,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--mutation/lexical.length-plus-one.txt",
+      "start": 68,
+      "end": 118,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-body-39-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-body-45-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--differential/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--mutation/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--mutation/lexical.invalid-alphabet.txt",
+      "start": 23,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--differential/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--metamorphic/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--metamorphic/context.indent.txt",
+      "start": 56,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--metamorphic/context.unicode-prefix.txt",
+      "start": 72,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--metamorphic/encoding.crlf.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--mutation/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--mutation/lexical.invalid-alphabet.txt",
+      "start": 52,
+      "end": 101,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--mutation/lexical.length-minus-one.txt",
+      "start": 52,
+      "end": 101,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-ci-log--mutation/lexical.replace-last.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-code-fence--differential/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-code-fence--metamorphic/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-code-fence--metamorphic/context.indent.txt",
+      "start": 49,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-code-fence--metamorphic/context.unicode-prefix.txt",
+      "start": 65,
+      "end": 111,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-code-fence--metamorphic/encoding.crlf.txt",
+      "start": 48,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-code-fence--mutation/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-code-fence--mutation/lexical.length-plus-one.txt",
+      "start": 45,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-code-fence--mutation/lexical.replace-last.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-dotenv--differential/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-dotenv--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-dotenv--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-dotenv--mutation/canonical.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 21,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-dotenv--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--differential/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 92,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--mutation/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--mutation/lexical.invalid-alphabet.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-export--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 85,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--mutation/lexical.invalid-alphabet.txt",
+      "start": 16,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 84,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 14,
+      "end": 63,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 63,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--differential/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--metamorphic/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--metamorphic/context.indent.txt",
+      "start": 105,
+      "end": 154,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--metamorphic/context.unicode-prefix.txt",
+      "start": 121,
+      "end": 170,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--metamorphic/encoding.crlf.txt",
+      "start": 107,
+      "end": 156,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--mutation/canonical.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--mutation/lexical.invalid-alphabet.txt",
+      "start": 101,
+      "end": 149,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--mutation/lexical.length-minus-one.txt",
+      "start": 101,
+      "end": 149,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--mutation/lexical.length-plus-one.txt",
+      "start": 101,
+      "end": 151,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-k8s-string-data--mutation/lexical.replace-last.txt",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-leading-glue-twin--twin/canonical.txt",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-leading-underscore-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-missing-first-dot-twin--twin/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-missing-type-dot-twin--twin/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sdk-kwarg--differential/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 79,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 95,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 29,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-1-byte-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--differential/canonical.txt",
+      "start": 21,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--mutation/canonical.txt",
+      "start": 21,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--mutation/lexical.invalid-alphabet.txt",
+      "start": 21,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--mutation/lexical.length-minus-one.txt",
+      "start": 21,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--mutation/lexical.length-plus-one.txt",
+      "start": 21,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-2--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--differential/canonical.txt",
+      "start": 22,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 128,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--mutation/canonical.txt",
+      "start": 22,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--mutation/lexical.invalid-alphabet.txt",
+      "start": 22,
+      "end": 107,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 107,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-35--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-36-bytes-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--differential/canonical.txt",
+      "start": 14,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--mutation/canonical.txt",
+      "start": 14,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--mutation/lexical.invalid-alphabet.txt",
+      "start": 14,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-dash--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-segment-uppercase-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sentence-period--differential/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sentence-period--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sentence-period--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sentence-period--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sentence-period--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sentence-period--mutation/canonical.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sentence-period--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-sentence-period--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-trailing-glue-twin--twin/canonical.txt",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-underscore-in-body-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-unknown-type-twin--twin/canonical.txt",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-uppercase-type-twin--twin/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-x-api-key-header--differential/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 106,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 122,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 58,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-x-api-key-header--mutation/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 103,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--differential/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--metamorphic/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--metamorphic/context.indent.txt",
+      "start": 42,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--metamorphic/context.unicode-prefix.txt",
+      "start": 58,
+      "end": 107,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--metamorphic/encoding.crlf.txt",
+      "start": 40,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--mutation/canonical.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--mutation/lexical.invalid-alphabet.txt",
+      "start": 38,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--mutation/lexical.length-minus-one.txt",
+      "start": 38,
+      "end": 86,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--mutation/lexical.length-plus-one.txt",
+      "start": 38,
+      "end": 88,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434a--doppler-token-yaml--mutation/lexical.replace-last.txt",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--differential/canonical.txt",
+      "start": 61,
+      "end": 113,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 113,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 117,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 133,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 61,
+      "end": 113,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--mutation/canonical.txt",
+      "start": 61,
+      "end": 113,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--mutation/lexical.invalid-alphabet.txt",
+      "start": 61,
+      "end": 112,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--mutation/lexical.length-minus-one.txt",
+      "start": 61,
+      "end": 112,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 113,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bearer-header--differential/canonical.txt",
+      "start": 67,
+      "end": 114,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bearer-header--metamorphic/canonical.txt",
+      "start": 67,
+      "end": 114,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 71,
+      "end": 118,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 87,
+      "end": 134,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 69,
+      "end": 116,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bearer-header--mutation/canonical.txt",
+      "start": 67,
+      "end": 114,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bearer-header--mutation/lexical.length-plus-one.txt",
+      "start": 67,
+      "end": 115,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 67,
+      "end": 114,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-chat-paste--mutation/lexical.invalid-alphabet.txt",
+      "start": 23,
+      "end": 75,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-chat-paste--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 75,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-curl-projects--differential/canonical.txt",
+      "start": 71,
+      "end": 118,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-curl-projects--metamorphic/canonical.txt",
+      "start": 71,
+      "end": 118,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-curl-projects--metamorphic/context.indent.txt",
+      "start": 75,
+      "end": 122,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-curl-projects--metamorphic/context.unicode-prefix.txt",
+      "start": 91,
+      "end": 138,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-curl-projects--metamorphic/encoding.crlf.txt",
+      "start": 71,
+      "end": 118,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-curl-projects--mutation/canonical.txt",
+      "start": 71,
+      "end": 118,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-curl-projects--mutation/lexical.length-plus-one.txt",
+      "start": 71,
+      "end": 119,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-curl-projects--mutation/lexical.replace-last.txt",
+      "start": 71,
+      "end": 118,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-dotenv--mutation/lexical.invalid-alphabet.txt",
+      "start": 32,
+      "end": 84,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 32,
+      "end": 84,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-export--mutation/lexical.length-plus-one.txt",
+      "start": 33,
+      "end": 80,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-hyphen-prefix-twin--twin/canonical.txt",
+      "start": 67,
+      "end": 114,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 72,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 88,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 69,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--mutation/lexical.invalid-alphabet.txt",
+      "start": 16,
+      "end": 67,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 67,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 68,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 65,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 65,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 69,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 85,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 66,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--mutation/authored.twin.txt",
+      "start": 14,
+      "end": 65,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 65,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--mutation/lexical.invalid-alphabet.txt",
+      "start": 14,
+      "end": 64,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 64,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 66,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 65,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-leading-glue-twin--twin/canonical.txt",
+      "start": 61,
+      "end": 113,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-mcp-config--mutation/lexical.length-plus-one.txt",
+      "start": 203,
+      "end": 250,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-project-token-prefix-twin--twin/canonical.txt",
+      "start": 71,
+      "end": 118,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--differential/canonical.txt",
+      "start": 26,
+      "end": 78,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 26,
+      "end": 78,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 30,
+      "end": 82,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 46,
+      "end": 98,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 26,
+      "end": 78,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 26,
+      "end": 78,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--mutation/lexical.invalid-alphabet.txt",
+      "start": 26,
+      "end": 77,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--mutation/lexical.length-minus-one.txt",
+      "start": 26,
+      "end": 77,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 26,
+      "end": 78,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-short-prefix-twin--twin/canonical.txt",
+      "start": 26,
+      "end": 78,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-underscore-in-body-twin--differential/canonical.txt",
+      "start": 14,
+      "end": 65,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-underscore-in-body-twin--twin/authored.twin.txt",
+      "start": 14,
+      "end": 65,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-underscore-in-body-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 65,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--differential/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 59,
+      "end": 109,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 75,
+      "end": 125,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 57,
+      "end": 107,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--mutation/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--mutation/lexical.invalid-alphabet.txt",
+      "start": 55,
+      "end": 104,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--mutation/lexical.length-minus-one.txt",
+      "start": 55,
+      "end": 104,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 55,
+      "end": 106,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 55,
+      "end": 105,
+      "family": "posthog-token"
     },
     {
       "path": "cases/common-formats--anthropic-token-api03-admin-prefix-plain-twin--differential/canonical.txt",
@@ -33980,5 +39620,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "90d693f047e29828f3f236967a68058e25842162891f3bace188e0ec2941a76b"
+  "digest": "d37af71e9b6622c2aee6a2473f98176bb691561f1c9ea2dd6e2ab10d1af6a072"
 }

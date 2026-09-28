@@ -365,8 +365,12 @@ export function comparePiiPopulationReports(baselineValue: unknown, candidateVal
       JSON.stringify(baseline.weighting) !== JSON.stringify(candidate.weighting) || JSON.stringify(baseline.regressionPolicy) !== JSON.stringify(candidate.regressionPolicy) ||
       baseline.denominator.declared !== candidate.denominator.declared)
     throw new Error('PII population comparison commitments differ');
+  // One scanner identity (same adapter id and requested-selection config) must have produced both sides, but a
+  // baseline (released package) and candidate (build under test) legitimately declare different versions -- that
+  // is the comparison's whole purpose, so version is excluded from this check.
   if (baseline.observation.scanner === null || candidate.observation.scanner === null ||
-      JSON.stringify(baseline.observation.scanner) !== JSON.stringify(candidate.observation.scanner) ||
+      baseline.observation.scanner.id !== candidate.observation.scanner.id ||
+      baseline.observation.scanner.configurationHash !== candidate.observation.scanner.configurationHash ||
       baseline.observation.runId === candidate.observation.runId ||
       baseline.observation.candidateArtifactHash === candidate.observation.candidateArtifactHash ||
       baseline.observation.reportArtifactCommitment === candidate.observation.reportArtifactCommitment)

@@ -63,6 +63,7 @@
     "ledger:provenance:check": "node --import tsx scripts/check-review-ledger.mjs",
     "queue:check": "node --import tsx scripts/check-review-queue-coverage.mjs",
     "eval:candidate": "node --import tsx benchmarks/candidate.ts",
+    "pii:observe:populations": "node --import tsx scripts/observe-pii-populations.mjs",
     "pii:qualify:candidate": "node --import tsx scripts/qualify-pii-family-candidate.mjs",
     "pii:support:record": "node --import tsx scripts/record-pii-support-evidence.ts",
     "pii:arrival:refresh": "node --import tsx scripts/refresh-us-ssn-arrival-data.mjs",

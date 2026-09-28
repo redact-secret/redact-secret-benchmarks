@@ -75,7 +75,7 @@ const CONTEXT_OBLIGATION: Record<string, string> = {
 };
 /** Activation is a separate axis from support: a family can be switchable in the product and still pending here. */
 const ACTIVATION: Record<string, () => string> = {
-  'not-measured': () => statusMark('not-measured', 'Activation not measured'), unavailable: () => '<span class="st st-none">Not in the product</span>',
+  'not-measured': () => statusMark('not-measured', 'Activation not measured'), unavailable: () => '<span class="st st-none">Not in the recorded activation</span>',
   available: () => statusMark('pass', 'Available'), 'explicitly-unsupported': () => statusMark('fail', 'Explicitly unsupported'),
 };
 const POPULATION_ROLE: Record<string, string> = {
@@ -157,12 +157,17 @@ export function piiSupportPage(domain: EvaluationDomainDescriptorV2, matrix: Pii
   const selected = matrix.families.filter(row => !query.family && !query.jurisdiction || Boolean(query.family && row.family === query.family) || Boolean(query.jurisdiction && row.jurisdiction === query.jurisdiction));
   const narrowed = Boolean(query.family || query.jurisdiction);
   const rows = selected.map(row => familyRow(row, Boolean(query.family))).join('');
-  const product = matrix.activationContract.productArtifact === 'trusted' ? matrix.activationContract.productArtifactCommitment : null;
+  const contract = matrix.activationContract, product = contract.productArtifact === 'trusted' ? contract.productArtifactCommitment : null;
+  const activationIdentity = matrix.families.find(row => row.activation.activationIdentity)?.activation.activationIdentity ?? null;
+  const selectors = activationIdentity ? /;selectors=([^;]+);/.exec(activationIdentity)?.[1].split(',') ?? [] : [];
+  const activationNote = product && contract.productSourceCommit ? `<p class="small">Activation was recorded on product <code>${e(contract.productSourceCommit.slice(0, 12))}</code> with ${selectors.length === 1 ? 'selector' : 'selectors'} ${selectors.map(value => `<code>${e(value)}</code>`).join(', ')}. A family outside ${selectors.length === 1 ? 'that selector' : 'those selectors'} reads as not in the recorded activation, which is not a statement that the product lacks it.</p>`
+    : '<p class="small">No product activation record matches the product this publication measured, so activation is not measured.</p>';
   const families = rows ? `<div class="pii-families"><div class="pii-family-head" aria-hidden="true"><span>PII family</span><span>Status</span><span>Authority</span><span>Context</span><span>Activation</span></div>${rows}</div>`
     : actionEmptyState({ title: narrowed ? 'No matching PII family' : 'PII support is pending', body: narrowed ? 'The requested identity is not present in the validated arrival registry.' : 'No PII family has arrived in the canonical registry. Absence is not an unsupported, provisional or stable claim.', mark: statusMark('not-measured') });
   return `${supportDomainBar('pii', domain)}<div class="page-head"><div><h1>PII support</h1></div></div>
     <div class="prose"><p class="small">This benchmark measures and records family-level PII evidence; <code>supportClaims=false</code>. It does not infer one jurisdiction or identity family from a neighbor.</p></div>
-    <p class="commitments" role="group" aria-label="Commitments recomputed before rendering">${commitmentChip({ label: 'Artifact', commitment: matrix.artifactCommitment })}${commitmentChip({ label: 'Registry', commitment: matrix.registryCommitment })}${commitmentChip({ label: 'Product artifact', commitment: product, note: 'Not measured' })}</p>
+    <p class="commitments" role="group" aria-label="Commitments recomputed before rendering">${commitmentChip({ label: 'Artifact', commitment: matrix.artifactCommitment })}${commitmentChip({ label: 'Registry', commitment: matrix.registryCommitment })}${commitmentChip({ label: 'Product artifact', commitment: product, note: product ? 'Sanctioned binding' : 'Not measured' })}</p>
+    ${activationNote}
     <section class="section" aria-labelledby="pii-families"><div class="section-head"><div><h2 class="h2-compact" id="pii-families">PII families</h2>
       <p class="small">${narrowed ? `Showing ${selected.length} of ${matrix.families.length}. <a href="/support?domain=pii">Show every family</a>.` : `${matrix.families.length} ${matrix.families.length === 1 ? 'family' : 'families'} in the validated registry.`} Status and activation are separate axes. Rows stop at identity and authority: this artifact cannot carry fixture content, so there is no link down to bytes.</p></div></div>
       ${families}</section>

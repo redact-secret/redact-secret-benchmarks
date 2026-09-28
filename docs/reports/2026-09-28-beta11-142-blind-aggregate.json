@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "reportType": "blind-aggregate",
+  "evidenceClass": "custodian-blind",
+  "independence": {
+    "level": "custodian-held-blind",
+    "achieved": "procedural-separation",
+    "organisationalIndependence": false,
+    "statement": "Custodian-held blind fixtures, authored and held by an isolated custodian agent session that product-implementing agents and the orchestrator never saw. The same human operates the custodian and the maintainer roles, so this run achieves procedural separation, not organisational independence."
+  },
+  "runId": "1604909b-bd5f-4c2d-b3ab-3eb1bc7d0d61",
+  "startedAt": "2026-09-28T21:28:29.837Z",
+  "finishedAt": "2026-09-28T21:28:30.549Z",
+  "status": "complete",
+  "candidate": {
+    "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1",
+    "packageName": "@redact-secret/core",
+    "declaredVersion": "0.1.0-beta.10",
+    "artifactSha256": "4681ad429ebe1b2c7ae9f5d72479ba996c75eb4a118049b6dbe4ea8dcfbd29a1",
+    "artifacts": [
+      {
+        "role": "node",
+        "sha256": "878b6185b9827da953d502da906c1d806ab63fe283f5b47654c4d6038f0e9e60"
+      },
+      {
+        "role": "package",
+        "sha256": "4681ad429ebe1b2c7ae9f5d72479ba996c75eb4a118049b6dbe4ea8dcfbd29a1"
+      },
+      {
+        "role": "wasm",
+        "sha256": "af0633663d713456a82d297f23023280cff05ad5f56489e9e72854601af2b1a1"
+      }
+    ],
+    "configurationHash": "3b0dc27d40a3b27194676ebb4a3ce2d0ca7417700ba7b6d695106007c1d77d8e"
+  },
+  "benchmark": {
+    "sourceCommit": "ef34e5c3f557e1bfcc914da58ad9f7640fc67795",
+    "lockfileSha256": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939"
+  },
+  "environment": {
+    "node": "v22.16.0",
+    "os": "darwin",
+    "arch": "arm64"
+  },
+  "freeze": {
+    "freezeId": "3a9021dd-280e-4efa-a1a9-13b51a0e6ae0",
+    "frozenAt": "2026-09-28T21:28:24.478Z",
+    "freezeHash": "22f69b176babdde15e9751a6848ba563a3d15eb8c05524627a05ae54f498ef3b"
+  },
+  "corpus": {
+    "epoch": "beta11-e1",
+    "commitment": "a3afabcc6fc2e7cea78c74fbba2e26f5fdbfdf009d6dc3554f21e4cbc73db3b0",
+    "fixtures": 84
+  },
+  "replays": 2,
+  "measurability": {
+    "fixtures": 84,
+    "measurable": 84,
+    "share": 1,
+    "withheld": 0,
+    "withheldReasons": {
+      "unstable-across-replays": 0,
+      "scan-error": 0
+    }
+  },
+  "instability": {
+    "count": 0,
+    "of": 84,
+    "value": 0,
+    "interval": [
+      0,
+      0.0437
+    ]
+  },
+  "leakage": {
+    "fixtures": 57,
+    "spans": 66,
+    "leakedSpans": {
+      "count": 3,
+      "of": 66,
+      "value": 0.0455,
+      "interval": [
+        0.0156,
+        0.1253
+      ]
+    },
+    "outcomes": {
+      "EXACT": 18,
+      "COVERED": 45,
+      "OVERBROAD": 0,
+      "PARTIAL": 0,
+      "MISS": 3
+    }
+  },
+  "falseAlarms": {
+    "controls": 27,
+    "flaggedControls": {
+      "count": 0,
+      "of": 27,
+      "value": 0,
+      "interval": [
+        0,
+        0.1246
+      ]
+    }
+  },
+  "strata": {
+    "status": "released",
+    "minimumFixtures": 5,
+    "rows": [
+      {
+        "label": "benign-context",
+        "fixtures": 13,
+        "spans": 0,
+        "leakedSpans": 0,
+        "controls": 13,
+        "flaggedControls": 0
+      },
+      {
+        "label": "benign-lookalike",
+        "fixtures": 14,
+        "spans": 0,
+        "leakedSpans": 0,
+        "controls": 14,
+        "flaggedControls": 0
+      },
+      {
+        "label": "mixed-document",
+        "fixtures": 9,
+        "spans": 18,
+        "leakedSpans": 0,
+        "controls": 0,
+        "flaggedControls": 0
+      },
+      {
+        "label": "provider-beta11",
+        "fixtures": 17,
+        "spans": 17,
+        "leakedSpans": 2,
+        "controls": 0,
+        "flaggedControls": 0
+      },
+      {
+        "label": "provider-established",
+        "fixtures": 17,
+        "spans": 17,
+        "leakedSpans": 1,
+        "controls": 0,
+        "flaggedControls": 0
+      },
+      {
+        "label": "structural-generic",
+        "fixtures": 14,
+        "spans": 14,
+        "leakedSpans": 0,
+        "controls": 0,
+        "flaggedControls": 0
+      }
+    ]
+  },
+  "uncertainty": {
+    "method": "wilson-score",
+    "confidence": 0.95,
+    "scope": "Intervals treat the custodian corpus as a sample of authored cases. The fixtures are authored, not drawn from real traffic, so no interval estimates a real-world rate."
+  },
+  "failures": []
+}

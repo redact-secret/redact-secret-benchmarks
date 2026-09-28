@@ -1,5 +1,5 @@
-import planData from '../../../../qualification/pii-profile-cost-v1.json';
-import workloadData from '../../../../qualification/pii-profile-cost-workloads-v1.json';
+import planData from '../../../../qualification/pii-profile-cost-v1.json' with { type: 'json' };
+import workloadData from '../../../../qualification/pii-profile-cost-workloads-v1.json' with { type: 'json' };
 import { roundOrder, pairedRatios, ceilToFivePercent } from '../../../lib/regression-budgets.ts';
 import { hash } from '../../substrate/hash.ts';
 

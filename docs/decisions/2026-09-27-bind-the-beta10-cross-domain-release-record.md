@@ -93,20 +93,22 @@ ready.
 ## Scope not covered by this decision
 
 This decision defines the record's shape and its binding/guardrail behavior.
-It does not yet build:
+It does not yet build a schema file under `schemas/` for `ajv` (the module
+validates with plain `exact()`/type checks today, matching how
+`benchmarks/accounting/shared/primitives.ts` and several PII accounting
+helpers ship without an Ajv schema and add one only when a report crosses a
+process boundary as JSON). That remains follow-up work under #287.
 
-- the script that gathers a specific release candidate's credential
-  `qualification` evidence, PII `trusted-product-bindings-v1.json` row, and
-  performance-budget report and calls `assembleReleaseRecord` (mirrors
-  `scripts/qualify-pii-family-candidate.mjs` and the `release-regression-check`
-  skill's existing candidate-fetch flow);
-- a schema file under `schemas/` for `ajv` (the module validates with plain
-  `exact()`/type checks today, matching how `benchmarks/accounting/shared/
-  primitives.ts` and several PII accounting helpers ship without an Ajv
-  schema and add one only when a report crosses a process boundary as JSON).
-
-Both are follow-up work under #287; this decision unblocks them by fixing the
-record's shape first.
+`scripts/produce-beta10-release-record.mjs` (added 2026-09-28) is the
+gathering script: it reads already-produced evidence files (credential
+`candidate`/`qualification` evidence, a PII `PiiQualificationReport`, a
+`PiiTrustedProductBinding`, a performance-`BudgetReport`) named as CLI
+arguments and calls `assembleReleaseRecord`. It does not decide which commit
+is the release candidate, measure anything itself, or fetch evidence from
+CI — every identity and evidence path is a required argument, supplied by
+whoever runs it for a specific candidate, mirroring
+`scripts/qualify-pii-family-candidate.mjs` and `scripts/observe-pii-populations.mjs`'s
+own CLI-argument conventions.
 
 `validatePiiProductBinding` also checks its input against the committed
 `trusted-product-bindings-v1.json` ledger, and the raw evidence that hashed

@@ -1,7 +1,7 @@
 {
   "schema": "fixture-independence-audit-v1",
   "benchmark": {
-    "revision": "5bcaaace92046154f6febfbe8923b021b77dedff",
+    "revision": "4fdc8a6ecef9aa2fe23a71d14255e4307e15c338",
     "dirty": false,
     "fixtureIndex": {
       "schemaVersion": 1,
@@ -13408,6 +13408,11 @@
         "id": "product-754",
         "kind": "false-negative",
         "status": "fixed"
+      },
+      {
+        "id": "product-936",
+        "kind": "false-negative",
+        "status": "policy-decision"
       }
     ],
     "discord-bot-token": [
@@ -13439,6 +13444,21 @@
         "id": "product-743-url-path",
         "kind": "false-positive",
         "status": "fixed"
+      },
+      {
+        "id": "product-933",
+        "kind": "false-negative",
+        "status": "observed"
+      },
+      {
+        "id": "product-934",
+        "kind": "false-positive",
+        "status": "observed"
+      },
+      {
+        "id": "product-936",
+        "kind": "false-negative",
+        "status": "policy-decision"
       }
     ],
     "confluent-cloud-api-secret": [
@@ -13491,6 +13511,16 @@
         "id": "product-744",
         "kind": "false-positive",
         "status": "fixed"
+      },
+      {
+        "id": "product-933",
+        "kind": "false-negative",
+        "status": "observed"
+      },
+      {
+        "id": "product-936",
+        "kind": "false-negative",
+        "status": "policy-decision"
       }
     ],
     "confluent-cloud-api-secret-legacy": [
@@ -13498,6 +13528,16 @@
         "id": "product-744",
         "kind": "false-positive",
         "status": "fixed"
+      },
+      {
+        "id": "product-933",
+        "kind": "false-negative",
+        "status": "observed"
+      },
+      {
+        "id": "product-936",
+        "kind": "false-negative",
+        "status": "policy-decision"
       }
     ],
     "twilio-api-key-secret": [
@@ -13512,6 +13552,11 @@
         "id": "product-756",
         "kind": "false-positive",
         "status": "fixed"
+      },
+      {
+        "id": "product-931",
+        "kind": "false-negative",
+        "status": "observed"
       }
     ],
     "pinecone-api-key": [
@@ -13548,12 +13593,45 @@
         "kind": "false-negative",
         "status": "fixed"
       }
+    ],
+    "deepgram-api-key": [
+      {
+        "id": "product-932",
+        "kind": "false-negative",
+        "status": "observed"
+      },
+      {
+        "id": "product-936",
+        "kind": "false-negative",
+        "status": "policy-decision"
+      }
+    ],
+    "cohere-api-key": [
+      {
+        "id": "product-932",
+        "kind": "false-negative",
+        "status": "observed"
+      }
+    ],
+    "stripe-token": [
+      {
+        "id": "product-934",
+        "kind": "false-positive",
+        "status": "observed"
+      }
+    ],
+    "connection-string": [
+      {
+        "id": "product-935",
+        "kind": "false-negative",
+        "status": "observed"
+      }
     ]
   },
   "published": {
     "identity": {
       "mode": "published",
-      "revision": "5bcaaace92046154f6febfbe8923b021b77dedff",
+      "revision": "6b821663e394bd2906b54a319caa426d2ba0b96e",
       "dirty": false,
       "product": null,
       "publishedPackage": {
@@ -13570,8 +13648,8 @@
       "scannerObservations": {
         "redact-secret": {
           "source": "fresh",
-          "observedAt": "2026-09-28T15:43:53.359Z",
-          "sourceRunId": "87a5cc5f-b965-4830-9e25-c78c064258c3"
+          "observedAt": "2026-09-28T16:16:34.087Z",
+          "sourceRunId": "737e0444-85fe-4056-b743-23ed5ed03f5f"
         },
         "gitleaks": {
           "source": "snapshot",
@@ -13599,8 +13677,8 @@
     },
     "distribution": {
       "pending": 2,
-      "provisional": 26,
-      "stable": 58
+      "provisional": 23,
+      "stable": 61
     },
     "families": {
       "ai21-api-key": {
@@ -13663,8 +13741,8 @@
         "twinFailures": 0,
         "benignFalseAlarms": 1,
         "metamorphicCriticalFailures": 7,
-        "mutationUnresolvedCritical": 37,
-        "differentialUnresolvedContractDisagreements": 25,
+        "mutationUnresolvedCritical": 1,
+        "differentialUnresolvedContractDisagreements": 17,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
@@ -13696,13 +13774,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 16,
-        "differentialUnresolvedContractDisagreements": 33,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 19,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 2,
+        "reasons": 1,
         "benchSpans": {
           "spans": 15,
           "leaked": 0,
@@ -13814,10 +13892,10 @@
         }
       },
       "aws-bedrock-long-term-api-key": {
-        "status": "provisional",
+        "status": "stable",
         "tier": "T1",
         "basis": "provider-documented",
-        "profile": null,
+        "profile": "documented",
         "cells": {
           "totalFixtures": 44,
           "positiveCases": 12,
@@ -13833,13 +13911,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 15,
-        "differentialUnresolvedContractDisagreements": 5,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 2,
+        "reasons": 0,
         "benchSpans": {
           "spans": 18,
           "leaked": 0,
@@ -14006,7 +14084,7 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 14,
         "mutationUnresolvedCritical": 2,
-        "differentialUnresolvedContractDisagreements": 10,
+        "differentialUnresolvedContractDisagreements": 4,
         "supportedContexts": [
           "cohere.ClientV2(api_key=...) and Authorization: Bearer on a line naming the Cohere API host",
           "same line as the word cohere or CO_API_KEY, COHERE_API_KEY"
@@ -14075,7 +14153,7 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 7,
         "mutationUnresolvedCritical": 1,
-        "differentialUnresolvedContractDisagreements": 12,
+        "differentialUnresolvedContractDisagreements": 4,
         "supportedContexts": [
           "CONFLUENT_CLOUD_API_SECRET=<secret> in env, shell export, CI/k8s YAML",
           "confluent api-key store <key-id> <secret>",
@@ -14116,12 +14194,12 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 7,
         "mutationUnresolvedCritical": 1,
-        "differentialUnresolvedContractDisagreements": 12,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 7,
+        "reasons": 6,
         "benchSpans": {
           "spans": 32,
           "leaked": 1,
@@ -14290,7 +14368,7 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 28,
         "mutationUnresolvedCritical": 8,
-        "differentialUnresolvedContractDisagreements": 14,
+        "differentialUnresolvedContractDisagreements": 8,
         "supportedContexts": [
           "DeepgramClient(api_key=...) and Authorization: Token on a line naming the Deepgram API host",
           "same line as the word deepgram, e.g. DEEPGRAM_API_KEY=, api.deepgram.com"
@@ -14580,10 +14658,10 @@
         }
       },
       "github-token": {
-        "status": "provisional",
+        "status": "stable",
         "tier": "T1",
         "basis": "provider-documented",
-        "profile": null,
+        "profile": "documented",
         "cells": {
           "totalFixtures": 131,
           "positiveCases": 28,
@@ -14599,13 +14677,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 20,
-        "differentialUnresolvedContractDisagreements": 4,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 2,
+        "reasons": 0,
         "benchSpans": {
           "spans": 74,
           "leaked": 0,
@@ -14872,7 +14950,7 @@
         "benignFalseAlarms": 1,
         "metamorphicCriticalFailures": 14,
         "mutationUnresolvedCritical": 3,
-        "differentialUnresolvedContractDisagreements": 10,
+        "differentialUnresolvedContractDisagreements": 1,
         "supportedContexts": [
           "Authorization: Bearer <uuid> on a line naming api.heroku.com",
           "HEROKU_API_KEY=<uuid> in env, shell export, compose/YAML env",
@@ -15084,8 +15162,8 @@
         "twinFailures": 2,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 21,
-        "mutationUnresolvedCritical": 35,
-        "differentialUnresolvedContractDisagreements": 9,
+        "mutationUnresolvedCritical": 8,
+        "differentialUnresolvedContractDisagreements": 7,
         "supportedContexts": [
           "same-line mailchimp keyword assignment (e.g. MAILCHIMP_API_KEY=<value>), bare, double-quoted, or after a CRLF comment line",
           "suffix -us + one or two digits (no other data-center literal is claimed)"
@@ -15283,10 +15361,10 @@
         }
       },
       "new-relic-license-key": {
-        "status": "provisional",
+        "status": "stable",
         "tier": "T1",
         "basis": "provider-documented",
-        "profile": null,
+        "profile": "documented",
         "cells": {
           "totalFixtures": 42,
           "positiveCases": 8,
@@ -15302,13 +15380,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 30,
-        "differentialUnresolvedContractDisagreements": 4,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 2,
+        "reasons": 0,
         "benchSpans": {
           "spans": 18,
           "leaked": 0,
@@ -15479,13 +15557,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 30,
-        "differentialUnresolvedContractDisagreements": 25,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 16,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 12,
+        "reasons": 11,
         "benchSpans": {
           "spans": 15,
           "leaked": 0,
@@ -16154,8 +16232,8 @@
         "twinFailures": 0,
         "benignFalseAlarms": 1,
         "metamorphicCriticalFailures": 7,
-        "mutationUnresolvedCritical": 31,
-        "differentialUnresolvedContractDisagreements": 9,
+        "mutationUnresolvedCritical": 1,
+        "differentialUnresolvedContractDisagreements": 2,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
@@ -16394,8 +16472,8 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 20,
-        "differentialUnresolvedContractDisagreements": 9,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [
           "bare value (the tgp_v1_ prefix plus exactly 43 base64url characters is the only marker)",
           "double-quoted assignment value",
@@ -16404,7 +16482,7 @@
         "empiricalMode": "shape",
         "supportsBareValues": true,
         "unprobeable": false,
-        "reasons": 9,
+        "reasons": 7,
         "benchSpans": {
           "spans": 22,
           "leaked": 0,
@@ -16506,7 +16584,7 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 7,
         "mutationUnresolvedCritical": 2,
-        "differentialUnresolvedContractDisagreements": 9,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [
           "same line as an Account SID (AC + 32 hex), e.g. Client(AC..., token) or Basic-auth -u AC...:token",
           "same line as the word twilio (e.g. TWILIO_AUTH_TOKEN=, twilio_auth_token:, log/prose mentioning Twilio)"
@@ -16514,7 +16592,7 @@
         "empiricalMode": "context-constrained",
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 4,
+        "reasons": 3,
         "benchSpans": {
           "spans": 28,
           "leaked": 1,
@@ -17865,7 +17943,7 @@
   "candidate": {
     "identity": {
       "mode": "candidate",
-      "revision": "5bcaaace92046154f6febfbe8923b021b77dedff",
+      "revision": "6b821663e394bd2906b54a319caa426d2ba0b96e",
       "dirty": false,
       "product": {
         "sourceCommit": "b0be64b0b3636dda5f0167ea9ee6aa64a3112ec0",
@@ -17897,8 +17975,8 @@
       "scannerObservations": {
         "redact-secret": {
           "source": "fresh",
-          "observedAt": "2026-09-28T15:51:34.089Z",
-          "sourceRunId": "2fb0724c-46fb-4a21-8207-c2bf78052c21"
+          "observedAt": "2026-09-28T16:17:37.728Z",
+          "sourceRunId": "4925d8b5-617e-4eda-b924-7fea78f5fb60"
         },
         "gitleaks": {
           "source": "snapshot",
@@ -17930,8 +18008,8 @@
     },
     "distribution": {
       "pending": 2,
-      "provisional": 26,
-      "stable": 58
+      "provisional": 23,
+      "stable": 61
     },
     "families": {
       "ai21-api-key": {
@@ -17994,8 +18072,8 @@
         "twinFailures": 0,
         "benignFalseAlarms": 1,
         "metamorphicCriticalFailures": 7,
-        "mutationUnresolvedCritical": 37,
-        "differentialUnresolvedContractDisagreements": 25,
+        "mutationUnresolvedCritical": 1,
+        "differentialUnresolvedContractDisagreements": 17,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
@@ -18027,13 +18105,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 16,
-        "differentialUnresolvedContractDisagreements": 33,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 19,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 2,
+        "reasons": 1,
         "benchSpans": {
           "spans": 15,
           "leaked": 0,
@@ -18145,10 +18223,10 @@
         }
       },
       "aws-bedrock-long-term-api-key": {
-        "status": "provisional",
+        "status": "stable",
         "tier": "T1",
         "basis": "provider-documented",
-        "profile": null,
+        "profile": "documented",
         "cells": {
           "totalFixtures": 44,
           "positiveCases": 12,
@@ -18164,13 +18242,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 15,
-        "differentialUnresolvedContractDisagreements": 5,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 2,
+        "reasons": 0,
         "benchSpans": {
           "spans": 18,
           "leaked": 0,
@@ -18337,7 +18415,7 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 14,
         "mutationUnresolvedCritical": 2,
-        "differentialUnresolvedContractDisagreements": 10,
+        "differentialUnresolvedContractDisagreements": 4,
         "supportedContexts": [
           "cohere.ClientV2(api_key=...) and Authorization: Bearer on a line naming the Cohere API host",
           "same line as the word cohere or CO_API_KEY, COHERE_API_KEY"
@@ -18406,7 +18484,7 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 7,
         "mutationUnresolvedCritical": 1,
-        "differentialUnresolvedContractDisagreements": 12,
+        "differentialUnresolvedContractDisagreements": 4,
         "supportedContexts": [
           "CONFLUENT_CLOUD_API_SECRET=<secret> in env, shell export, CI/k8s YAML",
           "confluent api-key store <key-id> <secret>",
@@ -18447,12 +18525,12 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 7,
         "mutationUnresolvedCritical": 1,
-        "differentialUnresolvedContractDisagreements": 12,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 7,
+        "reasons": 6,
         "benchSpans": {
           "spans": 32,
           "leaked": 1,
@@ -18621,7 +18699,7 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 28,
         "mutationUnresolvedCritical": 8,
-        "differentialUnresolvedContractDisagreements": 14,
+        "differentialUnresolvedContractDisagreements": 8,
         "supportedContexts": [
           "DeepgramClient(api_key=...) and Authorization: Token on a line naming the Deepgram API host",
           "same line as the word deepgram, e.g. DEEPGRAM_API_KEY=, api.deepgram.com"
@@ -18911,10 +18989,10 @@
         }
       },
       "github-token": {
-        "status": "provisional",
+        "status": "stable",
         "tier": "T1",
         "basis": "provider-documented",
-        "profile": null,
+        "profile": "documented",
         "cells": {
           "totalFixtures": 131,
           "positiveCases": 28,
@@ -18930,13 +19008,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 20,
-        "differentialUnresolvedContractDisagreements": 4,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 2,
+        "reasons": 0,
         "benchSpans": {
           "spans": 74,
           "leaked": 0,
@@ -19203,7 +19281,7 @@
         "benignFalseAlarms": 1,
         "metamorphicCriticalFailures": 14,
         "mutationUnresolvedCritical": 3,
-        "differentialUnresolvedContractDisagreements": 10,
+        "differentialUnresolvedContractDisagreements": 1,
         "supportedContexts": [
           "Authorization: Bearer <uuid> on a line naming api.heroku.com",
           "HEROKU_API_KEY=<uuid> in env, shell export, compose/YAML env",
@@ -19415,8 +19493,8 @@
         "twinFailures": 2,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 21,
-        "mutationUnresolvedCritical": 35,
-        "differentialUnresolvedContractDisagreements": 9,
+        "mutationUnresolvedCritical": 8,
+        "differentialUnresolvedContractDisagreements": 7,
         "supportedContexts": [
           "same-line mailchimp keyword assignment (e.g. MAILCHIMP_API_KEY=<value>), bare, double-quoted, or after a CRLF comment line",
           "suffix -us + one or two digits (no other data-center literal is claimed)"
@@ -19614,10 +19692,10 @@
         }
       },
       "new-relic-license-key": {
-        "status": "provisional",
+        "status": "stable",
         "tier": "T1",
         "basis": "provider-documented",
-        "profile": null,
+        "profile": "documented",
         "cells": {
           "totalFixtures": 42,
           "positiveCases": 8,
@@ -19633,13 +19711,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 30,
-        "differentialUnresolvedContractDisagreements": 4,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 2,
+        "reasons": 0,
         "benchSpans": {
           "spans": 18,
           "leaked": 0,
@@ -19810,13 +19888,13 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 30,
-        "differentialUnresolvedContractDisagreements": 25,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 16,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 12,
+        "reasons": 11,
         "benchSpans": {
           "spans": 15,
           "leaked": 0,
@@ -20485,8 +20563,8 @@
         "twinFailures": 0,
         "benignFalseAlarms": 1,
         "metamorphicCriticalFailures": 7,
-        "mutationUnresolvedCritical": 31,
-        "differentialUnresolvedContractDisagreements": 9,
+        "mutationUnresolvedCritical": 1,
+        "differentialUnresolvedContractDisagreements": 2,
         "supportedContexts": [],
         "empiricalMode": null,
         "supportsBareValues": false,
@@ -20725,8 +20803,8 @@
         "twinFailures": 0,
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 0,
-        "mutationUnresolvedCritical": 20,
-        "differentialUnresolvedContractDisagreements": 9,
+        "mutationUnresolvedCritical": 0,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [
           "bare value (the tgp_v1_ prefix plus exactly 43 base64url characters is the only marker)",
           "double-quoted assignment value",
@@ -20735,7 +20813,7 @@
         "empiricalMode": "shape",
         "supportsBareValues": true,
         "unprobeable": false,
-        "reasons": 9,
+        "reasons": 7,
         "benchSpans": {
           "spans": 22,
           "leaked": 0,
@@ -20837,7 +20915,7 @@
         "benignFalseAlarms": 0,
         "metamorphicCriticalFailures": 7,
         "mutationUnresolvedCritical": 2,
-        "differentialUnresolvedContractDisagreements": 9,
+        "differentialUnresolvedContractDisagreements": 0,
         "supportedContexts": [
           "same line as an Account SID (AC + 32 hex), e.g. Client(AC..., token) or Basic-auth -u AC...:token",
           "same line as the word twilio (e.g. TWILIO_AUTH_TOKEN=, twilio_auth_token:, log/prose mentioning Twilio)"
@@ -20845,7 +20923,7 @@
         "empiricalMode": "context-constrained",
         "supportsBareValues": false,
         "unprobeable": false,
-        "reasons": 4,
+        "reasons": 3,
         "benchSpans": {
           "spans": 28,
           "leaked": 1,

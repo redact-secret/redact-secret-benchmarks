@@ -314,4 +314,61 @@ export function buildMixedParityPlan(credentialFixtures: Map<string, { content: 
     documents,
   };
 }
-export type MixedParityPlan = ReturnType<typeof buildMixedParityPlan>;
+
+// ---------------------------------------------------------------------------------------------------------------
+// Plan v2 (after redact-secret#930): the v1 plan stays frozen; v2 is derived from it and changes only the envelopes.
+// ---------------------------------------------------------------------------------------------------------------
+
+export const MIXED_PARITY_PLAN_V2_FILE = 'benchmarks/evaluation/domains/pii/mixed-parity/mixed-parity-v2.json';
+export const MIXED_PARITY_PLAN_FILES = { 1: MIXED_PARITY_PLAN_FILE, 2: MIXED_PARITY_PLAN_V2_FILE } as const;
+const V2_CONTRACT_COMMIT = '79c0a66119fb72931fda9adddbe2973a52bb4833';
+
+/**
+ * Each v1 envelope the merged contracts now decide, with the contract text that decides it. A promoted target keeps
+ * its v1 id so the two plans stay comparable target by target.
+ */
+export const V2_PROMOTIONS: Record<string, { basis: string; ref: string }> = {
+  'app-log-logfmt/L04/O1': { ref: 'redact-secret/redact-secret#926',
+    basis: 'email-v1 (at 79c0a66): in `key=local@domain`, a key that is a reviewed high-signal email label (`email`) and its `=` are a label, and the candidate starts after the `=`; `user=42` holds no candidate.' },
+  'app-log-logfmt/L07/O1': { ref: 'redact-secret/redact-secret#925',
+    basis: 'detector-families network-address row (at 79c0a66): one `.` directly after an address and followed by a line end or whitespace is a right boundary outside the range; `client ip` is the field label in front.' },
+  'app-log-logfmt/L08/O1': { ref: 'redact-secret/redact-secret#924',
+    basis: 'pii-context/v2 `association.fieldLabel.equidistanceAmong: following-candidates`: the `ip:` label counts only candidates after it, so the earlier unlabelled addresses no longer make it equidistant; `src=`/`dst=` are not labels, so those stay absent.' },
+  'app-log-logfmt/L09/O1': { ref: 'redact-secret/redact-secret#924',
+    basis: 'pii-context/v2 forward-only field-label equidistance: the preceding unlabelled email does not block `ip:`; `user` is not an email label, so the email stays absent.' },
+  'payment-form/L10/O1': { ref: 'redact-secret/redact-secret#924',
+    basis: 'pii-context/v2 forward-only field-label equidistance: `card_number=` associates with the following PAN; 203.0.113.9 is RFC 5737 documentation space and stays absent under `ip=`.' },
+};
+
+type PlanV1 = ReturnType<typeof buildMixedParityPlan>;
+/** Derive plan v2 from the frozen v1 plan (expectations stripped), promoting every envelope the merged contracts decide. */
+export function buildMixedParityPlanV2(v1: PlanV1, v1Commitment: string) {
+  const used = new Set<string>();
+  const documents = v1.documents.map(document => ({ ...document, lines: document.lines.map(line => {
+    const promoted = line.optional.filter(target => V2_PROMOTIONS[target.id]);
+    promoted.forEach(target => used.add(target.id));
+    if (!promoted.length) return line;
+    return { ...line, role: line.role === 'pii-envelope' ? 'pii-sensitive' as const : line.role,
+      targets: [...line.targets, ...promoted.map(target => {
+        const { envelope, ref: _ref, basis: _basis, ...rest } = target as typeof target & { envelope: string; ref: string };
+        return { ...rest, basis: V2_PROMOTIONS[target.id].basis, promotedFrom: { planVersion: 1, envelope, ref: V2_PROMOTIONS[target.id].ref } };
+      })],
+      optional: line.optional.filter(target => !V2_PROMOTIONS[target.id]) };
+  }) }));
+  const missing = Object.keys(V2_PROMOTIONS).filter(id => !used.has(id));
+  if (missing.length) throw new Error(`v2 promotions do not match v1 envelopes: ${missing.join(', ')}`);
+  return {
+    ...v1, planVersion: 2,
+    supersedes: { path: MIXED_PARITY_PLAN_FILE, planVersion: 1, commitment: v1Commitment, frozenAt: '163f4ecbfc11fe679000353e305e4379fe45cee0' },
+    contextVocabulary: 'pii-context/v2',
+    contracts: { repository: 'redact-secret/redact-secret', commit: V2_CONTRACT_COMMIT,
+      files: ['docs/contracts/pii/pii-context-v2.json', 'docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md', 'docs/contracts/pii/email-v1.md',
+        'docs/contracts/pii/phone-v1.md', 'docs/contracts/pii/payment-card-v1.md', 'docs/contracts/pii/iban-v1.md', 'docs/contracts/pii/us-ssn-v1.md',
+        'docs/specs/detector-families.md', 'docs/decisions/2026-09-26-define-the-pii-domain-scope-arbitration-and-activation-contract.md'] },
+    accounting: { ...v1.accounting,
+      optional: 'no optional target remains: every v1 envelope is decided by the merged contracts and is required; everything outside the required targets must be absent' },
+    documents,
+  };
+}
+
+export type MixedParityPlan = ReturnType<typeof buildMixedParityPlan> & { planVersion: number; supersedes?: unknown; contextVocabulary?: string };

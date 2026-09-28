@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { MIXED_PARITY_PLAN_FILE } from '../benchmarks/evaluation/domains/pii/mixed-parity/authoring.ts';
+import { MIXED_PARITY_PLAN_FILE, MIXED_PARITY_PLAN_V2_FILE, V2_PROMOTIONS } from '../benchmarks/evaluation/domains/pii/mixed-parity/authoring.ts';
 import {
-  SELECTIONS, VARIANTS, expectedOutput, loadPlan, materialize, offsetTables, partitions, scoreOperation, sha256, targetsFor, variantOf,
+  SELECTIONS, VARIANTS, expectedOutput, loadPlan, planCommitment, materialize, offsetTables, partitions, scoreOperation, sha256, targetsFor, variantOf,
 } from '../benchmarks/evaluation/domains/pii/mixed-parity/parity.ts';
 import { renderMixedParityPlan } from '../scripts/generate-pii-mixed-parity.mjs';
 
@@ -117,5 +117,25 @@ test('#427 committed observations re-score to their committed reports byte for b
     // Evidence stays input-free: no finding carries text and every output is a digest.
     const text = await readFile(`evidence/901/427/${file}`, 'utf8');
     for (const document of documents) for (const target of document.targets) assert.ok(!text.includes(slice(document.input, target.start, target.end)));
+  }
+});
+
+test('#427 plan v2 regenerates, leaves the frozen v1 plan untouched, and promotes exactly the v1 envelopes', async () => {
+  assert.equal(await readFile(MIXED_PARITY_PLAN_V2_FILE, 'utf8'), renderMixedParityPlan(2));
+  const v2 = loadPlan(MIXED_PARITY_PLAN_V2_FILE), v2Documents = materialize(v2);
+  assert.equal(v2.planVersion, 2); assert.equal(v2.contextVocabulary, 'pii-context/v2');
+  assert.equal(v2.supersedes.commitment, planCommitment(plan));
+  assert.equal(planCommitment(plan), 'b4092b2533f787df08168cc826879cf4b5c08fdcf5881e892ba58f5f4e9b6789');
+  const v1Optional = documents.flatMap(row => row.targets.filter(target => target.optional).map(target => target.id)).sort();
+  assert.deepEqual(Object.keys(V2_PROMOTIONS).sort(), v1Optional);
+  assert.equal(v2Documents.flatMap(row => row.targets).filter(target => target.optional).length, 0);
+  for (const document of v2Documents) {
+    const before = documents.find(row => row.id === document.id);
+    assert.equal(document.input, before.input);
+    for (const target of document.targets) {
+      const old = before.targets.find(row => row.id === target.id);
+      assert.deepEqual([old.start, old.end, old.type ?? null, old.action ?? null], [target.start, target.end, target.type ?? null, target.action ?? null]);
+      assert.equal(target.optional, false);
+    }
   }
 });

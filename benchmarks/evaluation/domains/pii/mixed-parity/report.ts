@@ -38,7 +38,7 @@ const ratio = (rows: Array<boolean | null>) => { const scored = rows.filter(row 
 
 export function buildMixedParityReport(observation: MixedParityObservation) {
   if (observation.reportType !== 'pii-mixed-parity-observation' || observation.schemaVersion !== 1) throw new Error('not a #427 parity observation');
-  const plan = loadPlan();
+  const plan = loadPlan(observation.plan.path);
   if (observation.plan.commitment !== planCommitment(plan)) throw new Error('observation was taken on a different #427 plan');
   const documents = materialize(plan);
   const shaped = new Map<string, MaterializedDocument>(documents.flatMap(document => VARIANTS.map(variant => [`${document.id}/${variant}`, variantOf(document, variant)] as const)));

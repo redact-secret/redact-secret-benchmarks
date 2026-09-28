@@ -25,6 +25,11 @@ async function run(args, payload, allowedExitCodes = [0], captureStdout = false)
       const match = /^VmHWM:\s+(\d+)\s+kB$/m.exec(status); if (match) peakRss = Math.max(peakRss, Number(match[1]) * 1024);
     } catch { /* The process may exit between samples. */ }
   }, 1);
+  // --print-pii-activation exits without reading stdin by design (redact-secret-cli's own tests assert this),
+  // so the child can close its end of the pipe before this write lands. That EPIPE says nothing about the
+  // sample's outcome -- the child's exit code/signal below is still the truth -- but an unhandled 'error'
+  // event on a stream crashes the whole process, so it must have a listener.
+  child.stdin.on('error', () => {});
   child.stdin.end(payload);
   const exit = await new Promise((resolve, reject) => { child.once('error', reject); child.once('close', (code, signal) => resolve({ code, signal })); });
   clearInterval(timer);

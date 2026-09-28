@@ -82,7 +82,7 @@ export function validatePiiProfileCostPlan(value: unknown = piiProfileCostPlan) 
     throw new Error('Invalid PII profile-cost typed profile N/A');
   if (JSON.stringify(plan.sampleProtocol) !== JSON.stringify({ environment: 'github-hosted-ubuntu-24.04-x86_64-release', minimumSamplesPerSide: 12,
       warmupSamples: 2, processIsolation: 'fresh-process-per-sample', pairing: 'same-job', roundOrder: 'ABBA',
-      aaRunsRequiredBeforeCandidate: 3, cpuModelRequired: true, candidateBlockedUntilThresholdFreeze: true }))
+      aaRunsRequiredBeforeCandidate: 3, cpuModelRequired: true, candidateBlockedUntilThresholdFreeze: true, transientRetryLimit: 2 }))
     throw new Error('Invalid PII profile-cost sample protocol');
   if (plan.officialLinuxExecution?.runner !== 'github-hosted-ubuntu-24.04-x86_64' ||
       plan.officialLinuxExecution?.playwrightVersion !== '1.55.0' || plan.officialLinuxExecution?.chromiumRevision !== 1187 ||
@@ -374,10 +374,11 @@ export function validatePiiProfileCostCandidateReport(value: unknown, thresholdA
     if (!definition) throw new Error('Unknown PII profile-cost workload');
     const text = `${Array.from({ length: piiProfileCostWorkloads.generator.lineCount }, (_, index) =>
       definition.lines[index % definition.lines.length]).join('\n')}\n`;
-    if (!exact(row, ['surface', 'credentialProfile', 'profile', 'workload', 'workloadCommitment', 'workloadBytes', 'samplesPerSide', 'sides']) ||
+    if (!exact(row, ['surface', 'credentialProfile', 'profile', 'workload', 'workloadCommitment', 'workloadBytes', 'samplesPerSide', 'transientRetries', 'sides']) ||
         !exact(row.sides, ['reference', 'comparison']) ||
         row.workloadCommitment !== hash(text) || row.workloadBytes !== new TextEncoder().encode(text).length ||
         row.samplesPerSide < piiProfileCostPlan.sampleProtocol.minimumSamplesPerSide ||
+        !Number.isInteger(row.transientRetries) || row.transientRetries < 0 ||
         row.sides.reference.length !== row.samplesPerSide || row.sides.comparison.length !== row.samplesPerSide)
       throw new Error('Invalid PII profile-cost candidate observation');
     for (const sample of [...row.sides.reference, ...row.sides.comparison]) validatePiiProfileCostSample(sample);

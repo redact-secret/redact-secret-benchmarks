@@ -144,6 +144,7 @@ test('threshold freezer accepts three complete A/A reports and rejects mixed met
             workload.lines[index % workload.lines.length]).join('\n')}\n`;
           return { surface: surface.id, credentialProfile, profile: profile.id, workload: workload.id,
             workloadCommitment: createHash('sha256').update(text).digest('hex'), workloadBytes: Buffer.byteLength(text), samplesPerSide: 12,
+            transientRetries: 0,
             sides: { reference: Array.from({ length: 12 }, () => structuredClone(sample)),
               comparison: Array.from({ length: 12 }, () => structuredClone(sample)) } };
         }))));
@@ -203,6 +204,7 @@ test('candidate validator rejects stale and forged within-budget verdicts', () =
           workload.lines[index % workload.lines.length]).join('\n')}\n`;
         return { surface: surface.id, credentialProfile, profile: profile.id, workload: workload.id,
           workloadCommitment: createHash('sha256').update(text).digest('hex'), workloadBytes: Buffer.byteLength(text), samplesPerSide: 12,
+          transientRetries: 0,
           sides: { reference: Array.from({ length: 12 }, () => structuredClone(sample)),
             comparison: Array.from({ length: 12 }, () => structuredClone(sample)) } };
       }))));
@@ -342,6 +344,7 @@ test('generic runner validates all adapter identities and emits one filtered ABB
     assert.equal(report.observations.length, 1);
     assert.equal(report.observations[0].sides.reference.length, 2);
     assert.equal(report.observations[0].sides.comparison.length, 2);
+    assert.equal(report.observations[0].transientRetries, 0);
     assert.equal((await readFile(count, 'utf8')).trim().split('\n').length, 8, 'two warmups and two recorded samples per side');
     assert.equal(report.artifactCommitment,
       piiProfileCostCommitment(Object.fromEntries(Object.entries(report).filter(([key]) => key !== 'artifactCommitment'))));
@@ -351,5 +354,56 @@ test('generic runner validates all adapter identities and emits one filtered ABB
     await assert.rejects(execFile(process.execPath, ['--import', 'tsx', 'scripts/measure-pii-profile-cost.mjs', '--mode=candidate',
       `--config=${configPath}`, `--output=${output}`, '--run-id=fixture-candidate'], { timeout: 10_000 }),
     error => /pre-frozen thresholds/.test(error.stderr));
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+async function runFlakyMatrix(directory, helperSource) {
+  const helper = path.join(directory, 'adapter.mjs'), count = path.join(directory, 'count.txt');
+  const configPath = path.join(directory, 'config.json'), output = path.join(directory, 'aa.json');
+  await writeFile(helper, helperSource);
+  const executableSha256 = await fileHash(process.execPath), helperSha256 = await fileHash(helper);
+  const rows = piiProfileCostPlan.surfaces.map(surface => {
+    const args = [helper, count], files = [{ role: 'adapter', path: helper, sha256: helperSha256 }];
+    return { id: surface.id, cwd: directory, executable: { path: process.execPath, sha256: executableSha256 }, args, definitionFiles: files,
+      definitionCommitment: piiProfileCostCommitment({ cwd: path.resolve(directory), executableSha256, args,
+        files: files.map(({ role, sha256 }) => ({ role, sha256 })) }),
+      artifactIds: ['fixture'], credentialProfiles: surface.credentialProfiles };
+  });
+  const configProjection = { schemaVersion: 1, sourceCommit: piiProfileCostPlan.inputs.candidateProductCommit,
+    producer: { id: 'prepare-pii-profile-cost-linux-v1', sha256: piiProfileCostPlan.implementationFreeze.files
+      .find(row => row.path === 'scripts/prepare-pii-profile-cost-linux.mjs').sha256 },
+    qualification: { candidateRun: piiProfileCostPlan.inputs.candidateQualificationRun,
+      candidateInventorySha256: piiProfileCostPlan.inputs.candidateInventorySha256 },
+    productCheckout: { path: directory, commit: piiProfileCostPlan.inputs.candidateProductCommit },
+    artifacts: [{ id: 'fixture', sha256: 'a'.repeat(64) }], surfaces: rows };
+  await writeFile(configPath, `${JSON.stringify({ ...configProjection, configCommitment: piiProfileCostCommitment(configProjection) })}\n`);
+  return { configPath, output, count,
+    run: runId => execFile(process.execPath, ['--import', 'tsx', 'scripts/measure-pii-profile-cost.mjs', '--mode=aa',
+      `--config=${configPath}`, `--output=${output}`, `--run-id=${runId}`,
+      '--filter=rust-native/full/global/validator-heavy', '--development-samples=2'], { timeout: 30_000 }) };
+}
+
+test('a transient adapter-launch failure is retried and recorded, not silently absorbed or fatal', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'pii-profile-cost-retry-'));
+  try {
+    // Fails only the very first invocation across the whole matrix (simulating one flaky launch); every
+    // invocation -- including the failed one -- still appends, so the count file's line count before this
+    // invocation is a persistent, cross-process invocation counter.
+    const helperSource = `import{appendFileSync,existsSync,readFileSync}from'node:fs';let input='';for await(const chunk of process.stdin)input+=chunk;JSON.parse(input);const countFile=process.argv[2];const n=(existsSync(countFile)?readFileSync(countFile,'utf8').split('\\n').filter(Boolean).length:0)+1;appendFileSync(countFile,'1\\n');if(n===1){process.exit(1);}process.stdout.write(JSON.stringify({import:1,initialize:2,wholeInput:3,incremental:4,bytesPerSecond:{wholeInput:5,incremental:6},memory:{processPeakRss:1024,processRetainedRss:512}})+'\\n');\n`;
+    const { output, count, run } = await runFlakyMatrix(directory, helperSource);
+    await run('fixture-retry-1');
+    const report = JSON.parse(await readFile(output, 'utf8'));
+    assert.equal(report.observations.length, 1);
+    assert.equal(report.observations[0].transientRetries, 1);
+    assert.equal((await readFile(count, 'utf8')).trim().split('\n').length, 9, 'eight recorded samples plus the one retried launch');
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test('a transient adapter that never recovers still fails the run once the retry limit is exhausted', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'pii-profile-cost-retry-exhausted-'));
+  try {
+    const helperSource = `let input='';for await(const chunk of process.stdin)input+=chunk;JSON.parse(input);process.exit(1);\n`;
+    const { run } = await runFlakyMatrix(directory, helperSource);
+    await assert.rejects(run('fixture-retry-exhausted'), error => /adapter failed: rust-native \(after 3 attempts\)/.test(error.stderr));
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

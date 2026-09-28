@@ -104,7 +104,8 @@ if (thresholds && thresholds.frozenAt >= startedAt) throw new Error('PII profile
 
 async function observe(surface, credentialProfile, profile, workload) {
   const sides = { reference: [], comparison: [] };
-  const sample = async step => {
+  let transientRetries = 0;
+  const attempt = async step => {
     const selected = rawArgs.mode === 'aa' ? profile : step.side === 'off' ? piiProfileCostPlan.piiProfiles[0] : profile;
     const selectors = selected.selectors.length ? selected.selectors.join(',') : 'off';
     const expectedActivation = `credentials=${credentialProfile};selectors=${selectors};families=${selected.families.join(',')};vocabulary=pii-context/v1`;
@@ -123,8 +124,20 @@ async function observe(surface, credentialProfile, profile, workload) {
     const outcome = await new Promise((resolve, reject) => { child.once('error', reject);
       child.once('close', (code, signal) => resolve({ code, signal })); });
     clearTimeout(timeout);
-    if (outcome.code !== 0 || outcome.signal !== null) throw new Error(`PII profile-cost adapter failed: ${surface.id}`);
-    return parseAdapterSample(stdout, stderr);
+    // A non-zero exit or kill signal here means the launch itself did not complete -- not that a produced
+    // measurement was wrong. `parseAdapterSample` below still runs unretried: a shape/identity failure on a
+    // completed process is a real defect, never a transient launch failure.
+    if (outcome.code !== 0 || outcome.signal !== null) return { ok: false };
+    return { ok: true, sample: parseAdapterSample(stdout, stderr) };
+  };
+  const sample = async step => {
+    const limit = piiProfileCostPlan.sampleProtocol.transientRetryLimit;
+    for (let retry = 0; ; retry++) {
+      const outcome = await attempt(step);
+      if (outcome.ok) return outcome.sample;
+      if (retry >= limit) throw new Error(`PII profile-cost adapter failed: ${surface.id} (after ${retry + 1} attempts)`);
+      transientRetries++;
+    }
   };
   const warmups = piiProfileCostSchedule(piiProfileCostPlan.sampleProtocol.warmupSamples, true);
   for (const step of warmups) await sample(step);
@@ -133,7 +146,7 @@ async function observe(surface, credentialProfile, profile, workload) {
     sides[label].push(await sample(step));
   }
   return { surface: surface.id, credentialProfile, profile: profile.id, workload: workload.id,
-    workloadCommitment: workload.commitment, workloadBytes: workload.bytes, samplesPerSide: schedule.length / 2, sides };
+    workloadCommitment: workload.commitment, workloadBytes: workload.bytes, samplesPerSide: schedule.length / 2, transientRetries, sides };
 }
 
 const observations = [];

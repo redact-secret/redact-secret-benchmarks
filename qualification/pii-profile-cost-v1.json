@@ -191,7 +191,8 @@
     "roundOrder": "ABBA",
     "aaRunsRequiredBeforeCandidate": 3,
     "cpuModelRequired": true,
-    "candidateBlockedUntilThresholdFreeze": true
+    "candidateBlockedUntilThresholdFreeze": true,
+    "transientRetryLimit": 2
   },
   "officialLinuxExecution": {
     "runner": "github-hosted-ubuntu-24.04-x86_64",
@@ -259,11 +260,11 @@
     "algorithm": "sha256-file-bytes",
     "files": [
       { "path": ".github/workflows/pii-profile-cost.yml", "sha256": "9b245cb52bf3625693c95c7c95d80b34c5a1f3f81761aa8c62eb4ed48c84429b" },
-      { "path": "benchmarks/evaluation/domains/pii/profile-cost.ts", "sha256": "708c01cdbda36680f37be443e21e7b69df9fb39329e5ce206371ff5e45cbdc90" },
+      { "path": "benchmarks/evaluation/domains/pii/profile-cost.ts", "sha256": "7a120bd3616a3083d11e8d61a591d5f2a59661025896b72a9cb771b5b12b4ba2" },
       { "path": "scripts/build-pii-profile-cost-browser-bundle.mjs", "sha256": "720f29b4d29be2990193e7adaeb64ee69a085b1abbbb5b8fb1a7b97857debe4c" },
       { "path": "scripts/collect-pii-profile-cost-sizes.mjs", "sha256": "eda32868c7cffeb869fad7c3e1637427d14aacc903ca627b1ba89ad6c7e13c08" },
-      { "path": "scripts/freeze-pii-profile-cost-thresholds.mjs", "sha256": "21fa6fd16fc703374d12dbed22d1a24f602a02c1244ba7439e68f6fe4e52508c" },
-      { "path": "scripts/measure-pii-profile-cost.mjs", "sha256": "aaf02f23a4a6c7a0c21f91831642ec6c57c4b5c43955f5e401e5e4d6883639b7" },
+      { "path": "scripts/freeze-pii-profile-cost-thresholds.mjs", "sha256": "009eec119778f5a0cf83523eac1b5f4a0bb23ebedbfda4c51f6f2ce2987ab23d" },
+      { "path": "scripts/measure-pii-profile-cost.mjs", "sha256": "0d82216d963ecf75caedd5c79f0d1c8b1a97a9d2d21c65d5febe460871a0ab1c" },
       { "path": "scripts/prepare-pii-profile-cost-linux.mjs", "sha256": "13d12dae564b19987bf4d8124437b29cf8f387d44ea66ebb4ab2fb9202b7efcd" },
       { "path": "scripts/prepare-pii-profile-cost-size-config.mjs", "sha256": "420e6b626e01bb27610947be1741ba454742042d7cfa7ad803006a7a1610621b" },
       { "path": "scripts/pii-profile-cost/adapter-protocol.mjs", "sha256": "a9ef1c30aa54fef6669c9762590199429ee45dddffa4dedb70cc5adb51313176" },
@@ -272,7 +273,7 @@
       { "path": "scripts/pii-profile-cost/node-sample.mjs", "sha256": "78466284f0378c4bf66c37887a55c5da2ffb4a8a3d25768cd6198e421ca6a482" },
       { "path": "scripts/pii-profile-cost/python-sample.py", "sha256": "5bdf8f2b528b5e6bbef9662176591ece69a65b72765e157b0d07dc8de370e5e1" },
       { "path": "scripts/pii-profile-cost/rust-sample.rs", "sha256": "4837989376ad704ab9aeb76c39acbb74ed7c0eb0ba2b691d1cd12d03e8fa9f60" },
-      { "path": "tests/pii-profile-cost.test.mjs", "sha256": "1235d22be44aec2169818e05d91cbc5fdedf4411d3f54b73f5c0f5874a61377a" }
+      { "path": "tests/pii-profile-cost.test.mjs", "sha256": "536a8603d19b170c299a4cda5e9273ecb209f471a1779b2e32eb9b7158019fc0" }
     ]
   },
   "evidenceSafety": {
@@ -280,5 +281,5 @@
     "forbiddenText": ["SYNTHETIC-PERSON-ID", "890-62-6879", "4111111111111111"],
     "supportClaim": "none"
   },
-  "contentCommitment": "1a979af04524f044077d142a186d1d9bd7bdf8ec1109e85e5b4e6f956a5f4965"
+  "contentCommitment": "bbd2971098c89f364c1c41e69d501d63b6bf7b1f92ee2133ba95ac776cfc0622"
 }

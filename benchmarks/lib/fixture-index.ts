@@ -129,7 +129,8 @@ export function buildFixtureIndex(input: {
     const beta10 = /^beta8-384/.test(category.id);
     // beta8-434a..434g hold the Beta.11 #860 Tier A credential corpus (#434), in the same per-issue layout.
     // beta8-436a..436f hold the Beta.11 #860 Tier B credential corpus (#436), in the same per-issue layout.
-    const beta11 = /^beta8-43[46]/.test(category.id);
+    // beta8-379 holds the Beta.11 independent family evidence (#379), in the same per-issue corpus layout.
+    const beta11 = /^beta8-43[46]/.test(category.id) || category.id === 'beta8-379';
     const beta8 = /^beta8-/.test(category.id) && !beta10 && !beta11;
     const provenance: FixtureIndexEntry['provenance'] = {
       categoryId: category.id,

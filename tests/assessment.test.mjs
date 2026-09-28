@@ -282,7 +282,7 @@ test('envelopes are authored where v3 needed prose: URIs, OTP, Bearer, quoted ge
   for (const { f } of enveloped) for (const r of f.expected) {
     const bytes = Buffer.from(f.content);
     const whole = bytes.subarray(r.envelope.start, r.envelope.end).toString();
-    assert.ok(/^(?:[a-z]+:\/\/|otpauth:\/\/|Authorization: Bearer |[A-Za-z_]+(?:=|: )")/.test(whole), `${f.id}: ${whole}`);
+    assert.ok(/^(?:[a-z][a-z0-9+.-]*:\/\/|otpauth:\/\/|Authorization: Bearer |[A-Za-z_]+(?:=|: )")/.test(whole), `${f.id}: ${whole}`);
     assert.ok(r.envelope.start <= r.start && r.envelope.end >= r.end && r.envelope.reason.length > 20, f.id);
   }
   const postgres = get('connection-string-postgres-bare');

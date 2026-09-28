@@ -5,6 +5,8 @@ import { PII_ORACLE_UNAVAILABLE_REASON, piiOraclePlanCommitment, validatePiiOrac
 import emailPopulationPlanV1 from './email-population-plan-v1.json';
 import emailPopulationPlan from './email-population-plan-v2.json';
 import networkAddressPopulationPlan from './network-address-population-plan-v1.json';
+import emailPopulationPlanV3 from './email-population-plan-v3.json';
+import networkAddressPopulationPlanV2 from './network-address-population-plan-v2.json';
 import gapLedger from '../../../../evidence/901/pii-gap-ledger-v1.json';
 import piiV1Profile from '../../../../qualification/pii-v1.json';
 
@@ -45,6 +47,14 @@ export const C1_SEMANTIC_ROLES = ['synthetic-personal', 'public-role', 'operatio
   'collision', 'malformed'] as const;
 export const C1_ISSUE = 'redact-secret/redact-secret-benchmarks#424';
 export const C1_CONTEXT_VOCABULARY = 'pii-context/v1';
+/**
+ * Plans authored under `pii-context/v2` (benchmarks #428): the same schema, validated against the v2 association
+ * reference (#924 forward-only field-label equidistance, #927 added forms and Korean ASCII case folding) and the
+ * amended email-v1 whole-candidate rule (#926 reviewed label glued by `=`).
+ */
+export const C1_CONTEXT_VOCABULARY_V2 = 'pii-context/v2';
+export const C1_V2_ISSUE = 'redact-secret/redact-secret-benchmarks#428';
+export type C1Vocabulary = typeof C1_CONTEXT_VOCABULARY | typeof C1_CONTEXT_VOCABULARY_V2;
 const LEDGER_FILE = 'evidence/901/pii-gap-ledger-v1.json';
 const DOMAIN: Record<C1Family, 'email' | 'network-address'> = { 'pii:global:email': 'email', 'pii:global:network-address': 'network-address' };
 
@@ -69,6 +79,9 @@ export interface C1PopulationPlan {
   plan: { family: C1Family; findingType: string; familyContractVersion: 1; canonicalOffsetUnit: 'utf8-byte'; cases: C1Case[] };
   oracle: PiiOracleFamily;
   populations: C1Population[];
+  derivedFrom?: { id: string; file: string; fileSha256: string; planCommitment: string; method: string;
+    relabeled: Array<{ caseId: string; fromStratum: string; toStratum: string; basis: string }>; addedCases: string[];
+    removedFromPopulationViews: Array<{ caseId: string; views: string[]; basis: string }>; retiredStrata: Array<{ stratum: string; basis: string }> };
   supersedes?: { id: string; file: string; fileSha256: string; planCommitment: string; reason: string; contractRule: string; detectedBy: string;
     firstRun: { benchmarkRevision: string; runId: string; reportCommitment: string };
     corrections: Array<{ v1CaseId: string; v1Label: string; v2CaseId: string; v2Label: string; twinAdded?: string; rangeCorrected?: boolean }> };
@@ -78,6 +91,13 @@ export const C1_POPULATION_PLANS: Readonly<Record<C1Family, { file: string; plan
   'pii:global:email': { file: 'benchmarks/evaluation/domains/pii/email-population-plan-v2.json', plan: emailPopulationPlan as unknown as C1PopulationPlan },
   'pii:global:network-address': { file: 'benchmarks/evaluation/domains/pii/network-address-population-plan-v1.json',
     plan: networkAddressPopulationPlan as unknown as C1PopulationPlan },
+});
+
+/** The pii-context/v2 successors (#428): email plan v3 and network-address plan v2, derived by `beta11-population-v2.ts`. */
+export const C1_POPULATION_PLANS_V2: Readonly<Record<C1Family, { file: string; plan: C1PopulationPlan }>> = Object.freeze({
+  'pii:global:email': { file: 'benchmarks/evaluation/domains/pii/email-population-plan-v3.json', plan: emailPopulationPlanV3 as unknown as C1PopulationPlan },
+  'pii:global:network-address': { file: 'benchmarks/evaluation/domains/pii/network-address-population-plan-v2.json',
+    plan: networkAddressPopulationPlanV2 as unknown as C1PopulationPlan },
 });
 
 /**
@@ -159,9 +179,29 @@ export function networkReservedAddress(candidate: string) {
  * right by something other than a domain-label character, `.` or `@`. Note that `=`, `/`, `'` and `+` are `atext`, so a
  * `key=addr` spelling is one candidate that starts at the key.
  */
-export function emailWholeCandidate(input: string, range: { start: number; end: number }) {
+/** The reviewed high-signal email field labels email-v1 (#926) names for the `key=` split, after context-only normalization. */
+export const EMAIL_EQUALS_LABEL_FORMS = ['email', 'e-mail', 'customer_email', '이메일', '고객_이메일'] as const;
+const equalsLabelKey = (key: string) => {
+  const norm = (value: string) => value.normalize('NFC').replace(/[A-Z]/g, char => char.toLowerCase()).split(/[\s_\-:]+/u).filter(Boolean);
+  const tokens = norm(key);
+  return EMAIL_EQUALS_LABEL_FORMS.some(form => {
+    const want = norm(form);
+    return want.length <= tokens.length && want.every((token, index) => tokens[tokens.length - want.length + index] === token);
+  });
+};
+export function emailWholeCandidate(input: string, range: { start: number; end: number }, vocabulary: C1Vocabulary = C1_CONTEXT_VOCABULARY) {
   const before = Array.from(slice(input, 0, range.start)).at(-1), after = Array.from(slice(input, range.end, bytes(input).length))[0];
   const atom = (char: string) => /[A-Za-z0-9!#$%&'*+\-/=?^_`{|}~]/.test(char) || /[\p{L}\p{N}]/u.test(char);
+  // email-v1 as amended by #926: in `key=local@domain`, when the run before the first `=` is a reviewed email label
+  // (whole key or its last separator-delimited tokens), the key and `=` are a label and the candidate starts after `=`.
+  if (vocabulary === C1_CONTEXT_VOCABULARY_V2 && before === '=') {
+    const head = Array.from(slice(input, 0, range.start - 1));
+    let index = head.length;
+    while (index > 0 && (atom(head[index - 1]) || head[index - 1] === '.')) index -= 1;
+    const run = head.slice(index).join('');
+    const rightOk = after === undefined || !(/[A-Za-z0-9-]/.test(after) || /[\p{L}\p{N}]/u.test(after) || after === '.' || after === '@');
+    if (!run.includes('=') && !run.includes('.') && run.length > 0 && equalsLabelKey(run) && (index === 0 || head[index - 1] !== '@')) return rightOk;
+  }
   const leftOk = before === undefined || !(atom(before) || before === '.' || before === '@');
   const rightOk = after === undefined || !(/[A-Za-z0-9-]/.test(after) || /[\p{L}\p{N}]/u.test(after) || after === '.' || after === '@');
   return leftOk && rightOk;
@@ -193,16 +233,25 @@ export const C1_CONTEXT_ENTRIES: readonly Entry[] = Object.freeze([
   { id: 'ko-value-neutral', language: 'ko', kind: 'field-label', class: 'neutral', strength: 'ambiguous', domains: ['email', 'network-address'], forms: ['값'] },
 ] as Entry[]);
 
+/** The reviewed entries of core `docs/contracts/pii/pii-context-v2.json` at 79c0a661 that name the email or network-address domain. */
+export const C1_CONTEXT_ENTRIES_V2: readonly Entry[] = Object.freeze(C1_CONTEXT_ENTRIES.map(entry =>
+  entry.id === 'en-email-field' ? { ...entry, forms: ['email', 'e-mail', 'email address', 'e-mail address'] } :
+    entry.id === 'ko-email-field' ? { ...entry, forms: ['이메일', '고객 이메일', '이메일 주소'] } : entry) as Entry[]);
+
 const LINE_BREAK = /[\n\r\u000b\u000c\u001c-\u001e\u0085\u2028\u2029]/u;
 const GOVERNED_INVISIBLE = /[\u00ad\u180e\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufeff]/u;
 const isSeparator = (char: string) => /\s/u.test(char) || char === '_' || char === '-' || char === ':' || char === '=';
 
-/** Context-only view: governed invisibles removed, ASCII case folded for English, separator runs collapsed to one space. */
-function contextView(chars: Array<{ char: string; byte: number }>, language: 'en' | 'ko') {
+/**
+ * Context-only view: governed invisibles removed, ASCII case folded for English (and, in pii-context/v2, for Korean
+ * forms too: `koreanCase: ascii-lower`, #927), separator runs collapsed to one space.
+ */
+function contextView(chars: Array<{ char: string; byte: number }>, language: 'en' | 'ko', vocabulary: C1Vocabulary = C1_CONTEXT_VOCABULARY) {
   const out: Array<{ char: string; byte: number }> = [];
+  const fold = language === 'en' || vocabulary === C1_CONTEXT_VOCABULARY_V2;
   for (const item of chars) {
     if (GOVERNED_INVISIBLE.test(item.char)) continue;
-    const char = language === 'en' && /[A-Z]/.test(item.char) ? item.char.toLowerCase() : item.char;
+    const char = fold && /[A-Z]/.test(item.char) ? item.char.toLowerCase() : item.char;
     if (isSeparator(char)) { if (out.at(-1)?.char !== ' ') out.push({ char: ' ', byte: item.byte }); }
     else out.push({ char, byte: item.byte });
   }
@@ -216,7 +265,8 @@ function contextView(chars: Array<{ char: string; byte: number }>, language: 'en
  * matches unassociated, longest/high-signal/negative-first precedence), then the family's named negative evidence.
  */
 export function c1ReferenceSensitivity(family: C1Family, input: string, target: { start: number; end: number },
-  others: readonly C1LineCandidate[] = []): { sensitivity: Sensitivity; matches: string[] } {
+  others: readonly C1LineCandidate[] = [], vocabulary: C1Vocabulary = C1_CONTEXT_VOCABULARY): { sensitivity: Sensitivity; matches: string[] } {
+  const v2 = vocabulary === C1_CONTEXT_VOCABULARY_V2;
   const candidateText = slice(input, target.start, target.end);
   if (family === 'pii:global:email' ? emailReservedDomain(candidateText) : networkReservedAddress(candidateText))
     return { sensitivity: 'non-sensitive', matches: [] };
@@ -237,14 +287,14 @@ export function c1ReferenceSensitivity(family: C1Family, input: string, target: 
   const beforeBarrier = Math.max(lineStart, ...others.filter(row => row.end <= target.start && row.end >= lineStart).map(row => row.end));
   const afterBarrier = Math.min(lineEnd, ...others.filter(row => row.start >= target.end && row.start <= lineEnd).map(row => row.start));
   const found: Array<{ entry: Entry; side: 0 | 1; start: number; end: number }> = [];
-  for (const entry of C1_CONTEXT_ENTRIES.filter(row => row.domains.includes(domain))) {
-    const view = contextView(chars.filter(item => item.byte >= lineStart && item.byte < lineEnd), entry.language);
+  for (const entry of (v2 ? C1_CONTEXT_ENTRIES_V2 : C1_CONTEXT_ENTRIES).filter(row => row.domains.includes(domain))) {
+    const view = contextView(chars.filter(item => item.byte >= lineStart && item.byte < lineEnd), entry.language, vocabulary);
     const at = (byte: number) => { const index = view.findIndex(item => item.byte >= byte); return index < 0 ? view.length : index; };
     const [candStart, candEnd] = [at(target.start), at(target.end)];
     const windows: Array<[0 | 1, number, number]> = [[0, at(beforeBarrier), candStart], [1, candEnd, at(afterBarrier)]];
     const positions = lineCandidates.map(row => [at(row.start), at(row.end)] as const);
     for (const form of entry.forms) {
-      const needle = Array.from(contextView(Array.from(form).map((char, byte) => ({ char, byte })), entry.language).map(item => item.char).join(''));
+      const needle = Array.from(contextView(Array.from(form).map((char, byte) => ({ char, byte })), entry.language, vocabulary).map(item => item.char).join(''));
       for (const [side, from, to] of windows) {
         if (entry.kind === 'field-label' && side === 1) continue;
         const text = view.slice(from, to).map(item => item.char);
@@ -257,7 +307,9 @@ export function c1ReferenceSensitivity(family: C1Family, input: string, target: 
           if (distance > (entry.kind === 'field-label' ? 16 : 64)) continue;
           if (entry.kind === 'field-label' && !text.slice(index + needle.length).every(char => /\s/u.test(char) || char === '"' || char === "'")) continue;
           const start = from + index, end = start + needle.length;
-          const distances = positions.map(([s, e]) => e <= start ? start - e : Math.max(0, s - end));
+          // pii-context/v2 (#924): a field label's equidistance is judged among the candidates that follow it only.
+          const compared = v2 && entry.kind === 'field-label' ? positions.filter(([s]) => s >= end) : positions;
+          const distances = compared.map(([s, e]) => e <= start ? start - e : Math.max(0, s - end));
           const nearest = Math.min(...distances);
           if (distances.filter(value => value === nearest).length > 1) continue;
           found.push({ entry, side, start, end });
@@ -298,11 +350,22 @@ const MAX_SHARED_CANDIDATE = 4;
 export function validateC1PopulationPlan(value: unknown, priorPlanCandidates: readonly string[] = []): { plan: C1PopulationPlan; independence: C1Independence } {
   const plan = value as C1PopulationPlan;
   if (!plan || plan.schemaVersion !== 1 || plan.reportType !== 'pii-family-population-plan' || plan.supportClaims !== false ||
-      !C1_FAMILIES.includes(plan.family) || plan.issue !== C1_ISSUE || plan.contextVocabulary !== C1_CONTEXT_VOCABULARY ||
+      !C1_FAMILIES.includes(plan.family) ||
+      !((plan.issue === C1_ISSUE && plan.contextVocabulary === C1_CONTEXT_VOCABULARY) || (plan.issue === C1_V2_ISSUE && plan.contextVocabulary === C1_CONTEXT_VOCABULARY_V2)) ||
       plan.familyContractVersion !== 1 || plan.plan?.family !== plan.family || plan.plan.findingType !== plan.findingType ||
       plan.plan.familyContractVersion !== 1 || plan.plan.canonicalOffsetUnit !== 'utf8-byte' || !Array.isArray(plan.plan.cases) ||
       !Array.isArray(plan.strata) || !Array.isArray(plan.populations))
     throw new Error('Invalid C1 PII population plan');
+  const vocabulary = plan.contextVocabulary as C1Vocabulary;
+  if (plan.derivedFrom !== undefined) {
+    const known = [...Object.values(C1_POPULATION_PLANS), ...C1_SUPERSEDED_PLANS].find(row => row.file === plan.derivedFrom!.file);
+    if (vocabulary !== C1_CONTEXT_VOCABULARY_V2 || !known || known.plan.family !== plan.family || known.plan.oracle.planCommitment !== plan.derivedFrom.planCommitment ||
+        !/^[a-f0-9]{64}$/.test(plan.derivedFrom.fileSha256) ||
+        plan.derivedFrom.relabeled.some(row => !plan.plan.cases.some(item => item.id === row.caseId && item.stratum === row.toStratum) ||
+          !known.plan.plan.cases.some(item => item.id === row.caseId && item.stratum === row.fromStratum)) ||
+        plan.derivedFrom.addedCases.some(id => !plan.plan.cases.some(item => item.id === id) || known.plan.plan.cases.some(item => item.id === id)))
+      throw new Error('C1 derivation record does not match its frozen predecessor');
+  }
   if (plan.supersedes !== undefined) {
     const prior = C1_SUPERSEDED_PLANS.find(row => row.file === plan.supersedes!.file);
     if (!prior || prior.plan.family !== plan.family || prior.plan.oracle.planCommitment !== plan.supersedes.planCommitment ||
@@ -347,10 +410,10 @@ export function validateC1PopulationPlan(value: unknown, priorPlanCandidates: re
       if (!Number.isInteger(other.start) || other.end <= other.start || other.end > bytes(row.input).length ||
           (label.candidate && other.start < label.candidate.end && label.candidate.start < other.end))
         throw new Error(`Invalid C1 line candidate: ${row.id}`);
-    if (label.identity !== 'not-established' && plan.family === 'pii:global:email' && !emailWholeCandidate(row.input, label.candidate!))
+    if (label.identity !== 'not-established' && plan.family === 'pii:global:email' && !emailWholeCandidate(row.input, label.candidate!, vocabulary))
       throw new Error(`C1 email candidate is not a whole contract candidate: ${row.id}`);
     if (label.identity === 'valid') {
-      const reference = c1ReferenceSensitivity(plan.family, row.input, label.candidate!, row.lineCandidates);
+      const reference = c1ReferenceSensitivity(plan.family, row.input, label.candidate!, row.lineCandidates, vocabulary);
       if (reference.sensitivity !== label.sensitivity)
         throw new Error(`C1 label disagrees with the contract reference: ${row.id} (${label.sensitivity} vs ${reference.sensitivity})`);
     }

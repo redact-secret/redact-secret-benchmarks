@@ -6,6 +6,7 @@ import { comparePiiPopulationReports, piiPopulationContract, validatePiiPopulati
   type PiiPopulationReport } from './populations.ts';
 import type { PiiAccountingRow } from './accounting.ts';
 import { parsePiiActivationIdentity } from './product-binding.ts';
+import type { PiiContextVocabulary } from './context-vocabulary.ts';
 
 const canonical = (value: unknown): unknown => Array.isArray(value) ? value.map(canonical) : value && typeof value === 'object' ?
   Object.fromEntries(Object.entries(value).filter(([, child]) => child !== undefined).sort(([a], [b]) => a.localeCompare(b))
@@ -21,10 +22,15 @@ const exact = (value: unknown, keys: string[]) => value !== null && typeof value
   Object.keys(value).sort().join(',') === [...keys].sort().join(',');
 const projection = (value: Record<string, unknown>) => { const { artifactCommitment: _commitment, ...rest } = value; return rest; };
 
-export function piiArrivalSelectionEvidence(side: 'baseline' | 'candidate', activationIdentity: string, familyAvailability: string) {
+/**
+ * The frozen arrival contract was measured against `pii-context/v1` (beta.10). A later candidate that reports
+ * another vocabulary must name it explicitly, so a silent vocabulary change still fails closed.
+ */
+export function piiArrivalSelectionEvidence(side: 'baseline' | 'candidate', activationIdentity: string, familyAvailability: string,
+  vocabulary: PiiContextVocabulary = 'pii-context/v1') {
   const policy = piiArrivalContract.population.selectionComparison, expected = policy[side];
   const parsed = parsePiiActivationIdentity(activationIdentity);
-  if (parsed.credentials !== 'full' || parsed.vocabulary !== 'pii-context/v1' ||
+  if (parsed.credentials !== 'full' || parsed.vocabulary !== vocabulary ||
       JSON.stringify(parsed.selectors) !== JSON.stringify(expected.effectiveSelectors) ||
       JSON.stringify(parsed.families) !== JSON.stringify(expected.expectedAvailableFamilies) ||
       familyAvailability !== expected.familyAvailability)

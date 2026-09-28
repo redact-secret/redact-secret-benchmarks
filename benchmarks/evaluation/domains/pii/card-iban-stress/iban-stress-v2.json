@@ -1,0 +1,4307 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-validator-collision-stress-plan",
+  "planVersion": 2,
+  "supportClaims": false,
+  "issue": "redact-secret/redact-secret-benchmarks#428",
+  "parentLedger": {
+    "file": "evidence/901/pii-gap-ledger-v1.json",
+    "contentCommitment": "7fcbba702d93849ce1452ee5a9adf3d20e493179107ec0c6bbda36cb9e5fd116"
+  },
+  "family": "pii:global:iban",
+  "findingType": "pii_global_iban",
+  "familyContractVersion": 1,
+  "contract": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "79c0a66119fb72931fda9adddbe2973a52bb4833",
+    "file": "docs/contracts/pii/iban-v1.md",
+    "contextVocabulary": "pii-context/v2"
+  },
+  "derivedFrom": {
+    "id": "iban-stress-v1",
+    "file": "benchmarks/evaluation/domains/pii/card-iban-stress/iban-stress-v1.json",
+    "fileSha256": "e953ee00c04339c2a38532483e2d61afb9254447819bcf1a706dbe4a87042a69",
+    "planCommitment": "d05fbb4de0ac1a0da071ba734f4b43ddfb961b22cfda78876f22cb75f5c3c584",
+    "method": "Every v1 case is kept with its id, construction and input. The pre-registered pii-context/v2 expectation revisions become native authored truth; new independent cases are appended. No case was added, removed or relabelled from a scan.",
+    "relabeled": [
+      {
+        "caseId": "iban-xfam-equidistant-after-card",
+        "from": "valid/not-established",
+        "to": "valid/sensitive",
+        "basis": "redact-secret/redact-secret#924:v2-forward-only-field-label-equidistance"
+      }
+    ],
+    "addedCases": [
+      "iban-v2-control-pos-se24-example-before",
+      "iban-v2-control-neg-se24-example-before",
+      "iban-v2-control-pos-ch21-documentation-after",
+      "iban-v2-control-neg-ch21-documentation-after",
+      "iban-v2-control-pos-be16-documentation-before",
+      "iban-v2-control-neg-be16-documentation-before",
+      "iban-v2-control-pos-ie22-korean-example-after",
+      "iban-v2-control-neg-ie22-korean-example-after"
+    ]
+  },
+  "profile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "canonicalOffsetUnit": "utf8-byte",
+  "authority": {
+    "countryRegistry": {
+      "sourceKind": "registration-authority",
+      "sourceId": "swift-iso-13616-iban-registry",
+      "locator": "https://www.swift.com/swift-resource/9606/download",
+      "revision": "Release 103 (2026-09-17)",
+      "derivedCountryLengthRows": 89
+    },
+    "validator": {
+      "id": "iban-mod97",
+      "version": 1,
+      "normativeSource": "ISO 13616-1:2020"
+    }
+  },
+  "authorityGaps": [
+    {
+      "id": "no-authority-reserved-iban-value",
+      "detail": "pii-v1 and iban-v1 name no authority-reserved or test IBAN: Release 103 is frozen for country/length rows only, and its per-country example values carry no negative authority in the contract. The valid/non-sensitive cell therefore stays empty by contract; no control was invented. The registry download returned HTTP 403 on 2026-09-28, so no example value could be verified either."
+    }
+  ],
+  "constructions": [
+    {
+      "id": "iban-synx-marker-v1",
+      "method": "country, check digits by the iban-v1 generator, BBAN SYNX + zero run + marker 425 + serial (seed redact-secret-benchmarks-425-iban)"
+    },
+    {
+      "id": "iban-numeric-marker-v1",
+      "method": "country, check digits by the iban-v1 generator, BBAN 0425 + zero run + serial (seed redact-secret-benchmarks-425-iban)"
+    },
+    {
+      "id": "iban-derived-near-miss-v1",
+      "method": "a named IBAN construction with a check digit, character or adjacent-pair change, mod-97 failing"
+    },
+    {
+      "id": "rf-creditor-reference-v1",
+      "method": "ISO 11649-shaped RF reference: RF, mod-97 check digits, marker 425 + zero run (a mod-97 lookalike, not an IBAN)"
+    },
+    {
+      "id": "hand-authored-shape",
+      "method": "a non-value shape (placeholder, masked or reference syntax) written by hand"
+    }
+  ],
+  "axes": [
+    {
+      "order": 19,
+      "id": "iban-multi-country-positives",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ]
+    },
+    {
+      "order": 20,
+      "id": "iban-mod97-valid-lookalikes",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ]
+    },
+    {
+      "order": 21,
+      "id": "iban-reference-documentation-controls",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ]
+    },
+    {
+      "order": 22,
+      "id": "iban-print-format-separator-twins",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ]
+    }
+  ],
+  "nonGoals": [
+    {
+      "id": "noncanonical-iban-formats",
+      "basis": "Lowercase, mixed case, hyphen, repeated space, tab, NBSP, dot, groups of five and mixed compact/print are iban-v1 unsupported formats."
+    },
+    {
+      "id": "countries-outside-registry-103",
+      "basis": "Only the 89 Release 103 country/length rows are in claim; US, KR, CA, ZZ and RF are out of claim."
+    }
+  ],
+  "contractNotes": [
+    {
+      "id": "context-equidistance-v2",
+      "basis": "pii-context/v2 (#924): a field label is compared only with the candidates that follow it, so a field label right after an earlier same-line value still associates with the value after it. The v1 equidistance cases are relabelled sensitive."
+    },
+    {
+      "id": "annotation-not-whole-token",
+      "basis": "pii-context/v2 (unchanged from v1) tokenizes on whitespace, underscore, hyphen, colon and equals only; a parenthesized (example)/(예시) is not the whole example label and does not suppress."
+    }
+  ],
+  "independenceRequirements": {
+    "minDistinctPositiveValues": 25,
+    "maxDominantPositiveCaseShare": 0.2,
+    "minPositiveConstructions": 2,
+    "minKoreanPositives": 5,
+    "minDeclaredTwins": 25
+  },
+  "populations": [
+    {
+      "id": "qualification-plan",
+      "denominator": {
+        "unit": "authored-case",
+        "selection": "explicit-members",
+        "caseIds": [
+          "iban-pos-no15-compact",
+          "iban-pos-be16-upper-label",
+          "iban-pos-dk18-long-label",
+          "iban-pos-nl18-json",
+          "iban-pos-fi18-print",
+          "iban-pos-mk19-compact",
+          "iban-pos-at20-compact",
+          "iban-pos-ch21-kv",
+          "iban-pos-de22-compact",
+          "iban-pos-gb22-beneficiary",
+          "iban-pos-ie22-print",
+          "iban-pos-gi23-compact",
+          "iban-pos-es24-kebab",
+          "iban-pos-pt25-compact",
+          "iban-pos-tr26-compact",
+          "iban-pos-it27-print",
+          "iban-pos-fr27-log-line",
+          "iban-pos-pl28-compact",
+          "iban-pos-br29-compact",
+          "iban-pos-mu30-compact",
+          "iban-pos-mt31-print",
+          "iban-pos-lc32-print",
+          "iban-pos-ru33-print",
+          "iban-ko-pos-de22-korean-label",
+          "iban-ko-pos-fr27-print-underscore",
+          "iban-ko-pos-nl18-payee",
+          "iban-ko-pos-es24-iban-form",
+          "iban-ko-pos-se24-astral-print",
+          "iban-print-de22-final-group-2",
+          "iban-print-no15-final-group-3",
+          "iban-print-de22-trailing-space-outside-range",
+          "iban-print-de22-hyphen",
+          "iban-print-de22-double-space",
+          "iban-print-de22-tab",
+          "iban-print-de22-nbsp",
+          "iban-print-de22-lowercase",
+          "iban-print-de22-mixed-case",
+          "iban-print-de22-mixed-compact-and-print",
+          "iban-print-de22-groups-of-five",
+          "iban-print-de22-dot",
+          "iban-xfam-at20-print-card-shaped-bban",
+          "iban-xfam-equidistant-after-card",
+          "iban-xfam-nearest-after-card"
+        ]
+      },
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "rationaleCode": "qualification-equal-class-mass",
+        "strata": [
+          {
+            "evidenceClass": "cross-family-collision",
+            "mass": 3334
+          },
+          {
+            "evidenceClass": "sensitive-synthetic",
+            "mass": 3333
+          },
+          {
+            "evidenceClass": "unsupported-format",
+            "mass": 3333
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnostic-balanced",
+      "denominator": {
+        "unit": "authored-case",
+        "selection": "explicit-members",
+        "caseIds": [
+          "iban-pos-no15-compact",
+          "iban-pos-be16-upper-label",
+          "iban-pos-dk18-long-label",
+          "iban-pos-nl18-json",
+          "iban-pos-fi18-print",
+          "iban-pos-mk19-compact",
+          "iban-pos-at20-compact",
+          "iban-pos-ch21-kv",
+          "iban-pos-de22-compact",
+          "iban-pos-gb22-beneficiary",
+          "iban-pos-ie22-print",
+          "iban-pos-gi23-compact",
+          "iban-pos-es24-kebab",
+          "iban-pos-pt25-compact",
+          "iban-pos-tr26-compact",
+          "iban-pos-it27-print",
+          "iban-pos-fr27-log-line",
+          "iban-pos-pl28-compact",
+          "iban-pos-br29-compact",
+          "iban-pos-mu30-compact",
+          "iban-pos-mt31-print",
+          "iban-pos-lc32-print",
+          "iban-pos-ru33-print",
+          "iban-ko-pos-de22-korean-label",
+          "iban-ko-pos-fr27-print-underscore",
+          "iban-ko-pos-nl18-payee",
+          "iban-ko-pos-es24-iban-form",
+          "iban-ko-pos-se24-astral-print",
+          "iban-lookalike-de21-short",
+          "iban-lookalike-de23-long",
+          "iban-lookalike-gb21-short",
+          "iban-lookalike-gb23-long",
+          "iban-lookalike-no16-long",
+          "iban-lookalike-fr28-long",
+          "iban-lookalike-ru34-long",
+          "iban-lookalike-lc31-short",
+          "iban-lookalike-unknown-us22",
+          "iban-lookalike-unknown-kr22",
+          "iban-lookalike-unknown-zz24",
+          "iban-lookalike-unknown-ca20",
+          "iban-lookalike-rf-reference-payment-label",
+          "iban-lookalike-rf-reference-iban-label",
+          "iban-near-miss-de22-check-digits",
+          "iban-near-miss-de22-bban-digit",
+          "iban-near-miss-gb22-adjacent-swap",
+          "iban-near-miss-it27-print-letter",
+          "iban-collision-sku-twin",
+          "iban-collision-order-ref",
+          "iban-collision-account-number",
+          "iban-collision-bank-account",
+          "iban-collision-tracking",
+          "iban-collision-neutral-value",
+          "iban-collision-bare-prose",
+          "iban-collision-neutral-context-twin",
+          "iban-doc-example-before",
+          "iban-doc-documentation-before",
+          "iban-doc-example-after",
+          "iban-ko-doc-example-before-iban-form",
+          "iban-ko-doc-example-before-korean-label",
+          "iban-ko-doc-example-after",
+          "iban-en-parenthesized-example-not-whole-label",
+          "iban-ref-mustache-at20",
+          "iban-ref-env-at20",
+          "iban-ref-angle-at20",
+          "iban-ref-env-name",
+          "iban-ref-placeholder-x",
+          "iban-ref-masked",
+          "iban-ko-ref-masked",
+          "iban-print-de22-final-group-2",
+          "iban-print-no15-final-group-3",
+          "iban-print-de22-trailing-space-outside-range",
+          "iban-print-de22-hyphen",
+          "iban-print-de22-double-space",
+          "iban-print-de22-tab",
+          "iban-print-de22-nbsp",
+          "iban-print-de22-lowercase",
+          "iban-print-de22-mixed-case",
+          "iban-print-de22-mixed-compact-and-print",
+          "iban-print-de22-groups-of-five",
+          "iban-print-de22-dot",
+          "iban-xfam-at20-print-card-shaped-bban",
+          "iban-xfam-at20-print-under-card-label",
+          "iban-xfam-iban-under-phone-label",
+          "iban-xfam-equidistant-after-card",
+          "iban-xfam-nearest-after-card",
+          "iban-v2-control-pos-se24-example-before",
+          "iban-v2-control-neg-se24-example-before",
+          "iban-v2-control-pos-ch21-documentation-after",
+          "iban-v2-control-neg-ch21-documentation-after",
+          "iban-v2-control-pos-be16-documentation-before",
+          "iban-v2-control-neg-be16-documentation-before",
+          "iban-v2-control-pos-ie22-korean-example-after",
+          "iban-v2-control-neg-ie22-korean-example-after"
+        ]
+      },
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "rationaleCode": "diagnostic-equal-class-mass",
+        "strata": [
+          {
+            "evidenceClass": "context-negative",
+            "mass": 1250
+          },
+          {
+            "evidenceClass": "cross-family-collision",
+            "mass": 1250
+          },
+          {
+            "evidenceClass": "near-miss",
+            "mass": 1250
+          },
+          {
+            "evidenceClass": "ordinary-reference-account",
+            "mass": 1250
+          },
+          {
+            "evidenceClass": "out-of-claim",
+            "mass": 1250
+          },
+          {
+            "evidenceClass": "placeholder",
+            "mass": 1250
+          },
+          {
+            "evidenceClass": "sensitive-synthetic",
+            "mass": 1250
+          },
+          {
+            "evidenceClass": "unsupported-format",
+            "mass": 1250
+          }
+        ]
+      }
+    },
+    {
+      "id": "benign-heavy-stress",
+      "denominator": {
+        "unit": "authored-case",
+        "selection": "explicit-members",
+        "caseIds": [
+          "iban-lookalike-de21-short",
+          "iban-lookalike-de23-long",
+          "iban-lookalike-gb21-short",
+          "iban-lookalike-gb23-long",
+          "iban-lookalike-no16-long",
+          "iban-lookalike-fr28-long",
+          "iban-lookalike-ru34-long",
+          "iban-lookalike-lc31-short",
+          "iban-lookalike-unknown-us22",
+          "iban-lookalike-unknown-kr22",
+          "iban-lookalike-unknown-zz24",
+          "iban-lookalike-unknown-ca20",
+          "iban-lookalike-rf-reference-payment-label",
+          "iban-lookalike-rf-reference-iban-label",
+          "iban-near-miss-de22-check-digits",
+          "iban-near-miss-de22-bban-digit",
+          "iban-near-miss-gb22-adjacent-swap",
+          "iban-near-miss-it27-print-letter",
+          "iban-collision-sku-twin",
+          "iban-collision-order-ref",
+          "iban-collision-account-number",
+          "iban-collision-bank-account",
+          "iban-collision-tracking",
+          "iban-collision-neutral-value",
+          "iban-collision-bare-prose",
+          "iban-collision-neutral-context-twin",
+          "iban-doc-example-before",
+          "iban-doc-documentation-before",
+          "iban-doc-example-after",
+          "iban-ko-doc-example-before-iban-form",
+          "iban-ko-doc-example-before-korean-label",
+          "iban-ko-doc-example-after",
+          "iban-en-parenthesized-example-not-whole-label",
+          "iban-ref-mustache-at20",
+          "iban-ref-env-at20",
+          "iban-ref-angle-at20",
+          "iban-ref-env-name",
+          "iban-ref-placeholder-x",
+          "iban-ref-masked",
+          "iban-ko-ref-masked",
+          "iban-xfam-at20-print-under-card-label",
+          "iban-xfam-iban-under-phone-label",
+          "iban-v2-control-pos-se24-example-before",
+          "iban-v2-control-neg-se24-example-before",
+          "iban-v2-control-pos-ch21-documentation-after",
+          "iban-v2-control-neg-ch21-documentation-after",
+          "iban-v2-control-pos-be16-documentation-before",
+          "iban-v2-control-neg-be16-documentation-before",
+          "iban-v2-control-pos-ie22-korean-example-after",
+          "iban-v2-control-neg-ie22-korean-example-after"
+        ]
+      },
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "rationaleCode": "benign-heavy-one-percent-sensitive",
+        "strata": [
+          {
+            "evidenceClass": "context-negative",
+            "mass": 1650
+          },
+          {
+            "evidenceClass": "cross-family-collision",
+            "mass": 1650
+          },
+          {
+            "evidenceClass": "near-miss",
+            "mass": 1650
+          },
+          {
+            "evidenceClass": "ordinary-reference-account",
+            "mass": 1650
+          },
+          {
+            "evidenceClass": "out-of-claim",
+            "mass": 1650
+          },
+          {
+            "evidenceClass": "placeholder",
+            "mass": 1650
+          },
+          {
+            "evidenceClass": "sensitive-synthetic",
+            "mass": 100
+          }
+        ]
+      }
+    }
+  ],
+  "cases": [
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-no15-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 1
+      },
+      "prefix": "iban: ",
+      "display": "NO93SYNX0042501",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: NO93SYNX0042501",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 21,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 21
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-be16-upper-label",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 2
+      },
+      "prefix": "IBAN=",
+      "display": "BE76042500000002",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "IBAN=BE76042500000002",
+      "expected": {
+        "publicFinding": true,
+        "start": 5,
+        "end": 21,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 5,
+          "end": 21
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-dk18-long-label",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 3
+      },
+      "prefix": "international bank account number: ",
+      "display": "DK44SYNX0000042503",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "international bank account number: DK44SYNX0000042503",
+      "expected": {
+        "publicFinding": true,
+        "start": 35,
+        "end": 53,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 35,
+          "end": 53
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-nl18-json",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 4
+      },
+      "prefix": "{\"iban\": \"",
+      "display": "NL4504250000000004",
+      "suffix": "\"}",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "{\"iban\": \"NL4504250000000004\"}",
+      "expected": {
+        "publicFinding": true,
+        "start": 10,
+        "end": 28,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 10,
+          "end": 28
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-fi18-print",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 5
+      },
+      "prefix": "iban: ",
+      "display": "FI75 SYNX 0000 0425 05",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: FI75 SYNX 0000 0425 05",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 28,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 28
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-mk19-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 6
+      },
+      "prefix": "iban = ",
+      "display": "MK18042500000000006",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban = MK18042500000000006",
+      "expected": {
+        "publicFinding": true,
+        "start": 7,
+        "end": 26,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 7,
+          "end": 26
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-at20-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 7
+      },
+      "prefix": "iban: ",
+      "display": "AT33SYNX000000042507",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: AT33SYNX000000042507",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 26,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 26
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-ch21-kv",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 8
+      },
+      "prefix": "iban=",
+      "display": "CH6404250000000000008",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban=CH6404250000000000008",
+      "expected": {
+        "publicFinding": true,
+        "start": 5,
+        "end": 26,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 5,
+          "end": 26
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-de22-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "iban: ",
+      "display": "DE02042500000000000009",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02042500000000000009",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 28,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 28
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-gb22-beneficiary",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 10
+      },
+      "prefix": "beneficiary iban: ",
+      "display": "GB49SYNX00000000042510",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "beneficiary iban: GB49SYNX00000000042510",
+      "expected": {
+        "publicFinding": true,
+        "start": 18,
+        "end": 40,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 18,
+          "end": 40
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-ie22-print",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 11
+      },
+      "prefix": "IBAN: ",
+      "display": "IE97 0425 0000 0000 0000 11",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "IBAN: IE97 0425 0000 0000 0000 11",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 33,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-gi23-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 12
+      },
+      "prefix": "iban: ",
+      "display": "GI71SYNX000000000042512",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: GI71SYNX000000000042512",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 29,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-es24-kebab",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 13
+      },
+      "prefix": "payee-iban: ",
+      "display": "ES6704250000000000000013",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "payee-iban: ES6704250000000000000013",
+      "expected": {
+        "publicFinding": true,
+        "start": 12,
+        "end": 36,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 12,
+          "end": 36
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-pt25-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 14
+      },
+      "prefix": "iban: ",
+      "display": "PT97SYNX00000000000042514",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: PT97SYNX00000000000042514",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 31,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-tr26-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 15
+      },
+      "prefix": "iban: ",
+      "display": "TR680425000000000000000015",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: TR680425000000000000000015",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 32,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-it27-print",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 16
+      },
+      "prefix": "iban: ",
+      "display": "IT09 SYNX 0000 0000 0000 0042 516",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: IT09 SYNX 0000 0000 0000 0042 516",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 39,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 39
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-fr27-log-line",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 17
+      },
+      "prefix": "transfer queued iban=",
+      "display": "FR9404250000000000000000017",
+      "suffix": " amount=10",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "transfer queued iban=FR9404250000000000000000017 amount=10",
+      "expected": {
+        "publicFinding": true,
+        "start": 21,
+        "end": 48,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 21,
+          "end": 48
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-pl28-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 18
+      },
+      "prefix": "iban: ",
+      "display": "PL13SYNX00000000000000042518",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: PL13SYNX00000000000000042518",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 34,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 34
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-br29-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 19
+      },
+      "prefix": "iban: ",
+      "display": "BR600425000000000000000000019",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: BR600425000000000000000000019",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 35,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 35
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-mu30-compact",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 20
+      },
+      "prefix": "iban: ",
+      "display": "MU56SYNX0000000000000000042520",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: MU56SYNX0000000000000000042520",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 36,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 36
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-mt31-print",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 21
+      },
+      "prefix": "iban: ",
+      "display": "MT47 0425 0000 0000 0000 0000 0000 021",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: MT47 0425 0000 0000 0000 0000 0000 021",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 44,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 44
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-lc32-print",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 22
+      },
+      "prefix": "iban: ",
+      "display": "LC65 SYNX 0000 0000 0000 0000 0004 2522",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: LC65 SYNX 0000 0000 0000 0000 0004 2522",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 45,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 45
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-pos-ru33-print",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 23
+      },
+      "prefix": "iban: ",
+      "display": "RU92 0425 0000 0000 0000 0000 0000 0002 3",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: RU92 0425 0000 0000 0000 0000 0000 0002 3",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 47,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 47
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-ko-pos-de22-korean-label",
+      "axis": "iban-multi-country-positives",
+      "language": "ko",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 24
+      },
+      "prefix": "국제 계좌번호: ",
+      "display": "DE77SYNX00000000042524",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "국제 계좌번호: DE77SYNX00000000042524",
+      "expected": {
+        "publicFinding": true,
+        "start": 21,
+        "end": 43,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 21,
+          "end": 43
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-ko-pos-fr27-print-underscore",
+      "axis": "iban-multi-country-positives",
+      "language": "ko",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 25
+      },
+      "prefix": "국제_계좌번호=",
+      "display": "FR90 SYNX 0000 0000 0000 0042 525",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "국제_계좌번호=FR90 SYNX 0000 0000 0000 0042 525",
+      "expected": {
+        "publicFinding": true,
+        "start": 20,
+        "end": 53,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 20,
+          "end": 53
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-ko-pos-nl18-payee",
+      "axis": "iban-multi-country-positives",
+      "language": "ko",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 26
+      },
+      "prefix": "수취인 국제 계좌번호: ",
+      "display": "NL09SYNX0000042526",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "수취인 국제 계좌번호: NL09SYNX0000042526",
+      "expected": {
+        "publicFinding": true,
+        "start": 31,
+        "end": 49,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 31,
+          "end": 49
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-ko-pos-es24-iban-form",
+      "axis": "iban-multi-country-positives",
+      "language": "ko",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 27
+      },
+      "prefix": "송금 iban: ",
+      "display": "ES7704250000000000000027",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "송금 iban: ES7704250000000000000027",
+      "expected": {
+        "publicFinding": true,
+        "start": 13,
+        "end": 37,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 13,
+          "end": 37
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-ko-pos-se24-astral-print",
+      "axis": "iban-multi-country-positives",
+      "language": "ko",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 28
+      },
+      "prefix": "🔒 국제 계좌번호 = ",
+      "display": "SE63 0425 0000 0000 0000 0028",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "🔒 국제 계좌번호 = SE63 0425 0000 0000 0000 0028",
+      "expected": {
+        "publicFinding": true,
+        "start": 27,
+        "end": 56,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 27,
+          "end": 56
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "iban-lookalike-de21-short",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "country-length-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 29
+      },
+      "prefix": "iban: ",
+      "display": "DE7904250000000000029",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: DE7904250000000000029",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 27
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-de23-long",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "country-length-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 30
+      },
+      "prefix": "iban: ",
+      "display": "DE550425000000000000030",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: DE550425000000000000030",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 29
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-gb21-short",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "country-length-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 31
+      },
+      "prefix": "iban: ",
+      "display": "GB64SYNX0000000042531",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: GB64SYNX0000000042531",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 27
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-gb23-long",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "country-length-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 32
+      },
+      "prefix": "iban: ",
+      "display": "GB37SYNX000000000042532",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: GB37SYNX000000000042532",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 29
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-no16-long",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "country-length-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 33
+      },
+      "prefix": "iban: ",
+      "display": "NO05SYNX00042533",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: NO05SYNX00042533",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 22
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-fr28-long",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "country-length-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 34
+      },
+      "prefix": "iban: ",
+      "display": "FR48042500000000000000000034",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: FR48042500000000000000000034",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 34
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-ru34-long",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "country-length-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 35
+      },
+      "prefix": "iban: ",
+      "display": "RU55042500000000000000000000000035",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: RU55042500000000000000000000000035",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 40
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-lc31-short",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "country-length-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 36
+      },
+      "prefix": "iban: ",
+      "display": "LC75SYNX00000000000000000042536",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: LC75SYNX00000000000000000042536",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 37
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-unknown-us22",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "unknown-country"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 37
+      },
+      "prefix": "iban: ",
+      "display": "US21042500000000000037",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: US21042500000000000037",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 28
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-unknown-kr22",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "unknown-country"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 38
+      },
+      "prefix": "iban: ",
+      "display": "KR82SYNX00000000042538",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: KR82SYNX00000000042538",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 28
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-unknown-zz24",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "unknown-country"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 39
+      },
+      "prefix": "iban: ",
+      "display": "ZZ90SYNX0000000000042539",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: ZZ90SYNX0000000000042539",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 30
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-unknown-ca20",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "unknown-country"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 40
+      },
+      "prefix": "iban: ",
+      "display": "CA490425000000000040",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: CA490425000000000040",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 26
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-rf-reference-payment-label",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "rf-creditor-reference"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "rf-creditor-reference-v1",
+        "serial": 90
+      },
+      "prefix": "payment reference: ",
+      "display": "RF80425000000090",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "payment reference: RF80425000000090",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 19,
+          "end": 35
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-lookalike-rf-reference-iban-label",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "out-of-claim",
+      "classes": [
+        "rf-creditor-reference"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "rf-creditor-reference-v1",
+        "serial": 90
+      },
+      "prefix": "iban: ",
+      "display": "RF80425000000090",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-lookalike-rf-reference-payment-label",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: RF80425000000090",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 22
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "contract-grammar"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-near-miss-de22-check-digits",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "near-miss",
+      "classes": [
+        "validator-checksum-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-derived-near-miss-v1"
+      },
+      "prefix": "iban: ",
+      "display": "DE03042500000000000009",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "value",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: DE03042500000000000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 28
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-near-miss-de22-bban-digit",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "near-miss",
+      "classes": [
+        "validator-checksum-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-derived-near-miss-v1"
+      },
+      "prefix": "iban: ",
+      "display": "DE02042500000007000009",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "value",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: DE02042500000007000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 28
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-near-miss-gb22-adjacent-swap",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "near-miss",
+      "classes": [
+        "adjacent-transposition"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-derived-near-miss-v1"
+      },
+      "prefix": "beneficiary iban: ",
+      "display": "GB49SYNX00000000045210",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-gb22-beneficiary",
+      "varies": "value",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "beneficiary iban: GB49SYNX00000000045210",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 18,
+          "end": 40
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-near-miss-it27-print-letter",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "near-miss",
+      "classes": [
+        "validator-checksum-invalid"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-derived-near-miss-v1"
+      },
+      "prefix": "iban: ",
+      "display": "IT09 SYYX 0000 0000 0000 0042 516",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-it27-print",
+      "varies": "value",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: IT09 SYYX 0000 0000 0000 0042 516",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 39
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-collision-sku-twin",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "ordinary-reference-account",
+      "classes": [
+        "checksum-valid-semantic-collision"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "sku: ",
+      "display": "DE02042500000000000009",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "sku: DE02042500000000000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 5,
+          "end": 27
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-collision-order-ref",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "ordinary-reference-account",
+      "classes": [
+        "checksum-valid-semantic-collision"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 41
+      },
+      "prefix": "order_ref=",
+      "display": "GB85SYNX00000000042541",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "order_ref=GB85SYNX00000000042541",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 10,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-collision-account-number",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "ordinary-reference-account",
+      "classes": [
+        "checksum-valid-account-label"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 42
+      },
+      "prefix": "account_number: ",
+      "display": "CH1904250000000000042",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "account_number: CH1904250000000000042",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 16,
+          "end": 37
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-collision-bank-account",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "ordinary-reference-account",
+      "classes": [
+        "checksum-valid-account-label"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 43
+      },
+      "prefix": "bank account: ",
+      "display": "BE67SYNX00042543",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "bank account: BE67SYNX00042543",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 14,
+          "end": 30
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-collision-tracking",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "ordinary-reference-account",
+      "classes": [
+        "checksum-valid-semantic-collision"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 44
+      },
+      "prefix": "tracking=",
+      "display": "FR62SYNX0000000000000042544",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "tracking=FR62SYNX0000000000000042544",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 9,
+          "end": 36
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-collision-neutral-value",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "ordinary-reference-account",
+      "classes": [
+        "neutral-context"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 45
+      },
+      "prefix": "value: ",
+      "display": "ES7604250000000000000045",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "value: ES7604250000000000000045",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 7,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-collision-bare-prose",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "ordinary-reference-account",
+      "classes": [
+        "checksum-valid-semantic-collision"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 46
+      },
+      "prefix": "Batch ",
+      "display": "IT72SYNX0000000000000042546",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "suffix": " closed without errors.",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "Batch IT72SYNX0000000000000042546 closed without errors.",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-collision-neutral-context-twin",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "ordinary-reference-account",
+      "classes": [
+        "checksum-valid-semantic-collision"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 10
+      },
+      "prefix": "reference ",
+      "display": "GB49SYNX00000000042510",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-gb22-beneficiary",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "reference GB49SYNX00000000042510",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 10,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-doc-example-before",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "example iban: ",
+      "display": "DE02042500000000000009",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "example iban: DE02042500000000000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 14,
+          "end": 36
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-doc-documentation-before",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 1
+      },
+      "prefix": "documentation iban: ",
+      "display": "NO93SYNX0042501",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-no15-compact",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "documentation iban: NO93SYNX0042501",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 20,
+          "end": 35
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-doc-example-after",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 14
+      },
+      "prefix": "iban: ",
+      "display": "PT97SYNX00000000000042514",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-pt25-compact",
+      "varies": "context",
+      "suffix": " example",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: PT97SYNX00000000000042514 example",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ko-doc-example-before-iban-form",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "ko",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "예시 iban: ",
+      "display": "DE02042500000000000009",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "예시 iban: DE02042500000000000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 13,
+          "end": 35
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ko-doc-example-before-korean-label",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "ko",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 24
+      },
+      "prefix": "예시 국제 계좌번호: ",
+      "display": "DE77SYNX00000000042524",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-ko-pos-de22-korean-label",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "예시 국제 계좌번호: DE77SYNX00000000042524",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 28,
+          "end": 50
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ko-doc-example-after",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "ko",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 24
+      },
+      "prefix": "국제 계좌번호: ",
+      "display": "DE77SYNX00000000042524",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-ko-pos-de22-korean-label",
+      "varies": "context",
+      "suffix": " 예시",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "국제 계좌번호: DE77SYNX00000000042524 예시",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 21,
+          "end": 43
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "annotation-not-whole-token"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-en-parenthesized-example-not-whole-label",
+      "axis": "iban-reference-documentation-controls",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 14
+      },
+      "prefix": "iban: ",
+      "display": "PT97SYNX00000000000042514",
+      "twinOf": "iban-pos-pt25-compact",
+      "varies": "context",
+      "suffix": " (example)",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: PT97SYNX00000000000042514 (example)",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 31,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "iban-ref-mustache-at20",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "placeholder",
+      "classes": [
+        "reference-syntax"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "{{AT33SYNX000000042507}}",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "suffix": "",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: {{AT33SYNX000000042507}}",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ref-env-at20",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "placeholder",
+      "classes": [
+        "reference-syntax"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "${AT33SYNX000000042507}",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "suffix": "",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: ${AT33SYNX000000042507}",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ref-angle-at20",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "placeholder",
+      "classes": [
+        "reference-syntax"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "<AT33SYNX000000042507>",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "suffix": "",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: <AT33SYNX000000042507>",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ref-env-name",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "placeholder",
+      "classes": [
+        "reference-syntax"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "${IBAN}",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "suffix": "",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: ${IBAN}",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ref-placeholder-x",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "placeholder",
+      "classes": [
+        "placeholder"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "XXXX XXXX XXXX XXXX XX",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "suffix": "",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: XXXX XXXX XXXX XXXX XX",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ref-masked",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "placeholder",
+      "classes": [
+        "masked-value"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "DE** **** **** **** **** 00",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "suffix": "",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: DE** **** **** **** **** 00",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-ko-ref-masked",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "placeholder",
+      "classes": [
+        "masked-value"
+      ],
+      "language": "ko",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "국제 계좌번호: ",
+      "display": "GB** **** **** **** **** **",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "suffix": "",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "국제 계좌번호: GB** **** **** **** **** **",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "print-form"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-print-de22-final-group-2",
+      "axis": "iban-print-format-separator-twins",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "iban: ",
+      "display": "DE02 0425 0000 0000 0000 09",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02 0425 0000 0000 0000 09",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 33,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "print-form"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-print-no15-final-group-3",
+      "axis": "iban-print-format-separator-twins",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 1
+      },
+      "prefix": "iban: ",
+      "display": "NO93 SYNX 0042 501",
+      "twinOf": "iban-pos-no15-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: NO93 SYNX 0042 501",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 24,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 24
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "print-form-surrounding-space"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-print-de22-trailing-space-outside-range",
+      "axis": "iban-print-format-separator-twins",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "iban: ",
+      "display": "DE02 0425 0000 0000 0000 09",
+      "twinOf": "iban-print-de22-final-group-2",
+      "varies": "context",
+      "suffix": " ",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02 0425 0000 0000 0000 09 ",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 33,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "iban-print-de22-hyphen",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "DE02-0425-0000-0000-0000-09",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02-0425-0000-0000-0000-09",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-print-de22-double-space",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "DE02  0425  0000  0000  0000  09",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02  0425  0000  0000  0000  09",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-print-de22-tab",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "DE02\t0425\t0000\t0000\t0000\t09",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02\t0425\t0000\t0000\t0000\t09",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-print-de22-nbsp",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "DE02 0425 0000 0000 0000 09",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02 0425 0000 0000 0000 09",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-print-de22-lowercase",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "de02042500000000000009",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: de02042500000000000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-print-de22-mixed-case",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "De02042500000000000009",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: De02042500000000000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-print-de22-mixed-compact-and-print",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "DE02 0425 00000000000009",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02 0425 00000000000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-print-de22-groups-of-five",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "DE020 42500 00000 00000 09",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE020 42500 00000 00000 09",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-print-de22-dot",
+      "axis": "iban-print-format-separator-twins",
+      "evidenceClass": "unsupported-format",
+      "classes": [
+        "unsupported-format"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "hand-authored-shape"
+      },
+      "prefix": "iban: ",
+      "display": "DE02.0425.0000.0000.0000.09",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "layout",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: DE02.0425.0000.0000.0000.09",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "evidenceClass": "cross-family-collision",
+      "classes": [
+        "cross-family-card-shape"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-xfam-at20-print-card-shaped-bban",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 91
+      },
+      "prefix": "iban: ",
+      "display": "AT59 4425 0000 0000 0918",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "iban: AT59 4425 0000 0000 0918",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 30,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 30
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "iban-xfam-at20-print-under-card-label",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "cross-family-collision",
+      "classes": [
+        "cross-family-card-label"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 91
+      },
+      "prefix": "card number: ",
+      "display": "AT59 4425 0000 0000 0918",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-xfam-at20-print-card-shaped-bban",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "card number: AT59 4425 0000 0000 0918",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 13,
+          "end": 37
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-xfam-iban-under-phone-label",
+      "axis": "iban-mod97-valid-lookalikes",
+      "evidenceClass": "cross-family-collision",
+      "classes": [
+        "cross-family-phone-label"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "phone: ",
+      "display": "DE02042500000000000009",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "not-authored",
+      "twinOf": "iban-pos-de22-compact",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "phone: DE02042500000000000009",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 7,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "iban-xfam-equidistant-after-card",
+      "axis": "iban-multi-country-positives",
+      "evidenceClass": "cross-family-collision",
+      "classes": [
+        "context-equidistance",
+        "pii-context-v2:v2-forward-only-field-label-equidistance"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "card_number=4000000000425928 iban=",
+      "display": "DE02042500000000000009",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "not-authored",
+      "twinOf": "iban-xfam-nearest-after-card",
+      "varies": "context",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "card_number=4000000000425928 iban=DE02042500000000000009",
+      "expected": {
+        "publicFinding": true,
+        "start": 34,
+        "end": 56,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 34,
+          "end": 56
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "cross-family-collision",
+      "classes": [
+        "context-equidistance-control"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "not-authored",
+      "id": "iban-xfam-nearest-after-card",
+      "axis": "iban-multi-country-positives",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 9
+      },
+      "prefix": "card_number=4000000000425928; iban=",
+      "display": "DE02042500000000000009",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "input": "card_number=4000000000425928; iban=DE02042500000000000009",
+      "expected": {
+        "publicFinding": true,
+        "start": 35,
+        "end": 57,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 35,
+          "end": 57
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive",
+        "documentation-control-twin-base"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-v2-control-pos-se24-example-before",
+      "axis": "iban-reference-documentation-controls",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 60
+      },
+      "prefix": "iban: ",
+      "display": "SE37SYNX0000000000042560",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "iban: SE37SYNX0000000000042560",
+      "expected": {
+        "publicFinding": true,
+        "start": 6,
+        "end": 30,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 6,
+          "end": 30
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "iban-v2-control-neg-se24-example-before",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 60
+      },
+      "prefix": "example iban: ",
+      "display": "SE37SYNX0000000000042560",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-v2-control-pos-se24-example-before",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "example iban: SE37SYNX0000000000042560",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 14,
+          "end": 38
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive",
+        "documentation-control-twin-base"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-v2-control-pos-ch21-documentation-after",
+      "axis": "iban-reference-documentation-controls",
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 61
+      },
+      "prefix": "IBAN = ",
+      "display": "CH8804250000000000061",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "IBAN = CH8804250000000000061",
+      "expected": {
+        "publicFinding": true,
+        "start": 7,
+        "end": 28,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 7,
+          "end": 28
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "iban-v2-control-neg-ch21-documentation-after",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 61
+      },
+      "prefix": "IBAN = ",
+      "display": "CH8804250000000000061",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-v2-control-pos-ch21-documentation-after",
+      "varies": "context",
+      "suffix": " documentation",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "IBAN = CH8804250000000000061 documentation",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 7,
+          "end": 28
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive",
+        "documentation-control-twin-base"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-v2-control-pos-be16-documentation-before",
+      "axis": "iban-reference-documentation-controls",
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 62
+      },
+      "prefix": "international bank account number: ",
+      "display": "BE39SYNX00042562",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "international bank account number: BE39SYNX00042562",
+      "expected": {
+        "publicFinding": true,
+        "start": 35,
+        "end": 51,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 35,
+          "end": 51
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "iban-v2-control-neg-be16-documentation-before",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "en",
+      "construction": {
+        "id": "iban-synx-marker-v1",
+        "serial": 62
+      },
+      "prefix": "documentation international bank account number: ",
+      "display": "BE39SYNX00042562",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-v2-control-pos-be16-documentation-before",
+      "varies": "context",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "documentation international bank account number: BE39SYNX00042562",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 49,
+          "end": 65
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "evidenceClass": "sensitive-synthetic",
+      "classes": [
+        "validator-valid-sensitive",
+        "documentation-control-twin-base"
+      ],
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "crossFamily": "none-expected",
+      "id": "iban-v2-control-pos-ie22-korean-example-after",
+      "axis": "iban-reference-documentation-controls",
+      "language": "ko",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 63
+      },
+      "prefix": "국제 계좌번호 = ",
+      "display": "IE51 0425 0000 0000 0000 63",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "국제 계좌번호 = IE51 0425 0000 0000 0000 63",
+      "expected": {
+        "publicFinding": true,
+        "start": 22,
+        "end": 49,
+        "sensitive": true
+      },
+      "oracle": {
+        "candidate": {
+          "start": 22,
+          "end": 49
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "iban-v2-control-neg-ie22-korean-example-after",
+      "axis": "iban-reference-documentation-controls",
+      "evidenceClass": "context-negative",
+      "classes": [
+        "documentation-example-public-absence"
+      ],
+      "language": "ko",
+      "construction": {
+        "id": "iban-numeric-marker-v1",
+        "serial": 63
+      },
+      "prefix": "국제 계좌번호 = ",
+      "display": "IE51 0425 0000 0000 0000 63",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "crossFamily": "none-expected",
+      "twinOf": "iban-v2-control-pos-ie22-korean-example-after",
+      "varies": "context",
+      "suffix": " 예시",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "input": "국제 계좌번호 = IE51 0425 0000 0000 0000 63 예시",
+      "expected": {
+        "publicFinding": false,
+        "sensitive": false
+      },
+      "oracle": {
+        "candidate": {
+          "start": 22,
+          "end": 49
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    }
+  ],
+  "planSeed": "1ee886af8f12043a1815b4dbb52255e2ba01481a3557401c8d89f0d48d108da8"
+}

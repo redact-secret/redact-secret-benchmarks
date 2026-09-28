@@ -38,6 +38,10 @@ async function candidatePackages() {
   return { root, core: await pack(core), node: await pack(node), wasm: await pack(wasm) };
 }
 
+// A full classification over every corpus takes about 110 s of CPU since the Beta.11 #434 corpus (4,171 fixtures);
+// the harness limit leaves headroom for a loaded runner instead of failing on wall-clock time alone.
+const CLASSIFY_TIMEOUT = 300_000;
+
 test('eval:classify CLI substitutes a candidate build for redact-secret only, and names the measured product', async () => {
   const artifacts = await candidatePackages();
   const output = path.join(artifacts.root, 'support-status.json');
@@ -46,7 +50,7 @@ test('eval:classify CLI substitutes a candidate build for redact-secret only, an
     await exec(process.execPath, ['--import', 'tsx', 'benchmarks/classify-support.ts',
       `--output=${output}`, `--candidate-package=${artifacts.core}`, `--candidate-node-package=${artifacts.node}`,
       `--candidate-wasm-package=${artifacts.wasm}`, `--candidate-source-commit=${sourceCommit}`],
-      { cwd: repositoryRoot, timeout: 120_000 });
+      { cwd: repositoryRoot, timeout: CLASSIFY_TIMEOUT });
     const report = JSON.parse(await readFile(output, 'utf8'));
     assert.ok(validate(report), JSON.stringify(validate.errors));
     // Peer scanners stay exactly the pinned set; only the redact-secret entry was substituted.
@@ -66,7 +70,7 @@ test('eval:classify CLI with no arguments still measures the published package, 
   const output = path.join(await mkdtemp(path.join(tmpdir(), 'classify-default-')), 'support-status.json');
   try {
     await exec(process.execPath, ['--import', 'tsx', 'benchmarks/classify-support.ts', `--output=${output}`],
-      { cwd: repositoryRoot, timeout: 120_000 });
+      { cwd: repositoryRoot, timeout: CLASSIFY_TIMEOUT });
     const report = JSON.parse(await readFile(output, 'utf8'));
     assert.ok(validate(report), JSON.stringify(validate.errors));
     assert.equal(report.product, null);

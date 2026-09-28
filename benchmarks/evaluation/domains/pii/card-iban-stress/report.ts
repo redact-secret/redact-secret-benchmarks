@@ -27,7 +27,7 @@ export function buildStressReport(observation: Observation) {
       const plan = stressPlans[entry.family as StressFamily];
       const observed = entry.lanes.filter(lane => lane.status === 'observed');
       const unavailable = entry.lanes.filter(lane => lane.status !== 'observed').map(lane => ({ lane: lane.lane, selection: lane.selection, status: lane.status }));
-      return { ...scoreSide(plan, observed, side.identity, oracle), unavailableLanes: unavailable };
+      return { ...scoreSide(plan, observed, oracle), unavailableLanes: unavailable };
     }),
   }));
   const primary = (side: typeof sides[number], family: string) => side.families.find(row => row.family === family)!.lanes
@@ -50,7 +50,8 @@ export function buildStressReport(observation: Observation) {
       nonRedactAction: lane.action.nonRedact, valueLeaked: lane.outputLeakage.valueLeakedAfterRedaction,
       collateralOutsideModified: lane.collateral.casesWithOutsideModification, credentialFindings: lane.collateral.credentialFindings,
       crossFamilyNoneExpectedViolations: lane.crossFamily.noneExpectedViolations, crossFamilyFindings: lane.crossFamily.findingsByType,
-      laneDisagreements: scored.parity.disagreements.length, identityOnly: scored.identityOnly.status };
+      surfaceDisagreements: Object.values(scored.parity.surfaceDisagreements).flat().length,
+      selectionDependentCases: [...new Set(Object.values(scored.parity.selectionDisagreements).flat())].length, identityOnly: scored.identityOracle.identityOnly.status };
   }));
   return {
     schemaVersion: 1, reportType: 'pii-card-iban-stress-report', supportClaims: false, statusPromotion: false,

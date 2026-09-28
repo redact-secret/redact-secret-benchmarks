@@ -10,7 +10,7 @@
  */
 import { hash } from '../../../substrate/hash.ts';
 import {
-  PII_ORACLE_UNAVAILABLE_REASON, evaluatePiiIdentityOracle, piiIdentityOracleCommitment, piiOraclePlanCommitment,
+  PII_ORACLE_UNAVAILABLE_REASON, piiIdentityOracleCommitment, piiOraclePlanCommitment,
   validatePiiIdentityOracle, type PiiIdentityOracle, type PiiOraclePlan,
 } from '../identity-oracle.ts';
 import { CONSTRUCTIONS, STRESS_PLAN_FILES, buildStressPlan, type StressCase, type StressView } from './authoring.ts';
@@ -237,20 +237,48 @@ export function scoreLane(plan: StressPlan, lane: ObservedLane) {
   };
 }
 
-/** Lanes of one side must agree case by case on the target family (cross-surface and global/exact-selection parity). */
+/**
+ * Lane parity. Surface parity compares the Node addon and Wasm lanes under the same selection; selection parity
+ * compares the plan's `pii:global`+`pii:us` selection with the exact-family selection on the same surface. The plan's
+ * expectations are authored for the `pii:global`+`pii:us` selection; exact-family lanes are a diagnostic of how the
+ * selected family set changes the candidate set that context association sees.
+ */
 export function laneParity(plan: StressPlan, lanes: ObservedLane[]) {
   const key = (lane: ObservedLane) => lane.cases.map(row => JSON.stringify(row.findings.filter(finding => finding.type === plan.findingType)
     .map(finding => [finding.start, finding.end, finding.action])));
-  const reference = key(lanes[0]);
-  const disagreements = lanes.slice(1).flatMap(lane => key(lane).flatMap((value, index) => value === reference[index] ? [] : [`${lane.lane}/${lane.selection}:${plan.cases[index].id}`]));
-  return { lanes: lanes.map(lane => `${lane.lane}/${lane.selection}`), disagreements };
+  const compare = (a: ObservedLane, b: ObservedLane) => { const left = key(a), right = key(b); return plan.cases.filter((_, index) => left[index] !== right[index]).map(row => row.id); };
+  const find = (lane: string, selection: string) => lanes.find(row => row.lane === lane && row.selection === selection);
+  const surface: Record<string, string[]> = {}, selection: Record<string, string[]> = {};
+  for (const name of ['pii-global-and-us', 'exact-family']) { const a = find('node-addon', name), b = find('node-wasm', name); if (a && b) surface[name] = compare(a, b); }
+  for (const name of ['node-addon', 'node-wasm']) { const a = find(name, 'pii-global-and-us'), b = find(name, 'exact-family'); if (a && b) selection[name] = compare(a, b); }
+  return { lanes: lanes.map(lane => `${lane.lane}/${lane.selection}`), surfaceDisagreements: surface, selectionDisagreements: selection };
 }
 
-export function scoreSide(plan: StressPlan, lanes: ObservedLane[], binding: { sourceCommit: string; artifactSetCommitment: string }, oracle: PiiIdentityOracle) {
+/**
+ * Oracle accounting for one side, in the #423 cell vocabulary. The shared `evaluatePiiIdentityOracle` binds the six
+ * frozen v1 plans, so this computes the same authored-truth cells and public-stream outcomes over the stress plan
+ * locally; the identity-only axis stays the typed core#910 `not-measured`.
+ */
+export function stressOracleAccounting(plan: StressPlan, lanes: ObservedLane[], oracle: PiiIdentityOracle) {
+  const entry = oracle.families.find(row => row.family === plan.family);
+  if (!entry) throw new Error('stress oracle has no entry for this family');
+  const found = plan.cases.map((row, index) => {
+    const values = new Set(lanes.map(lane => lane.cases[index].findings.some(finding => finding.type === plan.findingType)));
+    if (values.size !== 1) throw new Error(`installed lanes disagree on ${row.id}`);
+    return [...values][0];
+  });
+  const cells = ['valid/sensitive', 'valid/non-sensitive', 'valid/not-established', 'invalid/not-established', 'not-established/not-established']
+    .map(cell => ({ cell, cases: entry.labels.filter(label => `${label.identity}/${label.sensitivity}` === cell).length }));
+  const outcome = (index: number) => entry.labels[index].sensitivity === 'sensitive' ? (found[index] ? 'detected' : 'missed') : (found[index] ? 'false-alarm' : 'absent');
+  const publicStream = ['sensitive/detected', 'sensitive/missed', 'non-sensitive/absent', 'non-sensitive/false-alarm', 'not-established/absent', 'not-established/false-alarm']
+    .map(key => ({ key, cases: entry.labels.filter((label, index) => `${label.sensitivity}/${outcome(index)}` === key).length }));
+  return { planCommitment: entry.planCommitment, authoredTruth: cells, publicStream,
+    identityOnly: { status: 'not-measured' as const, eligibleCases: entry.labels.filter((label, index) => label.sensitivity !== 'sensitive' && !found[index]).length,
+      reason: { ...PII_ORACLE_UNAVAILABLE_REASON } }, gateStatus: 'unresolved' as const };
+}
+
+export function scoreSide(plan: StressPlan, lanes: ObservedLane[], oracle: PiiIdentityOracle) {
   const primary = lanes.filter(lane => lane.selection === 'pii-global-and-us');
-  const identityOracle = evaluatePiiIdentityOracle({ plan: oraclePlan(plan), oracle, productSourceCommit: binding.sourceCommit,
-    candidateArtifactCommitment: binding.artifactSetCommitment, artifactSetCommitment: binding.artifactSetCommitment,
-    publicObservations: primary.map(lane => lane.cases.map(row => ({ id: row.id, publicFinding: row.findings.some(finding => finding.type === plan.findingType) }))) });
-  return { family: plan.family, lanes: lanes.map(lane => scoreLane(plan, lane)), parity: laneParity(plan, lanes), identityOracle,
-    identityOnly: { status: 'not-measured', reason: { ...PII_ORACLE_UNAVAILABLE_REASON } } };
+  return { family: plan.family, lanes: lanes.map(lane => scoreLane(plan, lane)), parity: laneParity(plan, lanes),
+    identityOracle: stressOracleAccounting(plan, primary, oracle) };
 }

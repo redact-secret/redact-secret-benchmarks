@@ -63,6 +63,10 @@
       "method": "prefix, marker 425, zero run, two-digit serial, Luhn check digit (seed redact-secret-benchmarks-425-card)"
     },
     {
+      "id": "card-nanp-fictional-v1",
+      "method": "10-digit Visa-range value 400-555-01xx: unassigned N00 area, NANPA fictional 555-0100..0199 line, Luhn check digit"
+    },
+    {
       "id": "card-transposition-v1",
       "method": "prefix, marker 425, digits 09 then zero run, serial, Luhn check digit; its twin swaps 09 to 90 (Luhn-blind)"
     },
@@ -3141,11 +3145,11 @@
       ],
       "language": "en",
       "construction": {
-        "id": "card-head-marker-v1",
-        "serial": 34
+        "id": "card-nanp-fictional-v1",
+        "serial": 3
       },
       "prefix": "phone: ",
-      "display": "4425000348",
+      "display": "4005550134",
       "identity": "valid",
       "sensitivity": "not-established",
       "crossFamily": "not-authored",
@@ -3153,7 +3157,7 @@
         "diagnostic-balanced",
         "benign-heavy-stress"
       ],
-      "input": "phone: 4425000348",
+      "input": "phone: 4005550134",
       "expected": {
         "publicFinding": false,
         "sensitive": false
@@ -7000,16 +7004,16 @@
       "axis": "card-independent-sensitive-positives",
       "language": "en",
       "construction": {
-        "id": "card-head-marker-v1",
-        "serial": 80
+        "id": "card-nanp-fictional-v1",
+        "serial": 8
       },
       "prefix": "card_number=",
-      "display": "4425000801",
+      "display": "4005550183",
       "views": [
         "qualification-plan",
         "diagnostic-balanced"
       ],
-      "input": "card_number=4425000801",
+      "input": "card_number=4005550183",
       "expected": {
         "publicFinding": true,
         "start": 12,

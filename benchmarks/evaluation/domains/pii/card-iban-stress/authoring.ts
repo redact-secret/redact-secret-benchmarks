@@ -54,6 +54,7 @@ export const CONSTRUCTIONS = Object.freeze({
   'card-tail-marker-v1': 'prefix, zero run, marker 425, two-digit serial, Luhn check digit (seed redact-secret-benchmarks-425-card)',
   'card-edge-marker-v1': 'range-edge prefix, zero run, marker 425, three-digit serial from 100, Luhn check digit (seed redact-secret-benchmarks-425-card)',
   'card-head-marker-v1': 'prefix, marker 425, zero run, two-digit serial, Luhn check digit (seed redact-secret-benchmarks-425-card)',
+  'card-nanp-fictional-v1': '10-digit Visa-range value 400-555-01xx: unassigned N00 area, NANPA fictional 555-0100..0199 line, Luhn check digit',
   'card-transposition-v1': 'prefix, marker 425, digits 09 then zero run, serial, Luhn check digit; its twin swaps 09 to 90 (Luhn-blind)',
   'card-derived-near-miss-v1': 'a named construction with one digit changed or two adjacent digits swapped, Luhn failing',
   'visa-acceptance-test-card-suite': 'whole value printed on the Visa Acceptance test-card page (X read as 0), retrieved 2026-09-28',
@@ -96,6 +97,11 @@ export function ibanNumeric(country: string, length: number, n: number) {
   if (zeros < 0) throw new Error('iban construction too short');
   const bban = `0425${'0'.repeat(zeros)}${serial(n)}`;
   return sized(`${country}${ibanCheckDigits(country, bban)}${bban}`, length);
+}
+/** A Luhn-valid 10-digit Visa-range value that is also NANP-shaped without being assignable: area 400, line 555-01xx. */
+export function nanpFictional(n: number) {
+  const body = `40055501${serial(n, 1)}`;
+  return sized(`${body}${luhnCheckDigit(body)}`, 10);
 }
 export const groupDisplay = (value: string, sizes: number[], separator: string) => {
   const out: string[] = []; let at = 0;
@@ -219,7 +225,7 @@ function cardCases(): StressSpec[] {
       { twinOf: 'card-pos-jcb19-debit-card-number-kebab', varies: 'context' }),
     collision('card-collision-bare-prose', 'Shipment ', cardHead('4', 16, 33), 'luhn-valid-random-collision', 'en', { id: HEAD, serial: 33 },
       { suffix: ' was scanned at the dock.' }),
-    collision('card-collision-phone-label-visa10', 'phone: ', cardHead('4', 10, 34), 'luhn-valid-phone-collision', 'en', { id: HEAD, serial: 34 },
+    collision('card-collision-phone-label-visa10', 'phone: ', nanpFictional(3), 'luhn-valid-phone-collision', 'en', { id: 'card-nanp-fictional-v1', serial: 3 },
       { crossFamily: 'not-authored' }),
     collision('card-ko-collision-account-number', '계좌 번호: ', cardHead('5500', 16, 35), 'luhn-valid-account-collision', 'ko', { id: HEAD, serial: 35 }),
     collision('card-ko-collision-invoice-number', '송장 번호: ', cardTail('4', 16, 36), 'luhn-valid-order-reference-collision', 'ko', { id: TAIL, serial: 36 }),
@@ -336,8 +342,8 @@ function cardCases(): StressSpec[] {
   // Cross-family collisions on the card side (card vs IBAN / phone / SSN / network-address), and the contract's
   // equidistance rule for a field label that sits one scalar from a preceding candidate.
   add(
-    pos({ id: 'card-xfam-visa10-nanp-shaped-under-card-label', axis: A12, language: 'en', construction: { id: HEAD, serial: 80 }, prefix: 'card_number=',
-      display: cardHead('4', 10, 80), evidenceClass: 'cross-family-collision', classes: ['cross-family-phone-shape'] }),
+    pos({ id: 'card-xfam-visa10-nanp-shaped-under-card-label', axis: A12, language: 'en', construction: { id: 'card-nanp-fictional-v1', serial: 8 }, prefix: 'card_number=',
+      display: nanpFictional(8), evidenceClass: 'cross-family-collision', classes: ['cross-family-phone-shape'] }),
     { id: 'card-xfam-card-under-iban-label', axis: A14, evidenceClass: 'cross-family-collision', classes: ['cross-family-iban-label'], language: 'en',
       construction: { id: TAIL, serial: 1 }, prefix: 'iban: ', display: visa16, identity: 'valid', sensitivity: 'not-established', crossFamily: 'none-expected',
       twinOf: 'card-pos-visa16-card-number-kv', varies: 'context' },

@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-28T15:33:50.146Z",
+  "observedAt": "2026-09-28T16:36:29.086Z",
   "sourceRun": {
-    "runId": "c0029b1c-bb74-4b3a-9b7f-86224e49662a",
-    "benchmarkRevision": "464bf40d672d0efbda63e2b4bf55aed774129807"
+    "runId": "63f0638d-95e9-43a4-845b-69282d9e7ad0",
+    "benchmarkRevision": "40823687901b8a0927030ec70c765921f6e2e9b6"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "889215b8da84c9314caaf530b21ccabaf71376dadd30ba7dd12127f73c70c077",
-    "fixtureCount": 33956,
-    "fixturesDigest": "ea405590429d10c7466ff0966dda2e0f702be7f83cd950abcb109a91dd25586a",
+    "corpusHash": "2960e31348fbf12f0152729de505ad6b5b7283dd93086d6cfe16afeb6cca418a",
+    "fixtureCount": 35489,
+    "fixturesDigest": "819e245d16d82c20c2df1931f20a4ad5c36ea3e4b29c5c78ecb067d32a810e20",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "de68c54bbbfde8cb3d184f738bd620ad11d9488046167ba00c2b8a08dc62ed0f",
-      "fixtureCount": 4276
+      "digest": "79f8b2564c016fdbaa1946a5c580fbd085ed3bbb825cdec93dd32810b5cfe4ad",
+      "fixtureCount": 4462
     }
   },
   "peer": {
@@ -21652,6 +21652,731 @@
       "family": "posthog-token"
     },
     {
+      "path": "cases/beta8-436e--apify-api-token-bare-prose--differential/canonical.txt",
+      "start": 59,
+      "end": 105
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bare-prose--metamorphic/canonical.txt",
+      "start": 59,
+      "end": 105
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 63,
+      "end": 109
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 79,
+      "end": 125
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 59,
+      "end": 105
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bare-prose--mutation/canonical.txt",
+      "start": 59,
+      "end": 105
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 59,
+      "end": 105
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bearer-header--differential/canonical.txt",
+      "start": 66,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bearer-header--metamorphic/canonical.txt",
+      "start": 66,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 70,
+      "end": 116
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 86,
+      "end": 132
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 68,
+      "end": 114
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bearer-header--mutation/canonical.txt",
+      "start": 66,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 66,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-chat-paste--differential/canonical.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-chat-paste--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-chat-paste--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 71
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 87
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-chat-paste--mutation/authored.twin.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-chat-paste--mutation/canonical.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-curl-bearer--differential/canonical.txt",
+      "start": 89,
+      "end": 135
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-curl-bearer--metamorphic/canonical.txt",
+      "start": 89,
+      "end": 135
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-curl-bearer--metamorphic/context.indent.txt",
+      "start": 93,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-curl-bearer--metamorphic/context.unicode-prefix.txt",
+      "start": 109,
+      "end": 155
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-curl-bearer--metamorphic/encoding.crlf.txt",
+      "start": 89,
+      "end": 135
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-curl-bearer--mutation/canonical.txt",
+      "start": 89,
+      "end": 135
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-curl-bearer--mutation/lexical.replace-last.txt",
+      "start": 89,
+      "end": 135
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-dotenv--differential/canonical.txt",
+      "start": 19,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-dotenv--metamorphic/canonical.txt",
+      "start": 19,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-dotenv--metamorphic/context.indent.txt",
+      "start": 23,
+      "end": 69
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 39,
+      "end": 85
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-dotenv--mutation/canonical.txt",
+      "start": 19,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-dotenv--mutation/lexical.replace-last.txt",
+      "start": 19,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-export--differential/canonical.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-export--metamorphic/canonical.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-export--metamorphic/context.indent.txt",
+      "start": 24,
+      "end": 70
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-export--metamorphic/context.unicode-prefix.txt",
+      "start": 40,
+      "end": 86
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-export--metamorphic/encoding.crlf.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-export--mutation/canonical.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-export--mutation/lexical.replace-last.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-hyphen-prefix-twin--twin/canonical.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-js-client--differential/canonical.txt",
+      "start": 86,
+      "end": 132
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-js-client--metamorphic/canonical.txt",
+      "start": 86,
+      "end": 132
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-js-client--metamorphic/context.indent.txt",
+      "start": 90,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-js-client--metamorphic/context.unicode-prefix.txt",
+      "start": 106,
+      "end": 152
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-js-client--metamorphic/encoding.crlf.txt",
+      "start": 88,
+      "end": 134
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-js-client--mutation/canonical.txt",
+      "start": 86,
+      "end": 132
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-js-client--mutation/lexical.replace-last.txt",
+      "start": 86,
+      "end": 132
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 62
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 62
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 82
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 63
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 62
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 62
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-leading-glue-twin--twin/canonical.txt",
+      "start": 59,
+      "end": 105
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-python-positional--differential/canonical.txt",
+      "start": 60,
+      "end": 106
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-python-positional--metamorphic/canonical.txt",
+      "start": 60,
+      "end": 106
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-python-positional--metamorphic/context.indent.txt",
+      "start": 64,
+      "end": 110
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-python-positional--metamorphic/context.unicode-prefix.txt",
+      "start": 80,
+      "end": 126
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-python-positional--metamorphic/encoding.crlf.txt",
+      "start": 62,
+      "end": 108
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-python-positional--mutation/canonical.txt",
+      "start": 60,
+      "end": 106
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-python-positional--mutation/lexical.replace-last.txt",
+      "start": 60,
+      "end": 106
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-sdk-kwarg--differential/canonical.txt",
+      "start": 30,
+      "end": 76
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 30,
+      "end": 76
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 34,
+      "end": 80
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 50,
+      "end": 96
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 30,
+      "end": 76
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 30,
+      "end": 76
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 30,
+      "end": 76
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-trailing-hyphen-twin--differential/canonical.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-trailing-hyphen-twin--twin/authored.twin.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-trailing-hyphen-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-trailing-underscore-twin--twin/canonical.txt",
+      "start": 66,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-underscore-in-body-twin--twin/canonical.txt",
+      "start": 30,
+      "end": 76
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 19,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-x-api-key-header--differential/canonical.txt",
+      "start": 54,
+      "end": 100
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 54,
+      "end": 100
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 58,
+      "end": 104
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 74,
+      "end": 120
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 56,
+      "end": 102
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-x-api-key-header--mutation/canonical.txt",
+      "start": 54,
+      "end": 100
+    },
+    {
+      "path": "cases/beta8-436e--apify-api-token-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 54,
+      "end": 100
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bare-prose--differential/canonical.txt",
+      "start": 70,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bare-prose--metamorphic/canonical.txt",
+      "start": 70,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bare-prose--metamorphic/context.indent.txt",
+      "start": 74,
+      "end": 160
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 90,
+      "end": 176
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bare-prose--mutation/canonical.txt",
+      "start": 70,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 70,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bearer-header--differential/canonical.txt",
+      "start": 65,
+      "end": 151
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bearer-header--metamorphic/canonical.txt",
+      "start": 65,
+      "end": 151
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bearer-header--metamorphic/context.indent.txt",
+      "start": 69,
+      "end": 155
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 85,
+      "end": 171
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 67,
+      "end": 153
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bearer-header--mutation/canonical.txt",
+      "start": 65,
+      "end": 151
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 65,
+      "end": 151
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-chat-paste--differential/canonical.txt",
+      "start": 32,
+      "end": 118
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-chat-paste--metamorphic/canonical.txt",
+      "start": 32,
+      "end": 118
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-chat-paste--metamorphic/context.indent.txt",
+      "start": 36,
+      "end": 122
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 52,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 32,
+      "end": 118
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-chat-paste--mutation/canonical.txt",
+      "start": 32,
+      "end": 118
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 32,
+      "end": 118
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-dotenv--differential/canonical.txt",
+      "start": 21,
+      "end": 107
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-dotenv--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 107
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-dotenv--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 111
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 127
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 108
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-dotenv--mutation/canonical.txt",
+      "start": 21,
+      "end": 107
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-dotenv--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 107
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-export--mutation/lexical.length-plus-one.txt",
+      "start": 22,
+      "end": 108
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 107
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-hyphen-prefix-twin--twin/canonical.txt",
+      "start": 65,
+      "end": 151
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-json-api-key--mutation/lexical.invalid-alphabet.txt",
+      "start": 16,
+      "end": 102
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 102
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-leading-glue-twin--twin/canonical.txt",
+      "start": 70,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-leading-underscore-twin--twin/canonical.txt",
+      "start": 32,
+      "end": 118
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-mcp-env--differential/canonical.txt",
+      "start": 128,
+      "end": 214
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-mcp-env--metamorphic/canonical.txt",
+      "start": 128,
+      "end": 214
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-mcp-env--metamorphic/context.indent.txt",
+      "start": 132,
+      "end": 218
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-mcp-env--metamorphic/context.unicode-prefix.txt",
+      "start": 148,
+      "end": 234
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-mcp-env--metamorphic/encoding.crlf.txt",
+      "start": 133,
+      "end": 219
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-mcp-env--mutation/canonical.txt",
+      "start": 128,
+      "end": 214
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-mcp-env--mutation/lexical.replace-last.txt",
+      "start": 128,
+      "end": 214
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-netrc-password--mutation/lexical.invalid-alphabet.txt",
+      "start": 56,
+      "end": 142
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-netrc-password--mutation/lexical.length-minus-one.txt",
+      "start": 56,
+      "end": 142
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-on-prem-host-label--differential/canonical.txt",
+      "start": 90,
+      "end": 176
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-on-prem-host-label--metamorphic/canonical.txt",
+      "start": 90,
+      "end": 176
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-on-prem-host-label--metamorphic/context.indent.txt",
+      "start": 94,
+      "end": 180
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-on-prem-host-label--metamorphic/context.unicode-prefix.txt",
+      "start": 110,
+      "end": 196
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-on-prem-host-label--metamorphic/encoding.crlf.txt",
+      "start": 92,
+      "end": 178
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-on-prem-host-label--mutation/canonical.txt",
+      "start": 90,
+      "end": 176
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-on-prem-host-label--mutation/lexical.replace-last.txt",
+      "start": 90,
+      "end": 176
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 28,
+      "end": 114
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-x-api-key-header--differential/canonical.txt",
+      "start": 53,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-x-api-key-header--metamorphic/canonical.txt",
+      "start": 53,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 57,
+      "end": 143
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 73,
+      "end": 159
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 55,
+      "end": 141
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-x-api-key-header--mutation/canonical.txt",
+      "start": 53,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-436f--wandb-api-key-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 53,
+      "end": 139
+    },
+    {
       "path": "cases/common-formats--anthropic-token-api03-admin-prefix-plain-twin--differential/canonical.txt",
       "start": 0,
       "end": 110,
@@ -39620,5 +40345,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "d37af71e9b6622c2aee6a2473f98176bb691561f1c9ea2dd6e2ab10d1af6a072"
+  "digest": "6291dffcfbce5dd0d0ca2120d03c5f8458c57b441fa0235aa9ca24cc61b3a0e3"
 }

@@ -210,6 +210,48 @@
     "corpus": "fixtures/generated/beta8-384e.json"
   },
   {
+    "id": "beta8-436a",
+    "title": "Beta.11 evidence for Convex deployment and admin keys with a hex body (#436, slice a)",
+    "description": "Fixtures for convex-deployment-key (an optional prod:/dev:/preview:/project: lead, the name, one |, then 01 + an even 74–96 lowercase hex body; the whole key is the span), an arrival family for product redact-secret#912, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/convex.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436a.json"
+  },
+  {
+    "id": "beta8-436b",
+    "title": "Beta.11 evidence for the 1Password service-account token (#436, slice b)",
+    "description": "Fixtures for onepassword-service-account-token (ops_eyJ + at least 250 Base64url bytes, = padding inside the span), an arrival family for product redact-secret#913, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/onepassword.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436b.json"
+  },
+  {
+    "id": "beta8-436c",
+    "title": "Beta.11 evidence for the Inngest signing key (#436, slice c)",
+    "description": "Fixtures for inngest-signing-key (signkey-prod-/test-/branch- + 64 lowercase hex, raw and hashed wire form), an arrival family for product redact-secret#914, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/inngest.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436c.json"
+  },
+  {
+    "id": "beta8-436d",
+    "title": "Beta.11 evidence for the Resend API key (#436, slice d)",
+    "description": "Fixtures for resend-api-key (re_ + 8 + _ + 24 alphanumerics), an arrival family for product redact-secret#915, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/resend.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436d.json"
+  },
+  {
+    "id": "beta8-436e",
+    "title": "Beta.11 evidence for the Apify API token (#436, slice e)",
+    "description": "Fixtures for apify-api-token (apify_api_ + at least 20 alphanumerics, open-ended), an arrival family for product redact-secret#916, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/apify.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436e.json"
+  },
+  {
+    "id": "beta8-436f",
+    "title": "Beta.11 evidence for the Weights & Biases wandb_v1_ API key (#436, slice f)",
+    "description": "Fixtures for wandb-api-key (wandb_v1_ + [A-Za-z0-9_] to about 86 in all; positives at 85–87, no length asserted), an arrival family for product redact-secret#917, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/wandb.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436f.json"
+  },
+  {
     "id": "beta8-434a",
     "title": "Beta.11 evidence for Doppler tokens (#434, slice a)",
     "description": "Fixtures for the seven Doppler dp.<type>. token types (doppler-token for dp.st. and six sibling arrival families), arrival families for product redact-secret#903, authored from the #860 step-3 handoff https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",

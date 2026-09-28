@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:33:31.892Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:33:31.892Z-49a793",
+    "benchmarkRevision": "40823687901b8a0927030ec70c765921f6e2e9b6"
+  },
+  "input": {
+    "surface": "comparison/beta8-436b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "6732157eed9a5062986d047b8387efaef85d95f6f0e9b0cf1ac766d0da673304",
+    "fixtureCount": 31,
+    "fixturesDigest": "8b46b3ea2dc2efe152b491f506768e86509f0c8145453f8057cb94508b42daec",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "79f8b2564c016fdbaa1946a5c580fbd085ed3bbb825cdec93dd32810b5cfe4ad",
+      "fixtureCount": 4462
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [],
+  "digest": "4b206d4a87f6e7bb496a1058cf5db5ca05c6bf8618685cb62f3f369ffdea6e3e"
+}

@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "profilesVersion": 1,
-  "familyCount": 108,
+  "familyCount": 114,
   "cellsMetByProfile": {
-    "arrival-provisional": 73,
-    "stable-documented": 73,
+    "arrival-provisional": 75,
+    "stable-documented": 75,
     "stable-empirical": 26,
     "context-constrained-empirical": 9
   },
@@ -240,6 +240,66 @@
           "placeholder",
           "public-identifier",
           "reference",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": []
+    },
+    {
+      "family": "apify-api-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 30,
+        "positiveCases": 6,
+        "benignControls": 10,
+        "twinPairs": 7,
+        "positiveContextAxes": 9,
+        "controlAxes": 5,
+        "confusionAxes": 9,
+        "positiveContextAxisIds": [
+          "#436e · apify-api-token · cli",
+          "#436e · apify-api-token · env",
+          "#436e · apify-api-token · header",
+          "#436e · apify-api-token · prose",
+          "#436e · apify-api-token · sdk-config",
+          "#436e · apify-api-token · shell-export",
+          "#436e · apify-api-token · source-code",
+          "#436e · apify-api-token · structured-file",
+          "#436e · apify-api-token · tool-output"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
           "twin:prefix"
         ]
       },
@@ -1115,6 +1175,73 @@
           "actual": 3,
           "required": 4,
           "shortfall": 1
+        }
+      ]
+    },
+    {
+      "family": "convex-deployment-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 33,
+        "positiveCases": 3,
+        "benignControls": 10,
+        "twinPairs": 10,
+        "positiveContextAxes": 10,
+        "controlAxes": 6,
+        "confusionAxes": 10,
+        "positiveContextAxisIds": [
+          "#436a · convex-deployment-key · ci-config",
+          "#436a · convex-deployment-key · cli",
+          "#436a · convex-deployment-key · container-config",
+          "#436a · convex-deployment-key · env",
+          "#436a · convex-deployment-key · header",
+          "#436a · convex-deployment-key · prose",
+          "#436a · convex-deployment-key · sdk-config",
+          "#436a · convex-deployment-key · shell-export",
+          "#436a · convex-deployment-key · structured-file",
+          "#436a · convex-deployment-key · tool-output"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 3,
+          "required": 6,
+          "shortfall": 3
         }
       ]
     },
@@ -3328,6 +3455,72 @@
       "debt": []
     },
     {
+      "family": "inngest-signing-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 32,
+        "positiveCases": 4,
+        "benignControls": 10,
+        "twinPairs": 9,
+        "positiveContextAxes": 9,
+        "controlAxes": 6,
+        "confusionAxes": 10,
+        "positiveContextAxisIds": [
+          "#436c · inngest-signing-key · cli",
+          "#436c · inngest-signing-key · env",
+          "#436c · inngest-signing-key · header",
+          "#436c · inngest-signing-key · prose",
+          "#436c · inngest-signing-key · sdk-config",
+          "#436c · inngest-signing-key · shell-export",
+          "#436c · inngest-signing-key · source-code",
+          "#436c · inngest-signing-key · structured-file",
+          "#436c · inngest-signing-key · tool-output"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 4,
+          "required": 6,
+          "shortfall": 2
+        }
+      ]
+    },
+    {
       "family": "jwt",
       "tier": "T1",
       "profilesVersion": 1,
@@ -4385,6 +4578,73 @@
       "debt": []
     },
     {
+      "family": "onepassword-service-account-token",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 31,
+        "positiveCases": 4,
+        "benignControls": 9,
+        "twinPairs": 9,
+        "positiveContextAxes": 10,
+        "controlAxes": 6,
+        "confusionAxes": 10,
+        "positiveContextAxisIds": [
+          "#436b · onepassword-service-account-token · ci-config",
+          "#436b · onepassword-service-account-token · cli",
+          "#436b · onepassword-service-account-token · env",
+          "#436b · onepassword-service-account-token · header",
+          "#436b · onepassword-service-account-token · prose",
+          "#436b · onepassword-service-account-token · sdk-config",
+          "#436b · onepassword-service-account-token · shell-export",
+          "#436b · onepassword-service-account-token · source-code",
+          "#436b · onepassword-service-account-token · structured-file",
+          "#436b · onepassword-service-account-token · tool-output"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 4,
+          "required": 6,
+          "shortfall": 2
+        }
+      ]
+    },
+    {
       "family": "openai-admin-api-key",
       "tier": "T2",
       "profilesVersion": 1,
@@ -5326,6 +5586,70 @@
       },
       "requiredButEmptyAxisIds": [],
       "debt": []
+    },
+    {
+      "family": "resend-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [],
+      "cells": {
+        "totalFixtures": 33,
+        "positiveCases": 2,
+        "benignControls": 9,
+        "twinPairs": 11,
+        "positiveContextAxes": 9,
+        "controlAxes": 5,
+        "confusionAxes": 9,
+        "positiveContextAxisIds": [
+          "#436d · resend-api-key · cli",
+          "#436d · resend-api-key · env",
+          "#436d · resend-api-key · header",
+          "#436d · resend-api-key · prose",
+          "#436d · resend-api-key · sdk-config",
+          "#436d · resend-api-key · shell-export",
+          "#436d · resend-api-key · source-code",
+          "#436d · resend-api-key · structured-file",
+          "#436d · resend-api-key · tool-output"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": [
+        {
+          "cell": "positiveCases",
+          "actual": 2,
+          "required": 6,
+          "shortfall": 4
+        }
+      ]
     },
     {
       "family": "sendgrid-token",
@@ -6697,6 +7021,64 @@
           "shortfall": 1
         }
       ]
+    },
+    {
+      "family": "wandb-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 27,
+        "positiveCases": 7,
+        "benignControls": 8,
+        "twinPairs": 6,
+        "positiveContextAxes": 8,
+        "controlAxes": 5,
+        "confusionAxes": 8,
+        "positiveContextAxisIds": [
+          "#436f · wandb-api-key · basic-auth",
+          "#436f · wandb-api-key · env",
+          "#436f · wandb-api-key · header",
+          "#436f · wandb-api-key · prose",
+          "#436f · wandb-api-key · sdk-config",
+          "#436f · wandb-api-key · shell-export",
+          "#436f · wandb-api-key · structured-file",
+          "#436f · wandb-api-key · tool-output"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": []
     },
     {
       "family": "xai-api-key",

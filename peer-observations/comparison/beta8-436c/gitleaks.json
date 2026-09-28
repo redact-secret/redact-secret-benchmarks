@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T16:33:31.892Z",
+  "sourceRun": {
+    "runId": "2026-09-28T16:33:31.892Z-49a793",
+    "benchmarkRevision": "40823687901b8a0927030ec70c765921f6e2e9b6"
+  },
+  "input": {
+    "surface": "comparison/beta8-436c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "3661be1348e706c04216ac9442af188dcb41381d914db573bf62ff4e39ba0b66",
+    "fixtureCount": 32,
+    "fixturesDigest": "6c79bd4e76d8f1dd54251700e51773223784796d773286ab1502b146c5bd9e8a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "79f8b2564c016fdbaa1946a5c580fbd085ed3bbb825cdec93dd32810b5cfe4ad",
+      "fixtureCount": 4462
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/inngest-signing-key-body-63-twin.env",
+      "start": 27,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-body-65-twin.sh",
+      "start": 28,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-curl-hashed-bearer.sh",
+      "start": 100,
+      "end": 177
+    },
+    {
+      "path": "cases/inngest-signing-key-dotenv.env",
+      "start": 27,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-export.sh",
+      "start": 28,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-fallback-dotenv.env",
+      "start": 60,
+      "end": 137,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-g-in-body-twin.json",
+      "start": 16,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-json-api-key.json",
+      "start": 16,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-sdk-kwarg.py",
+      "start": 26,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-sdk-short-placeholder.ts",
+      "start": 55,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-ts-client.ts",
+      "start": 105,
+      "end": 182,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-uppercase-prefix-twin.http",
+      "start": 56,
+      "end": 133,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/inngest-signing-key-x-api-key-header.http",
+      "start": 56,
+      "end": 133,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "66ccc0f016ae81b50eb5d0d5ab9c22464e517ef50fe6049368c857e46a1262ae"
+}

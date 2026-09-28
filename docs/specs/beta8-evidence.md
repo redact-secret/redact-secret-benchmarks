@@ -291,6 +291,53 @@ to `posthog-token` and gitleaks `doppler-api-token` to `doppler-personal-token`.
 | PostHog | `phx_` + 43–48 of `[a-zA-Z0-9_]`: misses 42- and 49-byte keys, admits `_`, no `phs_` | none |
 | Trigger.dev, E2B, Helicone, Firecrawl, Composio | none (the staff-authored Composio PR #5322 is still open) | none |
 
+## Beta.11 Tier B slices (#436)
+
+The same layout carries the #860 Tier B READY credential families
+([#436](https://github.com/redact-secret/redact-secret-benchmarks/issues/436); product parent
+[redact-secret#860](https://github.com/redact-secret/redact-secret/issues/860)). The fixture index labels
+these corpora `beta.11`. One corpus key per product issue, one family per key. Each contract is authored
+from the step-3 handoff frozen at product `54fe385` and the provider sources it cites, never from product
+detector code; `benchmarks/lib/beta8/436-sources.ts` carries the shared citations and
+`fixtures/generated/beta8/436-shared.mjs` the shared contract guard and the nine re-rank probe contexts.
+
+| Key | Category | Family (arrival id) | Handoff | Product issue |
+| --- | --- | --- | --- | --- |
+| `436a` | `beta8-436a` | `convex-deployment-key` | [convex.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/convex.md) | [#912](https://github.com/redact-secret/redact-secret/issues/912) |
+| `436b` | `beta8-436b` | `onepassword-service-account-token` | [onepassword.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/onepassword.md) | [#913](https://github.com/redact-secret/redact-secret/issues/913) |
+| `436c` | `beta8-436c` | `inngest-signing-key` | [inngest.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/inngest.md) | [#914](https://github.com/redact-secret/redact-secret/issues/914) |
+| `436d` | `beta8-436d` | `resend-api-key` | [resend.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/resend.md) | [#915](https://github.com/redact-secret/redact-secret/issues/915) |
+| `436e` | `beta8-436e` | `apify-api-token` | [apify.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/apify.md) | [#916](https://github.com/redact-secret/redact-secret/issues/916) |
+| `436f` | `beta8-436f` | `wandb-api-key` | [wandb.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/wandb.md) | [#917](https://github.com/redact-secret/redact-secret/issues/917) |
+
+All six are T1 arrival families declared `documented-24`, unscored until the product detector with the
+same id is in the pinned registry (then they graduate as above). Conventions specific to these slices:
+
+- **Every positive in every probe context.** Each family has a positive in the nine contexts of the Tier B
+  re-rank probe (bare prose, `ENV=`, `export`, Bearer, `X-API-Key`, JSON `"token"`, JSON `"api_key"`, an SDK
+  keyword argument, a chat sentence) plus the handoff's own contexts (Compose, CI, MCP `env`, CLI, `.netrc`).
+- **Policy is not provider fact.** A bound the handoff sets as project policy is not asserted where the
+  provider's own rule disagrees or is silent: the Apify 128-byte cap (the provider linter is open-ended), the
+  Resend mixed-case guard (a random one-case body), a Convex name or slug outside the bounded class and the
+  Convex cloud `eyJ2` body (issuance-gated, ruling R4). The 1Password 250-byte floor is asserted, because the
+  documented field set makes a shorter token impossible and the handoff decides it.
+- **W&B length (orchestrator decision on redact-secret#917).** The docs say "about 86"; the product matches a
+  bounded tolerant range around it. Positives carry totals 85, 86 and 87 (86 in most), and no fixture asserts
+  silence on any length. A `wandb_v2_` value is not authored either way.
+- **Spans.** Convex's span is the whole key, name included (the provider joins `{name}|{encrypted}` into
+  one credential string). 1Password's span includes `=`/`==` padding. W&B's on-prem `local-` host label sits
+  in an authored envelope, so a finding with or without it passes.
+- **Lexical separability (#84).** A twin whose broken part leaves a contract-valid remainder is not authored:
+  the Convex `prod;` and leading-glue twins (the untyped `<name>|01…` after the `;` or `:` still matches), and
+  a trailing glue byte after a full-length 1Password body. The `+`, `/` and `=` 1Password twins sit early in
+  the body instead.
+- **Another family's credential is a twin, never a control:** the 1Password Connect JWT and the Resend
+  `whsec_` webhook secret.
+
+The corpus adds one authored calibration row pair per family to
+`corpora/development/shadow-scoring-authored.json` and lists the six categories as development-evaluation
+in `tuning/shadow-scoring-development-v1.json`.
+
 ## Per-field provenance
 
 `FormatContract.fields` records each structural claim (prefix, total length,

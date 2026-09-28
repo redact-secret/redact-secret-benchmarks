@@ -3,8 +3,14 @@
     "id": "beta9-cli-aarch64-linux-gnu-detector-pack",
     "triggerId": "size/cli/aarch64-unknown-linux-gnu",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "6b124ac50803fe35aad99abbb2dbe89c32f5f284" },
-    "measured": { "baseline": 863848, "candidate": 930576, "unit": "bytes" },
+    "candidate": {
+      "sourceCommit": "6b124ac50803fe35aad99abbb2dbe89c32f5f284"
+    },
+    "measured": {
+      "baseline": 863848,
+      "candidate": 930576,
+      "unit": "bytes"
+    },
     "rationale": "The file grew 66,728 bytes (+7.7%) against the 5% trigger, but its loadable segments grew only 11,368 bytes (651,364 to 662,660 at the fixed #772 candidate ecf4db1 and at 6b124ac, 651,292 at beta.8): +1.7%, in line with every other target's growth from the same detector changes (x86_64 Linux CLI +1.5%, every addon and wheel under +2%). aarch64-unknown-linux-gnu aligns its loadable segments to 64 KiB, so that growth pushed the second segment's file offset from 0x995e8 to 0xa9490, one full alignment step, and the file size jumps by the step, not by the code. The growth is the beta.9 detector pack below, not the shadow scorer (#772 alone left this binary at beta.8's size). Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -27,8 +33,14 @@
     "id": "beta9-rc-cli-aarch64-linux-gnu-detector-pack",
     "triggerId": "size/cli/aarch64-unknown-linux-gnu",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "93ddf510a31563d58c7d4c202363ef65c4d92d55" },
-    "measured": { "baseline": 863848, "candidate": 930616, "unit": "bytes" },
+    "candidate": {
+      "sourceCommit": "93ddf510a31563d58c7d4c202363ef65c4d92d55"
+    },
+    "measured": {
+      "baseline": 863848,
+      "candidate": 930616,
+      "unit": "bytes"
+    },
     "rationale": "The beta.9 RC remains in the same 64 KiB-aligned file-size step accepted for 6b124ac. Its file is 40 bytes larger (+0.0043%) than that candidate, while the executable load segment grows 8,624 bytes (+1.35%) and the writable load segment and second-segment offset are byte-identical. Every other changed shipped binary is within 0.33% of 6b124ac, exact-candidate conformance and cross-runtime determinism pass, and the paired latency, initialization and memory gates pass. This applies the existing candidate-bound review mechanism; it does not widen the 5% budget or transfer the prior acceptance implicitly.",
     "benefit": {
       "kind": "safety",
@@ -47,8 +59,14 @@
     "id": "beta9-final-cli-aarch64-linux-gnu-detector-pack",
     "triggerId": "size/cli/aarch64-unknown-linux-gnu",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "09e1d7f85cd2ada9f387cc5c9beef3b29023d17d" },
-    "measured": { "baseline": 863848, "candidate": 930616, "unit": "bytes" },
+    "candidate": {
+      "sourceCommit": "09e1d7f85cd2ada9f387cc5c9beef3b29023d17d"
+    },
+    "measured": {
+      "baseline": 863848,
+      "candidate": 930616,
+      "unit": "bytes"
+    },
     "rationale": "The post-contract-review beta.9 candidate produces the same 930,616-byte aarch64 Linux CLI, with the same SHA-256, as the separately reviewed 93ddf510 candidate. The executable, writable and alignment footprint is therefore byte-identical and remains within the already reviewed 64 KiB alignment step. This fresh row applies the unchanged tradeoff to the exact 09e1d7f8 source candidate; it does not widen the 5% budget or transfer acceptance to any later source commit.",
     "benefit": {
       "kind": "safety",
@@ -66,8 +84,14 @@
     "id": "beta10-cli-scale-logs-medium-credential-detector-pack",
     "triggerId": "latency/cli/scale-logs-medium-fixed4096/processing-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
-    "measured": { "baseline": 1, "candidate": 1.129, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.129,
+      "unit": "ratio"
+    },
     "rationale": "Two interleaved dispatches at this candidate measured processing-ratio 1.142 and 1.116 against the 10% budget (median 1.129 shown here). This is the CLI's forced per-line incremental dispatch of 7 new provider detectors from redact-secret#862-#868 (Anthropic api01/admin01 prefixes, an OpenAI admin-key contract fix, Amazon Bedrock long/short-term keys, ElevenLabs, Together AI, Tavily, and keyword-gated Mistral/Cohere/AI21/Deepgram coverage). Three rounds of optimization (redact-secret#870, #871, #872) cut the regression from an initial 13-31% down to this residual by removing an unconditional per-line table allocation, replacing a length-sensitive Boyer-Moore-Horspool scan with a faster first-byte scan, and removing a duplicate whole-input scan on single-line CLI input. The remaining cost is structural: rust-core's own scale-logs benchmark uses a one-shot scan() the CLI's stdin path never takes (it always streams per line, so a credential can straddle a chunk boundary), which amplifies each new detector's fixed per-line cost relative to that one-shot comparison. Closing it further needs a redesign of the incremental per-line dispatch path, tracked separately in redact-secret#883 and not committed to this or any specific release. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -89,8 +113,14 @@
     "id": "beta10-cli-scale-logs-small-credential-detector-pack",
     "triggerId": "latency/cli/scale-logs-small-whole/processing-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
-    "measured": { "baseline": 1, "candidate": 1.116, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.116,
+      "unit": "ratio"
+    },
     "rationale": "Two interleaved dispatches at this candidate measured processing-ratio 1.127 and 1.105 against the 10% budget (median 1.116 shown here). Same root cause and remediation history as the medium-profile CLI row above: the incremental per-line dispatch of the seven redact-secret#862-#868 detectors is amplified on this shorter, single-shot-vs-streamed workload comparison specifically. Tracked for a further fix in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -112,8 +142,14 @@
     "id": "beta10-browser-wasm-scale-logs-medium-credential-detector-pack",
     "triggerId": "latency/browser-wasm/scale-logs-medium-fixed4096/processing-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
-    "measured": { "baseline": 1, "candidate": 1.118, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.118,
+      "unit": "ratio"
+    },
     "rationale": "Two interleaved dispatches at this candidate measured processing-ratio 1.117 and 1.119 against the 10% budget. Same seven-detector Beta.10 addition and the same structural per-line dispatch cost as the CLI rows above, carried through the shared wasm32 core; the browser-wasm surface showed the same pattern intermittently through the optimization rounds (sometimes clearing, sometimes not) and is consistently over budget at this final candidate. Tracked for a further fix in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -135,8 +171,14 @@
     "id": "beta10-python-scale-logs-medium-credential-detector-pack",
     "triggerId": "latency/python/scale-logs-medium-fixed4096/processing-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
-    "measured": { "baseline": 1, "candidate": 1.104, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.104,
+      "unit": "ratio"
+    },
     "rationale": "Two interleaved dispatches at this candidate measured processing-ratio 1.101 and 1.107, both just over the 10% budget. Same seven-detector Beta.10 addition and structural per-line dispatch cost as the CLI/browser-wasm rows above, carried through the shared core via the Python binding; unlike node and rust-core (which cleared budget on both dispatches), this surface's binding overhead pushed it just over the line. Tracked for a further fix in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -158,8 +200,14 @@
     "id": "beta10-node-scale-logs-medium-credential-detector-pack",
     "triggerId": "latency/node/scale-logs-medium-fixed4096/processing-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09" },
-    "measured": { "baseline": 1, "candidate": 1.102, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.102,
+      "unit": "ratio"
+    },
     "rationale": "This surface cleared budget on the two dispatches used to judge the candidate overall (1.089, 1.097) but a third, later dispatch at the same source commit measured 1.102, just over the 10% budget. Same root cause and remediation history as the other Beta.10 rows in this file: the seven redact-secret#862-#868 detectors' fixed per-line cost through the incremental dispatch path, right at the noise boundary on this surface rather than clearly over it like cli. Recorded rather than re-dispatched for a favorable sample, since every surface at this commit is hovering within noise of the 10% line and picking a lucky run would not be honest. Tracked in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -181,8 +229,14 @@
     "id": "beta10-final-cli-scale-logs-medium-credential-detector-pack",
     "triggerId": "latency/cli/scale-logs-medium-fixed4096/processing-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314" },
-    "measured": { "baseline": 1, "candidate": 1.103, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.103,
+      "unit": "ratio"
+    },
     "rationale": "The credential-detector-pack code accepted for this trigger at f26dee26 (redact-secret-benchmarks accepted-regressions row beta10-cli-scale-logs-medium-credential-detector-pack) is unchanged through af7f863f: the intervening commits are documentation/README fixes (38bfe639), an unrelated new PII family (2e1bdcf0, phone detection), and version-bump/audit-record commits (7213dea5, 9269e9d8, c359569e), none of which touch the CLI's per-line dispatch path. A dispatch at the final candidate (redact-secret-benchmarks run 36370525959) measured processing-ratio 1.103 against the 10% budget, consistent with the previously accepted magnitude. Root cause and remediation history remain as recorded in the original row; the redesign remains tracked in redact-secret#883 and not committed to this release. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -204,8 +258,14 @@
     "id": "beta10-final-node-scale-logs-medium-credential-detector-pack",
     "triggerId": "latency/node/scale-logs-medium-fixed4096/processing-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314" },
-    "measured": { "baseline": 1, "candidate": 1.120, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.12,
+      "unit": "ratio"
+    },
     "rationale": "Same unchanged credential-detector-pack code and root cause as beta10-node-scale-logs-medium-credential-detector-pack (accepted at f26dee26); no commit between f26dee26 and af7f863f touches Node's dispatch path (see the CLI row above for the intervening commit list). A dispatch at the final candidate (redact-secret-benchmarks run 36370525959) measured processing-ratio 1.120 against the 10% budget; this surface hovers at the noise boundary as previously documented. Tracked in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -227,8 +287,14 @@
     "id": "beta10-final-browser-wasm-scale-logs-medium-credential-detector-pack",
     "triggerId": "latency/browser-wasm/scale-logs-medium-fixed4096/processing-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314" },
-    "measured": { "baseline": 1, "candidate": 1.101, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.101,
+      "unit": "ratio"
+    },
     "rationale": "Same unchanged credential-detector-pack code and root cause as beta10-browser-wasm-scale-logs-medium-credential-detector-pack (accepted at f26dee26); no commit between f26dee26 and af7f863f touches the shared wasm32 core's dispatch path (see the CLI row above for the intervening commit list). A dispatch at the final candidate (redact-secret-benchmarks run 36370525959) measured processing-ratio 1.101 against the 10% budget; a second dispatch (run 36371400453) cleared budget on this trigger, consistent with this surface hovering at the noise boundary as previously documented. Tracked in redact-secret#883. Accepted for this candidate only; a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -250,8 +316,14 @@
     "id": "beta10-browser-wasm-scale-logs-small-whole-phone-detector-init",
     "triggerId": "initialization/browser-wasm/scale-logs-small-whole/initialization-ratio",
     "baselineId": "0.1.0-beta.8",
-    "candidate": { "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314" },
-    "measured": { "baseline": 1, "candidate": 1.488, "unit": "ratio" },
+    "candidate": {
+      "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.488,
+      "unit": "ratio"
+    },
     "rationale": "New at this release: not present in any prior Beta.10 candidate's accepted-regressions rows (including f26dee26), and absent from every other performance-evaluation dispatch run against `develop` on 2026-09-27. Two interleaved dispatches at the final candidate (redact-secret-benchmarks runs 36370525959 and 36371400453) measured initialization-ratio 1.412 and 1.565 (median 1.488 shown here) against the row's 25%-relative, noise-adjusted budget (calibrated from an 11.2% A/A median deviation). A third dispatch isolated to the phone-detection commit alone (2e1bdcf0, redact-secret-benchmarks run 36371926215, measured 1.389) reproduces the same breach with every other commit between f26dee26 and af7f863f excluded, confirming redact-secret#895 (constrained-context phone detection) as the sole cause. Root-cause investigation found no fixable defect: the new `pii_phone.rs` detector is a ~450-line hand-written byte scanner with no regex or eager static initialization, its one import (`unicode_normalization::char::is_combining_mark`) was already a dependency used by five existing PII detectors, and the workspace's wasm release profile already uses `lto = \"fat\"` and `codegen-units = 1` with no `wasm-opt` post-processing step to add. The measured cost is the wasm module's own compiled-size growth (both the `full` and `common` profile `.wasm` artifacts grew ~12.2 KB, +1.67%, entirely attributable to this commit) increasing one-time module-instantiation cost, amplified into a large relative ratio only because this row's workload (`scale-logs-small-whole`) has the smallest absolute initialization baseline of any measured profile. PII family activation is a runtime `PiiSelection` choice layered identically onto both the `full` and `common` compiled profiles (crates/secret-scan-core/src/registry.rs `with_profile_and_pii`), not a compile-time feature gate like the secret-detector packs, so this cost is paid by both profiles regardless of whether a given consumer activates phone detection; folding PII behind the full/common compile-time split would remove PII capability from the common profile entirely and is a public-contract change out of scope for this release. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
     "benefit": {
       "kind": "detection",
@@ -263,5 +335,57 @@
     },
     "decidedAt": "2026-09-28",
     "decidedBy": "milocosmopolitan (maintainer decision relayed for the Beta.10 final candidate af7f863f phone-detection wasm-initialization tradeoff)"
+  },
+  {
+    "id": "beta11-wasm-full-gzip-provider-detectors",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1"
+    },
+    "measured": {
+      "baseline": 137639,
+      "candidate": 179388,
+      "unit": "bytes"
+    },
+    "rationale": "Maintainer decision of 2026-09-28: the full-profile WASM gzip size growth is accepted as the cost of the provider-detector additions across Beta.9 to Beta.11 (Beta.11 adds 13 provider detectors, redact-secret#903-#909 and #912-#917). The size has already been reduced where it could be without a contract change: the PII runtime moved to separate pii WASM artifacts (redact-secret#937) and provider detectors no longer link into the common profile (redact-secret#929). Stripping the WASM name section was considered and rejected to keep debuggability. Measured by performance-evaluation.yml run 36480340241 at candidate 1db8ff3 (scripts/measure-wasm-sizes.mjs in the candidate checkout). Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (Doppler, Trigger.dev, E2B, PostHog, Helicone, Firecrawl, Composio, Convex, 1Password service accounts, Inngest, Resend, Apify, W&B) with 24 scored families, 22 of them documented-stable in benchmark candidate mode.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/issues/937",
+        "https://github.com/redact-secret/redact-secret/issues/929"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: WASM gzip size rows accepted for the Beta.11 detector additions)"
+  },
+  {
+    "id": "beta11-wasm-common-gzip-provider-detectors",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1"
+    },
+    "measured": {
+      "baseline": 100058,
+      "candidate": 122544,
+      "unit": "bytes"
+    },
+    "rationale": "Maintainer decision of 2026-09-28: the common-profile WASM gzip size growth is accepted as the cost of the provider-detector additions across Beta.9 to Beta.11 (Beta.11 adds 13 provider detectors, redact-secret#903-#909 and #912-#917). The size has already been reduced where it could be without a contract change: the PII runtime moved to separate pii WASM artifacts (redact-secret#937) and provider detectors no longer link into the common profile (redact-secret#929). Stripping the WASM name section was considered and rejected to keep debuggability. Measured by performance-evaluation.yml run 36480340241 at candidate 1db8ff3 (scripts/measure-wasm-sizes.mjs in the candidate checkout). Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (Doppler, Trigger.dev, E2B, PostHog, Helicone, Firecrawl, Composio, Convex, 1Password service accounts, Inngest, Resend, Apify, W&B) with 24 scored families, 22 of them documented-stable in benchmark candidate mode.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/issues/937",
+        "https://github.com/redact-secret/redact-secret/issues/929"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: WASM gzip size rows accepted for the Beta.11 detector additions)"
   }
 ]

@@ -47,4 +47,4 @@ in the sanitized bytes more times than in the reference output is a leak. Cross-
 findings (in UTF-8 bytes) and output digest with the Node addon's whole-input result on the same document variant.
 
 Run: `npm run credential-parity:measure -- --core-commit=<40-hex> --core-repo=<absolute path to a redact-secret clone>`.
-Evidence lands in `evidence/381/<commit12>/`: the observation (ranges, digests, no text) and the report.
+Evidence lands in `evidence/860/381/<commit12>/` (keyed by the product parent, redact-secret#860): the observation (ranges, digests, no text) and the report.

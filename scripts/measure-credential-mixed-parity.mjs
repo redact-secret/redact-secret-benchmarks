@@ -13,7 +13,7 @@
  * detector, action and ranges; outputs are SHA-256 digests plus the ids of targets whose value survived.
  *
  * Run: node --import tsx scripts/measure-credential-mixed-parity.mjs --core-commit=<sha> --core-repo=<path>
- *        [--surfaces=a,b] [--out-dir=evidence/381/<sha12>] [--keep-scratch]
+ *        [--surfaces=a,b] [--out-dir=evidence/860/381/<sha12>] [--keep-scratch]
  */
 import { createHash } from 'node:crypto';
 import { execFile, spawn } from 'node:child_process';
@@ -41,7 +41,7 @@ if (!/^[0-9a-f]{40}$/.test(args['core-commit'] ?? '') || !path.isAbsolute(args['
   throw new Error('needs --core-commit=<40-hex sha> and an absolute --core-repo=<path>');
 const surfacesRequested = args.surfaces ? String(args.surfaces).split(',') : SURFACES;
 for (const surface of surfacesRequested) if (!SURFACES.includes(surface)) throw new Error(`unknown surface ${surface}`);
-const outDir = path.resolve(root, args['out-dir'] ?? `evidence/381/${String(args['core-commit']).slice(0, 12)}`);
+const outDir = path.resolve(root, args['out-dir'] ?? `evidence/860/381/${String(args['core-commit']).slice(0, 12)}`);
 const INCREMENTAL_LIMITS = { maxInput: 1 << 20, maxBuffered: 1 << 16, maxToken: 8192, maxMultiline: 16384 };
 const digest = async file => createHash('sha256').update(await readFile(file)).digest('hex');
 const run = async (command, argv, options = {}) => (await exec(command, argv, { maxBuffer: 512 * 1024 * 1024, timeout: 60 * 60_000, ...options })).stdout;

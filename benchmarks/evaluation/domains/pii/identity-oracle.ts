@@ -1,3 +1,4 @@
+import { isPiiContextVocabulary } from './context-vocabulary.ts';
 import { hash } from '../../substrate/hash.ts';
 import oracleData from './identity-oracle-v1.json';
 import networkAddressPlan from './network-address-qualification-v1.json';
@@ -36,6 +37,7 @@ export const PII_ORACLE_IDENTITY_BASES = ['contract-grammar', 'reference-validat
 export const PII_ORACLE_SENSITIVITY_BASES = ['contract-context-rule', 'authority-reserved-value'] as const;
 /** Signals that are named so they can be rejected: none of them establishes sensitivity. */
 export const PII_ORACLE_INSUFFICIENT_SENSITIVITY_BASES = ['validator-hit', 'context-keyword', 'public-absence', 'public-finding'] as const;
+/** The vocabulary the authored oracle and its plans were frozen against; product evidence may report a later one. */
 export const PII_ORACLE_CONTEXT_VOCABULARY = 'pii-context/v1';
 export const PII_PRODUCT_IDENTITY_FORMAT = 'redact-secret/pii-identity-evaluation/1';
 export const PII_PRODUCT_IDENTITY_SEAM_ISSUE = 'redact-secret/redact-secret#910';
@@ -280,8 +282,8 @@ export function validatePiiProductIdentityEvidence(value: unknown, binding: { fa
     throw new Error('Invalid PII product identity evidence');
   const evidence = value as PiiProductIdentityEvidence;
   if (evidence.format !== PII_PRODUCT_IDENTITY_FORMAT || evidence.family !== binding.family ||
-      evidence.contextVocabulary !== PII_ORACLE_CONTEXT_VOCABULARY || typeof evidence.activationIdentity !== 'string' ||
-      !evidence.activationIdentity.includes(`vocabulary=${PII_ORACLE_CONTEXT_VOCABULARY}`) ||
+      !isPiiContextVocabulary(evidence.contextVocabulary) || typeof evidence.activationIdentity !== 'string' ||
+      !evidence.activationIdentity.endsWith(`;vocabulary=${evidence.contextVocabulary}`) ||
       !(/;families=([^;]*)/.exec(evidence.activationIdentity)?.[1].split(',') ?? []).includes(binding.family) ||
       evidence.sourceCommit !== binding.sourceCommit || evidence.artifactSetCommitment !== binding.artifactSetCommitment ||
       !Array.isArray(evidence.observations) || evidence.artifactCommitment !== commitment(evidence as unknown as Record<string, unknown>))
@@ -401,7 +403,7 @@ export function validatePiiIdentityOracleProjection(value: unknown) {
       'candidateArtifactCommitment', 'productIdentityCommitment']) ||
     !digest(binding.oracleCommitment) || !digest(binding.planCommitment) || !digest(binding.candidateArtifactCommitment) ||
     !/^[a-f0-9]{40}$/.test(binding.productSourceCommit) || !Number.isInteger(binding.familyContractVersion) || binding.familyContractVersion < 1 ||
-    binding.contextVocabulary !== PII_ORACLE_CONTEXT_VOCABULARY || (binding.productIdentityCommitment !== null && !digest(binding.productIdentityCommitment)) ||
+    !isPiiContextVocabulary(binding.contextVocabulary) || (binding.productIdentityCommitment !== null && !digest(binding.productIdentityCommitment)) ||
     !exact(truth, ['evidenceKind', 'cells']) || truth.evidenceKind !== 'authored-truth' ||
     JSON.stringify(truth.cells.map(cell => [cell.identity, cell.sensitivity])) !== JSON.stringify(CELLS.map(cell => [cell.identity, cell.sensitivity])) ||
     truth.cells.some(cell => !exact(cell, ['identity', 'sensitivity', 'cases']) || !count(cell.cases)) ||

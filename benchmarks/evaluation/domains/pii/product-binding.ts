@@ -1,3 +1,4 @@
+import { isPiiContextVocabulary, type PiiContextVocabulary } from './context-vocabulary.ts';
 import { validateEvidence } from '../credential/evidence.ts';
 import { hash } from '../../substrate/hash.ts';
 import trustedBindings from './trusted-product-bindings-v1.json';
@@ -140,13 +141,14 @@ export const piiQualificationSanctionedProjection = (row: PiiFamilyQualification
 });
 
 export function parsePiiActivationIdentity(value: string) {
-  const match = /^credentials=(full|common);selectors=([a-z0-9:,-]+);families=([a-z0-9:,-]+);vocabulary=pii-context\/v1$/.exec(value);
+  const match = /^credentials=(full|common);selectors=([a-z0-9:,-]+);families=([a-z0-9:,-]+);vocabulary=(pii-context\/v[0-9]+)$/.exec(value);
+  if (!match || !isPiiContextVocabulary(match[4])) throw new Error('Invalid PII activation identity');
   if (!match) throw new Error('Invalid PII activation identity');
   const selectors = match[2].split(','), families = match[3].split(',');
   if (new Set(selectors).size !== selectors.length || new Set(families).size !== families.length || families.some(item => !family(item)) ||
       JSON.stringify(selectors) !== JSON.stringify([...selectors].sort()) || JSON.stringify(families) !== JSON.stringify([...families].sort()))
     throw new Error('Invalid PII activation identity');
-  return { credentials: match[1] as 'full' | 'common', selectors, families, vocabulary: 'pii-context/v1' as const };
+  return { credentials: match[1] as 'full' | 'common', selectors, families, vocabulary: match[4] as PiiContextVocabulary };
 }
 
 function selectorClosure(selectors: readonly string[], registryFamilies: readonly string[]) {

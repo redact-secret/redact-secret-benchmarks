@@ -138,6 +138,11 @@ test('population comparison freezes one shared scanner policy and proves global-
   for (const identity of invalidIdentities)
     assert.throws(() => piiArrivalSelectionEvidence('candidate', identity, 'available'), /activation identity|closure mismatch/);
   assert.throws(() => piiArrivalSelectionEvidence('baseline', baseline.activationIdentity, 'available'), /closure mismatch/);
+  // A repaired-vocabulary candidate is accepted only when the caller names pii-context/v2; v1 stays the frozen default.
+  const v2 = 'credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:us:ssn;vocabulary=pii-context/v2';
+  assert.equal(piiArrivalSelectionEvidence('candidate', v2, 'available', 'pii-context/v2').activationIdentity, v2);
+  assert.throws(() => piiArrivalSelectionEvidence('candidate', candidate.activationIdentity, 'available', 'pii-context/v2'), /closure mismatch/);
+  assert.throws(() => piiArrivalSelectionEvidence('candidate', v2.replace('/v2', '/v9'), 'available', 'pii-context/v2'), /activation identity/);
 });
 
 test('bounded SSN reference validator implements only the frozen structural exclusions', () => {
@@ -385,4 +390,12 @@ test('unspent qualification binds exact public failures through the sanctioned t
     hostile.arrivalEvidence.artifactCommitment = piiBindingArtifactCommitment(arrivalProjection);
     assert.equal(validatePiiQualificationArrivalBinding(hostile), false);
   }
+});
+
+test('activation identities parse under pii-context/v1 (frozen beta.10 records) and v2, and reject unknown vocabularies', async () => {
+  const { parsePiiActivationIdentity } = await import('../benchmarks/evaluation/domains/pii/product-binding.ts');
+  const base = 'credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=';
+  assert.equal(parsePiiActivationIdentity(`${base}pii-context/v1`).vocabulary, 'pii-context/v1');
+  assert.equal(parsePiiActivationIdentity(`${base}pii-context/v2`).vocabulary, 'pii-context/v2');
+  for (const bad of ['pii-context/v3', 'pii-context/v', 'other/v2']) assert.throws(() => parsePiiActivationIdentity(`${base}${bad}`), /activation identity/);
 });

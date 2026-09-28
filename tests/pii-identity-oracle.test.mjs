@@ -259,3 +259,19 @@ test('a schemaVersion 2 qualification must bind its oracle projection and take i
   assert.equal(validQualificationIdentityOracle({ ...row, product: { ...row.product, artifactCommitment: 'f'.repeat(64) } }), false);
   assert.equal(validQualificationIdentityOracle({ ...row, identityOracle: undefined }), false);
 });
+
+test('product identity evidence may report the repaired pii-context/v2 vocabulary, but only consistently', () => {
+  const family = 'pii:global:phone', plan = PII_ORACLE_PLANS[family];
+  const withVocabulary = (declared, reported) => {
+    const evidence = productEvidence(plan);
+    evidence.contextVocabulary = declared;
+    evidence.activationIdentity = evidence.activationIdentity.replace('pii-context/v1', reported);
+    evidence.artifactCommitment = piiBindingArtifactCommitment(evidence);
+    return evidence;
+  };
+  assert.doesNotThrow(() => evaluate(family, { productIdentity: withVocabulary('pii-context/v2', 'pii-context/v2') }));
+  assert.throws(() => evaluate(family, { productIdentity: withVocabulary('pii-context/v2', 'pii-context/v1') }), /not bound/);
+  assert.throws(() => evaluate(family, { productIdentity: withVocabulary('pii-context/v9', 'pii-context/v9') }), /not bound/);
+  // The authored oracle itself stays frozen against v1.
+  assert.equal(piiIdentityOracle.contextVocabulary, 'pii-context/v1');
+});

@@ -1,3 +1,4 @@
+import { isPiiContextVocabulary } from '../benchmarks/evaluation/domains/pii/context-vocabulary.ts';
 import { execFileSync, spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -17,6 +18,9 @@ for (const argument of process.argv.slice(2)) {
   if (!match || Object.hasOwn(rawArgs, match[1])) throw new Error('Invalid PII profile-cost arguments');
   rawArgs[match[1]] = match[2];
 }
+// beta.10 records were measured under pii-context/v1; a candidate carrying the repaired vocabulary names it explicitly.
+const contextVocabulary = rawArgs['context-vocabulary'] ?? 'pii-context/v1';
+if (!isPiiContextVocabulary(contextVocabulary)) throw new Error('Unknown --context-vocabulary');
 if (!['aa', 'candidate'].includes(rawArgs.mode) || !rawArgs.config || !rawArgs.output || !rawArgs['run-id'])
   throw new Error('Required: --mode=aa|candidate --config=<json> --output=<json> --run-id=<stable-id>');
 if (rawArgs.mode === 'candidate' && !rawArgs.thresholds) throw new Error('Candidate measurement requires pre-frozen thresholds');
@@ -108,7 +112,7 @@ async function observe(surface, credentialProfile, profile, workload) {
   const attempt = async step => {
     const selected = rawArgs.mode === 'aa' ? profile : step.side === 'off' ? piiProfileCostPlan.piiProfiles[0] : profile;
     const selectors = selected.selectors.length ? selected.selectors.join(',') : 'off';
-    const expectedActivation = `credentials=${credentialProfile};selectors=${selectors};families=${selected.families.join(',')};vocabulary=pii-context/v1`;
+    const expectedActivation = `credentials=${credentialProfile};selectors=${selectors};families=${selected.families.join(',')};vocabulary=${contextVocabulary}`;
     const expectedArtifact = surface.id === 'node-native' ? 'addon' : ['node-wasm', 'chromium-wasm'].includes(surface.id) ? 'wasm' : 'compiled';
     const input = { credentialProfile, selectors: selected.selectors, expectedActivation, expectedArtifact,
       workloadBase64: Buffer.from(workload.text).toString('base64url'),

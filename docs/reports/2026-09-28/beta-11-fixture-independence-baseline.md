@@ -9,6 +9,17 @@ once axes that only re-wrap one value are merged. Fifteen families are
 selected for #379, with a 230-file ledger. No status, expectation, envelope,
 tier or profile floor changed.
 
+> **Measured identity vs the integrated pin.** Every number here was measured
+> at benchmarks `0a73b7db` with the published `0.1.0-beta.9` pin and is kept as
+> measured. `develop` has since pinned the published `0.1.0-beta.10`
+> ([#433](https://github.com/redact-secret/redact-secret-benchmarks/pull/433)).
+> On the batch-1 integration tree (`8576326c3aa201bd5b0d6d3a55a77ea326c89ddc`,
+> which adds #378's untargeted corpus), `eval:classify` in published mode
+> (`0.1.0-beta.10`, TruffleHog 3.97.4) reads 64 stable / 20 provisional /
+> 2 pending (39 documented, 25 empirical), the same distribution as the
+> candidate `9ab0fa0` column below. Read the published beta.9 column as the
+> pre-beta.10 before-state, not as the current published baseline.
+
 Issue: [#377](https://github.com/redact-secret/redact-secret-benchmarks/issues/377)
 (epic [#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376);
 product research [redact-secret#860](https://github.com/redact-secret/redact-secret/issues/860)).

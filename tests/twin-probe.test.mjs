@@ -130,8 +130,7 @@ const T1_DIMENSIONS = {
   'anthropic-token': ['prefix'],
   'aws-access-key': ['prefix'],
   'azure-devops-personal-access-token': ['length', 'boundary'],
-  // #379 adds a trailing-identifier boundary twin (tool-undisputed: the body length is fixed at 36).
-  'github-token': ['length', 'prefix', 'boundary'],
+  'github-token': ['length', 'prefix'],
   'gitlab-token': ['length', 'prefix'],
   'shopify-token': ['prefix', 'boundary'],
   'vault-token': ['length', 'prefix', 'boundary'],

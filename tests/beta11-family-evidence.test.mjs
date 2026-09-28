@@ -17,12 +17,12 @@ const isPositive = f => f.expected.some(r => (r.role ?? 'secret') === 'secret');
 const positives = corpus.filter(isPositive), twins = corpus.filter(f => f.twinOf), benign = corpus.filter(f => !isPositive(f) && !f.twinOf);
 const selected = ledger.selection.map(s => s.family);
 
-test('the corpus covers exactly the ledger selection with 81 positives, 83 benign controls and 41 twins', () => {
+test('the corpus covers exactly the ledger selection with 81 positives, 83 benign controls and 38 twins', () => {
   assert.deepEqual([...new Set(corpus.map(targetOf))].sort(), [...selected].sort());
   assert.equal(positives.length, ledger.budgetTotals.positives);
   // Ledger planned 96 benign and 53 twins; every dropped item is a recorded revision.
   assert.equal(benign.length, 83);
-  assert.equal(twins.length, 41);
+  assert.equal(twins.length, 38);
   for (const family of selected) {
     const plan = ledger.selection.find(s => s.family === family);
     assert.equal(positives.filter(f => targetOf(f) === family).length, plan.positives.length, `${family}: every planned positive authored`);
@@ -55,6 +55,17 @@ test('positives author the redact action, satisfy their frozen contract and use 
   }
   assert.equal(new Set(positives.flatMap(secretValues)).size, positives.length, 'one distinct value per positive');
   assert.equal(new Set(positives.map(skeleton)).size, positives.length, 'one distinct skeleton per positive');
+});
+
+test('no #379 fixture duplicates the content or reuses the template of a fixture in any other corpus', () => {
+  // Same role only: twins of one positive share its template by construction.
+  const role = f => isPositive(f) ? 'positive' : f.twinOf ? 'twin' : 'benign';
+  const others = Object.entries(generated).filter(([category]) => category !== 'beta8-379').flatMap(([, c]) => c.fixtures);
+  const contents = new Set(others.map(o => o.content)), templates = new Set(others.map(o => `${role(o)}:${skeleton(o)}`));
+  for (const f of corpus) {
+    assert.ok(!contents.has(f.content), `${f.id}: byte-identical to an existing fixture`);
+    if (!f.twinOf) assert.ok(!templates.has(`${role(f)}:${skeleton(f)}`), `${f.id}: reuses an existing template`);
+  }
 });
 
 test('each twin changes one property of its positive', () => {

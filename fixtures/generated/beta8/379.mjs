@@ -52,6 +52,9 @@ export const REVISIONS = [
   { family: "stripe-token", item: "benign placeholder sk_test_ + 32 X", action: "revised", reason: "32 X characters satisfy the frozen T1 pattern and fail lexical separability; the documentation placeholder is authored with 24 x characters." },
   { family: "stripe-token", item: "benign public-identifier pk_live_ tier", action: "noted", reason: "The ledger calls it a T1 control; the reviewed Beta.8 control rules score every non-twin public-identifier control at T2 (T1 controls require a twin with a provider source), so it lands at T2 without any contract change." },
   { family: "github-token", item: "benign public-identifier: github_pat_ as a sibling attribution control", action: "dropped", reason: "github_pat_ is the contracted must-redact family github-fine-grained-pat (#371); an unscoped control would assert silence on it." },
+  { family: "anthropic-admin01-key", item: "twin boundary (identifier character after the AA tail)", action: "dropped", reason: "Dropped after the first scan, on contract text alone: the contract review states that no length, alphabet or tail twin is authored on the tool-only 93 + AA field and that the product keeps a >= 20 byte superset, so a trailing identifier character asserts an undecided length property. Dropped together with the stripe and github trailing twins, whatever each scored." },
+  { family: "stripe-token", item: "twin boundary (identifier character after the 32-character body)", action: "dropped", reason: "Dropped after the first scan, on rule text alone: the pinned trufflehog 3.97.4 stripe rule matches [rs]k_live_[a-zA-Z0-9]{20,247} and gitleaks 8.30.1 (sk|rk)_(test|live|prod)_[a-zA-Z0-9]{10,99}, and the contract review calls the body length un-probeable, so a 33-character body is disputed, not tool-undisputed as the ledger recorded." },
+  { family: "github-token", item: "twin boundary (identifier character after the 36-character body)", action: "dropped", reason: "Dropped after the first scan, on rule text alone: the pinned trufflehog 3.97.4 github rule matches (ghp|gho|ghu|ghs|ghr|github_pat)_[a-zA-Z0-9_]{36,255}, so a 37-character body is disputed by a pinned peer, not tool-undisputed as the ledger recorded. This twin scored clean; it is dropped for the same reason as the two that did not." },
   { family: "github-token", item: "benign placeholder ghp_ + 36 x", action: "revised", reason: "36 x characters satisfy the frozen T1 pattern and fail lexical separability; the placeholder is authored with 20 x characters." },
 ];
 
@@ -177,7 +180,7 @@ export function build379({ fixture, synthetic }) {
       `s3://exports-archive/${hex(T_, "s3-digest", 32)}-us-east-1/manifest.json\n`,
       "32-hex digest followed by -us-east-1 (an AWS region after an unrelated hash): no -us<digits> suffix.");
     C(T_, "placeholder", "usx-template", "env",
-      "MAILCHIMP_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-usX\n",
+      "# .env.example (copy to .env and fill in)\nMAILCHIMP_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-usX\n",
       "Documentation template with x body and usX suffix.");
     C(T_, "prose", "datacenter-move", "md",
       "We moved the account from us6 to us19 last week; update the server setting in each client after the move.\n",
@@ -270,10 +273,10 @@ export function build379({ fixture, synthetic }) {
       `$ heroku clients:info $CLIENT_ID\nName:   release-bot\nID:     ${uuid(T_, "client-id")}\nSecret: ************************************\n`,
       "OAuth client id with the secret column masked.");
     C(T_, "near-miss", "releases-path", "txt",
-      `GET https://api.heroku.com/apps/${uuid(T_, "path-app")}/releases\n`,
+      `curl -n https://api.heroku.com/apps/${uuid(T_, "path-app")}/releases -H "Accept: application/vnd.heroku+json; version=3"\n`,
       "App UUID that appears only as a URL path segment.");
     C(T_, "placeholder", "zero-uuid", "env",
-      "HEROKU_API_KEY=00000000-0000-0000-0000-000000000000\n",
+      "# release pipeline settings\nHEROKU_API_KEY=00000000-0000-0000-0000-000000000000\n",
       "Documentation all-zero UUID.");
     C(T_, "reference", "makefile-auth-token", "mk",
       "deploy:\n\tHEROKU_API_KEY=$$(heroku auth:token) ./scripts/release.sh\n",
@@ -378,8 +381,8 @@ export function build379({ fixture, synthetic }) {
       `POST /sms/inbound HTTP/1.1\nX-Twilio-Signature: ${synthetic(seed(T_, "signature"), 27, B64)}=\nContent-Type: application/x-www-form-urlencoded\n`,
       "X-Twilio-Signature header: a Base64 HMAC, not a 32-hex token.");
     C(T_, "placeholder", "quickstart-token", "env",
-      "TWILIO_AUTH_TOKEN=your_auth_token\n",
-      "Quickstart placeholder.");
+      "# Quickstart: paste the token from the Console before running send_sms.py\nexport TWILIO_AUTH_TOKEN=your_auth_token\n",
+      "Quickstart placeholder (a new skeleton; the bare assignment already exists in beta8-207).");
     C(T_, "reference", "functions-context", "js",
       "exports.handler = (context, event, callback) => {\n  const client = require('twilio')(context.ACCOUNT_SID, context.AUTH_TOKEN);\n  callback(null, 'ok');\n};\n",
       "Twilio Functions context.AUTH_TOKEN reference.");
@@ -429,8 +432,8 @@ export function build379({ fixture, synthetic }) {
       "ADMIN_KEY_PREFIX = \"sk-ant-admin01-\"\n\ndef is_admin_key(value: str) -> bool:\n    return value.startswith(ADMIN_KEY_PREFIX)\n",
       "Prefix-only string constant in SDK source (new skeleton).");
     C(T_, "reference", "one-password-ref", "env",
-      "ANTHROPIC_ADMIN_KEY=op://vault/anthropic-admin/credential\n",
-      "1Password secret reference.");
+      "export ANTHROPIC_ADMIN_KEY=\"op://vault/anthropic-admin/credential\"\nop run -- ./rotate-keys.sh\n",
+      "1Password secret reference resolved by op run.");
     C(T_, "prose", "rotation-policy", "md",
       "Admin keys can manage every workspace in the organization; rotate them every 90 days and never use one for model requests.\n",
       "Security policy prose on admin-key rotation.");
@@ -440,9 +443,6 @@ export function build379({ fixture, synthetic }) {
     T(T_, "circleci-environment", "admim-letter", "prefix", "provider",
       "prefix: one letter of the documented prefix changes (sk-ant-admim01-)",
       w => w.pre + w.value.replace(/^sk-ant-admin01-/, "sk-ant-admim01-") + w.post);
-    T(T_, "ts-fetch-literal", "trailing-identifier", "boundary", "provider",
-      "boundary: the value is continued by one identifier character after the AA tail",
-      w => `${w.pre}${w.value}Q${w.post}`);
   }
 
   // ------------------------------------------------------------ cohere-api-key (T2, context-gated)
@@ -597,11 +597,11 @@ export function build379({ fixture, synthetic }) {
       `API key: tgp_v1_${synthetic(seed(T_, "truncated"), 20, B64URL)}… (click to reveal)\n`,
       "tgp_v1_ followed by a 20-character truncated body and an ellipsis.");
     C(T_, "placeholder", "docs-ellipsis", "env",
-      "TOGETHER_API_KEY=tgp_v1_...\n",
+      "# eval runner settings\nTOGETHER_API_KEY=tgp_v1_...\n",
       "Documentation placeholder.");
     C(T_, "reference", "doppler-ref", "yml",
-      "env:\n  TOGETHER_API_KEY: ${{ doppler.TOGETHER_API_KEY }}\n",
-      "Doppler secret reference.");
+      "# doppler.yaml: TOGETHER_API_KEY is injected at runtime by `doppler run -- python eval.py`\nsetup:\n  project: eval\n  config: prd\n",
+      "Doppler project reference with no literal (a new skeleton; a workflow-expression reference already exists).");
     C(T_, "prose", "base-url-readme", "md",
       "Together exposes an OpenAI-compatible API at api.together.xyz/v1, so switching providers only changes the base URL and the model name.\n",
       "README comparing Together and OpenAI base URLs.");
@@ -730,7 +730,7 @@ export function build379({ fixture, synthetic }) {
     const T_ = "stripe-token";
     const body = s => synthetic(seed(T_, s), 32, ALNUM);
     P(T_, "env", "env-with-publishable", "env",
-      `STRIPE_PUBLISHABLE_KEY=pk_test_${body("env-publishable-neighbour")}\nSTRIPE_SECRET_KEY=`, `sk_test_${body("env-with-publishable")}`, "\n",
+      `# Stripe test-mode keys for local checkout\nSTRIPE_PUBLISHABLE_KEY=pk_test_${body("env-publishable-neighbour")}\nSTRIPE_SECRET_KEY=`, `sk_test_${body("env-with-publishable")}`, "\n",
       "Mixed document: .env with the secret key beside a publishable pk_test_ key; only the sk_test_ span is expected.");
     P(T_, "container-config", "compose-restricted", "yml",
       "services:\n  billing-worker:\n    image: registry.example.test/billing:2.3\n    environment:\n      STRIPE_API_KEY: ", `rk_live_${body("compose-restricted")}`, "\n",
@@ -757,7 +757,7 @@ export function build379({ fixture, synthetic }) {
       `Customer reported a failing key ending sk_live_…${synthetic(seed(T_, "last-four"), 4, ALNUM)}; asked them to roll it from the dashboard.\n`,
       "Dashboard-style truncated display (prefix + ellipsis + last four).");
     C(T_, "placeholder", "docs-x-body", "env",
-      "STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxxx\n",
+      "# checkout service settings\nSTRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxxx\n",
       "Documentation placeholder (24 x characters; see REVISIONS).");
     C(T_, "reference", "process-env", "js",
       "Stripe.apiKey = process.env.STRIPE_SECRET_KEY;\n",
@@ -774,9 +774,6 @@ export function build379({ fixture, synthetic }) {
     T(T_, "httpie-bearer", "hyphen-separators", "prefix", "provider",
       "prefix: sk_live_ written with hyphens (sk-live-)",
       w => w.pre + w.value.replace(/^sk_live_/, "sk-live-") + w.post);
-    T(T_, "rails-credentials", "trailing-identifier", "boundary", "tool-undisputed",
-      "boundary: the body is continued by one identifier character",
-      w => `${w.pre}${w.value}Q${w.post}`);
   }
 
   // ------------------------------------------------------------ github-token (T1)
@@ -803,7 +800,7 @@ export function build379({ fixture, synthetic }) {
       "commit 1f2e3d4c\n\n    Remove leaked token ghp_**** from the deploy script\n",
       "ghp_ followed by a masked body in a commit message.");
     C(T_, "placeholder", "x-body", "env",
-      "GH_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx\n",
+      "# release workflow settings\nGH_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx\n",
       "Placeholder with 20 x characters (see REVISIONS).");
     C(T_, "reference", "workflow-expressions", "yml",
       "env:\n  GH_TOKEN: ${{ github.token }}\n  RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n",
@@ -823,9 +820,6 @@ export function build379({ fixture, synthetic }) {
     T(T_, "gh-login-herestring", "hyphen-separator", "prefix", "provider",
       "prefix: ghp_ written with a hyphen (ghp-)",
       w => w.pre + w.value.replace(/^ghp_/, "ghp-") + w.post);
-    T(T_, "gh-auth-status-token", "trailing-identifier", "boundary", "tool-undisputed",
-      "boundary: the body is continued by one identifier character",
-      w => `${w.pre}${w.value}Q${w.post}`);
     T(T_, "installation-clone-url", "short-body-35", "length", "tool-undisputed",
       "length: the ghs_ body has 35 characters vs the 36 the contract fixes",
       w => w.pre + w.value.slice(0, -1) + w.post);

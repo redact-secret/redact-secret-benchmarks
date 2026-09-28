@@ -19,6 +19,7 @@ test('v2 is a reviewed plan for a pii-context/v2 candidate with its own implemen
   assert.equal(plan.id, 'pii-profile-cost-v2');
   assert.equal(plan.inputs.contextVocabulary, 'pii-context/v2');
   assert.ok(['interim', 'final'].includes(plan.inputs.candidateRole));
+  assert.equal(plan.inputs.candidateProductCommit, '1127bf91323797be89b4413c8051f9a9a85da43b');
   assert.equal(await verifyImplementationFreeze(v2Plan), true);
   // The plan is a separate version: v1 files are not part of the v2 freeze except the shared, unchanged adapters.
   const shared = v2Plan.implementationFreeze.files.filter(row => v1Plan.implementationFreeze.files.some(item => item.path === row.path));
@@ -33,7 +34,12 @@ test('v2 adapters expect the plan vocabulary and the size roster keeps a split-o
   assert.ok(!measure.includes('vocabulary=pii-context/v1'));
   const collect = text('scripts/collect-pii-profile-cost-sizes-v2.mjs');
   assert.ok(collect.includes("verdict: 'no-frozen-budget'") && collect.includes('piiArtifacts'));
-  assert.ok(collect.includes("filter(profile => !profile.startsWith('pii:'))"));
+  assert.ok(collect.includes("filter(profile => !profile.startsWith('pii:'))") && collect.includes('_pii_bg.wasm'));
+  // redact-secret#937: raw browser Wasm with PII on runs the `_pii` builds; PII-off runs the default builds.
+  const chromium = text('scripts/pii-profile-cost/chromium-sample-v2.mjs'), prepare = text('scripts/prepare-pii-profile-cost-linux-v2.mjs');
+  assert.ok(chromium.includes("input.selectors.length ? '-pii' : ''"));
+  for (const entry of ['redact_secret_wasm_pii.js', 'redact_secret_wasm_common_pii.js', 'redact_secret_wasm_pii_bg.wasm', 'redact_secret_wasm_common_pii_bg.wasm'])
+    assert.ok(prepare.includes(entry), entry);
   const workflow = text('.github/workflows/pii-profile-cost-v2.yml');
   assert.ok(!workflow.includes('2e1bdcf0905f') && workflow.includes('qualification/pii-profile-cost-v2.json'));
   assert.ok(!/pii-profile-cost\.yml/.test(workflow.replace(/pii-profile-cost-v2\.yml/g, '')));

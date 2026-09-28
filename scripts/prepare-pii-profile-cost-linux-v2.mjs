@@ -38,7 +38,7 @@ const qualified = async (family, target, value) => {
 };
 const adapterRoot = path.resolve('scripts/pii-profile-cost');
 const definitions = {
-  node: path.join(adapterRoot, 'node-sample.mjs'), chromium: path.join(adapterRoot, 'chromium-sample.mjs'),
+  node: path.join(adapterRoot, 'node-sample.mjs'), chromium: path.join(adapterRoot, 'chromium-sample-v2.mjs'),
   python: path.join(adapterRoot, 'python-sample.py'), cli: path.join(adapterRoot, 'cli-sample.mjs'),
   rust: path.join(adapterRoot, 'rust-sample.rs'), protocol: path.join(adapterRoot, 'adapter-protocol.mjs'),
 };
@@ -50,6 +50,9 @@ const artifacts = [
     path.join(args['node-wasm-root'], 'node_modules/@redact-secret/wasm/redact_secret_wasm_bg.wasm'))) },
   { id: 'browser-full-wasm', ...(await qualified('browser', null, path.join(args['browser-root'], 'redact_secret_wasm_bg.wasm'))) },
   { id: 'browser-common-wasm', ...(await qualified('browser-common', null, path.join(args['browser-common-root'], 'redact_secret_wasm_common_bg.wasm'))) },
+  // redact-secret#937: PII selections in the browser run the `_pii` builds shipped beside the defaults.
+  { id: 'browser-full-pii-wasm', ...(await qualified('browser', null, path.join(args['browser-root'], 'redact_secret_wasm_pii_bg.wasm'))) },
+  { id: 'browser-common-pii-wasm', ...(await qualified('browser-common', null, path.join(args['browser-common-root'], 'redact_secret_wasm_common_pii_bg.wasm'))) },
   { id: 'python-wheel-install', ...(await qualified('python-wheel', 'x86_64-unknown-linux-gnu', args['python-wheel'])) },
   { id: 'cli-linux-x64', ...(await qualified('cli', 'x86_64-unknown-linux-gnu', args.cli)) },
   { id: 'rust-release-helper', ...(await file(args['rust-helper'])) },
@@ -70,7 +73,8 @@ const surfaces = [
   await surface('node-wasm', process.execPath, nodeArgs(args['node-wasm-root']), ['node-forced-wasm'], ['full', 'common'], [['adapter', definitions.node], ['protocol', definitions.protocol]]),
   await surface('chromium-wasm', process.execPath, [definitions.chromium, `--playwright=${args.playwright}`,
     `--full-root=${args['browser-root']}`, '--full-entry=redact_secret_wasm.js', `--common-root=${args['browser-common-root']}`,
-    '--common-entry=redact_secret_wasm_common.js'], ['browser-full-wasm', 'browser-common-wasm'], ['full', 'common'],
+    '--full-pii-entry=redact_secret_wasm_pii.js', '--common-entry=redact_secret_wasm_common.js', '--common-pii-entry=redact_secret_wasm_common_pii.js'],
+  ['browser-full-wasm', 'browser-common-wasm', 'browser-full-pii-wasm', 'browser-common-pii-wasm'], ['full', 'common'],
   [['adapter', definitions.chromium], ['protocol', definitions.protocol], ['playwright', args.playwright]]),
   await surface('python', args.python, [definitions.python], ['python-wheel-install'], ['full'], [['adapter', definitions.python]]),
   await surface('cli', process.execPath, [definitions.cli, `--binary=${args.cli}`], ['cli-linux-x64'], ['full'],

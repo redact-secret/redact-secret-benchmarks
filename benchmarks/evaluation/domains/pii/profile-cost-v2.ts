@@ -104,7 +104,7 @@ export function validatePiiProfileCostPlan(value: unknown = piiProfileCostPlan) 
     'scripts/build-pii-profile-cost-browser-bundle-v2.mjs', 'scripts/collect-pii-profile-cost-sizes-v2.mjs',
     'scripts/freeze-pii-profile-cost-thresholds-v2.mjs', 'scripts/measure-pii-profile-cost-v2.mjs',
     'scripts/prepare-pii-profile-cost-linux-v2.mjs', 'scripts/prepare-pii-profile-cost-size-config-v2.mjs',
-    'scripts/pii-profile-cost/adapter-protocol.mjs', 'scripts/pii-profile-cost/chromium-sample.mjs',
+    'scripts/pii-profile-cost/adapter-protocol.mjs', 'scripts/pii-profile-cost/chromium-sample-v2.mjs',
     'scripts/pii-profile-cost/cli-sample.mjs', 'scripts/pii-profile-cost/node-sample.mjs',
     'scripts/pii-profile-cost/python-sample.py', 'scripts/pii-profile-cost/rust-sample.rs', 'tests/pii-profile-cost-v2.test.mjs'];
   if (plan.implementationFreeze?.algorithm !== 'sha256-file-bytes' ||

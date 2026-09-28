@@ -4,14 +4,14 @@
   "issue": 428,
   "supportClaims": false,
   "inputs": {
-    "benchmarkBaseCommit": "834f2c091994cd08ba972a7a026066e92aca8b12",
-    "candidateProductCommit": "79c0a66119fb72931fda9adddbe2973a52bb4833",
-    "candidateRole": "interim",
+    "benchmarkBaseCommit": "096aab4e91d42cf7f334884b51a9c4d32320c2dd",
+    "candidateProductCommit": "1127bf91323797be89b4413c8051f9a9a85da43b",
+    "candidateRole": "final",
     "contextVocabulary": "pii-context/v2",
     "distributionBaselineProductCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09",
-    "candidateQualificationRun": 36446845486,
+    "candidateQualificationRun": 36463771960,
     "distributionBaselineQualificationRun": 36317349914,
-    "candidateInventorySha256": "f4c67df6a6d54f971e66af55827be8e2ad18a4bddf4404ff9c2ff2fbdcf590fa",
+    "candidateInventorySha256": "5ea986f500855bcff2aea3e44045f75efe90b151729ae8769d4bf9e5f8b75061",
     "distributionBaselineInventorySha256": "c41b05aeaca64d6f877d6bfd3c5caf07b358905aad51c8f182f9e4f9ed121683",
     "regressionBudgetId": "regression-budgets-v1",
     "regressionBudgetBaseline": "0.1.0-beta.8"
@@ -379,11 +379,11 @@
     "files": [
       {
         "path": ".github/workflows/pii-profile-cost-v2.yml",
-        "sha256": "9c03049529774897bf73a1325818e419d81e2a527cc39f0fbf6f9a2c6e48b5cf"
+        "sha256": "bd117f73a4da02bfc0dc91ec00a5da1fb76bc1858660c0a6b79be20d00244064"
       },
       {
         "path": "benchmarks/evaluation/domains/pii/profile-cost-v2.ts",
-        "sha256": "3451cf92a695519fc6fb596d43a46c7ce5c3a49c81d3fd0be4496a32dbe9cea3"
+        "sha256": "43df8e558e79653c4111ccceea20bf93f5fe28c01abdb3035be562c03ba4fd7a"
       },
       {
         "path": "scripts/build-pii-profile-cost-browser-bundle-v2.mjs",
@@ -391,7 +391,7 @@
       },
       {
         "path": "scripts/collect-pii-profile-cost-sizes-v2.mjs",
-        "sha256": "aa0996f09f5afbd7c52f6fffcce243b3b4c03f81488d3d302a395960cefa0642"
+        "sha256": "b98f550593d0af7b319af1cdd99044e52c37712556aff27617a2d0195726f0ba"
       },
       {
         "path": "scripts/freeze-pii-profile-cost-thresholds-v2.mjs",
@@ -403,19 +403,19 @@
       },
       {
         "path": "scripts/prepare-pii-profile-cost-linux-v2.mjs",
-        "sha256": "589590d8a04db93a8bc06ce4e66ae5862658adb836525b5bfafb0a6f12b59100"
+        "sha256": "d88c7e1138b34ca696fed4161a14bea19f78c2efdcef8dce6e717396c1ea9e44"
       },
       {
         "path": "scripts/prepare-pii-profile-cost-size-config-v2.mjs",
-        "sha256": "8a48575df729e628c202c15f0687d4420443396026ba1d923b48804e480228bf"
+        "sha256": "31d4a8bdd211584fe596c011b8c5710c48d814da460c38b38adcdaba7963220c"
       },
       {
         "path": "scripts/pii-profile-cost/adapter-protocol.mjs",
         "sha256": "a9ef1c30aa54fef6669c9762590199429ee45dddffa4dedb70cc5adb51313176"
       },
       {
-        "path": "scripts/pii-profile-cost/chromium-sample.mjs",
-        "sha256": "765ee3ae03e88700256267485519fbb82ef6aea81af8f027545c3dd3c73fdb64"
+        "path": "scripts/pii-profile-cost/chromium-sample-v2.mjs",
+        "sha256": "1dd1f270d84898d23716f4e7fb45cc338a4c4344e024ff57b5cfd58fdb2c8373"
       },
       {
         "path": "scripts/pii-profile-cost/cli-sample.mjs",
@@ -435,9 +435,9 @@
       },
       {
         "path": "tests/pii-profile-cost-v2.test.mjs",
-        "sha256": "7b89a314bc13f219228161beac97498661096121db1f75ae1a9016bcc739516c"
+        "sha256": "7ad93d301e3a59447ab44369319586a9817d78d443e9159cbfc3348797f08467"
       }
     ]
   },
-  "contentCommitment": "4ce9b95e04db9e3a5d097992f07fb7e16bc7eb472e70c9eaffb533c734cb94e5"
+  "contentCommitment": "fd6d7cb1b879feabb5737ff573025ca3f1b34ed917497815c255d629af724bd9"
 }

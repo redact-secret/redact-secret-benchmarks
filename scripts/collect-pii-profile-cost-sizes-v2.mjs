@@ -49,11 +49,9 @@ async function loadSide(id) {
   const inventory = JSON.parse(inventoryBytes);
   if (inventory.sourceCommit !== expected[id].commit || Number(inventory.workflowRun) !== expected[id].run ||
       inventory.sourceRef !== 'refs/heads/main' || !Array.isArray(inventory.artifacts)) throw new Error(`${id} inventory identity mismatch`);
-  // v2: the default roster must be present on both sides; the candidate may add PII-only families (redact-secret#937).
+  // v2: redact-secret#937 ships `_pii` Wasm builds inside the existing browser families, so the family roster is unchanged.
   const families = [...new Set(inventory.artifacts.map(row => row.family))].sort();
-  const defaults = families.filter(family => !/pii/.test(family));
-  if (JSON.stringify(defaults) !== JSON.stringify([...piiProfileCostPlan.artifactRoster.qualificationFamilies].sort()) ||
-      (id === 'baseline' && defaults.length !== families.length))
+  if (JSON.stringify(families) !== JSON.stringify([...piiProfileCostPlan.artifactRoster.qualificationFamilies].sort()))
     throw new Error(`${id} qualification artifact roster mismatch`);
   const lane = inventory.cleanInstallQualification?.filter(row => row.lane === 'node');
   if (lane?.length !== 1) throw new Error(`${id} node qualification lane mismatch`);
@@ -79,13 +77,14 @@ async function loadSide(id) {
     throw new Error(`${id} npm tarball roster mismatch`);
   const wasm = [];
   for (const row of side.wasm) {
-    const pii = typeof row.profile === 'string' && /^pii:wasm-[a-z0-9-]*pii[a-z0-9-]*$/.test(row.profile);
+    const pii = typeof row.profile === 'string' && /^pii:(?:full|common)$/.test(row.profile);
     if (!exact(row, ['profile', 'path', 'sha256']) || !(['full', 'common'].includes(row.profile) || (pii && id === 'candidate')) || !digest(row.sha256))
       throw new Error(`Invalid ${id} wasm input`);
     const bytes = await readFile(path.resolve(row.path));
     if (sha256(bytes) !== row.sha256 || (!pii && inventory.artifacts.filter(artifact => artifact.family === (row.profile === 'full' ? 'browser' : 'browser-common') &&
         artifact.file.endsWith('_bg.wasm') && artifact.sha256 === row.sha256 && artifact.bytes === bytes.length).length !== 1) ||
-        (pii && inventory.artifacts.filter(artifact => /pii/.test(artifact.family) && artifact.sha256 === row.sha256 && artifact.bytes === bytes.length).length !== 1))
+        (pii && inventory.artifacts.filter(artifact => artifact.family === (row.profile === 'pii:full' ? 'browser' : 'browser-common') &&
+          artifact.file.endsWith('_pii_bg.wasm') && artifact.sha256 === row.sha256 && artifact.bytes === bytes.length).length !== 1))
       throw new Error(`${id} wasm identity mismatch: ${row.profile}`);
     wasm.push({ profile: row.profile, sha256: row.sha256, raw: bytes.length,
       gzip9: gzipSync(bytes, { level: 9, mtime: 0 }).length,
@@ -129,7 +128,7 @@ const artifactKey = row => `${row.family}/${row.target ?? 'portable'}/${row.arti
 const baselineArtifacts = new Map(baseline.inventory.artifacts.map(row => [artifactKey(row), row]));
 const candidateArtifacts = new Map(candidate.inventory.artifacts.map(row => [artifactKey(row), row]));
 const candidateOnly = [...candidateArtifacts.keys()].filter(key => !baselineArtifacts.has(key));
-if ([...baselineArtifacts.keys()].some(key => !candidateArtifacts.has(key)) || candidateOnly.some(key => !/pii/.test(candidateArtifacts.get(key).family)))
+if ([...baselineArtifacts.keys()].some(key => !candidateArtifacts.has(key)) || candidateOnly.some(key => !/_pii(?:_bg\.wasm|\.js|\.d\.ts|_bg\.wasm\.d\.ts)$/.test(candidateArtifacts.get(key).file)))
   throw new Error('Baseline/candidate qualification artifact roster mismatch');
 const budget = (id, baselineBytes, candidateBytes, floorBytes) => {
   const deltaBytes = candidateBytes - baselineBytes, allowedBytes = Math.max(Math.ceil(baselineBytes * 0.05), floorBytes);

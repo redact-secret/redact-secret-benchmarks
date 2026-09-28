@@ -72,10 +72,7 @@ jobs:
             --sha '${{ steps.plan.outputs.candidate_commit }}' --run-id '${{ steps.plan.outputs.candidate_run }}' --product-ref main --dir "$RUNNER_TEMP/qualified"
           gh run download '${{ steps.plan.outputs.candidate_run }}' -R redact-secret/redact-secret -n python-wheel-x86_64-unknown-linux-gnu -D "$RUNNER_TEMP/python-wheel"
           gh run download '${{ steps.plan.outputs.candidate_run }}' -R redact-secret/redact-secret -n cli-x86_64-unknown-linux-gnu -D "$RUNNER_TEMP/cli"
-          # redact-secret#937: a split-out PII Wasm artifact, when the run has one; its digest is checked against the inventory later.
-          for name in $(gh api "repos/redact-secret/redact-secret/actions/runs/${{ steps.plan.outputs.candidate_run }}/artifacts" --paginate --jq '.artifacts[].name' | grep -E '^wasm-[a-z0-9-]*pii[a-z0-9-]*$' || true); do
-            gh run download '${{ steps.plan.outputs.candidate_run }}' -R redact-secret/redact-secret -n "$name" -D "$RUNNER_TEMP/qualified/$name"
-          done
+          # redact-secret#937: the `_pii` Wasm builds arrive inside wasm-web and wasm-web-common; the inventory binds them.
       - name: Repack and install the qualified Node candidates
         run: |
           set -euo pipefail
@@ -212,11 +209,6 @@ jobs:
             git -C "$RUNNER_TEMP/$side/product" checkout --quiet "$commit"
             node benchmarks/scripts/qualified-candidate.mjs fetch --repository redact-secret/redact-secret \
               --sha "$commit" --run-id "$run" --product-ref main --dir "$RUNNER_TEMP/$side/qualified"
-            if [ "$side" = candidate ]; then
-              for name in $(gh api "repos/redact-secret/redact-secret/actions/runs/$run/artifacts" --paginate --jq '.artifacts[].name' | grep -E '^wasm-[a-z0-9-]*pii[a-z0-9-]*$' || true); do
-                gh run download "$run" -R redact-secret/redact-secret -n "$name" -D "$RUNNER_TEMP/$side/qualified/$name"
-              done
-            fi
             npm --prefix "$RUNNER_TEMP/$side/product" ci --ignore-scripts --no-audit --no-fund
             npm --prefix "$RUNNER_TEMP/$side/product" run js:build
             node "$RUNNER_TEMP/$side/product/scripts/pack-npm-candidate.mjs" \

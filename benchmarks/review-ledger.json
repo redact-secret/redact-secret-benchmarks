@@ -137930,6 +137930,146 @@
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
       "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+    },
+    "ba27617ce17add6d0b298cd4ac695736126d98931ac5f8aeba4424d0e601120b": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--helm-values-search-api, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [922,943) that the expectation (expected: none) does not assert; gitleaks reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "3a38e7083d8fba1492ffd96df2ceef119c4aab3022bbba00a800f32a2a615692": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--helm-values-search-api, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [922,943) that the expectation (expected: none) does not assert; trufflehog reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "c8bb0a5f149267bbd0b7359c6d024d7e60c4bf4f457132f8c9d437b10f25cf12": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--k8s-billing-externalsecret, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [420,431), [535,558), [668,690) that the expectation (expected: none) does not assert; gitleaks also reports a span at a different range. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "4d3d7d13bdb1dd49a34ff7aa92390888f0a2a5a4224fbd0b127b2b987defad6c": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--k8s-billing-externalsecret, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [420,431), [535,558), [668,690) that the expectation (expected: none) does not assert; trufflehog reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "5c2af0c6c7bad4345adcbf9f8308f600929332660fa3b34a482a017e06a26896": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Peer false alarm on an untargeted benign control (#378, real-world-shapes--spring-application-prod-yml, must-not-flag/T3, authored before any scan): trufflehog reports span(s) at [371,439) that the expectation (expected: none) does not assert; redact-secret reports nothing. Peer output is review evidence, not ground truth; recorded open pending human review, and the fixture is not relabelled or edited. Class: differential-false-alarm-unconfirmed/untargeted-real-world-shapes."
+    },
+    "4528afd7e221894d05cc8cf4c7a685e1522a2e1e15da4cb08b30ffbdd1c49dc5": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--ansible-group-vars-gameservers, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [792,821) that the expectation (expected: none) does not assert; gitleaks reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "e16bf966147e2d08243f6d05568f792aa1f0b890522e6f235607e9e423216f22": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--ansible-group-vars-gameservers, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [792,821) that the expectation (expected: none) does not assert; trufflehog reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "2db5a441f72eb958e68c61265fee2120ccb4606194cfc579a3c2563a5585642a": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Peer false alarm on an untargeted benign control (#378, real-world-shapes--pino-checkout-ndjson, must-not-flag/T3, authored before any scan): gitleaks reports span(s) at [1261,1297) that the expectation (expected: none) does not assert; redact-secret reports nothing. Peer output is review evidence, not ground truth; recorded open pending human review, and the fixture is not relabelled or edited. Class: differential-false-alarm-unconfirmed/untargeted-real-world-shapes."
+    },
+    "d4b816adc57f4dc49fb2f6369d24f30479b7a2f4810b4d1e43b71c827b28b097": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--terraform-apply-sensitive, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [780,790) that the expectation (expected: none) does not assert; gitleaks reports nothing. The redact-secret finding is a warn-only contextual finding, accepted by design under product ADR 2026-09-20-warn-unconditionally-on-high-signal-contextual-names and non-gating for this corpus. Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "36f30269ee92808585d49cd29bcec02cb42717cf6c850d7ce7e63f9a27981eb8": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--terraform-apply-sensitive, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [780,790) that the expectation (expected: none) does not assert; trufflehog reports nothing. The redact-secret finding is a warn-only contextual finding, accepted by design under product ADR 2026-09-20-warn-unconditionally-on-high-signal-contextual-names and non-gating for this corpus. Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "75c46d582b3a1ff588b4b6ce3207e033a437ce34a3947fa24135fd6607c7efe1": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Peer false alarm on an untargeted benign control (#378, real-world-shapes--podfile-lock-ios-wallet, must-not-flag/T3, authored before any scan): gitleaks reports span(s) at [785,825) that the expectation (expected: none) does not assert; redact-secret reports nothing. Peer output is review evidence, not ground truth; recorded open pending human review, and the fixture is not relabelled or edited. Class: differential-false-alarm-unconfirmed/untargeted-real-world-shapes."
+    },
+    "5fa479edb242e7b4695d59c7807c6bcad2caeb9f3edce572bb90a9e7aec7ab8d": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Peer false alarm on an untargeted benign control (#378, real-world-shapes--spring-value-injection, must-not-flag/T3, authored before any scan): gitleaks reports span(s) at [2025,2040) that the expectation (expected: none) does not assert; redact-secret reports nothing. Peer output is review evidence, not ground truth; recorded open pending human review, and the fixture is not relabelled or edited. Class: differential-false-alarm-unconfirmed/untargeted-real-world-shapes."
+    },
+    "ee6ba8372f53d16b21737992c674755f35b2a727e67c717ece72d40466dbf82e": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--swift-keychain-wrapper, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [366,397), [428,459), [490,521) that the expectation (expected: none) does not assert; gitleaks reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "bb3fecb532a6bcf1c86a29b94c5a5b278926fb909b67a1f811d43f024976771c": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--swift-keychain-wrapper, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [366,397), [428,459), [490,521) that the expectation (expected: none) does not assert; trufflehog reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "d1b7fa6dcf194d2af6f7a796ad41979d207f54008037ccb9ffe9b3bf07be654e": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--pytest-fake-fixtures, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [406,416), [950,960), [985,1004) that the expectation (expected: none) does not assert; gitleaks reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "db36d32860bb68b0ed1857bce3b64c4814139b6b86589d091a074bbd8c9254bb": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--pytest-fake-fixtures, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [406,416), [950,960), [985,1004) that the expectation (expected: none) does not assert; trufflehog reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "0af5ebbccef3558bf71f2b298b88f08cdac7621c546ce573a50080848ad77bd1": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--lua-openresty-hmac, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [997,1017) that the expectation (expected: none) does not assert; gitleaks reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "1f7993b13d9daf4157702c0b7602bee3001e82fa34a58bb8c7fa4867bbca5079": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--lua-openresty-hmac, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [997,1017) that the expectation (expected: none) does not assert; trufflehog reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "06924f4c32fdbe311b439854b9585720c95b40d7087ce563032176f1b7b35d3b": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--agent-summary-korean-rotation, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [344,368) that the expectation (expected: none) does not assert; gitleaks reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
+    },
+    "1bdabc23c36b71d4ac6603e8e2aec1859fd77f60d8772cd7ebcacbc1acfcaa40": {
+      "status": "open",
+      "firstSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenRun": "c15f7e24-72f7-44de-b0e3-4acb27a75612",
+      "lastSeenAt": "2026-09-28T14:16:20.000Z",
+      "note": "Product false alarm on an untargeted benign control (#378, real-world-shapes--agent-summary-korean-rotation, must-not-flag/T3, authored before any scan): redact-secret reports generic-token span(s) at [344,368) that the expectation (expected: none) does not assert; trufflehog reports nothing. The redact-secret finding is recorded as an observed false-positive known gap (benchmarks/known-gaps.json product-911, redact-secret#911). Recorded open so it stays visible without asserting product or peer correctness; the fixture is not relabelled or edited. Class: benign-false-alarm-unconfirmed/generic-token."
     }
   }
 }

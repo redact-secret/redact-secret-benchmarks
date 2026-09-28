@@ -42,3 +42,36 @@ test('no fixture content matches any contracts[*].pattern — the machine-checka
     }
   }
 });
+
+// #378: a larger corpus is more evidence only when its files are independent and balanced.
+import { independenceProblems, independentShapeCount, distributionProblems, DEFAULT_DISTRIBUTION, frozenSubsetProblems, axisCounts, maxPairwiseSimilarity, NEAR_DUPLICATE_THRESHOLD } from '../benchmarks/lib/corpus-independence.ts';
+import { loadCases } from '../benchmarks/engine/cases.ts';
+import { createOperators } from '../benchmarks/operators/index.ts';
+
+const frozen = await read('fixtures/real-world-shapes/frozen-baseline-v1.json');
+
+test('#378: no two fixtures share an id, path or bytes, and no pair is a value-swapped near-duplicate', () => {
+  assert.deepEqual(independenceProblems(fixtures), []);
+  assert.equal(independentShapeCount(fixtures), fixtures.length);
+  assert.ok(maxPairwiseSimilarity(fixtures).similarity < NEAR_DUPLICATE_THRESHOLD);
+});
+
+test('#378: the corpus is balanced across all six declared axes', () => {
+  assert.deepEqual(distributionProblems(fixtures, { axes: REAL_WORLD_AXES, ...DEFAULT_DISTRIBUTION }), []);
+  assert.equal(REAL_WORLD_AXES.length, 6);
+});
+
+test('#378: the frozen baseline subset is present, unedited and still ten per axis', () => {
+  assert.deepEqual(frozenSubsetProblems(frozen, fixtures), []);
+  const counts = axisCounts(frozen.fixtures.map(e => fixtures.find(f => f.id === e.id)), REAL_WORLD_AXES);
+  for (const axis of REAL_WORLD_AXES) assert.equal(counts[axis], 10, axis);
+  assert.equal(frozen.fixtures.length, 60);
+});
+
+test('#378: every real-world-shapes benign case is untargeted, so no family gains benign cases or axes from it', async () => {
+  const cases = (await loadCases(createOperators())).filter(c => c.source.category === 'real-world-shapes');
+  const benign = cases.filter(c => c.method === 'benign');
+  assert.equal(benign.length, fixtures.length);
+  for (const c of cases) assert.deepEqual(c.targets, [], c.id);
+  for (const c of benign) assert.ok(REAL_WORLD_AXES.includes(c.taxonomy), c.id);
+});

@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T14:17:32.466Z",
+  "observedAt": "2026-09-28T13:54:36.055Z",
   "sourceRun": {
-    "runId": "b5ea1cc9-d0c4-4a51-a4f0-8c13cf3c3bf8",
-    "benchmarkRevision": "1f21fe92eee7174310c06ec10fc3cbf86a6c06c2"
+    "runId": "1c2584fd-24b7-4401-8674-b63019d86701",
+    "benchmarkRevision": "3cee43ced37f188f8f76ab42cca11efef37f55a1"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "1ea0d8e2f8cc9ffa217dd33395d197b5b7a54dc5314cc971afca5dd660ce2779",
-    "fixtureCount": 28250,
-    "fixturesDigest": "5d366d4896d9851cb31bb74ac02c080a66a4d26578deda3b70632572c5a397c5",
+    "corpusHash": "773d05bb7f37c6b40ce3960773f51b4e9e39c0105eae4d4639808c38fe172e57",
+    "fixtureCount": 28985,
+    "fixturesDigest": "d15b7ecc4bdcd838bb8187f982bc366f2d8a934ded66cef83866c237bb48dccd",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
-      "fixtureCount": 3533
+      "digest": "4e82ac020b4e9cc0ed9710491a21627aa23c5444ffff49b22cf40bee7410c81e",
+      "fixtureCount": 3638
     }
   },
   "peer": {
@@ -31539,6 +31539,41 @@
       "end": 72
     },
     {
+      "path": "cases/real-world-shapes--spring-application-prod-yml--benign/canonical.txt",
+      "start": 371,
+      "end": 439
+    },
+    {
+      "path": "cases/real-world-shapes--spring-application-prod-yml--differential/canonical.txt",
+      "start": 371,
+      "end": 439
+    },
+    {
+      "path": "cases/real-world-shapes--spring-application-prod-yml--metamorphic/canonical.txt",
+      "start": 371,
+      "end": 439
+    },
+    {
+      "path": "cases/real-world-shapes--spring-application-prod-yml--metamorphic/context.indent.txt",
+      "start": 375,
+      "end": 443
+    },
+    {
+      "path": "cases/real-world-shapes--spring-application-prod-yml--metamorphic/context.unicode-prefix.txt",
+      "start": 391,
+      "end": 459
+    },
+    {
+      "path": "cases/real-world-shapes--spring-application-prod-yml--metamorphic/encoding.crlf.txt",
+      "start": 385,
+      "end": 453
+    },
+    {
+      "path": "cases/real-world-shapes--spring-application-prod-yml--mutation/canonical.txt",
+      "start": 371,
+      "end": 439
+    },
+    {
       "path": "cases/sendgrid-regressions--base62-bare--differential/canonical.txt",
       "start": 0,
       "end": 69,
@@ -33945,5 +33980,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "516361420c76c30e1bbdc5a8691ea9819cb3d3ec4059f6e3015890a85ab7118f"
+  "digest": "90d693f047e29828f3f236967a68058e25842162891f3bace188e0ec2941a76b"
 }

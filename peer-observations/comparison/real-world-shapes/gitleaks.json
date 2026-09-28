@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T14:15:34.299Z",
+  "observedAt": "2026-09-28T13:52:01.001Z",
   "sourceRun": {
-    "runId": "2026-09-27T14:15:34.299Z-1b80a8",
-    "benchmarkRevision": "1f21fe92eee7174310c06ec10fc3cbf86a6c06c2"
+    "runId": "2026-09-28T13:52:01.001Z-708f62",
+    "benchmarkRevision": "3cee43ced37f188f8f76ab42cca11efef37f55a1"
   },
   "input": {
     "surface": "comparison/real-world-shapes",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "a2aee870981b7e6436678af90b54ea6fcab3402baef6aee6c6dbb2cd9da59a57",
-    "fixtureCount": 15,
-    "fixturesDigest": "c4187ce8980366757c26e1b1ebd3bb89331087a22be09507d950aac0f7228902",
+    "corpusHash": "cee690b5dc0764c6b3b800ef0713d892ce11645d7bfc4bc9ac2af47fc39589f3",
+    "fixtureCount": 120,
+    "fixturesDigest": "688b84610b70d4186cc841c572d410f7ac687ee352edf3bb63eb0014e8841ed2",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
-      "fixtureCount": 3533
+      "digest": "4e82ac020b4e9cc0ed9710491a21627aa23c5444ffff49b22cf40bee7410c81e",
+      "fixtureCount": 3638
     }
   },
   "peer": {
@@ -59,6 +59,31 @@
     "count": 2,
     "agreed": true
   },
-  "findings": [],
-  "digest": "435d3568eb81bff4cfa8a214ac5f03f0328640be32af06b62934d8f981bcd9f0"
+  "findings": [
+    {
+      "path": "ios/Podfile.lock",
+      "start": 785,
+      "end": 825,
+      "family": "generic-token"
+    },
+    {
+      "path": "k8s/billing/invoice-worker.yaml",
+      "start": 1331,
+      "end": 1395,
+      "family": "generic-token"
+    },
+    {
+      "path": "services/checkout/logs/checkout-2026-09-14.ndjson",
+      "start": 1261,
+      "end": 1297,
+      "family": "generic-token"
+    },
+    {
+      "path": "src/main/java/com/example/payments/config/GatewayClientConfig.java",
+      "start": 2025,
+      "end": 2040,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "58b7a5e3c9df181deb33577c8abfb96a5c7e570b515847f9c2ce37a22fdfc4b3"
 }

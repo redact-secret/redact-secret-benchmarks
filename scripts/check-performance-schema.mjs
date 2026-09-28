@@ -56,6 +56,8 @@ if (summaryFlagIndex !== -1) {
   if (missingResolvedArtifact.length) {
     failed = true;
     console.error(`FAILED: ${summaryPath} node performance runs must record provenance.resolvedArtifact ("node-addon" or "wasm")`);
+    // #415: the producer is core's own runner, not this repository; a candidate without it cannot pass.
+    console.error('  produced by core\'s scripts/assessment-node-performance.mjs (from artifact()); this core commit predates that runner change (#415)');
     for (const run of missingResolvedArtifact) console.error(`  - ${run.surface}:${run.kind}:${run.profileId}`);
   } else {
     console.log(`OK: ${summaryPath} node performance runs name their resolved artifact`);

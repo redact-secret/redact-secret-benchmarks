@@ -79,3 +79,27 @@ test('completeAssessmentProblem accepts a node performance run naming its resolv
   );
   assert.equal(problem, null);
 });
+
+test('check-performance-schema --summary fails a node performance run without resolvedArtifact and names its producer (#415)', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { mkdtempSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const path = await import('node:path');
+  const dir = mkdtempSync(path.join(tmpdir(), 'perf-schema-'));
+  const summary = await read('evidence/603/summary.json');
+  const nodePerformance = run => run.surface === 'node' && run.kind === 'performance' && run.result?.provenance;
+  const check = value => {
+    const file = path.join(dir, 'summary.json');
+    writeFileSync(file, JSON.stringify(value));
+    return spawnSync(process.execPath, ['scripts/check-performance-schema.mjs', '--summary', file], { encoding: 'utf8' });
+  };
+  const missing = check(summary);
+  assert.notEqual(missing.status, 0);
+  assert.match(missing.stderr, /must record provenance\.resolvedArtifact/);
+  assert.match(missing.stderr, /core's scripts\/assessment-node-performance\.mjs/);
+  const stamped = structuredClone(summary);
+  for (const run of stamped.runs.filter(nodePerformance)) run.result.provenance.resolvedArtifact = 'node-addon';
+  const ok = check(stamped);
+  assert.equal(ok.status, 0, ok.stderr);
+  assert.match(ok.stdout, /node performance runs name their resolved artifact/);
+});

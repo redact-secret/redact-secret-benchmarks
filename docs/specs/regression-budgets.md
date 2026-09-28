@@ -49,7 +49,7 @@ report combines them into a score.
 | `latency` | same-job paired run (`paired.json` from `performance-evaluation.yml`) | `linux-x64-release`, same job, in-job baseline = the budgets' baseline commit | processing median, candidate/baseline ratio, per surface × workload profile; the p95 ratio is the tail check |
 | `initialization` | the same paired run | the same | initialization median ratio per surface × workload profile; the p95 ratio is the tail check |
 | `memory` | core `CompleteAssessment` summary (`performance-evaluation.yml`) | `linux-x64-release` | largest observed sample per surface × profile × observable category |
-| `size` | `benchmarks/operational-evidence.json` (#141) | `release-artifacts` | compressed WebAssembly per profile, the quickstart browser bundle, npm tarballs, native addons, wheels, CLI binaries |
+| `size` | WebAssembly: `wasm-sizes.json`, measured from the candidate's own build in `performance-evaluation.yml` (redact-secret#929); the other families: `benchmarks/operational-evidence.json` (#141) | `release-artifacts` | compressed WebAssembly per profile, the quickstart browser bundle, npm tarballs, native addons, wheels, CLI binaries |
 | `adapter-overhead` | the `redact-secret-adapters` overhead harnesses | the measuring host (platform, arch, CPU model, runtime line) | adapter traversal per host × workload, scanner calls per event, scanned code units per event |
 
 **Timing is judged on same-job paired ratios** (#303). The hosted runner's
@@ -64,6 +64,23 @@ initialization compared with the frozen snapshot are still reported, under
 a verdict. Memory and size stay absolute: the six-run study moved memory by
 at most 5.2%, inside every memory threshold and its 1 MiB floor, and sizes do
 not depend on the machine.
+
+**Every performance run judges the WebAssembly size rows**
+([redact-secret#929](https://github.com/redact-secret/redact-secret/issues/929)).
+The beta.10 run judged neither `size/wasm/*/gzip` row, because no size source
+was passed, and a common-profile growth shipped without a verdict. The
+workflow now also builds the candidate's `common` profile
+(`npm run wasm:build:common`) and, after the assessment,
+`scripts/measure-wasm-sizes.mjs` measures both profiles' `.wasm` files in that
+same checkout: raw, gzip level 9 and brotli quality 11 (the #141 method), with
+each file's sha256 and the checkout's commit. Only gzip is budgeted. `evaluate`
+rejects sizes measured at another commit. With `--summary` (a performance
+run) the `size/wasm/` rows are required: without `--wasm-sizes` they are
+`invalid-measurement` (exit 2), never `not-evaluated`. A size source that
+covers only WebAssembly leaves the other size families (npm tarballs, addons,
+wheels, CLI binaries, the browser bundle) `not-evaluated`, visibly counted in
+the report; those are cross-platform release artifacts one Linux job does not
+build.
 
 **Detection** is reported next to them, never budgeted. A detection change is
 the benefit side of a tradeoff, not a cost.
@@ -202,11 +219,15 @@ promotion is invalid.
 ## Commands
 
 ```sh
-# Judge a candidate (any subset of sources; unsupplied dimensions are not evaluated).
+# Judge a candidate (any subset of sources; unsupplied dimensions are not evaluated,
+# except the wasm size rows, which --summary requires).
 # Timing needs --paired; --summary alone judges memory and reports timing as informational.
 npm run performance:budgets:evaluate -- --summary <summary.json> --paired <paired.json> \
-  --operational <operational-evidence.json> --adapter <overhead-v1 output or series> \
+  --wasm-sizes <wasm-sizes.json> --operational <operational-evidence.json> --adapter <overhead-v1 output or series> \
   --source-commit <40-hex> --json-out r.json --markdown-out r.md
+
+# the candidate build's wasm sizes (in performance-evaluation.yml, after both wasm profiles are built)
+node scripts/measure-wasm-sizes.mjs --core <core checkout> --source-commit <40-hex> --out wasm-sizes.json [--markdown-out wasm-sizes.md]
 
 npm run performance:budgets:check      # ledger, baseline history, derivation drift (CI: validate.yml)
 npm run performance:budgets:derive     # rewrite triggers after a new baseline or new noise evidence
@@ -222,8 +243,10 @@ npm run performance:noise -- --core-repo <redact-secret checkout> --python <pyth
 the pin manifest's revision) and the paired baseline (default: the budgets'
 baseline commit) in one job, records the runner's CPU model in `runner.json`,
 runs the candidate's absolute assessment for the acceptance criteria and
-memory, then the interleaved paired rounds. It then runs `evaluate` with
-`--summary` and `--paired` and adds the verdict to the job summary. Dispatch
+memory, measures the candidate's two WebAssembly profiles, then the
+interleaved paired rounds. It then runs `evaluate` with `--summary`,
+`--paired` and `--wasm-sizes` and adds the verdict and the size table to the
+job summary. Dispatch
 inputs `baseline_revision`, `candidate_revision` and `rounds` select other
 pairs. The same commit on both sides is an A/A run.
 

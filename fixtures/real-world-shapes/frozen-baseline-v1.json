@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "id": "real-world-shapes-frozen-v1",
+  "issue": "https://github.com/redact-secret/redact-secret-benchmarks/issues/378",
+  "frozenAt": "2026-09-28",
+  "purpose": "Fixed baseline subset of the untargeted real-world-shapes corpus for later paired (before/after) runs. Later additions are reported against the full corpus and never change this subset; an edited, regrouped or removed member fails tests/real-world-shapes.test.mjs.",
+  "selection": "Chosen before any scanner run: per axis, the first ten fixtures in corpus order (the fifteen #95 fixtures first, then #378 fixtures in authoring order). Selection used no scanner output.",
+  "review": "Authored-synthetic, reviewed at authoring time for credential-free construction (placeholders, references, hash/id noise only) and near-duplicate independence; independent human review is still required, as corpus.json reviewStatus states.",
+  "digestAlgorithm": "sha256 over sorted \"<id>\\t<sha256(content)>\\n\" lines",
+  "digest": "64841e0d52c829b9a6a50037c1d871daa53799e120510af253e6420d0ff05b4f",
+  "fixtures": [
+    {
+      "id": "docker-compose",
+      "group": "realworld-config",
+      "sha256": "30d7bc6de583b694ba405daf20fcd8a3c568a8d20414a2c5c1623c161127968b"
+    },
+    {
+      "id": "nginx-conf",
+      "group": "realworld-config",
+      "sha256": "9348ccbf9adbeff64d325f7bafed190c34a9307e71b7d84736a207983c7d0251"
+    },
+    {
+      "id": "app-settings",
+      "group": "realworld-config",
+      "sha256": "e546ac324b01daa88ae08121e51439f22048f04f32e671fc13010a1f80500e03"
+    },
+    {
+      "id": "helm-values-search-api",
+      "group": "realworld-config",
+      "sha256": "d9df25b931fed306c6f5d22748312a76a86824fc5bcd59f04543bb5c05c2225f"
+    },
+    {
+      "id": "k8s-billing-externalsecret",
+      "group": "realworld-config",
+      "sha256": "323219c235b859fb3ac9f3e19d0b43da32db73d8c9e21ef7cc52e3e43dbddc6f"
+    },
+    {
+      "id": "gha-mobile-release-workflow",
+      "group": "realworld-config",
+      "sha256": "7ee001bea33845ca9bd89f9bd67ab3223cf0260094d504b4e3d27727f2eb6536"
+    },
+    {
+      "id": "gitlab-ci-ml-training",
+      "group": "realworld-config",
+      "sha256": "677adafd1ec668d4566c79d69ae2461abaa1cc093908e3a621939dedf06e5194"
+    },
+    {
+      "id": "env-example-iot-telemetry",
+      "group": "realworld-config",
+      "sha256": "7ad2efee396e8e8761836538bbe2e8b0ee5dc345be16991e3b9a25933c9007b2"
+    },
+    {
+      "id": "systemd-ledger-worker-unit",
+      "group": "realworld-config",
+      "sha256": "396bc0b33c3b7865b20179c96cc8810d1618089a66d8d8cea5d258ab9108cf0b"
+    },
+    {
+      "id": "haproxy-game-lobby",
+      "group": "realworld-config",
+      "sha256": "f5adfb2e6856209dbf7a5df986bb543cdfd83db1d7244056422e0375ccff0b4a"
+    },
+    {
+      "id": "nginx-access-log",
+      "group": "realworld-logs",
+      "sha256": "acebe2a588eac9dd933e1ac966bf46e9340876d8f9aa8f655e83494524ff2b3c"
+    },
+    {
+      "id": "app-error-log",
+      "group": "realworld-logs",
+      "sha256": "3724409a3bfb97635fc6454a698ea23590423dba772e35e0db268e09a58d5651"
+    },
+    {
+      "id": "deploy-log",
+      "group": "realworld-logs",
+      "sha256": "d9fa0b03395b603454402e5f77fb5c2590e13cdac07874030208f934080ece03"
+    },
+    {
+      "id": "pino-checkout-ndjson",
+      "group": "realworld-logs",
+      "sha256": "500c907a90d1c228f0ba0c255e3caab3c002431f40f771170752d129852f9e67"
+    },
+    {
+      "id": "kubectl-events-search-oom",
+      "group": "realworld-logs",
+      "sha256": "2e9e313b3cb92e28012b49993788b0f68e516e93848f902c2d945f0498afad8e"
+    },
+    {
+      "id": "journalctl-iot-gateway-ko",
+      "group": "realworld-logs",
+      "sha256": "29f2452ec76bb10411819fc245bce6be5bcd641d89b3d694d89bad2af197ef3a"
+    },
+    {
+      "id": "postgres-slow-query-de",
+      "group": "realworld-logs",
+      "sha256": "eec3437647cd42b28a73ebd922f2abcf39931691f1dc64e670e0398f931a5f7e"
+    },
+    {
+      "id": "spring-boot-ledger-startup",
+      "group": "realworld-logs",
+      "sha256": "aa9f5b3b824dfba4e2959973853be39ab980274c90b1994f726de1e9a886d6db"
+    },
+    {
+      "id": "python-traceback-trainer",
+      "group": "realworld-logs",
+      "sha256": "d369cebfa4fec15dacb99be1b4ba1a5cd5c1e1c21dbd85c3d2e9e0f05bc2f65e"
+    },
+    {
+      "id": "gha-release-run-masked",
+      "group": "realworld-logs",
+      "sha256": "ad1a78dc5fb54fbcbc8f28a8d8acb23e137dc29aff9f9101340dd53fd662c338"
+    },
+    {
+      "id": "package-lock-snippet",
+      "group": "realworld-lockfile",
+      "sha256": "d81ab4a63a5b62fd34eae00f6c5d30e047f24875ed26c2260a7255cf16ba8ce0"
+    },
+    {
+      "id": "yarn-lock-snippet",
+      "group": "realworld-lockfile",
+      "sha256": "7bda1ef106ee041e954f5c0198dde1c7f4dfdcc4d8abcfd0f039444e35a039c4"
+    },
+    {
+      "id": "go-sum-snippet",
+      "group": "realworld-lockfile",
+      "sha256": "c13aa3fbc137c7cb5f986bf0880a3b82f20c552b2e17e99d2f90c81777084fd5"
+    },
+    {
+      "id": "pnpm-lock-monorepo-dashboard",
+      "group": "realworld-lockfile",
+      "sha256": "1293ce0d8b73bc373982e1f83ae8068509ef522102cd801ab4e239b814a16743"
+    },
+    {
+      "id": "cargo-lock-telemetry-agent",
+      "group": "realworld-lockfile",
+      "sha256": "3b7dc6fb85b69355efb2ba51139dfab4a633d3a61e9a1a90993ce313a7b61d0b"
+    },
+    {
+      "id": "poetry-lock-ml-pipeline",
+      "group": "realworld-lockfile",
+      "sha256": "fed8d03887306f04dbe76abc4c69155729bbac2aba7a03619c990cad57067b5e"
+    },
+    {
+      "id": "requirements-hashes-search-api",
+      "group": "realworld-lockfile",
+      "sha256": "b40d1efba026f2e9cd1efef967cc7c99c1c39c22129d85949fbfc6266be15b2b"
+    },
+    {
+      "id": "uv-lock-cli-tool",
+      "group": "realworld-lockfile",
+      "sha256": "fec2b2248260d9d7b986acd5a5f624bebe9e32872854999c90860b1ecfa9c79a"
+    },
+    {
+      "id": "gemfile-lock-billing-rails",
+      "group": "realworld-lockfile",
+      "sha256": "83bda2d1755344d383ee374c33ee4158d2287516e6e07c19d955f9b86f5efbef"
+    },
+    {
+      "id": "composer-lock-cms-plugins",
+      "group": "realworld-lockfile",
+      "sha256": "2d45db8a5db70c3483f9e15a824ca8cb7f8d96489c3597bd420793a956964b5e"
+    },
+    {
+      "id": "js-source-snippet",
+      "group": "realworld-source",
+      "sha256": "d27e2a5b82463ec205e2535233d74c52e75aade0f2052f75d795e233ed8b126a"
+    },
+    {
+      "id": "python-source-snippet",
+      "group": "realworld-source",
+      "sha256": "94de5395b225a5c52ae7f57872de375d6205c76bfcba413591f1cd93be6dfd52"
+    },
+    {
+      "id": "terraform-source-snippet",
+      "group": "realworld-source",
+      "sha256": "5649b7e87f865f443d9d326d59f9c9e8896f90771921f4bde80b26452eed894d"
+    },
+    {
+      "id": "go-auth-middleware",
+      "group": "realworld-source",
+      "sha256": "f5efa2dfd935e2af96df8cd143e0be681e4977478b42b6741a4a8f88f492086a"
+    },
+    {
+      "id": "rust-secrecy-config",
+      "group": "realworld-source",
+      "sha256": "558218b817683bdf7ff618d72c12b4da44b5a217d9830190f7063e78c873940b"
+    },
+    {
+      "id": "spring-value-injection",
+      "group": "realworld-source",
+      "sha256": "615630019e21ea342f9b7bda55aa4a03178f31899f98c3333931c796703a9fd9"
+    },
+    {
+      "id": "kotlin-buildconfig-android",
+      "group": "realworld-source",
+      "sha256": "53c8fdbbe03283efc7cdac3027afb53d1d538497c306a723002ea408638dc758"
+    },
+    {
+      "id": "swift-keychain-wrapper",
+      "group": "realworld-source",
+      "sha256": "4ac933274fe05b25d4cd7a8181b693d81029dbca46e122e8e988e7e4eb602384"
+    },
+    {
+      "id": "csharp-options-pattern",
+      "group": "realworld-source",
+      "sha256": "7594d967f44eb03f3cffe4202ba2b673595b96beebbf5a50c0e825a71d55cd65"
+    },
+    {
+      "id": "rails-credentials-access",
+      "group": "realworld-source",
+      "sha256": "0a980bf4b70051932bbf515081f23c69dcb755557e6d7496413bfe84ba96b519"
+    },
+    {
+      "id": "readme-snippet",
+      "group": "realworld-docs",
+      "sha256": "31e6502ef5d97f4331c226acf2a31e6b54cf858d1cfd5316b0f17e601cea9a45"
+    },
+    {
+      "id": "api-docs-snippet",
+      "group": "realworld-docs",
+      "sha256": "dce0c86e239203e3dc6a2ba26aa0ece4cc6f4ec30372ebb40d3b0e4e75622bce"
+    },
+    {
+      "id": "changelog-snippet",
+      "group": "realworld-docs",
+      "sha256": "30497d4e344a25722485226c88c7ad05c4f1ddf8c95009b6da0e536c56ca6688"
+    },
+    {
+      "id": "adr-secret-rotation-cadence",
+      "group": "realworld-docs",
+      "sha256": "1fad88791d43c6c7814ec5bf760238ec5243c4ae0452fe7d9aabc6a28d7884c3"
+    },
+    {
+      "id": "runbook-rotate-postgres-role",
+      "group": "realworld-docs",
+      "sha256": "f1f801474940e8746135f07363b11d865c9ca06076ae34f01d31d220ec5c42b0"
+    },
+    {
+      "id": "openapi-security-components",
+      "group": "realworld-docs",
+      "sha256": "78042974e5f795c5dafdf91e55c3ff5751072aff87818b0c7b494d4b7d9b696b"
+    },
+    {
+      "id": "man-page-tidectl",
+      "group": "realworld-docs",
+      "sha256": "3186ee958289c94688fd22314767ccfb9f97ef10ee53ad2ac4f494f5b19bbef3"
+    },
+    {
+      "id": "sphinx-model-registry-credentials",
+      "group": "realworld-docs",
+      "sha256": "11e3748e31d86a883081f7777fbb3cdbed9a1fd37c5835366f3900fc7cc7a83b"
+    },
+    {
+      "id": "asciidoc-game-server-operator-guide",
+      "group": "realworld-docs",
+      "sha256": "75cbc188fcd73becad5b4b4de00b24ae05ebfb36535ff7bab9d82e17aa003478"
+    },
+    {
+      "id": "security-policy-pgp-disclosure",
+      "group": "realworld-docs",
+      "sha256": "eb768eafbee1d112ce4482d806b7fc2c83941c134de85a844691783ef8845d46"
+    },
+    {
+      "id": "agent-transcript-env-example",
+      "group": "realworld-agent-output",
+      "sha256": "05b780558d1f0f0888d0e0397462c0e139642e8eea3d44cc68193cfd306169e4"
+    },
+    {
+      "id": "mcp-search-issues-result",
+      "group": "realworld-agent-output",
+      "sha256": "787c89793cbb06c5a42543e104a98105018527b2e2f25286e9a12a3232bc684a"
+    },
+    {
+      "id": "git-log-stat-payments",
+      "group": "realworld-agent-output",
+      "sha256": "1ec60a4b9ea01bdb202cd6050a7394793d0ae51a8a06fc6944a43f2bb6c7014e"
+    },
+    {
+      "id": "git-diff-config-env-ref",
+      "group": "realworld-agent-output",
+      "sha256": "4626d790e5e5a673c68092242c42c14ff7850c3a23b4f0c9d4519780f5f68df3"
+    },
+    {
+      "id": "kubectl-secret-yaml-redacted",
+      "group": "realworld-agent-output",
+      "sha256": "57d7e45e6502f3fe0026c935265b4875e3d377a1ea67ab7558fac36611e0aad3"
+    },
+    {
+      "id": "docker-inspect-ml-inference",
+      "group": "realworld-agent-output",
+      "sha256": "a8e9f8d2cfd79c1fa4fef78416ca266f99591cf3f2ccd652ab7ea05adf3c3996"
+    },
+    {
+      "id": "npm-audit-json-dashboard",
+      "group": "realworld-agent-output",
+      "sha256": "fa38367a5a8517ea0b99e56b9b0e019cbab465047f9214000fc91d4e7dc76436"
+    },
+    {
+      "id": "pip-install-require-hashes-log",
+      "group": "realworld-agent-output",
+      "sha256": "21f2176bd44653148565f93ae219ea446dd8f55be66d66a031ee250c1fcfeb6d"
+    },
+    {
+      "id": "terraform-output-json-iot",
+      "group": "realworld-agent-output",
+      "sha256": "55e723839769287a3934bf7a1d5162da2ff4eae894b568ee96e3aa3647a717f8"
+    },
+    {
+      "id": "aws-sts-caller-identity",
+      "group": "realworld-agent-output",
+      "sha256": "9482748d5219e58d6b00a3d0fcb58571eedbab15e8f7d6c1172b90f37b4b0d1a"
+    }
+  ]
+}

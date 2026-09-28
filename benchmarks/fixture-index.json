@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "5e899fff7c252121b5eb9f94233ffbe18454aa843005c655e4e1ce9c4118e5ee"
+      "digest": "c268cb20ef7227da083d345d8ca0a622ff70bbfe08873b4a0dc3cbc422c2921e"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -71158,6 +71158,132 @@
       }
     },
     {
+      "slug": "real-world-shapes--admin-audit-log-pt",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "admin-audit-log-pt",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "compliance/audit/exports/admin-console-2026-09.jsonl"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--adr-secret-rotation-cadence",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "adr-secret-rotation-cadence",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/adr/0014-rotate-service-credentials-on-a-fixed-cadence.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--agent-summary-korean-rotation",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "agent-summary-korean-rotation",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "reports/agent/2026-09-15-rotation-summary.ko.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--agent-transcript-env-example",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "agent-transcript-env-example",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "transcripts/session-2026-09-14.jsonl"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--alertmanager-routing",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "alertmanager-routing",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "monitoring/alertmanager/alertmanager.yml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--android-logcat-ja",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "android-logcat-ja",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "mobile/android/bugreports/2026-09-15/logcat-crash.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--ansible-group-vars-gameservers",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "ansible-group-vars-gameservers",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ansible/group_vars/gameservers/main.yml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
       "slug": "real-world-shapes--api-docs-snippet",
       "source": {
         "categoryId": "real-world-shapes",
@@ -71212,12 +71338,246 @@
       }
     },
     {
+      "slug": "real-world-shapes--asciidoc-game-server-operator-guide",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "asciidoc-game-server-operator-guide",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/modules/ROOT/pages/operator-guide.adoc"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--aws-sts-caller-identity",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "aws-sts-caller-identity",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "support/aws-whoami.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--bash-deploy-env",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "bash-deploy-env",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "scripts/deploy-canary.sh"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--c-sha256-constants-header",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "c-sha256-constants-header",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "firmware/crypto/sha256_tables.h"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--cargo-lock-telemetry-agent",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "cargo-lock-telemetry-agent",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "agent/Cargo.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
       "slug": "real-world-shapes--changelog-snippet",
       "source": {
         "categoryId": "real-world-shapes",
         "fixtureId": "changelog-snippet",
         "corpus": "fixtures/real-world-shapes/corpus.json",
         "path": "CHANGELOG.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--ci-bot-coverage-comment",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "ci-bot-coverage-comment",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": ".github/bot-comments/pr-2317-coverage.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--cloudtrail-assumerole-event",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "cloudtrail-assumerole-event",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "security/detections/samples/assumerole-cross-account.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--composer-lock-cms-plugins",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "composer-lock-cms-plugins",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "web/composer.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--conda-env-geospatial",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "conda-env-geospatial",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "envs/geospatial/environment.yml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--confluence-wiki-onboarding-access",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "confluence-wiki-onboarding-access",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "wiki/confluence/DATA/New-Analyst-Access-Checklist.wiki"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--csharp-options-pattern",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "csharp-options-pattern",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "src/Inventory.Api/Options/SearchIndexOptions.cs"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--curl-verbose-bearer-redacted",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "curl-verbose-bearer-redacted",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "tmp/curl-trace-search-suggest.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--deno-lock-scheduler",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "deno-lock-scheduler",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "apps/scheduler/deno.lock"
       },
       "familyIds": [],
       "scenarioIds": [
@@ -71248,12 +71608,408 @@
       }
     },
     {
+      "slug": "real-world-shapes--devcontainer-geo-tiles",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "devcontainer-geo-tiles",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": ".devcontainer/devcontainer.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
       "slug": "real-world-shapes--docker-compose",
       "source": {
         "categoryId": "real-world-shapes",
         "fixtureId": "docker-compose",
         "corpus": "fixtures/real-world-shapes/corpus.json",
         "path": "docker-compose.yml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--docker-inspect-ml-inference",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "docker-inspect-ml-inference",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "diagnostics/docker-inspect-inference.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--dockerfile-secret-mount",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "dockerfile-secret-mount",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "services/ml-scorer/Dockerfile"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--docusaurus-mdx-mobile-sdk",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "docusaurus-mdx-mobile-sdk",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "website/docs/sdk/configure-client.mdx"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--elixir-uplink-client",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "elixir-uplink-client",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "lib/beacon/uplink/client.ex"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--env-example-iot-telemetry",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "env-example-iot-telemetry",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "services/telemetry-ingest/.env.example"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--env-sort-sandbox",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "env-sort-sandbox",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "debug/sandbox-env.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--env-var-reference-csv",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "env-var-reference-csv",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/reference/environment-variables.csv"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--envoy-ingress-access-log",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "envoy-ingress-access-log",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "mesh/ingress/logs/envoy-access.log"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--faq-german-mailrelay",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "faq-german-mailrelay",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/de/faq.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--flake-lock-nix-devshell",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "flake-lock-nix-devshell",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "flake.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--fluent-bit-edge-logs",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "fluent-bit-edge-logs",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "observability/fluent-bit/fluent-bit.conf"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--gemfile-lock-billing-rails",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "gemfile-lock-billing-rails",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "Gemfile.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--gh-api-repo-response",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "gh-api-repo-response",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "scripts/fixtures/gh-api-repos-mobile-app.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--gha-mobile-release-workflow",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "gha-mobile-release-workflow",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": ".github/workflows/release-mobile.yml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--gha-release-run-masked",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "gha-release-run-masked",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ci/logs/release-run-8842.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--git-diff-config-env-ref",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "git-diff-config-env-ref",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "patches/0003-use-env-for-search-credentials.patch"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--git-log-stat-payments",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "git-log-stat-payments",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "notes/git-log-stat-release-2.14.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--gitlab-ci-ml-training",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "gitlab-ci-ml-training",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ml/.gitlab-ci.yml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--glossary-token-key-secret",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "glossary-token-key-secret",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/handbook/security/glossary.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--go-auth-middleware",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "go-auth-middleware",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "internal/httpmw/bearer.go"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--go-mod-iot-gateway",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "go-mod-iot-gateway",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "cmd/iot-gateway/go.mod"
       },
       "familyIds": [],
       "scenarioIds": [
@@ -71284,12 +72040,354 @@
       }
     },
     {
+      "slug": "real-world-shapes--gradle-version-catalog-android",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "gradle-version-catalog-android",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "android/gradle/libs.versions.toml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--haproxy-game-lobby",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "haproxy-game-lobby",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ops/haproxy/haproxy.cfg"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--helm-chart-lock-observability",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "helm-chart-lock-observability",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "deploy/charts/observability/Chart.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--helm-values-search-api",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "helm-values-search-api",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "deploy/helm/search-api/values.yaml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--install-guide-japanese-kintai",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "install-guide-japanese-kintai",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/ja/installation.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--ios-crash-game-client",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "ios-crash-game-client",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "mobile/ios/crashes/StarHarbor-2026-09-17-213344.ips"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--journalctl-iot-gateway-ko",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "journalctl-iot-gateway-ko",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/runbooks/iot-gateway/journalctl-sample.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
       "slug": "real-world-shapes--js-source-snippet",
       "source": {
         "categoryId": "real-world-shapes",
         "fixtureId": "js-source-snippet",
         "corpus": "fixtures/real-world-shapes/corpus.json",
         "path": "client.js"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--k8s-billing-externalsecret",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "k8s-billing-externalsecret",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "k8s/billing/invoice-worker.yaml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--kafka-broker-properties",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "kafka-broker-properties",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "kafka/config/server.properties"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--kafka-broker-startup",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "kafka-broker-startup",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "platform/kafka/logs/server.log.2026-09-20-14"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--kotlin-buildconfig-android",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "kotlin-buildconfig-android",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "app/src/main/java/com/example/fieldtrack/di/NetworkModule.kt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--kubectl-events-search-oom",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "kubectl-events-search-oom",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ops/incidents/2026-08-search-oom/kubectl-events.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--kubectl-secret-yaml-redacted",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "kubectl-secret-yaml-redacted",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "debug/kubectl-get-secret-notification-svc.yaml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--laravel-config-env",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "laravel-config-env",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "config/facturacion.php"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--llm-answer-secret-storage",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "llm-answer-secret-storage",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "chat-exports/how-to-store-api-keys.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--lua-openresty-hmac",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "lua-openresty-hmac",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "gateway/lua/hmac_verify.lua"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--man-page-tidectl",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "man-page-tidectl",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "man/man1/tidectl.1"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--mcp-search-issues-result",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "mcp-search-issues-result",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "logs/mcp/tracker-search_issues-result.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--mix-lock-realtime-chat",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "mix-lock-realtime-chat",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "chat_server/mix.lock"
       },
       "familyIds": [],
       "scenarioIds": [
@@ -71338,12 +72436,264 @@
       }
     },
     {
+      "slug": "real-world-shapes--npm-audit-json-dashboard",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "npm-audit-json-dashboard",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "reports/npm-audit.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--nuget-packages-lock-game-server",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "nuget-packages-lock-game-server",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "src/Arena.Server/packages.lock.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--openapi-security-components",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "openapi-security-components",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "api/openapi/components/security.yaml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--openssl-x509-text-summary",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "openssl-x509-text-summary",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/certs/api-gateway-cert-inspect.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--package-json-edge-worker",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "package-json-edge-worker",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "workers/edge-cache/package.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
       "slug": "real-world-shapes--package-lock-snippet",
       "source": {
         "categoryId": "real-world-shapes",
         "fixtureId": "package-lock-snippet",
         "corpus": "fixtures/real-world-shapes/corpus.json",
         "path": "package-lock.json"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--pino-checkout-ndjson",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "pino-checkout-ndjson",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "services/checkout/logs/checkout-2026-09-14.ndjson"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--pip-install-require-hashes-log",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "pip-install-require-hashes-log",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ci/logs/pip-install-worker.log"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--pnpm-lock-monorepo-dashboard",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "pnpm-lock-monorepo-dashboard",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "pnpm-lock.yaml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--podfile-lock-ios-wallet",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "podfile-lock-ios-wallet",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ios/Podfile.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--poetry-lock-ml-pipeline",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "poetry-lock-ml-pipeline",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ml/poetry.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--postgres-slow-query-de",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "postgres-slow-query-de",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "db/pg/log/postgresql-2026-09-12_000000.log"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--postmortem-webhook-signing-outage",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "postmortem-webhook-signing-outage",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/postmortems/2026-07-14-webhook-signing-key-rollover.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--pytest-fake-fixtures",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "pytest-fake-fixtures",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "tests/conftest.py"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--pytest-summary-snapshots",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "pytest-summary-snapshots",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ci/logs/pytest-recommender.log"
       },
       "familyIds": [],
       "scenarioIds": [
@@ -71374,12 +72724,444 @@
       }
     },
     {
+      "slug": "real-world-shapes--python-traceback-trainer",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "python-traceback-trainer",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ml/training/runs/0412/stderr.log"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--rails-credentials-access",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "rails-credentials-access",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "app/services/shipping/label_purchaser.rb"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--rails-database-yml-erb",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "rails-database-yml-erb",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "config/database.yml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--react-token-hook",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "react-token-hook",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "web/src/hooks/useAuthedQuery.ts"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--readme-korean-edge-uploader",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "readme-korean-edge-uploader",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/ko/README.ko.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
       "slug": "real-world-shapes--readme-snippet",
       "source": {
         "categoryId": "real-world-shapes",
         "fixtureId": "readme-snippet",
         "corpus": "fixtures/real-world-shapes/corpus.json",
         "path": "README.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--redis-session-cache-log",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "redis-session-cache-log",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "cache/session-store/logs/redis-6379.log"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--release-notes-checksums-vectordb",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "release-notes-checksums-vectordb",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "releases/v3.8.0/RELEASE_NOTES.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--requirements-hashes-search-api",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "requirements-hashes-search-api",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "services/search-api/requirements.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--runbook-rotate-postgres-role",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "runbook-rotate-postgres-role",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ops/runbooks/rotate-postgres-app-role.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--rust-secrecy-config",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "rust-secrecy-config",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "crates/ingest/src/config.rs"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--sarif-lint-hardcoded-check",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "sarif-lint-hardcoded-check",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "reports/semgrep.sarif"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--security-policy-pgp-disclosure",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "security-policy-pgp-disclosure",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": ".github/SECURITY.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--sphinx-model-registry-credentials",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "sphinx-model-registry-credentials",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/source/configuration/registry-credentials.rst"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--spring-application-prod-yml",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "spring-application-prod-yml",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "order-service/src/main/resources/application-prod.yml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--spring-boot-ledger-startup",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "spring-boot-ledger-startup",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "services/ledger/logs/ledger-startup.log"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--spring-value-injection",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "spring-value-injection",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "src/main/java/com/example/payments/config/GatewayClientConfig.java"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--sql-api-keys-migration",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "sql-api-keys-migration",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "db/migrations/20260914093000_create_api_keys.sql"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--ssh-keygen-fingerprints",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "ssh-keygen-fingerprints",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ops/bastion/authorized-keys-audit.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--ssh-known-hosts-fleet",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "ssh-known-hosts-fleet",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ops/ssh/known_hosts"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--sshd-bastion-auth-log",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "sshd-bastion-auth-log",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ops/bastion/var-log/auth.log.1"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--swift-keychain-wrapper",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "swift-keychain-wrapper",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "Sources/VaultKit/KeychainStore.swift"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--systemd-ledger-worker-unit",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "systemd-ledger-worker-unit",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ops/systemd/ledger-worker.service"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--terraform-apply-sensitive",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "terraform-apply-sensitive",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "infra/network/logs/apply-prod-2026-09-10.txt"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--terraform-output-json-iot",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "terraform-output-json-iot",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "infra/iot-ingest/outputs.snapshot.json"
       },
       "familyIds": [],
       "scenarioIds": [
@@ -71410,12 +73192,120 @@
       }
     },
     {
+      "slug": "real-world-shapes--terraform-tfvars-staging",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "terraform-tfvars-staging",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "infra/envs/staging/terraform.tfvars"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--tutorial-spanish-weather-bot",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "tutorial-spanish-weather-bot",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "docs/es/tutorial-primeros-pasos.md"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--uv-lock-cli-tool",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "uv-lock-cli-tool",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "tools/keyrotate/uv.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--vault-agent-hcl-reports",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "vault-agent-hcl-reports",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "ops/vault/agent-reports.hcl"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--windows-security-event-xml",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "windows-security-event-xml",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "endpoints/windows/exports/4624-logon-build-agent.xml"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
       "slug": "real-world-shapes--yarn-lock-snippet",
       "source": {
         "categoryId": "real-world-shapes",
         "fixtureId": "yarn-lock-snippet",
         "corpus": "fixtures/real-world-shapes/corpus.json",
         "path": "yarn.lock"
+      },
+      "familyIds": [],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding"
+      ],
+      "unscopedReason": "Authored detector and arrival-target metadata intentionally assign no credential family; this fixture remains a global benchmark control.",
+      "provenance": {
+        "categoryId": "real-world-shapes"
+      }
+    },
+    {
+      "slug": "real-world-shapes--zsh-completion",
+      "source": {
+        "categoryId": "real-world-shapes",
+        "fixtureId": "zsh-completion",
+        "corpus": "fixtures/real-world-shapes/corpus.json",
+        "path": "contrib/completions/_orbitctl"
       },
       "familyIds": [],
       "scenarioIds": [
@@ -73066,7 +74956,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
-    "fixtureCount": 3533
+    "digest": "4e82ac020b4e9cc0ed9710491a21627aa23c5444ffff49b22cf40bee7410c81e",
+    "fixtureCount": 3638
   }
 }

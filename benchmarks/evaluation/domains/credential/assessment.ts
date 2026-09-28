@@ -435,8 +435,10 @@ export const AXES: readonly Axis[] = ['public-identifier', 'placeholder', 'refer
  * mistaken for reviewed family-control evidence. See
  * docs/decisions/2026-09-21-add-untargeted-benign-corpus.md.
  */
-export type RealWorldAxis = 'realworld-config' | 'realworld-logs' | 'realworld-lockfile' | 'realworld-source' | 'realworld-docs';
-export const REAL_WORLD_AXES: readonly RealWorldAxis[] = ['realworld-config', 'realworld-logs', 'realworld-lockfile', 'realworld-source', 'realworld-docs'];
+export type RealWorldAxis = 'realworld-config' | 'realworld-logs' | 'realworld-lockfile' | 'realworld-source' | 'realworld-docs' | 'realworld-agent-output';
+/** `realworld-lockfile` covers lockfiles and package/build manifests; `realworld-agent-output` (#378) covers
+ * text emitted by coding agents and developer tools (transcripts, CLI/JSON output, bot comments). */
+export const REAL_WORLD_AXES: readonly RealWorldAxis[] = ['realworld-config', 'realworld-logs', 'realworld-lockfile', 'realworld-source', 'realworld-docs', 'realworld-agent-output'];
 
 type ControlRule = { test: (f: Fixture) => boolean; tier: Tier; reason: string; axis: Exclude<Axis, 'pending'> | RealWorldAxis; family?: (f: Fixture) => string | undefined };
 const idSuffix = (...suffixes: string[]) => (f: Fixture) => suffixes.some(s => f.id.endsWith(`-${s}`));
@@ -528,7 +530,7 @@ const CONTROL_RULES: Record<string, ControlRule[]> = {
     { test: idIn('issue-265-secret-key-ref'), tier: 'T3', reason: MILESTONE_CLOSED, axis: 'reference' },
   ],
   // #95: untargeted, own axis vocabulary (REAL_WORLD_AXES, disjoint from AXES) — `group` doubles as
-  // the shape label since every fixture belongs to exactly one of the five shapes.
+  // the shape label since every fixture belongs to exactly one of the six shapes (#378 added agent/tool output).
   'real-world-shapes': REAL_WORLD_AXES.map(axis => ({ test: groupIn(axis), tier: 'T3' as Tier, reason: REAL_WORLD_SHAPE, axis })),
 };
 

@@ -1,0 +1,166 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:redact-secret-benchmarks:unit-diagnostics:1",
+  "description": "Unit-safe diagnostics (#380): secret-span units for must-redact/policy, file units for must-not-flag, actual sanitized output verified. Never a combined 2x2, precision, recall, F1 or ranking. Arithmetic invariants are enforced by benchmarks/lib/unit-diagnostics.ts reportProblem().",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "generatedAt", "mode", "product", "corpus", "configuration", "domains", "units", "segments", "pending", "v4Reference", "rowCount", "rowsDigest", "notableRows", "provenance", "runtime", "digest"],
+  "definitions": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "count": { "type": "integer", "minimum": 0 },
+    "counts": { "type": "object", "additionalProperties": { "$ref": "#/definitions/count" } },
+    "outcomes": {
+      "type": "object", "additionalProperties": false,
+      "required": ["EXACT", "COVERED", "OVERBROAD", "PARTIAL", "MISS"],
+      "properties": { "EXACT": { "$ref": "#/definitions/count" }, "COVERED": { "$ref": "#/definitions/count" }, "OVERBROAD": { "$ref": "#/definitions/count" }, "PARTIAL": { "$ref": "#/definitions/count" }, "MISS": { "$ref": "#/definitions/count" } }
+    },
+    "sanitization": {
+      "type": "object", "additionalProperties": false, "required": ["removed", "partial-leak", "leaked"],
+      "properties": { "removed": { "$ref": "#/definitions/count" }, "partial-leak": { "$ref": "#/definitions/count" }, "leaked": { "$ref": "#/definitions/count" } }
+    },
+    "failures": {
+      "type": "object", "additionalProperties": false, "required": ["scan-error", "unstable", "output-unverified"],
+      "properties": { "scan-error": { "$ref": "#/definitions/count" }, "unstable": { "$ref": "#/definitions/count" }, "output-unverified": { "$ref": "#/definitions/count" } }
+    },
+    "stratum": {
+      "type": "object", "additionalProperties": false, "required": ["domain", "kind", "tier", "scope"],
+      "properties": {
+        "domain": { "enum": ["credentials", "pii"] },
+        "kind": { "enum": ["must-redact", "must-not-flag", "policy"] },
+        "tier": { "enum": ["T1", "T2", "T3"] },
+        "scope": { "enum": ["family", "uncontracted", "global-untargeted"] }
+      }
+    },
+    "spanUnits": {
+      "type": "object",
+      "required": ["unit", "files", "eligibleSpans", "secretBytes", "detection", "sanitization", "sanitizationByActionClass", "failedSpans", "outputLeakedBytes", "v4"],
+      "properties": {
+        "unit": { "const": "secret-span" },
+        "files": { "$ref": "#/definitions/count" },
+        "eligibleSpans": { "$ref": "#/definitions/count" },
+        "secretBytes": { "$ref": "#/definitions/count" },
+        "detection": { "$ref": "#/definitions/outcomes" },
+        "sanitization": { "$ref": "#/definitions/sanitization" },
+        "sanitizationByActionClass": {
+          "type": "object", "additionalProperties": false, "required": ["none", "non-destructive", "destructive", "mixed"],
+          "properties": { "none": { "$ref": "#/definitions/sanitization" }, "non-destructive": { "$ref": "#/definitions/sanitization" }, "destructive": { "$ref": "#/definitions/sanitization" }, "mixed": { "$ref": "#/definitions/sanitization" } }
+        },
+        "detectionBySanitization": { "type": "object", "additionalProperties": { "$ref": "#/definitions/sanitization" } },
+        "outputLeakedBytes": { "$ref": "#/definitions/count" },
+        "plaintextInOutput": { "$ref": "#/definitions/count" },
+        "failedSpans": { "$ref": "#/definitions/failures" },
+        "collateral": {
+          "type": "object", "additionalProperties": false, "required": ["filesWithOutOfEnvelopeFindings", "outOfEnvelopeFindings", "outputCollateralBytes"],
+          "properties": { "filesWithOutOfEnvelopeFindings": { "$ref": "#/definitions/count" }, "outOfEnvelopeFindings": { "$ref": "#/definitions/counts" }, "outputCollateralBytes": { "$ref": "#/definitions/count" } }
+        },
+        "v4": {
+          "type": "object", "additionalProperties": false, "required": ["spans", "leakedSpans", "leakedBytes", "secretBytes", "collateralBytes"],
+          "properties": { "spans": { "$ref": "#/definitions/count" }, "leakedSpans": { "$ref": "#/definitions/count" }, "leakedBytes": { "$ref": "#/definitions/count" }, "secretBytes": { "$ref": "#/definitions/count" }, "collateralBytes": { "$ref": "#/definitions/count" } }
+        }
+      }
+    },
+    "fileUnits": {
+      "type": "object",
+      "required": ["unit", "eligibleFiles", "states", "strongestAction", "flaggedAttribution", "v4", "failedFiles"],
+      "properties": {
+        "unit": { "const": "file" },
+        "eligibleFiles": { "$ref": "#/definitions/count" },
+        "states": {
+          "type": "object", "additionalProperties": false, "required": ["clean", "flagged-non-destructive", "flagged-destructive"],
+          "properties": { "clean": { "$ref": "#/definitions/count" }, "flagged-non-destructive": { "$ref": "#/definitions/count" }, "flagged-destructive": { "$ref": "#/definitions/count" } }
+        },
+        "strongestAction": { "$ref": "#/definitions/counts" },
+        "flaggedAttribution": {
+          "type": "object", "additionalProperties": false, "required": ["own-or-unattributed", "other-family-only"],
+          "properties": { "own-or-unattributed": { "$ref": "#/definitions/count" }, "other-family-only": { "$ref": "#/definitions/count" } }
+        },
+        "v4": {
+          "type": "object", "additionalProperties": false, "required": ["files", "flaggedFiles"],
+          "properties": { "files": { "$ref": "#/definitions/count" }, "flaggedFiles": { "$ref": "#/definitions/count" } }
+        },
+        "findings": { "$ref": "#/definitions/count" },
+        "failedFiles": { "$ref": "#/definitions/failures" }
+      }
+    },
+    "segment": {
+      "type": "object",
+      "required": ["stratum", "unit"],
+      "properties": {
+        "stratum": { "$ref": "#/definitions/stratum" },
+        "families": { "type": "object", "additionalProperties": { "type": "object" } }
+      },
+      "oneOf": [
+        { "allOf": [{ "$ref": "#/definitions/spanUnits" }], "properties": { "unit": { "const": "secret-span" } } },
+        { "allOf": [{ "$ref": "#/definitions/fileUnits" }], "properties": { "unit": { "const": "file" } } }
+      ]
+    },
+    "row": {
+      "type": "object",
+      "required": ["category", "id", "segment", "unit", "status"],
+      "properties": {
+        "category": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "segment": { "type": "string" },
+        "family": { "type": "string" },
+        "unit": { "enum": ["secret-span", "file"] },
+        "status": { "enum": ["complete", "scan-error", "unstable", "output-unverified"] },
+        "code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,63}$" }
+      }
+    }
+  },
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "generatedAt": { "type": "string" },
+    "mode": { "enum": ["published", "candidate"] },
+    "product": {
+      "type": "object", "additionalProperties": false, "required": ["package", "version", "declaredVersion"],
+      "properties": {
+        "package": { "const": "@redact-secret/core" },
+        "version": { "type": "string" },
+        "declaredVersion": { "type": "string" },
+        "lockHash": { "$ref": "#/definitions/sha256" },
+        "candidate": {
+          "type": "object", "additionalProperties": false, "required": ["sourceCommit", "artifactSha256"],
+          "properties": {
+            "sourceCommit": { "$ref": "#/definitions/commit" },
+            "artifactSha256": {
+              "type": "object", "additionalProperties": false, "required": ["core", "node", "wasm"],
+              "properties": { "core": { "$ref": "#/definitions/sha256" }, "node": { "$ref": "#/definitions/sha256" }, "wasm": { "$ref": "#/definitions/sha256" } }
+            }
+          }
+        }
+      }
+    },
+    "corpus": {
+      "type": "object", "additionalProperties": false, "required": ["pinned", "pinManifestRevision", "categories", "identity"],
+      "properties": {
+        "pinned": { "const": true },
+        "pinManifestRevision": { "type": "string" },
+        "categories": { "type": "object", "additionalProperties": { "$ref": "#/definitions/sha256" } },
+        "identity": { "$ref": "#/definitions/sha256" }
+      }
+    },
+    "configuration": { "type": "object" },
+    "domains": {
+      "type": "object", "additionalProperties": false, "required": ["credentials", "pii"],
+      "properties": {
+        "credentials": { "type": "object", "required": ["status"], "properties": { "status": { "enum": ["measured", "not-measured"] } } },
+        "pii": { "type": "object", "required": ["status"], "properties": { "status": { "enum": ["measured", "not-measured"] }, "reason": { "type": "string" } } }
+      }
+    },
+    "units": { "type": "object" },
+    "segments": { "type": "object", "additionalProperties": { "$ref": "#/definitions/segment" } },
+    "pending": { "$ref": "#/definitions/counts" },
+    "v4Reference": { "type": "object", "additionalProperties": { "$ref": "#/definitions/counts" } },
+    "rowCount": { "$ref": "#/definitions/count" },
+    "rowsDigest": { "$ref": "#/definitions/sha256" },
+    "notableRows": { "type": "array", "items": { "$ref": "#/definitions/row" } },
+    "provenance": {
+      "type": "object", "additionalProperties": false, "required": ["benchmarkRevision", "dirty"],
+      "properties": { "benchmarkRevision": { "type": "string" }, "dirty": { "type": ["boolean", "null"] } }
+    },
+    "runtime": { "type": "object" },
+    "digest": { "$ref": "#/definitions/sha256" }
+  }
+}

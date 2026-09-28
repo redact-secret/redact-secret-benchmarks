@@ -5600,6 +5600,188 @@
           ]
         }
       ]
+    },
+    {
+      "id": "product-911",
+      "title": "generic-token redacts secret-reference names and identifiers in ordinary config/source (untargeted real-world-shapes)",
+      "url": "https://github.com/redact-secret/redact-secret/issues/911",
+      "number": 911,
+      "fixtures": [
+        "real-world-shapes--helm-values-search-api",
+        "real-world-shapes--k8s-billing-externalsecret",
+        "real-world-shapes--ansible-group-vars-gameservers",
+        "real-world-shapes--swift-keychain-wrapper",
+        "real-world-shapes--pytest-fake-fixtures",
+        "real-world-shapes--lua-openresty-hmac",
+        "real-world-shapes--agent-summary-korean-rotation"
+      ],
+      "kind": "false-positive",
+      "status": "observed",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "97692c4cd77c448583d28ea071290d574a7cbf71ef6962853e490732f4af5aec",
+        "sourceCommit": "9ab0fa02f2aeeda16a2c99e04862ebb0f0e9b5e7"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/3cee43ced37f188f8f76ab42cca11efef37f55a1/fixtures/real-world-shapes/corpus.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/3cee43ced37f188f8f76ab42cca11efef37f55a1/fixtures/real-world-shapes/frozen-baseline-v1.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/3cee43ced37f188f8f76ab42cca11efef37f55a1/docs/decisions/2026-09-21-add-untargeted-benign-corpus.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/052cfc8a0b0b9f5a27dbc4c784461436492cdbd3/docs/reports/2026-09-28/378-untargeted-benign-corpus.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/052cfc8a0b0b9f5a27dbc4c784461436492cdbd3/docs/reports/2026-09-28/378-untargeted-benign-corpus.json"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "fixture": "real-world-shapes--helm-values-search-api",
+          "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+          "expected": [],
+          "actual": [
+            {
+              "start": 922,
+              "end": 943,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "real-world-shapes--k8s-billing-externalsecret",
+          "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+          "expected": [],
+          "actual": [
+            {
+              "start": 420,
+              "end": 431,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            },
+            {
+              "start": 535,
+              "end": 558,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            },
+            {
+              "start": 668,
+              "end": 690,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "real-world-shapes--ansible-group-vars-gameservers",
+          "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+          "expected": [],
+          "actual": [
+            {
+              "start": 792,
+              "end": 821,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "real-world-shapes--swift-keychain-wrapper",
+          "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+          "expected": [],
+          "actual": [
+            {
+              "start": 366,
+              "end": 397,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            },
+            {
+              "start": 428,
+              "end": 459,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            },
+            {
+              "start": 490,
+              "end": 521,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "real-world-shapes--pytest-fake-fixtures",
+          "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+          "expected": [],
+          "actual": [
+            {
+              "start": 406,
+              "end": 416,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            },
+            {
+              "start": 950,
+              "end": 960,
+              "type": "contextual_secret",
+              "confidence": "medium",
+              "action": "warn"
+            },
+            {
+              "start": 985,
+              "end": 1004,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "real-world-shapes--lua-openresty-hmac",
+          "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+          "expected": [],
+          "actual": [
+            {
+              "start": 997,
+              "end": 1017,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "real-world-shapes--agent-summary-korean-rotation",
+          "corpusHash": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3",
+          "expected": [],
+          "actual": [
+            {
+              "start": 344,
+              "end": 368,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

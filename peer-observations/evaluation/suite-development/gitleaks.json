@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-27T14:17:32.466Z",
+  "observedAt": "2026-09-28T13:54:36.055Z",
   "sourceRun": {
-    "runId": "b5ea1cc9-d0c4-4a51-a4f0-8c13cf3c3bf8",
-    "benchmarkRevision": "1f21fe92eee7174310c06ec10fc3cbf86a6c06c2"
+    "runId": "1c2584fd-24b7-4401-8674-b63019d86701",
+    "benchmarkRevision": "3cee43ced37f188f8f76ab42cca11efef37f55a1"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "1ea0d8e2f8cc9ffa217dd33395d197b5b7a54dc5314cc971afca5dd660ce2779",
-    "fixtureCount": 28250,
-    "fixturesDigest": "5d366d4896d9851cb31bb74ac02c080a66a4d26578deda3b70632572c5a397c5",
+    "corpusHash": "773d05bb7f37c6b40ce3960773f51b4e9e39c0105eae4d4639808c38fe172e57",
+    "fixtureCount": 28985,
+    "fixturesDigest": "d15b7ecc4bdcd838bb8187f982bc366f2d8a934ded66cef83866c237bb48dccd",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
-      "fixtureCount": 3533
+      "digest": "4e82ac020b4e9cc0ed9710491a21627aa23c5444ffff49b22cf40bee7410c81e",
+      "fixtureCount": 3638
     }
   },
   "peer": {
@@ -65397,6 +65397,174 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/real-world-shapes--k8s-billing-externalsecret--benign/canonical.txt",
+      "start": 1331,
+      "end": 1395,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--k8s-billing-externalsecret--differential/canonical.txt",
+      "start": 1331,
+      "end": 1395,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--k8s-billing-externalsecret--metamorphic/canonical.txt",
+      "start": 1331,
+      "end": 1395,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--k8s-billing-externalsecret--metamorphic/context.indent.txt",
+      "start": 1335,
+      "end": 1399,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--k8s-billing-externalsecret--metamorphic/context.unicode-prefix.txt",
+      "start": 1351,
+      "end": 1415,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--k8s-billing-externalsecret--metamorphic/encoding.crlf.txt",
+      "start": 1382,
+      "end": 1446,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--k8s-billing-externalsecret--mutation/canonical.txt",
+      "start": 1331,
+      "end": 1395,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--pino-checkout-ndjson--benign/canonical.txt",
+      "start": 1261,
+      "end": 1297,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--pino-checkout-ndjson--differential/canonical.txt",
+      "start": 1261,
+      "end": 1297,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--pino-checkout-ndjson--metamorphic/canonical.txt",
+      "start": 1261,
+      "end": 1297,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--pino-checkout-ndjson--metamorphic/context.indent.txt",
+      "start": 1265,
+      "end": 1301,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--pino-checkout-ndjson--metamorphic/context.unicode-prefix.txt",
+      "start": 1281,
+      "end": 1317,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--pino-checkout-ndjson--metamorphic/encoding.crlf.txt",
+      "start": 1264,
+      "end": 1300,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--pino-checkout-ndjson--mutation/canonical.txt",
+      "start": 1261,
+      "end": 1297,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--podfile-lock-ios-wallet--benign/canonical.txt",
+      "start": 785,
+      "end": 825,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--podfile-lock-ios-wallet--differential/canonical.txt",
+      "start": 785,
+      "end": 825,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--podfile-lock-ios-wallet--metamorphic/canonical.txt",
+      "start": 785,
+      "end": 825,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--podfile-lock-ios-wallet--metamorphic/context.indent.txt",
+      "start": 789,
+      "end": 829,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--podfile-lock-ios-wallet--metamorphic/context.unicode-prefix.txt",
+      "start": 805,
+      "end": 845,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--podfile-lock-ios-wallet--metamorphic/encoding.crlf.txt",
+      "start": 823,
+      "end": 863,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--podfile-lock-ios-wallet--mutation/canonical.txt",
+      "start": 785,
+      "end": 825,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--spring-value-injection--benign/canonical.txt",
+      "start": 2025,
+      "end": 2040,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--spring-value-injection--differential/canonical.txt",
+      "start": 2025,
+      "end": 2040,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--spring-value-injection--metamorphic/canonical.txt",
+      "start": 2025,
+      "end": 2040,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--spring-value-injection--metamorphic/context.indent.txt",
+      "start": 2029,
+      "end": 2044,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--spring-value-injection--metamorphic/context.unicode-prefix.txt",
+      "start": 2045,
+      "end": 2060,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--spring-value-injection--metamorphic/encoding.crlf.txt",
+      "start": 2079,
+      "end": 2094,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/real-world-shapes--spring-value-injection--mutation/canonical.txt",
+      "start": 2025,
+      "end": 2040,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/reference-syntax--api-key--differential/canonical.txt",
       "start": 8,
       "end": 48,
@@ -68157,5 +68325,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "1d88959dc53bc94d3f23f3301d3a99afe038716b94d1c7c946f0e83d97baf3e1"
+  "digest": "047bfa52dea27e3831063655d99fd25c7b6b201a96ef8949c9a86b6caed14d33"
 }

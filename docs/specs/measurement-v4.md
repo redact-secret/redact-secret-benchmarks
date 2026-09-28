@@ -163,6 +163,11 @@ regression continuity readable, and it is no longer anything's headline.
 `precision`, `recall`, `f1` are **removed from the export**; `reportProblem()`
 rejects a v4 report that contains them, the way it now rejects scanner-wide totals.
 
+Unit-labelled TP/TN/FP/FN diagnostics and the product's verified sanitized
+output are reported separately, never in this report or its baselines, by
+[unit-safe diagnostics](unit-diagnostics.md) (#380); the three numbers above
+stay the headline.
+
 ### 2.5 Twin discrimination — the fix for positive-only precision
 
 The corpus cannot become a representative sample of production credentials, so

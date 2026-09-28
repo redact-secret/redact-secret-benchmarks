@@ -71,6 +71,8 @@
     "pii:arrival:operational": "node --import tsx scripts/measure-pii-arrival-operational.mjs",
     "pii:arrival:holdout": "node --import tsx scripts/run-us-ssn-protected-holdout.mjs",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
+    "eval:diagnostics": "node --import tsx benchmarks/unit-diagnostics.ts",
+    "eval:diagnostics:validate": "node --import tsx scripts/validate-unit-diagnostics.mjs",
     "eval:dry-run": "node --import tsx scripts/accounting-dry-run.ts",
     "eval:milestone": "node scripts/refresh-evaluation-milestone.mjs",
     "performance:criteria": "node --import tsx scripts/derive-performance-criteria.mjs",

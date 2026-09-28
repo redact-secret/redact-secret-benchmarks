@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "pii-benign-collision-v1",
   "version": 1,
-  "contentCommitment": "7b63d65db012a15e0a6ec9ba9390c45d21bbc0a5d92ca720c72e33365940c966",
+  "contentCommitment": "b9a2f3b24a734c39489095be5855701d64d7a775ac865a2c3d68e0c1efa25b18",
   "accountingProfile": {
     "id": "pii-v1",
     "version": 1,
@@ -871,23 +871,21 @@
       "scope": "jurisdiction:US",
       "identityDomain": "national-id",
       "language": "en",
-      "candidateCommitment": "0b4dd61a8647aa77827fc4762e5f0428c95eb3672b9b16bfaec51dbfe59b202c",
+      "candidateCommitment": "bb421fa35db885ce507b0ef5c3f23cb09c62eb378fae3641c165bdf4c0272949",
       "fixture": {
         "prefix": "placeholder_ssn=",
         "suffix": "",
         "candidate": {
-          "kind": "deterministic-pattern",
-          "generator": "sha256-pattern",
-          "seed": "redact-secret-benchmarks-392/stress/placeholder/0",
-          "pattern": "DDDDDDDDD"
+          "kind": "authoritative-reserved",
+          "value": "999999999"
         }
       },
-      "typeExpectation": "valid",
+      "typeExpectation": "invalid",
       "sensitivityExpectation": "non-sensitive",
       "validator": {
         "id": "us-ssn-allocation",
         "version": 1,
-        "expected": "valid"
+        "expected": "invalid"
       },
       "contextGroup": null,
       "context": {
@@ -896,26 +894,21 @@
       },
       "collision": null,
       "provenance": {
-        "kind": "deterministic-synthetic",
+        "kind": "authoritative",
         "sources": [
+          {
+            "sourceKind": "public-authority",
+            "sourceId": "ssa-ssn-randomization",
+            "locator": "https://www.ssa.gov/employer/randomization.html",
+            "revision": "implemented-2011-06-25-retrieved-2026-09-27"
+          },
           {
             "sourceKind": "public-authority",
             "sourceId": "ssa-poms-rm-10201-035",
             "locator": "https://secure.ssa.gov/poms.nsf/lnx/0110201035",
             "revision": "TN-2-2011-06-23"
-          },
-          {
-            "sourceKind": "product-decision",
-            "sourceId": "redact-secret-us-ssn-v1",
-            "locator": "https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md",
-            "revision": "a0709d2a41b70217874da9afeffb40fb2a1a2596"
           }
-        ],
-        "generator": {
-          "id": "sha256-pattern",
-          "version": 1,
-          "seedCommitment": "6301cc20bea99e3208e5a3dc57af8099b27e399487d2c413c2788d5c1b8fba08"
-        }
+        ]
       }
     },
     {

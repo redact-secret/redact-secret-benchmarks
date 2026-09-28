@@ -185,3 +185,21 @@ test('hostile case, validator, context, fixture, and class mutations fail closed
   wrongScope.contract.scope = 'global'; wrongScope.contract.family = 'pii:global:synthetic-national-id';
   assert.throws(() => methods.get('jurisdiction-collision').generate(wrongScope), /evidence case identity|collision/);
 });
+
+test('no structurally valid SSN under a positive SSN field label is authored as non-sensitive (#408)', () => {
+  // us-ssn-v1: a valid SSN associated with the `ssn` field label is sensitive unless a listed exclusion
+  // label (`documentation`, `example`, `not ssn`) wins; an unlisted placeholder word does not suppress.
+  const tokens = prefix => prefix.toLowerCase().split(/[^a-z]+/).filter(Boolean);
+  const excluded = words => words.includes('documentation') || words.includes('example') || words.join(' ').includes('not ssn');
+  const ssn = piiBenignCollisionEvidence.entries.filter(entry => entry.family === 'pii:us:ssn');
+  assert.ok(ssn.length > 0);
+  for (const entry of ssn.filter(row => row.typeExpectation === 'valid' && row.sensitivityExpectation === 'non-sensitive')) {
+    const words = tokens(entry.fixture.prefix);
+    assert.ok(!words.includes('ssn') || excluded(words), `${entry.id} authors a valid SSN under a positive label as non-sensitive`);
+  }
+  const placeholder = ssn.find(entry => entry.id === 'stress-placeholder');
+  assert.equal(placeholder.typeExpectation, 'invalid');
+  assert.equal(placeholder.validator.expected, 'invalid');
+  assert.equal(placeholder.fixture.candidate.kind, 'authoritative-reserved');
+  assert.ok(Number(placeholder.fixture.candidate.value.slice(0, 3)) >= 900, 'the SSA never assigns areas 900-999');
+});

@@ -73,5 +73,6 @@ measured.
   contracted behaviour and the corpus expectation is what is wrong. It is
   tracked as a corpus fix in
   [#408](https://github.com/redact-secret/redact-secret-benchmarks/issues/408),
-  not promoted as a product defect. The stress verdict should be read with
-  that in mind until #408 lands.
+  not promoted as a product defect. With #408's corpus fix (the control is now
+  the type-invalid `999999999` placeholder) the same local run reads both
+  populations no-regression.

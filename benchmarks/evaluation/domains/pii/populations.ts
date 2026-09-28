@@ -66,7 +66,7 @@ export interface PiiPopulationSelectionOptions extends PiiPopulationValidationOp
 const validateContractSchema = new Ajv({ strict: true }).compile(contractSchema);
 const validateReportSchema = new Ajv({ strict: true }).compile(reportSchema);
 const validateComparisonSchema = new Ajv({ strict: true }).compile(comparisonSchema);
-const canonicalContractCommitment = 'ff2a8a456a4a09b31d09b7ebf88fce55a2deb5328009a50f0e1cfbbe78975fbd';
+const canonicalContractCommitment = 'd7025a678969018563b1108cf575a2f718afd749229fcf124eb4c0085c131eb2';
 const canonicalize = (value: unknown): unknown => Array.isArray(value) ? value.map(canonicalize) : value && typeof value === 'object' ?
   Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, canonicalize(child)])) : value;
 export const piiPopulationProjection = (contract: PiiPopulationContract) => {

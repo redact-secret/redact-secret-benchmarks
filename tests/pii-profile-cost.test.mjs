@@ -404,6 +404,6 @@ test('a transient adapter that never recovers still fails the run once the retry
   try {
     const helperSource = `let input='';for await(const chunk of process.stdin)input+=chunk;JSON.parse(input);process.exit(1);\n`;
     const { run } = await runFlakyMatrix(directory, helperSource);
-    await assert.rejects(run('fixture-retry-exhausted'), error => /adapter failed: rust-native \(after 3 attempts\)/.test(error.stderr));
+    await assert.rejects(run('fixture-retry-exhausted'), error => /adapter failed: rust-native \(after 3 attempts; last code=1 signal=null/.test(error.stderr));
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

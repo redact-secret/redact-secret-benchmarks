@@ -41,7 +41,10 @@ must still fail closed immediately.
 
 Every observation now carries `transientRetries`, the count actually consumed
 for that cell, so a retried run is auditable rather than indistinguishable
-from a clean one. `benchmarks/evaluation/domains/pii/profile-cost.ts` and
+from a clean one. When every attempt for a cell is exhausted, the thrown
+error also carries the last attempt's exit code, signal, and truncated
+stdout/stderr, so a still-failing cell is diagnosable from the workflow log
+directly rather than only as a bare surface name. `benchmarks/evaluation/domains/pii/profile-cost.ts` and
 `scripts/freeze-pii-profile-cost-thresholds.mjs` require the field and reject
 a negative or non-integer count.
 

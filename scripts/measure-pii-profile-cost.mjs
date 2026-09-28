@@ -127,7 +127,8 @@ async function observe(surface, credentialProfile, profile, workload) {
     // A non-zero exit or kill signal here means the launch itself did not complete -- not that a produced
     // measurement was wrong. `parseAdapterSample` below still runs unretried: a shape/identity failure on a
     // completed process is a real defect, never a transient launch failure.
-    if (outcome.code !== 0 || outcome.signal !== null) return { ok: false };
+    if (outcome.code !== 0 || outcome.signal !== null)
+      return { ok: false, code: outcome.code, signal: outcome.signal, stderr: stderr.slice(0, 4096), stdout: stdout.slice(0, 1024) };
     return { ok: true, sample: parseAdapterSample(stdout, stderr) };
   };
   const sample = async step => {
@@ -135,7 +136,8 @@ async function observe(surface, credentialProfile, profile, workload) {
     for (let retry = 0; ; retry++) {
       const outcome = await attempt(step);
       if (outcome.ok) return outcome.sample;
-      if (retry >= limit) throw new Error(`PII profile-cost adapter failed: ${surface.id} (after ${retry + 1} attempts)`);
+      if (retry >= limit) throw new Error(`PII profile-cost adapter failed: ${surface.id} (after ${retry + 1} attempts; ` +
+        `last code=${outcome.code} signal=${outcome.signal} stderr=${JSON.stringify(outcome.stderr)} stdout=${JSON.stringify(outcome.stdout)})`);
       transientRetries++;
     }
   };

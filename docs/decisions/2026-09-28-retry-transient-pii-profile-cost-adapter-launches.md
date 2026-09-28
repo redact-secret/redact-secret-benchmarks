@@ -95,6 +95,32 @@ already uses for its product-repo artifact downloads. Re-hashes
 `.github/workflows/pii-profile-cost.yml`; plan `contentCommitment`
 recomputed again.
 
+## A third dormant bug, in the size phase
+
+With the workflow fix, all three `phase=aa` runs, the freeze, and
+`phase=candidate` succeeded end to end for the first time, producing a real
+80-cell candidate report (verdict `regression`: PII profile activation
+measurably slows several surfaces, e.g. ~6.3x on `rust-native/full/global/validator-heavy`
+whole-input latency). `phase=size` had never run to completion either and
+failed immediately in its first real run repacking the baseline side:
+`scripts/build-pii-profile-cost-browser-bundle.mjs` and
+`scripts/prepare-pii-profile-cost-size-config.mjs` are the only two scripts
+in this plan invoked via plain `node` rather than `node --import tsx`
+elsewhere in the workflow, and both import `benchmarks/evaluation/domains/pii/profile-cost.ts`,
+whose two JSON imports lacked the `with { type: 'json' }` import attribute
+Node's ESM loader now requires for a bare JSON import outside a loader that
+patches it (tsx does; plain `node`'s native TypeScript type-stripping does
+not). Every other JSON import already present elsewhere in this repository
+already uses `with { type: 'json' }`; `profile-cost.ts`'s own were simply
+missing it.
+
+Fixed at the source (`profile-cost.ts`) rather than by adding `--import tsx`
+to the two workflow steps, since the attribute is correct and inert under
+tsx too — it fixes both plain-`node` invocations that import this module
+with one change instead of two workflow edits. Re-hashes
+`benchmarks/evaluation/domains/pii/profile-cost.ts`; plan `contentCommitment`
+recomputed a final time.
+
 ## Consequences
 
 A single flaky launch no longer discards an otherwise-complete run. A

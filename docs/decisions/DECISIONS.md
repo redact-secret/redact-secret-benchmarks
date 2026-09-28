@@ -53,3 +53,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Bind PII publication evidence to the one product the publication measured](2026-09-27-bind-pii-publication-to-the-measured-product.md)
 - [Judge timing regression budgets on same-job paired ratios](2026-09-25-judge-timing-budgets-on-same-job-paired-ratios.md) (amends the regression budgets decision for latency, initialization and the review condition)
 - [Bind one beta.10 release record across credential and PII without merging their metrics](2026-09-27-bind-the-beta10-cross-domain-release-record.md)
+- [Retry a transient PII profile-cost adapter-launch failure instead of failing the whole run](2026-09-28-retry-transient-pii-profile-cost-adapter-launches.md)

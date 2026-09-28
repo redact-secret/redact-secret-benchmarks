@@ -61,8 +61,9 @@ const expectedKeys = first.observations.map(cellKey).sort();
 if (new Set(expectedKeys).size !== expectedKeys.length || reports.some(report =>
   JSON.stringify(report.observations.map(cellKey).sort()) !== JSON.stringify(expectedKeys))) throw new Error('PII profile-cost A/A matrix mismatch');
 for (const report of reports) for (const row of report.observations) {
-  if (!exact(row, ['surface', 'credentialProfile', 'profile', 'workload', 'workloadCommitment', 'workloadBytes', 'samplesPerSide', 'sides']) ||
+  if (!exact(row, ['surface', 'credentialProfile', 'profile', 'workload', 'workloadCommitment', 'workloadBytes', 'samplesPerSide', 'transientRetries', 'sides']) ||
       !exact(row.sides, ['reference', 'comparison']) || row.samplesPerSide < piiProfileCostPlan.sampleProtocol.minimumSamplesPerSide ||
+      !Number.isInteger(row.transientRetries) || row.transientRetries < 0 ||
       row.workloadCommitment !== workloadIdentity[row.workload]?.commitment || row.workloadBytes !== workloadIdentity[row.workload]?.bytes ||
       row.sides.reference.length !== row.samplesPerSide || row.sides.comparison.length !== row.samplesPerSide)
     throw new Error('Invalid PII profile-cost A/A observation');

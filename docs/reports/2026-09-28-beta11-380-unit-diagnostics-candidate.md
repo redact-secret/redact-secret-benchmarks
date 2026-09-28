@@ -6,13 +6,13 @@ Diagnostics only (#380). The measurement protocol v4 headline — leaked-span ra
 
 - Mode: **candidate**
 - Product: `@redact-secret/core` version `0.1.0-beta.10` (declared `0.1.0-beta.10`)
-- Candidate source commit: `9ab0fa02f2aeeda16a2c99e04862ebb0f0e9b5e7`
+- Candidate source commit: `7720ae2a8d383c855a3051b53103657d22154411`
 - Candidate core artifact SHA-256: `4c1a81b0a96e9d3343a696a7d2e60e9080ed95ccff20ec9acbe140619324aebf`
-- Candidate node artifact SHA-256: `42dbcd321ac3171eaa2b6b9710d4e1593da340da95ffcc4ca27c15c82df2e5aa`
-- Candidate wasm artifact SHA-256: `5508eec4473b30aba98c967b8fd31c677280db9dd506e680e206bdef085fea0c`
-- Corpus identity: `fe9697fe197d9ac36d0743d0fe5360b69164fc3017dafbc471336939fd1b0510` (31 categories, pinned by `benchmarks/pin-manifest.json` @ `99a76816613d513a0ececec9bb9bb43667e1c2d0`)
-- Benchmark revision: `39f21327fbeb524de91ed458541c2c3e6d3e2e7b`
-- Report schema: unit-diagnostics v1; digest `5adcbfc48ff20028591827f2522a184249f7e3be72acec0a6b52073d37e1613a`
+- Candidate node artifact SHA-256: `1aa6c90c96a9a281b5d3debddfaa59d1f42192e21b25ee185057d596abd889a6`
+- Candidate wasm artifact SHA-256: `2ec369915fb414b1ef9c66420413b3448d2aa77637702dd2189df7f6791a326e`
+- Corpus identity: `f06ddd6cedf4f71477b2efb3dc5c13ca5f062ce1d33f9adc1b3e5472f96dbd6d` (31 categories, pinned by `benchmarks/pin-manifest.json` @ `71d0d8c1da4d5c609c287912075bcd92b8cc4a71`)
+- Benchmark revision: `8576326c3aa201bd5b0d6d3a55a77ea326c89ddc`
+- Report schema: unit-diagnostics v1; digest `b79f280b9826d2ebece9307604a096e000890576ea4a024c5c092c8f0d2fdd2d`
 - Output verification: scanAndRedact (replayed twice) cross-checked against redact(input, scan(input)); placeholder `default:<SECRET_n>`
 - PII: not-measured — PII cases use the pii-v1 profile (sensitivity/jurisdiction expectations, PiiCase model) rather than must-redact/must-not-flag spans; they are measured by the PII domain reports and are never merged into credential units.
 
@@ -55,7 +55,7 @@ Detection is the v4 lattice over every finding, any action. Sanitization is meas
 | `credentials|must-not-flag/T2|family` | 1197 | 1042 (87.1%) | 6 | 149 | redact 149, warn 6 | 0 / 155 | 1 | 0 |
 | `credentials|must-not-flag/T2|global-untargeted` | 14 | 14 (100.0%) | 0 | 0 | — | n/a | 0 | 0 |
 | `credentials|must-not-flag/T3|family` | 723 | 695 (96.1%) | 1 | 27 | warn 1, redact 27 | 0 / 28 | 2 | 0 |
-| `credentials|must-not-flag/T3|global-untargeted` | 111 | 111 (100.0%) | 0 | 0 | — | n/a | 0 | 0 |
+| `credentials|must-not-flag/T3|global-untargeted` | 216 | 208 (96.3%) | 1 | 7 | redact 7, warn 1 | n/a | 8 | 0 |
 
 ## Family strata with any span left readable in the output
 
@@ -149,7 +149,7 @@ Counts from the unchanged v4 scorer over the same findings; the diagnostics abov
 | --- | --- |
 | `must-not-flag/T1` | files 9 · flaggedFiles 0 |
 | `must-not-flag/T2` | files 1211 · flaggedFiles 1 |
-| `must-not-flag/T3` | files 834 · flaggedFiles 2 |
+| `must-not-flag/T3` | files 939 · flaggedFiles 10 |
 | `must-redact/T1` | files 556 · spans 563 · leakedSpans 0 · leakedBytes 0 · secretBytes 44189 · collateralBytes 0 |
 | `must-redact/T2` | files 450 · spans 450 · leakedSpans 0 · leakedBytes 0 · secretBytes 31509 · collateralBytes 0 |
 | `policy/T3` | files 423 · spans 424 · leakedSpans 4 · leakedBytes 152 · secretBytes 20050 · collateralBytes 0 |

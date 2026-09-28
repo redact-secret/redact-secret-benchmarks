@@ -226,6 +226,26 @@ The corpus also adds one authored calibration row pair per family to
 development-evaluation in `tuning/shadow-scoring-development-v1.json`, as the calibration
 partition requires for every family with a measurable positive.
 
+## Beta.11 family evidence (#379)
+
+[#379](https://github.com/redact-secret/redact-secret-benchmarks/issues/379) (parent
+[#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376)) adds category
+`beta8-379` (`fixtures/generated/beta8/379.mjs`, no contract module: every family already has its
+contract and profile). The fixture index labels it `beta.11`. It follows #377's frozen family/axis
+ledger (`docs/reports/2026-09-28/beta-11-family-axis-ledger.json`) for fifteen existing families and
+adds no family, contract, tier, status or floor. Conventions beyond the ones above:
+
+- **Independence is checked, not claimed.** Every positive has a value and a value-masked skeleton
+  that no earlier fixture of its family uses (`tests/beta11-family-evidence.test.mjs`), so
+  `npm run audit:independence` counts it as a new sample.
+- **Positives author the action.** Each positive sets `expectedAction: "redact"`, the ledger's
+  stated action; a `warn` finding is detection, not sanitization.
+- **Per-case rationale and ledger revisions live in the generator.** `RATIONALE` records each case's
+  contract, axis, rationale, twin basis and seed provenance; `REVISIONS` records every departure
+  from the ledger with its reason (sibling-family secrets as non-twin controls, values a
+  context-gated contract admits beside its gate, twins that mutate no contract property or are not
+  lexically separable, and one disputed property).
+
 ## Per-field provenance
 
 `FormatContract.fields` records each structural claim (prefix, total length,

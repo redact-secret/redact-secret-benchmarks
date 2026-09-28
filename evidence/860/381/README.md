@@ -9,6 +9,28 @@ targets and 9 of 12 policy targets are redacted exactly; 2 must-redact and 2 pol
 filler. The same checks show the #860 detectors (PR #938) cost 5.6–14.9% processing time and 13.6 KB of gzip in the full
 WASM build. Nothing here is a support-status claim.
 
+## Re-run at the frozen Beta.11 candidate 1db8ff3
+
+Same frozen plan (commitment `021fb995…ec00`), harness at benchmarks `3d66c984e239851f1999233142b42832f793ba8a` (clean),
+product `1db8ff38b16e50c51229eb27025452952bf621e1` (PR #958). Components: core `4681ad42…29a1`, node `f08aab67…b37b`,
+wasm `af063366…b1a1`, wheel `89068094…9819`, CLI `6c0abb78…29f5`. Files:
+[`1db8ff38b16e/credential-mixed-parity-observation-v1.json`](1db8ff38b16e/credential-mixed-parity-observation-v1.json),
+[`1db8ff38b16e/credential-mixed-parity-report-v1.json`](1db8ff38b16e/credential-mixed-parity-report-v1.json).
+
+- **Parity:** unchanged from the 1127bf9 run. Every surface agrees on spans and output, every partition and stream
+  agrees with whole input, and only the declared token limit fails closed (91 partitions per surface, 182 Node/Web
+  streams).
+- **Outcomes:** must-redact 70 exact of 71, policy 11 exact of 12. Three targets that 1127bf9 only warned are now
+  redacted: Mailchimp python-requests-auth, Deepgram HTTPie and Heroku authorizations-info. Two remain:
+  - `mixed-01-log/L4/new-relic-license-key` is still warn-only (redact-secret#936, policy-decision).
+  - `mixed-02-markdown/L11/cohere-api-key` is still not reported, by product policy (#932).
+- **Collateral:** none replacing on controls or filler. The Resend placeholder control is silent (#949).
+- **Runtime at 1db8ff3:** with the #950 recovery, every processing and initialization row is within the 0.1.0-beta.8
+  budgets (run [36480959728](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36480959728)).
+  The accepted size tradeoffs are listed in [`../1db8ff3/README.md`](../1db8ff3/README.md).
+
+The measurement at 1127bf9 below is kept as history.
+
 Benchmark side of [redact-secret-benchmarks#381](https://github.com/redact-secret/redact-secret-benchmarks/issues/381)
 (Beta.11 E, parent [#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376); product research
 [redact-secret#860](https://github.com/redact-secret/redact-secret/issues/860)). Method:

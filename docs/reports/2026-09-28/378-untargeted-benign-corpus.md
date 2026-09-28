@@ -8,6 +8,19 @@ no regression and no improvement. In the frozen 60-file subset, 3 controls are
 flagged and all 3 are gating. No family's support status, benign case count or
 benign axis moved in either mode.
 
+> **Measured identity vs the integrated pin.** The numbers below were measured
+> at benchmarks `a50645833545489cfdb2b1dfc76c8d440313ee04` with the published
+> `0.1.0-beta.9` pin and are kept as measured. `develop` has since pinned the
+> published `0.1.0-beta.10`
+> ([#433](https://github.com/redact-secret/redact-secret-benchmarks/pull/433)).
+> Rerun on the batch-1 integration tree (`8576326c3aa201bd5b0d6d3a55a77ea326c89ddc`,
+> TruffleHog 3.97.4): the published-mode action split is fixture-for-fixture
+> identical (8 flagged, 7 gating, 1 warn-only; frozen 3/3/0, added 5/4/1), and
+> the peer rows are unchanged. The published `eval:classify` distribution moved
+> with the pin, not with this corpus: 64 stable / 20 provisional / 2 pending on
+> both `develop` `4158165` (before) and the integration tree (after), with
+> 0 per-family changes in the fields listed under Per-family movement.
+
 This is a file-level count on a project-authored synthetic corpus. The corpus is
 also a shadow-scoring tuning category
 (`tuning/shadow-scoring-development-v1.json`). It is not a production-population

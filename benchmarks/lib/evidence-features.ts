@@ -1,12 +1,13 @@
 /**
- * redact-secret's `evidence-features/v1` statistical feature vector (#254),
- * reproduced from the core's normative definition so calibration reads the
- * same integers the shadow scorer does.
+ * redact-secret's `evidence-features/v2` statistical feature vector (#254,
+ * redact-secret#829), reproduced from the core's normative definition so
+ * calibration reads the same integers the shadow scorer does.
  *
- * Authority: redact-secret `docs/specs/engine.md`, section "Shadow evidence
- * feature schema", and `crates/secret-scan-core/src/evidence/features.rs` and
- * `fixed_point.rs` at CORE_FEATURE_SCHEMA.sourceRevision (redact-secret#769,
- * PR #809). Integer arithmetic only, no floating point: Q16 fixed point via
+ * Authority: redact-secret `docs/specs/engine.md`, sections "Shadow evidence
+ * feature schema" (features 0-26, `v1`, redact-secret#769, PR #809) and
+ * "Shadow evidence residual features" (features 27-29, redact-secret#829),
+ * and `crates/secret-scan-core/src/evidence/features.rs`, `residual.rs` and
+ * `fixed_point.rs` at CORE_FEATURE_SCHEMA.sourceRevision. Integer arithmetic only, no floating point: Q16 fixed point via
  * the exact truncating `log2_q16`, `permille = floor(1000·a/b)`, every
  * division a floor, and only the first 256 Unicode scalar values analysed.
  * This module is the benchmark's only feature definition. A change to the
@@ -20,13 +21,14 @@
 
 /** The core feature schema this module reproduces, pinned to the revision and files it was read from. */
 export const CORE_FEATURE_SCHEMA = {
-  id: 'evidence-features/v1',
+  id: 'evidence-features/v2',
   repository: 'redact-secret/redact-secret',
-  sourceRevision: 'd7733632bb05082710f71b6684ccf60c7a69377e',
+  sourceRevision: '21509e903e540ece5966e4ed4d6d1a77a0a14ce8',
   sources: [
-    { path: 'docs/specs/engine.md', sha256: '213d7b2f7a3e09a22dc6a0b73d4eba072961d837fe38b67697e7411f8d2fcc9a' },
+    { path: 'docs/specs/engine.md', sha256: '89a0293bb4a1145bff203e453d2fb67e166fb15146916a621ff5907ea99de306' },
     { path: 'crates/secret-scan-core/src/evidence/features.rs', sha256: '1a9abfd0ff8c8fbddb23f5ecc81be533742a96dd7af999011e49f4bd247b5c02' },
-    { path: 'crates/secret-scan-core/src/evidence/fixed_point.rs', sha256: '27f0717227d4c99e97bfb141a69c843597c548cb6e374f38bd65eca11123a3bd' },
+    { path: 'crates/secret-scan-core/src/evidence/residual.rs', sha256: 'f216f67235e4666baea1b4699c24d73c9e984762bf9d45829bdb818e54d4679b' },
+    { path: 'crates/secret-scan-core/src/evidence/fixed_point.rs', sha256: '7a5cb4dcc66c8d055fa203c5a009db042434acdd37076b6b121269f145276f89' },
   ],
 } as const;
 
@@ -59,6 +61,9 @@ export const FEATURE_NAMES = [
   'smallest_period',
   'max_autocorrelation_permille',
   'max_autocorrelation_lag',
+  'residual_symbols',
+  'residual_entropy_q16',
+  'residual_min_entropy_q16',
 ] as const;
 export const FEATURE_COUNT = FEATURE_NAMES.length;
 /** Only the first MAX_ANALYSED_SYMBOLS Unicode scalar values are analysed. */
@@ -101,7 +106,37 @@ function classOf(codePoint: number): ClassIndex {
   return 5;
 }
 
-/** The 27-integer `evidence-features/v1` vector of one candidate value, in FEATURE_NAMES order. */
+/**
+ * Whether the core's residual predictor predicts `s[i]` (engine.md "Residual
+ * predictor"): a repeat, a constant code-point step at lag 1 or 2, or a
+ * trigram ending at `i` that already ended at some `j` in [2, i).
+ */
+function isPredicted(s: number[], i: number): boolean {
+  if (i >= 1 && s[i] === s[i - 1]) return true;
+  if (i >= 2 && s[i] + s[i - 2] === 2 * s[i - 1]) return true;
+  if (i >= 4 && s[i] + s[i - 4] === 2 * s[i - 2]) return true;
+  if (i >= 2) {
+    for (let j = 2; j < i; j++) if (s[j - 2] === s[i - 2] && s[j - 1] === s[i - 1] && s[j] === s[i]) return true;
+  }
+  return false;
+}
+
+/** Features 27-29: residual length, and Shannon and min-entropy (Q16) over the residual symbol counts. */
+function residualFeatures(symbols: number[]): [number, number, number] {
+  const counts = new Map<number, number>();
+  let r = 0;
+  for (let i = 0; i < symbols.length; i++) {
+    if (isPredicted(symbols, i)) continue;
+    r++;
+    counts.set(symbols[i], (counts.get(symbols[i]) ?? 0) + 1);
+  }
+  if (!r) return [0, 0, 0];
+  let sum = 0;
+  for (const c of counts.values()) sum += c * log2Q16(c);
+  return [r, sat(log2Q16(r), Math.floor(sum / r)), sat(log2Q16(r), log2Q16(Math.max(...counts.values())))];
+}
+
+/** The 30-integer `evidence-features/v2` vector of one candidate value, in FEATURE_NAMES order. */
 export function extractEvidenceFeatures(value: string): number[] {
   const all = [...value];
   const symbols = all.slice(0, MAX_ANALYSED_SYMBOLS).map(s => s.codePointAt(0)!);
@@ -180,6 +215,7 @@ export function extractEvidenceFeatures(value: string): number[] {
     smallestPeriod,
     maxAutocorrelation,
     maxLag,
+    ...residualFeatures(symbols),
   ];
   if (vector.length !== FEATURE_COUNT) throw new Error('evidence-features vector length mismatch');
   return vector;

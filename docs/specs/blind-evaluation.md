@@ -114,6 +114,7 @@ never pushed, synced or copied anywhere.
   ledger.json                     0600  written by the runner: epochs and runs
   runs/<run-id>/freeze.json       0600  the consumed freeze
   runs/<run-id>/aggregate.json    0600  the private copy of the released aggregate
+  archive/<epoch>.fixtures.json   0600  a replaced corpus, kept when an epoch rotates (§5, step 9)
   scratch-*/                      0700  fixture bytes during a run; removed in finally
 ```
 
@@ -212,7 +213,10 @@ from this directory other than a released aggregate.
    remove them from `fixtures.json`. Author replacements, write a fresh
    `nonce`, and set a new `epoch`. The runner refuses changed fixtures under
    the old epoch and refuses the old fixtures under a new epoch. The next
-   blind run needs a new freeze.
+   blind run needs a new freeze. Whenever a new epoch replaces
+   `fixtures.json`, move the old corpus unread to
+   `<private-root>/archive/<old-epoch>.fixtures.json` (file 0600, directory
+   0700). It stays inside the private root and is never copied out.
 10. **Contamination.** If fixture content reaches any product session, an
     issue, a log or a repository, the epoch is spent: say so in the next
     report, retire it, and rotate as in step 9. Never rerun an exposed epoch

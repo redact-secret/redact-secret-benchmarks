@@ -57,7 +57,7 @@ export interface PiiBenignCollisionValidationOptions {
 const expectedClasses: PiiEvidenceClass[] = PII_BENIGN_COLLISION_EVIDENCE_CLASSES.map(id => ({
   id, kind: PII_EVIDENCE_CLASS_ROLES[id].kind, accountingClasses: [...PII_EVIDENCE_ACCOUNTING_CLASSES[id]], qualifies: [...PII_EVIDENCE_CLASS_ROLES[id].qualifies],
 }));
-const canonicalContentCommitment = '7b63d65db012a15e0a6ec9ba9390c45d21bbc0a5d92ca720c72e33365940c966';
+const canonicalContentCommitment = 'b9a2f3b24a734c39489095be5855701d64d7a775ac865a2c3d68e0c1efa25b18';
 const validateSchema = new Ajv({ strict: true }).compile(schema);
 const canonicalize = (value: unknown): unknown => Array.isArray(value) ? value.map(canonicalize) : value && typeof value === 'object' ?
   Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, canonicalize(child)])) : value;

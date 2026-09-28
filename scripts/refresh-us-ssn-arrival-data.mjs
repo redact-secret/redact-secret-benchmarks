@@ -30,6 +30,7 @@ const authority = [
 const source = (sourceId, locator, revision) => ({ sourceKind: 'public-authority', sourceId, locator, revision });
 const ssaAllocation = source('ssa-poms-rm-10201-035', 'https://secure.ssa.gov/poms.nsf/lnx/0110201035', 'TN-2-2011-06-23');
 const ssaReserved = source('ssa-poms-rm-10201-020', 'https://secure.ssa.gov/poms.nsf/lnx/0110201020', 'Basic-2009-08-28');
+const ssaRandomization = source('ssa-ssn-randomization', 'https://www.ssa.gov/employer/randomization.html', 'implemented-2011-06-25-retrieved-2026-09-27');
 const productContract = { sourceKind: 'product-decision', sourceId: 'redact-secret-us-ssn-v1',
   locator: 'https://github.com/redact-secret/redact-secret/blob/a0709d2a41b70217874da9afeffb40fb2a1a2596/docs/contracts/pii/us-ssn-v1.md',
   revision: 'a0709d2a41b70217874da9afeffb40fb2a1a2596' };
@@ -67,7 +68,7 @@ function entry(id, population, evidenceClass, accountingClass, candidate, prefix
     context: { obligation: options.contextNegative ? 'required-for-sensitive-classification' : 'none',
       class: options.valid === false && evidenceClass === 'near-miss' ? 'neutral' : 'non-sensitive' },
     collision: null,
-    provenance: authoritative ? { kind: 'authoritative', sources: [ssaReserved, ssaAllocation] } :
+    provenance: authoritative ? { kind: 'authoritative', sources: options.sources ?? [ssaReserved, ssaAllocation] } :
       { kind: 'deterministic-synthetic', sources: [ssaAllocation, productContract],
         generator: { id: 'sha256-pattern', version: 1, seedCommitment: hash(seed) } },
   };
@@ -89,7 +90,11 @@ const stress = [
   entry('public-identifier-b', 'stress', 'public-identifier', 'public-operational', 'DDDDDDDDD', 'employee_registry_id='),
   entry('order-reference', 'stress', 'ordinary-reference-account', 'public-operational', 'DDDDDDDDD', 'order_reference='),
   entry('invoice-reference', 'stress', 'ordinary-reference-account', 'public-operational', 'DDDDDDDDD', 'invoice_number='),
-  entry('placeholder', 'stress', 'placeholder', 'placeholder', 'DDDDDDDDD', 'placeholder_ssn='),
+  // A placeholder must be one the product contract can leave unflagged. us-ssn-v1 says no structurally valid SSN is
+  // non-sensitive and an unlisted placeholder word does not suppress (#408), so the conventional all-nines placeholder
+  // is used: SSA never assigns areas 900-999, so it is identity-unmatched, not a valid value under a placeholder label.
+  entry('placeholder', 'stress', 'placeholder', 'placeholder', '999999999', 'placeholder_ssn=',
+    { valid: false, authoritative: true, sources: [ssaRandomization, ssaAllocation] }),
   entry('context-negative', 'stress', 'context-negative', 'context-negative', 'DDDDDDDDD', 'not_ssn=', { contextNegative: true }),
 ];
 

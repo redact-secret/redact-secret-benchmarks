@@ -7,12 +7,26 @@ lexical space.
 
 The canonical registry now includes fifteen US SSN controls split between the
 diagnostic and benign-heavy populations. They are reserved displays,
-deterministic synthetic public/reference/placeholder cases, allocation near
-misses, and context-negative cases—not cross-family or cross-jurisdiction
-collisions. Their five SSA authority bindings remain distinct: RM 10201.030,
-the SSN randomization page, RM 10201.035, RM 10201.020, and GN 03325.002.
-Structurally valid positive values are deterministically generated and carry
-no issuance, assignment, registry, lookup, or person provenance.
+deterministic synthetic public/reference cases, an all-nines placeholder,
+allocation near misses, and context-negative cases—not cross-family or
+cross-jurisdiction collisions. Their five SSA authority bindings remain
+distinct: RM 10201.030, the SSN randomization page, RM 10201.035, RM 10201.020,
+and GN 03325.002. Structurally valid positive values are deterministically
+generated and carry no issuance, assignment, registry, lookup, or person
+provenance.
+
+A non-sensitive SSN control must be one the product contract can leave
+unflagged. `us-ssn-v1` states there is no structurally valid non-sensitive SSN
+namespace and that an unlisted placeholder word does not suppress, so a
+structurally valid value under a `placeholder_ssn=` label is a sensitive
+occurrence, not a placeholder
+([#408](https://github.com/redact-secret/redact-secret-benchmarks/issues/408)).
+The `stress-placeholder` control therefore uses the conventional `999999999`
+placeholder. The SSN randomization page never assigns areas 900–999, so the
+value is type-invalid and identity-unmatched, and its placeholder accounting
+axis is exercised by rejection, not by a suppressed valid identity. The
+famous advertising numbers are not used for this: they are structurally valid,
+and the contract declines to treat placeholder folklore as a validity rule.
 
 The authored eight-class vocabulary is retained end to end. `evidenceClass`
 appears in method evidence and the accounting report's `evidenceByClass`

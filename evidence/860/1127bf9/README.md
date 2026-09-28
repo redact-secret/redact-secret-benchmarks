@@ -100,12 +100,20 @@ Published 61 stable, candidate 64 stable; no family loses status. `heroku-api-ke
 | `together-ai-api-key`, `openai-admin-api-key` | provisional | provisional | empirical corroboration floors (T2) |
 | `connection-string` | provisional | provisional | policy protected holdout not run |
 
-Fixed-candidate outcomes for the #379 known gaps (candidate run above): product-931 (Mailchimp, 3 fixtures), product-933
-(Heroku, Confluent, Twilio previous-line context, 3), product-934 (repeated-filler placeholders, 2) and product-935
-(`postgresql+psycopg`, 1) are all resolved at `1127bf9`; product-932 resolves 3 of 4 (the LiteLLM `masked_` Cohere line
-stays unreported, which the product records as policy on #932). The records move to `reviewed`; `promoted` needs product
-provenance-manifest records (`conformance/benchmark-regressions.json`) that `1127bf9` does not carry, so `fixed` and
-`verified` are not recorded.
+Fixed-candidate outcomes for the #379 known gaps (candidate run above, span and action per fixture):
+
+| Known gap | Fixtures | At 1127bf9 |
+| --- | --- | --- |
+| product-931 (Mailchimp `-us<dc>`) | 3 must-redact | all found on the authored span, but `warn`: the value stays in sanitized output |
+| product-932 (Deepgram/Cohere forms) | 4 policy | Go and Java forms redacted; HTTPie Deepgram form found but `warn`; the LiteLLM `masked_` Cohere line not reported (the product records it as policy on #932) |
+| product-933 (previous-line context) | 3 policy | all found on the authored span, but `warn` |
+| product-934 (repeated-filler placeholders) | 2 must-not-flag | silent, as authored |
+| product-935 (`postgresql+psycopg`) | 1 policy | redacted |
+
+So the misses are closed, but five of the ten positives are only warned. The #379 positives author `redact`, so a warn is
+detection without sanitization; that is the action question redact-secret#936 holds (commented there). The records move
+to `reviewed`; `promoted` needs product provenance-manifest records (`conformance/benchmark-regressions.json`) that
+`1127bf9` does not carry, so `fixed` and `verified` are not recorded.
 
 ## Review ledger
 

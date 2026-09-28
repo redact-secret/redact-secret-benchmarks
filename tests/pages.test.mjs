@@ -99,6 +99,21 @@ test('Report: reference scanners are muted rows in run order with no rank, and a
   assert.ok(!text(peers).includes('redact-secret'), 'the product is not a row in the reference table');
 });
 
+test('Report: T3 hides its peer table by default (#404); the same query the caption links to reproduces it', async () => {
+  const { reportPage } = await load('/src/pages/report.ts');
+  const hidden = reportPage(data, 'T3', fixtures), hiddenPeers = hidden.slice(hidden.indexOf('OTHER SCANNERS'), hidden.indexOf('id="rows"'));
+  assert.ok(hiddenPeers.includes('OTHER SCANNERS'), 'the section itself still appears, with an explanation');
+  assert.ok(!/<table>/.test(hiddenPeers), 'no peer table renders by default at T3');
+  assert.match(hiddenPeers, /Hidden by default[\s\S]*Show anyway/);
+  const shown = reportPage(data, 'T3', fixtures, '?level=T3&peers=1');
+  const peers = shown.slice(shown.indexOf('OTHER SCANNERS'), shown.indexOf('id="rows"'));
+  assert.match(peers, /<table>/);
+  assert.ok(peers.includes('silent') && peers.includes('absent'), 'peer rows render once opted in');
+  assert.match(peers, /reflects scope, not accuracy/);
+  const t1 = reportPage(data, 'T1', fixtures);
+  assert.ok(/<table>/.test(t1.slice(t1.indexOf('OTHER SCANNERS'))), 'T1 and T2 keep showing peers unconditionally');
+});
+
 test('Report: provider/family projection preserves the exact selected leaf set once', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
   for (const level of ['T1', 'T2', 'T3']) {
@@ -291,6 +306,22 @@ test('Performance: page reads the committed criteria file, verbatim', async () =
   assert.ok(html.includes(criteria.criteriaId) && html.includes(criteria.baseline.sourceCommit));
   assert.ok(html.includes('Linux x86_64 is the only official profile'));
   for (const criterion of criteria.performance) assert.ok(html.includes(criterion.surface) && html.includes(criterion.profileId));
+});
+
+test('Performance: the Thresholds table shows the pinned run\'s measured processing and throughput beside each floor (#405)', async () => {
+  const { performancePage } = await load('/src/pages/performance.ts');
+  const operational = await read('benchmarks/operational-evidence.json');
+  const html = performancePage(), thresholds = html.slice(html.indexOf('>Thresholds<'), html.indexOf('id="operational-evidence"'));
+  assert.match(thresholds, /Measured processing \(median \/ p95\)/);
+  assert.match(thresholds, /Measured throughput \(median\)/);
+  for (const t of operational.measurements.timings) {
+    assert.ok(thresholds.includes(`${t.processing.median.toLocaleString('en-US', { maximumFractionDigits: 2 })} ms`), `${t.surface}/${t.profileId} measured processing median`);
+    assert.ok(thresholds.includes(`${Math.round(t.throughput.median).toLocaleString('en-US')} B/s`), `${t.surface}/${t.profileId} measured throughput median`);
+  }
+  // #405: the node row names its resolved artifact as a recorded fact, or explicitly says it is not recorded -- never a silent assumption.
+  assert.match(thresholds, /Not recorded/, 'operational-evidence.json does not yet carry resolvedArtifact, pending the paired product change');
+  assert.ok(!/<td>N-API addon<\/td>|>N-API addon<\/span>/.test(thresholds), 'never renders the addon as the node row\'s artifact when it was not actually confirmed');
+  assert.match(html, /a sustained multi-megabyte-per-second stream would dominate request latency/, 'workload guidance paragraph is present and cites the measured figures');
 });
 
 test('boundary rule: pages measure and record; none asserts product quality or ranks a scanner', async () => {

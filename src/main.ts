@@ -198,7 +198,7 @@ async function refresh(force = false): Promise<void> {
     let matrix: SupportMatrixFile | null = null, matrixProblem: string | null = needsMatrix ? 'No support matrix published' : null;
     if (matrixText) { try { const parsed = JSON.parse(matrixText); matrixProblem = supportMatrixProblem(parsed); if (!matrixProblem) matrix = parsed; } catch { matrixProblem = 'Support matrix is unreadable'; } }
     let body: string;
-    if (current.kind === 'report') body = reportPage(data, levelOf(location.search), fixtures);
+    if (current.kind === 'report') body = reportPage(data, levelOf(location.search), fixtures, location.search);
     else if (current.kind === 'coverage') body = coveragePage(fixtures, coverageViewOf(location.search), data, matrix, matrixProblem, location.search);
     else if (current.kind === 'coverage-family') body = familyPage(data, fixtures, current.id, matrix, matrixProblem);
     else if (current.kind === 'coverage-detector') body = detectorPage(data, fixtures, current.id);

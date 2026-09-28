@@ -56,6 +56,8 @@ jobs:
         run: npm run pins:manifest:check
       - name: docs/generated/release-comparison.md matches baselines/*.json
         run: npm run baseline:report
+      - name: T3 (project policy) carries no peer column in the default-mode comparison (#404)
+        run: npm run baseline:check-t3
       - name: Generated inputs must not change tracked files
         run: git diff --exit-code
 

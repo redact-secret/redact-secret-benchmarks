@@ -6,8 +6,10 @@ Plan: `qualification/peer-pii-runtime-throughput-v1.json`, schema/validator
 `benchmarks/evaluation/domains/pii/peer-runtime-throughput.ts`. Adapters:
 `scripts/peer-pii-runtime-throughput/adapters.mjs`. Measurement:
 `scripts/measure-peer-pii-runtime-throughput.mjs`
-(`npm run peer-pii-runtime-throughput`). Published output:
-`public/results/peer-pii-runtime-throughput.json`.
+(`npm run peer-pii-runtime-throughput`). Published output: the frozen
+snapshot `evidence/429/peer-pii-runtime-throughput.json`, shown on `/report`
+under "Runtime redaction libraries on the same PII inputs"
+([#444](https://github.com/redact-secret/redact-secret-benchmarks/issues/444)).
 
 ## Why this exists
 
@@ -124,6 +126,23 @@ The report is validated against
 incomplete observation matrix fails the run rather than publishing a
 partial report — and written to
 `public/results/peer-pii-runtime-throughput.json`.
+
+## Publishing a snapshot
+
+The script's default output, `public/results/peer-pii-runtime-throughput.json`,
+is gitignored and the publish workflow never runs this measurement (it needs
+the hand-built addon above). The site therefore reads a committed snapshot
+instead: rerun with `--out=evidence/429/peer-pii-runtime-throughput.json` and
+update `evidence/429/README.md` with the new source identities.
+`src/pages/peer-runtime-throughput.ts` imports that file at build time, and
+`tests/peer-runtime-section.test.mjs` fails CI if it no longer passes
+`validatePeerRuntimeThroughputReport`. Without the file, the section reads
+Not measured.
+
+The `/report` section is bound by the same rule as this plan: rows in plan
+order, no marked, sorted or relative value, every `methodologyNotes` entry
+verbatim, and a roster that comes only from `TOOL_IDS`, never from the
+accuracy run's `summary.scanners`.
 
 ## What this plan does not do
 

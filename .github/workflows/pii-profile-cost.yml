@@ -111,7 +111,7 @@ jobs:
           test '${{ inputs.threshold_run_id }}' != ''
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/${{ inputs.threshold_run_id }}" --jq \
             'select(.conclusion == "success" and .event == "workflow_dispatch" and .path == ".github/workflows/pii-profile-cost.yml" and .head_sha == env.GITHUB_SHA) | .id' | grep -qx '${{ inputs.threshold_run_id }}'
-          gh run download '${{ inputs.threshold_run_id }}' -n pii-profile-cost-thresholds -D "$RUNNER_TEMP/thresholds"
+          gh run download '${{ inputs.threshold_run_id }}' -R "$GITHUB_REPOSITORY" -n pii-profile-cost-thresholds -D "$RUNNER_TEMP/thresholds"
       - name: Provision pinned scanners before candidate mode
         if: inputs.phase == 'candidate'
         working-directory: benchmarks

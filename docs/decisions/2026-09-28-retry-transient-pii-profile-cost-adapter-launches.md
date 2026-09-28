@@ -80,6 +80,21 @@ stops a harmless pipe-close race from crashing the process. Re-hashes
 `scripts/pii-profile-cost/cli-sample.mjs`; plan `contentCommitment`
 recomputed again.
 
+## A second, unrelated dormant bug
+
+The EPIPE fix cleared all three official `phase=aa` runs and the threshold
+freeze on the first try. `phase=candidate` had never executed successfully
+before (every prior attempt died in `aa` first) and immediately hit a
+different, unrelated bug on its very first real run: "Download the
+pre-frozen thresholds" calls `gh run download` with no `-R` and no
+`working-directory`, in a job whose checkout puts the repository at
+`benchmarks/`, not workspace root — so `gh`'s git-based repository
+auto-detection fails with `fatal: not a git repository`. Fixed by passing
+`-R "$GITHUB_REPOSITORY"` explicitly, matching the pattern the same file
+already uses for its product-repo artifact downloads. Re-hashes
+`.github/workflows/pii-profile-cost.yml`; plan `contentCommitment`
+recomputed again.
+
 ## Consequences
 
 A single flaky launch no longer discards an otherwise-complete run. A

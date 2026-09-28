@@ -96,9 +96,12 @@ const ibanMod97 = (value: string) => {
   return remainder === 1;
 };
 const nanpStructure = (value: string) => {
-  const match = /^(?:\+?1 ?)?(\d{3})[- ]?(\d{3})[- ]?(\d{4})(?: ext\.? \d{1,6})?$/.exec(value);
+  // #426: phone-v1 also accepts `+1-NXX-NXX-XXXX`, `(NXX) NXX-XXXX` and the `extension` marker; the first pattern is
+  // the original one, so every #423 label keeps its verdict.
+  const match = /^(?:\+?1 ?)?(\d{3})[- ]?(\d{3})[- ]?(\d{4})(?: (?:ext\.?|extension) \d{1,6})?$/.exec(value) ??
+    /^(?:\+1-(\d{3})-(\d{3})-\d{4}|\((\d{3})\) (\d{3})-\d{4})(?: (?:ext\.?|extension) \d{1,6})?$/.exec(value);
   if (!match) return false;
-  const [, area, office] = match;
+  const [area, office] = match.slice(1).filter(Boolean);
   const n11 = (code: string) => code.slice(1) === '11';
   return /^[2-9]/.test(area) && /^[2-9]/.test(office) && !n11(area) && !n11(office);
 };

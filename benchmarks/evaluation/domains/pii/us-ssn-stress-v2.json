@@ -1,0 +1,1511 @@
+{
+  "schemaVersion": 1,
+  "issue": 426,
+  "family": "pii:us:ssn",
+  "findingType": "pii_jurisdiction_us_ssn",
+  "familyContractVersion": 1,
+  "contextVocabulary": "pii-context/v1",
+  "contract": {
+    "repository": "redact-secret/redact-secret",
+    "commit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314",
+    "file": "docs/contracts/pii/us-ssn-v1.md"
+  },
+  "referenceValidator": {
+    "id": "us-ssn-allocation",
+    "version": 1
+  },
+  "id": "pii-c3-us-ssn-stress-v2",
+  "constructionPolicy": {
+    "positive": "us-ssn-sha256-v1: SHA-256 of the case seed maps to area 001-899 without 666, group 01-99 and serial 0001-9999. No person, SSA, registry, issuance or lookup provenance; the value exists only to exercise the structurally admissible path.",
+    "exclusions": "SSA RM 10201.035 exclusions (area 000, 666, 900-999; group 00; serial 0000) are one-component overrides of a generated value, declared as candidate twins.",
+    "displayControl": "SSA RM 10201.020 display replicas (000-00-0000 and other 000-area combinations) are identity-invalid controls, never non-sensitive identities: us-ssn-v1 has no structurally valid non-sensitive namespace.",
+    "placeholder": "#408/#411: a placeholder is benign only when it is type-invalid. A structurally valid SSN under an unlisted placeholder, sample or test label is authored sensitive, as us-ssn-v1 says those words do not suppress.",
+    "context": "Sensitivity follows us-ssn-v1 and pii-context/v1 only: en ssn / social security number, ko 사회보장번호 / 사회 보장 번호 / 미국 사회보장번호 field labels, with example/documentation/예시 and not ssn/사회보장번호 아님 as occurrence exclusions. Generic id, national id, tax id, account, order and reference labels have no authority."
+  },
+  "nonGoals": [
+    "masked or last-four forms",
+    "Numident, assignment or issuance-date allocation",
+    "a second jurisdiction or national-ID family (core #795 stays conditional)",
+    "product identity-only observation (core #910)"
+  ],
+  "populations": [
+    {
+      "id": "diagnostic-balanced",
+      "caseCount": 15,
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "sensitiveMass": 5000,
+        "nonSensitiveMass": 0,
+        "notEstablishedMass": 5000,
+        "rationale": "Balanced diagnosis of the context and allocation boundary; us-ssn-v1 has no structurally valid non-sensitive namespace, so the non-sensitive stratum is empty by contract."
+      }
+    },
+    {
+      "id": "benign-heavy-stress",
+      "caseCount": 21,
+      "baseRate": {
+        "kind": "declared-assumption",
+        "totalMass": 10000,
+        "sensitiveMass": 200,
+        "nonSensitiveMass": 0,
+        "notEstablishedMass": 9800,
+        "rationale": "Operational text dominated by nine-digit references, placeholders and negated or unassociated labels, with a small declared sensitive share so sensitive miss rate is measurable."
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "qp-en-compact-ssn-field",
+      "axis": 24,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "ssn=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-1",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-en-display-long-field",
+      "axis": 24,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "Social Security Number: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-2",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ko-display-field",
+      "axis": 24,
+      "view": "qualification-plan",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "사회보장번호: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-3",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ko-spaced-field-compact",
+      "axis": 24,
+      "view": "qualification-plan",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "사회 보장 번호 = ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-4",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ko-us-prefixed-field",
+      "axis": 25,
+      "view": "qualification-plan",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "미국 사회보장번호: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-5",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-ko-negation-field",
+      "axis": 25,
+      "view": "qualification-plan",
+      "language": "ko",
+      "construction": "context-negative",
+      "prefix": "사회보장번호 아님: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-6",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-twin-base",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-twin-group-zero",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "ssa-exclusion",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "display",
+        "set": {
+          "group": "00"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-twin-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-twin-serial-zero",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "ssa-exclusion",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "display",
+        "set": {
+          "serial": "0000"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-twin-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-twin-area-666",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "ssa-exclusion",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "display",
+        "set": {
+          "area": "666"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-twin-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-twin-area-9xx",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "ssa-exclusion",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "display",
+        "set": {
+          "area": "947"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-twin-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-twin-compact-display",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-twin-base",
+        "property": "display"
+      },
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "qp-twin-unicode-dash",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "unsupported-format",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "unicode-dash"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-twin-base",
+        "property": "display"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-twin-order-context",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "order_number: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "qp-twin-base",
+        "property": "context"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "qp-twin-identifier-suffix",
+      "axis": 28,
+      "view": "qualification-plan",
+      "language": "en",
+      "construction": "whole-candidate-boundary",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/qp-7",
+        "display": "display"
+      },
+      "suffix": "x",
+      "twinOf": {
+        "case": "qp-twin-base",
+        "property": "boundary"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-en-json-field",
+      "axis": 24,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "{\"ssn\": \"",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-1",
+        "display": "display"
+      },
+      "suffix": "\"}",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-en-snake-long-field",
+      "axis": 24,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "social_security_number: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-2",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-en-upper-field",
+      "axis": 24,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "SSN = ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-3",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-ko-field-display",
+      "axis": 24,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "사회보장번호=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-4",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-ko-us-field-compact",
+      "axis": 24,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "synthetic-positive",
+      "prefix": "미국 사회보장번호 = ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-5",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-ko-negation-compact",
+      "axis": 25,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "context-negative",
+      "prefix": "사회보장번호 아님 = ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-6",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-ko-example-label",
+      "axis": 25,
+      "view": "diagnostic-balanced",
+      "language": "ko",
+      "construction": "context-negative",
+      "prefix": "사회보장번호 예시: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-7",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-en-national-id",
+      "axis": 26,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "unlisted-label",
+      "prefix": "national_id: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-8",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-en-tax-id",
+      "axis": 26,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "unlisted-label",
+      "prefix": "tax id = ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-9",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-en-example-suffix",
+      "axis": 26,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "context-negative",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-10",
+        "display": "display"
+      },
+      "suffix": " (example)",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-en-area-9xx",
+      "axis": 26,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "ssa-exclusion",
+      "prefix": "ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-12",
+        "display": "display",
+        "set": {
+          "area": "913"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-twin-base",
+      "axis": 28,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "synthetic-positive",
+      "prefix": "ssn=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-11",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "db-twin-area-zero",
+      "axis": 28,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "ssa-exclusion",
+      "prefix": "ssn=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-11",
+        "display": "compact",
+        "set": {
+          "area": "000"
+        }
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "db-twin-base",
+        "property": "candidate"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-twin-negated-context",
+      "axis": 28,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "context-negative",
+      "prefix": "not ssn=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-11",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": {
+        "case": "db-twin-base",
+        "property": "context"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "db-twin-percent-suffix",
+      "axis": 28,
+      "view": "diagnostic-balanced",
+      "language": "en",
+      "construction": "whole-candidate-boundary",
+      "prefix": "ssn=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/db-11",
+        "display": "compact"
+      },
+      "suffix": "%20",
+      "twinOf": {
+        "case": "db-twin-base",
+        "property": "boundary"
+      },
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-placeholder-area-9xx",
+      "axis": 23,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "type-invalid-placeholder",
+      "prefix": "placeholder_ssn=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-1",
+        "display": "compact",
+        "set": {
+          "area": "987"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-placeholder-valid-unlisted-label",
+      "axis": 23,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "unlisted-placeholder-label",
+      "prefix": "placeholder_ssn=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-2",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "bh-sample-label-valid",
+      "axis": 23,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "unlisted-placeholder-label",
+      "prefix": "sample ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-3",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "bh-test-label-valid",
+      "axis": 23,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "unlisted-placeholder-label",
+      "prefix": "test_ssn=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-4",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": true
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      }
+    },
+    {
+      "id": "bh-dummy-area-zero-control",
+      "axis": 23,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ssa-display-control",
+      "prefix": "dummy ssn: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-5",
+        "display": "display",
+        "set": {
+          "area": "000"
+        }
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "authority-published-value",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ssa-display-control",
+      "axis": 23,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ssa-display-control",
+      "prefix": "ssn: ",
+      "candidate": {
+        "literal": "000-00-0000",
+        "authority": "ssa-poms-rm-10201-020"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "invalid",
+        "identityBasis": [
+          "authority-published-value",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-negation-spaced",
+      "axis": 25,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "context-negative",
+      "prefix": "사회 보장 번호 아님: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-6",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-example-before-label",
+      "axis": 25,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "context-negative",
+      "prefix": "예시 사회보장번호: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-7",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-particle-prose",
+      "axis": 25,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "unassociated-prose",
+      "prefix": "사회보장번호는 ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-8",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-employee-id",
+      "axis": 26,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "employee_id: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-9",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-member-number",
+      "axis": 26,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "member number = ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-10",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-account-number",
+      "axis": 26,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "account_number: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-11",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-routing-number",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "routing_number=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-12",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-tracking-id",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "tracking id: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-13",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-zip-plus-four",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "zip_plus_4=",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-14",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-ticket",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "ordinary-reference",
+      "prefix": "ticket: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-15",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-phone-field-display",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "cross-family-collision",
+      "prefix": "phone: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-19",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-en-card-field",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "en",
+      "construction": "cross-family-collision",
+      "prefix": "card number: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-20",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-order-number",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "ordinary-reference",
+      "prefix": "주문번호: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-16",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-invoice-number",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "ordinary-reference",
+      "prefix": "송장 번호 = ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-17",
+        "display": "display"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    },
+    {
+      "id": "bh-ko-account-number",
+      "axis": 27,
+      "view": "benign-heavy-stress",
+      "language": "ko",
+      "construction": "ordinary-reference",
+      "prefix": "계좌번호: ",
+      "candidate": {
+        "generator": "us-ssn-sha256-v1",
+        "seed": "redact-secret-benchmarks-426/us-ssn/bh-18",
+        "display": "compact"
+      },
+      "suffix": "",
+      "twinOf": null,
+      "expected": {
+        "publicFinding": false
+      },
+      "oracle": {
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    }
+  ],
+  "frozen": {
+    "planCommitment": "d2d6768711da81f53435d819cc72fda6fa4946c00e585311900d72642d23adea"
+  }
+}

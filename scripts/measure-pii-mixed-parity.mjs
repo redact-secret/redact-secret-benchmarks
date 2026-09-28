@@ -232,7 +232,9 @@ async function browserSurface(scratch, tarballs) {
   try {
     const moduleRoot = path.join(installation.root, 'node_modules');
     const page = `<!doctype html><meta charset="utf-8"><title>pii-427</title>
-<script type="importmap">${JSON.stringify({ imports: { '#native': '/m/@redact-secret/core/dist/runtime/browser.js', '@redact-secret/wasm': '/m/@redact-secret/wasm/redact_secret_wasm.js' } })}</script>
+<script type="importmap">${JSON.stringify({ imports: { '#native': '/m/@redact-secret/core/dist/runtime/browser.js', '@redact-secret/wasm': '/m/@redact-secret/wasm/redact_secret_wasm.js',
+  // redact-secret#937: the core browser runtime lazy-loads the pii build for a PII selection. Earlier artifacts have no such export.
+  ...(existsSync(path.join(moduleRoot, '@redact-secret/wasm/redact_secret_wasm_pii.js')) ? { '@redact-secret/wasm/pii': '/m/@redact-secret/wasm/redact_secret_wasm_pii.js' } : {}) } })}</script>
 <script type="module">
 import * as api from '/m/@redact-secret/core/dist/index.js';
 import { runJob } from '/runner/js-runner.mjs';

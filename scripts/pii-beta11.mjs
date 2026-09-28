@@ -28,7 +28,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { brotliCompressSync, constants as zlibConstants, gzipSync } from 'node:zlib';
-import { B11_CANDIDATE, B11_CURRENT_PLAN_SET, B11_FAMILIES, B11_PLAN_SETS, B11_SELECTIONS, activationProblem, b11CaseTables, b11ObservedRanges,
+import { B11_CANDIDATE, B11_CURRENT_PLAN_SET, B11_EXPECTED_ACTIVATION, B11_FAMILIES, B11_PLAN_SETS, B11_SELECTIONS, activationProblem, b11CaseTables, b11ObservedRanges,
   b11PlanSetOf, b11Selectors, b11EvidenceCommitment, b11Commitment } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
 import { b11FreezeFiles, B11_BASELINE_879, b11ProtectedEpochs, buildB11Report, buildB11Disposition, b11WasmRole,
   b11SizeBudgetRows } from '../benchmarks/evaluation/domains/pii/beta11-disposition.ts';
@@ -364,6 +364,34 @@ async function operational(frozen, tarballs, baselineTarballs) {
     sizeBudgetRows: b11SizeBudgetRows(frozen) };
 }
 
+/**
+ * redact-secret#937: the default raw Wasm builds must link no PII runtime (a valid PII selection is rejected with
+ * PII_SELECTOR_UNAVAILABLE) and each `_pii` build must activate PII under the frozen v2 identity. Artifacts without
+ * `_pii` builds (before #937) report `not-applicable`.
+ */
+async function rawWasmSplit(tarball) {
+  const directory = await mkdtemp(path.join(os.tmpdir(), 'pii-b11-split-'));
+  try {
+    await run('tar', ['-xzf', tarball, '-C', directory]);
+    const files = await readdir(path.join(directory, 'package'));
+    if (!files.includes('redact_secret_wasm_pii.js')) return { status: 'not-applicable', reason: 'artifact has no _pii Wasm build (before redact-secret#937)', builds: [] };
+    const builds = [];
+    for (const [glue, pii] of [['redact_secret_wasm.js', false], ['redact_secret_wasm_common.js', false],
+      ['redact_secret_wasm_pii.js', true], ['redact_secret_wasm_common_pii.js', true]]) {
+      const module = await import(`${pathToFileURL(path.join(directory, 'package', glue)).href}?split=${Date.now()}`);
+      module.initSync({ module: await readFile(path.join(directory, 'package', glue.replace(/\.js$/, '_bg.wasm'))) });
+      let code = null, activation = null;
+      try { module.initialize(['pii:global']); activation = module.piiActivation(); } catch (error) { code = String(error?.code ?? error?.message ?? error); }
+      const expected = pii ? { code: null, activation: B11_EXPECTED_ACTIVATION['pii:global'].replace('credentials=full', `credentials=${glue.includes('common') ? 'common' : 'full'}`) } :
+        { code: 'PII_SELECTOR_UNAVAILABLE', activation: null };
+      const ok = pii ? code === null && activation === expected.activation : code !== null && code.includes('PII_SELECTOR_UNAVAILABLE');
+      builds.push({ glue, piiBuild: pii, piiSelectorResult: code === null ? 'activated' : code.includes('PII_SELECTOR_UNAVAILABLE') ? 'PII_SELECTOR_UNAVAILABLE' : 'other-error',
+        activationMatchesFrozenV2: pii ? activation === expected.activation : null, pass: ok });
+    }
+    return { status: builds.every(row => row.pass) ? 'met' : 'not-met', builds };
+  } finally { await rm(directory, { recursive: true, force: true }); }
+}
+
 async function measure() {
   const { frozen, tarballs, baselineTarballs, example, freezeCommit } = await verifyFreeze();
   const benchmarkRevision = await git('rev-parse', 'HEAD');
@@ -378,6 +406,7 @@ async function measure() {
   } finally { await rm(scratch, { recursive: true, force: true }); }
   const identity = await seam(example, frozen, tarballs, candidate);
   const cost = await operational(frozen, tarballs, baselineTarballs);
+  const wasmSplit = await rawWasmSplit(tarballs.wasm);
   const finishedAt = new Date().toISOString();
   const observation = { schemaVersion: 1, reportType: 'pii-beta11-observation', supportClaims: false, issue: 'redact-secret/redact-secret-benchmarks#428',
     role: frozen.role, freeze: { file: path.relative(root, freezeFile), commit: freezeCommit, freezeCommitment: frozen.freezeCommitment },
@@ -386,7 +415,8 @@ async function measure() {
     baseline, identitySeam: { candidateArtifactCommitment: identity.candidateArtifactCommitment, evidence: identity.evidence },
     peerScanners: 'none', credentialAccounting: 'separate-not-scored' };
   const operationalEvidence = { schemaVersion: 1, reportType: 'pii-beta11-operational', supportClaims: false, issue: 'redact-secret/redact-secret-benchmarks#428',
-    role: frozen.role, sourceCommit: commit, freezeCommitment: frozen.freezeCommitment, ...cost, artifactCommitment: '' };
+    role: frozen.role, sourceCommit: commit, freezeCommitment: frozen.freezeCommitment, ...cost,
+    ...(wasmSplit.status === 'not-applicable' ? {} : { wasmSplit }), artifactCommitment: '' };
   operationalEvidence.artifactCommitment = b11EvidenceCommitment(operationalEvidence);
   await writeJson(path.join(evidenceDir, `pii-beta11-observation-${fileVersion}.json`), observation);
   await writeJson(path.join(evidenceDir, `pii-beta11-operational-${fileVersion}.json`), operationalEvidence);

@@ -230,6 +230,9 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
       gate('contract-fixture-discrepancy', unexplained.length || revisedWrong.length ? 'not-met' : 'met',
         `${unexplained.length} frozen-plan deviation(s) without a pre-registered revision; ${revisedWrong.length} revised case(s) observed wrong`),
       parityGate,
+      // redact-secret#937: present only for an artifact with split _pii Wasm builds (older records re-score unchanged).
+      ...(operational.wasmSplit ? [gate('default-wasm-excludes-pii', operational.wasmSplit.status === 'met' ? 'met' : 'not-met',
+        operational.wasmSplit.builds.map((row: any) => `${row.glue}: ${row.piiSelectorResult}`).join('; '))] : []),
       ...costGates,
       gate('trusted-accounting-source', 'met', `observations bound to the committed freeze ${observation.freeze.commit} on a clean benchmark tree ${observation.benchmark.revision}`),
       gate('independent-evidence', 'met', planSet === 'b11-population-v1' ?

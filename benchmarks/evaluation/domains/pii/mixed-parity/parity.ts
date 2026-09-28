@@ -171,11 +171,19 @@ export function scoreOperation(document: MaterializedDocument, selection: Select
     if (!correct) { wrong.push(hit.id); continue; }
     if (hit.optional) chosen.push(hit.id); else matched.add(hit.id);
   }
-  const missing = required.filter(target => !matched.has(target.id) && !wrong.includes(target.id)).map(target => target.id);
-  const findingsCorrect = observed.findings === null || observed.findings === undefined ? null
-    : !missing.length && !wrong.length && !unexpected.pii && !unexpected.credential;
-  const expectedSha = sha256(expectedOutput(document, selection, chosen));
-  const outputCorrect = observed.outputSha256 === undefined || observed.outputSha256 === null ? null : observed.outputSha256 === expectedSha;
+  const withFindings = observed.findings !== null && observed.findings !== undefined;
+  const missing = withFindings ? required.filter(target => !matched.has(target.id) && !wrong.includes(target.id)).map(target => target.id) : [];
+  const findingsCorrect = withFindings ? !missing.length && !wrong.length && !unexpected.pii && !unexpected.credential : null;
+  let outputCorrect: boolean | null = null;
+  if (observed.outputSha256 !== undefined && observed.outputSha256 !== null) {
+    if (withFindings) outputCorrect = observed.outputSha256 === sha256(expectedOutput(document, selection, chosen));
+    else {
+      // Output-only operation: the bytes must equal the expectation for exactly one admissible optional subset.
+      const subsets = optional.reduce<string[][]>((all, target) => [...all, ...all.map(subset => [...subset, target.id])], [[]]);
+      const hit = subsets.find(subset => observed.outputSha256 === sha256(expectedOutput(document, selection, subset)));
+      outputCorrect = Boolean(hit); if (hit) chosen.push(...hit);
+    }
+  }
   const domainRows = (domain: 'pii' | 'credential') => ({
     required: required.filter(target => target.domain === domain).length,
     matched: required.filter(target => target.domain === domain && matched.has(target.id)).length,

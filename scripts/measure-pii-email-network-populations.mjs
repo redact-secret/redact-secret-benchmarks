@@ -131,10 +131,15 @@ const outcomeVector = (plan, observations) => observations.map(row => {
 const families = C1_FAMILIES.map(family => {
   const { plan, independence, file, fileSha256 } = plans[family];
   const score = (role, surface) => { const run = runs.find(r => r.release.role === role && r.surface === surface); return scoreC1Surface(plan, run.families[family]); };
+  const summarize = scored => scored.views.map(view => ({ view: view.view, cases: view.cases, massTotals: view.massTotals, sensitivity: view.sensitivity,
+    falseAlarmsByAction: view.falseAlarmsByAction, output: view.output, unsupportedSyntax: view.unsupportedSyntax, contractSilent: view.contractSilent }));
   const surfaces = ['node-addon', 'node-wasm'].map(surface => {
     const baseline = score('baseline', surface), candidate = score('candidate', surface);
-    return { surface, baseline: baseline.views, candidate: candidate.views, comparison: compareC1(baseline, candidate) };
+    const comparison = compareC1(baseline, candidate).map(({ strata, ...rest }) => ({ ...rest,
+      changedStrata: strata.filter(row => row.detectedDelta || row.falseAlarmDelta || row.leakDelta || row.collateralDelta) }));
+    return { surface, baseline: summarize(baseline), candidate: summarize(candidate), comparison };
   });
+  const candidateDetail = score('candidate', 'node-addon').views;
   const crossSurface = Object.fromEntries(['baseline', 'candidate'].map(role => {
     const [a, b] = ['node-addon', 'node-wasm'].map(surface => runs.find(r => r.release.role === role && r.surface === surface).families[family]);
     return [role, outcomeVector(plan, a) === outcomeVector(plan, b) ? 'identical' : 'divergent'];
@@ -142,8 +147,12 @@ const families = C1_FAMILIES.map(family => {
   const candidateAddon = runs.find(r => r.release.role === 'candidate' && r.surface === 'node-addon').families[family];
   const labels = new Map(plan.oracle.labels.map(row => [row.caseId, row]));
   const scored = scoreC1Surface(plan, candidateAddon);
+  const silentStrata = new Set(plan.strata.filter(row => row.benignAxis === 'contract-silent').map(row => row.id));
+  const contractSilentObservations = candidateAddon.filter(observation => silentStrata.has(plan.plan.cases.find(item => item.id === observation.caseId).stratum))
+    .map(observation => ({ caseId: observation.caseId, observed: observation.familyFindings.length ? 'finding' : 'absent', redactedBytes: observation.collateralBytes }));
   const disagreements = candidateAddon.flatMap(observation => {
     const label = labels.get(observation.caseId), row = plan.plan.cases.find(item => item.id === observation.caseId);
+    if (silentStrata.has(row.stratum)) return [];
     const exact = observation.familyFindings.filter(f => label.candidate && f.start === label.candidate.start && f.end === label.candidate.end && f.action === 'redact');
     const onTarget = label.candidate ? observation.familyFindings.filter(f => f.start < label.candidate.end && label.candidate.start < f.end) : observation.familyFindings;
     const outcome = label.sensitivity === 'sensitive' ? (exact.length === 1 && onTarget.length === 1 ? null : onTarget.length ? 'range-mismatch' : 'missed') :
@@ -172,7 +181,8 @@ const families = C1_FAMILIES.map(family => {
   ];
   return {
     family, planFile: file, planFileSha256: fileSha256, planCommitment: plan.oracle.planCommitment, planFileCommitment: c1Commitment(plan),
-    independence, crossSurface, surfaces, disagreements,
+    ...(plan.supersedes ? { supersedes: plan.supersedes } : {}),
+    independence, crossSurface, candidateDetail, surfaces, disagreements, contractSilentObservations,
     identityOnly: { status: 'not-measured', reason: PII_ORACLE_UNAVAILABLE_REASON },
     gates, supportState: 'pending', promotion: 'none',
     reasonCodes: gates.filter(gate => gate.status !== 'met').map(gate => gate.id).sort(),

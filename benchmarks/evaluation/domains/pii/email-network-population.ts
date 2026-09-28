@@ -2,7 +2,8 @@ import { hash } from '../../substrate/hash.ts';
 import { proportion, type MechanicalAccountingConfig, type MechanicalPublished } from '../../../accounting/shared/primitives.ts';
 import { PII_ORACLE_UNAVAILABLE_REASON, piiOraclePlanCommitment, validatePiiOracleFamily, type PiiOracleFamily,
   type PiiOracleLabel } from './identity-oracle.ts';
-import emailPopulationPlan from './email-population-plan-v1.json';
+import emailPopulationPlanV1 from './email-population-plan-v1.json';
+import emailPopulationPlan from './email-population-plan-v2.json';
 import networkAddressPopulationPlan from './network-address-population-plan-v1.json';
 import gapLedger from '../../../../evidence/901/pii-gap-ledger-v1.json';
 import piiV1Profile from '../../../../qualification/pii-v1.json';
@@ -68,13 +69,25 @@ export interface C1PopulationPlan {
   plan: { family: C1Family; findingType: string; familyContractVersion: 1; canonicalOffsetUnit: 'utf8-byte'; cases: C1Case[] };
   oracle: PiiOracleFamily;
   populations: C1Population[];
+  supersedes?: { id: string; file: string; fileSha256: string; planCommitment: string; reason: string; contractRule: string; detectedBy: string;
+    firstRun: { benchmarkRevision: string; runId: string; reportCommitment: string };
+    corrections: Array<{ v1CaseId: string; v1Label: string; v2CaseId: string; v2Label: string; twinAdded?: string; rangeCorrected?: boolean }> };
 }
 
 export const C1_POPULATION_PLANS: Readonly<Record<C1Family, { file: string; plan: C1PopulationPlan }>> = Object.freeze({
-  'pii:global:email': { file: 'benchmarks/evaluation/domains/pii/email-population-plan-v1.json', plan: emailPopulationPlan as unknown as C1PopulationPlan },
+  'pii:global:email': { file: 'benchmarks/evaluation/domains/pii/email-population-plan-v2.json', plan: emailPopulationPlan as unknown as C1PopulationPlan },
   'pii:global:network-address': { file: 'benchmarks/evaluation/domains/pii/network-address-population-plan-v1.json',
     plan: networkAddressPopulationPlan as unknown as C1PopulationPlan },
 });
+
+/**
+ * Frozen plans superseded by a contract-cited correction. They stay committed and are never edited: the successor
+ * records their file digest and plan commitment, and they fail the corrected validator for the recorded reason.
+ */
+export const C1_SUPERSEDED_PLANS: ReadonlyArray<{ file: string; plan: C1PopulationPlan; supersededBy: string }> = Object.freeze([
+  { file: 'benchmarks/evaluation/domains/pii/email-population-plan-v1.json', plan: emailPopulationPlanV1 as unknown as C1PopulationPlan,
+    supersededBy: 'benchmarks/evaluation/domains/pii/email-population-plan-v2.json' },
+]);
 
 const canonical = (value: unknown): unknown => Array.isArray(value) ? value.map(canonical) : value && typeof value === 'object' ?
   Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, canonical(child)])) : value;
@@ -138,6 +151,20 @@ export function networkReservedAddress(candidate: string) {
   if (v6 === null) return false;
   if (inV6(v6, '::ffff:0:0', 96)) return reservedV4(Number(v6 & 0xffffffffn));
   return v6 === 0n || v6 === 1n || inV6(v6, 'ff00::', 8) || inV6(v6, '2001:db8::', 32) || inV6(v6, '2001:2::', 48) || inV6(v6, '3fff::', 20);
+}
+
+/**
+ * Email contract v1 whole-candidate rule: the authored range must be bounded on the left by something other than
+ * local-part atom syntax (RFC 5322 `atext`, or a Unicode alphabetic/numeric SMTPUTF8 scalar), `.` or `@`, and on the
+ * right by something other than a domain-label character, `.` or `@`. Note that `=`, `/`, `'` and `+` are `atext`, so a
+ * `key=addr` spelling is one candidate that starts at the key.
+ */
+export function emailWholeCandidate(input: string, range: { start: number; end: number }) {
+  const before = Array.from(slice(input, 0, range.start)).at(-1), after = Array.from(slice(input, range.end, bytes(input).length))[0];
+  const atom = (char: string) => /[A-Za-z0-9!#$%&'*+\-/=?^_`{|}~]/.test(char) || /[\p{L}\p{N}]/u.test(char);
+  const leftOk = before === undefined || !(atom(before) || before === '.' || before === '@');
+  const rightOk = after === undefined || !(/[A-Za-z0-9-]/.test(after) || /[\p{L}\p{N}]/u.test(after) || after === '.' || after === '@');
+  return leftOk && rightOk;
 }
 
 // -------------------------------------------------------------------------------------------------------------------
@@ -276,6 +303,14 @@ export function validateC1PopulationPlan(value: unknown, priorPlanCandidates: re
       plan.plan.familyContractVersion !== 1 || plan.plan.canonicalOffsetUnit !== 'utf8-byte' || !Array.isArray(plan.plan.cases) ||
       !Array.isArray(plan.strata) || !Array.isArray(plan.populations))
     throw new Error('Invalid C1 PII population plan');
+  if (plan.supersedes !== undefined) {
+    const prior = C1_SUPERSEDED_PLANS.find(row => row.file === plan.supersedes!.file);
+    if (!prior || prior.plan.family !== plan.family || prior.plan.oracle.planCommitment !== plan.supersedes.planCommitment ||
+        !/^[a-f0-9]{64}$/.test(plan.supersedes.fileSha256) || !plan.supersedes.corrections?.length ||
+        plan.supersedes.corrections.some(row => !plan.plan.cases.some(item => item.id === row.v2CaseId) ||
+          !prior.plan.plan.cases.some(item => item.id === row.v1CaseId)))
+      throw new Error('C1 supersession record does not match the frozen predecessor');
+  }
   const ledger = gapLedger as unknown as { contentCommitment: string };
   if (plan.ledger?.file !== LEDGER_FILE || plan.ledger.contentCommitment !== ledger.contentCommitment)
     throw new Error('C1 population plan is not bound to the frozen #422 ledger');
@@ -312,6 +347,8 @@ export function validateC1PopulationPlan(value: unknown, priorPlanCandidates: re
       if (!Number.isInteger(other.start) || other.end <= other.start || other.end > bytes(row.input).length ||
           (label.candidate && other.start < label.candidate.end && label.candidate.start < other.end))
         throw new Error(`Invalid C1 line candidate: ${row.id}`);
+    if (label.identity !== 'not-established' && plan.family === 'pii:global:email' && !emailWholeCandidate(row.input, label.candidate!))
+      throw new Error(`C1 email candidate is not a whole contract candidate: ${row.id}`);
     if (label.identity === 'valid') {
       const reference = c1ReferenceSensitivity(plan.family, row.input, label.candidate!, row.lineCandidates);
       if (reference.sensitivity !== label.sensitivity)
@@ -433,6 +470,7 @@ export function c1CaseOutcome(plan: C1PopulationPlan, observation: C1Observation
   return { outcome, wrongFamily, falseAlarmActions, leaked: observation.leakedSensitiveSpans > 0, collateral: observation.collateralBytes > 0 };
 }
 
+const CONTRACT_SILENT = 'contract-silent';
 const emptyCounts = () => ({ cases: 0, detected: 0, rangeMismatch: 0, missed: 0, wrongFamily: 0, absent: 0, falseAlarm: 0,
   falseAlarmByAction: {} as Record<string, number>, leakedCases: 0, collateralCases: 0, collateralBytes: 0, credentialOverlapCases: 0 });
 type Counts = ReturnType<typeof emptyCounts>;
@@ -480,11 +518,13 @@ export function scoreC1Surface(plan: C1PopulationPlan, observations: readonly C1
     const population = plan.populations.find(row => row.id === view);
     const stratumRows = [...perStratum.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([id, counts]) => {
       const stratum = strata.get(id)!, mass = population?.strata.find(row => row.stratum === id)?.mass ?? null;
-      const bad = stratum.sensitivity === 'sensitive' ? counts.cases - counts.detected : counts.falseAlarm;
-      return { stratum: id, axis: stratum.axis, identity: stratum.identity, sensitivity: stratum.sensitivity, benignAxis: stratum.benignAxis,
+      const bad = stratum.benignAxis === CONTRACT_SILENT ? 0 : stratum.sensitivity === 'sensitive' ? counts.cases - counts.detected : counts.falseAlarm;
+      return { stratum: id, scored: stratum.benignAxis !== CONTRACT_SILENT, axis: stratum.axis, identity: stratum.identity, sensitivity: stratum.sensitivity, benignAxis: stratum.benignAxis,
         declaredMass: mass, adverseMass: mass === null ? null : Math.round((mass * bad) / counts.cases * 1000) / 1000, ...counts };
     });
-    const pick = (predicate: (row: C1Case) => boolean) => members.filter(predicate);
+    // A contract-silent stratum has no authored truth to score against: its findings are observed behavior only.
+    const silent = (row: C1Case) => strata.get(row.stratum)!.benignAxis === CONTRACT_SILENT;
+    const pick = (predicate: (row: C1Case) => boolean) => members.filter(row => !silent(row) && predicate(row));
     const sens = pick(row => labels.get(row.id)!.sensitivity === 'sensitive');
     const nonSens = pick(row => labels.get(row.id)!.sensitivity === 'non-sensitive');
     const benign = pick(row => labels.get(row.id)!.sensitivity !== 'sensitive');
@@ -492,17 +532,20 @@ export function scoreC1Surface(plan: C1PopulationPlan, observations: readonly C1
     const twins = members.filter(row => row.twinOf && members.some(base => base.id === row.twinOf) &&
       (labels.get(row.id)!.sensitivity === 'sensitive') !== (labels.get(row.twinOf)!.sensitivity === 'sensitive'));
     const pairCorrect = (row: C1Case) => [row, byId.get(row.twinOf!)!].every(item => ['detected', 'absent'].includes(outcome(item)));
-    const piiFindings = members.flatMap(row => byCase.get(row.id)!.familyFindings.map(finding => ({ row, finding })));
+    const piiFindings = members.filter(row => !silent(row)).flatMap(row => byCase.get(row.id)!.familyFindings.map(finding => ({ row, finding })));
     const collateralFindings = piiFindings.filter(({ row, finding }) => {
       const label = labels.get(row.id)!;
       const sensitiveSpans = [...(label.sensitivity === 'sensitive' ? [label.candidate!] : []),
         ...(row.lineCandidates ?? []).filter(other => other.sensitivity === 'sensitive')];
       return !sensitiveSpans.some(span => span.start === finding.start && span.end === finding.end);
     });
-    const unsupported = members.filter(row => ['unsupported-syntax', 'contract-silent'].includes(strata.get(row.stratum)!.benignAxis ?? ''));
+    const unsupported = members.filter(row => strata.get(row.stratum)!.benignAxis === 'unsupported-syntax');
+    const contractSilent = members.filter(silent);
     const massTotals = population ? {
       sensitiveMass: population.strata.reduce((n, row) => n + row.sensitiveMass, 0),
-      benignMass: population.strata.reduce((n, row) => n + row.nonSensitiveMass + row.notEstablishedMass, 0),
+      benignMass: population.strata.filter(row => strata.get(row.stratum)!.benignAxis !== CONTRACT_SILENT)
+        .reduce((n, row) => n + row.nonSensitiveMass + row.notEstablishedMass, 0),
+      contractSilentMass: population.strata.filter(row => strata.get(row.stratum)!.benignAxis === CONTRACT_SILENT).reduce((n, row) => n + row.mass, 0),
       sensitiveMassMissed: stratumRows.filter(row => row.sensitivity === 'sensitive').reduce((n, row) => n + (row.adverseMass ?? 0), 0),
       benignMassFlagged: stratumRows.filter(row => row.sensitivity !== 'sensitive').reduce((n, row) => n + (row.adverseMass ?? 0), 0),
     } : null;
@@ -519,11 +562,14 @@ export function scoreC1Surface(plan: C1PopulationPlan, observations: readonly C1
       },
       falseAlarmsByAction: tally(benign.flatMap(row => results.get(row.id)!.falseAlarmActions)),
       output: { sensitiveCases: sens.length, leakedCases: sens.filter(r => results.get(r.id)!.leaked).length,
-        benignCases: benign.length, collateralCases: members.filter(r => results.get(r.id)!.collateral).length,
-        collateralBytes: members.reduce((n, r) => n + byCase.get(r.id)!.collateralBytes, 0),
+        benignCases: benign.length, collateralCases: pick(() => true).filter(r => results.get(r.id)!.collateral).length,
+        collateralBytes: pick(() => true).reduce((n, r) => n + byCase.get(r.id)!.collateralBytes, 0),
         credentialOverlapCases: members.filter(r => byCase.get(r.id)!.credentialFindings > 0).length },
       unsupportedSyntax: { cases: unsupported.length, absent: unsupported.filter(r => outcome(r) === 'absent').length,
         findingOnUnsupported: unsupported.filter(r => outcome(r) === 'false-alarm').length },
+      contractSilent: { cases: contractSilent.length, observedFinding: contractSilent.filter(r => outcome(r) === 'false-alarm').length,
+        observedAbsent: contractSilent.filter(r => outcome(r) === 'absent').length,
+        observedRedactedBytes: contractSilent.reduce((n, r) => n + byCase.get(r.id)!.collateralBytes, 0) },
       piiV1Metrics: [
         metric('type-miss-rate', sens.filter(r => outcome(r) === 'missed' && !results.get(r.id)!.wrongFamily).length, sens.length),
         metric('wrong-family-rate', sens.filter(r => results.get(r.id)!.wrongFamily).length, sens.length),
@@ -549,8 +595,8 @@ export function compareC1(baseline: ReturnType<typeof scoreC1Surface>, candidate
       const prior = before.strata.find(item => item.stratum === row.stratum)!;
       const detectedDelta = row.detected - prior.detected, falseAlarmDelta = row.falseAlarm - prior.falseAlarm;
       const leakDelta = row.leakedCases - prior.leakedCases, collateralDelta = row.collateralCases - prior.collateralCases;
-      const regression = row.sensitivity === 'sensitive' ? detectedDelta < 0 || leakDelta > 0 : falseAlarmDelta > 0 || collateralDelta > 0;
-      return { stratum: row.stratum, sensitivity: row.sensitivity, benignAxis: row.benignAxis, detectedDelta, falseAlarmDelta, leakDelta, collateralDelta, regression };
+      const regression = !row.scored ? false : row.sensitivity === 'sensitive' ? detectedDelta < 0 || leakDelta > 0 : falseAlarmDelta > 0 || collateralDelta > 0;
+      return { stratum: row.stratum, scored: row.scored, sensitivity: row.sensitivity, benignAxis: row.benignAxis, detectedDelta, falseAlarmDelta, leakDelta, collateralDelta, regression };
     });
     return { view, verdict: strata.some(row => row.regression) ? 'regression' : 'no-regression', regressedStrata: strata.filter(row => row.regression).length, strata };
   });

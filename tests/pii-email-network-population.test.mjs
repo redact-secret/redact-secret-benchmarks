@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import {
-  C1_FAMILIES, C1_POPULATION_PLANS, c1LedgerAxes, c1PriorPlanCandidates, c1ReferenceSensitivity, compareC1, emailReservedDomain,
+  C1_FAMILIES, C1_POPULATION_PLANS, C1_SUPERSEDED_PLANS, c1LedgerAxes, c1PriorPlanCandidates, c1ReferenceSensitivity, compareC1, emailReservedDomain,
   networkReservedAddress, scoreC1Surface, validateC1PopulationPlan,
 } from '../benchmarks/evaluation/domains/pii/email-network-population.ts';
 import { piiIdentityOracle, piiOraclePlanCommitment } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
@@ -30,6 +31,16 @@ test('both #424 population plans validate against the #423 oracle, the contract 
     assert.ok(independence.declaredTwins >= 15, family);
     for (const population of plan.populations) assert.equal(population.strata.reduce((n, row) => n + row.mass, 0), population.totalMass);
   }
+});
+
+test('the superseded email plan v1 stays frozen and fails only for its recorded contract reason', () => {
+  const successor = C1_POPULATION_PLANS['pii:global:email'].plan;
+  const [superseded] = C1_SUPERSEDED_PLANS;
+  assert.equal(successor.supersedes.file, superseded.file);
+  assert.equal(createHash('sha256').update(readFileSync(superseded.file)).digest('hex'), successor.supersedes.fileSha256);
+  assert.equal(superseded.plan.oracle.planCommitment, successor.supersedes.planCommitment);
+  assert.throws(() => validateC1PopulationPlan(superseded.plan, prior('pii:global:email')), /not a whole contract candidate/);
+  assert.equal(successor.supersedes.corrections.length, 3);
 });
 
 test('a label that contradicts the frozen contract is rejected, never adjusted', () => {

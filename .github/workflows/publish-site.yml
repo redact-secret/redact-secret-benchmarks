@@ -201,6 +201,14 @@ jobs:
               --candidate-node-package="$NODE_PACKAGE" \
               --candidate-wasm-package="$WASM_PACKAGE" \
               --candidate-source-commit="$PRODUCT_COMMIT"
+            # PII populations: the released lockfile package is the baseline,
+            # this qualified candidate the candidate. The bundle binds only here.
+            npm run pii:observe:populations -- \
+              --candidate-core="$CORE_PACKAGE" \
+              --candidate-node="$NODE_PACKAGE" \
+              --candidate-wasm="$WASM_PACKAGE" \
+              --candidate-source-commit="$PRODUCT_COMMIT" \
+              --output=results-output/pii/population-release-v1.json
           else
             npm run bench -- --strict
           fi
@@ -302,11 +310,18 @@ jobs:
           npm run eval:publish:domains
           # PII support is a separate v2 artifact. The publisher validates the
           # complete credential-v1 + PII set and renames the v2 index last.
+          # Staging names the product it measured, so committed activation
+          # evidence recorded for exactly that product (evidence/<n>/) binds;
+          # production measures the release and binds none.
+          product_args=()
+          if [ "$TARGET" = staging ]; then
+            product_args=(--product-commit="$PRODUCT_COMMIT" --product-core="$CORE_PACKAGE")
+          fi
           population_bundle=results-output/pii/population-release-v1.json
           if [ -s "$population_bundle" ]; then
-            npm run eval:publish:pii-support -- --population-bundle="$population_bundle"
+            npm run eval:publish:pii-support -- "${product_args[@]}" --population-bundle="$population_bundle"
           else
-            npm run eval:publish:pii-support -- --population-mode=not-measured
+            npm run eval:publish:pii-support -- "${product_args[@]}" --population-mode=not-measured
           fi
 
       # The page marks which environment served it and which commit built it

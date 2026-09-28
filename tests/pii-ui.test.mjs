@@ -12,6 +12,7 @@ const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replac
 const matrix = buildPiiSupportMatrixV2();
 const descriptor = domainDescriptorV2(buildEvaluationDomainsV2(matrix.artifactCommitment), 'pii');
 const page = (value = matrix, search = '?domain=pii') => piiSupportPage(descriptor, value, piiSupportQueryOf(search));
+const piiSupportPiiPage = value => piiSupportPage(domainDescriptorV2(buildEvaluationDomainsV2(value.artifactCommitment), 'pii'), value, piiSupportQueryOf('?domain=pii'));
 const piiEvaluation = { domain: 'pii', reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
   qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null }, support: { state: 'schema-only', href: null } };
 
@@ -60,7 +61,7 @@ test('activation is a separate axis from support, with its selector', () => {
   for (const row of matrix.families) assert.ok(html.includes(`<code>${row.activation.selector}</code>`), row.activation.selector);
   assert.match(text(html), /Activation not measured/);
   const value = structuredClone(matrix); value.families[0].activation.state = 'unavailable';
-  assert.match(page(value), /<span class="st st-none">Not in the product<\/span>/);
+  assert.match(page(value), /<span class="st st-none">Not in the recorded activation<\/span>/);
 });
 
 test('jurisdictions are a list of registered families, and the standard size is never a coverage denominator', () => {
@@ -89,4 +90,16 @@ test('PII evaluation renders the contract: every metric with its own population,
   assert.match(html, /<tr data-evidence-class="near-miss"><td><code>near-miss<\/code><\/td><td><span class="chip void">No accounting class<\/span>/);
   assert.match(html, /<tr data-evidence-class="cross-family-collision"><td><code>cross-family-collision<\/code><\/td><td><span class="chip void">No accounting class<\/span>/);
   assert.match(text(html), /Language support is not jurisdiction support/);
+});
+
+test('a bound product names the product and selectors its activation was recorded with', async () => {
+  const { productEvidenceFor } = await import('../scripts/pii-publication-inputs.ts');
+  const recorded = await productEvidenceFor({ sourceCommit: '2e1bdcf0905f7a374c4c54b7caac41303cd7d88b',
+    coreSha256: 'ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1' }, 'evidence');
+  const bound = buildPiiSupportMatrixV2({ product: recorded.binding });
+  const html = piiSupportPiiPage(bound);
+  assert.match(html, /Activation was recorded on product <code>2e1bdcf0905f<\/code> with selector <code>pii:global<\/code>/);
+  assert.match(html, /<b>Product artifact<\/b> <code>ff0e…d1b1<\/code> <span>✓ Sanctioned binding<\/span>/);
+  assert.match(html, /data-family="pii:us:ssn"[\s\S]*?Not in the recorded activation/);
+  assert.match(page(), /No product activation record matches/);
 });

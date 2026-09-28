@@ -101,7 +101,8 @@
     "observations:capture": "node --import tsx scripts/capture-empirical-observation.ts",
     "peers:provision": "node scripts/provision-peers.mjs",
     "peers:snapshots:refresh": "npm run bench -- --strict --refresh-peer-snapshots && npm run eval:classify -- --refresh-peer-snapshots",
-    "peers:snapshots:live": "npm run bench -- --strict --live-peers && npm run eval:classify -- --live-peers"
+    "peers:snapshots:live": "npm run bench -- --strict --live-peers && npm run eval:classify -- --live-peers",
+    "peer-pii-runtime-throughput": "node --import tsx scripts/measure-peer-pii-runtime-throughput.mjs"
   },
   "description": "Project-maintained synthetic regression and range benchmarks comparing redact-secret against Gitleaks, TruffleHog and flare-redact on identical fixture sets.",
   "license": "MIT",
@@ -110,6 +111,7 @@
     "url": "git+https://github.com/redact-secret/redact-secret-benchmarks.git"
   },
   "dependencies": {
+    "@openredaction/core": "1.1.5",
     "@redact-secret/core": "0.1.0-beta.9",
     "flare-redact": "1.6.1"
   },

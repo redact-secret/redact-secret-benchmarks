@@ -1,0 +1,568 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-context-v2-expectation-revisions",
+  "id": "pii-context-v2-expectation-revisions-v1",
+  "issue": "redact-secret/redact-secret-benchmarks#428",
+  "supportClaims": false,
+  "productDefect": false,
+  "kind": "contract-revision-expectation-update",
+  "candidate": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "79c0a66119fb72931fda9adddbe2973a52bb4833",
+    "contextVocabulary": "pii-context/v2"
+  },
+  "authoredBefore": "any observation of the candidate: this file is committed in the #428 freeze commit, before the population re-run",
+  "method": "Every case of the frozen #424/#425/#426 population plans and of the six #423 oracle qualification plans was screened from its input text alone for the pii-context/v2 and in-place contract deltas (#924 earlier same-line value before a field label, #925 period after an address, #926 reviewed label glued by =, #927 added forms and ASCII case in Korean labels). Each screened case was then read against the contract text at the candidate. Only the cases below change their authored truth; no US SSN or phone case and no oracle qualification-plan case changes. The frozen plans are not edited: these revisions apply only to the reviewed-v2 accounting view, and the frozen-plan view is reported beside it.",
+  "unchangedOracleQualificationPlans": true,
+  "revisions": [
+    {
+      "family": "pii:global:email",
+      "planFile": "benchmarks/evaluation/domains/pii/email-population-plan-v2.json",
+      "caseId": "email-j-snake-field-joined",
+      "issue": "redact-secret/redact-secret#926",
+      "rule": "email-reviewed-label-equals-split",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/email-v1.md",
+          "sha256": "0dda2c72453cce8e4c6328262f8705cd67bc4586fcd5d8bfccd669391dd11b24"
+        },
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        }
+      ],
+      "contractText": "email-v1 (amended in place by #926): when the run before the first = is a reviewed pii-context email field label (the whole key, or its last separator-delimited tokens: email, e-mail, customer_email, 이메일, 고객_이메일), that run and the = are a label and the candidate starts after the =",
+      "labelForm": "email",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 0,
+          "end": 30
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 11,
+          "end": 30
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:email",
+      "planFile": "benchmarks/evaluation/domains/pii/email-population-plan-v2.json",
+      "caseId": "email-j-logfmt-joined",
+      "issue": "redact-secret/redact-secret#926",
+      "rule": "email-reviewed-label-equals-split",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/email-v1.md",
+          "sha256": "0dda2c72453cce8e4c6328262f8705cd67bc4586fcd5d8bfccd669391dd11b24"
+        },
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        }
+      ],
+      "contractText": "email-v1 (amended in place by #926): when the run before the first = is a reviewed pii-context email field label (the whole key, or its last separator-delimited tokens: email, e-mail, customer_email, 이메일, 고객_이메일), that run and the = are a label and the candidate starts after the =",
+      "labelForm": "email",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 28,
+          "end": 65
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 34,
+          "end": 65
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:email",
+      "planFile": "benchmarks/evaluation/domains/pii/email-population-plan-v2.json",
+      "caseId": "email-g-email-address-label",
+      "issue": "redact-secret/redact-secret#927",
+      "rule": "v2-added-field-label-form",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        },
+        {
+          "file": "docs/contracts/pii/email-v1.md",
+          "sha256": "0dda2c72453cce8e4c6328262f8705cd67bc4586fcd5d8bfccd669391dd11b24"
+        },
+        {
+          "file": "docs/contracts/pii/payment-card-v1.md",
+          "sha256": "763969473aafbad06a704daa2c06380c51da77ef98872bc2ba35155fcf83ac20"
+        }
+      ],
+      "contractText": "pii-context/v2 adds the reviewed high-signal field-label forms email address, e-mail address, 이메일 주소 (email) and 카드번호, 신용카드번호, 직불카드번호 (payment-card)",
+      "labelForm": "email address",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 15,
+          "end": 40
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 15,
+          "end": 40
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:email",
+      "planFile": "benchmarks/evaluation/domains/pii/email-population-plan-v2.json",
+      "caseId": "email-g-ko-address-label",
+      "issue": "redact-secret/redact-secret#927",
+      "rule": "v2-added-field-label-form",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        },
+        {
+          "file": "docs/contracts/pii/email-v1.md",
+          "sha256": "0dda2c72453cce8e4c6328262f8705cd67bc4586fcd5d8bfccd669391dd11b24"
+        },
+        {
+          "file": "docs/contracts/pii/payment-card-v1.md",
+          "sha256": "763969473aafbad06a704daa2c06380c51da77ef98872bc2ba35155fcf83ac20"
+        }
+      ],
+      "contractText": "pii-context/v2 adds the reviewed high-signal field-label forms email address, e-mail address, 이메일 주소 (email) and 카드번호, 신용카드번호, 직불카드번호 (payment-card)",
+      "labelForm": "이메일 주소",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 18,
+          "end": 44
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 18,
+          "end": 44
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:email",
+      "planFile": "benchmarks/evaluation/domains/pii/email-population-plan-v2.json",
+      "caseId": "email-e-dense-space",
+      "issue": "redact-secret/redact-secret#924",
+      "rule": "v2-forward-only-field-label-equidistance",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        }
+      ],
+      "contractText": "pii-context/v2 association.fieldLabel.equidistanceAmong is following-candidates: a field label counts only candidates after it, so an earlier same-line candidate never makes it equidistant (within and across families)",
+      "labelForm": "email",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 38,
+          "end": 61
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 38,
+          "end": 61
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:email",
+      "planFile": "benchmarks/evaluation/domains/pii/email-population-plan-v2.json",
+      "caseId": "email-e-bare-then-label",
+      "issue": "redact-secret/redact-secret#924",
+      "rule": "v2-forward-only-field-label-equidistance",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        }
+      ],
+      "contractText": "pii-context/v2 association.fieldLabel.equidistanceAmong is following-candidates: a field label counts only candidates after it, so an earlier same-line candidate never makes it equidistant (within and across families)",
+      "labelForm": "email",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 30,
+          "end": 52
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 30,
+          "end": 52
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:network-address",
+      "planFile": "benchmarks/evaluation/domains/pii/network-address-population-plan-v1.json",
+      "caseId": "net-l-uppercase-ip-address",
+      "issue": "redact-secret/redact-secret#927",
+      "rule": "v2-ascii-case-folding-in-korean",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        }
+      ],
+      "contractText": "pii-context/v2 normalization.koreanCase is ascii-lower, so the ASCII part of a Korean form (ip 주소) matches IP 주소",
+      "labelForm": "ip 주소",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 11,
+          "end": 23
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 11,
+          "end": 23
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:network-address",
+      "planFile": "benchmarks/evaluation/domains/pii/network-address-population-plan-v1.json",
+      "caseId": "net-e-dense-space",
+      "issue": "redact-secret/redact-secret#924",
+      "rule": "v2-forward-only-field-label-equidistance",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        }
+      ],
+      "contractText": "pii-context/v2 association.fieldLabel.equidistanceAmong is following-candidates: a field label counts only candidates after it, so an earlier same-line candidate never makes it equidistant (within and across families)",
+      "labelForm": "ip",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 30,
+          "end": 38
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 30,
+          "end": 38
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:network-address",
+      "planFile": "benchmarks/evaluation/domains/pii/network-address-population-plan-v1.json",
+      "caseId": "net-e-repeated-label",
+      "issue": "redact-secret/redact-secret#924",
+      "rule": "v2-forward-only-field-label-equidistance",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        }
+      ],
+      "contractText": "pii-context/v2 association.fieldLabel.equidistanceAmong is following-candidates: a field label counts only candidates after it, so an earlier same-line candidate never makes it equidistant (within and across families)",
+      "labelForm": "ip",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 19,
+          "end": 29
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 19,
+          "end": 29
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:network-address",
+      "planFile": "benchmarks/evaluation/domains/pii/network-address-population-plan-v1.json",
+      "caseId": "net-e-email-then-ip",
+      "issue": "redact-secret/redact-secret#924",
+      "rule": "v2-forward-only-field-label-equidistance",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        }
+      ],
+      "contractText": "pii-context/v2 association.fieldLabel.equidistanceAmong is following-candidates: a field label counts only candidates after it, so an earlier same-line candidate never makes it equidistant (within and across families)",
+      "labelForm": "ip",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 33,
+          "end": 42
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 33,
+          "end": 42
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:network-address",
+      "planFile": "benchmarks/evaluation/domains/pii/network-address-population-plan-v1.json",
+      "caseId": "net-p-trailing-period",
+      "issue": "redact-secret/redact-secret#925",
+      "rule": "network-trailing-period-right-boundary",
+      "sources": [
+        {
+          "file": "docs/specs/detector-families.md",
+          "sha256": "051677ba140aac7b85751b61be687390982398e78a7a6098841aeb45cfd3f49e"
+        }
+      ],
+      "contractText": "detector-families.md network-address row: one . directly after an address is a right boundary when it ends the input or is followed by whitespace or a closing quote/bracket, and it stays outside the range",
+      "labelForm": "client ip",
+      "v1": {
+        "identity": "not-established",
+        "sensitivity": "not-established",
+        "candidate": null,
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 15,
+          "end": 24
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:payment-card",
+      "planFile": "benchmarks/evaluation/domains/pii/card-iban-stress/payment-card-stress-v1.json",
+      "caseId": "card-ko-unspaced-label-out-of-vocabulary",
+      "issue": "redact-secret/redact-secret#927",
+      "rule": "v2-added-field-label-form",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        },
+        {
+          "file": "docs/contracts/pii/email-v1.md",
+          "sha256": "0dda2c72453cce8e4c6328262f8705cd67bc4586fcd5d8bfccd669391dd11b24"
+        },
+        {
+          "file": "docs/contracts/pii/payment-card-v1.md",
+          "sha256": "763969473aafbad06a704daa2c06380c51da77ef98872bc2ba35155fcf83ac20"
+        }
+      ],
+      "contractText": "pii-context/v2 adds the reviewed high-signal field-label forms email address, e-mail address, 이메일 주소 (email) and 카드번호, 신용카드번호, 직불카드번호 (payment-card)",
+      "labelForm": "카드번호",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 14,
+          "end": 30
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 14,
+          "end": 30
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:payment-card",
+      "planFile": "benchmarks/evaluation/domains/pii/card-iban-stress/payment-card-stress-v1.json",
+      "caseId": "card-xfam-equidistant-after-ip",
+      "issue": "redact-secret/redact-secret#924",
+      "rule": "v2-forward-only-field-label-equidistance",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        }
+      ],
+      "contractText": "pii-context/v2 association.fieldLabel.equidistanceAmong is following-candidates: a field label counts only candidates after it, so an earlier same-line candidate never makes it equidistant (within and across families)",
+      "labelForm": "card_number",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 27,
+          "end": 43
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 27,
+          "end": 43
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    },
+    {
+      "family": "pii:global:iban",
+      "planFile": "benchmarks/evaluation/domains/pii/card-iban-stress/iban-stress-v1.json",
+      "caseId": "iban-xfam-equidistant-after-card",
+      "issue": "redact-secret/redact-secret#924",
+      "rule": "v2-forward-only-field-label-equidistance",
+      "sources": [
+        {
+          "file": "docs/contracts/pii/pii-context-v2.json",
+          "sha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f"
+        },
+        {
+          "file": "docs/decisions/2026-09-28-version-the-pii-context-vocabulary-as-v2.md",
+          "sha256": "34b70fca18a9691c1053d0678639b675c2d835b0c4014810fcdbcc345c4c85bc"
+        }
+      ],
+      "contractText": "pii-context/v2 association.fieldLabel.equidistanceAmong is following-candidates: a field label counts only candidates after it, so an earlier same-line candidate never makes it equidistant (within and across families)",
+      "labelForm": "iban",
+      "v1": {
+        "identity": "valid",
+        "sensitivity": "not-established",
+        "candidate": {
+          "start": 34,
+          "end": 56
+        },
+        "publicFinding": false
+      },
+      "v2": {
+        "identity": "valid",
+        "sensitivity": "sensitive",
+        "candidate": {
+          "start": 34,
+          "end": 56
+        },
+        "publicFinding": true,
+        "action": "redact"
+      }
+    }
+  ]
+}

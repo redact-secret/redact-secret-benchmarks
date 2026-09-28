@@ -292,3 +292,32 @@ export function summarizeC3Surface(file: C3File, observations: C3Observation[]) 
 }
 
 export const c3Commitment = (value: unknown) => hash(JSON.stringify(value));
+
+// -----------------------------------------------------------------------------------------------------------
+// Reviewed expectation corrections. A frozen plan is never edited after a scan; a reviewed contract reading that
+// contradicts an authored expectation is recorded separately, and accounting is reported both as measured
+// against the frozen plan and after the correction. A correction is a corpus fix, never a product defect.
+// -----------------------------------------------------------------------------------------------------------
+export interface C3Correction {
+  family: string; caseId: string; reasonCode: string; contractBasis: string;
+  frozen: { publicFinding: boolean; identity: PiiOracleIdentity; sensitivity: Sensitivity };
+  corrected: { publicFinding: boolean; oracle: C3Case['oracle'] };
+}
+export function applyC3Corrections(file: C3File, corrections: C3Correction[], deviatingCaseIds: readonly string[]) {
+  const corrected = structuredClone(file);
+  for (const correction of corrections.filter(row => row.family === file.family)) {
+    const row = corrected.cases.find(item => item.id === correction.caseId);
+    if (!row || !exactKeys(correction, ['family', 'caseId', 'reasonCode', 'contractBasis', 'frozen', 'corrected']) ||
+        !/^[a-z][a-z0-9-]+$/.test(correction.reasonCode) || typeof correction.contractBasis !== 'string' || !correction.contractBasis)
+      throw new Error(`Invalid #426 correction: ${correction.caseId}`);
+    if (row.expected.publicFinding !== correction.frozen.publicFinding || row.oracle.identity !== correction.frozen.identity ||
+        row.oracle.sensitivity !== correction.frozen.sensitivity) throw new Error(`Correction does not start from the frozen label: ${row.id}`);
+    // Only a case the scan contradicted is corrected; a correction may not pre-empt an unobserved disagreement.
+    if (!deviatingCaseIds.includes(row.id)) throw new Error(`Correction targets a case the scan did not contradict: ${row.id}`);
+    row.expected = { publicFinding: correction.corrected.publicFinding };
+    row.oracle = correction.corrected.oracle;
+  }
+  const plan = materializeC3Plan(corrected);
+  validatePiiOracleFamily({ ...c3OracleFamily(corrected, 'corrected'), planCommitment: piiOraclePlanCommitment(plan) }, plan);
+  return corrected;
+}

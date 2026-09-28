@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import {
-  C3_BACKLOG, c3Files, c3Independence, c3PlanCommitment, materializeC3Case, summarizeC3Surface, syntheticNanpParts, syntheticUsSsnParts,
+  C3_BACKLOG, applyC3Corrections, c3Files, c3Independence, c3PlanCommitment, materializeC3Case, summarizeC3Surface, syntheticNanpParts, syntheticUsSsnParts,
   validateC3File,
 } from '../benchmarks/evaluation/domains/pii/ssn-phone-stress.ts';
 import { PII_ORACLE_REFERENCE_VALIDATORS, piiIdentityOracle, validatePiiIdentityOracle } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
@@ -119,4 +119,44 @@ test('the surface summary is counts only and separates misses, range errors and 
   assert.equal(summary.views['benign-heavy-stress'].weighted.sensitiveMissRate, 0.5);
   const text = JSON.stringify(summary);
   for (const row of file.cases) { assert.ok(!text.includes(row.id)); assert.ok(!text.includes(materializeC3Case(row).candidate)); }
+});
+
+const evidence = JSON.parse(await readFile(new URL('../evidence/901/426/pii-c3-ssn-phone-evidence-v1.json', import.meta.url), 'utf8'));
+const corrections = JSON.parse(await readFile(new URL('../evidence/901/426/pii-c3-reviewed-corrections-v1.json', import.meta.url), 'utf8'));
+
+test('reviewed corrections touch only scan-contradicted cases, keep the frozen plan and leave no unexplained deviation', () => {
+  assert.equal(corrections.productDefect, false);
+  for (const row of evidence.families) {
+    const { file } = c3Files[row.family];
+    const deviating = row.stress.deviations.map(item => item.id);
+    assert.deepEqual(corrections.corrections.filter(item => item.family === row.family).map(item => item.caseId).sort(), [...deviating].sort());
+    const corrected = applyC3Corrections(file, corrections.corrections, deviating);
+    assert.equal(file.frozen.planCommitment, c3PlanCommitment(file), 'the frozen plan itself is unchanged');
+    assert.notEqual(c3PlanCommitment(corrected), file.frozen.planCommitment);
+    assert.deepEqual(row.stress.afterReviewedCorrections.remainingDeviations, []);
+    assert.deepEqual(row.beforeState.deviations, [], 'the frozen v1 plan replays without deviation on the exact candidate');
+  }
+  assert.throws(() => applyC3Corrections(c3Files['pii:us:ssn'].file, corrections.corrections, []), /did not contradict/);
+});
+
+test('the #426 evidence binds the exact beta.10 candidate, stays input-free and types what it did not measure', () => {
+  assert.equal(evidence.candidate.sourceCommit, ledger.finalCandidate.sourceCommit);
+  assert.equal(evidence.candidate.version, '0.1.0-beta.10');
+  assert.ok(evidence.candidate.verifiedFiles > 0);
+  const text = JSON.stringify(evidence);
+  for (const { file } of Object.values(c3Files)) for (const row of file.cases) {
+    const built = materializeC3Case(row);
+    assert.ok(!text.includes(built.input) && !text.includes(built.candidate), row.id);
+  }
+  for (const row of evidence.families) {
+    assert.equal(row.identityOnly.status, 'not-measured');
+    assert.equal(row.identityOnly.reason.issue, 'redact-secret/redact-secret#910');
+    assert.equal(row.protectedPartition.status, 'not-run');
+    assert.equal(row.surfaceAgreement.addonVsWasmDisagreements, 0);
+    assert.equal(row.activation.off.casesWithAnyPiiFinding, 0);
+  }
+  const ssnRow = evidence.families.find(row => row.family === 'pii:us:ssn');
+  assert.equal(ssnRow.activation.foreign.familyAvailable, false, 'pii:global never selects the US SSN family');
+  assert.equal(ssnRow.activation.foreign.casesWithFamilyFinding, 0);
+  assert.ok(evidence.populationV1.comparisons.every(row => row.verdict === 'no-regression' && row.placeholderFalseAlarms === 0));
 });

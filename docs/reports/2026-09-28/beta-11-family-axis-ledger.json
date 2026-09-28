@@ -1,0 +1,1676 @@
+{
+  "schema": "beta11-family-axis-ledger-v1",
+  "issue": "https://github.com/redact-secret/redact-secret-benchmarks/issues/377",
+  "consumer": "https://github.com/redact-secret/redact-secret-benchmarks/issues/379",
+  "frozenAt": "2026-09-28",
+  "status": "frozen before any Beta.11 family fixture was authored",
+  "baseline": {
+    "report": "docs/reports/2026-09-28/beta-11-fixture-independence-baseline.md",
+    "audit": "docs/reports/2026-09-28/beta-11-fixture-independence-audit.json",
+    "benchmarkRevisionMeasured": "0a73b7db198c628dde74fb815d3029eb6c0acf42",
+    "fixtureIndexDigest": "c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e",
+    "publishedProduct": "@redact-secret/core 0.1.0-beta.9",
+    "candidateProduct": "redact-secret 9ab0fa02f2aeeda16a2c99e04862ebb0f0e9b5e7 (declared 0.1.0-beta.10), core tarball sha256 4c1a81b0a96e9d3343a696a7d2e60e9080ed95ccff20ec9acbe140619324aebf",
+    "peers": "gitleaks 8.30.1, trufflehog 3.97.4 (read-only .peer-bin from npm run peers:provision; peer observations from the checked-in snapshots)"
+  },
+  "rules": [
+    "Every value is independently authored and unmistakably synthetic; nothing is provider-issued, real-derived, or copied from a provider example or a peer rule's test vector.",
+    "Positives are authored against the frozen contract named in benchmarks/lib/assessment.ts, never against current detector behavior. Expectations are frozen before any scan.",
+    "A new positive counts toward independence only if both its secret value and its skeleton (value-masked template) are new to the family; the audit script's independentUpperBound and independentAxes are the before/after check.",
+    "Each twin mutates exactly one property of the frozen contract, keeps lexical separability, and must not land on a format the same provider issues (measurement-v4 §2.5, #84). Each twin below names its basis: provider (a provider-owned source decides the property), tool-undisputed (tool-corroborated, not in DISPUTED_PROPERTIES and not contradicted by a peer), or context (context-gated or grammar-less value; the value is kept byte-for-byte). A property that sources dispute and no provider decides is never a negative expectation (decision-stop-asserting-provider-undecided-format-properties); #379 drops such a twin rather than asserting it.",
+    "Where the observed gap is output action (warn instead of redact), positives state the span and the expected action; a warn is not counted as sanitization (#376, #380).",
+    "Nothing in this ledger changes a support status, an expectation, a profile floor, an envelope or a tier.",
+    "Budgets are planning numbers, not quotas. A family whose axes are exhausted earlier stops earlier; #379 records the reason."
+  ],
+  "selection": [
+    {
+      "rank": 1,
+      "family": "new-relic-license-key",
+      "contract": "T1 · (32 hex | eu01xx + 26 hex) + FFFFNRAL; provider fixes total length 40 and the NRAL suffix",
+      "signals": {
+        "observedFailure": "must-redact spans resolved to warn only: 7 fixtures on 5 axes (container-config, header, sdk-config, structured-file, detector-coverage shapes), plus 3 policy keyword-context fixtures — identical in published beta.9 and candidate 9ab0fa0",
+        "ambiguousContext": "low — the suffix makes the value self-identifying",
+        "publicIdCollision": "account id / application id controls exist (213c:account-and-app-ids-public-id); ingest-key vs user-key sibling (NRAK-) is not yet a control",
+        "outputActionRisk": "highest in the corpus for a T1 must-redact family",
+        "runtimeExposure": "high — APM agent config and container env in CI and agent sandboxes"
+      },
+      "existing": {
+        "positives": 12,
+        "independentUpperBound": 8,
+        "axes": 7,
+        "benign": 8,
+        "twinKinds": [
+          "boundary",
+          "length"
+        ]
+      },
+      "budget": {
+        "positives": 6,
+        "benign": 6,
+        "twinPairs": 4
+      },
+      "positives": [
+        {
+          "axis": "container-config",
+          "context": "Kubernetes Secret manifest with stringData NEW_RELIC_LICENSE_KEY (distinct from the existing Helm values file)",
+          "action": "redact"
+        },
+        {
+          "axis": "sdk-config",
+          "context": "Python agent newrelic.ini [newrelic] license_key = … (the existing sdk-config is the Node newrelic.js)",
+          "action": "redact"
+        },
+        {
+          "axis": "header",
+          "context": "OTLP exporter header line api-key: <key> inside an OpenTelemetry Collector YAML (existing header is the Log API curl)",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": "Terraform newrelic provider block with license_key in a .tfvars map, EU-region value (eu01xx form, which no positive exercises today)",
+          "action": "redact"
+        },
+        {
+          "axis": "tool-output",
+          "context": "agent startup log line echoing the configured key in a JSON diagnostic record",
+          "action": "redact"
+        },
+        {
+          "axis": "ci-config",
+          "context": "GitHub Actions step env: NEW_RELIC_LICENSE_KEY literal (no ci-config positive exists)",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "NRAK- user API key placed where only a license key is expected — sibling attribution control scoped to this family (not a globally benign value)"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "New Relic entity GUID and account id in a dashboard permalink"
+        },
+        {
+          "axis": "near-miss",
+          "control": "40-character hex checksum that does not end in FFFFNRAL, on a line naming newrelic only as a package"
+        },
+        {
+          "axis": "placeholder",
+          "control": "newrelic.yml license_key: '<%= license_key %>' ERB template"
+        },
+        {
+          "axis": "reference",
+          "control": "Helm values licenseKey: {{ .Values.global.licenseKey }} indirection"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "base64 of a synthetic license key inside a Kubernetes Secret data: field, asserting only the decoded-form policy the contract states (no bare-value claim on the base64)"
+        }
+      ],
+      "twins": [
+        {
+          "property": "suffix",
+          "basis": "provider",
+          "mutation": "FFFFNRAL -> FFFFNRAI on an otherwise valid 40-character value (the NRAL literal is provider-documented)"
+        },
+        {
+          "property": "total-length",
+          "basis": "provider",
+          "mutation": "41 characters: one extra body character before FFFFNRAL in the OTLP header value"
+        },
+        {
+          "property": "total-length",
+          "basis": "provider",
+          "mutation": "39 characters: EU form eu01xx + 25 hex + FFFFNRAL in the Terraform value"
+        },
+        {
+          "property": "boundary",
+          "basis": "provider",
+          "mutation": "value continued by an identifier character after NRAL in the Kubernetes Secret"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "family": "mailchimp-api-key",
+      "contract": "T2 · 32 hex + -us + 1–2 digits; the data-center suffix is provider-stated",
+      "signals": {
+        "observedFailure": "must-redact warn-only on the basic-auth and prose axes (2 fixtures), both modes; differential 4 unresolved; co-detection on 5 boundary/length twins",
+        "ambiguousContext": "medium — the hex body is generic, the -usN suffix carries the signal",
+        "publicIdCollision": "audience/list ids and the subscriber MD5 hash are hex; list-webhook URL carries the dc",
+        "outputActionRisk": "must-redact spans only warned in Basic-auth and prose contexts",
+        "runtimeExposure": "medium — marketing automation scripts, CI newsletters"
+      },
+      "existing": {
+        "positives": 19,
+        "independentUpperBound": 15,
+        "axes": 14,
+        "benign": 14,
+        "twinKinds": [
+          "alphabet",
+          "boundary",
+          "length"
+        ]
+      },
+      "budget": {
+        "positives": 5,
+        "benign": 6,
+        "twinPairs": 2
+      },
+      "positives": [
+        {
+          "axis": "basic-auth",
+          "context": "Python requests auth=('anystring', key) tuple (a second, independent Basic-auth template beside curl -u)",
+          "action": "redact"
+        },
+        {
+          "axis": "url",
+          "context": "https://anystring:<key>@us14.api.mailchimp.com/3.0/ userinfo URL",
+          "action": "redact"
+        },
+        {
+          "axis": "prose",
+          "context": "support-ticket paragraph quoting the key mid-sentence with trailing punctuation",
+          "action": "redact"
+        },
+        {
+          "axis": "sdk-config",
+          "context": "Node @mailchimp/mailchimp_marketing setConfig({ apiKey, server }) with server matching the suffix",
+          "action": "redact"
+        },
+        {
+          "axis": "tool-output",
+          "context": "mailchimp CLI / script debug dump of the request headers (Authorization: apikey <key>)",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "Mailchimp list (audience) id and campaign web_id in an API response"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "subscriber_hash (MD5 of a lowercased synthetic email) in a /members/<hash> path"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "Mailchimp Transactional (Mandrill) API key — sibling attribution control scoped to this family; its shape must be sourced before authoring, and it is dropped if no provider-owned source exists"
+        },
+        {
+          "axis": "near-miss",
+          "control": "32-hex digest followed by -us-east-1 (an AWS region string after an unrelated hash in an S3 object key)"
+        },
+        {
+          "axis": "placeholder",
+          "control": "API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-usX docs template"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "changelog prose about moving an account from us6 to us19 with no key"
+        }
+      ],
+      "twins": [
+        {
+          "property": "suffix-separator",
+          "basis": "provider",
+          "mutation": "-us14 -> _us14 (the -<dc> suffix is provider-stated)"
+        },
+        {
+          "property": "suffix-presence",
+          "basis": "provider",
+          "mutation": "hex body with the -usN suffix removed, on the new Basic-auth tuple line"
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "family": "deepgram-api-key",
+      "contract": "T2 context-constrained · 40 lowercase hex, recognised only beside a Deepgram keyword/host; supported contexts listed in the contract",
+      "signals": {
+        "observedFailure": "candidate: policy spans leaked on the header and source-code axes and warn-only on header/log (3 fixtures); published: 7 leaks on 4 axes, 2 placeholder false alarms, 7 twin failures",
+        "ambiguousContext": "high — value alone is 40 hex; 4 benign and 12 context twins legitimately contain a contract-valid value",
+        "publicIdCollision": "request ids (UUID/hex), project UUIDs and model ids appear beside the key in real responses",
+        "outputActionRisk": "policy spans warned or missed in header and log contexts",
+        "runtimeExposure": "high — speech agents and LLM tool configs"
+      },
+      "existing": {
+        "positives": 15,
+        "independentUpperBound": 13,
+        "axes": 9,
+        "benign": 26,
+        "twinKinds": [
+          "context",
+          "length"
+        ]
+      },
+      "independenceNote": "Benign and twin sets share one #384e generator skeleton with cohere/mistral/ai21 (cross-family template clusters); new controls must not reuse that skeleton.",
+      "budget": {
+        "positives": 6,
+        "benign": 6,
+        "twinPairs": 5
+      },
+      "positives": [
+        {
+          "axis": "header",
+          "context": "Authorization: Token <key> in an HTTPie verbose request to api.deepgram.com (distinct from the curl and JSON-header templates)",
+          "action": "redact"
+        },
+        {
+          "axis": "source-code",
+          "context": "Go client construction with the key as a string literal beside the deepgram import path",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "structured JSON log line from a transcription worker with provider=deepgram and the key in an auth field",
+          "action": "redact"
+        },
+        {
+          "axis": "container-config",
+          "context": "docker run -e DEEPGRAM_API_KEY=<key> command line",
+          "action": "redact"
+        },
+        {
+          "axis": "ci-config",
+          "context": "GitLab CI variables: block DEEPGRAM_API_KEY literal",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": "LiveKit / agent-framework YAML with stt: provider: deepgram and api_key",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "Deepgram usage response carrying request_id, project_id and a 40-hex sha of the audio, no key"
+        },
+        {
+          "axis": "near-miss",
+          "control": "40-hex git commit id on a line that mentions deepgram in a changelog (keyword present, value is a commit hash by construction and label)"
+        },
+        {
+          "axis": "placeholder",
+          "control": "DEEPGRAM_API_KEY=${{ secrets.DEEPGRAM_API_KEY }} in a workflow (reference, different skeleton from the existing actions-secret control)"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "README section explaining Deepgram key scopes without any value"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "sha1 of a synthetic audio file listed in a manifest next to a deepgram model name"
+        },
+        {
+          "axis": "reference",
+          "control": "Kubernetes secretKeyRef for DEEPGRAM_API_KEY"
+        }
+      ],
+      "twins": [
+        {
+          "property": "context:keyword",
+          "basis": "context",
+          "mutation": "same 40-hex value under ASSEMBLYAI_API_KEY in the HTTPie template"
+        },
+        {
+          "property": "context:host",
+          "basis": "context",
+          "mutation": "Authorization: Token <value> to api.example-speech.test instead of api.deepgram.com"
+        },
+        {
+          "property": "context:scheme",
+          "basis": "context",
+          "mutation": "Authorization: Bearer in place of the provider-documented Token scheme on the Deepgram host line"
+        },
+        {
+          "property": "context:field",
+          "basis": "context",
+          "mutation": "agent YAML with the value under stt: model_revision instead of api_key"
+        },
+        {
+          "property": "length",
+          "basis": "tool-undisputed",
+          "mutation": "39 hex in the Go literal (existing length twins use the same basis; drop if the width becomes disputed)"
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "family": "heroku-api-key-legacy",
+      "contract": "T2 context-constrained · legacy UUID-shaped key beside a Heroku keyword/host; UUID-shaped siblings are provider-documented",
+      "signals": {
+        "observedFailure": "policy spans warn-only on 6 fixtures over 5 axes (log, prose, structured-file, tool-output, url), both modes",
+        "ambiguousContext": "high — a UUID is only a key by context",
+        "publicIdCollision": "high — app UUIDs, release ids, OAuth client ids are UUIDs on the same lines",
+        "outputActionRisk": "warn on legacy key in logs and CLI output",
+        "runtimeExposure": "medium — legacy deploy scripts, .netrc"
+      },
+      "existing": {
+        "positives": 16,
+        "independentUpperBound": 14,
+        "axes": 13,
+        "benign": 20,
+        "twinKinds": [
+          "context",
+          "length"
+        ]
+      },
+      "budget": {
+        "positives": 5,
+        "benign": 7,
+        "twinPairs": 4
+      },
+      "positives": [
+        {
+          "axis": "tool-output",
+          "context": "heroku authorizations:info table output with the token row",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "CI deploy log line echoing HEROKU_API_KEY during a debug step (different skeleton from deploy-log)",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": "app.json / Procfile-adjacent JSON deploy config with an api_key field beside heroku",
+          "action": "redact"
+        },
+        {
+          "axis": "sdk-config",
+          "context": "Ruby platform-api PlatformAPI.connect_oauth('<uuid>')",
+          "action": "redact"
+        },
+        {
+          "axis": "url",
+          "context": "https://:<uuid>@git.heroku.com/app.git inside a git config [remote] section (distinct from the git remote add command)",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "heroku apps:info --json with id (app UUID) and stack id, no key"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "Heroku dyno request_id UUID in a router log line"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "Heroku OAuth client id in an authorizations:create output where the secret column is masked"
+        },
+        {
+          "axis": "near-miss",
+          "control": "UUID on a line that mentions heroku only in a URL path (/apps/<uuid>/releases)"
+        },
+        {
+          "axis": "placeholder",
+          "control": "HEROKU_API_KEY=00000000-0000-0000-0000-000000000000 docs value"
+        },
+        {
+          "axis": "reference",
+          "control": "heroku auth:token command substitution inside a Makefile"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "migration note on replacing legacy keys with HRKU- tokens, no value"
+        }
+      ],
+      "twins": [
+        {
+          "property": "context:keyword",
+          "basis": "context",
+          "mutation": "same UUID under SENTRY_RELEASE_ID in the CI log template"
+        },
+        {
+          "property": "context:host",
+          "basis": "context",
+          "mutation": "the .git config URL with git.example.test instead of git.heroku.com"
+        },
+        {
+          "property": "context:field",
+          "basis": "context",
+          "mutation": "authorizations:info row relabelled Client ID"
+        },
+        {
+          "property": "length",
+          "basis": "tool-undisputed",
+          "mutation": "UUID missing one hex digit in the last group, platform-api call"
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "family": "confluent-cloud-api-secret-legacy",
+      "contract": "T2 context-constrained · legacy 64-character secret beside a Confluent keyword; current-generation secrets are a separate family",
+      "signals": {
+        "observedFailure": "policy spans warn-only on 6 fixtures over 4 axes (basic-auth, cli, log, detector-coverage keyword shapes), both modes; 10 context/prefix twins co-detected; differential 4",
+        "ambiguousContext": "high — 64-character base64-ish value",
+        "publicIdCollision": "high — the API key id (16 chars) always accompanies the secret; two current-generation twins contain a valid confluent-cloud-api-secret value (sibling-scoped)",
+        "outputActionRisk": "warn on the secret half of a key pair",
+        "runtimeExposure": "medium-high — Kafka client configs in services and CI"
+      },
+      "existing": {
+        "positives": 14,
+        "independentUpperBound": 12,
+        "axes": 12,
+        "benign": 19,
+        "twinKinds": [
+          "context",
+          "length",
+          "prefix"
+        ]
+      },
+      "budget": {
+        "positives": 5,
+        "benign": 6,
+        "twinPairs": 4
+      },
+      "positives": [
+        {
+          "axis": "sdk-config",
+          "context": "Java client.properties sasl.jaas.config=… password='<secret>' with a confluent.cloud bootstrap",
+          "action": "redact"
+        },
+        {
+          "axis": "basic-auth",
+          "context": "Schema Registry basic.auth.user.info=<key-id>:<secret> property",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "Kafka Connect worker log that prints the resolved connector config",
+          "action": "redact"
+        },
+        {
+          "axis": "container-config",
+          "context": "docker-compose environment CONNECT_SASL_JAAS_CONFIG literal",
+          "action": "redact"
+        },
+        {
+          "axis": "cli",
+          "context": "confluent kafka client-config create output snippet",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "API key id alone in a confluent api-key list table (secret column absent)"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "cluster id lkc-… and environment id env-… in a Terraform state excerpt"
+        },
+        {
+          "axis": "near-miss",
+          "control": "64-character base64 image digest on a line naming a confluentinc/ image"
+        },
+        {
+          "axis": "placeholder",
+          "control": "sasl.jaas.config with password='{{ CLUSTER_API_SECRET }}'"
+        },
+        {
+          "axis": "reference",
+          "control": "Kafka Connect ${file:/secrets/confluent.properties:api.secret} config provider"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "rotation runbook prose about key pairs, no value"
+        }
+      ],
+      "twins": [
+        {
+          "property": "context:keyword",
+          "basis": "context",
+          "mutation": "same value as password= in a jaas config pointing at a non-Confluent bootstrap host"
+        },
+        {
+          "property": "context:pairing",
+          "basis": "context",
+          "mutation": "basic.auth.user.info with the key-id half removed"
+        },
+        {
+          "property": "context:host",
+          "basis": "context",
+          "mutation": "Kafka Connect log naming a self-hosted broker instead of *.confluent.cloud"
+        },
+        {
+          "property": "length",
+          "basis": "tool-undisputed",
+          "mutation": "63-character value in the compose template"
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "family": "twilio-auth-token",
+      "contract": "T2 context-constrained · 32 hex beside an Account SID (AC + 32 hex) or a twilio keyword",
+      "signals": {
+        "observedFailure": "policy spans warn-only on 3 axes (log, prose, context-edges Documentation), both modes",
+        "ambiguousContext": "high — 32 hex collides with MD5 digests",
+        "publicIdCollision": "high — Account SID, messaging service SID and phone numbers sit on the same lines",
+        "outputActionRisk": "warn in log and prose contexts",
+        "runtimeExposure": "high — SMS/voice integrations in agent tools"
+      },
+      "existing": {
+        "positives": 22,
+        "independentUpperBound": 13,
+        "axes": 18,
+        "independentAxes": 13,
+        "benign": 17,
+        "twinKinds": [
+          "context"
+        ]
+      },
+      "independenceNote": "7 positives reuse a value across axes (context-edges wrappers): 18 raw axes are 13 independent.",
+      "budget": {
+        "positives": 6,
+        "benign": 6,
+        "twinPairs": 4
+      },
+      "positives": [
+        {
+          "axis": "log",
+          "context": "webhook signature-validation debug log naming twilio with the token",
+          "action": "redact"
+        },
+        {
+          "axis": "prose",
+          "context": "incident chat message pasting SID and token in one sentence",
+          "action": "redact"
+        },
+        {
+          "axis": "source-code",
+          "context": "C# TwilioClient.Init(accountSid, authToken) with literals",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": "serverless.yml environment block with TWILIO_AUTH_TOKEN",
+          "action": "redact"
+        },
+        {
+          "axis": "url",
+          "context": "https://AC…:<token>@api.twilio.com/2010-04-01/… userinfo URL",
+          "action": "redact"
+        },
+        {
+          "axis": "tool-output",
+          "context": "twilio profiles:list --properties authToken style CLI table",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "Account SID and phone number in a message resource JSON, no token"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "MD5 of a synthetic file in a package lock next to a twilio dependency name"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "Twilio API key SID (SK…) with its secret masked — sibling attribution control"
+        },
+        {
+          "axis": "near-miss",
+          "control": "X-Twilio-Signature header (base64 HMAC) in a webhook request"
+        },
+        {
+          "axis": "placeholder",
+          "control": "TWILIO_AUTH_TOKEN=your_auth_token in a quickstart"
+        },
+        {
+          "axis": "reference",
+          "control": "Twilio Functions context.AUTH_TOKEN reference"
+        }
+      ],
+      "twins": [
+        {
+          "property": "context:keyword",
+          "mutation": "same 32-hex value on an ETag: line in the log template",
+          "basis": "context"
+        },
+        {
+          "property": "context:pairing",
+          "mutation": "URL userinfo with the AC SID replaced by a non-SID user",
+          "basis": "context"
+        },
+        {
+          "property": "context:host",
+          "mutation": "userinfo URL to api.example-sms.test",
+          "basis": "context"
+        },
+        {
+          "property": "context:field",
+          "mutation": "CLI table column relabelled Account SID",
+          "basis": "context"
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "family": "anthropic-admin01-key",
+      "contract": "T1 · sk-ant-admin01- prefix provider-documented; 93-character body and AA tail tool-corroborated",
+      "signals": {
+        "observedFailure": "candidate: false alarm (redact) on the placeholder axis persists; published: 6 must-redact leaks on 6 axes; candidate differential 17 unresolved",
+        "ambiguousContext": "low for the prefix, medium for sibling attribution (api01/api03 prefixes)",
+        "publicIdCollision": "high — four prefix twins land on valid sibling formats (api01/api03) and are only coherent under family scoping",
+        "outputActionRisk": "placeholder redaction (collateral on docs)",
+        "runtimeExposure": "high — organization admin keys in agent tooling"
+      },
+      "existing": {
+        "positives": 9,
+        "independentUpperBound": 9,
+        "axes": 9,
+        "benign": 9,
+        "twinKinds": [
+          "boundary",
+          "prefix"
+        ]
+      },
+      "profileDebt": "positiveCases 3/6 (candidate)",
+      "budget": {
+        "positives": 6,
+        "benign": 7,
+        "twinPairs": 3
+      },
+      "positives": [
+        {
+          "axis": "header",
+          "context": "x-api-key header in an HTTPie call to the Admin API /v1/organizations/ endpoint",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": "Terraform-style provider block for an org-admin automation with admin_key",
+          "action": "redact"
+        },
+        {
+          "axis": "shell-export",
+          "context": "fish shell set -gx ANTHROPIC_ADMIN_KEY",
+          "action": "redact"
+        },
+        {
+          "axis": "ci-config",
+          "context": "CircleCI context environment literal",
+          "action": "redact"
+        },
+        {
+          "axis": "source-code",
+          "context": "TypeScript fetch() with headers: { 'x-api-key': … } literal",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "audit-script stderr dump of the outgoing request headers",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "placeholder",
+          "control": "sk-ant-admin01-... ellipsis inside a Markdown table cell (placeholder axis that currently false-alarms, new skeleton)"
+        },
+        {
+          "axis": "placeholder",
+          "control": "sk-ant-admin01-<YOUR_ADMIN_KEY> angle placeholder in a code comment"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "Admin API response listing api_key ids (apikey_…) and workspace ids, no secret"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "masked console display (prefix + last four characters) of an admin key"
+        },
+        {
+          "axis": "near-miss",
+          "control": "sk-ant-admin01- used as a string constant with no body in SDK source (prefix-only, new skeleton)"
+        },
+        {
+          "axis": "reference",
+          "control": "op://vault/anthropic-admin/credential 1Password reference"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "security policy paragraph about admin-key rotation"
+        }
+      ],
+      "twins": [
+        {
+          "property": "prefix-separator",
+          "basis": "provider",
+          "mutation": "sk-ant-admin01_ (underscore only after the version; existing twin changes all delimiters)"
+        },
+        {
+          "property": "prefix-letter",
+          "basis": "provider",
+          "mutation": "sk-ant-admim01- (one letter of the documented prefix)"
+        },
+        {
+          "property": "boundary",
+          "basis": "provider",
+          "mutation": "value continued by an identifier character after the AA tail in the TypeScript literal (existing boundary twin embeds the leading side)"
+        }
+      ],
+      "nonFixtureWork": "Candidate differential disagreements (17) are review-ledger triage, not fixture work."
+    },
+    {
+      "rank": 8,
+      "family": "cohere-api-key",
+      "contract": "T2 context-constrained · 40 alphanumerics beside a Cohere keyword/host; trial vs production is provider-documented",
+      "signals": {
+        "observedFailure": "candidate: policy span warn-only on log (proxy-log); published: leaks on log/sdk-config/source-code, 2 placeholder false alarms, 4 twin failures; co-detection 8",
+        "ambiguousContext": "high — 40 alphanumerics collide broadly (29 cross-family format overlaps)",
+        "publicIdCollision": "model ids, request ids and dataset ids on the same lines",
+        "outputActionRisk": "log-context warn",
+        "runtimeExposure": "high — LLM routers and RAG pipelines"
+      },
+      "existing": {
+        "positives": 15,
+        "independentUpperBound": 13,
+        "axes": 10,
+        "benign": 26,
+        "twinKinds": [
+          "context",
+          "length"
+        ]
+      },
+      "independenceNote": "Shares the #384e benign/twin skeleton with deepgram, mistral and ai21; new controls use new skeletons.",
+      "budget": {
+        "positives": 5,
+        "benign": 6,
+        "twinPairs": 4
+      },
+      "positives": [
+        {
+          "axis": "log",
+          "context": "LiteLLM proxy debug log with the cohere provider and the key in a masked-failed field (full value present)",
+          "action": "redact"
+        },
+        {
+          "axis": "sdk-config",
+          "context": "LlamaIndex Cohere(api_key=…) reranker construction",
+          "action": "redact"
+        },
+        {
+          "axis": "source-code",
+          "context": "Java CohereClient builder .token(\"…\") literal",
+          "action": "redact"
+        },
+        {
+          "axis": "ci-config",
+          "context": "Azure Pipelines variables: COHERE_API_KEY literal",
+          "action": "redact"
+        },
+        {
+          "axis": "tool-output",
+          "context": "MCP server config JSON (env: { CO_API_KEY }) as an agent host prints it",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "Cohere embed response with id, meta.api_version and billed_units, no key"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "Cohere dataset id and fine-tuned model id in a job listing"
+        },
+        {
+          "axis": "near-miss",
+          "control": "40-alphanumeric npm integrity-like token on a line that names cohere only as a package"
+        },
+        {
+          "axis": "placeholder",
+          "control": "CO_API_KEY=<trial key> in a notebook markdown cell"
+        },
+        {
+          "axis": "reference",
+          "control": "LangChain os.environ[\"COHERE_API_KEY\"] read"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "doc paragraph comparing trial and production keys, no value"
+        }
+      ],
+      "twins": [
+        {
+          "property": "context:keyword",
+          "basis": "context",
+          "mutation": "same value under VOYAGE_API_KEY in the MCP config template"
+        },
+        {
+          "property": "context:host",
+          "basis": "context",
+          "mutation": "Java builder pointed at api.example-llm.test"
+        },
+        {
+          "property": "context:field",
+          "basis": "context",
+          "mutation": "reranker call with the value passed as model= instead of api_key="
+        },
+        {
+          "property": "length",
+          "basis": "tool-undisputed",
+          "mutation": "39-character value in the LlamaIndex call"
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "family": "anthropic-api01-key",
+      "contract": "T1 · sk-ant-api01- prefix provider-documented; body grammar open (≥20 of [A-Za-z0-9_-]) — body/tail are research hypotheses",
+      "signals": {
+        "observedFailure": "published: 7 must-redact leaks on 7 axes; fixed on candidate; candidate differential 19 unresolved",
+        "ambiguousContext": "low for the prefix; the open body grammar makes boundary behavior the risk",
+        "publicIdCollision": "high — prefix twins land on valid admin01/api03 sibling formats",
+        "outputActionRisk": "none observed on candidate",
+        "runtimeExposure": "high — enterprise compliance keys in agent environments"
+      },
+      "existing": {
+        "positives": 9,
+        "independentUpperBound": 9,
+        "axes": 9,
+        "benign": 9,
+        "twinKinds": [
+          "boundary",
+          "prefix"
+        ]
+      },
+      "profileDebt": "positiveCases 3/6 (candidate)",
+      "budget": {
+        "positives": 6,
+        "benign": 6,
+        "twinPairs": 2
+      },
+      "positives": [
+        {
+          "axis": "structured-file",
+          "context": "compliance-export job YAML with the key at the minimum documented-safe body width (20)",
+          "action": "redact"
+        },
+        {
+          "axis": "header",
+          "context": "x-api-key header in a Python httpx client (distinct from the curl template)",
+          "action": "redact"
+        },
+        {
+          "axis": "prose",
+          "context": "key followed immediately by a period and a closing parenthesis in a ticket",
+          "action": "redact"
+        },
+        {
+          "axis": "source-code",
+          "context": "Go const with the key, long body (> 100 characters) to exercise the open upper bound",
+          "action": "redact"
+        },
+        {
+          "axis": "ci-config",
+          "context": "Buildkite pipeline env literal",
+          "action": "redact"
+        },
+        {
+          "axis": "tool-output",
+          "context": "secrets-manager get-secret-value JSON output with SecretString holding the key",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "Compliance API activity feed with actor ids and organization uuid, no key"
+        },
+        {
+          "axis": "placeholder",
+          "control": "sk-ant-api01-XXXXXXXX…XXXX masked display"
+        },
+        {
+          "axis": "near-miss",
+          "control": "sk-ant-api01- prefix constant inside a secret-scanner allowlist comment (prefix-only, new skeleton)"
+        },
+        {
+          "axis": "reference",
+          "control": "Vault path secret/data/anthropic#api01"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "SHA-256 fingerprint of a key in an audit table"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "procurement note naming the Compliance Access Key product"
+        }
+      ],
+      "twins": [
+        {
+          "property": "prefix-letter",
+          "basis": "provider",
+          "mutation": "sk-ant-apl01- in the httpx template"
+        },
+        {
+          "property": "boundary",
+          "basis": "provider",
+          "mutation": "value continued by an identifier character in the Go const (trailing side)"
+        }
+      ],
+      "nonFixtureWork": "Candidate differential disagreements (19) are review-ledger triage."
+    },
+    {
+      "rank": 10,
+      "family": "aws-bedrock-long-term-api-key",
+      "contract": "T1 · ABSK + Base64('BedrockAPIKey-') head + standard Base64 body with ≤2 '=' (provider blog pattern, maintainer ruling redact-secret#778)",
+      "signals": {
+        "observedFailure": "published: 11 must-redact leaks on 9 axes (fixed on candidate) — regression-guard value",
+        "ambiguousContext": "low — the head is self-identifying",
+        "publicIdCollision": "IAM user alias (BedrockAPIKey-…) is documented as public; short-term key is a sibling family",
+        "outputActionRisk": "none on candidate",
+        "runtimeExposure": "very high — LLM gateway keys in agent configs"
+      },
+      "existing": {
+        "positives": 13,
+        "independentUpperBound": 11,
+        "axes": 11,
+        "benign": 16,
+        "twinKinds": [
+          "alphabet",
+          "boundary",
+          "prefix"
+        ]
+      },
+      "budget": {
+        "positives": 5,
+        "benign": 5,
+        "twinPairs": 3
+      },
+      "positives": [
+        {
+          "axis": "structured-file",
+          "context": "LiteLLM config.yaml model_list entry with aws_bedrock_api_key",
+          "action": "redact"
+        },
+        {
+          "axis": "container-config",
+          "context": "Kubernetes Secret stringData AWS_BEARER_TOKEN_BEDROCK",
+          "action": "redact"
+        },
+        {
+          "axis": "header",
+          "context": "Authorization: Bearer in a Java HttpClient builder",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "proxy access log line with the full Authorization header (distinct skeleton from proxy-log)",
+          "action": "redact"
+        },
+        {
+          "axis": "cli",
+          "context": "aws bedrock-runtime call preceded by an inline AWS_BEARER_TOKEN_BEDROCK=… assignment",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "IAM service-specific credential listing (ServiceSpecificCredentialId, user name alias), no secret"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "Bedrock model ARN and inference-profile id in a CloudFormation output"
+        },
+        {
+          "axis": "near-miss",
+          "control": "ABSK followed by a Base64 head that decodes to a different label (not BedrockAPIKey-)"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "long standard-Base64 blob (a synthetic certificate) with no ABSK head"
+        },
+        {
+          "axis": "placeholder",
+          "control": "AWS_BEARER_TOKEN_BEDROCK=<paste key> in a devcontainer.json"
+        }
+      ],
+      "twins": [
+        {
+          "property": "head",
+          "basis": "provider",
+          "mutation": "one character of the fixed Base64 head changed, body unchanged"
+        },
+        {
+          "property": "padding",
+          "basis": "provider",
+          "mutation": "three '=' pad characters (the provider pattern allows at most two)"
+        },
+        {
+          "property": "boundary",
+          "basis": "provider",
+          "mutation": "value continued by an identifier character in the LiteLLM YAML (trailing side)"
+        }
+      ]
+    },
+    {
+      "rank": 11,
+      "family": "together-ai-api-key",
+      "contract": "T2 · tgp_v1_ + exactly 43 base64url characters (tool-corroborated); legacy keys provider-documented as a different surface",
+      "signals": {
+        "observedFailure": "published: 9 must-redact leaks on 6 axes (fixed on candidate); family still provisional on candidate",
+        "ambiguousContext": "low — prefix marker",
+        "publicIdCollision": "legacy unprefixed keys and masked displays",
+        "outputActionRisk": "none on candidate",
+        "runtimeExposure": "high — OpenAI-compatible base_url swaps in agent code"
+      },
+      "existing": {
+        "positives": 18,
+        "independentUpperBound": 16,
+        "axes": 13,
+        "benign": 19,
+        "twinKinds": [
+          "alphabet",
+          "boundary",
+          "length",
+          "prefix"
+        ]
+      },
+      "budget": {
+        "positives": 4,
+        "benign": 5,
+        "twinPairs": 2
+      },
+      "positives": [
+        {
+          "axis": "prose",
+          "context": "key inside backticks at the end of a chat message",
+          "action": "redact"
+        },
+        {
+          "axis": "sdk-config",
+          "context": "Vercel AI SDK createTogetherAI({ apiKey }) literal",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "Python logging of an OpenAI client repr() that includes api_key",
+          "action": "redact"
+        },
+        {
+          "axis": "cli",
+          "context": "together files upload --api-key flag in a shell history excerpt",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "fine-tune job id and uploaded file id in a list response"
+        },
+        {
+          "axis": "near-miss",
+          "control": "tgp_v1_ followed by a 20-character truncated body and an ellipsis in a dashboard screenshot transcript"
+        },
+        {
+          "axis": "placeholder",
+          "control": "TOGETHER_API_KEY=tgp_v1_... docs"
+        },
+        {
+          "axis": "reference",
+          "control": "Doppler secret reference for TOGETHER_API_KEY"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "README comparing Together and OpenAI base URLs"
+        }
+      ],
+      "twins": [
+        {
+          "property": "length",
+          "basis": "tool-undisputed",
+          "mutation": "44-character body in the AI SDK literal"
+        },
+        {
+          "property": "separator",
+          "basis": "tool-undisputed",
+          "mutation": "tgp-v1- hyphens in the CLI flag (existing hyphen-delimiters twin is on a different skeleton)"
+        }
+      ]
+    },
+    {
+      "rank": 12,
+      "family": "openai-admin-api-key",
+      "contract": "T2 · sk-admin- + two segment widths around the T3BlbkFJ marker (tool-corroborated); public key id provider-documented",
+      "signals": {
+        "observedFailure": "none at fixture level; candidate differential 16 unresolved; empirical profile short (positives 9 < 10, benign 10 < 14)",
+        "ambiguousContext": "low",
+        "publicIdCollision": "admin key ids and org/project ids are provider-documented public ids",
+        "outputActionRisk": "none observed",
+        "runtimeExposure": "very high — org-admin keys in automation"
+      },
+      "existing": {
+        "positives": 9,
+        "independentUpperBound": 9,
+        "axes": 9,
+        "benign": 10,
+        "twinKinds": [
+          "alphabet",
+          "boundary",
+          "length"
+        ]
+      },
+      "profileDebt": "positiveCases 2/6 (candidate profile report)",
+      "twinQuality": "short-first-segment and short-second-segment twins also regenerate the other segment's bytes (audit flag multiple-value-edits); new twins must keep the unmutated segment byte-identical",
+      "budget": {
+        "positives": 6,
+        "benign": 6,
+        "twinPairs": 3
+      },
+      "positives": [
+        {
+          "axis": "structured-file",
+          "context": "Terraform openai provider admin_key in a .tfvars",
+          "action": "redact"
+        },
+        {
+          "axis": "shell-export",
+          "context": "PowerShell $env:OPENAI_ADMIN_KEY assignment",
+          "action": "redact"
+        },
+        {
+          "axis": "ci-config",
+          "context": "GitHub Actions env literal on a usage-export job",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "requests debug log with Authorization: Bearer on the admin usage endpoint",
+          "action": "redact"
+        },
+        {
+          "axis": "prose",
+          "context": "on-call handoff note pasting the key",
+          "action": "redact"
+        },
+        {
+          "axis": "source-code",
+          "context": "Go const, 74/74 segment form",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "admin_api_keys list response with id, name, redacted_value"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "sk-proj- project key in the same file — sibling attribution control scoped to this family"
+        },
+        {
+          "axis": "near-miss",
+          "control": "sk-admin- followed by a single 58-character segment without the marker in a test name"
+        },
+        {
+          "axis": "placeholder",
+          "control": "sk-admin-************************ console mask"
+        },
+        {
+          "axis": "reference",
+          "control": "AWS Secrets Manager ARN for the admin key"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "doc paragraph on admin-key permissions"
+        }
+      ],
+      "twins": [
+        {
+          "property": "marker",
+          "basis": "tool-undisputed",
+          "mutation": "T3BlbkFJ -> T3BlbkFK with both segments byte-identical to the positive"
+        },
+        {
+          "property": "first-segment-length",
+          "basis": "tool-undisputed",
+          "mutation": "57-character first segment, second segment byte-identical"
+        },
+        {
+          "property": "prefix",
+          "basis": "provider",
+          "mutation": "sk-admn- (one letter dropped) on the 74/74 form"
+        }
+      ],
+      "nonFixtureWork": "Candidate differential disagreements (16) are review-ledger triage; empirical-route corroboration references are research, not fixtures."
+    },
+    {
+      "rank": 13,
+      "family": "connection-string",
+      "contract": "T3 policy · password in userinfo of a URI; password has no grammar, twins mutate context (twinSource: the user:password delimiter)",
+      "signals": {
+        "observedFailure": "none at fixture level",
+        "ambiguousContext": "high — password has no grammar; context is everything",
+        "publicIdCollision": "usernames, hosts and database names in the same URI; value reuse with generic-token",
+        "outputActionRisk": "envelope/collateral policy: whole-URI vs password-only redaction",
+        "runtimeExposure": "very high — DATABASE_URL in every agent and CI context"
+      },
+      "existing": {
+        "positives": 26,
+        "independentUpperBound": 12,
+        "axes": 6,
+        "benign": 16,
+        "twinKinds": [
+          "context"
+        ]
+      },
+      "profileDebt": "controlAxes 3/4 (candidate)",
+      "independenceNote": "26 positives carry 12 distinct passwords over 6 axes; 15 detector-coverage positives are 5 values × 3 wrappers; 16 context twins all delete the ':' delimiter (one property by contract, but one mutation kind only).",
+      "budget": {
+        "positives": 6,
+        "benign": 8,
+        "twinPairs": 5
+      },
+      "positives": [
+        {
+          "axis": "env",
+          "context": "DATABASE_URL=postgresql://app:<pw>@db.internal:5432/app?sslmode=require with query parameters after the password",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": "Rails database.yml url: key",
+          "action": "redact"
+        },
+        {
+          "axis": "source-code",
+          "context": "SQLAlchemy create_engine() literal with an IPv6 host in brackets",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "ORM connection error log printing the full DSN",
+          "action": "redact"
+        },
+        {
+          "axis": "cli",
+          "context": "psql \"postgresql://…\" command in shell history",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": "amqps:// broker URL in a Celery config (scheme not yet covered)",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "postgresql://app@db.internal/app with no password (user only)"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "JDBC URL with ?user= and no password parameter"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "percent-encoded DSN template with %s placeholders"
+        },
+        {
+          "axis": "near-miss",
+          "control": "HTTP URL with an @ in the path (not userinfo)"
+        },
+        {
+          "axis": "placeholder",
+          "control": "postgres://USER:PASSWORD@HOST/DB docs line"
+        },
+        {
+          "axis": "reference",
+          "control": "postgresql://app:${DB_PASSWORD}@db/app interpolation"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "email address followed by a colon in prose (user@example.test: see below)"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "git SSH remote git@github.com:org/repo.git"
+        }
+      ],
+      "twins": [
+        {
+          "property": "context:scheme",
+          "mutation": "same userinfo under a non-credential scheme (a documentation example.test:// scheme)",
+          "basis": "context"
+        },
+        {
+          "property": "context:host-delimiter",
+          "mutation": "'@' replaced by '/' so the password is a path segment",
+          "basis": "context"
+        },
+        {
+          "property": "context:field",
+          "mutation": "the DSN moved into a comment line marked as an example",
+          "basis": "context"
+        },
+        {
+          "property": "context:delimiter",
+          "mutation": "the user:password ':' removed (the existing axis) on one new positive only, for comparability",
+          "basis": "context"
+        },
+        {
+          "property": "context:key",
+          "mutation": "DATABASE_URL renamed to DOCS_EXAMPLE_URL in the env template",
+          "basis": "context"
+        }
+      ],
+      "knownGaps": "product-820 (verified, open): password in http(s)/ftp URL userinfo is missed; keyed to beta9-external-inputs fixtures outside this corpus. An independent http(s)-userinfo positive is allowed but its failure is that known gap, reported through the known-gap lifecycle, not a new finding."
+    },
+    {
+      "rank": 14,
+      "family": "stripe-token",
+      "contract": "T1 · (sk|rk)_(live|test)_ + 32 alphanumerics; pk_ publishable keys documented as safe to expose; 32-character body tool-corroborated",
+      "signals": {
+        "observedFailure": "none",
+        "ambiguousContext": "low",
+        "publicIdCollision": "very high — pk_ publishable keys, acct_ ids and whsec_ secrets on the same lines",
+        "outputActionRisk": "none observed",
+        "runtimeExposure": "very high — payment keys in app and agent code"
+      },
+      "existing": {
+        "positives": 25,
+        "independentUpperBound": 7,
+        "axes": 5,
+        "benign": 8,
+        "twinKinds": [
+          "boundary",
+          "public-prefix"
+        ]
+      },
+      "independenceNote": "18 of 25 positives are detector-coverage shape wrappers (6 shapes × 3); 5 positive axes over 3 authored contexts; only 8 benign controls.",
+      "budget": {
+        "positives": 6,
+        "benign": 8,
+        "twinPairs": 4
+      },
+      "positives": [
+        {
+          "axis": "env",
+          "context": ".env with STRIPE_SECRET_KEY=sk_test_… beside STRIPE_PUBLISHABLE_KEY=pk_test_… (both on adjacent lines)",
+          "action": "redact"
+        },
+        {
+          "axis": "container-config",
+          "context": "docker-compose environment with rk_live_ restricted key",
+          "action": "redact"
+        },
+        {
+          "axis": "header",
+          "context": "Authorization: Bearer sk_live_… in an HTTPie call",
+          "action": "redact"
+        },
+        {
+          "axis": "log",
+          "context": "Node stripe-node debug log with the request's Authorization header",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": "Rails credentials YAML stripe: secret_key:",
+          "action": "redact"
+        },
+        {
+          "axis": "tool-output",
+          "context": "stripe config --list output (secret key row)",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "pk_live_ publishable key in frontend JS (T1 must-not-flag: provider documents it as safe to expose)"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "acct_ connected-account id and cus_ customer id in a webhook payload"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "whsec_ signing secret in the same .env — sibling attribution control scoped to this family"
+        },
+        {
+          "axis": "near-miss",
+          "control": "dashboard-style truncated display sk_live_…a1b2 (prefix + last four) in a support ticket"
+        },
+        {
+          "axis": "placeholder",
+          "control": "sk_test_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX docs value"
+        },
+        {
+          "axis": "reference",
+          "control": "Stripe.apiKey = process.env.STRIPE_SECRET_KEY"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "Stripe-Signature header t=…,v1=… (HMAC hex)"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "doc paragraph explaining test vs live mode"
+        }
+      ],
+      "twins": [
+        {
+          "property": "mode",
+          "basis": "provider",
+          "mutation": "sk_prod_ in place of sk_live_ (live/test are the documented modes; avoid org, which is documented)"
+        },
+        {
+          "property": "public-prefix",
+          "basis": "provider",
+          "mutation": "rk_live_ -> pk_live_ in the compose file"
+        },
+        {
+          "property": "separator",
+          "basis": "provider",
+          "mutation": "sk-live- hyphens in the HTTPie header"
+        },
+        {
+          "property": "boundary",
+          "basis": "tool-undisputed",
+          "mutation": "body continued by an identifier character in the Rails credentials value"
+        }
+      ]
+    },
+    {
+      "rank": 15,
+      "family": "github-token",
+      "contract": "T1 · ghp_/gho_/ghu_/ghs_/ghr_ + 36 alphanumerics (body tool-corroborated; checksum in the last six characters per the provider blog)",
+      "signals": {
+        "observedFailure": "none; 9 length twins co-detected by another family (one axis)",
+        "ambiguousContext": "low",
+        "publicIdCollision": "GitHub App ids, installation ids, fine-grained github_pat_ sibling",
+        "outputActionRisk": "none observed",
+        "runtimeExposure": "highest — every agent/CI context"
+      },
+      "existing": {
+        "positives": 67,
+        "independentUpperBound": 29,
+        "axes": 22,
+        "independentAxes": 10,
+        "benign": 8,
+        "twinKinds": [
+          "length",
+          "prefix"
+        ]
+      },
+      "independenceNote": "Largest raw positive count in the corpus but 24 same-value reuses across axes (context-edges/token-contexts wrap one value): 22 raw axes are 10 independent. Only 8 non-twin benign controls and two twin kinds.",
+      "budget": {
+        "positives": 4,
+        "benign": 8,
+        "twinPairs": 4
+      },
+      "positives": [
+        {
+          "axis": "cli",
+          "context": "gh auth login --with-token <<< literal in shell history",
+          "action": "redact"
+        },
+        {
+          "axis": "url",
+          "context": "https://x-access-token:ghs_…@github.com/org/repo.git clone URL (installation token)",
+          "action": "redact"
+        },
+        {
+          "axis": "structured-file",
+          "context": ".npmrc //npm.pkg.github.com/:_authToken=ghp_…",
+          "action": "redact"
+        },
+        {
+          "axis": "tool-output",
+          "context": "gh auth status --show-token output line",
+          "action": "redact"
+        }
+      ],
+      "benign": [
+        {
+          "axis": "public-identifier",
+          "control": "GitHub App id, installation id and client id (Iv1.…) in an app manifest"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "github_pat_ fine-grained token in the same file — sibling attribution control scoped to github-token"
+        },
+        {
+          "axis": "near-miss",
+          "control": "ghp_ followed by a masked body (ghp_****) inside a Git commit message"
+        },
+        {
+          "axis": "placeholder",
+          "control": "GH_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        {
+          "axis": "reference",
+          "control": "${{ github.token }} and ${{ secrets.GITHUB_TOKEN }} in one workflow"
+        },
+        {
+          "axis": "encoded-value",
+          "control": "SHA-256 token fingerprint from an audit log export"
+        },
+        {
+          "axis": "ordinary-prose",
+          "control": "doc paragraph listing the five prefixes with no bodies"
+        },
+        {
+          "axis": "public-identifier",
+          "control": "40-hex commit SHA and a ghcr.io image digest"
+        }
+      ],
+      "twins": [
+        {
+          "property": "prefix",
+          "basis": "provider",
+          "mutation": "ghx_ (undocumented letter) on the .npmrc value"
+        },
+        {
+          "property": "separator",
+          "basis": "provider",
+          "mutation": "ghp- in place of ghp_ on the gh auth login line"
+        },
+        {
+          "property": "boundary",
+          "basis": "tool-undisputed",
+          "mutation": "body continued by an identifier character in the gh auth status line"
+        },
+        {
+          "property": "length",
+          "basis": "tool-undisputed",
+          "mutation": "35-character body in the clone-URL installation token (ghs_)"
+        }
+      ]
+    }
+  ],
+  "reserve": [
+    {
+      "family": "travisci-api-token",
+      "reason": "policy warn-only on 4 axes in both modes; ranked below the selection on runtime exposure (Travis CI usage is declining). Take it if a selected family exhausts its axes."
+    },
+    {
+      "family": "mailgun-api-key",
+      "reason": "must-redact warn-only on 2 axes, same #213d generator and failure shape as mailchimp; author only if mailchimp's new axes do not reproduce the warn."
+    },
+    {
+      "family": "mistral-api-key",
+      "reason": "policy warn-only on log and published placeholder false alarms — the same #384e skeleton and axes as cohere/deepgram; add only if their new evidence diverges."
+    },
+    {
+      "family": "okta-api-token",
+      "reason": "must-redact warn-only on 1 axis; lower exposure."
+    },
+    {
+      "family": "private-key",
+      "reason": "23 positives but at most 7 independent; its 2 ed25519 twins change several properties (PRIVATE->PUBLIC header, DER body, trailing newline). Structural contract: new positives need new parseable key material, costlier than the selected families."
+    }
+  ],
+  "exclusions": [
+    {
+      "family": "slack-user-token",
+      "reason": "beta.10 #369 closed its independent-positive debt; the remaining blockers (mutation 9, differential 3 unresolved) are review-ledger items, not fixture gaps — authoring here would duplicate #369."
+    },
+    {
+      "family": "slack-app-level-token",
+      "reason": "beta.10 #370; remaining blockers are mutation 3 / differential 1 review items."
+    },
+    {
+      "family": "github-fine-grained-pat",
+      "reason": "beta.10 #371; remaining blockers are mutation 5 / differential 3 review items. Used here only as a sibling control inside github-token."
+    },
+    {
+      "family": "stripe-webhook-signing-secret",
+      "reason": "beta.10 #372; remaining blocker is differential 2. Used here only as a sibling control inside stripe-token."
+    },
+    {
+      "family": "vercel-token",
+      "reason": "T0 pending; #373 is blocked on product contract redact-secret#858. No scored positive can be authored until it resolves."
+    },
+    {
+      "family": "ai21-api-key",
+      "reason": "T0 pending — no reviewed positive contract; fixtures would be unscored."
+    },
+    {
+      "family": "anthropic-token",
+      "reason": "stable on published beta.9, provisional on candidate only because of 6 new differential disagreements; no fixture-level failure. Work is differential review."
+    },
+    {
+      "family": "aws-bedrock-short-term-api-key",
+      "reason": "same #384b generator and the same published failure axes as the long-term key; covered through the long-term family's sibling twin and wrong-sibling control."
+    },
+    {
+      "family": "tavily-api-key",
+      "reason": "published leaks fixed on candidate (now stable there); lower exposure than bedrock/together. Reserve-grade."
+    },
+    {
+      "family": "elevenlabs-api-key",
+      "reason": "published leaks fixed on candidate (stable there); its stripe-shaped twin contains a valid stripe-token value and needs a sibling-scope note, not new fixtures."
+    },
+    {
+      "family": "generic-token",
+      "reason": "T3 policy family with 4 open verified product gaps (escaped JSON, URL query, non-secret references, keyword shapes) and untargeted benign handled by #378; new family fixtures before product fixes would re-measure known gaps."
+    },
+    {
+      "family": "sendgrid-token",
+      "reason": "38 positives but at most 8 independent (8 distinct values) and 21 same-value reuses across axes (9 raw axes, 4 independent); no observed failure and lower runtime exposure than github/stripe. Independence debt recorded for a later cycle."
+    }
+  ],
+  "budgetTotals": {
+    "positives": 81,
+    "benign": 96,
+    "twinPairs": 53,
+    "files": 230,
+    "note": "Twins pair with this ledger's new positives, so a twin adds one file. The epic's ~390 assumed 6 positives + 8 benign + 6 two-file pairs per family; the audit lowers breadth where a family's gap is output action or a single contract axis, and drops twins whose property is not provider-backed or undisputed."
+  }
+}

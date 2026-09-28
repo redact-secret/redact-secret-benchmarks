@@ -24,10 +24,10 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 73 | 90 |
-| Stable / documented | 73 | 90 |
-| Stable / empirical | 26 | 90 |
-| Context-constrained empirical | 9 | 90 |
+| Arrival / provisional | 75 | 96 |
+| Stable / documented | 75 | 96 |
+| Stable / empirical | 26 | 96 |
+| Context-constrained empirical | 9 | 96 |
 
 ## Per family
 
@@ -37,6 +37,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | anthropic-admin01-key | T1 | stable-documented | 24 | 3 | 9 | 6 | 9 | 6 | 8 | positive/context cases 3/6 |
 | anthropic-api01-key | T1 | stable-documented | 24 | 3 | 9 | 6 | 9 | 6 | 8 | positive/context cases 3/6 |
 | anthropic-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 8 | 5 | 6 | none |
+| apify-api-token | T1 | stable-documented | 30 | 6 | 10 | 7 | 9 | 5 | 9 | none |
 | atlassian-api-token | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | aws-access-key | T1 | stable-documented | 26 | 6 | 8 | 6 | 5 | 5 | 6 | none |
 | aws-bedrock-long-term-api-key | T1 | stable-documented | 35 | 7 | 16 | 6 | 11 | 6 | 9 | none |
@@ -48,6 +49,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | confluent-cloud-api-secret | T1 | stable-documented | 31 | 6 | 8 | 10 | 11 | 5 | 9 | none |
 | confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 48 | 1 | 19 | 15 | 12 | 6 | 9 | none |
 | connection-string | T3 | arrival-provisional | 58 | 10 | 16 | 16 | 4 | 3 | 4 | control axes 3/4 |
+| convex-deployment-key | T1 | stable-documented | 33 | 3 | 10 | 10 | 10 | 6 | 10 | positive/context cases 3/6 |
 | databricks-personal-access-token | T2 | stable-empirical | 40 | 12 | 15 | 9 | 14 | 6 | 9 | none |
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
@@ -72,6 +74,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | heroku-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
 | heroku-api-key-legacy | T2 | context-constrained-empirical | 49 | 3 | 20 | 13 | 13 | 6 | 8 | none |
 | huggingface-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 4 | 6 | none |
+| inngest-signing-key | T1 | stable-documented | 32 | 4 | 10 | 9 | 9 | 6 | 10 | positive/context cases 4/6 |
 | jwt | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 6 | 8 | none |
 | langfuse-secret-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 10 | none |
 | langsmith-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 10 | none |
@@ -89,6 +92,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | notion-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
 | npm-token | T1 | stable-documented | 24 | 8 | 8 | 6 | 4 | 5 | 8 | none |
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
+| onepassword-service-account-token | T1 | stable-documented | 31 | 4 | 9 | 9 | 10 | 6 | 10 | positive/context cases 4/6 |
 | openai-admin-api-key | T2 | arrival-provisional | 27 | 2 | 10 | 8 | 9 | 6 | 9 | positive/context cases 2/6 |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
@@ -102,6 +106,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | pulumi-access-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
 | pypi-token | T1 | stable-documented | 26 | 6 | 8 | 9 | 7 | 6 | 9 | none |
 | replicate-api-token | T1 | stable-documented | 32 | 6 | 14 | 6 | 8 | 6 | 10 | none |
+| resend-api-key | T1 | stable-documented | 33 | 2 | 9 | 11 | 9 | 5 | 9 | positive/context cases 2/6 |
 | sendgrid-token | T1 | stable-documented | 68 | 22 | 12 | 18 | 8 | 4 | 6 | none |
 | sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
@@ -122,4 +127,5 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | twilio-auth-token | T2 | context-constrained-empirical | 49 | 12 | 17 | 10 | 18 | 6 | 7 | none |
 | vault-token | T1 | stable-documented | 28 | 12 | 8 | 6 | 4 | 6 | 9 | none |
 | vercel-token | T0 | arrival-provisional | 20 | 15 | 5 | 0 | 1 | 3 | 3 | total fixtures 20/24; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
+| wandb-api-key | T1 | stable-documented | 27 | 7 | 8 | 6 | 8 | 5 | 8 | none |
 | xai-api-key | T2 | stable-empirical | 41 | 11 | 14 | 8 | 16 | 6 | 10 | none |

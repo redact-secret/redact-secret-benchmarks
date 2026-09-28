@@ -253,6 +253,30 @@
     {
       "id": "voyage-ai",
       "name": "Voyage AI"
+    },
+    {
+      "id": "convex",
+      "name": "Convex"
+    },
+    {
+      "id": "onepassword",
+      "name": "1Password"
+    },
+    {
+      "id": "inngest",
+      "name": "Inngest"
+    },
+    {
+      "id": "resend",
+      "name": "Resend"
+    },
+    {
+      "id": "apify",
+      "name": "Apify"
+    },
+    {
+      "id": "wandb",
+      "name": "Weights & Biases"
     }
   ],
   "families": [
@@ -1689,6 +1713,77 @@
         "https://github.com/redact-secret/redact-secret/issues/785"
       ],
       "note": "Beta.10 research disposition (redact-secret#785, benchmarks #384): pending, no corpus. The only body evidence is one betterleaks rule and community pages, no issued key confirms it, and pa- and al- are common two-letter prefixes, so a bare rule has low precision. Named-assignment, Bearer, JSON, YAML and tool-call forms are already redacted by the generic paths; revisit after the hands-on issuance the research comment lists."
+    },
+    {
+      "id": "convex:deployment-key",
+      "provider": "convex",
+      "name": "Deployment, project and admin key (hex body)",
+      "description": "An optional prod:/dev: + cloud name or preview:/project: + two slugs lead, the deployment or instance name, one |, then 01 + an even 74–96 lowercase hex body; the whole key is the credential. The cloud eyJ2 deploy-key body is issuance-gated and not claimed.",
+      "detectors": [],
+      "sources": [
+        "https://docs.convex.dev/cli/deploy-key-types",
+        "https://github.com/get-convex/convex-backend/blob/032e81e264a8b23b8d566d8f83f773d2bfbedb88/crates/common/src/types/admin_key.rs"
+      ],
+      "note": "Beta.11 arrival family convex-deployment-key (#436, product redact-secret#912), contract in benchmarks/lib/beta8/436a.ts from the #860 handoff convex.md. T1 on provider backend code (R1); neither pinned scanner has a Convex rule."
+    },
+    {
+      "id": "onepassword:service-account-token",
+      "provider": "onepassword",
+      "name": "Service account token (ops_)",
+      "description": "ops_ + the Base64url encoding of a serialized JSON object (so ops_eyJ), variable length; the 250-byte floor after the lead is project policy.",
+      "detectors": [],
+      "sources": [
+        "https://developer.1password.com/docs/service-accounts/security/"
+      ],
+      "note": "Beta.11 arrival family onepassword-service-account-token (#436, product redact-secret#913), contract in benchmarks/lib/beta8/436b.ts from the #860 handoff onepassword.md. T1 on provider documentation; gitleaks 8.30.1 has a rule, trufflehog 3.97.4 none."
+    },
+    {
+      "id": "inngest:signing-key",
+      "provider": "inngest",
+      "name": "Signing key (signkey-)",
+      "description": "signkey-prod-, signkey-test- or signkey-branch- + exactly 64 lowercase hex; the raw key, the rotation fallback and the hashed wire form share the shape.",
+      "detectors": [],
+      "sources": [
+        "https://www.inngest.com/docs/self-hosting",
+        "https://github.com/inngest/inngest/blob/dabb03f9e093672aaef2ee77eb7accdf0cd00ca3/pkg/authn/signing_key_strategy.go#L15-L25"
+      ],
+      "note": "Beta.11 arrival family inngest-signing-key (#436, product redact-secret#914), contract in benchmarks/lib/beta8/436c.ts from the #860 handoff inngest.md. T1 on provider code constants and docs; neither pinned scanner has an Inngest rule."
+    },
+    {
+      "id": "resend:api-key",
+      "provider": "resend",
+      "name": "API key (re_)",
+      "description": "re_ + 8 alphanumerics + _ + 24 alphanumerics, 36 in all; full_access and sending_access keys share the shape.",
+      "detectors": [],
+      "sources": [
+        "https://resend.com/docs/api-reference/api-keys/create-api-key",
+        "https://github.com/resend/resend-cli#authentication"
+      ],
+      "note": "Beta.11 arrival family resend-api-key (#436, product redact-secret#915), contract in benchmarks/lib/beta8/436d.ts from the #860 handoff resend.md. T1 on the provider CLI prefix and the docs/SDK example layout (R5); neither pinned scanner has a Resend rule."
+    },
+    {
+      "id": "apify:api-token",
+      "provider": "apify",
+      "name": "API token (apify_api_)",
+      "description": "apify_api_ + at least 20 alphanumerics, open-ended (the provider's own leak linter); apify_ui_ Console tokens are a separate, unshaped credential.",
+      "detectors": [],
+      "sources": [
+        "https://docs.apify.com/platform/integrations/api",
+        "https://github.com/apify/awesome-skills/blob/main/scripts/lint_references.py"
+      ],
+      "note": "Beta.11 arrival family apify-api-token (#436, product redact-secret#916), contract in benchmarks/lib/beta8/436e.ts from the #860 handoff apify.md. T1 on the docs placeholder (R4) and the provider-authored linter (R2); trufflehog 3.97.4 has an exact-36 rule."
+    },
+    {
+      "id": "wandb:api-key",
+      "provider": "wandb",
+      "name": "API key (wandb_v1_)",
+      "description": "wandb_v1_ + [A-Za-z0-9_] to about 86 characters in all (86 in every provider fixture); the legacy 40-hex key stays with generic context.",
+      "detectors": [],
+      "sources": [
+        "https://docs.wandb.ai/support/models/articles/why-does-my-api-key-fail-with-must-be-40-characters",
+        "https://github.com/wandb/wandb/blob/98f93d636e523bf6e195a2a154f23ba8775623a9/wandb/sdk/lib/wbauth/validation.py#L26-L63"
+      ],
+      "note": "Beta.11 arrival family wandb-api-key (#436, product redact-secret#917), contract in benchmarks/lib/beta8/436f.ts from the #860 handoff wandb.md. T1 on the provider test constant (R5) and SDK validator (R1); length measured around 86 with no length asserted. trufflehog 3.97.4 registers only the keyword-gated legacy rule by default."
     }
   ]
 }

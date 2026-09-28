@@ -1,6 +1,6 @@
 // Fixture identity/independence audit and per-family before-state (#377).
 //
-//   npm run audit:independence -- --out=<file.json>
+//   npm run audit:independence -- --out=<file.json> [--markdown=<family-table.md>]
 //     [--published-status=<support-status.json> --published-results=<public/results dir>]
 //     [--candidate-status=<support-status.json> --candidate-results=<public/results dir>]
 //
@@ -18,14 +18,14 @@ import { resolveCredentialDomain } from '../benchmarks/evaluation/domains/regist
 import { contracts } from '../benchmarks/lib/assessment.ts';
 import {
   auditTwins, duplicateContentClusters, familyIndependence, formatOverlaps, rowFailures, sharedValueClusters,
-  summarizeFailures, templateClusters,
+  renderFamilyTable, summarizeFailures, templateClusters,
 } from '../benchmarks/lib/fixture-independence.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const usage = 'Usage: npm run audit:independence -- --out=<file.json> [--published-status=<json> --published-results=<dir>] [--candidate-status=<json> --candidate-results=<dir>]';
+const usage = 'Usage: npm run audit:independence -- --out=<file.json> [--markdown=<file.md>] [--published-status=<json> --published-results=<dir>] [--candidate-status=<json> --candidate-results=<dir>]';
 const options = {};
 for (const arg of process.argv.slice(2)) {
-  const m = /^--(out|published-status|published-results|candidate-status|candidate-results)=(.+)$/.exec(arg);
+  const m = /^--(out|markdown|published-status|published-results|candidate-status|candidate-results)=(.+)$/.exec(arg);
   if (!m || m[1] in options) throw new Error(usage);
   options[m[1]] = path.resolve(m[2]);
 }
@@ -140,5 +140,6 @@ const report = {
   candidate: await measured('candidate'),
 };
 await writeFile(options.out, JSON.stringify(report, null, 2) + '\n');
+if (options.markdown) await writeFile(options.markdown, renderFamilyTable(report));
 console.log(`Audited ${fixtures.length} fixtures across ${families.length} families: ${duplicates.length} duplicate-content clusters, ${values.length} shared-value clusters, ${templates.length} template clusters, ${report.corpus.twinAudit.flagged.length}/${twins.length} twins flagged, ${overlaps.length} benign/twin format overlaps.`);
 console.log(`Report: ${path.relative(process.cwd(), options.out)}`);

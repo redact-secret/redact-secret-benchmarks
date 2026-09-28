@@ -363,3 +363,41 @@ export function summarizeFailures(rows: FailureRow[]): FailureSummary[] {
       uniqueTemplates: new Set(rs.map(r => r.cluster)).size, axes: [...new Set(rs.map(r => r.axis))].sort() };
   }).sort((a, b) => a.family.localeCompare(b.family) || a.type.localeCompare(b.type) || a.kind.localeCompare(b.kind) || a.action.localeCompare(b.action));
 }
+
+// ---------------------------------------------------------------------------
+// Markdown rendering of the per-family before-state (one row per family, no score)
+
+interface MeasuredFamily {
+  status: string; tier: string | null; target: string | null; debt: { cell: string; actual: number; required: number }[];
+  twinPairs: number; twinFailures: number; benignFalseAlarms: number; metamorphicCriticalFailures: number; mutationUnresolvedCritical: number;
+  differentialUnresolvedContractDisagreements: number; supportedContexts: string[]; empiricalMode: string | null;
+  benchSpans: { spans: number; leaked: number; collateralBytes: number };
+}
+interface MeasuredMode { families: Record<string, MeasuredFamily>; failures: FailureSummary[] }
+export interface AuditReportLike {
+  families: FamilyIndependence[]; knownGaps: Record<string, { id: string; status: string }[]>;
+  published: MeasuredMode | null; candidate: MeasuredMode | null;
+}
+
+const KIND = { 'must-redact': 'MR', policy: 'pol', 'must-not-flag': 'MNF' } as Record<string, string>;
+/** `leak MR 7f/7ax` style cells: distinct fixtures / distinct axes per failure type, kind and action. */
+export function failureCell(failures: FailureSummary[], family: string): string {
+  const rows = failures.filter(f => f.family === family);
+  if (!rows.length) return '—';
+  return rows.map(f => `${f.type} ${KIND[f.kind] ?? f.kind}${f.action === 'none' ? '' : `·${f.action}`} ${f.rawRows}f/${f.uniqueAxes}ax`).join('; ');
+}
+
+export function renderFamilyTable(report: AuditReportLike): string {
+  const header = '| Family | Tier | Status pub → cand | Profile target · candidate debt | Positives raw / ≤indep. / axes → indep. axes | Benign raw / axes | Twins raw (audit-flagged) | Failures, published | Failures, candidate | Twin fail. pub → cand | Metamorphic / mutation / differential, pub → cand | Supported contexts | Open known gaps |';
+  const sep = '|' + ' --- |'.repeat(13);
+  const lines = [header, sep];
+  for (const f of report.families) {
+    const p = report.published?.families[f.family], c = report.candidate?.families[f.family];
+    const debt = c?.debt.length ? c.debt.map(d => `${d.cell} ${d.actual}/${d.required}`).join(', ') : 'none';
+    const blockers = (m?: MeasuredFamily) => (m ? `${m.metamorphicCriticalFailures}/${m.mutationUnresolvedCritical}/${m.differentialUnresolvedContractDisagreements}` : '—');
+    const contexts = c?.empiricalMode === 'context-constrained' ? `context-constrained (${c.supportedContexts.length})` : c?.empiricalMode ?? (c?.supportedContexts.length ? `${c.supportedContexts.length} listed` : 'bare-value contract');
+    const gaps = (report.knownGaps[f.family] ?? []).filter(g => !['fixed'].includes(g.status)).map(g => `${g.id} (${g.status})`).join(', ') || '—';
+    lines.push(`| \`${f.family}\` | ${c?.tier ?? p?.tier ?? '—'} | ${p?.status ?? '—'} → ${c?.status ?? '—'} | ${c?.target ?? '—'} · ${debt} | ${f.positives.raw} / ${f.positives.independentUpperBound} / ${f.positives.axes} → ${f.positives.independentAxes} | ${f.benign.raw} / ${f.benign.axes.length} | ${f.twins.raw} (${f.twins.flagged}) | ${report.published ? failureCell(report.published.failures, f.family) : '—'} | ${report.candidate ? failureCell(report.candidate.failures, f.family) : '—'} | ${p?.twinFailures ?? '—'} → ${c?.twinFailures ?? '—'} | ${blockers(p)} → ${blockers(c)} | ${contexts} | ${gaps} |`);
+  }
+  return lines.join('\n') + '\n';
+}

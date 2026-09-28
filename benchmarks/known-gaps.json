@@ -5931,7 +5931,6 @@
       "fixtures": [
         "beta8-379--deepgram-api-key-httpie-token",
         "beta8-379--deepgram-api-key-go-client-literal",
-        "beta8-379--cohere-api-key-litellm-proxy-debug",
         "beta8-379--cohere-api-key-java-builder-token"
       ],
       "kind": "false-negative",
@@ -5981,7 +5980,7 @@
         "verified": {
           "at": "2026-09-28",
           "evidence": [
-            "https://github.com/redact-secret/redact-secret-benchmarks/blob/38d47382d287b5db2a75fb8a59504481a2b02998/evidence/932/README.md",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/cbd7a22dbbd38a0f3615d540da989dc8bb16096b/evidence/932/README.md",
             "https://github.com/redact-secret/redact-secret/blob/ca208625f6811206e6211a29bb2cdf2a6b12ccc5/conformance/benchmark-regressions.json",
             "https://github.com/redact-secret/redact-secret/actions/runs/36480272622"
           ]
@@ -6024,17 +6023,6 @@
           "actual": []
         },
         {
-          "fixture": "beta8-379--cohere-api-key-litellm-proxy-debug",
-          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
-          "expected": [
-            {
-              "start": 99,
-              "end": 139
-            }
-          ],
-          "actual": []
-        },
-        {
           "fixture": "beta8-379--cohere-api-key-java-builder-token",
           "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
           "expected": [
@@ -6070,10 +6058,78 @@
           "https://github.com/redact-secret/redact-secret/blob/ca208625f6811206e6211a29bb2cdf2a6b12ccc5/conformance/benchmark-regressions.json"
         ],
         "benchmarkRerunEvidence": [
-          "https://github.com/redact-secret/redact-secret-benchmarks/blob/38d47382d287b5db2a75fb8a59504481a2b02998/evidence/932/README.md",
-          "https://github.com/redact-secret/redact-secret-benchmarks/blob/38d47382d287b5db2a75fb8a59504481a2b02998/evidence/932/candidate-rerun.json"
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/cbd7a22dbbd38a0f3615d540da989dc8bb16096b/evidence/932/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/cbd7a22dbbd38a0f3615d540da989dc8bb16096b/evidence/932/candidate-rerun.json"
         ]
       }
+    },
+    {
+      "id": "product-932-masked-key-policy",
+      "title": "Policy: a Cohere key under a masked_-led name (LiteLLM proxy debug log) is not reported",
+      "url": "https://github.com/redact-secret/redact-secret/issues/932",
+      "number": 932,
+      "fixtures": [
+        "beta8-379--cohere-api-key-litellm-proxy-debug"
+      ],
+      "kind": "false-negative",
+      "status": "policy-decision",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.10",
+        "lockHash": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939",
+        "sourceCommit": "b0be64b0b3636dda5f0167ea9ee6aa64a3112ec0"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/80a168b39860068e98e3190119827148e147e834/docs/reports/2026-09-28/beta-11-family-axis-ledger.json",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/379"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/issues/379#issuecomment-5873853919",
+            "https://github.com/redact-secret/redact-secret/issues/932"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-28",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/ca208625f6811206e6211a29bb2cdf2a6b12ccc5/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md",
+            "https://github.com/redact-secret/redact-secret/blob/ca208625f6811206e6211a29bb2cdf2a6b12ccc5/conformance/benchmark-regressions.json"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/932",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-932-masked-key-policy",
+        "canonicalFixtureIds": []
+      },
+      "disposition": {
+        "reason": "Documented policy, not a defect: the value sits under a masked_-led key, and decision-redact-provider-named-credential-assignments section 2 says a prefix whose first segment says the value is not the secret (redacted_, masked_, hashed_, ...) does not make a high-signal name, so generic-token does not report it and the Cohere detector has no keyword on the line. The #932 fix (127260c) left it unreported by design, and product manifest record benchmark-gap-932 records it as a policy note. Split out of product-932 so that record is verified on the three forms the fix covers; the fixture expectation is unchanged. Candidate 1db8ff3 (run 009a85fa-e810-4ab8-85a5-a264dba30536) still misses it. A changed policy is a new observation, not an edit of this record.",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/blob/ca208625f6811206e6211a29bb2cdf2a6b12ccc5/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md",
+          "https://github.com/redact-secret/redact-secret/blob/ca208625f6811206e6211a29bb2cdf2a6b12ccc5/conformance/benchmark-regressions.json",
+          "https://github.com/redact-secret/redact-secret/issues/932",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/cbd7a22dbbd38a0f3615d540da989dc8bb16096b/evidence/932/README.md"
+        ]
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-379--cohere-api-key-litellm-proxy-debug",
+          "corpusHash": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15",
+          "expected": [
+            {
+              "start": 99,
+              "end": 139
+            }
+          ],
+          "actual": []
+        }
+      ]
     },
     {
       "id": "product-933",

@@ -53,6 +53,22 @@ schema-version constant, required surfaces, or result-contract field names
 have moved against the pinned copy — catching drift before a live summary
 even exists to validate, not only after (#150).
 
+**Resolved artifact (#405).** A `node`-surface result's `provenance` may
+carry `resolvedArtifact: "node-addon" | "wasm"`: which artifact actually
+served the run, since the Node loader may serve the N-API addon or fall back
+to the browser WebAssembly artifact (product
+`decision-add-node-webassembly-fallback`), and only the runner calling
+`artifact()` can tell — the `--addon-dir` command flag is an input, not this
+outcome. The field is optional in the pinned contract and in
+`checkCoreSchemaDrift`'s comparison (`PINNED_OPTIONAL_FIELDS`) until core
+lands the paired runner change, so its presence or absence is never itself
+drift. `completeAssessmentProblem`'s `requireResolvedArtifact` option turns
+the requirement on for a freshly submitted summary — `npm run
+performance:evaluate` and `check-performance-schema.mjs --summary <path>`
+both refuse a `node` performance run missing it — while staying off for the
+frozen `evidence/603` baseline and every derivation/regression-budget read of
+it, which predate the runner change.
+
 `evaluateAcceptance` (`benchmarks/lib/performance-acceptance.ts`) then checks
 the summary's completeness, repetition count, corpus/profile identity, host
 environment, accuracy parity, and every named performance profile's
@@ -193,6 +209,8 @@ first actually exercised, end to end, by
 - a minimal browser bundle.
 
 The acceptance verdict is a separate section. Artifact sizes carry no threshold. To regenerate, use `scripts/collect-operational-evidence.mjs`; its header lists the inputs. The report is `docs/reports/2026-09-25-beta8-141-operational-evidence.md`, and the site shows the data under `/performance#operational-evidence`.
+
+**Measured, beside the floor (#405).** The same `benchmarks/operational-evidence.json` also feeds two columns directly on the Thresholds table — measured processing (median / p95) and measured throughput (median), read the same way the floors are so the page cannot drift from what CI accepted — plus, for `node`, the resolved artifact (`environment.resolvedArtifact`, added by `collect-operational-evidence.mjs` from the summary's provenance; `null` until the paired runner change lands, rendered as an explicit "Not recorded" rather than assumed). A one-paragraph workload-guidance note beside the table is derived from these figures: at the measured whole-input throughput, small per-request payloads (an AI-context or tool-result scan) cost well under a millisecond, while an inline high-volume log hot path does not fit and needs sampling or an off-request-path placement.
 
 ## Regression budgets (#143)
 

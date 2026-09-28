@@ -27,7 +27,8 @@ if (!options.summary) throw new Error(usage);
 
 const root = new URL('../', import.meta.url);
 const summary = JSON.parse(await readFile(new URL(options.summary, root), 'utf8'));
-const problem = completeAssessmentProblem(summary);
+// #405: a fresh candidate is held to the resolvedArtifact requirement; the frozen evidence/603 baseline this evaluates against is not (predates the runner change).
+const problem = completeAssessmentProblem(summary, { requireResolvedArtifact: true });
 if (problem) throw new Error(`Refusing to evaluate: ${problem}`);
 
 const criteriaPath = options.criteria ?? 'benchmarks/performance-criteria.json';

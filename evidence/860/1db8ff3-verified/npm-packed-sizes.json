@@ -33,5 +33,17 @@
       "allowedIncrease": 12720.650000000001,
       "verdict": "breach"
     }
-  ]
+  ],
+  "nativeAddons": [
+    {
+      "target": "aarch64-apple-darwin",
+      "file": "package/redact-secret.darwin-arm64.node (inside the node-darwin-arm64 tarball above)",
+      "bytes": 1421552,
+      "trigger": "size/node-addon/aarch64-apple-darwin",
+      "baseline": 1004128,
+      "allowedIncrease": 50206.4,
+      "verdict": "breach"
+    }
+  ],
+  "notMeasured": "Native addon, wheel and CLI rows for other targets were not built on this host and are not recorded."
 }

@@ -343,5 +343,43 @@
     },
     "decidedAt": "2026-09-28",
     "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: WASM gzip and npm Wasm tarball size rows accepted for the Beta.11 detector additions and the #937 pii split)"
+  },
+  {
+    "id": "beta11-npm-node-darwin-arm64-packed-detectors",
+    "triggerId": "size/npm/node-darwin-arm64/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1" },
+    "measured": { "baseline": 424514, "candidate": 629779, "unit": "bytes" },
+    "rationale": "Maintainer decision of 2026-09-28: the @redact-secret/node-darwin-arm64 npm tarball grows with the provider detectors added across Beta.9 to Beta.11 (Beta.11 adds 13, redact-secret#903-#909 and #912-#917) and the PII runtime compiled into the addon. Packed size 629,779 bytes against the 0.1.0-beta.8 baseline of 424,514. Native builds keep the PII runtime by design; only the WASM builds split it out (redact-secret#937). Measured on the product benchmark:candidate build at 1db8ff3 (darwin-arm64 host); evidence/860/1db8ff3-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (24 scored families, all documented-stable in benchmark candidate mode at 1db8ff3) on top of the Beta.9 and Beta.10 detector packs; native builds carry the PII runtime so PII selection works without a separate artifact.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/pull/958"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: npm Node addon tarball size accepted for the Beta.9 to Beta.11 detector additions; native builds keep the PII runtime by design)"
+  },
+  {
+    "id": "beta11-node-addon-aarch64-apple-darwin-detectors",
+    "triggerId": "size/node-addon/aarch64-apple-darwin",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1" },
+    "measured": { "baseline": 1004128, "candidate": 1421552, "unit": "bytes" },
+    "rationale": "Maintainer decision of 2026-09-28, same grounds as the node-darwin-arm64 tarball row: the redact-secret.darwin-arm64.node binary inside that tarball is 1,421,552 bytes against the 0.1.0-beta.8 baseline of 1,004,128, from the Beta.9 to Beta.11 detector additions and the PII runtime. Native builds keep the PII runtime by design; only the WASM builds split it out (redact-secret#937). Measured on the product benchmark:candidate build at 1db8ff3 (darwin-arm64 host); evidence/860/1db8ff3-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 adds 13 provider credential detectors (24 scored families, all documented-stable in benchmark candidate mode at 1db8ff3) on top of the Beta.9 and Beta.10 detector packs; native builds carry the PII runtime so PII selection works without a separate artifact.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/938",
+        "https://github.com/redact-secret/redact-secret/pull/958"
+      ]
+    },
+    "decidedAt": "2026-09-28",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: npm Node addon tarball size accepted for the Beta.9 to Beta.11 detector additions; native builds keep the PII runtime by design)"
   }
 ]

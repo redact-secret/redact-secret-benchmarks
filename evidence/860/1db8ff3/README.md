@@ -68,12 +68,11 @@ Maintainer decisions of 2026-09-28, recorded in `benchmarks/accepted-regressions
 | `size/wasm/common/gzip` | 100,058 | 122,544 | run 36480959728 |
 | `size/browser-bundle/quickstart/gzip` | 144,501 | 186,761 (fetched; 489,101 emitted incl. lazy pii files) | the #937 quickstart method, [`../1db8ff3-verified/quickstart-bundle.md`](../1db8ff3-verified/quickstart-bundle.md) |
 | `size/npm/wasm/packed` | 254,413 | 871,030 | candidate tarball, [`../1db8ff3-verified/npm-packed-sizes.json`](../1db8ff3-verified/npm-packed-sizes.json) |
+| `size/npm/node-darwin-arm64/packed` | 424,514 | 629,779 | candidate tarball (decision relayed after the first batch) |
+| `size/node-addon/aarch64-apple-darwin` | 1,004,128 | 1,421,552 | the `.node` binary inside that tarball |
 
-Not recorded:
-- `size/npm/core/packed` is within budget (39,461 → 41,650).
-- `size/npm/node-darwin-arm64/packed` also breaches (424,514 → 629,779, +48%). The decision covers the Wasm tarball,
-  so this row is left for the maintainer. It is not judged by the performance workflow, which does not measure npm
-  tarballs.
+Not recorded: `size/npm/core/packed` is within budget (39,461 → 41,650). Native addon, wheel and CLI rows for other
+targets were not built on this host, so they are neither measured nor accepted here.
 
 ## Commands
 

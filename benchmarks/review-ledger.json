@@ -158384,6 +158384,30 @@
       "firstSeenRun": "triage-1127bf9-2026-09-28",
       "resolvedRun": "triage-1127bf9-2026-09-28",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection (candidate 1127bf9 (product main after PRs #938 and #947, built by benchmark:candidate), [22,69) as composio-user-api-key) matches this corpus's authored expected span(s) [22,69) on the canonical variant of beta8-434g/composio-user-api-key-end-of-input (positive, must-redact/T1, target composio-user-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "e44154f8cc1f6cf340a57a8d21a5da53b5578218ae97c51ca78bbeda04bfb87a": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1db8ff3-2026-09-28",
+      "resolvedRun": "triage-1db8ff3-2026-09-28",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (candidate 1db8ff3 (product main after PR #958, built by benchmark:candidate), [18,55) as unmapped) matches this corpus's authored expected span(s) [18,55) on the canonical variant of beta8-379/mailchimp-api-key-userinfo-url (positive, must-redact/T2, target mailchimp-api-key). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "9bc7ae8a03d4c32e503567931dcebef8715e7ec0a7d957eb983b236797c3c3d5": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1db8ff3-2026-09-28",
+      "resolvedRun": "triage-1db8ff3-2026-09-28",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (candidate 1db8ff3 (product main after PR #958, built by benchmark:candidate), [18,55) as unmapped) matches this corpus's authored expected span(s) [18,55) on the canonical variant of beta8-379/mailchimp-api-key-userinfo-url (positive, must-redact/T2, target mailchimp-api-key). The disagreement is fully explained by trufflehog reporting [0,78) as unmapped, [18,55) as unmapped — a wider span as its finding unit, a peer measurement difference, not a corpus or redact-secret defect. Class: range-disagreement/trufflehog/peer-measures-broader-span."
+    },
+    "a6470bf7d0074673030398fbbd8cd8728cc5271154bc8f1761269bafa6defca9": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1db8ff3-2026-09-28",
+      "resolvedRun": "triage-1db8ff3-2026-09-28",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence (candidate 1db8ff3 (product main after PR #958, built by benchmark:candidate)) matches this corpus's authored must-not-flag expectation exactly (expected span(s): none) on the canonical variant of beta8-436c/inngest-signing-key-sdk-short-placeholder (control, must-not-flag/T3, target inngest-signing-key). The disagreement is fully explained by gitleaks flagging this input anyway ([55,73) as generic-token), from its own broader pattern matching a value this corpus does not assert as a inngest-signing-key secret here. Class: peer-only/gitleaks/range-matches-corpus."
+    },
+    "19ae49488617587ed696b4674b7ba2a71deb77eab6cb1725d58ff114f3b39b89": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1db8ff3-2026-09-28",
+      "resolvedRun": "triage-1db8ff3-2026-09-28",
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence (candidate 1db8ff3 (product main after PR #958, built by benchmark:candidate)) matches this corpus's authored must-not-flag expectation exactly (expected span(s): none) on the canonical variant of beta8-436d/resend-api-key-digits-placeholder (control, must-not-flag/T3, target resend-api-key). The disagreement is fully explained by gitleaks flagging this input anyway ([15,27) as generic-token), from its own broader pattern matching a value this corpus does not assert as a resend-api-key secret here. Class: peer-only/gitleaks/range-matches-corpus."
     }
   }
 }

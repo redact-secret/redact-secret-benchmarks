@@ -67,7 +67,11 @@ the requirement on for a freshly submitted summary — `npm run
 performance:evaluate` and `check-performance-schema.mjs --summary <path>`
 both refuse a `node` performance run missing it — while staying off for the
 frozen `evidence/603` baseline and every derivation/regression-budget read of
-it, which predate the runner change.
+it, which predate the runner change. The field is written by core's own
+runner (`scripts/assessment-node-performance.mjs`, from `artifact()`), not by
+anything in this repository: a candidate commit from before that runner
+change fails `check-performance-schema.mjs --summary` on every dispatch, and
+that failure skips the acceptance step (#415).
 
 `evaluateAcceptance` (`benchmarks/lib/performance-acceptance.ts`) then checks
 the summary's completeness, repetition count, corpus/profile identity, host

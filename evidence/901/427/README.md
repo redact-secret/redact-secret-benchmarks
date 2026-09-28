@@ -2,6 +2,8 @@
 
 On the published beta.10 release, all six surfaces agree: Node addon, Node Wasm, browser Wasm, Python, Rust and the CLI. They report the same findings, actions and ranges and produce the same sanitized bytes. That holds for every mixed document, both line endings, both PII selections and every chunk partition. Turning PII off leaves credential findings and credential-only output unchanged. The only expectation failures come from the defect already filed as [redact-secret#922](https://github.com/redact-secret/redact-secret/issues/922), and they occur identically on every surface. No new product defect was found, and no status changes.
 
+**Update (exact repaired core, plan v2).** On core `79c0a661` (redact-secret#930, which fixes #922 and #924–#927 and ships `pii-context/v2`), all six surfaces meet every expectation of the new plan v2 in both selections. That is 36 of 36 required PII targets and 11 of 11 credential targets. Cross-surface disagreements, leaked values and range-unit errors are all zero, and the PII-off credential behaviour is unchanged. No new product defect was found. See [Exact repaired core](#exact-repaired-core-79c0a661-plan-v2).
+
 This is baseline development evidence for
 [redact-secret#901](https://github.com/redact-secret/redact-secret/issues/901)
 (benchmark issue [#427](https://github.com/redact-secret/redact-secret-benchmarks/issues/427),
@@ -152,11 +154,76 @@ retained.
    codes (`INPUT_LIMIT_EXCEEDED`, `FINDING_LIMIT_EXCEEDED`), and incremental sessions that end `failed` with
    only a sanitized prefix emitted.
 
+## Exact repaired core `79c0a661` (plan v2)
+
+**Plan v2.** [`mixed-parity-v2.json`](../../../benchmarks/evaluation/domains/pii/mixed-parity/mixed-parity-v2.json) is derived
+mechanically from the frozen v1 plan, which is unchanged (commitment `b4092b25…b6789`, bound as `supersedes`). It changes
+exactly one thing: each of the five v1 envelopes is promoted to a required target. The promoted targets keep their v1
+ids, ranges, types and actions, and each cites the merged contract text that now decides it:
+
+| Target | Decided by |
+| --- | --- |
+| `app-log-logfmt/L04/O1` (logfmt `email=`) | email-v1 `key=` label split, #926 |
+| `app-log-logfmt/L07/O1` (IP before a sentence-final period) | network-address right-boundary rule, #925 |
+| `app-log-logfmt/L08/O1`, `L09/O1`, `payment-form/L10/O1` (same-line fields) | `pii-context/v2` forward-only field-label equidistance, #924 |
+
+No optional target remains. Every other expectation is byte-identical to v1: 36 required PII targets (35 `redact`,
+1 `warn`) and 11 credential targets. Plan v2 was frozen at `d650739`, before any scan of the repaired core.
+
+**Build.** The core commit was checked out as a fresh detached worktree at
+`79c0a66119fb72931fda9adddbe2973a52bb4833` and built by the harness's core-commit path. Surface component SHA-256:
+
+| Component | SHA-256 |
+| --- | --- |
+| facade tarball | `4df009d2…c002f` |
+| Node addon package | `1454c342…3d24f` |
+| Wasm package | `dde65143…9e3ff` |
+| wheel | `c62ad9a2…e7152` |
+| CLI binary | `10677a93…f3139` |
+
+The core crate tree is `9a1384e6`. The build's package version string is still `0.1.0-beta.10`: core main has not
+bumped it. Every surface reports `vocabulary=pii-context/v2` in its activation identity, and so does `selectors=off`,
+as the v2 ADR states. The harness ran from benchmark commit `d650739` on a clean tree.
+
+**Results (identical on Node addon, Node Wasm, browser Wasm, Python, Rust and CLI).**
+
+| Selection | `scan` / `redact` / `scanAndRedact` | Incremental partitions | Output bytes correct | Sanitized success | Value left | Whole-input limit probes | Incremental limit probe | Range-unit errors |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `pii-on` | 16/16 each | 574/574 | 606/606 | 529/606 | 0 | 192/192 | 16/16 | 0 |
+| `pii-off` | 16/16 each | 574/574 | 606/606 | 606/606 | 0 | 156/156 | 16/16 | 0 |
+
+Under `pii-on`, the 77 operations short of sanitized success are exactly the operations on the support-ticket
+document: its local-only phone is a `warn` finding and keeps its text by contract, as the plan expects. The
+CLI covered the same paths as in the baseline and was fully correct: `pii-on` scored 16/16, 16/16, 32/32 and 48/48,
+with 42 sanitized because of the same `warn`. The paths it lacks stay typed `not-applicable`.
+
+**Domains (whole-input `scan`, LF+CRLF, every surface).**
+
+| Selection | PII required matched | PII unexpected | Credential required matched | Credential unexpected |
+| --- | ---: | ---: | ---: | ---: |
+| `pii-on` | 72/72 | 0 | 22/22 | 0 |
+| `pii-off` | 0/0 | 0 | 22/22 | 0 |
+
+**Parity and invariance.** In all 32 selection × case groups, every surface and operation produced one findings
+signature and one output signature. The credential-only control is identical under `pii-on` and `pii-off` on every
+surface. On all 16 cases, the credential findings with PII off equal those with PII on, and no PII finding appears
+while PII is off.
+
+**Against the beta.10 baseline.**
+- The two #922 targets are now matched everywhere.
+- The five former envelopes are present everywhere, exactly at their frozen ranges.
+- The knock-on limit and leak failures are gone.
+- Nothing that passed before regresses.
+
+**Findings.** No new product defect, so no core issue was filed. #922, #924, #925 and #926 are confirmed fixed on
+every surface for the lines these documents exercise. The #927 additions (case folding and new label forms) are not
+exercised by this plan.
+
 ## Ledger row owned by #427 (proposed; the ledger stays frozen)
 
 | Blocker | All six families |
 | --- | --- |
-| cross-surface-output | measured on published beta.10: surfaces agree; expectation met except #922 (payment-card, phone). Exact beta.11 candidate pending |
+| cross-surface-output | published beta.10: surfaces agree, expectation met except #922 (payment-card, phone). Exact repaired core `79c0a661` (plan v2): surfaces agree, every expectation met in both selections. The versioned beta.11 release artifacts are still to be bound (#428) |
 
 ## Rerun on a core commit
 
@@ -171,13 +238,22 @@ removed afterwards.
 npm ci
 npm run pii:parity:measure -- --target=core-commit \
   --core-commit=<40-hex core commit> --core-repo=<absolute path to a redact-secret clone>
-# writes evidence/901/427/mixed-parity-core-<sha12>-{observation,report}-v1.json
+# plan v2 by default (--plan=1 for the frozen v1 plan)
+# writes evidence/901/427/mixed-parity-core-<sha12>-plan-v<N>-{observation,report}-v1.json
 node --import tsx --test tests/pii-mixed-parity.test.mjs   # re-scores every committed observation
 ```
 
-The build path was checked end to end on `af7f863f` itself, and the results were not recorded. A
-post-repair commit can change only the #922 targets and the five envelopes. If the repair also bumps the
-context-vocabulary identity, the report shows it in each surface's `piiActivation`.
+The build path was first checked end to end on `af7f863f`, and those results were not recorded. It was then used for
+the recorded `79c0a661` run above.
+
+**Vocabulary handling.** Shared benchmark validators now accept `vocabulary=pii-context/v2` next to v1:
+- the activation-identity parser;
+- the product identity-evidence check, which also requires the declared vocabulary to match the one the activation
+  identity reports.
+
+Frozen beta.10 records and the authored #423 oracle stay v1. The arrival-contract selection check defaults to v1, and
+a v2 candidate has to name v2 explicitly. The profile-cost runner is hash-frozen by its own implementation freeze, so
+it still expects v1. A v2 cost run (#428) needs a reviewed re-freeze.
 
 ## Reproduce
 

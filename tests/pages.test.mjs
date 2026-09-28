@@ -91,7 +91,7 @@ test('Report: a run that measured an unreleased candidate names it in the eyebro
 
 test('Report: reference scanners are muted rows in run order with no rank, and an absent scanner is Not measured, not zero', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
-  const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('id="rows"'));
+  const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('id="runtime-peers"'));
   assert.ok(peers.indexOf('silent') < peers.indexOf('absent'), 'run order, never sorted by result');
   assert.ok(!/\b(rank|winner|best|worst|#1|leader|score)\b/i.test(text(peers).replace('Not a ranking', '')));
   assert.match(peers, /absent[\s\S]*data-status="not-measured">Not measured/);
@@ -101,17 +101,29 @@ test('Report: reference scanners are muted rows in run order with no rank, and a
 
 test('Report: T3 hides its peer table by default (#404); the same query the caption links to reproduces it', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
-  const hidden = reportPage(data, 'T3', fixtures), hiddenPeers = hidden.slice(hidden.indexOf('OTHER SCANNERS'), hidden.indexOf('id="rows"'));
+  const hidden = reportPage(data, 'T3', fixtures), hiddenPeers = hidden.slice(hidden.indexOf('OTHER SCANNERS'), hidden.indexOf('id="runtime-peers"'));
   assert.ok(hiddenPeers.includes('OTHER SCANNERS'), 'the section itself still appears, with an explanation');
   assert.ok(!/<table>/.test(hiddenPeers), 'no peer table renders by default at T3');
   assert.match(hiddenPeers, /Hidden by default[\s\S]*Show anyway/);
   const shown = reportPage(data, 'T3', fixtures, '?level=T3&peers=1');
-  const peers = shown.slice(shown.indexOf('OTHER SCANNERS'), shown.indexOf('id="rows"'));
+  const peers = shown.slice(shown.indexOf('OTHER SCANNERS'), shown.indexOf('id="runtime-peers"'));
   assert.match(peers, /<table>/);
   assert.ok(peers.includes('silent') && peers.includes('absent'), 'peer rows render once opted in');
   assert.match(peers, /reflects scope, not accuracy/);
   const t1 = reportPage(data, 'T1', fixtures);
-  assert.ok(/<table>/.test(t1.slice(t1.indexOf('OTHER SCANNERS'))), 'T1 and T2 keep showing peers unconditionally');
+  assert.ok(/<table>/.test(t1.slice(t1.indexOf('OTHER SCANNERS'), t1.indexOf('id="runtime-peers"'))), 'T1 and T2 keep showing peers unconditionally');
+});
+
+test('Report: runtime redaction libraries (#444) sit between the peer table and the rows, identical at every evidence level', async () => {
+  const { reportPage } = await load('/src/pages/report.ts');
+  const section = html => html.slice(html.indexOf('<section class="section rt"'), html.indexOf('</section>', html.indexOf('id="runtime-peers"')) + '</section>'.length);
+  const pages = [reportPage(data, 'T1', fixtures), reportPage(data, 'T2', fixtures), reportPage(data, 'T3', fixtures), reportPage(data, 'T3', fixtures, '?level=T3&peers=1')];
+  for (const html of pages) {
+    assert.ok(html.indexOf('OTHER SCANNERS') < html.indexOf('id="runtime-peers"') && html.indexOf('id="runtime-peers"') < html.indexOf('id="rows"'), 'after the peer table, before the rows');
+    assert.equal(section(html), section(pages[0]), 'byte-identical at every level');
+  }
+  const none = reportPage({ hashes: {}, loaded: categories.map(category => ({ category, problem: 'Missing or unreadable report' })) }, 'T1', fixtures);
+  assert.equal(section(none), section(pages[0]), 'renders without accuracy results too');
 });
 
 test('Report: provider/family projection preserves the exact selected leaf set once', async () => {
@@ -332,7 +344,7 @@ test('boundary rule: pages measure and record; none asserts product quality or r
   const { performancePage } = await load('/src/pages/performance.ts');
   const pages = [reportPage(data, 'T1', fixtures), coveragePage(fixtures, 'all'), detectorPage(data, fixtures, 'github-token'), suitePage(data, fixtures, 'accuracy'), howToRead(), performancePage()];
   for (const html of pages) {
-    const plain = text(html).replace(/Precision, recall and F1 are not exported[^.]*\./, '').replace(/not a product ranking|Not a ranking/g, '');
+    const plain = text(html).replace(/Precision, recall and F1 are not exported[^.]*\./, '').replace(/not a product ranking|Not a ranking|no ranking assertion/g, '');
     assert.ok(!/\b(precision|recall|F1)\b/i.test(plain), 'no rates outside the v4 headline metrics');
     assert.ok(!/\b(is safe|secure|best|winner|wins|outperforms|superior|top-ranked|ranking|grade [A-F])\b/i.test(plain), plain.match(/\b(is safe|secure|best|winner|wins|outperforms|superior|top-ranked|ranking|grade [A-F])\b/i)?.[0]);
     assert.ok(!html.includes('/benchmark') && !html.includes('/evaluation') && !html.includes('/methodology') && !html.includes('/pending'), 'no link to a pre-redesign path');

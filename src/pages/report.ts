@@ -2,6 +2,7 @@ import { escapeHtml as e, figure } from '../components';
 import type { Fixture } from '../catalog';
 import { currentReports, groupsOf, hasResults, PRODUCT, runIdOf, type BenchData } from './data';
 import { boundCell, confidence, metric, type Floors } from './figures';
+import { peerRuntimeSection } from './peer-runtime-throughput';
 import { peerObservation, reportHierarchy } from './report-hierarchy';
 import { tierTitle } from './rows';
 import { runStates } from './states';
@@ -21,7 +22,8 @@ export const controlKey = (level: Level) => `must-not-flag/${level}`;
  * Report: three answers, each one Figure. Production reads the published
  * package; a staging run may measure an unreleased candidate (#201), and the
  * eyebrow then names it. Other scanners are reference rows in run order: no
- * sort, no rank, no winner.
+ * sort, no rank, no winner. Runtime redaction libraries (#444) follow the
+ * peer table: PII runtime speed, identical at every evidence level.
  */
 export function reportPage(data: BenchData, level: Level, fixtures: Fixture[], search = ''): string {
   const version = data.run?.scannerVersions[PRODUCT], runId = runIdOf(data), candidate = data.run?.candidate;
@@ -30,7 +32,7 @@ export function reportPage(data: BenchData, level: Level, fixtures: Fixture[], s
   const summary = data.summaryProblem ? undefined : data.summary;
   const reports = currentReports(data), scanners = summary?.scanners ?? [];
   const head = `<div class="page-head"><div><p class="eyebrow"${candidate ? ' data-candidate' : ''}>${e(measured.toUpperCase())}</p><h1>What the benchmark shows</h1><div class="meta">${runId ? `<span>Run <b>${e(runId.slice(0, 10))}</b></span>` : ''}${summary ? `<span>Same ${fixtures.length.toLocaleString('en-US')} inputs for ${scanners.length} scanners</span><span>Accounting <b>v${e(summary.accountingVersion)}</b></span>` : ''}<a href="/how-to-read">How to read these numbers</a></div></div>${seg}</div>`;
-  if (!hasResults(data) || !summary) return head + runStates(data);
+  if (!hasResults(data) || !summary) return head + runStates(data) + peerRuntimeSection();
 
   const floors = summary.accounting as unknown as Floors, mine = groupsOf(summary, PRODUCT);
   const rKey = redactKey(level), cKey = controlKey(level), policy = level === 'T3';
@@ -47,5 +49,5 @@ export function reportPage(data: BenchData, level: Level, fixtures: Fixture[], s
     : `<section class="section peers"><p class="eyebrow">OTHER SCANNERS ON THE SAME INPUTS</p><p class="small">${policy ? 'T3 is this project’s masking policy, never compared with provider-documented formats. A peer’s rate below reflects scope, not accuracy. <a href="?level=T3">Hide</a>.' : 'Reference only. Not a ranking: scanners differ in scope and defaults. Listed in run order.'}</p><div class="tbl"><table><thead><tr><th scope="col">Scanner</th><th scope="col" class="num">Leaked, at most</th><th scope="col" class="num">False alarms, at most</th><th scope="col" class="num">Twins, at least</th></tr></thead><tbody>${others.map(s => { const g = groupsOf(summary, s.id); return `<tr><td>${e(s.id)} ${e(s.version ?? '')}${peerObservation(s.id, reports)}</td><td class="num">${boundCell(g[rKey], 'leak', rKey, floors)}</td><td class="num">${boundCell(g[cKey], 'alarm', cKey, floors)}</td><td class="num">${boundCell(g[rKey], 'twins', rKey, floors)}</td></tr>`; }).join('')}</tbody></table></div></section>`;
 
   const selected = fixtures.filter(f => f.assessment.tier === level && (policy ? f.assessment.kind !== 'must-redact' : f.assessment.kind !== 'policy'));
-  return head + figs + runStates(data) + peers + reportHierarchy(selected, reports, `Rows behind these numbers · ${tierTitle(level)}`);
+  return head + figs + runStates(data) + peers + peerRuntimeSection() + reportHierarchy(selected, reports, `Rows behind these numbers · ${tierTitle(level)}`);
 }

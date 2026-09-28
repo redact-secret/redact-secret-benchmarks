@@ -66,5 +66,12 @@ measured.
 - The population corpus currently holds only `pii:us:ssn` controls, so only
   that family has measured strata. A local run of `2e1bdcf` against released
   `0.1.0-beta.9` reads `diagnostic-balanced` no-regression and
-  `benign-heavy-stress` regression: an SSN placeholder is flagged in a
-  non-sensitive context.
+  `benign-heavy-stress` regression. The only regressed stratum is the
+  `stress-placeholder` case, which authors a structurally valid SSN under
+  `placeholder_ssn=` as non-sensitive. The product's own `us-ssn-v1` contract
+  says an unlisted placeholder word does not suppress, so the redaction is the
+  contracted behaviour and the corpus expectation is what is wrong. It is
+  tracked as a corpus fix in
+  [#408](https://github.com/redact-secret/redact-secret-benchmarks/issues/408),
+  not promoted as a product defect. The stress verdict should be read with
+  that in mind until #408 lands.

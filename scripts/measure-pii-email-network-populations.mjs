@@ -170,6 +170,8 @@ const families = C1_FAMILIES.map(family => {
     { id: 'diagnostic-population', status: metricsMet('diagnostic-balanced') ? 'met' : 'not-met' },
     { id: 'benign-heavy-population', status: metricsMet('benign-heavy-stress') ? 'met' : 'not-met' },
     { id: 'population-no-regression', status: noRegression ? 'met' : 'not-met' },
+    // pii-populations: unresolved mass is never renormalized; contract-silent strata carry declared mass but no truth.
+    { id: 'population-mass-resolved', status: ['diagnostic-balanced', 'benign-heavy-stress'].every(id => view(id).massTotals.contractSilentMass === 0) ? 'met' : 'not-met' },
     { id: 'authored-truth-agreement', status: disagreements.length ? 'not-met' : 'met' },
     { id: 'min-benign-cases-and-axes', status: ['diagnostic-balanced', 'benign-heavy-stress'].every(id =>
       view(id).sensitivity.nonSensitive.cases + view(id).sensitivity.notEstablished.cases >= 6 && view(id).benignAxesPresent.length >= 3) ? 'met' : 'not-met' },

@@ -96,6 +96,15 @@ async function measured(mode) {
     },
     distribution: status.families.reduce((d, r) => ({ ...d, [r.status]: (d[r.status] ?? 0) + 1 }), {}),
     families: byFamily,
+    // Distinct fixtures per failure type × kind × action, before any per-family attribution
+    // (a fixture targeting two families is one row here, two in `failures`).
+    failureTotals: Object.values(failures.reduce((totals, r) => {
+      const k = `${r.type}/${r.kind}/${r.action}`;
+      (totals[k] ??= { type: r.type, kind: r.kind, action: r.action, fixtures: new Set(), familyAxes: new Set() }).fixtures.add(r.key);
+      for (const family of r.families) totals[k].familyAxes.add(`${family}\u0000${r.axis}`);
+      return totals;
+    }, {})).map(t => ({ type: t.type, kind: t.kind, action: t.action, fixtures: t.fixtures.size, familyAxes: t.familyAxes.size }))
+      .sort((a, b) => `${a.type}/${a.kind}/${a.action}`.localeCompare(`${b.type}/${b.kind}/${b.action}`)),
     failures: summarizeFailures(failures),
   };
 }

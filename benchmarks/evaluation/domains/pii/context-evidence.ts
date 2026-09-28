@@ -3,6 +3,7 @@ import schema from '../../../../schemas/pii-context-evidence-v1.json';
 import data from './context-evidence-v1.json';
 import { hash } from '../../substrate/hash.ts';
 import type { PiiCase, PiiContract, PiiIdentityDomain, PiiSensitivityExpectation } from './types.ts';
+import { PII_CONTEXT_LANGUAGES } from './context-languages.ts';
 
 export type PiiContextClass = 'sensitive' | 'neutral' | 'non-sensitive';
 export interface PiiContextFrame {
@@ -39,7 +40,7 @@ export interface PiiContextEvidence {
 }
 
 const validateSchema = new Ajv({ strict: true }).compile(schema);
-const canonicalLanguages = ['en', 'ko'];
+const canonicalLanguages: readonly string[] = PII_CONTEXT_LANGUAGES;
 const upstreamIdentity = {
   revision: '230439ec8f208afadba6afba82d1b183e7800a15',
   contractSha256: '9955ad686ce9def6433ce224fb65a4a391404ea902cbca430d71c018a52e23f2',

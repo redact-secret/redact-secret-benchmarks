@@ -7,4 +7,6 @@ export { redactionLane, laneMarks, OUTCOME_NAME, OUTCOME_SHAPE, type LaneMark, t
 export { evidenceCrumb, type CrumbPart } from './evidence-crumb';
 export { actionEmptyState, type ActionEmptyStateInput } from './action-empty-state';
 export { pager, bindPager } from './pager';
+export { domainBar, type DomainBarInput, type DomainBarLink, type DomainBarIdentity } from './domain-bar';
+export { commitmentChip, type CommitmentChipInput } from './commitment-chip';
 export { escapeHtml, formatPercent, formatCount } from './html';

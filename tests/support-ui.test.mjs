@@ -235,7 +235,8 @@ test('support selects credential by default and PII queries fail closed', () => 
   for (const query of ['?domain=pii&status=stable', '?domain=pii&family=pii:us:ssn&family=pii:global:email', '?domain=pii&family=pii:us:ssn&jurisdiction=CA', '?domain=credential&family=pii:us:ssn']) assert.equal(piiSupportQueryOf(query), null);
   const descriptor = { domain: 'pii', reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
     qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null, artifactCommitment: null }, support: { state: 'published', href: `/results/pii-support-matrix-v2-${'a'.repeat(64)}.json`, artifactCommitment: 'a'.repeat(64) } };
-  const matrix = { families: [], supportClaims: false, populationComparisons: [
+  const matrix = { families: [], supportClaims: false, artifactCommitment: 'a'.repeat(64), registryCommitment: 'b'.repeat(64),
+    activationContract: { productArtifact: 'not-measured', productArtifactCommitment: null }, populationComparisons: [
     { id: 'benign-heavy-stress', status: 'not-measured', verdict: 'not-measured', benignFalseAlarmDeltas: [], diagnosticDeltas: [] },
     { id: 'diagnostic-balanced', status: 'not-measured', verdict: 'not-measured', benignFalseAlarmDeltas: [], diagnosticDeltas: [] },
   ] };

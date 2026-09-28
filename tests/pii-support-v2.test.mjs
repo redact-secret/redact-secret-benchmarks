@@ -498,6 +498,7 @@ test('one support query parser is strict across credential and PII domains', () 
 test('credential support renderer keeps its golden bytes', () => {
   const domain = { domain: 'credential', reportProfile: { id: 'credential-evaluation', version: 1 }, evaluationProfile: 'evaluation-v1', domainAccountingVersion: 'credential-v4',
     qualificationProfiles: [{ id: 'documented', version: 1 }, { id: 'empirical', version: 1 }], evaluation: { state: 'published', href: '/results/evaluation-v1.json' }, support: { state: 'published', href: '/results/support-matrix-v1.json' } };
+  // Pins the domain chrome (the beta.10 DomainBar); the credential matrix after it is asserted byte-identical in support-ui.test.mjs.
   const digest = createHash('sha256').update(credentialSupportPage('<golden/>', domain)).digest('hex');
-  assert.equal(digest, '14010b6c0b5d07b03a60c4dd1af1f72bbb87ae8d37b764804cee3a0289fd961c');
+  assert.equal(digest, '3d7fb5ee532e50bc943dfc1c8a4fa9463f88eb40d9f057baeccf73255edec707');
 });

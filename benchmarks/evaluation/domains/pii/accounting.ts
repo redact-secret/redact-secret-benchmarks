@@ -8,7 +8,7 @@ import { isPiiJurisdiction } from './jurisdictions.ts';
 import { validatePiiOutcome } from './outcome-validation.ts';
 import type { PiiAuthority, PiiOutcome, PiiScope, PiiSensitivityExpectation } from './types.ts';
 import { validatePiiAuthority } from './contract-model.ts';
-import { PII_METRIC_IDS, piiV1Profile, validatePiiQualificationProfile, type PiiMetricId, type PiiQualificationProfile } from './profile.ts';
+import { PII_METRIC_IDS, PII_METRIC_LABELS, piiV1Profile, validatePiiQualificationProfile, type PiiMetricId, type PiiQualificationProfile } from './profile.ts';
 import { PII_BENIGN_ACCOUNTING_CLASSES, PII_BENIGN_COLLISION_EVIDENCE_CLASSES, PII_EVIDENCE_ACCOUNTING_CLASSES,
   type PiiBenignCollisionEvidenceClass } from './benign-collision-classes.ts';
 
@@ -142,18 +142,7 @@ function metricBuckets(buckets: Bucket[], direction: 'upper' | 'lower', populati
   return { population, numerator, denominator, direction, status, counts, effectiveN,
     rate: proportion(counts.numerator, effectiveN, direction, profile.mechanics) };
 }
-const metricLabels: Record<PiiMetricId, [string, string, string]> = {
-  'type-miss-rate': ['scanner-source × authored valid-type occurrence', 'type state is miss', 'resolved type assertions for authored valid types'],
-  'wrong-family-rate': ['scanner-source × authored valid-type occurrence', 'type state is wrong-family', 'resolved type assertions for authored valid types'],
-  'wrong-jurisdiction-rate': ['scanner-source × authored jurisdictional valid-type occurrence', 'type state is wrong-jurisdiction', 'resolved jurisdictional type assertions'],
-  'sensitive-miss-rate': ['scanner-source × authored sensitive occurrence', 'sensitivity state is miss', 'resolved sensitivity assertions for authored sensitive occurrences'],
-  'non-sensitive-flag-rate': ['scanner-source × authored non-sensitive occurrence', 'sensitivity state is false-positive', 'resolved sensitivity assertions for authored non-sensitive occurrences'],
-  'context-discrimination-rate': ['complete scanner-source × authored context trios', 'both sensitive and non-sensitive endpoints pass', 'resolved complete context trios'],
-  'benign-suppression-rate': ['scanner-source × distinct authored benign case', 'non-sensitive assertion passes', 'resolved authored benign cases'],
-  'jurisdiction-collision-rate': ['scanner-source × authored jurisdiction collision case', 'target family and jurisdiction assertion passes', 'resolved collision type assertions'],
-  'range-collateral-rate': ['scanner-source × reported span for authored valid type', 'range is overbroad or partial', 'exact, overbroad, or partial reported spans'],
-  'measurable-share': ['all scanner-source × authored axis assertions', 'resolved pass or fail assertions', 'all eligible authored axes including unresolved axes'],
-};
+const metricLabels = PII_METRIC_LABELS;
 
 function assertSingleSource(rows: PiiAccountingRow[]) {
   if (!rows.length) return;

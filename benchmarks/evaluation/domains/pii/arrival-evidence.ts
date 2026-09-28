@@ -110,6 +110,31 @@ export function piiArrivalGateStatuses(population: Pick<PiiPopulationArrivalBund
   };
 }
 
+/**
+ * Independent population gates (benchmarks #423). `piiArrivalGateStatuses` above is kept for the frozen
+ * schemaVersion 1 qualification records, where identity-only, diagnostic and benign-heavy all read one
+ * population-report state. Here each view gate reads its own candidate report and its own baseline comparison,
+ * and identity-only is not derived from populations at all (it comes from the identity oracle).
+ */
+export function piiArrivalViewGateStatuses(population: Pick<PiiPopulationArrivalBundle, 'status' | 'candidate' | 'comparisons'>,
+  operational: { status?: unknown }, protectedState: 'completed' | 'unspent') {
+  const view = (id: 'diagnostic-balanced' | 'benign-heavy-stress') => {
+    const reports = Array.isArray(population.candidate.reports) ? population.candidate.reports.filter(report => report.population === id) : [];
+    const comparisons = Array.isArray(population.comparisons) ?
+      population.comparisons.filter((row: any) => row?.population === id) as Array<{ verdict?: unknown }> : [];
+    if (reports.length !== 1 || comparisons.length !== 1 || reports[0].status !== 'measured') return 'unresolved' as const;
+    return comparisons[0].verdict === 'no-regression' ? 'met' as const :
+      comparisons[0].verdict === 'regression' ? 'not-met' as const : 'unresolved' as const;
+  };
+  return {
+    diagnostic: view('diagnostic-balanced'),
+    benignHeavy: view('benign-heavy-stress'),
+    population: population.status === 'complete' ? 'met' as const : 'not-met' as const,
+    protected: protectedState === 'completed' ? 'met' as const : 'unresolved' as const,
+    operational: operational.status === 'complete' ? 'met' as const : 'not-met' as const,
+  };
+}
+
 export function validatePiiArrivalPopulationRoster(baselineReports: Array<{ population?: unknown }>,
   candidateReports: Array<{ population?: unknown }>, comparisons: Array<{ population?: unknown }>) {
   const required = JSON.stringify([...piiArrivalContract.population.requiredViews].sort());

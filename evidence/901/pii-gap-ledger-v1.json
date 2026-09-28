@@ -1,0 +1,2509 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-gap-ledger",
+  "id": "pii-gap-ledger-v1",
+  "supportClaims": false,
+  "auditOnly": true,
+  "frozenAt": "2026-09-28",
+  "issues": {
+    "benchmarks": 422,
+    "benchmarksParent": 421,
+    "core": 901
+  },
+  "profile": {
+    "id": "pii-v1",
+    "version": 1,
+    "file": "qualification/pii-v1.json",
+    "sha256": "02e1e012f48f610885b17ba806fd7b47d13de6d5a33ac8b58c094175b57b8df2"
+  },
+  "finalCandidate": {
+    "status": "identified",
+    "repository": "redact-secret/redact-secret",
+    "version": "0.1.0-beta.10",
+    "tag": "v0.1.0-beta.10",
+    "sourceCommit": "af7f863f29f9fe482dd233c8b7bc5b77dc427314",
+    "releaseManifest": {
+      "file": "docs/releases/0.1.0-beta.10/manifest.json",
+      "sha256": "344b1579ac9dae75dda8ed3de58bca79ef2ecbc19c19cd92d4dbb2f0c80a1e28"
+    },
+    "artifactInventorySha256": "c79f69288e4de2eac698e5361685d364813d213625d0bdb01c457af6b7e38fe6",
+    "conformanceIdentity": "3ee338adda67b30d80a0c7b1e74411423388a3e6",
+    "artifacts": [
+      {
+        "artifact": "crate:redact-secret",
+        "file": "redact-secret-0.1.0-beta.10.crate",
+        "algorithm": "sha256",
+        "digest": "6ceb095271b42d1e7653e9060d1f00a6b7aec9cb4bb266131767815c5922583e"
+      },
+      {
+        "artifact": "crate:redact-secret-cli",
+        "file": "redact-secret-cli-0.1.0-beta.10.crate",
+        "algorithm": "sha256",
+        "digest": "bdc701e7ec42b75fde0a342dd554a46ba90c89e58464f689cb53e3f60c24ce1b"
+      },
+      {
+        "artifact": "npm:@redact-secret/core",
+        "file": "packages/javascript",
+        "algorithm": "sha1",
+        "digest": "fe20341dd7a0586f9a8600bec79ca0ccbdcf4871"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-arm64",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-arm64",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-arm64",
+        "file": "redact-secret.darwin-arm64.node",
+        "algorithm": "sha256",
+        "digest": "effe64bb761ce19ca1c7046b53f5192aca97bb97009ac60793e2b27de1469809"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-x64",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-x64",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-darwin-x64",
+        "file": "redact-secret.darwin-x64.node",
+        "algorithm": "sha256",
+        "digest": "c87dbd64fcef83d0bbc6cb2fbaea77e8d7ed8e29439ae8a17fbae5ef501fff73"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-gnu",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-gnu",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-gnu",
+        "file": "redact-secret.linux-arm64-gnu.node",
+        "algorithm": "sha256",
+        "digest": "e653756ad5777fddc4c7d761e8040c3ade9bab25e4829f735c35e93d5a6e0262"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-musl",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-musl",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-arm64-musl",
+        "file": "redact-secret.linux-arm64-musl.node",
+        "algorithm": "sha256",
+        "digest": "d278c1800ee539cbc0d269857421ac417c1c9372b8fab64bd59caaf3a4726953"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-gnu",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-gnu",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-gnu",
+        "file": "redact-secret.linux-x64-gnu.node",
+        "algorithm": "sha256",
+        "digest": "3e2b06730a5900215a52b9b96e8c6defe00271d4962bffc727cd5098dcd06779"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-musl",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-musl",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-linux-x64-musl",
+        "file": "redact-secret.linux-x64-musl.node",
+        "algorithm": "sha256",
+        "digest": "146adc02c3b9bb0711171c30c6ecb1b2700feabfd6658e4d1c06a62b297b2313"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-arm64-msvc",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-arm64-msvc",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-arm64-msvc",
+        "file": "redact-secret.win32-arm64-msvc.node",
+        "algorithm": "sha256",
+        "digest": "264582aa7fc4bbbacaa1043bad291454c6980c11755e4672dac5fff969810937"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-x64-msvc",
+        "file": "index.d.ts",
+        "algorithm": "sha256",
+        "digest": "dcb7a3ebe1179fc2b200c055f4a26bf4e0b57f29426da9906eb2deb76ceac928"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-x64-msvc",
+        "file": "index.js",
+        "algorithm": "sha256",
+        "digest": "f2546304b37e27ddce4b9486a9ad0016a78777c105b5844153ae1d54638fed6b"
+      },
+      {
+        "artifact": "npm:@redact-secret/node-win32-x64-msvc",
+        "file": "redact-secret.win32-x64-msvc.node",
+        "algorithm": "sha256",
+        "digest": "c45008c2ee58bd20dbe5f676c8e6201d07aa83af054b254ca27f7614a1b4e2ec"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm.d.ts",
+        "algorithm": "sha256",
+        "digest": "44f2540d682a1fa66e49fdebda997148bd1ccd072c679912ae758219cd8de820"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm.js",
+        "algorithm": "sha256",
+        "digest": "bfbb354acf5e2256f35fab9864cf51a00f8cbe49e082285a29f1c0df65dcdc9a"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_bg.wasm",
+        "algorithm": "sha256",
+        "digest": "8a15b0dba434d99e976b71c3e795905d46157da16fd370346addd3ad44bad217"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_bg.wasm.d.ts",
+        "algorithm": "sha256",
+        "digest": "a673a3d035e9f9278cb51f3abed567f250c0723f4842832b8bb1aac3e226f25e"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_common.d.ts",
+        "algorithm": "sha256",
+        "digest": "44f2540d682a1fa66e49fdebda997148bd1ccd072c679912ae758219cd8de820"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_common.js",
+        "algorithm": "sha256",
+        "digest": "816fa500b79e6ec1c2a28b84a826fb3e1a9222e362bcb1a017a52e71b2a4ed50"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_common_bg.wasm",
+        "algorithm": "sha256",
+        "digest": "85f4159fed55bb6659df405735c90282953b459663e2ff35c0fe31f829b064a4"
+      },
+      {
+        "artifact": "npm:@redact-secret/wasm",
+        "file": "redact_secret_wasm_common_bg.wasm.d.ts",
+        "algorithm": "sha256",
+        "digest": "a673a3d035e9f9278cb51f3abed567f250c0723f4842832b8bb1aac3e226f25e"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10.tar.gz",
+        "algorithm": "sha256",
+        "digest": "4e8d0d061abea51892df69a898319310fb0b5911411a150d19fc5101dae30a81"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-macosx_11_0_arm64.whl",
+        "algorithm": "sha256",
+        "digest": "1cdba1d64ebbc0b80cb82e67aeda939f215b2d9a6860a67bcab57c0b0e0980b7"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-win_arm64.whl",
+        "algorithm": "sha256",
+        "digest": "f047d863bd26fa28233ceb2e63c8643617cb232fe9d658ba58167c7c64035610"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+        "algorithm": "sha256",
+        "digest": "59a023a884186cc0e7299c238b23eba82bca09c49627d6fe247161c52177cec1"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-musllinux_1_2_aarch64.whl",
+        "algorithm": "sha256",
+        "digest": "ed2cf582d2e935166c54d02195f59e3d0539f9ce40e53ed0c517b229f4103db2"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-macosx_10_12_x86_64.whl",
+        "algorithm": "sha256",
+        "digest": "78d0e2c9c4fe975867851be68fd15a690190f1d00a23b59d15496c1482528286"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-win_amd64.whl",
+        "algorithm": "sha256",
+        "digest": "809239592b704c80371395769be831054762c66a90fe2c6d2ff5378ee05d9517"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "algorithm": "sha256",
+        "digest": "1cc495eaec4ece3bca9d0b1615463b74169ad4d20d030d726c91d2bf30f63313"
+      },
+      {
+        "artifact": "pypi:redact-secret",
+        "file": "redact_secret-0.1.0b10-cp310-abi3-musllinux_1_2_x86_64.whl",
+        "algorithm": "sha256",
+        "digest": "7a321dcb7de3cb08713806b6b1cfd4737689aa8daaf65408854e4c144b0976b0"
+      }
+    ],
+    "piiEvidenceBound": false,
+    "piiEvidenceReason": "no-pii-evidence-on-final-candidate",
+    "detectionSourceEquivalence": {
+      "comparedTo": "2e1bdcf0905f7a374c4c54b7caac41303cd7d88b",
+      "coreSourceChanged": false,
+      "changedScope": "Between the phone merge and the final candidate only version strings, documentation, release scripts and package manifests change; crates/ is identical. Built artifacts still differ (beta.9 vs beta.10 version), so equivalence is of source, not of measured artifacts."
+    }
+  },
+  "benchmarkRevision": {
+    "repository": "redact-secret/redact-secret-benchmarks",
+    "commit": "0a73b7db198c628dde74fb815d3029eb6c0acf42",
+    "lockfileSha256": "97692c4cd77c448583d28ea071290d574a7cbf71ef6962853e490732f4af5aec"
+  },
+  "populationBeforeState": {
+    "contractId": "pii-populations-v1",
+    "contractCommitment": "d7025a678969018563b1108cf575a2f718afd749229fcf124eb4c0085c131eb2",
+    "corpusId": "pii-benign-collision-v1",
+    "corpusCommitment": "b9a2f3b24a734c39489095be5855701d64d7a775ac865a2c3d68e0c1efa25b18",
+    "views": [
+      {
+        "id": "diagnostic-balanced",
+        "role": "development-tuning",
+        "members": 5,
+        "sensitiveMass": 0,
+        "nonSensitiveMass": 8000,
+        "notEstablishedMass": 2000
+      },
+      {
+        "id": "benign-heavy-stress",
+        "role": "evaluation-only",
+        "members": 10,
+        "sensitiveMass": 0,
+        "nonSensitiveMass": 10000,
+        "notEstablishedMass": 0
+      }
+    ],
+    "audit": {
+      "entries": 15,
+      "families": {
+        "pii:us:ssn": 15
+      },
+      "languages": {
+        "en": 15
+      },
+      "candidateKinds": {
+        "authoritative-reserved": 6,
+        "deterministic-pattern": 9
+      },
+      "generators": {
+        "sha256-pattern": 9
+      },
+      "evidenceClasses": {
+        "context-negative": 2,
+        "near-miss": 1,
+        "official-test": 3,
+        "ordinary-reference-account": 3,
+        "placeholder": 1,
+        "public-identifier": 2,
+        "reserved-documentation": 3
+      },
+      "emptyEvidenceClasses": [
+        "cross-family-collision"
+      ],
+      "candidateCommitmentsReused": 2,
+      "entriesSharingACandidate": 4,
+      "fieldLabelsReusedAcrossViews": 3,
+      "declaredTwins": 0,
+      "declaredCollisions": 0
+    }
+  },
+  "priorEvidence": [
+    {
+      "id": "evidence/875",
+      "coreIssue": 875,
+      "benchmarkIssue": 388,
+      "kind": "family-qualification",
+      "families": [
+        "pii:global:network-address"
+      ],
+      "productSourceCommit": "941053baecdc4b99f98e085429ac26bf24fe0bee",
+      "benchmarkInputCommit": "7c639ba2a979048a601b89a755f1b0a05cd3a349",
+      "boundToFinalCandidate": false,
+      "summary": "Immutable pii:global:network-address record at the PR #885 merge with 0.1.0-beta.9-versioned candidate artifacts; qualification not-qualified, support pending.",
+      "qualificationStatus": "not-qualified",
+      "supportState": "pending",
+      "planCommitment": "1700856f519f2921f39fe706abda9e4d0b15e2fdb67469ac397b77bfd02d746e",
+      "candidateEvidenceCommitment": "64b7e887bc8299fd3ad5f14e1033263508b7294c0bf07ab6b647d93438782d99",
+      "supportMatrixCommitment": "139fce2c4812e39b56ba08cc133fe34357d94d58d9d3c059a0867cfccd066b8f",
+      "reasonCodes": [
+        "benign-heavy-population",
+        "benign-heavy-stress-not-measured",
+        "class-public-global",
+        "diagnostic-population",
+        "diagnostic-population-not-measured",
+        "identity-only-classification",
+        "population-comparison-not-qualified",
+        "protected-partition"
+      ],
+      "files": [
+        {
+          "file": "evidence/875/candidate-evidence-v1.json",
+          "sha256": "eb8f871645af4297d87874437641a21a710736b983d39d56283265898c9c5574"
+        },
+        {
+          "file": "evidence/875/pii-activation-evidence-v1.json",
+          "sha256": "9230ab327766918208bbb040f4a01e2cdd74d3917e236b178c46d8a6818cddee"
+        },
+        {
+          "file": "evidence/875/pii-family-qualification-v1.json",
+          "sha256": "a0856b740ff0da437599335a83c86003a408c3668dfe4c9601ed8fd1a7bdf28f"
+        },
+        {
+          "file": "evidence/875/pii-support-matrix-v2.json",
+          "sha256": "3c60ece61ec90890d12ec8f5ace3a82f9817b1e611e32a074bac72f484f0a821"
+        }
+      ]
+    },
+    {
+      "id": "evidence/876",
+      "coreIssue": 876,
+      "benchmarkIssue": 389,
+      "kind": "family-qualification",
+      "families": [
+        "pii:global:email"
+      ],
+      "productSourceCommit": "b73daade943f9dea5f86d90a91aa0332083f728a",
+      "benchmarkInputCommit": "7c639ba2a979048a601b89a755f1b0a05cd3a349",
+      "boundToFinalCandidate": false,
+      "summary": "Immutable pii:global:email record at the PR #886 merge with 0.1.0-beta.9-versioned candidate artifacts; qualification not-qualified, support pending.",
+      "qualificationStatus": "not-qualified",
+      "supportState": "pending",
+      "planCommitment": "aa39f91d00e27d259a70fdb9d1331071f3f7e6556fe2d1d149c502073d239923",
+      "candidateEvidenceCommitment": "0cdd435e4752b4e56b0afbf575a9beee05073edeee2c3a3195dbd6c0cb571532",
+      "supportMatrixCommitment": "739db7a87318060c84781e2a3fb2839d9dcf6df778d5ec911eae1debe60acd74",
+      "reasonCodes": [
+        "benign-heavy-population",
+        "benign-heavy-stress-not-measured",
+        "class-identity-only-classification",
+        "class-protected-partition",
+        "diagnostic-population",
+        "diagnostic-population-not-measured",
+        "identity-only-classification",
+        "population-comparison-not-qualified",
+        "protected-partition"
+      ],
+      "files": [
+        {
+          "file": "evidence/876/candidate-evidence-v1.json",
+          "sha256": "2ad13e64b0e1f2fa6d9669ddef9c30b5210484e2ca269caefd36901d5ab6186b"
+        },
+        {
+          "file": "evidence/876/pii-activation-evidence-v1.json",
+          "sha256": "c2fb4d2a9d226647847336cffef24c1f3d0a6572860c672a6a86070be1d97a64"
+        },
+        {
+          "file": "evidence/876/pii-family-qualification-v1.json",
+          "sha256": "972550641e8bf9e47c8fb876a91c70f5ddab509150609168ed71d494172a5398"
+        },
+        {
+          "file": "evidence/876/pii-support-matrix-v2.json",
+          "sha256": "509b0c035cd6a2a17cea44e317602146d78dad928e6363b97e8636e820fe5171"
+        }
+      ]
+    },
+    {
+      "id": "evidence/877",
+      "coreIssue": 877,
+      "benchmarkIssue": 390,
+      "kind": "family-qualification",
+      "families": [
+        "pii:global:payment-card"
+      ],
+      "productSourceCommit": "bf3631b1989570fbf6fdd8836ff21acc35f7d678",
+      "benchmarkInputCommit": "72de7bf813ee1e68c737ab09a65154f654eb9182",
+      "boundToFinalCandidate": false,
+      "summary": "Immutable pii:global:payment-card record at the PR #892 merge with 0.1.0-beta.9-versioned candidate artifacts; qualification not-qualified, support pending.",
+      "qualificationStatus": "not-qualified",
+      "supportState": "pending",
+      "planCommitment": "a56d0f7c35b7c6dfbb6eb0d2f7c6f4e857192d7be85866ef278f0f7b532a23f3",
+      "candidateEvidenceCommitment": "a5f98be45c32883799e0af4baec4c133fcd32f9ae64fe9dcb960838a4817253a",
+      "supportMatrixCommitment": "d01f73f88744bd7b01bcd2e06c11430cd6291ed6939893a6f472a02da793db77",
+      "reasonCodes": [
+        "benign-heavy-population",
+        "benign-heavy-stress-not-measured",
+        "class-identity-only-classification",
+        "class-protected-partition",
+        "diagnostic-population",
+        "diagnostic-population-not-measured",
+        "identity-only-classification",
+        "population-comparison-not-qualified",
+        "protected-partition"
+      ],
+      "files": [
+        {
+          "file": "evidence/877/candidate-evidence-v1.json",
+          "sha256": "473de51b4a4d02dff9c095c4a927c9ec9fe78671da58481d9193129b0ceb27a3"
+        },
+        {
+          "file": "evidence/877/pii-activation-evidence-v1.json",
+          "sha256": "2e12a493a2e1a3776074014693327efbcf487955b8b24ee7f787a9626b186a07"
+        },
+        {
+          "file": "evidence/877/pii-family-qualification-v1.json",
+          "sha256": "04f5867a927ab4e4a75ef33fcc7bdcb361d8395fc30ccf440ebb58c2eb96ee9f"
+        },
+        {
+          "file": "evidence/877/pii-support-matrix-v2.json",
+          "sha256": "7c785609d549ddc7c6ad0ab3f88936418ebb5c67f567ae096d57f8b8a1038619"
+        }
+      ]
+    },
+    {
+      "id": "evidence/878",
+      "coreIssue": 878,
+      "benchmarkIssue": 391,
+      "kind": "family-qualification",
+      "families": [
+        "pii:global:iban"
+      ],
+      "productSourceCommit": "c810623a3348da3b15cb06dc4e13bf5c39113154",
+      "benchmarkInputCommit": "a14f4327f4c9ee7c21a21d8bee448d81f04896cc",
+      "boundToFinalCandidate": false,
+      "summary": "Immutable pii:global:iban record at the PR #889 merge with 0.1.0-beta.9-versioned candidate artifacts; qualification not-qualified, support pending.",
+      "qualificationStatus": "not-qualified",
+      "supportState": "pending",
+      "planCommitment": "9ead94bd2da5df320d8a7fa44a8838c6449769bfc6d4e9fad69732b2bb400f6e",
+      "candidateEvidenceCommitment": "83bda533b5657d1073d8f291f6d56228896d9541eae02e6082f9207b2bda3789",
+      "supportMatrixCommitment": "72ba2360c096b66a6869b65b39fbcdca17a4931587887053ebda8f471d37b8c0",
+      "reasonCodes": [
+        "benign-heavy-population",
+        "benign-heavy-stress-not-measured",
+        "class-identity-only-classification",
+        "class-protected-partition",
+        "diagnostic-population",
+        "diagnostic-population-not-measured",
+        "identity-only-classification",
+        "population-comparison-not-qualified",
+        "protected-partition"
+      ],
+      "files": [
+        {
+          "file": "evidence/878/candidate-evidence-v1.json",
+          "sha256": "a2e7f3e97968e8b2cd1c79dd5cedae1cea935070a11cf331c1756edc42a7dd79"
+        },
+        {
+          "file": "evidence/878/pii-activation-evidence-v1.json",
+          "sha256": "c47e342aeae4fe732febf88899db41e9aeb184b80385e5009b09863c15420c29"
+        },
+        {
+          "file": "evidence/878/pii-family-qualification-v1.json",
+          "sha256": "4049614fc035d1bd903f670d23c4a0e7102758fc60cc8c44a11ac3c2f9f774a9"
+        },
+        {
+          "file": "evidence/878/pii-support-matrix-v2.json",
+          "sha256": "504a592b0ec17169b701b9c29207f8d5f208be237b85c9dc7155ba657c3d4e50"
+        }
+      ]
+    },
+    {
+      "id": "evidence/879",
+      "coreIssue": 879,
+      "benchmarkIssue": 392,
+      "kind": "family-qualification",
+      "families": [
+        "pii:us:ssn"
+      ],
+      "productSourceCommit": "a0709d2a41b70217874da9afeffb40fb2a1a2596",
+      "benchmarkInputCommit": "677bd3f16cbc09c812bb60e2d286cc33111ef37f",
+      "boundToFinalCandidate": false,
+      "summary": "Immutable pii:us:ssn record at the PR #894 merge with 0.1.0-beta.9-versioned candidate artifacts; qualification not-qualified, support pending.",
+      "qualificationStatus": "not-qualified",
+      "supportState": "pending",
+      "planCommitment": "1cb335d0fbd74581adb0dc89e7d928c0d6b399b6d7c6bdcd7f9e7cb4fd8652ba",
+      "candidateEvidenceCommitment": "abd77d4f53cbea579d184b0ee24304582aa6b78803481cab6e8117db95ceb939",
+      "supportMatrixCommitment": "fc6ea430fc34976ed2497dcec9cbc91d8a16c9c5b85035064abe834d8d002f00",
+      "reasonCodes": [
+        "population-comparison-not-qualified",
+        "population-no-regression",
+        "protected-partition",
+        "runtime-and-package-cost"
+      ],
+      "files": [
+        {
+          "file": "evidence/879/candidate-evidence-v1.json",
+          "sha256": "76076492ba119716d678a4d16ca4a5a482937303efdfbc1541929b3690571591"
+        },
+        {
+          "file": "evidence/879/pii-activation-evidence-v1.json",
+          "sha256": "a5c434c1ba6935ccee3b408630438f50dc4e0606e1079acb37086ec8c4f3ea2c"
+        },
+        {
+          "file": "evidence/879/pii-family-qualification-v1.json",
+          "sha256": "e39d71f119a67857ef06a5d8cc48af43080b1bcd2309f89d90269be9a9002138"
+        },
+        {
+          "file": "evidence/879/pii-operational-evidence-v1.json",
+          "sha256": "53ce7b1a2b7c892c6ab0f4e4ec3df5c8c6da514f67bd032f109bf9c82ec03a85"
+        },
+        {
+          "file": "evidence/879/pii-population-arrival-v1.json",
+          "sha256": "eb965f7e0a0acd7ea5e72e932f7990205d5ae07c3d17c7a77d2a6c26181a37c2"
+        },
+        {
+          "file": "evidence/879/pii-protected-unspent-attestation-v1.json",
+          "sha256": "32d67b331ef74219491b0889877ea4af74bc5b09bd70724a97dd722ea8672557"
+        },
+        {
+          "file": "evidence/879/pii-support-matrix-v2.json",
+          "sha256": "360e40fe9ecc7b12458f808e9dc3953b6f6c17fc41ac6e9726d22c82aade9cbc"
+        }
+      ]
+    },
+    {
+      "id": "evidence/880",
+      "coreIssue": 880,
+      "benchmarkIssue": 393,
+      "kind": "family-qualification",
+      "families": [
+        "pii:global:phone"
+      ],
+      "productSourceCommit": "2e1bdcf0905f7a374c4c54b7caac41303cd7d88b",
+      "benchmarkInputCommit": "886dda9016b0f8a44ddc732b457aa2362377b224",
+      "boundToFinalCandidate": false,
+      "summary": "Immutable pii:global:phone record at the PR #895 merge with 0.1.0-beta.9-versioned candidate artifacts; qualification not-qualified, support pending.",
+      "qualificationStatus": "not-qualified",
+      "supportState": "pending",
+      "planCommitment": "8e00a1029d2eef67fbbddc705362a7e4f61d8a8cca54bbba8436f9c00dbc5c18",
+      "candidateEvidenceCommitment": "23c2ba74a93aa4091691572cbc99a3bd4cc23fa19b6a08111ca0d292d6bddc4e",
+      "supportMatrixCommitment": "4984d17cf4974e578438fd7d97ce029a82153218f5086aa36daf1855d922ef69",
+      "reasonCodes": [
+        "benign-heavy-population",
+        "benign-heavy-stress-not-measured",
+        "class-identity-only-classification",
+        "class-protected-partition",
+        "diagnostic-population",
+        "diagnostic-population-not-measured",
+        "identity-only-classification",
+        "population-comparison-not-qualified",
+        "population-no-regression",
+        "protected-partition",
+        "runtime-and-package-cost"
+      ],
+      "files": [
+        {
+          "file": "evidence/880/candidate-evidence-v1.json",
+          "sha256": "45f2e1444a22d0fc739a9d4df677c80070156971705552749319f8cf3df81379"
+        },
+        {
+          "file": "evidence/880/pii-activation-evidence-v1.json",
+          "sha256": "276681a19da66428727a991ddc06f076ca4b90bfb532dbb022858a38b0fc75a3"
+        },
+        {
+          "file": "evidence/880/pii-family-qualification-v1.json",
+          "sha256": "1d39bb881f712bc211ad290c0df12a94fdd72aecdca903da2245f0fcbdeb5519"
+        },
+        {
+          "file": "evidence/880/pii-support-matrix-v2.json",
+          "sha256": "c06519e3824db86d5752db7cc1ae9b42996993dd60c85a84a44459fe884a0ba0"
+        }
+      ]
+    },
+    {
+      "id": "evidence/286",
+      "coreIssue": null,
+      "benchmarkIssue": 286,
+      "kind": "profile-cost",
+      "families": [
+        "pii:global:network-address",
+        "pii:global:email",
+        "pii:global:payment-card",
+        "pii:global:iban",
+        "pii:us:ssn",
+        "pii:global:phone"
+      ],
+      "productSourceCommit": "2e1bdcf0905f7a374c4c54b7caac41303cd7d88b",
+      "benchmarkInputCommit": "a25309af7add303a063b152ccb9b4a6d733626bc",
+      "boundToFinalCandidate": false,
+      "summary": "Beta.10 PII profile/runtime/artifact-size cost at the phone merge: candidate verdict regression (161 of 640 metric evaluations), 40 of 65 distribution artifacts over the #143 budget; profile-level, not per family.",
+      "files": [
+        {
+          "file": "evidence/286/pii-profile-cost-candidate-v1.json",
+          "sha256": "4c15baf6254f51a69c0801c45bd6aa068d6c528594da3f20782486cc1b3f43d1"
+        },
+        {
+          "file": "evidence/286/pii-profile-cost-size-v1.json",
+          "sha256": "b2e55f2b543e468344271e8e5b8c2cfc9b08a4ddc2ff9a95f5b86914e9921bb6"
+        },
+        {
+          "file": "evidence/286/pii-profile-cost-thresholds-v1.json",
+          "sha256": "7aff794c874fa20dcd437f9af4c2ea5da7ffedb7512bdd2615931121d84a71ba"
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "id": "ssn-placeholder-control-408-411",
+      "family": "pii:us:ssn",
+      "kind": "fixture-correction",
+      "references": [
+        "benchmarks#408",
+        "benchmarks#411"
+      ],
+      "affects": [
+        "evidence/879"
+      ],
+      "rewritesPriorEvidence": false,
+      "remeasureOwner": "#426",
+      "summary": "The benign-heavy placeholder control authored a structurally valid value under an unlisted placeholder label as non-sensitive, contradicting us-ssn-v1. #411 replaced it with a type-invalid area-9xx control. evidence/879 and evidence/880 stay frozen against the earlier corpus."
+    }
+  ],
+  "evaluatorFindings": [
+    {
+      "id": "identity-gate-derived-from-population-state",
+      "families": [
+        "pii:us:ssn"
+      ],
+      "location": "scripts/qualify-pii-family-candidate.mjs:L323-L326",
+      "owner": "#423",
+      "productDefect": false,
+      "summary": "identity-only-classification, diagnostic-population and benign-heavy-population all read arrivalGateStatuses.identity, which piiArrivalGateStatuses sets from population-report state. Three gates carry one signal; the identity source lane is a precondition, not the source of the status."
+    },
+    {
+      "id": "negative-sensitivity-label-unenforced",
+      "families": [
+        "pii:global:payment-card",
+        "pii:us:ssn",
+        "pii:global:phone"
+      ],
+      "location": "scripts/qualify-pii-family-candidate.mjs:L271-L278",
+      "owner": "#423",
+      "productDefect": false,
+      "summary": "Absence cases are checked only for zero public findings; the plan label sensitive:false is never compared. Several such cases are not-established under their contract (context-less collisions, identity-unmatched controls), so the label must not feed an oracle as non-sensitive."
+    },
+    {
+      "id": "facade-commitment-not-build-identity",
+      "families": [
+        "pii:global:network-address",
+        "pii:global:email",
+        "pii:global:payment-card",
+        "pii:global:iban",
+        "pii:us:ssn",
+        "pii:global:phone"
+      ],
+      "location": "benchmarks/evaluation/domains/pii/trusted-product-bindings-v1.json",
+      "owner": "#428",
+      "productDefect": false,
+      "summary": "All six records bind the same npm facade SHA-256 across six different source commits. The facade does not identify the native or Wasm build; build identity rests on the source commit and the component hashes in each candidate evidence file."
+    },
+    {
+      "id": "latest-record-activation-omits-jurisdiction",
+      "families": [
+        "pii:us:ssn"
+      ],
+      "location": "evidence/880/pii-support-matrix-v2.json",
+      "owner": "#428",
+      "productDefect": false,
+      "summary": "The latest trusted binding requested only pii:global, so it reports this family as product-family-unavailable. That is recorded activation, not a product claim; a beta.11 binding must request pii:us."
+    },
+    {
+      "id": "population-sensitive-mass-zero",
+      "families": [
+        "pii:us:ssn"
+      ],
+      "location": "benchmarks/evaluation/domains/pii/populations-v1.json",
+      "owner": "#426",
+      "productDefect": false,
+      "summary": "Both population views declare zero sensitive mass, so neither can measure a sensitive miss rate. The other five families have no population entries at all."
+    }
+  ],
+  "families": [
+    {
+      "family": "pii:global:network-address",
+      "scope": "global",
+      "contract": "network-address-v1",
+      "evidence": "evidence/875",
+      "supportState": "pending",
+      "blockers": [
+        {
+          "category": "identity-only-observability",
+          "status": "not-measured",
+          "classification": "evaluator-observability",
+          "owner": "#423",
+          "reason": "public-absence-cannot-establish-identity",
+          "detail": "Gate identity-only-classification is unresolved. The installed surfaces expose only public findings, so a recognized non-sensitive candidate cannot be told apart from an invalid or unmatched one; absence is not evidence.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "sensitive-positive-false-negative",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#424",
+          "reason": "class-public-global-unresolved",
+          "detail": "The 8 authored private, link-local, CGNAT, Teredo, translation and ORCHIDv2 positives were found, but class public-global stays unresolved: no arbitrary public address was authored, so false negatives on public/global addresses are unmeasured.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "benign-false-positive",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#424",
+          "reason": "plan-absence-controls-clean",
+          "detail": "All 17 authored public-absence controls produced no public finding (gate public-absence-controls met). This is plan-level only; no population false-alarm rate exists for this family.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "context-validator-collision",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#424",
+          "reason": "plan-collisions-clean",
+          "detail": "Version-prefix, identifier-boundary, URL-neutral and invalid-spelling (leading zero, zone ID) controls produced no public finding on both surfaces.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "diagnostic-balanced-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#424",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family (all 15 corpus entries are US SSN); the diagnostic-balanced report is not-measured with 0 strata.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "benign-heavy-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#424",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family; the benign-heavy-stress report and both baseline/candidate comparisons are not-measured.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "protected-partition",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "no-protected-epoch",
+          "detail": "No sealed protected corpus or epoch exists for this family. The gate is unresolved, not spent and not passed.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "cross-surface-output",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#427",
+          "reason": "output-and-incremental-not-measured",
+          "detail": "Finding and range parity passed on installed Node addon and Node Wasm only (no exact-source lane in this record). Sanitized output bytes, scanAndRedact, incremental sessions, browser Wasm, credential overlap and mixed documents were not measured.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "activation",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#428",
+          "reason": "selector-closure-met",
+          "detail": "Global closure, exact-family selector and PII-off invariance met on both installed surfaces at the evidence commit. Re-binding to an exact beta.11 candidate belongs to #428.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "performance-size",
+          "status": "failed",
+          "classification": "product-cost-decision",
+          "owner": "#428",
+          "reason": "profile-cost-regression",
+          "detail": "No family-attributable cost exists. evidence/286 (phone merge) regresses on every PII profile, including global (40 of 160 metric evaluations), and 40 of 65 artifacts exceed the #143 size budget. Accepting that cost is a core activation/cost decision (core #794 under #901), not a detector defect.",
+          "evidence": [
+            "evidence/286"
+          ]
+        },
+        {
+          "category": "contract-fixture-discrepancy",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#424",
+          "reason": "no-discrepancy-found",
+          "detail": "The current plan reproduces the plan commitment its immutable record bound, and this audit found no authored expectation that contradicts family contract v1.",
+          "evidence": [
+            "evidence/875"
+          ]
+        },
+        {
+          "category": "exact-candidate-binding",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "evidence-on-predecessor-commit",
+          "detail": "Evidence binds product 941053baecdc with beta.9-versioned artifacts, not the final candidate af7f863f29f9; core crates/ differs by 25 files between them. Re-binding the released beta.10 record is #287; beta.11 exact-candidate binding is #428.",
+          "evidence": [
+            "evidence/875"
+          ]
+        }
+      ],
+      "independence": {
+        "plan": {
+          "planFile": "benchmarks/evaluation/domains/pii/network-address-qualification-v1.json",
+          "planCommitment": "1700856f519f2921f39fe706abda9e4d0b15e2fdb67469ac397b77bfd02d746e",
+          "cases": 25,
+          "publicFindingCases": 8,
+          "publicAbsenceCases": 17,
+          "distinctPositiveSpans": 8,
+          "dominantPositiveCases": 1,
+          "casesContainingDominantPositive": 3,
+          "languages": {
+            "en": 25
+          },
+          "koreanPublicFinding": 0,
+          "koreanPublicAbsence": 0,
+          "classesMeasured": 18,
+          "classesUnresolved": 1
+        },
+        "populationEntries": 0,
+        "contractLanguages": [
+          "en",
+          "ko"
+        ],
+        "languageGaps": [
+          "ko-network-address-field-unexercised"
+        ],
+        "jurisdiction": "Global family, no jurisdiction selector. The plan exercises IANA special-purpose and private spaces only; public/global scope is unresolved.",
+        "authorityControls": "IANA special-purpose registries: documentation (IPv4, IPv6, RFC 9637), benchmarking (RFC 2544, BMWG), multicast, loopback/unspecified and mapped inheritance; 11 absence classes.",
+        "twins": "Informal only: a private-context value reappears as URL-embedded, leading-zero and right-boundary variants. No declared twinOf; no population twins.",
+        "generatorFindings": [
+          "fixed-literal-addresses",
+          "two-field-labels-only",
+          "no-public-global-positive",
+          "no-sensitivity-expectation-in-plan"
+        ]
+      },
+      "fixtureCorrections": [],
+      "productDefects": [],
+      "nonGoals": [
+        {
+          "id": "url-embedded-address",
+          "basis": "Addresses inside a URL are contracted URL-neutral; the plan measures them as absence controls, not as a gap to close."
+        },
+        {
+          "id": "noncanonical-spellings",
+          "basis": "Leading-zero IPv4 and zone-ID IPv6 spellings are contracted non-findings (plan class invalid-spelling)."
+        }
+      ]
+    },
+    {
+      "family": "pii:global:email",
+      "scope": "global",
+      "contract": "email-v1",
+      "evidence": "evidence/876",
+      "supportState": "pending",
+      "blockers": [
+        {
+          "category": "identity-only-observability",
+          "status": "not-measured",
+          "classification": "evaluator-observability",
+          "owner": "#423",
+          "reason": "public-absence-cannot-establish-identity",
+          "detail": "Gate identity-only-classification is unresolved. The installed surfaces expose only public findings, so a recognized non-sensitive candidate cannot be told apart from an invalid or unmatched one; absence is not evidence.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "sensitive-positive-false-negative",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#424",
+          "reason": "plan-positives-found",
+          "detail": "All 4 authored public-finding cases produced one redact finding at the authored range on both installed surfaces (gate sensitive-public-findings met). Only 4 distinct positive span(s); independence is weak and is extended by the axis backlog.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "benign-false-positive",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#424",
+          "reason": "plan-absence-controls-clean",
+          "detail": "All 16 authored public-absence controls produced no public finding (gate public-absence-controls met). This is plan-level only; no population false-alarm rate exists for this family.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "context-validator-collision",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#424",
+          "reason": "plan-collisions-clean",
+          "detail": "URI userinfo, credential userinfo and source-route collisions plus neutral, ambiguous and named-negative contexts produced no public finding on any lane.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "diagnostic-balanced-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#424",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family (all 15 corpus entries are US SSN); the diagnostic-balanced report is not-measured with 0 strata.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "benign-heavy-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#424",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family; the benign-heavy-stress report and both baseline/candidate comparisons are not-measured.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "protected-partition",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "no-protected-epoch",
+          "detail": "No sealed protected corpus or epoch exists for this family. The gate is unresolved, not spent and not passed.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "cross-surface-output",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#427",
+          "reason": "output-and-incremental-not-measured",
+          "detail": "Finding and range parity passed on installed Node addon and Node Wasm plus exact-source Rust, Python and CLI lanes. Sanitized output bytes, scanAndRedact, incremental sessions, browser Wasm, credential overlap and mixed documents were not measured.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "activation",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#428",
+          "reason": "selector-closure-met",
+          "detail": "Global closure, exact-family selector and PII-off invariance met on both installed surfaces at the evidence commit. Re-binding to an exact beta.11 candidate belongs to #428.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "performance-size",
+          "status": "failed",
+          "classification": "product-cost-decision",
+          "owner": "#428",
+          "reason": "profile-cost-regression",
+          "detail": "No family-attributable cost exists. evidence/286 (phone merge) regresses on every PII profile, including global (40 of 160 metric evaluations), and 40 of 65 artifacts exceed the #143 size budget. Accepting that cost is a core activation/cost decision (core #794 under #901), not a detector defect.",
+          "evidence": [
+            "evidence/286"
+          ]
+        },
+        {
+          "category": "contract-fixture-discrepancy",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#424",
+          "reason": "no-discrepancy-found",
+          "detail": "The current plan reproduces the plan commitment its immutable record bound, and this audit found no authored expectation that contradicts family contract v1.",
+          "evidence": [
+            "evidence/876"
+          ]
+        },
+        {
+          "category": "exact-candidate-binding",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "evidence-on-predecessor-commit",
+          "detail": "Evidence binds product b73daade943f with beta.9-versioned artifacts, not the final candidate af7f863f29f9; core crates/ differs by 19 files between them. Re-binding the released beta.10 record is #287; beta.11 exact-candidate binding is #428.",
+          "evidence": [
+            "evidence/876"
+          ]
+        }
+      ],
+      "independence": {
+        "plan": {
+          "planFile": "benchmarks/evaluation/domains/pii/email-qualification-v1.json",
+          "planCommitment": "aa39f91d00e27d259a70fdb9d1331071f3f7e6556fe2d1d149c502073d239923",
+          "cases": 20,
+          "publicFindingCases": 4,
+          "publicAbsenceCases": 16,
+          "distinctPositiveSpans": 4,
+          "dominantPositiveCases": 1,
+          "casesContainingDominantPositive": 1,
+          "languages": {
+            "en": 18,
+            "ko": 2
+          },
+          "koreanPublicFinding": 1,
+          "koreanPublicAbsence": 1,
+          "classesMeasured": 6,
+          "classesUnresolved": 2
+        },
+        "populationEntries": 0,
+        "contractLanguages": [
+          "en",
+          "ko"
+        ],
+        "languageGaps": [
+          "ko-example-label-unexercised"
+        ],
+        "jurisdiction": "Global family; frozen RFC 5321/6531 subset of email-v1. No jurisdiction applies.",
+        "authorityControls": "RFC 2606 example domains and RFC 6761 special-use names (3 reserved controls); resemblance-only domains are authored as positives.",
+        "twins": "Informal context twins: one synthetic local part under field, neutral, ambiguous-contact and named-negative contexts. No declared twinOf.",
+        "generatorFindings": [
+          "single-local-part-generator",
+          "one-korean-positive",
+          "no-public-contact-axis"
+        ]
+      },
+      "fixtureCorrections": [],
+      "productDefects": [],
+      "nonGoals": [
+        {
+          "id": "rfc-forms-outside-v1-subset",
+          "basis": "Quoted local parts, domain literals, single-label and Unicode domains are email-v1 false negatives by contract."
+        }
+      ]
+    },
+    {
+      "family": "pii:global:payment-card",
+      "scope": "global",
+      "contract": "payment-card-v1",
+      "evidence": "evidence/877",
+      "supportState": "pending",
+      "blockers": [
+        {
+          "category": "identity-only-observability",
+          "status": "not-measured",
+          "classification": "evaluator-observability",
+          "owner": "#423",
+          "reason": "public-absence-cannot-establish-identity",
+          "detail": "Gate identity-only-classification is unresolved. The installed surfaces expose only public findings, so a recognized non-sensitive candidate cannot be told apart from an invalid or unmatched one; absence is not evidence.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "sensitive-positive-false-negative",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#425",
+          "reason": "plan-positives-found",
+          "detail": "All 5 authored public-finding cases produced one redact finding at the authored range on both installed surfaces (gate sensitive-public-findings met). Only 4 distinct positive span(s); independence is weak and is extended by the axis backlog.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "benign-false-positive",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#425",
+          "reason": "plan-absence-controls-clean",
+          "detail": "All 14 authored public-absence controls produced no public finding (gate public-absence-controls met). This is plan-level only; no population false-alarm rate exists for this family.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "context-validator-collision",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#425",
+          "reason": "plan-collisions-clean",
+          "detail": "Checksum neighbor, out-of-range IIN, official test value, Luhn-valid order/account/phone/random/prose collisions, named-negative context and URL query produced no public finding on any lane.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "diagnostic-balanced-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#425",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family (all 15 corpus entries are US SSN); the diagnostic-balanced report is not-measured with 0 strata.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "benign-heavy-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#425",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family; the benign-heavy-stress report and both baseline/candidate comparisons are not-measured.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "protected-partition",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "no-protected-epoch",
+          "detail": "No sealed protected corpus or epoch exists for this family. The gate is unresolved, not spent and not passed.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "cross-surface-output",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#427",
+          "reason": "output-and-incremental-not-measured",
+          "detail": "Finding and range parity passed on installed Node addon and Node Wasm plus exact-source Rust, Python and CLI lanes. Sanitized output bytes, scanAndRedact, incremental sessions, browser Wasm, credential overlap and mixed documents were not measured.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "activation",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#428",
+          "reason": "selector-closure-met",
+          "detail": "Global closure, exact-family selector and PII-off invariance met on both installed surfaces at the evidence commit. Re-binding to an exact beta.11 candidate belongs to #428.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "performance-size",
+          "status": "failed",
+          "classification": "product-cost-decision",
+          "owner": "#428",
+          "reason": "profile-cost-regression",
+          "detail": "No family-attributable cost exists. evidence/286 (phone merge) regresses on every PII profile, including global (40 of 160 metric evaluations), and 40 of 65 artifacts exceed the #143 size budget. Accepting that cost is a core activation/cost decision (core #794 under #901), not a detector defect.",
+          "evidence": [
+            "evidence/286"
+          ]
+        },
+        {
+          "category": "contract-fixture-discrepancy",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#425",
+          "reason": "no-discrepancy-found",
+          "detail": "The current plan reproduces the plan commitment its immutable record bound, and this audit found no authored expectation that contradicts family contract v1.",
+          "evidence": [
+            "evidence/877"
+          ]
+        },
+        {
+          "category": "exact-candidate-binding",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "evidence-on-predecessor-commit",
+          "detail": "Evidence binds product bf3631b19895 with beta.9-versioned artifacts, not the final candidate af7f863f29f9; core crates/ differs by 12 files between them. Re-binding the released beta.10 record is #287; beta.11 exact-candidate binding is #428.",
+          "evidence": [
+            "evidence/877"
+          ]
+        }
+      ],
+      "independence": {
+        "plan": {
+          "planFile": "benchmarks/evaluation/domains/pii/payment-card-qualification-v1.json",
+          "planCommitment": "a56d0f7c35b7c6dfbb6eb0d2f7c6f4e857192d7be85866ef278f0f7b532a23f3",
+          "cases": 19,
+          "publicFindingCases": 5,
+          "publicAbsenceCases": 14,
+          "distinctPositiveSpans": 4,
+          "dominantPositiveCases": 2,
+          "casesContainingDominantPositive": 12,
+          "languages": {
+            "en": 19
+          },
+          "koreanPublicFinding": 0,
+          "koreanPublicAbsence": 0,
+          "classesMeasured": 13,
+          "classesUnresolved": 2
+        },
+        "populationEntries": 0,
+        "contractLanguages": [
+          "en",
+          "ko"
+        ],
+        "languageGaps": [
+          "ko-payment-card-field-unexercised",
+          "ko-example-label-unexercised"
+        ],
+        "jurisdiction": "Global family; ISO/IEC 7812 structure limited to the frozen Visa Acceptance supported-brand subset.",
+        "authorityControls": "One exact Visa Acceptance test value; ISO/IEC 7812 structure; PCI SSC FAQ 1137 Luhn guidance.",
+        "twins": "Informal context twins: one Luhn-valid construction under card, order, account, random-number, prose and URL contexts; the checksum neighbor differs in one digit. No declared twinOf.",
+        "generatorFindings": [
+          "one-seed-construction-family",
+          "no-korean-case",
+          "single-authority-test-value"
+        ]
+      },
+      "fixtureCorrections": [],
+      "productDefects": [],
+      "nonGoals": [
+        {
+          "id": "unsupported-brands-and-ranges",
+          "basis": "Brands and range revisions outside the frozen subset (for example Maestro) are payment-card-v1 false negatives by contract."
+        },
+        {
+          "id": "mixed-separator-layouts",
+          "basis": "Mixed space/hyphen display layouts are contracted unsupported formats."
+        }
+      ]
+    },
+    {
+      "family": "pii:global:iban",
+      "scope": "global",
+      "contract": "iban-v1",
+      "evidence": "evidence/878",
+      "supportState": "pending",
+      "blockers": [
+        {
+          "category": "identity-only-observability",
+          "status": "not-measured",
+          "classification": "evaluator-observability",
+          "owner": "#423",
+          "reason": "public-absence-cannot-establish-identity",
+          "detail": "Gate identity-only-classification is unresolved. The installed surfaces expose only public findings, so a recognized non-sensitive candidate cannot be told apart from an invalid or unmatched one; absence is not evidence.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "sensitive-positive-false-negative",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#425",
+          "reason": "plan-positives-found",
+          "detail": "All 2 authored public-finding cases produced one redact finding at the authored range on both installed surfaces (gate sensitive-public-findings met). Only 1 distinct positive span(s); independence is weak and is extended by the axis backlog.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "benign-false-positive",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#425",
+          "reason": "plan-absence-controls-clean",
+          "detail": "All 19 authored public-absence controls produced no public finding (gate public-absence-controls met). This is plan-level only; no population false-alarm rate exists for this family.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "context-validator-collision",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#425",
+          "reason": "plan-collisions-clean",
+          "detail": "Checksum mismatch, wrong country length, unknown country, checksum-valid neutral context, documentation and Korean example labels and reference syntax produced no public finding on any lane.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "diagnostic-balanced-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#425",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family (all 15 corpus entries are US SSN); the diagnostic-balanced report is not-measured with 0 strata.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "benign-heavy-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#425",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family; the benign-heavy-stress report and both baseline/candidate comparisons are not-measured.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "protected-partition",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "no-protected-epoch",
+          "detail": "No sealed protected corpus or epoch exists for this family. The gate is unresolved, not spent and not passed.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "cross-surface-output",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#427",
+          "reason": "output-and-incremental-not-measured",
+          "detail": "Finding and range parity passed on installed Node addon and Node Wasm plus exact-source Rust, Python and CLI lanes. Sanitized output bytes, scanAndRedact, incremental sessions, browser Wasm, credential overlap and mixed documents were not measured.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "activation",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#428",
+          "reason": "selector-closure-met",
+          "detail": "Global closure, exact-family selector and PII-off invariance met on both installed surfaces at the evidence commit. Re-binding to an exact beta.11 candidate belongs to #428.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "performance-size",
+          "status": "failed",
+          "classification": "product-cost-decision",
+          "owner": "#428",
+          "reason": "profile-cost-regression",
+          "detail": "No family-attributable cost exists. evidence/286 (phone merge) regresses on every PII profile, including global (40 of 160 metric evaluations), and 40 of 65 artifacts exceed the #143 size budget. Accepting that cost is a core activation/cost decision (core #794 under #901), not a detector defect.",
+          "evidence": [
+            "evidence/286"
+          ]
+        },
+        {
+          "category": "contract-fixture-discrepancy",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#425",
+          "reason": "no-discrepancy-found",
+          "detail": "The current plan reproduces the plan commitment its immutable record bound, and this audit found no authored expectation that contradicts family contract v1.",
+          "evidence": [
+            "evidence/878"
+          ]
+        },
+        {
+          "category": "exact-candidate-binding",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "evidence-on-predecessor-commit",
+          "detail": "Evidence binds product c810623a3348 with beta.9-versioned artifacts, not the final candidate af7f863f29f9; core crates/ differs by 14 files between them. Re-binding the released beta.10 record is #287; beta.11 exact-candidate binding is #428.",
+          "evidence": [
+            "evidence/878"
+          ]
+        }
+      ],
+      "independence": {
+        "plan": {
+          "planFile": "benchmarks/evaluation/domains/pii/iban-qualification-v1.json",
+          "planCommitment": "9ead94bd2da5df320d8a7fa44a8838c6449769bfc6d4e9fad69732b2bb400f6e",
+          "cases": 21,
+          "publicFindingCases": 2,
+          "publicAbsenceCases": 19,
+          "distinctPositiveSpans": 1,
+          "dominantPositiveCases": 2,
+          "casesContainingDominantPositive": 18,
+          "languages": {
+            "en": 19,
+            "ko": 2
+          },
+          "koreanPublicFinding": 1,
+          "koreanPublicAbsence": 1,
+          "classesMeasured": 9,
+          "classesUnresolved": 2
+        },
+        "populationEntries": 0,
+        "contractLanguages": [
+          "en",
+          "ko"
+        ],
+        "languageGaps": [],
+        "jurisdiction": "Global family; SWIFT IBAN Registry Release 103 (89 country/length rows), but positives exercise a single country.",
+        "authorityControls": "No authority-published test IBAN; controls are mechanical (checksum, country length, unknown country) plus documentation/example labels.",
+        "twins": "Informal: one checksum-valid construction under field, neutral, documentation, reference and separator variants, with checksum and length neighbors. No declared twinOf.",
+        "generatorFindings": [
+          "single-checksum-valid-construction",
+          "single-country-positive",
+          "no-authority-test-value"
+        ]
+      },
+      "fixtureCorrections": [],
+      "productDefects": [],
+      "nonGoals": [
+        {
+          "id": "noncanonical-iban-formats",
+          "basis": "Lowercase, hyphen, repeated-space and tab separators are iban-v1 unsupported formats."
+        },
+        {
+          "id": "countries-outside-registry-103",
+          "basis": "Only the 89 country/length rows of Registry Release 103 are in claim."
+        }
+      ]
+    },
+    {
+      "family": "pii:us:ssn",
+      "scope": "jurisdiction:US",
+      "contract": "us-ssn-v1",
+      "evidence": "evidence/879",
+      "supportState": "pending",
+      "blockers": [
+        {
+          "category": "identity-only-observability",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#423",
+          "reason": "source-identity-lane-met",
+          "detail": "evidence/879 requires a private identity source lane plus validator, native, Python and CLI lanes to pass. The gate status itself is derived from population-report state (evaluator finding identity-gate-derived-from-population-state), and the lane runs on source, not the installed artifact.",
+          "evidence": [
+            "evidence/879"
+          ]
+        },
+        {
+          "category": "sensitive-positive-false-negative",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#426",
+          "reason": "plan-positives-found",
+          "detail": "All 3 authored public-finding cases produced one redact finding at the authored range on both installed surfaces (gate sensitive-public-findings met). Only 1 distinct positive span(s); independence is weak and is extended by the axis backlog.",
+          "evidence": [
+            "evidence/879"
+          ]
+        },
+        {
+          "category": "benign-false-positive",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#426",
+          "reason": "plan-absence-controls-clean",
+          "detail": "All 17 authored public-absence controls produced no public finding (gate public-absence-controls met). This is plan-level only; no population false-alarm rate exists for this family.",
+          "evidence": [
+            "evidence/879"
+          ]
+        },
+        {
+          "category": "context-validator-collision",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#426",
+          "reason": "plan-collisions-clean",
+          "detail": "Area, group and serial exclusions, the SSA display control, order/invoice references, a card-field collision, documentation and negation contexts produced no public finding on any lane.",
+          "evidence": [
+            "evidence/879"
+          ]
+        },
+        {
+          "category": "diagnostic-balanced-population",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#426",
+          "reason": "diagnostic-no-regression",
+          "detail": "evidence/879 diagnostic-balanced comparison is no-regression (5 members). Both views declare zero sensitive mass, so the population measures false alarms and near misses only, never sensitive misses.",
+          "evidence": [
+            "evidence/879"
+          ]
+        },
+        {
+          "category": "benign-heavy-population",
+          "status": "failed",
+          "classification": "fixture-correction",
+          "owner": "#426",
+          "reason": "placeholder-fixture-error",
+          "detail": "evidence/879 records benign-heavy-stress regression from one placeholder case. #408 showed the expectation contradicted us-ssn-v1; #411 re-authored it as a type-invalid control. Only a local run shows no-regression; no exact-candidate re-measurement is recorded, and evidence/879 is not rewritten.",
+          "evidence": [
+            "evidence/879",
+            "benchmarks#408",
+            "benchmarks#411"
+          ],
+          "resolution": "corrected-in-corpus-remeasure-pending"
+        },
+        {
+          "category": "protected-partition",
+          "status": "not-run",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "public-gates-failed",
+          "detail": "The sealed epoch exists and stays unspent at 0 of 1 runs; the redacted attestation records not-run because public gates failed. It is custody evidence, not protected performance.",
+          "evidence": [
+            "evidence/879"
+          ]
+        },
+        {
+          "category": "cross-surface-output",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#427",
+          "reason": "output-and-incremental-not-measured",
+          "detail": "Finding and range parity passed on installed Node addon and Node Wasm plus exact-source Rust, Python and CLI lanes. Sanitized output bytes, scanAndRedact, incremental sessions, browser Wasm, credential overlap and mixed documents were not measured.",
+          "evidence": [
+            "evidence/879"
+          ]
+        },
+        {
+          "category": "activation",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#428",
+          "reason": "selector-closure-met",
+          "detail": "evidence/879 met the pii:us closure, exact selector and PII-off invariance on both installed surfaces. The later evidence/880 activation requested only pii:global, so that record shows this family as product-family-unavailable (evaluator finding latest-record-activation-omits-jurisdiction).",
+          "evidence": [
+            "evidence/879"
+          ]
+        },
+        {
+          "category": "performance-size",
+          "status": "failed",
+          "classification": "product-cost-decision",
+          "owner": "#428",
+          "reason": "common-wasm-zero-growth-exceeded",
+          "detail": "evidence/879 common Wasm payload grows 3,675 raw / 1,372 gzip / 688 brotli bytes against a frozen zero-growth budget; evidence/286 us-ssn-exact regresses on 35 of 160 metric evaluations. Accepting that cost is a core decision, not a detector defect.",
+          "evidence": [
+            "evidence/879",
+            "evidence/286"
+          ]
+        },
+        {
+          "category": "contract-fixture-discrepancy",
+          "status": "failed",
+          "classification": "fixture-correction",
+          "owner": "#426",
+          "reason": "placeholder-expectation-contradicted-contract",
+          "detail": "The frozen evidence/879 narrative calls the placeholder redaction a reviewed product false positive; #408/#411 established it as a corpus expectation error under us-ssn-v1. The record stays frozen; its interpretation is superseded here, not rewritten.",
+          "evidence": [
+            "evidence/879",
+            "benchmarks#408",
+            "benchmarks#411"
+          ],
+          "resolution": "corrected-in-corpus-remeasure-pending"
+        },
+        {
+          "category": "exact-candidate-binding",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "evidence-on-predecessor-commit",
+          "detail": "Evidence binds product a0709d2a41b7 with beta.9-versioned artifacts, not the final candidate af7f863f29f9; core crates/ differs by 9 files between them. Re-binding the released beta.10 record is #287; beta.11 exact-candidate binding is #428.",
+          "evidence": [
+            "evidence/879"
+          ]
+        }
+      ],
+      "independence": {
+        "plan": {
+          "planFile": "benchmarks/evaluation/domains/pii/us-ssn-qualification-v1.json",
+          "planCommitment": "1cb335d0fbd74581adb0dc89e7d928c0d6b399b6d7c6bdcd7f9e7cb4fd8652ba",
+          "cases": 20,
+          "publicFindingCases": 3,
+          "publicAbsenceCases": 17,
+          "distinctPositiveSpans": 1,
+          "dominantPositiveCases": 3,
+          "casesContainingDominantPositive": 14,
+          "languages": {
+            "en": 20
+          },
+          "koreanPublicFinding": 0,
+          "koreanPublicAbsence": 0,
+          "classesMeasured": 11,
+          "classesUnresolved": 0
+        },
+        "populationEntries": 15,
+        "contractLanguages": [
+          "en",
+          "ko"
+        ],
+        "languageGaps": [
+          "ko-us-ssn-field-unexercised",
+          "ko-us-ssn-negation-unexercised",
+          "ko-example-label-unexercised"
+        ],
+        "jurisdiction": "jurisdiction:US through pii:us or the exact selector; pii:global never selects it. No second jurisdiction is registered, so several-jurisdiction comparisons are not applicable.",
+        "authorityControls": "SSA structural exclusions (area 000, 666 and 900-999; group 00; serial 0000) and the SSA display control; the population adds the all-nines area-9xx placeholder from #411.",
+        "twins": "Informal: one construction under field, order, invoice, card-field, documentation and negation labels, with one-component area/group/serial mutations. The population corpus declares 0 twins.",
+        "generatorFindings": [
+          "single-positive-construction",
+          "no-korean-case",
+          "population-english-only",
+          "population-values-reused-across-views",
+          "population-labels-reused-across-views",
+          "population-sensitive-mass-zero"
+        ]
+      },
+      "fixtureCorrections": [
+        "ssn-placeholder-control-408-411"
+      ],
+      "productDefects": [],
+      "nonGoals": [
+        {
+          "id": "second-jurisdiction",
+          "basis": "No second national-ID jurisdiction is registered; core #795 forbids inventing one to fill a comparison shape."
+        },
+        {
+          "id": "unicode-separator-forms",
+          "basis": "Unicode dash and no-break-space forms are us-ssn-v1 unsupported formats."
+        }
+      ]
+    },
+    {
+      "family": "pii:global:phone",
+      "scope": "global",
+      "contract": "phone-v1",
+      "evidence": "evidence/880",
+      "supportState": "pending",
+      "blockers": [
+        {
+          "category": "identity-only-observability",
+          "status": "not-measured",
+          "classification": "evaluator-observability",
+          "owner": "#423",
+          "reason": "public-absence-cannot-establish-identity",
+          "detail": "Gate identity-only-classification is unresolved. The installed surfaces expose only public findings, so a recognized non-sensitive candidate cannot be told apart from an invalid or unmatched one; absence is not evidence.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "sensitive-positive-false-negative",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#426",
+          "reason": "plan-positives-found",
+          "detail": "All 14 authored public-finding cases produced one redact finding at the authored range on both installed surfaces (gate sensitive-public-findings met). Only 6 distinct positive span(s); independence is weak and is extended by the axis backlog.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "benign-false-positive",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#426",
+          "reason": "plan-absence-controls-clean",
+          "detail": "All 27 authored public-absence controls produced no public finding (gate public-absence-controls met). This is plan-level only; no population false-alarm rate exists for this family.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "context-validator-collision",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#426",
+          "reason": "plan-collisions-clean",
+          "detail": "Version, order-reference, IPv4 and date collisions, 555 reserved controls, N11 exclusions, malformed extension seams and ambiguous English/Korean contact labels produced no public finding on any lane.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "diagnostic-balanced-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#426",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family (all 15 corpus entries are US SSN); the diagnostic-balanced report is not-measured with 0 strata.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "benign-heavy-population",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#426",
+          "reason": "no-population-entries",
+          "detail": "pii-populations-v1 holds no entry for this family; the benign-heavy-stress report and both baseline/candidate comparisons are not-measured.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "protected-partition",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "no-protected-epoch",
+          "detail": "No sealed protected corpus or epoch exists for this family. The gate is unresolved, not spent and not passed.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "cross-surface-output",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#427",
+          "reason": "output-and-incremental-not-measured",
+          "detail": "Finding and range parity passed on installed Node addon and Node Wasm plus exact-source Rust, Python and CLI lanes. Sanitized output bytes, scanAndRedact, incremental sessions, browser Wasm, credential overlap and mixed documents were not measured.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "activation",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#428",
+          "reason": "selector-closure-met",
+          "detail": "Global closure, exact-family selector and PII-off invariance met on both installed surfaces at the evidence commit. Re-binding to an exact beta.11 candidate belongs to #428.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "performance-size",
+          "status": "failed",
+          "classification": "product-cost-decision",
+          "owner": "#428",
+          "reason": "profile-cost-regression",
+          "detail": "evidence/880 leaves runtime-and-package-cost unresolved for this family. evidence/286 at the same commit regresses on every PII profile including global (40 of 160 metric evaluations), and 40 of 65 artifacts exceed the size budget. Accepting that cost is a core decision, not a detector defect.",
+          "evidence": [
+            "evidence/880",
+            "evidence/286"
+          ]
+        },
+        {
+          "category": "contract-fixture-discrepancy",
+          "status": "passed",
+          "classification": "none",
+          "owner": "#426",
+          "reason": "no-discrepancy-found",
+          "detail": "The current plan reproduces the plan commitment its immutable record bound, and this audit found no authored expectation that contradicts family contract v1.",
+          "evidence": [
+            "evidence/880"
+          ]
+        },
+        {
+          "category": "exact-candidate-binding",
+          "status": "not-measured",
+          "classification": "measurement-gap",
+          "owner": "#428",
+          "reason": "evidence-on-predecessor-commit",
+          "detail": "Evidence binds product 2e1bdcf0905f with beta.9-versioned artifacts, not the final candidate af7f863f29f9; core crates/ differs by 0 files between them. Re-binding the released beta.10 record is #287; beta.11 exact-candidate binding is #428.",
+          "evidence": [
+            "evidence/880"
+          ]
+        }
+      ],
+      "independence": {
+        "plan": {
+          "planFile": "benchmarks/evaluation/domains/pii/phone-qualification-v1.json",
+          "planCommitment": "8e00a1029d2eef67fbbddc705362a7e4f61d8a8cca54bbba8436f9c00dbc5c18",
+          "cases": 41,
+          "publicFindingCases": 14,
+          "publicAbsenceCases": 27,
+          "distinctPositiveSpans": 6,
+          "dominantPositiveCases": 9,
+          "casesContainingDominantPositive": 29,
+          "languages": {
+            "en": 36,
+            "ko": 5
+          },
+          "koreanPublicFinding": 3,
+          "koreanPublicAbsence": 2,
+          "classesMeasured": 15,
+          "classesUnresolved": 2
+        },
+        "populationEntries": 0,
+        "contractLanguages": [
+          "en",
+          "ko"
+        ],
+        "languageGaps": [
+          "ko-example-label-unexercised"
+        ],
+        "jurisdiction": "Global family with the NANP (+1) grammar only; other country codes are explicit phone-v1 false negatives, not inferred.",
+        "authorityControls": "NANPA fictitious 555 line range 0100-0199 (2 controls) and actual N11 area/central-office codes.",
+        "twins": "Informal: one dominant base construction under field, ambiguous, negative, reference and version labels, with extension and boundary seams. No declared twinOf.",
+        "generatorFindings": [
+          "dominant-base-construction",
+          "nanp-only-positives"
+        ]
+      },
+      "fixtureCorrections": [],
+      "productDefects": [],
+      "nonGoals": [
+        {
+          "id": "non-nanp-country-codes",
+          "basis": "Unsupported country codes, tel: URIs and vanity numbers are explicit phone-v1 false negatives."
+        },
+        {
+          "id": "x-extension-and-compact-local-forms",
+          "basis": "x-style extensions and seven-digit local forms are contracted exclusions."
+        }
+      ]
+    }
+  ],
+  "axisBacklog": [
+    {
+      "order": 1,
+      "id": "network-public-global-positives",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ],
+      "detail": "Author independent public/global IPv4 and IPv6 positives with reviewed field context; resolves class public-global."
+    },
+    {
+      "order": 2,
+      "id": "network-operational-log-config-context",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ],
+      "detail": "Private and public operational addresses in dense log, config and tool-result lines as a public-operational benign axis."
+    },
+    {
+      "order": 3,
+      "id": "network-reserved-documentation-benchmark",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "diagnostic-balanced-population"
+      ],
+      "detail": "IANA documentation, benchmarking, loopback and multicast controls as population strata, not only plan cases."
+    },
+    {
+      "order": 4,
+      "id": "network-version-boundary-url-collisions",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ],
+      "detail": "Version strings, identifier boundaries and URL-embedded addresses as collision strata with one-property twins."
+    },
+    {
+      "order": 5,
+      "id": "network-korean-field-context",
+      "family": "pii:global:network-address",
+      "owner": "#424",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ],
+      "detail": "Exercise the reviewed Korean network-address field label; no Korean case exists today."
+    },
+    {
+      "order": 6,
+      "id": "email-independent-sensitive-positives",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ],
+      "detail": "Several independent local parts and domains from distinct generators instead of one local part; include SMTPUTF8."
+    },
+    {
+      "order": 7,
+      "id": "email-reserved-documentation-controls",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ],
+      "detail": "RFC 2606/6761 reserved domains as population strata."
+    },
+    {
+      "order": 8,
+      "id": "email-public-contact-addresses",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ],
+      "detail": "Public role and contact addresses under ambiguous contact context as a public-identifier benign axis."
+    },
+    {
+      "order": 9,
+      "id": "email-example-label-context-negatives",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ],
+      "detail": "English and Korean example/documentation labels; the Korean example label is unexercised today."
+    },
+    {
+      "order": 10,
+      "id": "email-userinfo-credential-collisions",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ],
+      "detail": "URI and connection-string userinfo as cross-family collisions beside credentials."
+    },
+    {
+      "order": 11,
+      "id": "email-smtputf8-boundary-twins",
+      "family": "pii:global:email",
+      "owner": "#424",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ],
+      "detail": "Declared one-property twins at SMTPUTF8 and whole-candidate boundaries."
+    },
+    {
+      "order": 12,
+      "id": "card-independent-sensitive-positives",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ],
+      "detail": "Independent constructions across every frozen brand and length with English and Korean card field labels."
+    },
+    {
+      "order": 13,
+      "id": "card-official-test-values",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ],
+      "detail": "More than one official test value, each inside the frozen authority subset."
+    },
+    {
+      "order": 14,
+      "id": "card-luhn-valid-benign-collisions",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ],
+      "detail": "Luhn-valid order, account, phone and random numbers as independent benign strata."
+    },
+    {
+      "order": 15,
+      "id": "card-checksum-invalid-near-miss",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ],
+      "detail": "Checksum failures as near-miss strata that measure validator correctness only."
+    },
+    {
+      "order": 16,
+      "id": "card-issuer-range-scope-boundary",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ],
+      "detail": "In-range and out-of-range IIN twins at every frozen range edge."
+    },
+    {
+      "order": 17,
+      "id": "card-separator-display-twins",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ],
+      "detail": "Supported and unsupported display layouts as declared twins."
+    },
+    {
+      "order": 18,
+      "id": "card-korean-field-and-example-context",
+      "family": "pii:global:payment-card",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "context-validator-collision"
+      ],
+      "detail": "Korean card field labels and the Korean example label; no Korean case exists today."
+    },
+    {
+      "order": 19,
+      "id": "iban-multi-country-positives",
+      "family": "pii:global:iban",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ],
+      "detail": "Independent constructions across several Registry 103 countries and lengths instead of one country."
+    },
+    {
+      "order": 20,
+      "id": "iban-mod97-valid-lookalikes",
+      "family": "pii:global:iban",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ],
+      "detail": "mod-97-valid lookalikes, wrong country lengths and unknown countries as strata."
+    },
+    {
+      "order": 21,
+      "id": "iban-reference-documentation-controls",
+      "family": "pii:global:iban",
+      "owner": "#425",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ],
+      "detail": "Template references and documentation/example labels as benign strata."
+    },
+    {
+      "order": 22,
+      "id": "iban-print-format-separator-twins",
+      "family": "pii:global:iban",
+      "owner": "#425",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative"
+      ],
+      "detail": "Print-format and separator variants as declared twins."
+    },
+    {
+      "order": 23,
+      "id": "ssn-remeasure-corrected-placeholder",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-heavy-population",
+        "contract-fixture-discrepancy"
+      ],
+      "detail": "Re-measure benign-heavy-stress on the #411-corrected corpus against an exact candidate; evidence/879 stays frozen."
+    },
+    {
+      "order": 24,
+      "id": "ssn-independent-sensitive-positives",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ],
+      "detail": "Several independent area/group/serial constructions; give the diagnostic view non-zero sensitive mass."
+    },
+    {
+      "order": 25,
+      "id": "ssn-korean-field-and-negation",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "context-validator-collision"
+      ],
+      "detail": "Korean SSN field labels and Korean negation; no Korean case exists today."
+    },
+    {
+      "order": 26,
+      "id": "ssn-population-value-and-label-independence",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "diagnostic-balanced-population",
+        "benign-heavy-population"
+      ],
+      "detail": "Stop reusing the same candidate values and field labels across the two views."
+    },
+    {
+      "order": 27,
+      "id": "ssn-ordinary-identifier-collisions",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ],
+      "detail": "Nine-digit ordinary identifiers beyond order and invoice references."
+    },
+    {
+      "order": 28,
+      "id": "ssn-declared-twins",
+      "family": "pii:us:ssn",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "context-validator-collision"
+      ],
+      "detail": "Declare one-property twins for context and allocation mutations."
+    },
+    {
+      "order": 29,
+      "id": "phone-independent-sensitive-positives",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "diagnostic-balanced-population"
+      ],
+      "detail": "Several independent NANP constructions instead of one dominant base construction."
+    },
+    {
+      "order": 30,
+      "id": "phone-reserved-555-and-n11-controls",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "benign-false-positive",
+        "benign-heavy-population"
+      ],
+      "detail": "NANPA 555 fictitious range and N11 codes as population strata."
+    },
+    {
+      "order": 31,
+      "id": "phone-order-reference-collisions",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "en",
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ],
+      "detail": "Order, reference, version and date numbers in phone shape as benign strata."
+    },
+    {
+      "order": 32,
+      "id": "phone-extension-seams",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ],
+      "languages": [
+        "en"
+      ],
+      "resolves": [
+        "sensitive-positive-false-negative",
+        "context-validator-collision"
+      ],
+      "detail": "Supported and malformed extension seams as declared twins."
+    },
+    {
+      "order": 33,
+      "id": "phone-korean-high-signal-vs-ambiguous",
+      "family": "pii:global:phone",
+      "owner": "#426",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ],
+      "languages": [
+        "ko"
+      ],
+      "resolves": [
+        "context-validator-collision",
+        "benign-heavy-population"
+      ],
+      "detail": "Korean high-signal phone labels against ambiguous contact labels and the Korean example label."
+    }
+  ],
+  "contentCommitment": "7fcbba702d93849ce1452ee5a9adf3d20e493179107ec0c6bbda36cb9e5fd116"
+}

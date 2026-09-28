@@ -70,6 +70,7 @@
     "pii:arrival:observe": "node --import tsx scripts/observe-us-ssn-populations.mjs",
     "pii:arrival:operational": "node --import tsx scripts/measure-pii-arrival-operational.mjs",
     "pii:arrival:holdout": "node --import tsx scripts/run-us-ssn-protected-holdout.mjs",
+    "pii:ledger:check": "node --import tsx scripts/check-pii-gap-ledger.mjs",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
     "eval:dry-run": "node --import tsx scripts/accounting-dry-run.ts",
     "eval:milestone": "node scripts/refresh-evaluation-milestone.mjs",

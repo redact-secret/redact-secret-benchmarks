@@ -9,7 +9,9 @@ import { validateEvidence } from '../benchmarks/evaluation/domains/credential/ev
 import { validatePiiArrivalCandidateBinding, validatePiiArrivalOperational, validatePiiArrivalQualificationReadiness,
   validatePiiArrivalProtectedEvidence, validatePiiPopulationArrivalBundle, piiArrivalCommitment,
   piiArrivalContractCommitment, piiArrivalFamilyContractCommitment,
-  piiArrivalGateStatuses } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
+  piiArrivalViewGateStatuses } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
+import { evaluatePiiIdentityOracle, piiIdentityOracle, validatePiiIdentityOracle,
+  validatePiiOracleFamily } from '../benchmarks/evaluation/domains/pii/identity-oracle.ts';
 import { piiBindingArtifactCommitment } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 
@@ -33,6 +35,15 @@ if (plan.schemaVersion !== 1 || !/^pii:(?:global|[a-z]{2}):/.test(plan.family) |
     plan.activationChecks.some(check => !Array.isArray(check.selectors) || !check.selectors.length || typeof check.expectedActivationIdentity !== 'string') ||
     !Array.isArray(plan.cases) || !plan.cases.length || !Array.isArray(plan.classAccounting) || !plan.classAccounting.length) throw new Error('invalid PII qualification plan');
 const planCommitment = createHash('sha256').update(JSON.stringify(plan)).digest('hex');
+// #423: every plan case must carry an authored identity/sensitivity oracle label, bound to this exact plan. This is
+// also where the plan's `sensitive` label is finally checked (true => oracle sensitive; false => non-sensitive or
+// not-established, and never on a public-finding expectation).
+const identityOracle = validatePiiIdentityOracle(piiIdentityOracle);
+const oracleFamily = identityOracle.families.find(row => row.family === plan.family);
+if (!oracleFamily) throw new Error('no identity oracle entry for this PII family');
+validatePiiOracleFamily(oracleFamily, plan);
+const productIdentityEvidence = args['product-identity-evidence'] ?
+  JSON.parse(await readFile(args['product-identity-evidence'], 'utf8')) : null;
 const candidateEvidenceCommitment = createHash('sha256').update(JSON.stringify(candidate)).digest('hex');
 const product = { repository: 'redact-secret/redact-secret', sourceCommit: candidate.candidate.sourceCommit,
   artifactCommitment: candidate.candidate.artifactSha256, candidateEvidenceCommitment };
@@ -78,7 +89,7 @@ if (plan.family === 'pii:us:ssn') {
     protectedEvidence: protectedProjection,
   };
   arrivalEvidence = { ...arrivalProjection, artifactCommitment: piiArrivalCommitment(arrivalProjection) };
-  arrivalGateStatuses = piiArrivalGateStatuses(population, operational, protectedEvidence.state);
+  arrivalGateStatuses = piiArrivalViewGateStatuses(population, operational, protectedEvidence.state);
 }
 
 const execFileAsync = promisify(execFile);
@@ -274,7 +285,7 @@ async function runSurfaceCheck(id, fallback, check, captureCases) {
         if (canonicalRange.start !== row.expected.start || canonicalRange.end !== row.expected.end) throw new Error(`case failed: ${row.id}`);
         if (captureCases) observations.push({ id: row.id, publicFinding: true, type: findings[0].type, action: findings[0].action,
           nativeOffsetUnit: 'utf16-code-unit', nativeRange: { start: findings[0].start, end: findings[0].end }, canonicalRange });
-      } else if (findings.length) throw new Error(`case failed: ${row.id}`);
+      } else if (findings.length || row.expected.sensitive === true) throw new Error(`case failed: ${row.id}`);
       else if (captureCases) observations.push({ id: row.id, publicFinding: false, type: null, action: null,
         nativeOffsetUnit: 'utf16-code-unit', nativeRange: null, canonicalRange: null });
     }
@@ -316,14 +327,18 @@ activation.artifactCommitment = piiBindingArtifactCommitment(activation);
 const installedArtifactConformance = { canonicalOffsetUnit: plan.canonicalOffsetUnit, lanes: installedLanes, artifactCommitment: '' };
 installedArtifactConformance.artifactCommitment = piiBindingArtifactCommitment(installedArtifactConformance);
 const sourceConformance = await runSourceConformance();
+const identityOracleProjection = evaluatePiiIdentityOracle({ plan, oracle: identityOracle,
+  productSourceCommit: product.sourceCommit, candidateArtifactCommitment: product.artifactCommitment,
+  artifactSetCommitment: piiArrivalCommitment(actualComponents),
+  publicObservations: installedLanes.map(lane => lane.observations), productIdentity: productIdentityEvidence });
 const gates = [
   { id: 'exact-candidate-artifact', status: 'met' }, { id: 'selector-global-closure', status: 'met' },
   { id: 'selector-exact-family', status: 'met' }, { id: 'cross-surface-determinism', status: 'met' },
   { id: 'sensitive-public-findings', status: 'met' }, { id: 'public-absence-controls', status: 'met' },
-  { id: 'identity-only-classification', status: arrivalGateStatuses?.identity ?? 'unresolved' },
+  { id: 'identity-only-classification', status: identityOracleProjection.gateStatus },
   { id: 'exact-source-conformance', status: sourceConformance ? 'met' : 'not-applicable' },
-  { id: 'pii-off-invariance', status: 'met' }, { id: 'diagnostic-population', status: arrivalGateStatuses?.identity ?? 'unresolved' },
-  { id: 'benign-heavy-population', status: arrivalGateStatuses?.identity ?? 'unresolved' },
+  { id: 'pii-off-invariance', status: 'met' }, { id: 'diagnostic-population', status: arrivalGateStatuses?.diagnostic ?? 'unresolved' },
+  { id: 'benign-heavy-population', status: arrivalGateStatuses?.benignHeavy ?? 'unresolved' },
   { id: 'population-no-regression', status: arrivalGateStatuses?.population ?? 'unresolved' },
   { id: 'protected-partition', status: arrivalGateStatuses?.protected ?? 'unresolved' },
   { id: 'runtime-and-package-cost', status: arrivalGateStatuses?.operational ?? 'unresolved' },
@@ -337,8 +352,11 @@ const classAccounting = plan.classAccounting.map(entry => {
 });
 gates.push(...classAccounting.filter(entry => entry.status === 'unresolved').map(entry => ({ id: `class-${entry.id}`, status: 'unresolved' })));
 const reasonCodes = gates.filter(gate => !['met', 'not-applicable'].includes(gate.status)).map(gate => gate.id).sort();
-const qualification = { schemaVersion: 1, reportType: 'pii-family-qualification', supportClaims: false, family: plan.family, product,
+// schemaVersion 2 (#423): gates are independent signals and the identity-only gate comes from the identity oracle.
+// Frozen schemaVersion 1 records keep their original meaning and are not rewritten.
+const qualification = { schemaVersion: 2, reportType: 'pii-family-qualification', supportClaims: false, family: plan.family, product,
   activationArtifactCommitment: activation.artifactCommitment, planCommitment, profile: plan.profile, gates, classAccounting,
+  identityOracle: identityOracleProjection,
   ...(sourceConformance ? { installedArtifactConformance, sourceConformance } : {}),
   ...(arrivalEvidence ? { arrivalEvidence } : {}),
   status: reasonCodes.length ? 'not-qualified' : 'qualified',

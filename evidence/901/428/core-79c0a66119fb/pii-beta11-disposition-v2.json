@@ -1,0 +1,586 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-beta11-disposition",
+  "supportClaims": false,
+  "issue": "redact-secret/redact-secret-benchmarks#428",
+  "productIssue": "redact-secret/redact-secret#901",
+  "populationPlanSet": "b11-population-v2",
+  "role": "interim",
+  "roleNote": "Interim evidence: not the final exact beta.11 candidate. redact-secret#937 (PII runtime split out of the default Wasm builds, on #929) changes the Wasm artifact set after this commit.",
+  "candidate": {
+    "sourceCommit": "79c0a66119fb72931fda9adddbe2973a52bb4833",
+    "versionString": "0.1.0-beta.10",
+    "released": false,
+    "artifactSetCommitment": "4d2bc2f9604ea4d9839e5aabedc9919166e1452b6cc82f249a47fd96e7618146",
+    "components": {
+      "core": "4df009d28ae2cec77e9bb791ff12ad746592479e821b62b692d14c50eccb002f",
+      "node": "3313e47c30ef07320b98662f3b79a2212cc68eac88078f3e49378a9392dd34ef",
+      "wasm": "dde6514373d149e83659e59f500d8c7aa0f3c06f0638186b914919169279e3ff"
+    }
+  },
+  "freeze": {
+    "file": "evidence/901/428/core-79c0a66119fb/pii-beta11-freeze-v2.json",
+    "commit": "4de7944f309b6d12f9d32d797f5c737e2b58eae7",
+    "freezeCommitment": "9243b8a5f039b45ec48c6d5ce8e4ecf16543b6089d05996e6e4ec2c37aac28de"
+  },
+  "benchmark": {
+    "revision": "4de7944f309b6d12f9d32d797f5c737e2b58eae7",
+    "dirty": false
+  },
+  "reportCommitment": "2df3afcacdb3ceccc3273552ad2003b956339a8f4b9c8d5557066ee53ad8a3dc",
+  "domainSeparation": "PII numerators and denominators only; no credential count is merged, and no combined credential+PII score exists.",
+  "protectedPartition": {
+    "run": false,
+    "eligibleFamilies": [],
+    "eligibleExceptCostOnly": [
+      "pii:global:network-address",
+      "pii:global:email",
+      "pii:global:payment-card",
+      "pii:global:iban",
+      "pii:us:ssn",
+      "pii:global:phone"
+    ]
+  },
+  "distribution": {
+    "pending": 6,
+    "provisional": 0,
+    "stable": 0
+  },
+  "families": [
+    {
+      "family": "pii:global:network-address",
+      "scope": {
+        "jurisdiction": "global",
+        "selectors": [
+          "pii:family:global:network-address",
+          "pii:global"
+        ],
+        "contextLanguages": [
+          "en",
+          "ko"
+        ],
+        "contextVocabulary": "pii-context/v2",
+        "publicFindingType": "pii_global_network_address"
+      },
+      "supportedContract": {
+        "familyContractVersion": 1,
+        "file": "docs/audits/evidence/875/README.md"
+      },
+      "status": "pending",
+      "profile": "pii-v1",
+      "failedOrWithheldGates": [
+        {
+          "gate": "runtime-and-package-cost",
+          "status": "not-met",
+          "reason": "wasmCommonRaw +24323 B over a maximum increase of 0 B (paired local build); wasmCommonGzip +7937 B over a maximum increase of 0 B (paired local build); wasmCommonBrotli +5351 B over a maximum increase of 0 B (paired local build); wasmCommonRaw +24323 B over the frozen evidence/879 zero-growth baseline; wasmCommonGzip +7937 B over the frozen evidence/879 zero-growth baseline; wasmCommonBrotli +5351 B over the frozen evidence/879 zero-growth baseline"
+        },
+        {
+          "gate": "size-regression-budget",
+          "status": "not-met",
+          "reason": "size/wasm/full/gzip 278785 B vs beta.8 137639 B (+141146, allowed +6882); size/wasm/common/gzip 278818 B vs beta.8 100058 B (+178760, allowed +5003); size/npm/wasm/packed 575112 B vs beta.8 254413 B (+320699, allowed +12721); size/npm/node-darwin-arm64/packed 597999 B vs beta.8 424514 B (+173485, allowed +21226)"
+        },
+        {
+          "gate": "profile-cost",
+          "status": "unresolved",
+          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+        },
+        {
+          "gate": "protected-partition",
+          "status": "not-run",
+          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 062b6cb7a3a2 stays unspent (0/1)."
+        }
+      ],
+      "metGates": [
+        "exact-candidate-binding",
+        "activation-v2",
+        "pii-off-invariance",
+        "oracle-plan-public-stream",
+        "identity-only-classification",
+        "source-artifact-equivalence",
+        "cross-surface-determinism",
+        "diagnostic-population",
+        "benign-heavy-population",
+        "population-no-regression",
+        "population-mass-resolved",
+        "authored-truth-agreement",
+        "contract-fixture-discrepancy",
+        "cross-surface-output",
+        "trusted-accounting-source",
+        "independent-evidence"
+      ],
+      "population": {
+        "oracle-plan": {
+          "cases": 25,
+          "sensitive": "8/8",
+          "nonSensitiveFalseAlarms": "0/11",
+          "notEstablishedFalseAlarms": "0/6"
+        },
+        "diagnostic-balanced": {
+          "cases": 97,
+          "sensitive": "41/41",
+          "nonSensitiveFalseAlarms": "0/15",
+          "notEstablishedFalseAlarms": "0/41"
+        },
+        "benign-heavy-stress": {
+          "cases": 80,
+          "sensitive": "24/24",
+          "nonSensitiveFalseAlarms": "0/19",
+          "notEstablishedFalseAlarms": "0/37"
+        }
+      },
+      "protected": {
+        "eligible": false,
+        "eligibleExceptCostOnly": true,
+        "state": "not-run",
+        "runs": "0/1",
+        "epochCommitment": "062b6cb7a3a2a3240f326a8bad98870fa261e94c21ae4a971b9de78e6ab2b359"
+      }
+    },
+    {
+      "family": "pii:global:email",
+      "scope": {
+        "jurisdiction": "global",
+        "selectors": [
+          "pii:family:global:email",
+          "pii:global"
+        ],
+        "contextLanguages": [
+          "en",
+          "ko"
+        ],
+        "contextVocabulary": "pii-context/v2",
+        "publicFindingType": "pii_global_email"
+      },
+      "supportedContract": {
+        "familyContractVersion": 1,
+        "file": "docs/contracts/pii/email-v1.md"
+      },
+      "status": "pending",
+      "profile": "pii-v1",
+      "failedOrWithheldGates": [
+        {
+          "gate": "runtime-and-package-cost",
+          "status": "not-met",
+          "reason": "wasmCommonRaw +24323 B over a maximum increase of 0 B (paired local build); wasmCommonGzip +7937 B over a maximum increase of 0 B (paired local build); wasmCommonBrotli +5351 B over a maximum increase of 0 B (paired local build); wasmCommonRaw +24323 B over the frozen evidence/879 zero-growth baseline; wasmCommonGzip +7937 B over the frozen evidence/879 zero-growth baseline; wasmCommonBrotli +5351 B over the frozen evidence/879 zero-growth baseline"
+        },
+        {
+          "gate": "size-regression-budget",
+          "status": "not-met",
+          "reason": "size/wasm/full/gzip 278785 B vs beta.8 137639 B (+141146, allowed +6882); size/wasm/common/gzip 278818 B vs beta.8 100058 B (+178760, allowed +5003); size/npm/wasm/packed 575112 B vs beta.8 254413 B (+320699, allowed +12721); size/npm/node-darwin-arm64/packed 597999 B vs beta.8 424514 B (+173485, allowed +21226)"
+        },
+        {
+          "gate": "profile-cost",
+          "status": "unresolved",
+          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+        },
+        {
+          "gate": "protected-partition",
+          "status": "not-run",
+          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 97ab19703835 stays unspent (0/1)."
+        }
+      ],
+      "metGates": [
+        "exact-candidate-binding",
+        "activation-v2",
+        "pii-off-invariance",
+        "oracle-plan-public-stream",
+        "identity-only-classification",
+        "source-artifact-equivalence",
+        "cross-surface-determinism",
+        "diagnostic-population",
+        "benign-heavy-population",
+        "population-no-regression",
+        "population-mass-resolved",
+        "authored-truth-agreement",
+        "contract-fixture-discrepancy",
+        "cross-surface-output",
+        "trusted-accounting-source",
+        "independent-evidence"
+      ],
+      "population": {
+        "oracle-plan": {
+          "cases": 20,
+          "sensitive": "4/4",
+          "nonSensitiveFalseAlarms": "0/3",
+          "notEstablishedFalseAlarms": "0/13"
+        },
+        "diagnostic-balanced": {
+          "cases": 86,
+          "sensitive": "44/44",
+          "nonSensitiveFalseAlarms": "0/7",
+          "notEstablishedFalseAlarms": "0/35"
+        },
+        "benign-heavy-stress": {
+          "cases": 51,
+          "sensitive": "12/12",
+          "nonSensitiveFalseAlarms": "0/11",
+          "notEstablishedFalseAlarms": "0/28"
+        }
+      },
+      "protected": {
+        "eligible": false,
+        "eligibleExceptCostOnly": true,
+        "state": "not-run",
+        "runs": "0/1",
+        "epochCommitment": "97ab19703835c973a519e671471aec0a83df7974b6f8f2d488f2671541d0d476"
+      }
+    },
+    {
+      "family": "pii:global:payment-card",
+      "scope": {
+        "jurisdiction": "global",
+        "selectors": [
+          "pii:family:global:payment-card",
+          "pii:global"
+        ],
+        "contextLanguages": [
+          "en",
+          "ko"
+        ],
+        "contextVocabulary": "pii-context/v2",
+        "publicFindingType": "pii_global_payment_card"
+      },
+      "supportedContract": {
+        "familyContractVersion": 1,
+        "file": "docs/contracts/pii/payment-card-v1.md"
+      },
+      "status": "pending",
+      "profile": "pii-v1",
+      "failedOrWithheldGates": [
+        {
+          "gate": "runtime-and-package-cost",
+          "status": "not-met",
+          "reason": "wasmCommonRaw +24323 B over a maximum increase of 0 B (paired local build); wasmCommonGzip +7937 B over a maximum increase of 0 B (paired local build); wasmCommonBrotli +5351 B over a maximum increase of 0 B (paired local build); wasmCommonRaw +24323 B over the frozen evidence/879 zero-growth baseline; wasmCommonGzip +7937 B over the frozen evidence/879 zero-growth baseline; wasmCommonBrotli +5351 B over the frozen evidence/879 zero-growth baseline"
+        },
+        {
+          "gate": "size-regression-budget",
+          "status": "not-met",
+          "reason": "size/wasm/full/gzip 278785 B vs beta.8 137639 B (+141146, allowed +6882); size/wasm/common/gzip 278818 B vs beta.8 100058 B (+178760, allowed +5003); size/npm/wasm/packed 575112 B vs beta.8 254413 B (+320699, allowed +12721); size/npm/node-darwin-arm64/packed 597999 B vs beta.8 424514 B (+173485, allowed +21226)"
+        },
+        {
+          "gate": "profile-cost",
+          "status": "unresolved",
+          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+        },
+        {
+          "gate": "protected-partition",
+          "status": "not-run",
+          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 5caec522a21d stays unspent (0/1)."
+        }
+      ],
+      "metGates": [
+        "exact-candidate-binding",
+        "activation-v2",
+        "pii-off-invariance",
+        "oracle-plan-public-stream",
+        "identity-only-classification",
+        "source-artifact-equivalence",
+        "cross-surface-determinism",
+        "diagnostic-population",
+        "benign-heavy-population",
+        "population-no-regression",
+        "population-mass-resolved",
+        "authored-truth-agreement",
+        "contract-fixture-discrepancy",
+        "cross-surface-output",
+        "trusted-accounting-source",
+        "independent-evidence"
+      ],
+      "population": {
+        "oracle-plan": {
+          "cases": 19,
+          "sensitive": "5/5",
+          "nonSensitiveFalseAlarms": "0/1",
+          "notEstablishedFalseAlarms": "0/13"
+        },
+        "diagnostic-balanced": {
+          "cases": 161,
+          "sensitive": "71/71",
+          "nonSensitiveFalseAlarms": "0/10",
+          "notEstablishedFalseAlarms": "0/80"
+        },
+        "benign-heavy-stress": {
+          "cases": 55,
+          "sensitive": "13/13",
+          "nonSensitiveFalseAlarms": "0/10",
+          "notEstablishedFalseAlarms": "0/32"
+        }
+      },
+      "protected": {
+        "eligible": false,
+        "eligibleExceptCostOnly": true,
+        "state": "not-run",
+        "runs": "0/1",
+        "epochCommitment": "5caec522a21d1755de4119b3a4d2422b34dad2ef4262dd8b7474c4c0714576fe"
+      }
+    },
+    {
+      "family": "pii:global:iban",
+      "scope": {
+        "jurisdiction": "global",
+        "selectors": [
+          "pii:family:global:iban",
+          "pii:global"
+        ],
+        "contextLanguages": [
+          "en",
+          "ko"
+        ],
+        "contextVocabulary": "pii-context/v2",
+        "publicFindingType": "pii_global_iban"
+      },
+      "supportedContract": {
+        "familyContractVersion": 1,
+        "file": "docs/contracts/pii/iban-v1.md"
+      },
+      "status": "pending",
+      "profile": "pii-v1",
+      "failedOrWithheldGates": [
+        {
+          "gate": "runtime-and-package-cost",
+          "status": "not-met",
+          "reason": "wasmCommonRaw +24323 B over a maximum increase of 0 B (paired local build); wasmCommonGzip +7937 B over a maximum increase of 0 B (paired local build); wasmCommonBrotli +5351 B over a maximum increase of 0 B (paired local build); wasmCommonRaw +24323 B over the frozen evidence/879 zero-growth baseline; wasmCommonGzip +7937 B over the frozen evidence/879 zero-growth baseline; wasmCommonBrotli +5351 B over the frozen evidence/879 zero-growth baseline"
+        },
+        {
+          "gate": "size-regression-budget",
+          "status": "not-met",
+          "reason": "size/wasm/full/gzip 278785 B vs beta.8 137639 B (+141146, allowed +6882); size/wasm/common/gzip 278818 B vs beta.8 100058 B (+178760, allowed +5003); size/npm/wasm/packed 575112 B vs beta.8 254413 B (+320699, allowed +12721); size/npm/node-darwin-arm64/packed 597999 B vs beta.8 424514 B (+173485, allowed +21226)"
+        },
+        {
+          "gate": "profile-cost",
+          "status": "unresolved",
+          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+        },
+        {
+          "gate": "protected-partition",
+          "status": "not-run",
+          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 913f86bf65e4 stays unspent (0/1)."
+        }
+      ],
+      "metGates": [
+        "exact-candidate-binding",
+        "activation-v2",
+        "pii-off-invariance",
+        "oracle-plan-public-stream",
+        "identity-only-classification",
+        "source-artifact-equivalence",
+        "cross-surface-determinism",
+        "diagnostic-population",
+        "benign-heavy-population",
+        "population-no-regression",
+        "population-mass-resolved",
+        "authored-truth-agreement",
+        "contract-fixture-discrepancy",
+        "cross-surface-output",
+        "trusted-accounting-source",
+        "independent-evidence"
+      ],
+      "population": {
+        "oracle-plan": {
+          "cases": 21,
+          "sensitive": "2/2",
+          "nonSensitiveFalseAlarms": "0/0",
+          "notEstablishedFalseAlarms": "0/19"
+        },
+        "diagnostic-balanced": {
+          "cases": 93,
+          "sensitive": "39/39",
+          "nonSensitiveFalseAlarms": "0/0",
+          "notEstablishedFalseAlarms": "0/54"
+        },
+        "benign-heavy-stress": {
+          "cases": 50,
+          "sensitive": "5/5",
+          "nonSensitiveFalseAlarms": "0/0",
+          "notEstablishedFalseAlarms": "0/45"
+        }
+      },
+      "protected": {
+        "eligible": false,
+        "eligibleExceptCostOnly": true,
+        "state": "not-run",
+        "runs": "0/1",
+        "epochCommitment": "913f86bf65e4073ed030008e2b0e9353b7ac05b6e96ec55cf7b51ccc91627dfb"
+      }
+    },
+    {
+      "family": "pii:us:ssn",
+      "scope": {
+        "jurisdiction": "us",
+        "selectors": [
+          "pii:family:us:ssn",
+          "pii:us"
+        ],
+        "contextLanguages": [
+          "en",
+          "ko"
+        ],
+        "contextVocabulary": "pii-context/v2",
+        "publicFindingType": "pii_jurisdiction_us_ssn"
+      },
+      "supportedContract": {
+        "familyContractVersion": 1,
+        "file": "docs/contracts/pii/us-ssn-v1.md"
+      },
+      "status": "pending",
+      "profile": "pii-v1",
+      "failedOrWithheldGates": [
+        {
+          "gate": "runtime-and-package-cost",
+          "status": "not-met",
+          "reason": "wasmCommonRaw +24323 B over a maximum increase of 0 B (paired local build); wasmCommonGzip +7937 B over a maximum increase of 0 B (paired local build); wasmCommonBrotli +5351 B over a maximum increase of 0 B (paired local build); wasmCommonRaw +24323 B over the frozen evidence/879 zero-growth baseline; wasmCommonGzip +7937 B over the frozen evidence/879 zero-growth baseline; wasmCommonBrotli +5351 B over the frozen evidence/879 zero-growth baseline"
+        },
+        {
+          "gate": "size-regression-budget",
+          "status": "not-met",
+          "reason": "size/wasm/full/gzip 278785 B vs beta.8 137639 B (+141146, allowed +6882); size/wasm/common/gzip 278818 B vs beta.8 100058 B (+178760, allowed +5003); size/npm/wasm/packed 575112 B vs beta.8 254413 B (+320699, allowed +12721); size/npm/node-darwin-arm64/packed 597999 B vs beta.8 424514 B (+173485, allowed +21226)"
+        },
+        {
+          "gate": "profile-cost",
+          "status": "unresolved",
+          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+        },
+        {
+          "gate": "protected-partition",
+          "status": "not-run",
+          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 8a896979547a stays unspent (0/1)."
+        }
+      ],
+      "metGates": [
+        "exact-candidate-binding",
+        "activation-v2",
+        "pii-off-invariance",
+        "oracle-plan-public-stream",
+        "identity-only-classification",
+        "source-artifact-equivalence",
+        "cross-surface-determinism",
+        "diagnostic-population",
+        "benign-heavy-population",
+        "population-no-regression",
+        "population-mass-resolved",
+        "authored-truth-agreement",
+        "contract-fixture-discrepancy",
+        "cross-surface-output",
+        "trusted-accounting-source",
+        "independent-evidence"
+      ],
+      "population": {
+        "oracle-plan": {
+          "cases": 20,
+          "sensitive": "3/3",
+          "nonSensitiveFalseAlarms": "0/0",
+          "notEstablishedFalseAlarms": "0/17"
+        },
+        "diagnostic-balanced": {
+          "cases": 19,
+          "sensitive": "9/9",
+          "nonSensitiveFalseAlarms": "0/0",
+          "notEstablishedFalseAlarms": "0/10"
+        },
+        "benign-heavy-stress": {
+          "cases": 29,
+          "sensitive": "7/7",
+          "nonSensitiveFalseAlarms": "0/0",
+          "notEstablishedFalseAlarms": "0/22"
+        }
+      },
+      "protected": {
+        "eligible": false,
+        "eligibleExceptCostOnly": true,
+        "state": "not-run",
+        "runs": "0/1",
+        "epochCommitment": "8a896979547a52fe8bf29416a5f878fd854d3cfad0422382e8c03bcc8eb98098"
+      }
+    },
+    {
+      "family": "pii:global:phone",
+      "scope": {
+        "jurisdiction": "global",
+        "selectors": [
+          "pii:family:global:phone",
+          "pii:global"
+        ],
+        "contextLanguages": [
+          "en",
+          "ko"
+        ],
+        "contextVocabulary": "pii-context/v2",
+        "publicFindingType": "pii_global_phone"
+      },
+      "supportedContract": {
+        "familyContractVersion": 1,
+        "file": "docs/contracts/pii/phone-v1.md"
+      },
+      "status": "pending",
+      "profile": "pii-v1",
+      "failedOrWithheldGates": [
+        {
+          "gate": "runtime-and-package-cost",
+          "status": "not-met",
+          "reason": "wasmCommonRaw +24323 B over a maximum increase of 0 B (paired local build); wasmCommonGzip +7937 B over a maximum increase of 0 B (paired local build); wasmCommonBrotli +5351 B over a maximum increase of 0 B (paired local build); wasmCommonRaw +24323 B over the frozen evidence/879 zero-growth baseline; wasmCommonGzip +7937 B over the frozen evidence/879 zero-growth baseline; wasmCommonBrotli +5351 B over the frozen evidence/879 zero-growth baseline"
+        },
+        {
+          "gate": "size-regression-budget",
+          "status": "not-met",
+          "reason": "size/wasm/full/gzip 278785 B vs beta.8 137639 B (+141146, allowed +6882); size/wasm/common/gzip 278818 B vs beta.8 100058 B (+178760, allowed +5003); size/npm/wasm/packed 575112 B vs beta.8 254413 B (+320699, allowed +12721); size/npm/node-darwin-arm64/packed 597999 B vs beta.8 424514 B (+173485, allowed +21226)"
+        },
+        {
+          "gate": "profile-cost",
+          "status": "unresolved",
+          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+        },
+        {
+          "gate": "protected-partition",
+          "status": "not-run",
+          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 5c95f421e735 stays unspent (0/1)."
+        }
+      ],
+      "metGates": [
+        "exact-candidate-binding",
+        "activation-v2",
+        "pii-off-invariance",
+        "oracle-plan-public-stream",
+        "identity-only-classification",
+        "source-artifact-equivalence",
+        "cross-surface-determinism",
+        "diagnostic-population",
+        "benign-heavy-population",
+        "population-no-regression",
+        "population-mass-resolved",
+        "authored-truth-agreement",
+        "contract-fixture-discrepancy",
+        "cross-surface-output",
+        "trusted-accounting-source",
+        "independent-evidence"
+      ],
+      "population": {
+        "oracle-plan": {
+          "cases": 41,
+          "sensitive": "14/14",
+          "nonSensitiveFalseAlarms": "0/2",
+          "notEstablishedFalseAlarms": "0/25"
+        },
+        "diagnostic-balanced": {
+          "cases": 21,
+          "sensitive": "9/9",
+          "nonSensitiveFalseAlarms": "0/5",
+          "notEstablishedFalseAlarms": "0/7"
+        },
+        "benign-heavy-stress": {
+          "cases": 34,
+          "sensitive": "7/7",
+          "nonSensitiveFalseAlarms": "0/7",
+          "notEstablishedFalseAlarms": "0/20"
+        }
+      },
+      "protected": {
+        "eligible": false,
+        "eligibleExceptCostOnly": true,
+        "state": "not-run",
+        "runs": "0/1",
+        "epochCommitment": "5c95f421e735ca51a6fe9756c2ba2ca97b615d885adc8e8f26619e0b3e98fb7a"
+      }
+    }
+  ],
+  "artifactCommitment": "0b112a301a90da461adaea178e936eab0277db60be385dd050e57ab9bc91a038"
+}

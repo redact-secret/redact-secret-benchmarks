@@ -1,0 +1,583 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T15:30:26.806Z",
+  "sourceRun": {
+    "runId": "2026-09-28T15:30:26.806Z-1b599f",
+    "benchmarkRevision": "464bf40d672d0efbda63e2b4bf55aed774129807"
+  },
+  "input": {
+    "surface": "comparison/beta8-434a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "97b3249713e1fd3943827944fbd3a64600be6ab9374a913a422e5c32baee2edc",
+    "fixtureCount": 260,
+    "fixturesDigest": "d3fc4449bc4ba1d697ac3770e068ac1878df7045f05a9d189a57424bad0cd6b7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "de68c54bbbfde8cb3d184f738bd620ad11d9488046167ba00c2b8a08dc62ed0f",
+      "fixtureCount": 4276
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/doppler-audit-token-bare-prose.md",
+      "start": 61,
+      "end": 113,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-bearer-header.http",
+      "start": 68,
+      "end": 120,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-chat-paste.txt",
+      "start": 23,
+      "end": 76,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-ci-log.log",
+      "start": 52,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-code-fence.md",
+      "start": 45,
+      "end": 94,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-dotenv.env",
+      "start": 21,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-export.sh",
+      "start": 22,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-json-api-key.json",
+      "start": 16,
+      "end": 68,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-json-token.json",
+      "start": 14,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 153,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 78,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-sentence-period.txt",
+      "start": 25,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-x-api-key-header.http",
+      "start": 56,
+      "end": 105,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-yaml.yml",
+      "start": 38,
+      "end": 90,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-bare-prose.md",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-bearer-header.http",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-chat-paste.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-ci-log.log",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-code-fence.md",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-dotenv.env",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-export.sh",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-json-api-key.json",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-json-token.json",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-sentence-period.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-x-api-key-header.http",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-yaml.yml",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-bearer-header.http",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-chat-paste.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-ci-log.log",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-code-fence.md",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-dotenv.env",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-export.sh",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-json-api-key.json",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-json-token.json",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-sentence-period.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-x-api-key-header.http",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-yaml.yml",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-bare-prose.md",
+      "start": 61,
+      "end": 112,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-bearer-header.http",
+      "start": 68,
+      "end": 119,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-chat-paste.txt",
+      "start": 23,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-ci-log.log",
+      "start": 52,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-code-fence.md",
+      "start": 45,
+      "end": 93,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-dotenv.env",
+      "start": 21,
+      "end": 69,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-export.sh",
+      "start": 22,
+      "end": 74,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-json-api-key.json",
+      "start": 16,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-json-token.json",
+      "start": 14,
+      "end": 66,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 152,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 77,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-sentence-period.txt",
+      "start": 25,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-x-api-key-header.http",
+      "start": 56,
+      "end": 104,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-yaml.yml",
+      "start": 38,
+      "end": 89,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-bare-prose.md",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-bearer-header.http",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-chat-paste.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-ci-log.log",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-code-fence.md",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-dotenv.env",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-export.sh",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-json-api-key.json",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-json-token.json",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-sentence-period.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-x-api-key-header.http",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-yaml.yml",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-bare-prose.md",
+      "start": 61,
+      "end": 110,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-bearer-header.http",
+      "start": 68,
+      "end": 117,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-chat-paste.txt",
+      "start": 23,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-ci-log.log",
+      "start": 52,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-code-fence.md",
+      "start": 45,
+      "end": 91,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-dotenv.env",
+      "start": 21,
+      "end": 67,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-export.sh",
+      "start": 22,
+      "end": 72,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-json-api-key.json",
+      "start": 16,
+      "end": 65,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-json-token.json",
+      "start": 14,
+      "end": 64,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 150,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 75,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-segment-2.env",
+      "start": 21,
+      "end": 73,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-segment-35.sh",
+      "start": 22,
+      "end": 108,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-segment-dash.json",
+      "start": 14,
+      "end": 70,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-sentence-period.txt",
+      "start": 25,
+      "end": 71,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-x-api-key-header.http",
+      "start": 56,
+      "end": 102,
+      "family": "doppler-token"
+    },
+    {
+      "path": "cases/doppler-token-yaml.yml",
+      "start": 38,
+      "end": 87,
+      "family": "doppler-token"
+    }
+  ],
+  "digest": "082b5ee9e77e1c91dcced9030ff8eb441e391d4bbe52d099fb4184153efac6a8"
+}

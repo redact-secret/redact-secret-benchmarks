@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T15:30:26.806Z",
+  "sourceRun": {
+    "runId": "2026-09-28T15:30:26.806Z-1b599f",
+    "benchmarkRevision": "464bf40d672d0efbda63e2b4bf55aed774129807"
+  },
+  "input": {
+    "surface": "comparison/beta8-434f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "e4849543c3cda23c349aa51d37f7f364e36723c7aa5e521842b2309cd9f40cdf",
+    "fixtureCount": 37,
+    "fixturesDigest": "49391d00d57de266976a8b8d38042ca0af72854f7d575ec9f185a0f1bd9f2a1c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "de68c54bbbfde8cb3d184f738bd620ad11d9488046167ba00c2b8a08dc62ed0f",
+      "fixtureCount": 4276
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "a2479764ba28b0279e3ddf21a7fe63c0245ea44a6924582039f4ff9c0bacaeab"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/firecrawl-api-key-body-31-twin.env",
+      "start": 25,
+      "end": 59,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-body-33-twin.sh",
+      "start": 26,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-curl-bearer.sh",
+      "start": 78,
+      "end": 113
+    },
+    {
+      "path": "cases/firecrawl-api-key-dashed-uuid-twin.json",
+      "start": 143,
+      "end": 182,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-digest-encoded-value.txt",
+      "start": 26,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-dotenv.env",
+      "start": 25,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-export.sh",
+      "start": 26,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-g-in-body-twin.ts",
+      "start": 92,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-json-api-key.json",
+      "start": 16,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-mcp-env.json",
+      "start": 143,
+      "end": 178,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-python-app.py",
+      "start": 64,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-sdk-kwarg.py",
+      "start": 31,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-trailing-glue-twin.env",
+      "start": 25,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-uppercase-hex-twin.py",
+      "start": 64,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-uppercase-prefix-twin.sh",
+      "start": 78,
+      "end": 113
+    },
+    {
+      "path": "cases/firecrawl-api-key-variant-7-twin.py",
+      "start": 31,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-variant-c-twin.json",
+      "start": 16,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-version-7-twin.http",
+      "start": 58,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-x-api-key-header.http",
+      "start": 58,
+      "end": 93,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "b530526e31286e6eef8d959fca72950df6be0b1790be8d56a22258c52e77a341"
+}

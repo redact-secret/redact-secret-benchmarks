@@ -129,7 +129,10 @@ for (const { directory, version } of records) {
     const parityFile = `evidence/901/427/mixed-parity-core-${directory.slice(5)}-plan-v2-report-v1.json`;
     const parity = existsSync(new URL(parityFile, root)) ? { file: parityFile, report: json(parityFile) } : null;
     // Scoring code may be fixed after an observation only through a new freeze; the committed report must re-derive exactly.
-    const report = buildB11Report({ freeze, observation, operational, parity });
+    const cost = name => `${base}pii-profile-cost-v2-${name}.json`;
+    const profileCost = ['runs', 'candidate', 'size'].every(name => existsSync(new URL(cost(name), root))) ?
+      { runs: json(cost('runs')).runs.map(row => `${row.phase}:${row.runId}`), candidate: json(cost('candidate')), size: json(cost('size')) } : null;
+    const report = buildB11Report({ freeze, observation, operational, parity, profileCost });
     assert.equal(`${JSON.stringify(report, null, 2)}\n`, readFileSync(new URL(`${base}pii-beta11-report-${version}.json`, root), 'utf8'));
     assert.equal(`${JSON.stringify(buildB11Disposition(report), null, 2)}\n`, readFileSync(new URL(`${base}pii-beta11-disposition-${version}.json`, root), 'utf8'));
     const texts = B11_FAMILIES.flatMap(family => b11CaseTables(family, planSet).frozen.flatMap(row => {

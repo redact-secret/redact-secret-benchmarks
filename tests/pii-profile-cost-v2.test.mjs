@@ -19,7 +19,7 @@ test('v2 is a reviewed plan for a pii-context/v2 candidate with its own implemen
   assert.equal(plan.id, 'pii-profile-cost-v2');
   assert.equal(plan.inputs.contextVocabulary, 'pii-context/v2');
   assert.ok(['interim', 'final'].includes(plan.inputs.candidateRole));
-  assert.equal(plan.inputs.candidateProductCommit, '1127bf91323797be89b4413c8051f9a9a85da43b');
+  assert.equal(plan.inputs.candidateProductCommit, '1db8ff38b16e50c51229eb27025452952bf621e1');
   assert.equal(await verifyImplementationFreeze(v2Plan), true);
   // The plan is a separate version: v1 files are not part of the v2 freeze except the shared, unchanged adapters.
   const shared = v2Plan.implementationFreeze.files.filter(row => v1Plan.implementationFreeze.files.some(item => item.path === row.path));

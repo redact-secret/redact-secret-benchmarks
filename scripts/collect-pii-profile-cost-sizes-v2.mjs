@@ -124,7 +124,9 @@ async function loadSide(id) {
 }
 
 const [baseline, candidate] = await Promise.all([loadSide('baseline'), loadSide('candidate')]);
-const artifactKey = row => `${row.family}/${row.target ?? 'portable'}/${row.artifact}/${row.file}`;
+// v2: the two sides carry different release versions (beta.9 baseline, beta.10+ candidate), which appear in wheel, sdist and
+// crate file names; the version is normalized out so the same artifact pairs up across sides.
+const artifactKey = row => `${row.family}/${row.target ?? 'portable'}/${row.artifact}/${row.file.replace(/\d+\.\d+\.\d+(?:-beta\.\d+|b\d+)/g, '<version>')}`;
 const baselineArtifacts = new Map(baseline.inventory.artifacts.map(row => [artifactKey(row), row]));
 const candidateArtifacts = new Map(candidate.inventory.artifacts.map(row => [artifactKey(row), row]));
 const candidateOnly = [...candidateArtifacts.keys()].filter(key => !baselineArtifacts.has(key));

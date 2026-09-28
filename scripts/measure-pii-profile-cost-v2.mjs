@@ -82,8 +82,9 @@ const official = filter === null;
 if (official) {
   const git = (cwd, ...arguments_) => execFileSync('git', arguments_, { cwd, encoding: 'utf8' }).trim();
   const benchmarkHead = git(process.cwd(), 'rev-parse', 'HEAD');
-  const expectedArtifacts = ['browser-common-wasm', 'browser-full-wasm', 'candidate-inventory', 'cli-linux-x64', 'node-forced-wasm',
-    'node-native', 'python-wheel-install', 'rust-release-helper'];
+  // redact-secret#937: the browser surface also binds the two `_pii` Wasm builds.
+  const expectedArtifacts = ['browser-common-pii-wasm', 'browser-common-wasm', 'browser-full-pii-wasm', 'browser-full-wasm', 'candidate-inventory',
+    'cli-linux-x64', 'node-forced-wasm', 'node-native', 'python-wheel-install', 'rust-release-helper'];
   if (JSON.stringify(config.artifacts.map(row => row.id).sort()) !== JSON.stringify(expectedArtifacts) ||
       new Set(config.artifacts.map(row => row.sha256)).size < 6 ||
       process.env.GITHUB_ACTIONS !== 'true' || process.env.GITHUB_REPOSITORY !== 'redact-secret/redact-secret-benchmarks' ||

@@ -41,7 +41,7 @@ const exec = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const args = Object.fromEntries(process.argv.slice(2).map(argument => {
-  const match = /^--(core-commit|core-repo|role|work|samples|plan-set)=(.+)$/.exec(argument);
+  const match = /^--(core-commit|core-repo|role|work|samples|plan-set|rescore)=(.+)$/.exec(argument);
   if (!match) throw new Error(`Unknown argument ${argument}`); return [match[1], match[2]];
 }));
 if (!/^[0-9a-f]{40}$/.test(args['core-commit'] ?? '') || !path.isAbsolute(args['core-repo'] ?? '') || !['interim', 'final'].includes(args.role))
@@ -420,9 +420,21 @@ async function measure() {
   operationalEvidence.artifactCommitment = b11EvidenceCommitment(operationalEvidence);
   await writeJson(path.join(evidenceDir, `pii-beta11-observation-${fileVersion}.json`), observation);
   await writeJson(path.join(evidenceDir, `pii-beta11-operational-${fileVersion}.json`), operationalEvidence);
+  await writeReport(frozen, observation, operationalEvidence);
+}
+
+/** Official profile-cost v2 results bound next to the freeze (`pii-profile-cost-v2-{runs,candidate,size}.json`), or null. */
+async function profileCostEvidence() {
+  const file = name => path.join(evidenceDir, `pii-profile-cost-v2-${name}.json`);
+  if (!['runs', 'candidate', 'size'].every(name => existsSync(file(name)))) return null;
+  const [runs, candidate, size] = await Promise.all(['runs', 'candidate', 'size'].map(async name => JSON.parse(await readFile(file(name), 'utf8'))));
+  return { runs: runs.runs.map(row => `${row.phase}:${row.runId}`), candidate, size };
+}
+
+async function writeReport(frozen, observation, operationalEvidence) {
   const parityFile = path.join(root, 'evidence/901/427', `mixed-parity-core-${sha12}-plan-v2-report-v1.json`);
   const parity = existsSync(parityFile) ? { file: path.relative(root, parityFile), report: JSON.parse(await readFile(parityFile, 'utf8')) } : null;
-  const report = buildB11Report({ freeze: frozen, observation, operational: operationalEvidence, parity });
+  const report = buildB11Report({ freeze: frozen, observation, operational: operationalEvidence, parity, profileCost: await profileCostEvidence() });
   await writeJson(path.join(evidenceDir, `pii-beta11-report-${fileVersion}.json`), report);
   const disposition = buildB11Disposition(report);
   await writeJson(path.join(evidenceDir, `pii-beta11-disposition-${fileVersion}.json`), disposition);
@@ -430,5 +442,11 @@ async function measure() {
   console.log(`protected eligibility: ${disposition.protectedPartition.eligibleFamilies.length ? disposition.protectedPartition.eligibleFamilies.join(', ') : 'none'}`);
 }
 
-if (existsSync(freezeFile) && (await git('ls-files', path.relative(root, freezeFile)))) await measure();
+if (args.rescore === 'true') {
+  // Re-derive the report and disposition from the committed observation and operational evidence, e.g. after binding the
+  // official profile-cost runs. Nothing is measured again.
+  const frozen = JSON.parse(await readFile(freezeFile, 'utf8'));
+  const read = async name => JSON.parse(await readFile(path.join(evidenceDir, `pii-beta11-${name}-${fileVersion}.json`), 'utf8'));
+  await writeReport(frozen, await read('observation'), await read('operational'));
+} else if (existsSync(freezeFile) && (await git('ls-files', path.relative(root, freezeFile)))) await measure();
 else await freeze();

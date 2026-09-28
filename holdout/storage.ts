@@ -68,7 +68,18 @@ export async function storeDirectory(manifestFile: string, m: HoldoutManifest, c
 
 export async function sealProtectedCorpus<TCorpus extends HoldoutCorpus>(manifestFile: string, sourceFile: string, review: string, adapter: HoldoutStorageAdapter<TCorpus>) {
   if (review !== 'reviewed') throw new HoldoutError('review-declaration-required');
-  const text = await privateRead(sourceFile), corpus = adapter.validateCorpus(JSON.parse(text));
+  const text = await privateRead(sourceFile);
+  return sealProtectedCorpusValue(manifestFile, JSON.parse(text), review, adapter);
+}
+
+/**
+ * Seal an already-parsed corpus value under one new manifest with a one-attempt budget. A domain that splits one
+ * custodian input into several sealed corpora (one per family) uses this directly; `sealProtectedCorpus` reads a
+ * private source file and delegates here.
+ */
+export async function sealProtectedCorpusValue<TCorpus extends HoldoutCorpus>(manifestFile: string, value: unknown, review: string, adapter: HoldoutStorageAdapter<TCorpus>) {
+  if (review !== 'reviewed') throw new HoldoutError('review-declaration-required');
+  const corpus = adapter.validateCorpus(value);
   const corpusText = adapter.serializeCorpus(corpus);
   const id = randomUUID();
   const manifest: HoldoutManifest = { schemaVersion: 1, id, revision: 1, purpose: 'protected', review: 'reviewed',

@@ -47,6 +47,19 @@ if (summaryFlagIndex !== -1) {
   if (!summaryPath) throw new Error('Usage: node scripts/check-performance-schema.mjs [--summary <path>]');
   const liveSummary = await read(summaryPath);
   report(`${summaryPath} matches schemas/performance-assessment-v1.json (pinned core result contract) -- core schema drift check`, validAssessment(liveSummary), validAssessment);
+
+  // #405: unlike the frozen evidence/603 baseline above, a freshly submitted summary is held to naming
+  // which artifact served a node performance run -- the loader may serve the N-API addon or fall back to
+  // WebAssembly, and only the runner calling artifact() can tell.
+  const missingResolvedArtifact = (liveSummary.runs ?? []).filter(run =>
+    run.surface === 'node' && run.kind === 'performance' && run.result?.provenance && run.result.provenance.resolvedArtifact === undefined);
+  if (missingResolvedArtifact.length) {
+    failed = true;
+    console.error(`FAILED: ${summaryPath} node performance runs must record provenance.resolvedArtifact ("node-addon" or "wasm")`);
+    for (const run of missingResolvedArtifact) console.error(`  - ${run.surface}:${run.kind}:${run.profileId}`);
+  } else {
+    console.log(`OK: ${summaryPath} node performance runs name their resolved artifact`);
+  }
 }
 
 if (failed) throw new Error('Performance schema validation failed.');

@@ -24,7 +24,7 @@ Files in this directory:
 
 | Input | Identity |
 | --- | --- |
-| Benchmarks revision measured | `0a73b7db198c628dde74fb815d3029eb6c0acf42` (`origin/develop`, clean) for `bench`, `eval:classify` and `benchmark:candidate`. The audit JSON was written at `2b4b70cf886b4a325f4f66a595b01b29b0337eeb`, which differs only by the audit tooling (no fixture, generator or contract change). |
+| Benchmarks revision measured | `0a73b7db198c628dde74fb815d3029eb6c0acf42` (`origin/develop`, clean) for `bench`, `eval:classify` and `benchmark:candidate`. The audit JSON was regenerated at `66613721e57eef35a6f1b7e1f0bd05f6876a8d1a` (this branch rebased onto `develop` `9b9d066`), which differs from the measured revision only by the audit tooling and PII-domain files: no credential fixture, generator, contract, known-gap or review-ledger change, and the output is byte-identical apart from `benchmark.revision`. |
 | Fixture semantic index | schema 1, 3,533 fixtures, SHA-256 `c295bd99b0850d8b34b3b618258e6891e8f72811b858d18c65fecfe81123aa7e`; taxonomy `b1032d4d4991599d6fccb82599d4e3f7280e7254496982e2a48f103e40ec49c8` |
 | Candidate corpus hash (measurement-v4) | `fbc432625be7203ae36138c36fb30cab7a194b60510e6996a4d5898a70c09af4`; lockfile `97692c4cd77c448583d28ea071290d574a7cbf71ef6962853e490732f4af5aec` |
 | Fixture profiles | `benchmarks/support/fixture-profiles.json` profiles version 1 at the revision above |

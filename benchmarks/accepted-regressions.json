@@ -507,5 +507,131 @@
     },
     "decidedAt": "2026-09-29",
     "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split, and the later decision that #991 and #992 ship in Beta.11 with the #983 WASM size increment accepted on top of those rows; relayed by the Beta.11 orchestrator for the 8f97f14 re-bind on 2026-09-29)"
+  },
+  {
+    "id": "beta11-ec9224d-wasm-full-gzip",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833" },
+    "measured": { "baseline": 137639, "candidate": 187248, "unit": "bytes" },
+    "rationale": "The 8f97f14 row for this trigger (maintainer decisions of 2026-09-28 and 2026-09-29) carries over to the Beta.11 candidate re-bound to redact-secret ec9224d (main after PR #994: the #948 provider-named generic-token fallback, the #993 non-secret value exclusions, the #902 linear PII context association and #896 scripts), which the maintainer decided ship in Beta.11; the maintainer accepted the Beta.11 WASM and package growth. Full-profile WASM gzip 187,248 bytes against the 0.1.0-beta.8 baseline of 137,639 (8f97f14: 184,422, +1.5%), measured by performance-evaluation.yml run 36570952406 (scripts/measure-wasm-sizes.mjs in the candidate checkout); the file inside the ec9224d candidate wasm tarball is 186,585 gzip bytes at level 9. Evidence: evidence/860/ec9224d-verified/wasm-sizes.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts and the #990 streaming fixes, and at ec9224d reports an off-grammar value under the provider's own credential variable (#948) while keeping placeholders, masks and public keys silent under every name (#993).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/issues/948",
+        "https://github.com/redact-secret/redact-secret/issues/993",
+        "https://github.com/redact-secret/redact-secret/issues/902"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split; of 2026-09-29, #991 and #992 ship in Beta.11 with the #983 increment accepted; and the later 2026-09-29 decision that PR #994 ships in Beta.11 with the Beta.11 WASM and package growth accepted; relayed by the Beta.11 orchestrator for the ec9224d re-bind)"
+  },
+  {
+    "id": "beta11-ec9224d-wasm-common-gzip",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833" },
+    "measured": { "baseline": 100058, "candidate": 127661, "unit": "bytes" },
+    "rationale": "The 8f97f14 row for this trigger (maintainer decisions of 2026-09-28 and 2026-09-29) carries over to the Beta.11 candidate re-bound to redact-secret ec9224d (main after PR #994: the #948 provider-named generic-token fallback, the #993 non-secret value exclusions, the #902 linear PII context association and #896 scripts), which the maintainer decided ship in Beta.11; the maintainer accepted the Beta.11 WASM and package growth. Common-profile WASM gzip 127,661 bytes against the 0.1.0-beta.8 baseline of 100,058 (8f97f14: 125,295, +1.9%), measured by performance-evaluation.yml run 36570952406. Evidence: evidence/860/ec9224d-verified/wasm-sizes.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts and the #990 streaming fixes, and at ec9224d reports an off-grammar value under the provider's own credential variable (#948) while keeping placeholders, masks and public keys silent under every name (#993).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/issues/948",
+        "https://github.com/redact-secret/redact-secret/issues/993",
+        "https://github.com/redact-secret/redact-secret/issues/902"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split; of 2026-09-29, #991 and #992 ship in Beta.11 with the #983 increment accepted; and the later 2026-09-29 decision that PR #994 ships in Beta.11 with the Beta.11 WASM and package growth accepted; relayed by the Beta.11 orchestrator for the ec9224d re-bind)"
+  },
+  {
+    "id": "beta11-ec9224d-quickstart-bundle-gzip",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833" },
+    "measured": { "baseline": 144501, "candidate": 194628, "unit": "bytes" },
+    "rationale": "The 8f97f14 row for this trigger (maintainer decisions of 2026-09-28 and 2026-09-29) carries over to the Beta.11 candidate re-bound to redact-secret ec9224d (main after PR #994: the #948 provider-named generic-token fallback, the #993 non-secret value exclusions, the #902 linear PII context association and #896 scripts), which the maintainer decided ship in Beta.11; the maintainer accepted the Beta.11 WASM and package growth. The quickstart browser bundle fetched by a default initialize() is 194,628 gzip bytes against the 0.1.0-beta.8 baseline of 144,501 (8f97f14: 191,801, +1.5%); the growth over 8f97f14 (+2,827) is the full-profile WASM increment above. Measured by performance-evaluation.yml run 36570952406 with the redact-secret#937 quickstart method; the lazy pii files are emitted but never fetched (516,065 gzip bytes emitted in all, a diagnostic). Evidence: evidence/860/ec9224d-verified/quickstart-bundle.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts and the #990 streaming fixes, and at ec9224d reports an off-grammar value under the provider's own credential variable (#948) while keeping placeholders, masks and public keys silent under every name (#993).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/issues/948",
+        "https://github.com/redact-secret/redact-secret/issues/993",
+        "https://github.com/redact-secret/redact-secret/issues/902"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split; of 2026-09-29, #991 and #992 ship in Beta.11 with the #983 increment accepted; and the later 2026-09-29 decision that PR #994 ships in Beta.11 with the Beta.11 WASM and package growth accepted; relayed by the Beta.11 orchestrator for the ec9224d re-bind)"
+  },
+  {
+    "id": "beta11-ec9224d-npm-wasm-packed",
+    "triggerId": "size/npm/wasm/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833" },
+    "measured": { "baseline": 254413, "candidate": 917465, "unit": "bytes" },
+    "rationale": "The 8f97f14 row for this trigger (maintainer decisions of 2026-09-28 and 2026-09-29) carries over to the Beta.11 candidate re-bound to redact-secret ec9224d (main after PR #994: the #948 provider-named generic-token fallback, the #993 non-secret value exclusions, the #902 linear PII context association and #896 scripts), which the maintainer decided ship in Beta.11; the maintainer accepted the Beta.11 WASM and package growth. The @redact-secret/wasm tarball ships four WASM builds (full, common and their _pii builds, redact-secret#937); packed with the product benchmark:candidate recipe at ec9224d it is 917,465 bytes against the 0.1.0-beta.8 baseline of 254,413 (8f97f14: 887,249, +3.4%). Evidence: evidence/860/ec9224d-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts and the #990 streaming fixes, and at ec9224d reports an off-grammar value under the provider's own credential variable (#948) while keeping placeholders, masks and public keys silent under every name (#993).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/issues/948",
+        "https://github.com/redact-secret/redact-secret/issues/993",
+        "https://github.com/redact-secret/redact-secret/issues/902"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split; of 2026-09-29, #991 and #992 ship in Beta.11 with the #983 increment accepted; and the later 2026-09-29 decision that PR #994 ships in Beta.11 with the Beta.11 WASM and package growth accepted; relayed by the Beta.11 orchestrator for the ec9224d re-bind)"
+  },
+  {
+    "id": "beta11-ec9224d-npm-node-darwin-arm64-packed",
+    "triggerId": "size/npm/node-darwin-arm64/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833" },
+    "measured": { "baseline": 424514, "candidate": 655692, "unit": "bytes" },
+    "rationale": "The 8f97f14 row for this trigger (maintainer decisions of 2026-09-28 and 2026-09-29) carries over to the Beta.11 candidate re-bound to redact-secret ec9224d (main after PR #994: the #948 provider-named generic-token fallback, the #993 non-secret value exclusions, the #902 linear PII context association and #896 scripts), which the maintainer decided ship in Beta.11; the maintainer accepted the Beta.11 WASM and package growth. The @redact-secret/node-darwin-arm64 tarball is 655,692 bytes against the 0.1.0-beta.8 baseline of 424,514 (8f97f14: 635,892, +3.1%); native builds keep the PII runtime by design. Measured on the product benchmark:candidate build at ec9224d (darwin-arm64 host); evidence/860/ec9224d-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts and the #990 streaming fixes, and at ec9224d reports an off-grammar value under the provider's own credential variable (#948) while keeping placeholders, masks and public keys silent under every name (#993).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/issues/948",
+        "https://github.com/redact-secret/redact-secret/issues/993",
+        "https://github.com/redact-secret/redact-secret/issues/902"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split; of 2026-09-29, #991 and #992 ship in Beta.11 with the #983 increment accepted; and the later 2026-09-29 decision that PR #994 ships in Beta.11 with the Beta.11 WASM and package growth accepted; relayed by the Beta.11 orchestrator for the ec9224d re-bind)"
+  },
+  {
+    "id": "beta11-ec9224d-node-addon-aarch64-apple-darwin",
+    "triggerId": "size/node-addon/aarch64-apple-darwin",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833" },
+    "measured": { "baseline": 1004128, "candidate": 1460896, "unit": "bytes" },
+    "rationale": "The 8f97f14 row for this trigger (maintainer decisions of 2026-09-28 and 2026-09-29) carries over to the Beta.11 candidate re-bound to redact-secret ec9224d (main after PR #994: the #948 provider-named generic-token fallback, the #993 non-secret value exclusions, the #902 linear PII context association and #896 scripts), which the maintainer decided ship in Beta.11; the maintainer accepted the Beta.11 WASM and package growth. The redact-secret.darwin-arm64.node binary inside that tarball is 1,460,896 bytes against the 0.1.0-beta.8 baseline of 1,004,128 (8f97f14: 1,422,800, +2.7%). Measured on the product benchmark:candidate build at ec9224d (darwin-arm64 host); evidence/860/ec9224d-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts and the #990 streaming fixes, and at ec9224d reports an off-grammar value under the provider's own credential variable (#948) while keeping placeholders, masks and public keys silent under every name (#993).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/issues/948",
+        "https://github.com/redact-secret/redact-secret/issues/993",
+        "https://github.com/redact-secret/redact-secret/issues/902"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split; of 2026-09-29, #991 and #992 ship in Beta.11 with the #983 increment accepted; and the later 2026-09-29 decision that PR #994 ships in Beta.11 with the Beta.11 WASM and package growth accepted; relayed by the Beta.11 orchestrator for the ec9224d re-bind)"
   }
 ]

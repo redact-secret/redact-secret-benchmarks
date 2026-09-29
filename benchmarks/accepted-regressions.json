@@ -819,5 +819,65 @@
     },
     "decidedAt": "2026-09-29",
     "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28 and 2026-09-29 accepting the Beta.11 WASM and package growth, and the approval of 94fc18a as the 0.1.0-beta.11 release source; relayed by the Beta.11 orchestrator)"
+  },
+  {
+    "id": "beta11-94fc18a-npm-wasm-packed",
+    "triggerId": "size/npm/wasm/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28" },
+    "measured": { "baseline": 254413, "candidate": 900773, "unit": "bytes" },
+    "rationale": "The 8b6a5fd row for this trigger carries over to the approved 0.1.0-beta.11 release source, redact-secret 94fc18a (main after PR #1007). 94fc18a differs from the benchmarked candidate 8b6a5fd only by version strings (Cargo.toml, package.json, version.ts) and READMEs; no crates/*.rs, bindings or package source changed, so the few-byte differences come from the embedded version string. The maintainer accepted the Beta.11 WASM and package growth. The @redact-secret/wasm 0.1.0-beta.11 tarball (four WASM builds, redact-secret#937) packed with the product benchmark:candidate recipe is 900,773 bytes against the 0.1.0-beta.8 baseline of 254,413 (8b6a5fd: 900,829), sha256 d89e0e6b…bcf9, darwin-arm64 host. Evidence: evidence/860/94fc18a-release/README.md. Accepted for this release source only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts, the #990 streaming fixes, the #948 provider-named fallback, the #993 non-secret exclusions and the #902 PII context rework; 94fc18a is the 0.1.0-beta.11 release source of that code.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/pull/996",
+        "https://github.com/redact-secret/redact-secret/pull/1007"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28 and 2026-09-29 accepting the Beta.11 WASM and package growth, and the approval of 94fc18a as the 0.1.0-beta.11 release source; relayed by the Beta.11 orchestrator)"
+  },
+  {
+    "id": "beta11-94fc18a-npm-node-darwin-arm64-packed",
+    "triggerId": "size/npm/node-darwin-arm64/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28" },
+    "measured": { "baseline": 424514, "candidate": 649380, "unit": "bytes" },
+    "rationale": "The 8b6a5fd row for this trigger carries over to the approved 0.1.0-beta.11 release source, redact-secret 94fc18a (main after PR #1007). 94fc18a differs from the benchmarked candidate 8b6a5fd only by version strings (Cargo.toml, package.json, version.ts) and READMEs; no crates/*.rs, bindings or package source changed, so the few-byte differences come from the embedded version string. The maintainer accepted the Beta.11 WASM and package growth. The @redact-secret/node-darwin-arm64 0.1.0-beta.11 tarball is 649,380 bytes against the 0.1.0-beta.8 baseline of 424,514 (8b6a5fd: 649,386), sha256 153db1df…6baa, packed with the product benchmark:candidate recipe on a darwin-arm64 host; native builds keep the PII runtime by design. Evidence: evidence/860/94fc18a-release/README.md. Accepted for this release source only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts, the #990 streaming fixes, the #948 provider-named fallback, the #993 non-secret exclusions and the #902 PII context rework; 94fc18a is the 0.1.0-beta.11 release source of that code.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/pull/996",
+        "https://github.com/redact-secret/redact-secret/pull/1007"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28 and 2026-09-29 accepting the Beta.11 WASM and package growth, and the approval of 94fc18a as the 0.1.0-beta.11 release source; relayed by the Beta.11 orchestrator)"
+  },
+  {
+    "id": "beta11-94fc18a-node-addon-aarch64-apple-darwin",
+    "triggerId": "size/node-addon/aarch64-apple-darwin",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28" },
+    "measured": { "baseline": 1004128, "candidate": 1442736, "unit": "bytes" },
+    "rationale": "The 8b6a5fd row for this trigger carries over to the approved 0.1.0-beta.11 release source, redact-secret 94fc18a (main after PR #1007). 94fc18a differs from the benchmarked candidate 8b6a5fd only by version strings (Cargo.toml, package.json, version.ts) and READMEs; no crates/*.rs, bindings or package source changed, so the few-byte differences come from the embedded version string. The maintainer accepted the Beta.11 WASM and package growth. The redact-secret.darwin-arm64.node binary inside that tarball is 1,442,736 bytes against the 0.1.0-beta.8 baseline of 1,004,128 (8b6a5fd: 1,442,736), the same byte count as at 8b6a5fd. Evidence: evidence/860/94fc18a-release/README.md. Accepted for this release source only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) with the #980 processing-time cuts, the #990 streaming fixes, the #948 provider-named fallback, the #993 non-secret exclusions and the #902 PII context rework; 94fc18a is the 0.1.0-beta.11 release source of that code.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/994",
+        "https://github.com/redact-secret/redact-secret/pull/996",
+        "https://github.com/redact-secret/redact-secret/pull/1007"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28 and 2026-09-29 accepting the Beta.11 WASM and package growth, and the approval of 94fc18a as the 0.1.0-beta.11 release source; relayed by the Beta.11 orchestrator)"
   }
 ]

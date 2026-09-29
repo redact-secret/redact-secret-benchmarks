@@ -1024,7 +1024,7 @@
       "family": "okta-api-token",
       "mode": "shape",
       "supportsBareValues": false,
-      "uncertainty": "Okta shows the token only as an elided SSWS example beginning 00, and its only staff statement (2023) says not to assume a set structure; the 40-byte body and alphabet rest on tools and a 2019 community answer. Tools disagree on '=' in the body and GitGuardian does not treat 00 as a prefix; no issued token has been measured.",
+      "uncertainty": "Okta states no length or alphabet in prose. It shows the token as an elided SSWS example beginning 00, and three dated, distinct full-length examples in its own repositories (developer docs guide, management OpenAPI spec 2025-2026, an API-security book page 2019), all 00 + 40 alphanumeric. A 2019 devforum answer ('always 42 characters', regex 00 + 40 [a-zA-Z0-9-_]) comes from an account whose staff status is not confirmed on the forum. Both 2023 items in this record come from one devforum thread (2023-09-21): an Okta team reply saying not to assume a set structure (and that there are no plans to change it) and a customer's alphabet reading. gitleaks' '=' comes from its generic AlphaNumericExtended helper, not from Okta evidence, and GitGuardian does not treat 00 as a prefix. The four open contradictions below carry the dispositions redact-secret#1013 proposes, pending maintainer ruling Q-OK; until ruled they stay unresolved. No issued token has been measured.",
       "supportedContexts": [
         "Authorization: SSWS <value> header",
         "same-line okta keyword assignment (e.g. OKTA_API_TOKEN=<value>)",
@@ -1069,6 +1069,20 @@
           "supports": "Okta's own developer docs (oie-upgrade-api-sdk-to-oie-sdk guide) show an unelided Authorization: SSWS value of 00 + 40 [A-Za-z0-9] (42 characters, no '_', '-' or '=')"
         },
         {
+          "class": "provider-example",
+          "owner": "okta",
+          "reference": "https://github.com/okta/okta-management-openapi-spec/blob/74fcd17fad54332caee96ebbb11fd7f203b03e4f/dist/current/management-dev-noEnums-minimal.yaml#L60548",
+          "observedAt": "2026-09-29",
+          "supports": "Okta management OpenAPI spec (path history 2025-01-10 to 2026-03-23): an SSWS example with one full-length value, 00 + 40 alphanumeric, distinct from the developer-docs guide example; value not reproduced"
+        },
+        {
+          "class": "provider-example",
+          "owner": "okta",
+          "reference": "https://github.com/okta/okta-developer-docs/blob/8aff3329cb8e651d2182ce6dcd5ebd303b42a690/packages/@okta/vuepress-site/books/api-security/api-keys/other-options/index.md#L18",
+          "observedAt": "2026-09-29",
+          "supports": "Okta developer docs, API-security book (2019-02-14): 'Okta (with tokens that look like this …)', a third distinct 00 + 40 alphanumeric value; value not reproduced"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/694#issuecomment-5800302850",
@@ -1078,15 +1092,15 @@
       ],
       "contradictions": [
         {
-          "statement": "gitleaks and betterleaks admit '=' in the body; the contract's alphabet twin asserts silence on a body containing one '=' byte.",
+          "statement": "gitleaks and betterleaks admit '=' in the body; the contract's alphabet twin asserts silence on a body containing one '=' byte. (redact-secret#1013: the '=' comes from gitleaks' generic AlphaNumericExtended helper, cmd/generate/config/utils/patterns.go L27-L28 at v8.30.1, PR #1599, not from Okta evidence; no Okta API-token or sibling-token example contains '='.) [redact-secret#1013 proposes, pending maintainer ruling Q-OK: bounded -- the contract excludes '=' and accepts a false negative if a padded token ever appears]",
           "status": "unresolved"
         },
         {
-          "statement": "Okta staff (2023): do not assume a set structure for Okta API tokens; the contract freezes a 00 + 40 grammar and fixtures assert it.",
+          "statement": "Okta staff (2023): do not assume a set structure for Okta API tokens; the contract freezes a 00 + 40 grammar and fixtures assert it. (redact-secret#1013: devforum thread 'Okta API token format', 2023-09-21; the same reply says there are no plans to change it, and three dated provider examples from 2019 to 2026 all match 00 + 40.) [redact-secret#1013 proposes, pending maintainer ruling Q-OK: bounded -- the contract freezes the currently issued shape, accepts false negatives on a future format change, and is re-reviewed on any new Okta statement]",
           "status": "unresolved"
         },
         {
-          "statement": "A 2023 customer observation gives the alphabet as [A-Za-z0-9-] without '_'; the contract admits '_' (tools, the 2019 answer and 23/52 measured candidates include it).",
+          "statement": "A 2023 customer observation gives the alphabet as [A-Za-z0-9-] without '_'; the contract admits '_' (tools, the 2019 answer and 23/52 measured candidates include it). (redact-secret#1013: the same 2023-09-21 thread as the staff reply above, and the customer's own regex 00[\\w\\d-]{40} admits '_'; Okta's sibling 00 tokens (session, state, recovery) in its authn reference contain '_' and '-'.) [redact-secret#1013 proposes, pending maintainer ruling Q-OK: bounded -- the detector admits '_' and no fixture asserts either way on '_'; settled instead if the ruling accepts the 2019 answer as a staff statement (R3) with the sibling-token examples]",
           "status": "unresolved"
         },
         {
@@ -1095,7 +1109,7 @@
           "bound": "The benchmark makes no claim about a final '-': no positive, twin or control ends in '-', so a trailing '-' is outside supportedContexts and neither asserted nor refuted."
         },
         {
-          "statement": "GitGuardian records the Okta detector as 'Prefixed: False', i.e. 00 is not treated as a prefix; the contract's prefix twin asserts silence on a 01-prefixed value.",
+          "statement": "GitGuardian records the Okta detector as 'Prefixed: False', i.e. 00 is not treated as a prefix; the contract's prefix twin asserts silence on a 01-prefixed value. [redact-secret#1013 proposes, pending maintainer ruling Q-OK: bounded -- 'Prefixed: False' classifies GitGuardian's detector, not the tokens; every Okta example starts 00, and the contract excludes non-00 shapes]",
           "status": "unresolved"
         }
       ]

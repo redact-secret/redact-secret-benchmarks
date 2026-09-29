@@ -1926,7 +1926,7 @@
     {
       "id": "trigger-dev:secret-api-key",
       "provider": "trigger-dev",
-      "name": "Environment secret key (tr_<env>_ / tr_<env>_sk_)",
+      "name": "Environment secret key (tr_ENV_ / tr_ENV_sk_)",
       "description": "tr_ + dev|stg|prod|preview + _sk_ + 24 [0-9A-Za-z] (additional), or tr_<env>_ + 24 or legacy 20 (root); pk_<env>_ public keys are not secrets.",
       "detectors": [
         "trigger-dev-token"

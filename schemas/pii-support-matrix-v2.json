@@ -28,11 +28,36 @@
       "pending": { "type": "integer", "minimum": 0 }, "provisional": { "type": "integer", "minimum": 0 },
       "stable": { "type": "integer", "minimum": 0 }, "unsupported": { "type": "integer", "minimum": 0 }
     } },
+    "protectedRoute": { "$ref": "#/$defs/protectedRoute" },
     "families": { "type": "array", "items": { "$ref": "#/$defs/familyRow" } },
     "artifactCommitment": { "$ref": "#/$defs/digest" }
   },
   "$defs": {
     "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "repoFile": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]{0,199}$" },
+    "protectedRoute": { "type": "object", "additionalProperties": false,
+      "required": ["id", "route", "issue", "productIssue", "record", "evidenceDirectory", "sealRecord", "maximumStatus", "coreCommit", "freezeCommitment", "reportCommitment", "dispositionCommitment", "sealCommitment", "costAcceptance", "artifactCommitment", "families"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" }, "route": { "const": "pii-b11-protected-v1" },
+        "issue": { "type": "string", "pattern": "^redact-secret/[a-z0-9-]+#[0-9]+$" }, "productIssue": { "type": "string", "pattern": "^redact-secret/[a-z0-9-]+#[0-9]+$" },
+        "record": { "$ref": "#/$defs/repoFile" }, "evidenceDirectory": { "$ref": "#/$defs/repoFile" }, "sealRecord": { "$ref": "#/$defs/repoFile" },
+        "maximumStatus": { "const": "provisional" }, "coreCommit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "freezeCommitment": { "$ref": "#/$defs/digest" }, "reportCommitment": { "$ref": "#/$defs/digest" }, "dispositionCommitment": { "$ref": "#/$defs/digest" },
+        "sealCommitment": { "$ref": "#/$defs/digest" }, "artifactCommitment": { "$ref": "#/$defs/digest" },
+        "costAcceptance": { "type": "object", "additionalProperties": false, "required": ["id", "entryCommitment"], "properties": {
+          "id": { "$ref": "#/$defs/slug" }, "entryCommitment": { "$ref": "#/$defs/digest" } } },
+        "families": { "type": "array", "items": { "type": "object", "additionalProperties": false,
+          "required": ["family", "status", "reason", "epochCommitment", "aggregateCommitment", "trustCommitment", "coverage"], "properties": {
+            "family": { "$ref": "#/$defs/family" }, "status": { "enum": ["pending", "provisional"] },
+            "reason": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,79}(?::[a-z][a-z0-9-]{1,79}(?:,[a-z][a-z0-9-]{1,79})*)?$" },
+            "epochCommitment": { "$ref": "#/$defs/digest" }, "aggregateCommitment": { "$ref": "#/$defs/digest" }, "trustCommitment": { "$ref": "#/$defs/digest" },
+            "coverage": { "type": "object", "additionalProperties": false, "required": ["scope", "jurisdiction", "restriction", "note", "contract", "contractSha256"], "properties": {
+              "scope": { "$ref": "#/$defs/scope" }, "jurisdiction": { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+              "restriction": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/slug" }] },
+              "note": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9 ()/.,+-]{0,119}$" },
+              "contract": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/repoFile" }] },
+              "contractSha256": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] } } } } } }
+      } },
     "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,79}$" },
     "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
     "scope": { "type": "string", "pattern": "^(?:global|jurisdiction:[A-Z]{2})$" },

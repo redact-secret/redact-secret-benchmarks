@@ -106,18 +106,25 @@ const validatorLine = (row: PiiFamily) => row.validatorApplicable
 const populationEvidence = (row: PiiFamily) => `<ul class="plain">${row.populationEvidence.map(item =>
   `<li><code>${e(item.id)}</code> · ${item.status === 'not-measured' ? statusMark('not-measured') : e(item.status)} · strata ${e(String(item.strata))}</li>`).join('')}</ul>`;
 
+type PiiRoute = NonNullable<PiiSupportMatrixFile['protectedRoute']>;
+/** The protected-disposition evidence behind a routed status: its reason, coverage and the committed custody identities. */
+const protectedBlock = (routed: PiiRoute['families'][number]) => `<div class="family-block" data-protected-reason="${e(routed.reason)}"><h3 class="h3">Protected disposition</h3>
+  <p class="small">${routed.status === 'provisional' ? 'Every public gate and the sealed protected run are met under an accepted custody.' : `Held at pending: <code>${e(routed.reason)}</code>.`}
+  Coverage: ${e(routed.coverage.note)}${routed.coverage.jurisdiction ? ` (jurisdiction <code>${e(routed.coverage.jurisdiction)}</code>)` : ''}${routed.coverage.contract ? `, per <code>${e(routed.coverage.contract)}</code> as frozen` : ''}.</p>
+  <p class="commitments">${commitmentChip({ label: 'Epoch', commitment: routed.epochCommitment, note: 'Reviewed binding' })}${commitmentChip({ label: 'Custody', commitment: routed.trustCommitment, note: 'Reviewed binding' })}</p></div>`;
+
 /** PiiFamilyRow: scope instead of provider, authority instead of detectors, and no link down to fixture bytes; the artifact cannot carry them. */
-function familyRow(row: PiiFamily, open: boolean): string {
+function familyRow(row: PiiFamily, open: boolean, route: PiiRoute | null): string {
   const copy = SUPPORT_STATUS_COPY[row.status.state], activation = ACTIVATION[row.activation.state];
-  const supports = supportsOf(row);
+  const supports = supportsOf(row), routed = route?.families.find(entry => entry.family === row.family) ?? null;
   return `<details class="pii-family" data-support-status="${e(row.status.state)}" data-family="${e(row.family)}"${open ? ' open' : ''}><summary>
-    <span class="nm">${label('Family')}${e(row.displayName)}<small><code>${e(row.family)}</code> · ${e(row.identityDomain)} · ${e(row.scope)}</small></span>
+    <span class="nm">${label('Family')}${e(row.displayName)}<small><code>${e(row.family)}</code> · ${e(row.identityDomain)} · ${e(row.scope)}</small>${routed ? `<small class="coverage">${e(routed.coverage.note)}</small>` : ''}</span>
     <span>${label('Status')}${statusMark(copy.kind, copy.word)}<small>Profile <code>${e(row.status.profile.id)}@${e(String(row.status.profile.version))}</code></small><small class="reasons">${row.status.reasonCodes.map(e).join(' · ')}</small></span>
     <span>${label('Authority')}${row.authority.length} ${row.authority.length === 1 ? 'source' : 'sources'}<small>${supports.map(e).join(' · ')}</small></span>
     <span class="small">${label('Context')}${e(CONTEXT_OBLIGATION[row.contextObligation] ?? row.contextObligation)}</span>
     <span>${label('Activation')}${activation()}<small><code>${e(row.activation.selector)}</code></small></span>
   </summary><div class="pii-family-detail">
-    <div class="family-block"><h3 class="h3">Authority</h3>${authorityList(row)}</div>
+    ${routed ? protectedBlock(routed) : ''}<div class="family-block"><h3 class="h3">Authority</h3>${authorityList(row)}</div>
     <div class="cols2"><div class="family-block"><h3 class="h3">Validator</h3><p class="small">${validatorLine(row)}</p></div>
       <div class="family-block"><h3 class="h3">Population evidence</h3>${populationEvidence(row)}</div></div>
     <p class="small">Selector <code>${e(row.activation.selector)}</code> enables this family only; it does not enable a neighbouring family or jurisdiction.${row.jurisdiction ? ` Jurisdiction is read from the <code>scope</code> field (<code>${e(row.scope)}</code>), not from the identifier.` : ''}</p>
@@ -156,7 +163,8 @@ function populationComparison(comparison: PiiComparison): string {
 export function piiSupportPage(domain: EvaluationDomainDescriptorV2, matrix: PiiSupportMatrixFile, query: PiiSupportQuery): string {
   const selected = matrix.families.filter(row => !query.family && !query.jurisdiction || Boolean(query.family && row.family === query.family) || Boolean(query.jurisdiction && row.jurisdiction === query.jurisdiction));
   const narrowed = Boolean(query.family || query.jurisdiction);
-  const rows = selected.map(row => familyRow(row, Boolean(query.family))).join('');
+  const route = matrix.protectedRoute ?? null;
+  const rows = selected.map(row => familyRow(row, Boolean(query.family), route)).join('');
   const contract = matrix.activationContract, product = contract.productArtifact === 'trusted' ? contract.productArtifactCommitment : null;
   const activationIdentity = matrix.families.find(row => row.activation.activationIdentity)?.activation.activationIdentity ?? null;
   const selectors = activationIdentity ? /;selectors=([^;]+);/.exec(activationIdentity)?.[1].split(',') ?? [] : [];
@@ -167,7 +175,7 @@ export function piiSupportPage(domain: EvaluationDomainDescriptorV2, matrix: Pii
   return `${supportDomainBar('pii', domain)}<div class="page-head"><div><h1>PII support</h1></div></div>
     <div class="prose"><p class="small">This benchmark measures and records family-level PII evidence; <code>supportClaims=false</code>. It does not infer one jurisdiction or identity family from a neighbor.</p></div>
     <p class="commitments" role="group" aria-label="Commitments recomputed before rendering">${commitmentChip({ label: 'Artifact', commitment: matrix.artifactCommitment })}${commitmentChip({ label: 'Registry', commitment: matrix.registryCommitment })}${commitmentChip({ label: 'Product artifact', commitment: product, note: product ? 'Sanctioned binding' : 'Not measured' })}</p>
-    ${activationNote}
+    ${activationNote}${route ? `<p class="small" data-protected-route="${e(route.id)}">Family status comes from the reviewed Beta.11 protected disposition for core <code>${e(route.coreCommit.slice(0, 12))}</code> (route <code>${e(route.route)}</code>; recorded in <code>${e(route.record)}</code>). This route reaches <b>provisional</b> at most and never stable; the population views below stay separate evidence.</p>` : ''}
     <section class="section" aria-labelledby="pii-families"><div class="section-head"><div><h2 class="h2-compact" id="pii-families">PII families</h2>
       <p class="small">${narrowed ? `Showing ${selected.length} of ${matrix.families.length}. <a href="/support?domain=pii">Show every family</a>.` : `${matrix.families.length} ${matrix.families.length === 1 ? 'family' : 'families'} in the validated registry.`} Status and activation are separate axes. Rows stop at identity and authority: this artifact cannot carry fixture content, so there is no link down to bytes.</p></div></div>
       ${families}</section>

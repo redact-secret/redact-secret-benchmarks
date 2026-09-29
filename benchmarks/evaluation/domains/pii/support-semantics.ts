@@ -1,5 +1,6 @@
 import { isPiiJurisdiction } from './jurisdictions.ts';
 import trustedBindings from './trusted-product-bindings-v1.json';
+import protectedBindings from './protected-support-bindings-v1.json';
 
 export const PII_SUPPORT_REGISTRY_SOURCE = Object.freeze({
   repository: 'redact-secret/redact-secret' as const,
@@ -16,10 +17,75 @@ const slug = (value: unknown) => typeof value === 'string' && /^[a-z][a-z0-9-]{1
 const locator = (value: unknown) => typeof value === 'string' && /^(?:https:\/\/[a-z0-9.-]+\/[a-zA-Z0-9._~!$&'()*+,;=:@\/-]+|(?:section|clause|annex):[a-zA-Z0-9][a-zA-Z0-9._:-]{0,119})$/.test(value);
 const authoritySupports = ['lexical', 'validation', 'allocation', 'reserved-control', 'sensitivity'];
 const diagnosticAxes = ['type-identity', 'validator-correctness', 'context-discrimination'] as const;
+const ordered = (value: unknown): unknown => Array.isArray(value) ? value.map(ordered) : value && typeof value === 'object' ?
+  Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, ordered(child)])) : value;
 const arithmetic = (baseline: any, candidate: any, delta: any) => {
   if (baseline === null || candidate === null) return delta === null;
   return typeof baseline === 'number' && typeof candidate === 'number' && typeof delta === 'number' && delta === candidate - baseline;
 };
+
+/**
+ * Reviewed v2 binding path (benchmarks #428): a `pii-beta11-protected-disposition` bound to its exact core commit,
+ * freeze, report, seal, per-family epochs and custody, and profile-cost acceptance ledger entry. The entries in
+ * `protected-support-bindings-v1.json` are the only ones a support matrix may carry; the Node binder
+ * (`protected-support-binding.ts`) re-derives each from committed evidence before a publication uses it. This route
+ * projects `provisional` or `pending`, never `stable`, and never together with a v1 product record.
+ */
+export const PII_PROTECTED_ROUTE = 'pii-b11-protected-v1' as const;
+export interface PiiProtectedRouteFamily {
+  family: string; status: 'pending' | 'provisional'; reason: string; epochCommitment: string; aggregateCommitment: string; trustCommitment: string;
+  coverage: { scope: string; jurisdiction: string | null; restriction: string | null; note: string; contract: string | null; contractSha256: string | null };
+}
+export interface PiiProtectedRoute {
+  id: string; route: typeof PII_PROTECTED_ROUTE; issue: string; productIssue: string; record: string; evidenceDirectory: string; sealRecord: string;
+  maximumStatus: 'provisional'; coreCommit: string; freezeCommitment: string; reportCommitment: string; dispositionCommitment: string;
+  sealCommitment: string; costAcceptance: { id: string; entryCommitment: string }; artifactCommitment: string; families: PiiProtectedRouteFamily[];
+}
+const sameKeys = (value: unknown, keys: string[]) => value !== null && typeof value === 'object' && !Array.isArray(value) &&
+  Object.keys(value).sort().join(',') === [...keys].sort().join(',');
+const sha = (value: unknown) => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
+const repoFile = (value: unknown) => typeof value === 'string' && /^[a-z0-9][a-z0-9._/-]{0,199}$/.test(value) && !value.includes('..');
+const ROUTE_KEYS = ['id', 'route', 'issue', 'productIssue', 'record', 'evidenceDirectory', 'sealRecord', 'maximumStatus', 'coreCommit', 'freezeCommitment',
+  'reportCommitment', 'dispositionCommitment', 'sealCommitment', 'costAcceptance', 'artifactCommitment', 'families'];
+const ROUTE_FAMILY_KEYS = ['family', 'status', 'reason', 'epochCommitment', 'aggregateCommitment', 'trustCommitment', 'coverage'];
+
+/** Structural problems of one reviewed route entry against the registry families it projects; null when well formed. */
+export function piiProtectedRouteProblem(route: any, registryFamilies: Array<{ family: string; scope: string; jurisdiction: string | null }>): string | null {
+  if (!sameKeys(route, ROUTE_KEYS) || !slug(route.id) || route.route !== PII_PROTECTED_ROUTE || route.maximumStatus !== 'provisional' ||
+      !/^redact-secret\/[a-z0-9-]+#\d+$/.test(route.issue) || !/^redact-secret\/[a-z0-9-]+#\d+$/.test(route.productIssue) ||
+      ![route.record, route.evidenceDirectory, route.sealRecord].every(repoFile) || !/^[a-f0-9]{40}$/.test(route.coreCommit) ||
+      ![route.freezeCommitment, route.reportCommitment, route.dispositionCommitment, route.sealCommitment, route.artifactCommitment].every(sha) ||
+      !sameKeys(route.costAcceptance, ['id', 'entryCommitment']) || !slug(route.costAcceptance.id) || !sha(route.costAcceptance.entryCommitment))
+    return 'PII protected route identity is malformed';
+  if (!Array.isArray(route.families) || JSON.stringify(route.families.map((row: any) => row?.family)) !== JSON.stringify(registryFamilies.map(row => row.family)))
+    return 'PII protected route does not cover exactly the registry families';
+  for (const row of route.families) {
+    const registered = registryFamilies.find(item => item.family === row.family)!;
+    if (!sameKeys(row, ROUTE_FAMILY_KEYS) || ![row.epochCommitment, row.aggregateCommitment, row.trustCommitment].every(sha) ||
+        typeof row.reason !== 'string' || !/^[a-z][a-z0-9-]{1,79}(?::[a-z][a-z0-9-]{1,79}(?:,[a-z][a-z0-9-]{1,79})*)?$/.test(row.reason))
+      return 'PII protected route family is malformed';
+    if (row.status === 'stable') return 'PII protected route never projects stable';
+    if (!['pending', 'provisional'].includes(row.status)) return 'PII protected route family status is invalid';
+    if ((row.status === 'provisional') !== (row.reason === 'protected-gates-met'))
+      return 'PII protected route projects a family above pending without its protected gate';
+    const coverage = row.coverage;
+    if (!sameKeys(coverage, ['scope', 'jurisdiction', 'restriction', 'note', 'contract', 'contractSha256']) || coverage.scope !== registered.scope ||
+        coverage.jurisdiction !== registered.jurisdiction || (coverage.restriction !== null && !slug(coverage.restriction)) ||
+        typeof coverage.note !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9 ()/.,+-]{0,119}$/.test(coverage.note) ||
+        (coverage.contract === null) !== (coverage.contractSha256 === null) || (coverage.contract !== null && (!repoFile(coverage.contract) || !sha(coverage.contractSha256))) ||
+        ((coverage.restriction !== null || coverage.jurisdiction !== null) && coverage.contract === null))
+      return 'PII protected route coverage is inconsistent with the registry or unbound to a frozen contract';
+  }
+  return null;
+}
+/** The reviewed entry with this id, or null. Only reviewed entries may appear in a matrix. */
+export function piiReviewedProtectedRoute(id: unknown): PiiProtectedRoute | null {
+  return (protectedBindings.bindings as unknown as PiiProtectedRoute[]).find(entry => entry.id === id) ?? null;
+}
+export const piiCurrentProtectedRoute = (): PiiProtectedRoute | null => piiReviewedProtectedRoute(protectedBindings.current);
+/** Reason codes a route family projects: none when provisional; the reason's segments when pending. */
+export const piiProtectedRouteReasonCodes = (row: Pick<PiiProtectedRouteFamily, 'status' | 'reason'>) => row.status === 'provisional' ? [] :
+  [...new Set(row.reason.split(/[:,]/))].sort();
 
 export function piiSupportRegistryProjection(matrix: any) {
   return { schemaVersion: 1, id: 'pii-support-registry-v1', version: 1, source: PII_SUPPORT_REGISTRY_SOURCE,
@@ -41,6 +107,14 @@ export function piiSupportSemanticProblem(matrix: any, options: { allowBoundPopu
     binding.product.candidateEvidenceCommitment === matrix.activationContract.candidateEvidenceCommitment &&
     binding.activationArtifactCommitment === matrix.activationContract.activationArtifactCommitment) : null;
   if (trustedProduct && !sanctioned) return 'PII product artifact binding is not repository-sanctioned';
+  const route: PiiProtectedRoute | null = matrix.protectedRoute === undefined ? null : matrix.protectedRoute;
+  if (route !== null) {
+    const reviewed = piiReviewedProtectedRoute(route?.id);
+    if (!reviewed || JSON.stringify(ordered(route)) !== JSON.stringify(ordered(reviewed))) return 'PII protected route is not a reviewed binding';
+    const problem = piiProtectedRouteProblem(route, Array.isArray(matrix.families) ? matrix.families : []);
+    if (problem) return problem;
+    if (trustedProduct) return 'PII v1 product record and v2 protected route cannot bind one matrix';
+  }
   if (!Array.isArray(matrix.populationReports) || JSON.stringify(matrix.populationReports.map((row: any) => row.id)) !== JSON.stringify(populationIds) ||
       matrix.populationReports.some((row: any) => !['measured', 'partial', 'not-measured'].includes(row.status)) ||
       new Set(matrix.populationReports.map((row: any) => row.contractCommitment)).size !== 1 ||
@@ -149,8 +223,11 @@ export function piiSupportSemanticProblem(matrix: any, options: { allowBoundPopu
     const provisional = row.activation.state === 'available' && row.populationEvidence.every((entry: any) => entry.status === 'measured') &&
       matrix.populationComparisons.every((comparison: any) => comparison.verdict === 'no-regression') && row.qualificationArtifactCommitment !== null &&
       row.status.reasonCodes.length === 0;
-    const exactReasons = [...new Set(reasons)].sort();
-    if (row.status.state !== (provisional ? 'provisional' : 'pending') ||
+    // On the reviewed v2 route the status is the protected disposition's, with its reason; population views stay separate evidence.
+    const routed = route?.families.find(entry => entry.family === row.family) ?? null;
+    const exactState = routed ? routed.status : provisional ? 'provisional' : 'pending';
+    const exactReasons = routed ? piiProtectedRouteReasonCodes(routed) : [...new Set(reasons)].sort();
+    if (row.status.state !== exactState ||
         JSON.stringify(row.status.reasonCodes) !== JSON.stringify(exactReasons)) return 'PII support status is not exactly derived';
   }
   return null;

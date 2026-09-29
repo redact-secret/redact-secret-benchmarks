@@ -53,6 +53,11 @@
     "eval:matrix": "node --import tsx benchmarks/generate-support-matrix.ts",
     "eval:publish:matrix": "node --import tsx scripts/publish-support-matrix.ts",
     "eval:matrix:drift": "node --import tsx benchmarks/support-matrix-drift.ts",
+    "dossiers:scaffold": "node scripts/scaffold-dossiers.mjs",
+    "dossiers:check": "node scripts/scaffold-dossiers.mjs --check",
+    "dossiers:publish": "node --import tsx benchmarks/generate-provider-dossiers.ts",
+    "family:new": "node scripts/family-new.mjs",
+    "family:status": "node scripts/family-status.mjs",
     "support:check:ui": "node --import tsx scripts/check-support-ui.mjs",
     "arrival:check": "node --import tsx scripts/check-evidence-arrival.mjs",
     "profiles:generate": "node --import tsx scripts/generate-fixture-profile-coverage.mjs",
@@ -79,6 +84,7 @@
     "credential-parity:measure": "node --import tsx scripts/measure-credential-mixed-parity.mjs",
     "pii:beta11": "node --import tsx scripts/pii-beta11.mjs",
     "pii:beta11:plans": "node --import tsx scripts/generate-pii-beta11-population-v2.mjs",
+    "pii:beta11:protected": "node --import tsx scripts/pii-beta11-protected.mjs",
     "eval:validate": "node --import tsx benchmarks/validate-evidence.ts",
     "eval:diagnostics": "node --import tsx benchmarks/unit-diagnostics.ts",
     "eval:diagnostics:validate": "node --import tsx scripts/validate-unit-diagnostics.mjs",
@@ -131,6 +137,7 @@
     "ajv": "8.20.0",
     "tsx": "4.23.13",
     "typescript": "7.0.2",
-    "vite": "8.3.0"
+    "vite": "8.3.0",
+    "yaml": "2.9.1"
   }
 }

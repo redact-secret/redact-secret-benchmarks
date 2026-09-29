@@ -3,7 +3,42 @@ on: [push, pull_request]
 permissions:
   contents: read
 jobs:
+  # `validate` is the required status check and keeps its name: it is the
+  # aggregate of `validate-sources` (everything but `npm test`) and the
+  # `unit-tests` shards, which run in parallel instead of serially (#479 P3).
   validate:
+    if: always()
+    needs: [validate-sources, unit-tests]
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      SOURCES: ${{ needs.validate-sources.result }}
+      TESTS: ${{ needs.unit-tests.result }}
+    steps:
+      - run: |
+          echo "validate-sources: $SOURCES; unit-tests: $TESTS"
+          [ "$SOURCES" = success ] && [ "$TESTS" = success ]
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      # Same command as `npm test`, sharded by file; --test-shard must precede the file list.
+      - run: node --import tsx --test --test-shard=${{ matrix.shard }}/4 tests/*.test.mjs
+
+  validate-sources:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
@@ -18,7 +53,6 @@ jobs:
       - run: npm run fixtures:check
       - name: Fixture semantic index is complete, reviewed, and current (#340)
         run: npm run fixture-index:check
-      - run: npm test
       - name: Validate published engine qualification evidence
         run: npm run eval:validate -- docs/specs/qualification/engine-v1.json
       - name: Exercise evaluation engine with the published npm scanner
@@ -31,6 +65,8 @@ jobs:
         run: npm run profiles:check
       - name: Every ADR has valid frontmatter and is indexed exactly once (#135)
         run: npm run decisions:validate
+      - name: Every taxonomy provider and family has a dossier entry (#473)
+        run: npm run dossiers:check
       - name: Performance criteria are derived from the committed release-build evidence, and its schema pin has not drifted (#136)
         run: npm run performance:criteria:check && npm run performance:schema:check
       - name: Regression budgets match their derivation, baselines are unchanged, and no breach was replaced away (#143)

@@ -50,10 +50,18 @@ export async function executeRuntime<
   const allIds = [...scanners.map(scanner => scanner.id), ...reused.map(scanner => scanner.id)];
   if (!allIds.length || new Set(allIds).size !== allIds.length) throw new Error('Empty or duplicate scanner selection');
   const startedAt = new Date().toISOString();
+  const inputByPath = new Map<string, TInput>();
+  for (const input of inputs) if (!inputByPath.has(input.path)) inputByPath.set(input.path, input);
+  const byteLengthByPath = new Map<string, number>();
+  const byteLengthOf = (input: TInput) => {
+    let length = byteLengthByPath.get(input.path);
+    if (length === undefined) byteLengthByPath.set(input.path, length = Buffer.byteLength(input.content));
+    return length;
+  };
   for (const observation of reused) {
     if (observation.status !== 'complete' || observation.observation?.source !== 'snapshot' ||
-        observation.findings.some(finding => !inputs.some(input => input.path === finding.path) || finding.start < 0 || finding.end <= finding.start ||
-          finding.end > Buffer.byteLength(inputs.find(input => input.path === finding.path)!.content)))
+        observation.findings.some(finding => !inputByPath.has(finding.path) || finding.start < 0 || finding.end <= finding.start ||
+          finding.end > byteLengthOf(inputByPath.get(finding.path)!)))
       throw new Error('Invalid reused peer observation');
     validateFindings(observation.findings);
     onProgress(`${observation.id}: reused snapshot ${observation.observation.snapshotDigest}`);
@@ -86,8 +94,12 @@ export async function executeRuntime<
         }
         const [first, ...rest] = replayed.map(findings => tuples(findings, identity));
         const divergent = new Set<string>();
-        for (const other of rest) for (const tuple of [...first.filter(value => !other.includes(value)), ...other.filter(value => !first.includes(value))])
-          divergent.add(JSON.parse(tuple)[0]);
+        const firstSet = new Set(first);
+        for (const other of rest) {
+          const otherSet = new Set(other);
+          for (const tuple of [...first.filter(value => !otherSet.has(value)), ...other.filter(value => !firstSet.has(value))])
+            divergent.add(JSON.parse(tuple)[0]);
+        }
         if (divergent.size) observations.push({ ...metadata, version, status: 'unstable', findings: [],
           message: 'Replays over identical input disagreed; findings discarded and raw output suppressed.',
           replays: { count: replayed.length, agreed: false, divergentPaths: [...divergent].sort() } });

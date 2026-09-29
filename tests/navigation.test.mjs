@@ -30,6 +30,7 @@ test('the redesign route table resolves, with or without a trailing slash', () =
   assert.equal(resolve('/report').kind, 'report');
   assert.equal(resolve('/coverage/').kind, 'coverage');
   assert.equal(resolve('/support').kind, 'support');
+  assert.equal(resolve('/support/providers/').kind, 'providers');
   assert.deepEqual(resolve('/evaluation'), { kind: 'redirect', id: '', view: '', to: '/evaluation/credentials' });
   assert.deepEqual(resolve('/evaluation/credentials/'), { kind: 'evaluation-domain', id: 'credential', view: '', to: '' });
   assert.deepEqual(resolve('/evaluation/pii'), { kind: 'evaluation-domain', id: 'pii', view: '', to: '' });

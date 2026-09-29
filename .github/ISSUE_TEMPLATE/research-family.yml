@@ -1,0 +1,95 @@
+name: Research a provider or family
+description: Track research on a provider's secret family. Closed only by the dossier PR that records the verdict.
+title: "research(<provider>): <family>"
+labels: ["research"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Completion rule.** This issue is closed only by a pull request that adds or updates
+        `benchmarks/support/dossiers/<provider>.md` and carries `Closes #N` for this issue. That
+        includes a `not-found` or `rejected` verdict. Do not close it by hand. Iterative findings
+        stay in comments; the dossier links them by permalink.
+
+        The fields below mirror the dossier frontmatter (`schemas/dossier-v1.json`). Describe a
+        token shape in words or as a grammar. Never paste a real, live or new secret-shaped value.
+  - type: input
+    id: provider
+    attributes:
+      label: provider
+      description: taxonomy.json provider id (lowercase, hyphenated), or `generic` for provider-less families.
+    validations:
+      required: true
+  - type: textarea
+    id: families
+    attributes:
+      label: families
+      description: One family id per line as `<provider>:<family>`, existing in taxonomy.json or proposed.
+    validations:
+      required: true
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: verdict
+      description: Expected verdict. The dossier PR records the final one.
+      options:
+        - unresearched
+        - ready
+        - issuance-gated
+        - date-gated
+        - not-found
+        - rejected
+    validations:
+      required: true
+  - type: dropdown
+    id: tier
+    attributes:
+      label: tier
+      description: Evidence tier expected. Use `null` while unresearched.
+      options:
+        - "null"
+        - T0
+        - T1
+        - T2
+        - T3
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: sources
+      description: https URLs to provider docs, SDK or generator code backing the grammar. One per line; GitHub links must be commit permalinks.
+    validations:
+      required: true
+  - type: textarea
+    id: issues
+    attributes:
+      label: issues
+      description: Related research issues as `owner/repo#N`, one per line. Add this issue once it has a number.
+  - type: input
+    id: evidence
+    attributes:
+      label: evidence
+      description: GitHub blob or tree link pinned to a 40-hex commit, if final evidence for a past state exists. Otherwise leave empty.
+  - type: input
+    id: researchedAt
+    attributes:
+      label: researchedAt
+      description: YYYY-MM-DD of the latest verdict. Leave empty while unresearched.
+  - type: input
+    id: blockedBy
+    attributes:
+      label: blockedBy
+      description: One line on what stops the next stage. Required for issuance-gated and date-gated (for example, whether a revoked sample can be minted and what plan or cost that needs).
+  - type: textarea
+    id: grammar
+    attributes:
+      label: Observed prefix and grammar, in words
+      description: Prose only, for the dossier body. No real token values.
+  - type: checkboxes
+    id: credential-attestation
+    attributes:
+      label: Credential check
+      options:
+        - label: I did not paste any real or unrevoked credential
+          required: true

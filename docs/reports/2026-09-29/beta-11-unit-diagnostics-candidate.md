@@ -1,5 +1,7 @@
 # Unit-safe diagnostics — candidate @redact-secret/core@0.1.0-beta.10
 
+> **Superseded** by [`beta-11-unit-diagnostics-candidate-ec9224d.md`](beta-11-unit-diagnostics-candidate-ec9224d.md) (candidate `ec9224d` on the corpus with the #948 relabel). Kept as history.
+
 Diagnostics only (#380). The measurement protocol v4 headline — leaked-span rate, leaked-byte rate, collateral ratio and false-alarm rate per kind × tier — is unchanged and remains authoritative; its counts are reproduced under **v4 reference** and cross-checked. Span units and file units are never combined, and no precision, recall, F1 or scanner ranking is derived.
 
 ## Identity

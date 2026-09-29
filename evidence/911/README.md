@@ -1,6 +1,64 @@
 # Evidence: redact-secret#911: fixed-candidate rerun of its untargeted benign fixtures
 
-## Rerun at the re-bound Beta.11 candidate 8f97f14 (current)
+## Rerun at the re-bound Beta.11 candidate 8b6a5fd (current)
+
+**Result:** PASS, unchanged. The Beta.11 candidate moved from `ec9224d` to product main `8b6a5fd` (PR #996, the #902
+Wasm follow-up; PII-only code, output byte-identical). Every fixture of this record has the same outcome and finding
+count there. The record stays `verified`.
+
+| Fixture | Kind | Candidate `ec9224d` | Candidate `8b6a5fd` |
+| --- | --- | --- | --- |
+| `real-world-shapes--helm-values-search-api` | must-not-flag | clean | clean |
+| `real-world-shapes--k8s-billing-externalsecret` | must-not-flag | clean | clean |
+| `real-world-shapes--ansible-group-vars-gameservers` | must-not-flag | clean | clean |
+| `real-world-shapes--swift-keychain-wrapper` | must-not-flag | clean | clean |
+| `real-world-shapes--pytest-fake-fixtures` | must-not-flag | flagged:1 | flagged:1 |
+| `real-world-shapes--lua-openresty-hmac` | must-not-flag | clean | clean |
+| `real-world-shapes--agent-summary-korean-rotation` | must-not-flag | clean | clean |
+
+The residual `pytest-fake-fixtures` warn is unchanged (406–416, medium, `contextual_secret`, `warn`), from `scan()` on the
+8b6a5fd tarballs.
+
+- Candidate run `e795030e-478e-4d21-9775-57456d832143` (complete, full suite, 4,777 of 4,777 fixtures, `eval:validate`
+  passed), benchmarks `405892a5ba40b6eeef919d2fb818470ee495092c` (clean, the re-pin), corpus `d88c19f7…3e2f` (unchanged).
+- Artifacts: core `467111e2…f74c`, node `19f41652…05ea`, wasm `61d135ba…6f2d`.
+- Product conformance at `8b6a5fd`: [Artifact qualification run 36581019627](https://github.com/redact-secret/redact-secret/actions/runs/36581019627) (success).
+- Raw rows: [`candidate-rerun-8b6a5fd.json`](candidate-rerun-8b6a5fd.json). Family-level summary:
+  [`../860/8b6a5fd/README.md`](../860/8b6a5fd/README.md).
+
+The `ec9224d` rerun below is superseded by this one and kept as history.
+
+## Rerun at the re-bound Beta.11 candidate ec9224d (superseded)
+
+**Result:** PASS, unchanged. The Beta.11 candidate was re-bound from `8f97f14` to product main `ec9224d` (PR #994: the
+#948 provider-named generic-token fallback, the #993 non-secret value exclusions and the #902 linear PII context
+association). Every fixture of this record has the same outcome and finding count there. None of them is among the 177
+fixtures #948 changes or the one #993 changes. The record stays `verified`.
+
+| Fixture | Kind | Candidate `8f97f14` | Candidate `ec9224d` |
+| --- | --- | --- | --- |
+| `real-world-shapes--helm-values-search-api` | must-not-flag | clean | clean |
+| `real-world-shapes--k8s-billing-externalsecret` | must-not-flag | clean | clean |
+| `real-world-shapes--ansible-group-vars-gameservers` | must-not-flag | clean | clean |
+| `real-world-shapes--swift-keychain-wrapper` | must-not-flag | clean | clean |
+| `real-world-shapes--pytest-fake-fixtures` | must-not-flag | flagged:1 | flagged:1 |
+| `real-world-shapes--lua-openresty-hmac` | must-not-flag | clean | clean |
+| `real-world-shapes--agent-summary-korean-rotation` | must-not-flag | clean | clean |
+
+The residual `pytest-fake-fixtures` warn is unchanged (406–416, medium, `contextual_secret`, `warn`), from `scan()` on the
+ec9224d tarballs.
+
+- Candidate run `589527ab-8df1-4ae7-a517-26f7567ffb3b` (complete, full suite, 4,777 of 4,777 fixtures, `eval:validate`
+  passed), benchmarks `5b03068ae5f1d34ae52549cf05d13c97aaf4ed0f` (clean), corpus `d88c19f7…3e2f` (the #948 relabel and
+  the nine `beta8-948` controls; this record's fixtures are unchanged).
+- Artifacts: core `467111e2…f74c`, node `9ceabe01…83d6`, wasm `c3f54788…7d78`.
+- Product conformance at `ec9224d`: [Artifact qualification run 36570726765](https://github.com/redact-secret/redact-secret/actions/runs/36570726765) (success).
+- Raw rows: [`candidate-rerun-ec9224d.json`](candidate-rerun-ec9224d.json). Family-level summary:
+  [`../860/ec9224d/README.md`](../860/ec9224d/README.md).
+
+The `8f97f14` rerun below is superseded by this one and kept as history.
+
+## Rerun at the re-bound Beta.11 candidate 8f97f14 (superseded)
 
 **Result:** PASS, unchanged. The Beta.11 candidate was re-bound from `1db8ff3` to product main `8f97f14` (PR #991, the
 #980 performance backlog, and PR #992, the #990 streaming fixes). Every fixture of this record has the same outcome

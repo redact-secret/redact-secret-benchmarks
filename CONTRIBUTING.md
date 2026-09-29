@@ -47,6 +47,38 @@ validates every pack; `npm run evidence:query -- --class=<class>` lists
 public adversarial, protected holdout and maintainer regression evidence
 separately. Project-authored evidence is never described as independent.
 
+## Adding or researching a provider
+
+Every provider in `benchmarks/support/taxonomy.json` has one dossier at
+`benchmarks/support/dossiers/<provider>.md` (`generic.md` for provider-less
+families). Open it first: it shows each family's research verdict, tier, sources,
+blocker and open questions, so you can pick up the next piece of work. Rules are
+in [`benchmarks/support/dossiers/README.md`](benchmarks/support/dossiers/README.md)
+and the
+[decision](docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
+
+0. Finding work: `npm run family:status -- <provider>[:<family>]` is offline
+   and prints each family's dossier verdict, detector mapping, fixture
+   shortfall against `status-criteria.json` and one next step (counts only,
+   never fixture values).
+1. New provider or family: `npm run family:new -- <provider> <family>` adds the
+   `taxonomy.json` draft, the dossier entry and an inert fixture stub, prints
+   the seven-item evidence checklist, and refuses to overwrite anything. (By
+   hand: edit `taxonomy.json`, then run `npm run dossiers:scaffold`.)
+2. Researching: hand-write only the provider facts (verdict, tier, `sources`,
+   `issues`, `evidence`, `researchedAt`, `blockedBy`, prose). Status, fixture
+   counts and detector presence are derived and have no field. Verdicts are
+   `unresearched`, `ready`, `issuance-gated`, `date-gated`, `not-found` and
+   `rejected`. `anthropic.md` is the worked example.
+3. Links: a past state is a 40-hex commit permalink, a living `redact-secret`
+   doc may use `main`, and branch links are rejected. Never write a real, live
+   or new secret-shaped value: describe a shape in words or as a grammar.
+4. Open research with the "Research a provider or family" issue form. A
+   research issue closes only via a dossier PR's `Closes #N`, including a
+   `not-found` or `rejected` verdict; never close it by hand. Iterative findings
+   stay in issue comments and the dossier links them by permalink.
+5. Run `npm run dossiers:check` (schema, taxonomy ids, permalinks, coverage).
+
 ## Recording a decision
 
 `docs/decisions/` holds this repository's ADRs — benchmark-methodology and

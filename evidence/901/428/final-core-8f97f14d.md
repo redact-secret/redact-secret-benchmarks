@@ -1,5 +1,7 @@
 # #428 final public-gate record: core `8f97f14d`
 
+> **Superseded** for the release decision by [`final-core-ec9224d9.md`](final-core-ec9224d9.md): the Beta.11 candidate moved to core `ec9224d9` (redact-secret #994). This record stays as history.
+
 **All six PII families stay `pending`, with exactly the disposition they had at `1db8ff38`.** Every public gate except `profile-cost` passes on the exact final candidate. `profile-cost` is `not-met` on the official Linux workflow, as it was at `1db8ff38`. The protected partition is unspent and not eligible.
 
 This record re-binds the #428 evidence to the new Beta.11 candidate. It supersedes [`final-core-1db8ff38.md`](final-core-1db8ff38.md), [`profile-cost-v2-core-1db8ff38.md`](profile-cost-v2-core-1db8ff38.md) and [`package-budget-acceptance-core-1db8ff38.md`](package-budget-acceptance-core-1db8ff38.md) for the release decision, and edits no earlier evidence beyond a superseded note at their top. It makes no support claim. PII numerators and denominators are the only counts in it. Mode: candidate build (isolated tarballs from the commit, and qualified product run 36553444981 for the CI rows and the official workflow), not the published package.

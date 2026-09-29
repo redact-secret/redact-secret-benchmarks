@@ -11,6 +11,12 @@
  *  3. a second page starts rendering support statuses, out of this gate's
  *     reach.
  *
+ * The providers roadmap (#478) is held to the same rule by checkProvidersUi:
+ * its stages and verdicts are the generated file's own vocabulary, every
+ * taxonomy family is listed once, a stage or verdict is read from the file and
+ * never written into markup, and nothing on the page or in the schema forecasts
+ * a date.
+ *
  * Run: npm run support:check:ui
  */
 import { readdir, readFile } from 'node:fs/promises';
@@ -18,6 +24,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { supportPage, SUPPORT_STATUS_COPY } from '../src/pages/support.ts';
 import { supportMatrixProblem } from '../src/support-model.ts';
+import { providersPage, PROVIDER_STAGE_COPY, DOSSIER_VERDICT_COPY } from '../src/pages/providers.ts';
+import { providerDossiersProblem, PROVIDER_STAGES, DOSSIER_VERDICTS } from '../src/providers-model.ts';
+import { buildProviderDossiers, defaultInputs, STAGES } from '../benchmarks/generate-provider-dossiers.ts';
 import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
 
@@ -70,8 +79,80 @@ async function uiFilesRenderingStatuses() {
   return found;
 }
 
-export async function checkSupportUi() {
+/** A file's families with the stage/verdict a probe chooses; deliberately not validated, the page must render what it is given. */
+function probedDossiers(base, patch) {
+  const file = structuredClone(base);
+  for (const provider of file.providers) for (const family of provider.families) Object.assign(family, patch);
+  return file;
+}
+const articles = html => [...html.matchAll(/<article data-stage="([^"]*)" data-verdict="([^"]*)" data-family="([^"]*)"/g)].map(match => ({ stage: match[1], verdict: match[2], family: match[3] }));
+const propertyNames = value => value && typeof value === 'object' ? Object.entries(value).flatMap(([key, child]) => [key, ...propertyNames(child)]) : [];
+
+/** The providers roadmap cannot drift from the taxonomy, its schema, or the dossier schema, and never promises a date. */
+export async function checkProvidersUi() {
   const problems = [];
+  const schema = await read('schemas/provider-dossiers-v1.json');
+  const dossierSchema = await read('schemas/dossier-v1.json');
+  const stages = schema.definitions.stage.enum;
+  const verdicts = schema.definitions.family.properties.verdict.enum;
+  const same = (a, b) => JSON.stringify(sorted(a)) === JSON.stringify(sorted(b));
+  if (!same(stages, Object.keys(schema.properties.stageDistribution.properties)) || !same(stages, Object.keys(schema.definitions.family.properties.reached.properties)))
+    problems.push('provider-dossiers-v1.json disagrees with itself: the stage enum, stageDistribution keys and reached keys differ');
+  if (!same(verdicts, Object.keys(schema.properties.verdictDistribution.properties))) problems.push('provider-dossiers-v1.json disagrees with itself: the verdict enum and verdictDistribution keys differ');
+  if (!same(verdicts, dossierSchema.$defs.research.properties.verdict.enum)) problems.push('provider-dossiers-v1.json verdicts differ from schemas/dossier-v1.json: a verdict a dossier can carry has no place on the roadmap, or the reverse');
+  if (JSON.stringify(stages) !== JSON.stringify([...STAGES]) || JSON.stringify(stages) !== JSON.stringify(PROVIDER_STAGES)) problems.push('The generator, the schema and the UI model disagree on the stages or their order');
+  if (!same(verdicts, DOSSIER_VERDICTS)) problems.push('The UI model disagrees with the schema on the verdicts');
+  const stageCopy = Object.keys(PROVIDER_STAGE_COPY), verdictCopy = Object.keys(DOSSIER_VERDICT_COPY);
+  for (const stage of stageCopy) if (!stages.includes(stage)) problems.push(`The UI carries the stage "${stage}", which the roadmap cannot: it is not in schemas/provider-dossiers-v1.json`);
+  for (const stage of stages) if (!stageCopy.includes(stage)) problems.push(`The roadmap can carry the stage "${stage}", and the UI has no copy for it: src/pages/providers.ts would render undefined`);
+  for (const verdict of verdictCopy) if (!verdicts.includes(verdict)) problems.push(`The UI carries the verdict "${verdict}", which the roadmap cannot`);
+  for (const verdict of verdicts) if (!verdictCopy.includes(verdict)) problems.push(`The roadmap can carry the verdict "${verdict}", and the UI has no copy for it`);
+  for (const name of propertyNames(schema).filter(name => /^(eta|etas|expected\w*|forecast\w*|deadline|targetDate|dueDate|estimate\w*)$/i.test(name)))
+    problems.push(`schemas/provider-dossiers-v1.json has a "${name}" field: the roadmap answers "when" with a stage and a blocker, never a date`);
+
+  let base;
+  try { base = buildProviderDossiers(defaultInputs(null)); } catch (error) { return [...problems, `The generator cannot build the roadmap from the checked-in dossiers: ${error.message.split('\n')[0]}`]; }
+  const invalid = providerDossiersProblem(base);
+  if (invalid) return [...problems, `The generated roadmap is rejected by the page's own validator (${invalid}); the gate cannot be trusted until it is fixed`];
+  const html = providersPage(base, null, 'all');
+  const rows = articles(html);
+  const listed = new Set(rows.map(row => row.family));
+  if (rows.length !== taxonomy.families.length || listed.size !== rows.length) problems.push(`The roadmap page lists ${rows.length} families (${listed.size} distinct) of ${taxonomy.families.length} in the taxonomy: every family stays visible`);
+  for (const family of taxonomy.families) if (!listed.has(family.id)) problems.push(`The roadmap page does not list the taxonomy family ${family.id}`);
+  for (const stage of stages) {
+    const shown = articles(providersPage(probedDossiers(base, { stage }), null, 'all'));
+    for (const row of shown) if (row.stage !== stage) problems.push(`Rendering a ${stage} roadmap lists a family at "${row.stage}"`);
+    if (shown.length !== taxonomy.families.length) problems.push(`Rendering a ${stage} roadmap lists ${shown.length} families of ${taxonomy.families.length}`);
+  }
+  for (const verdict of verdicts) for (const row of articles(providersPage(probedDossiers(base, { verdict }), null, 'all')))
+    if (row.verdict !== verdict) problems.push(`Rendering a ${verdict} roadmap lists a family as "${row.verdict}"`);
+  const promise = /\b(ETA|coming soon|expected (?:by|in|on)|will be (?:supported|available|added)|planned for|due (?:by|in))\b/i.exec(html.replace(/<[^>]+>/g, ' '));
+  if (promise) problems.push(`The roadmap page promises a date or delivery ("${promise[0]}"): it states a stage and a blocker only`);
+
+  const files = [];
+  const walk = async dir => {
+    for (const entry of await readdir(path.join(root, dir), { withFileTypes: true })) {
+      const relative = `${dir}/${entry.name}`;
+      if (entry.isDirectory()) await walk(relative);
+      else if (/\.(ts|mjs)$/.test(entry.name) && (await readFile(path.join(root, relative), 'utf8')).includes('data-stage=')) files.push(relative);
+    }
+  };
+  await walk('src');
+  if (files.join() !== 'src/pages/providers.ts') problems.push(`data-stage is rendered by ${files.join(', ') || 'no file'}; this gate only sees src/pages/providers.ts`);
+
+  const published = path.join(root, 'public/results/provider-dossiers-v1.json');
+  try {
+    const file = JSON.parse(await readFile(published, 'utf8'));
+    const problem = providerDossiersProblem(file);
+    if (problem) problems.push(`public/results/provider-dossiers-v1.json is published but the UI would reject it: ${problem}`);
+  } catch (error) {
+    if (error.code !== 'ENOENT') problems.push(`public/results/provider-dossiers-v1.json is unreadable: ${error.message}`);
+  }
+  return problems;
+}
+
+export async function checkSupportUi() {
+  const problems = [...await checkProvidersUi()];
   const schema = await read('schemas/support-matrix-v1.json');
   const vocabulary = schema.properties.families.items.properties.status.enum;
   const distributionKeys = Object.keys(schema.properties.distribution.properties);
@@ -116,5 +197,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const problems = await checkSupportUi();
   for (const problem of problems) console.error(`::error::${problem}`);
   if (problems.length) process.exitCode = 1;
-  else console.log(`Support UI gate passed: ${Object.keys(SUPPORT_STATUS_COPY).join(', ')} are exactly the statuses the generated matrix can carry.`);
+  else console.log(`Support UI gate passed: ${Object.keys(SUPPORT_STATUS_COPY).join(', ')} are exactly the statuses the generated matrix can carry, and ${Object.keys(PROVIDER_STAGE_COPY).join(', ')} the stages the providers roadmap can carry.`);
 }

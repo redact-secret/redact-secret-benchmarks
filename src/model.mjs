@@ -64,6 +64,7 @@ export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
   if (path === '/report') return at('report');
   if (path === '/coverage') return at('coverage');
   if (path === '/support') return at('support');
+  if (path === '/support/providers') return at('providers');
   if (path === '/evaluation') return redirect('/evaluation/credentials');
   if (path === '/evaluation/credentials') return at('evaluation-domain', 'credential');
   if (path === '/evaluation/pii') return at('evaluation-domain', 'pii');

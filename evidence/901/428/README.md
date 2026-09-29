@@ -1,6 +1,6 @@
 # Beta.11 PII E: protected qualification and six-family disposition (benchmarks #428)
 
-**Final disposition:** see [`final-core-8f97f14d.md`](final-core-8f97f14d.md) (core `8f97f14d`, all six `pending` on `profile-cost` only; it supersedes the `1db8ff38` and `1127bf91` records). What follows is the interim record.
+**Final disposition:** see [`final-core-8b6a5fde.md`](final-core-8b6a5fde.md) (core `8b6a5fde`, all six `pending`; the report's `profile-cost` is `not-met` with 175 failing cells, accepted by the maintainer as a tradeoff on 2026-09-29, so all six are eligible for the protected run; it supersedes the `ec9224d9`, `8f97f14d`, `1db8ff38` and `1127bf91` records). What follows is the interim record.
 
 **Interim record.** It measures core `79c0a661`, which is not the final beta.11 candidate. [redact-secret#937](https://github.com/redact-secret/redact-secret/issues/937) (built on #929) will move the PII runtime out of the default Wasm builds, so the Wasm artifact set and its cost change after this commit. Rerun this record on the post-#937 commit before any release decision (see [Rerun](#rerun-on-a-new-core-commit)).
 
@@ -192,6 +192,8 @@ The official A/A, freeze, candidate and size phases have not been dispatched. Th
   - The US SSN arrival path needs a custodian-attested protected epoch.
 
   The projection was therefore not regenerated for this interim commit. It still says `pending` for all six, which agrees with this record, so no site copy changes.
+
+  The v1 path still cannot bind a v2 candidate. The final commit's protected disposition now reaches the projection through a separate reviewed v2 binding path (`benchmarks/evaluation/domains/pii/protected-support-bindings-v1.json`), described in [final-core-8b6a5fde.md](final-core-8b6a5fde.md#support-projection-and-site-copy).
 - **Browser Wasm, Python, Rust and CLI output.** These surfaces are covered by #427 on the same source commit, not re-run here.
 
 ## Rerun on a new core commit

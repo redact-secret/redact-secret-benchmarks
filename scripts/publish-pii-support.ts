@@ -6,6 +6,7 @@ import { evaluationProblem } from '../src/evaluation-model.ts';
 import { supportMatrixProblem } from '../src/support-model.ts';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2, type PiiSupportBuildOptions } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 import { populationBindingsFrom, productEvidenceFor, type PiiMeasuredProduct } from './pii-publication-inputs.ts';
+import { bindPiiProtectedSupport } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
 import { buildEvaluationDomainsV2, evaluationDomainsV2Problem } from '../src/evaluation-domains-v2.ts';
 import { publishArtifactAndIndex } from './atomic-publication.ts';
 
@@ -39,6 +40,12 @@ if (product) {
   if (recorded) { bindings.product = recorded.binding; console.log(`PII product activation: bound ${path.relative(root, recorded.directory)} for ${product.sourceCommit}`); }
   else console.log(`PII product activation: no committed record for ${product.sourceCommit}; activation stays not-measured`);
 }
+// Without a v1 record for the measured product, the reviewed v2 protected disposition (benchmarks #428) decides each
+// family's status, after it re-derives from committed evidence. The two routes never bind one matrix.
+if (!bindings.product) {
+  const route = await bindPiiProtectedSupport(root);
+  if (route) { bindings.protectedRoute = route; console.log(`PII protected route: bound ${route.id} (${route.route}, core ${route.coreCommit.slice(0, 12)}, record ${route.record})`); }
+}
 if (hasBundle) Object.assign(bindings, populationBindingsFrom(JSON.parse(await readFile(location('population-bundle', 'results-output/pii/population-release-v1.json'), 'utf8')), product));
 const pii = validatePiiSupportMatrixV2(buildPiiSupportMatrixV2(bindings), bindings);
 const piiTarget = path.join(location('pii-directory', 'public/results'), `pii-support-matrix-v2-${pii.artifactCommitment}.json`);
@@ -54,4 +61,5 @@ await publishArtifactAndIndex(piiTarget, JSON.stringify(pii) + '\n', indexTarget
     if (!evaluationAfter.equals(evaluationBytes) || !supportAfter.equals(supportBytes)) throw new Error('Credential v1 artifact bytes changed during PII publication'); },
 });
 console.log(`Published ${path.relative(root, piiTarget)} and committed it through ${path.relative(root, indexTarget)}`);
+console.log(`PII support: ${pii.families.map(row => `${row.family}=${row.status.state}`).join(', ')}`);
 console.log(`PII population comparisons: ${pii.populationComparisons.map(row => `${row.id}=${row.verdict}`).join(', ')}`);

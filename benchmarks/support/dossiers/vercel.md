@@ -17,7 +17,8 @@ families:
         - redact-secret/redact-secret-benchmarks#367
         - redact-secret/redact-secret-benchmarks#373
         - redact-secret/redact-secret-benchmarks#473
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/858/README.md
+        - redact-secret/redact-secret#1013
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/vercel.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: vercel:personal-access-token
@@ -35,19 +36,22 @@ families:
         - https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007
         - https://github.com/secretlint/secretlint/blob/e8fc91351add9eebfd5eec5bdd7cd0d551d5e42a/packages/@secretlint/secretlint-rule-vercel/src/index.ts#L27-L58
         - https://github.blog/changelog/2026-03-10-secret-scanning-pattern-updates-march-2026/
+        - https://openapi.vercel.sh/
+        - https://github.com/vercel/vercel-azure-devops-extension/blob/24183cd1671cdb451e22a20634c2bb19e3478870/vercel-deployment-task-source/src/index.ts#L37-L38
       issues:
         - redact-secret/redact-secret#858
         - redact-secret/redact-secret#516
         - redact-secret/redact-secret-benchmarks#367
         - redact-secret/redact-secret-benchmarks#373
         - redact-secret/redact-secret-benchmarks#473
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/858/README.md
+        - redact-secret/redact-secret#1013
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/vercel.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: vercel:integration-token
     research:
-      verdict: ready
-      tier: T2
+      verdict: issuance-gated
+      tier: T1
       sources:
         - https://vercel.com/changelog/new-token-formats-and-secret-scanning
         - https://vercel.com/docs/integrations/create-integration/vercel-api-integrations
@@ -61,9 +65,10 @@ families:
         - redact-secret/redact-secret-benchmarks#367
         - redact-secret/redact-secret-benchmarks#373
         - redact-secret/redact-secret-benchmarks#473
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/858/README.md
+        - redact-secret/redact-secret#1013
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/vercel.md
       researchedAt: 2026-09-29
-    blockedBy: null
+    blockedBy: No provider source writes vci_ with the underscore; the 56-character body rests on peer rules only (1 class). Needs ruling Q-VC or one integration token measured (checklist in redact-secret#1013).
   - id: vercel:app-access-token
     research:
       verdict: ready
@@ -74,6 +79,7 @@ families:
         - https://vercel.com/docs/sign-in-with-vercel/authorization-server-api
         - https://github.com/vercel/vercel-plugin/blob/c632a50838a47a639a160baff8411eb9c6af22bf/.claude/skills/benchmark-sandbox/SKILL.md#L144
         - https://github.com/vercel/turborepo/blob/d7d106538e80f59c80a88ec9503770358197c5fa/crates/turborepo-auth/src/auth/mod.rs#L361
+        - https://github.com/vercel/vercel-azure-devops-extension/blob/24183cd1671cdb451e22a20634c2bb19e3478870/vercel-deployment-task-source/src/index.ts#L37-L38
         - https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L133-L192
         - https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L115-L147
         - https://github.blog/changelog/2026-03-10-secret-scanning-pattern-updates-march-2026/
@@ -83,7 +89,8 @@ families:
         - redact-secret/redact-secret-benchmarks#367
         - redact-secret/redact-secret-benchmarks#373
         - redact-secret/redact-secret-benchmarks#473
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/858/README.md
+        - redact-secret/redact-secret#1013
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/vercel.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: vercel:app-refresh-token
@@ -104,13 +111,14 @@ families:
         - redact-secret/redact-secret-benchmarks#367
         - redact-secret/redact-secret-benchmarks#373
         - redact-secret/redact-secret-benchmarks#473
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/858/README.md
+        - redact-secret/redact-secret#1013
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/vercel.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: vercel:api-key
     research:
-      verdict: ready
-      tier: T2
+      verdict: issuance-gated
+      tier: T1
       sources:
         - https://vercel.com/changelog/new-token-formats-and-secret-scanning
         - https://vercel.com/docs/ai-gateway/authentication-and-byok/api-keys
@@ -126,9 +134,10 @@ families:
         - redact-secret/redact-secret-benchmarks#367
         - redact-secret/redact-secret-benchmarks#373
         - redact-secret/redact-secret-benchmarks#473
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/858/README.md
+        - redact-secret/redact-secret#1013
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/vercel.md
       researchedAt: 2026-09-29
-    blockedBy: null
+    blockedBy: The vck_ marker is provider-backed but no full-length value is; the 56-character body rests on peer rules only (1 class). Needs ruling Q-VC or one AI Gateway key measured (checklist in redact-secret#1013).
 ---
 
 # Vercel
@@ -141,46 +150,65 @@ and `vck` for API keys. The five classes are recorded as separate families. The
 product's `vercel-token` detector reports all five under one compatibility
 finding type; that shared type is not a research result for any of them.
 
-## Verdicts (2026-09-29 re-research)
+## Verdicts (2026-09-29, corrected by redact-secret#1013)
 
 The 2026-09-27 record (#858) called all five classes `not-found`, T0: the
 prefixes identify the class and no provider statement gives a body grammar. A
-fresh, wide pass (peer scanner rules, provider docs and code, third-party
-implementations, community threads) changes the outcome. No page *states* a
-grammar, so none is T1. But every class clears the corroboration bar in
-[the empirical-qualification spec](../../../docs/specs/empirical-qualification.md)
-(at least 3 dated references, 3 distinct owners and 2 non-summary classes), so
-each is `ready` at T2. The decisive new evidence:
+wide re-research pass under #473 found full-length provider examples and peer
+rules and first called all five `ready` at T2. The same day, redact-secret#1013
+([evidence](https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/vercel.md)) verified that pass source by source and disagreed on two
+classes: the corroborated route (at least 3 dated references, 3 distinct owners
+and 2 non-summary classes, per
+[the empirical-qualification spec](../../../docs/specs/empirical-qualification.md))
+must be counted on the full grammar each class freezes, marker with underscore
+plus 56, and for `vci_` and `vck_` the 56-character length comes from peer rules
+only. This dossier follows #1013. No page *states* a grammar and no Vercel code
+generates or validates a length, alphabet or checksum, so none is T1.
 
-- Vercel's own docs print full-length **example** tokens for three of the five
-  classes. Two distinct example values (60 characters each: the marker, `_`,
-  then 56 characters) are on the Sign in with Vercel Tokens page (`vca_`, and
-  the same body reused for `vcr_`) and in the `--token` section of the CLI
-  global options page (`vcp_`, with a body that ends in the literal word
-  `EXAMPLE`). The earlier record found only the masked `vcp_` filler and
-  concluded that no provider source gave a length.
-- Three scanner rule sets written after the changelog read the same length:
-  Kingfisher (MongoDB, 2026-02-11), CredSweeper (Samsung, 2026-02-17) and
-  Betterleaks. They cover `vcp_` (all three) and all five classes (Kingfisher,
-  Betterleaks).
-- Vercel's CLI, turborepo and plugin code use the prefixes as class
-  discriminators (`vca_` login token, `vcr_` refresh token, `vck_` gateway key,
-  `vcp_` personal token), which settles the prefix-to-class mapping.
-
-| Family | Verdict | Tier | What clears the bar |
+| Family | Verdict | Tier | Corroborated-route count (references / owners / non-summary classes) |
 | --- | --- | --- | --- |
-| `vercel:access-token` | `rejected` | none | Not a credential family (taxonomy: compatibility aggregate). Nothing to corroborate; the legacy unprefixed form it stands in for is a candidate below. |
-| `vercel:personal-access-token` | `ready` | T2 | provider-example (CLI `--token` docs, 56-character body), 3 peer rules (Kingfisher, Betterleaks, CredSweeper), provider-owned code (CLI) |
-| `vercel:integration-token` | `ready` | T2 | 2 peer rules with the same shape (Kingfisher, Betterleaks), secretlint, GitHub's `vercel_integration_access_token` type, provider changelog. Weakest of the five: no provider example. |
-| `vercel:app-access-token` | `ready` | T2 | provider-example (56-character body), provider-owned code (CLI, turborepo, plugin), 2 peer rules |
-| `vercel:app-refresh-token` | `ready` | T2 | same docs example body as `vca_` (one observation, not two), provider-owned CLI code, 2 peer rules |
-| `vercel:api-key` | `ready` | T2 | provider docs and CLI code confirm the marker and masking, 2 peer rules, secretlint. No provider example carries a full-length value. |
+| `vercel:access-token` | `rejected` | none | Not a family: the product's compatibility aggregate for the `vercel-token` detector. Nothing to corroborate. |
+| `vercel:personal-access-token` | `ready` | T2 | 4 / 4 / 2 (3 / 3 / 2 without Betterleaks): CLI `--token` provider example, Kingfisher, Betterleaks, CredSweeper |
+| `vercel:app-access-token` | `ready` (thin) | T2 | 3 / 3 / 2: the Sign in with Vercel provider example, Kingfisher, Betterleaks; both peer rules copy the provider value |
+| `vercel:app-refresh-token` | `ready` (thin) | T2 | 3 / 3 / 2 as `vca_`; the docs reuse the `vca_` body, so there is no independent `vcr_` body |
+| `vercel:integration-token` | `issuance-gated` | T1 (stem only) | 3 / 3 / 1: Kingfisher, Betterleaks, secretlint. No provider source writes `vci_` with the underscore |
+| `vercel:api-key` | `issuance-gated` | T1 (marker only) | 3 / 3 / 1 for the length: Kingfisher, Betterleaks (secretlint is marker-only). The `vck_` marker is provider-backed; no full-length value is |
+
+A provider page that shows only a marker (`vck_...`, a mask, the changelog stem)
+or a short test dummy corroborates the marker, not the 56-character body, so it
+does not count toward the length. Maintainer ruling Q-VC (treat the five classes
+as one generator, so the `vca_`/`vcp_` structure extends to `vci_`/`vck_`) or one
+issued value each would make `vci_` and `vck_` `ready` at T2.
+
+Findings from #1013 that change the earlier pass:
+
+- **The 50 + 6 checksum is provider-backed on one value.** The `vca_` example
+  on the Sign in with Vercel Tokens page passes Kingfisher's check (the last
+  6 characters are base62 of the CRC-32 of the 50 before them; a chance match
+  is about 1 in 5.7×10¹⁰), and Vercel's OpenAPI spec calls `tokenSuffix`
+  "The token checksum suffix". Backed on one value only, so not frozen.
+- **The `vca_`/`vcr_` example predates the changelog** (Wayback 2025-11-28;
+  changelog 2026-02-09).
+- **The CLI `vcp_` example is hand-written.** Its body ends in a literal
+  English word and fails the checksum. It still shows a 56-character body as
+  an example shape.
+- **Peer rules are less independent than counted.** Kingfisher's `vca_` and
+  `vcr_` examples copy the Vercel docs value, its `vcp_`, `vci_` and `vck_`
+  examples are synthetic values that pass its own checksum, and Betterleaks
+  copies all six Kingfisher examples. CredSweeper's `vcp_` samples fail the
+  checksum, so CredSweeper is independent of Kingfisher.
+- **No provider source writes `vci_`**: not the docs (`llms-full.txt` has no
+  `vci` at all), the OpenAPI enums (`vcp_`, `vca_`, `vcr_` only), the SDK or
+  org code. For `vck_` the underscore is provider-backed.
+- **Provider masking regexes admit `_` and `-`** (Azure DevOps extension
+  `vcp_[A-Za-z0-9_-]+`, `vca_[A-Za-z0-9_-]+`; CLI eval `vcp_[A-Za-z0-9_]+`).
+  They are maskers with no length, so the alphabet stays bounded, not settled.
 
 ## Shape the T2 verdict freezes
 
-Grammar in words, the same for all five classes (`vcp_`, `vca_` and `vcr_` have
-a provider length example; `vci_` and `vck_` rest on peer rules and the
-sibling classes):
+Grammar in words for the three `ready` classes (`vcp_`, `vca_` and `vcr_`, each
+with a provider length example). `vci_` and `vck_` would take the same grammar
+under ruling Q-VC; until then it is a candidate, not a frozen shape:
 
 - a literal class marker (`vcp_`, `vci_`, `vca_`, `vcr_` or `vck_`), including
   the underscore;
@@ -196,10 +224,12 @@ What T2 does **not** freeze, and the core contract should not lean on:
   digits only. Vercel's own CLI eval matches `vcp_` followed by letters, digits
   and `_` with no length. Every provider example is letters and digits only.
   This is a `bounded` disagreement: leave `_` and `-` out of the body.
-- **The checksum.** Only Kingfisher states it: the last 6 characters are the
-  base62-encoded CRC32 of the 50 before them. No provider source or observation
-  confirms it, and Betterleaks does not verify it. The 50 plus 6 split is
-  frozen for the same reason: not at all.
+- **The checksum.** Kingfisher states it (the last 6 characters are the
+  base62-encoded CRC32 of the 50 before them), the one checksum-valid provider
+  value (`vca_`) and the OpenAPI `tokenSuffix` description support it, and the
+  hand-written CLI `vcp_` example fails it. Backed on one provider value, so
+  neither the checksum nor the 50 plus 6 split is frozen, and neither is
+  required for `vcp_`, `vci_` or `vck_`.
 - **Any length range.** Third parties use 20+ or 40-80 to hedge; those are
   hedges, not observations.
 
@@ -220,18 +250,19 @@ What T2 does **not** freeze, and the core contract should not lean on:
    "classic" means legacy unprefixed or a full-scope `vcp_` is not stated.
    Recorded as open question 1; it does not change the prefixed grammar.
 4. **Kingfisher and Betterleaks agree on all five classes, but Betterleaks
-   reuses Kingfisher's example values.** Counted as two rules with one likely
-   shared origin, so `vci_` and `vck_` length rests on effectively one
-   independent peer plus the shared-generator inference (the three classes
-   with provider examples are all 56).
+   copies Kingfisher's example values, and Kingfisher's `vca_`/`vcr_` examples
+   copy Vercel's.** They count as two owners in one class, so `vci_` and `vck_`
+   length rests on the peer class alone (1 class < 2) plus the shared-generator
+   inference that ruling Q-VC would have to accept.
 
 ## Families
 
 ### `vercel:access-token` — Compatibility aggregate (unreviewed Vercel token shapes)
 
-- **Verdict:** `rejected`. The taxonomy row is the routing label for the
-  aggregate `vercel-token` detector, and its note says it is not a credential
-  family. There is no shape to research for the row itself. Its profile cells
+- **Verdict:** `rejected`: not a family. The row is the product's compatibility
+  aggregate, the routing label for the `vercel-token` detector that reports
+  every Vercel class under one finding type (redact-secret#1013 agrees), and
+  its taxonomy note says it is not a credential family. There is no shape to research for the row itself. Its profile cells
   combine five implementation hypotheses and must not be read as evidence for
   any modern class.
 - **What it stood in for:** legacy unprefixed 24-character tokens. See the
@@ -248,8 +279,8 @@ What T2 does **not** freeze, and the core contract should not lean on:
 
 | Reference | Owner | Class | Supports |
 | --- | --- | --- | --- |
-| [Vercel CLI global options](https://vercel.com/docs/cli/global-options) | vercel | provider-example | `vcp_` + 56-character letters/digits body in two examples |
-| [Vercel Access tokens](https://vercel.com/docs/accounts/access-tokens) | vercel | provider-example | marker `vcp_`; masked filler is not a value |
+| [Vercel CLI global options](https://vercel.com/docs/cli/global-options) | vercel | provider-example | one `vcp_` + 56-character letters/digits value printed twice (first seen 2026-05-10); hand-written (ends in an English word, fails the checksum), so an example shape, not a generated value |
+| [Vercel Access tokens](https://vercel.com/docs/accounts/access-tokens) | vercel | provider docs (marker only) | marker `vcp_`; masked filler is a placeholder, not a value; does not count toward the length |
 | [vercel/vercel `tokens/add.ts`](https://github.com/vercel/vercel/blob/c628be7835e03a965b93e9cf9e2bd5ac2acbf5eb/packages/cli/src/commands/tokens/add.ts#L36-L41) | vercel | provider-owned-code | `vcp_` is the personal-token marker; some are team- or project-scoped |
 | [Kingfisher `vercel.yml` at v1.82.0](https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L91) | mongodb | peer-scanner-rule | `vcp_` + 50 + 6, alphabet with `_-`, CRC32 claim |
 | [Betterleaks `vercel.go`](https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L80) | betterleaks | peer-scanner-rule | `vcp_` + 56, alphabet with `_-` |
@@ -266,21 +297,22 @@ What T2 does **not** freeze, and the core contract should not lean on:
 
 ### `vercel:integration-token` — Integration token
 
-- **Shape:** `vci_` plus 56 characters. The changelog prints only `vci`. The
-  underscore, the length and the alphabet come from peer rules (secretlint,
-  Kingfisher and Betterleaks all use `vci_`), and every sibling class with a
-  provider example has the `_`.
-- **Corroboration (read 2026-09-29):** the changelog (provider-example, class
-  and stem); Kingfisher rule (peer, mongodb, `vci_` + 50 + 6); Betterleaks rule
-  (peer, betterleaks, `vci_` + 56); secretlint (peer, `vci_` + 20-60 letters
-  and digits); GitHub `vercel_integration_access_token` (peer, github, push
-  protection on by default). Independent implementations (brainlayer
-  `vc[kpi]_` 20+, merged 2026-09-25) confirm the marker only.
-- **Gap:** no Vercel page prints a `vci_` value. The Building Integrations
-  page (updated 2026-09-16) still shows unprefixed 24-character `access_token`
-  and client values in its code-exchange examples: legacy or stale, as with the
-  REST example. Whether OAuth code exchange now returns `vci_` tokens is
-  undocumented.
+- **Verdict:** `issuance-gated` (redact-secret#1013). The changelog prints only
+  the stem `vci`; no provider source writes `vci_` with the underscore or
+  shows a value. The underscore, the 56-character length and the alphabet come
+  from peer rules (Kingfisher, Betterleaks, secretlint), one class, so the
+  corroborated route fails on classes (3 / 3 / 1). GitHub's
+  `vercel_integration_access_token` type names the class, not a shape.
+- **Candidate shape (not frozen):** `vci_` plus 56 characters, as the sibling
+  classes with provider examples. Frozen only if ruling Q-VC accepts one
+  generator for all five classes, or once one issued token is measured.
+- **Issuance:** create an integration and run the OAuth code exchange; record
+  structure only (marker with `_`, total length 60, body alphabet, whether the
+  last 6 characters are base62(CRC-32) of the previous 50), then revoke.
+- **Gap:** the Building Integrations page (updated 2026-09-16) still shows
+  unprefixed 24-character `access_token` and client values in its code-exchange
+  examples: legacy or stale, as with the REST example. Whether OAuth code
+  exchange now returns `vci_` tokens is undocumented.
 
 ### `vercel:app-access-token` — App access token
 
@@ -309,13 +341,15 @@ What T2 does **not** freeze, and the core contract should not lean on:
 
 ### `vercel:api-key` — API key (AI Gateway)
 
-- **Shape:** `vck_` plus 56 characters. Docs and CLI show `vck_...` and the mask
-  `vck_••••1234`; CLI tests use short dummies. Length from peer rules only.
-- **Corroboration (read 2026-09-29):** AI Gateway API Keys doc and `vercel
-  ai-gateway` CLI doc (provider-example, marker and mask); vercel/vercel CLI
-  test (provider-owned-code, marker); Kingfisher (peer); Betterleaks (peer);
-  secretlint (peer); GitHub `vercel_api_key` (peer, push protection on by
-  default).
+- **Verdict:** `issuance-gated` on length (redact-secret#1013). The `vck_`
+  marker with its underscore is provider-backed: the AI Gateway API Keys doc
+  and `vercel ai-gateway` CLI doc show `vck_...` and the mask `vck_` + 4 dots
+  + 4 digits, and CLI, AI SDK and Terraform tests use short `vck_` dummies.
+  None shows a full-length value, so the 56-character body rests on the peer
+  class alone (Kingfisher, Betterleaks; secretlint is marker-only): 3 / 3 / 1.
+- **Candidate shape (not frozen):** `vck_` plus 56 characters. Frozen under
+  ruling Q-VC, or once one AI Gateway key is measured (the cheapest check:
+  create one key in the dashboard; structure only, then revoke).
 - **Note:** the AI Gateway doc describes an unauthenticated
   `POST /external/compromised_secret` route for reporting a leaked key. A
   benchmark must never call it with a real value.
@@ -341,8 +375,11 @@ What T2 does **not** freeze, and the core contract should not lean on:
    full-scope `vcp_`? Does Vercel still issue unprefixed tokens?
 2. Do `_` or `-` occur in the 56-character body? A provider statement or one
    locally inspected, revoked token would settle it (structural metadata only).
-3. Is the trailing CRC32 real? Only Kingfisher claims it.
-4. Do OAuth integration code exchanges return `vci_` tokens?
+3. Is the trailing CRC32 real for every class? The one checksum-valid provider
+   value (`vca_`) and the OpenAPI `tokenSuffix` description say yes for that
+   class; the hand-written CLI `vcp_` example fails it.
+4. Do OAuth integration code exchanges return `vci_` tokens, and do the five
+   classes share one generator (ruling Q-VC)?
 5. Should the legacy 24-character form become its own family, and should
    `vercel:access-token` then leave the taxonomy?
 
@@ -365,6 +402,10 @@ hedge (`{20,}`, `{24}`, `{40,80}`) were read and not counted as observations.
   changelog and the REST contradiction.
 - redact-secret-benchmarks#373 — benchmark counterpart, blocked on #858;
   closed 2026-09-27 with the classes split and no positive manufactured.
+- redact-secret#1013 — 2026-09-29 source-by-source verification
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/vercel.md)): `vcp_`, `vca_`, `vcr_` ready T2; `vci_` and `vck_` fail
+  the class count on length and go back to `issuance-gated` pending Q-VC;
+  checksum provider-backed on one value.
 - 2026-09-29 — wide re-research under #473 (this record): found the CLI
   `--token` and Sign in with Vercel full-length examples, three peer rule sets,
   and provider code for the prefix-to-class mapping. Verdict changes: five

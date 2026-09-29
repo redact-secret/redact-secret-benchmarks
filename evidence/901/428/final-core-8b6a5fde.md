@@ -257,8 +257,20 @@ By maintainer direction on 2026-09-29, the custodian and the reviewer were isola
 
 ## Support projection and site copy
 
-The statuses changed, but `pii-support-matrix-v2` was not regenerated, because its generator cannot express this disposition yet.
+`pii-support-matrix-v2` reads this disposition through a reviewed v2 binding path. The matrix is built at publish time, so no matrix file is committed; the next site publish projects it.
 
-- **What the projection binds.** `pii:support:record` and `eval:publish:pii-support` build `pii-support-matrix-v2` from a committed `evidence/<n>/` product record (`pii-activation-evidence-v1.json` plus `pii-family-qualification-v1.json`, written by `pii:qualify:candidate`) and a population bundle. A family is `provisional` there only when its v1 qualification artifact is `qualified` and both v1 population comparisons are `no-regression` (`benchmarks/evaluation/domains/pii/support-v2.ts`).
-- **Why this disposition does not bind.** The Beta.11 route writes `pii-beta11-protected-disposition` from v2 plans and the protected runs. No v1 product record exists for `8b6a5fde`, and the frozen v1 plans pin `vocabulary=pii-context/v1` identities (see [README](README.md#not-done-here-with-reasons)). Reading the protected disposition in the projection needs a reviewed v2 binding path, which this record does not add.
-- **What the site shows until then.** The site publisher binds only a committed record for the product it measures, so `pii-support-matrix-v2` keeps projecting `pending` for all six families. The authoritative Beta.11 status is the protected disposition above: five `provisional`, us-ssn `pending`, none `stable`.
+- **The v1 path is unchanged.** A committed `evidence/<n>/` product record (`pii-activation-evidence-v1.json` plus `pii-family-qualification-v1.json`, from `pii:qualify:candidate`) still binds when it names the product a publication measured. No such record exists for `8b6a5fde`, and its frozen v1 plans pin `vocabulary=pii-context/v1` identities (see [README](README.md#not-done-here-with-reasons)).
+- **The reviewed v2 binding.** `benchmarks/evaluation/domains/pii/protected-support-bindings-v1.json` holds the entry `beta11-8b6a5fd-pii-protected`. It names core `8b6a5fde52ecb4dfce13f09c7a947062d21483c7`, freeze `f79278ae…`, report `530879bc…`, disposition `50c22680…`, seal `63e62fa4…` (`holdout/pii-b11-17dae942ee4b-seal.json`), ledger entry `beta11-8b6a5fd-pii-profile-cost` (`086647b4…`), and the protected disposition `e3ea85dd…`. It also names each family's epoch, aggregate and custody commitments, and its coverage cited to the frozen contract.
+- **What the binder checks.** `bindPiiProtectedSupport` (`benchmarks/evaluation/domains/pii/protected-support-binding.ts`) reads the committed evidence and rejects the entry in these cases:
+  - the commit, freeze, report, disposition or seal differs;
+  - the ledger entry is missing, changed, or no longer covers the bound runs;
+  - a family's custody is rejected or unresolved (every family needs one accepted trust resolution over a complete sealed run);
+  - a family whose public or protected gates are not met is marked above `pending`;
+  - any family, or the maximum status, is `stable`;
+  - the disposition does not re-derive byte for byte from the report, seal, runs and acceptance.
+- **What it projects.** `eval:publish:pii-support` binds the current reviewed entry whenever no v1 record matches the measured product; the two routes never bind one matrix. `pii:support:record -- --protected-binding=beta11-8b6a5fd-pii-protected --output=<file>` produces the same projection offline. From the committed evidence the projection is:
+  - `provisional` for network-address, email, payment-card, IBAN and phone (phone covers country code `+1` (NANP) only, per `docs/contracts/pii/phone-v1.md`);
+  - `pending` for us-ssn (United States only), with reason codes `identity-only-classification` and `protected-gates-not-met`;
+  - `stable` for none.
+  Activation stays `not-measured`, and the population views stay separate evidence. The browser validator accepts the route only when it equals a reviewed entry. `tests/pii-protected-support.test.mjs` proves the projection and each rejection.
+- **Site copy.** The PII support page names the route, the core commit and this record. It shows each family's coverage and protected reason. It needs no separate dispatch: the merge to `develop` publishes staging, and promotion to `main` publishes production.

@@ -1,5 +1,10 @@
 # redact-secret-benchmarks
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15001/badge)](https://www.bestpractices.dev/projects/15001)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/redact-secret/redact-secret-benchmarks/badge)](https://scorecard.dev/viewer/?uri=github.com/redact-secret/redact-secret-benchmarks)
+[![CI](https://github.com/redact-secret/redact-secret-benchmarks/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/redact-secret/redact-secret-vault/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/redact-secret/redact-secret-benchmarks)](./LICENSE)
+
 Project-maintained, reproducible synthetic benchmarks comparing
 [redact-secret](https://github.com/redact-secret/redact-secret) against
 established secret-scanning tools on identical fixture sets.

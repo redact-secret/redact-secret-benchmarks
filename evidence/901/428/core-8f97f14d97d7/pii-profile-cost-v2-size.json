@@ -1,0 +1,1183 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-profile-cost-size",
+  "supportClaims": false,
+  "planCommitment": "96fc24b17e2bdd0b6fd2020409092a49edcebd1335bfc7ab0a0f5219cda5a612",
+  "provenance": {
+    "kind": "github-actions",
+    "runId": "36554861842",
+    "benchmarkCommit": "58a9abe5a979ece70c2859295c0adf238410f3e0",
+    "workflowRef": "redact-secret/redact-secret-benchmarks/.github/workflows/pii-profile-cost-v2.yml@refs/heads/beta11/rebind-8f97f14-pii",
+    "configProducerSha256": "31d4a8bdd211584fe596c011b8c5710c48d814da460c38b38adcdaba7963220c"
+  },
+  "baseline": {
+    "sourceCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09",
+    "qualificationRun": 36317349914,
+    "inventoryCommitment": "c41b05aeaca64d6f877d6bfd3c5caf07b358905aad51c8f182f9e4f9ed121683"
+  },
+  "comparison": {
+    "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
+    "qualificationRun": 36553444981,
+    "inventoryCommitment": "6118d148732992dcd45208ba5449fd47532bf7269adc3fc0c9a3240ed63a197e"
+  },
+  "baselineSemantic": "distribution",
+  "browserBundleDefinition": "vite-minified-consumer-all-emitted-assets-summed-per-file-raw-and-gzip9-bytes",
+  "qualificationArtifacts": [
+    {
+      "id": "cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret",
+      "baselineBytes": 800320,
+      "candidateBytes": 1175424,
+      "deltaBytes": 375104,
+      "relative": 0.46869252299080366,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe",
+      "baselineBytes": 538112,
+      "candidateBytes": 909824,
+      "deltaBytes": 371712,
+      "relative": 0.6907706945765937,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret",
+      "baselineBytes": 938064,
+      "candidateBytes": 1309904,
+      "deltaBytes": 371840,
+      "relative": 0.3963908645891965,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret",
+      "baselineBytes": 844072,
+      "candidateBytes": 1250728,
+      "deltaBytes": 406656,
+      "relative": 0.4817788055995223,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe",
+      "baselineBytes": 593408,
+      "candidateBytes": 1008640,
+      "deltaBytes": 415232,
+      "relative": 0.6997411561691113,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret",
+      "baselineBytes": 916776,
+      "candidateBytes": 1344784,
+      "deltaBytes": 428008,
+      "relative": 0.4668621342618044,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/index.d.ts",
+      "baselineBytes": 14954,
+      "candidateBytes": 15796,
+      "deltaBytes": 842,
+      "relative": 0.05630600508225224,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/index.js",
+      "baselineBytes": 30376,
+      "candidateBytes": 30690,
+      "deltaBytes": 314,
+      "relative": 0.010337108243350013,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node",
+      "baselineBytes": 1041888,
+      "candidateBytes": 1422800,
+      "deltaBytes": 380912,
+      "relative": 0.36559783777143035,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/index.d.ts",
+      "baselineBytes": 14954,
+      "candidateBytes": 15796,
+      "deltaBytes": 842,
+      "relative": 0.05630600508225224,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/index.js",
+      "baselineBytes": 30376,
+      "candidateBytes": 30690,
+      "deltaBytes": 314,
+      "relative": 0.010337108243350013,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node",
+      "baselineBytes": 750592,
+      "candidateBytes": 1137664,
+      "deltaBytes": 387072,
+      "relative": 0.5156889495225102,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/index.d.ts",
+      "baselineBytes": 14954,
+      "candidateBytes": 15796,
+      "deltaBytes": 842,
+      "relative": 0.05630600508225224,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/index.js",
+      "baselineBytes": 30376,
+      "candidateBytes": 30690,
+      "deltaBytes": 314,
+      "relative": 0.010337108243350013,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node",
+      "baselineBytes": 1223864,
+      "candidateBytes": 1606800,
+      "deltaBytes": 382936,
+      "relative": 0.31289097481419503,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/index.d.ts",
+      "baselineBytes": 14954,
+      "candidateBytes": 15796,
+      "deltaBytes": 842,
+      "relative": 0.05630600508225224,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/index.js",
+      "baselineBytes": 30376,
+      "candidateBytes": 30690,
+      "deltaBytes": 314,
+      "relative": 0.010337108243350013,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node",
+      "baselineBytes": 1222936,
+      "candidateBytes": 1605784,
+      "deltaBytes": 382848,
+      "relative": 0.3130564477617798,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/index.d.ts",
+      "baselineBytes": 14954,
+      "candidateBytes": 15796,
+      "deltaBytes": 842,
+      "relative": 0.05630600508225224,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/index.js",
+      "baselineBytes": 30376,
+      "candidateBytes": 30690,
+      "deltaBytes": 314,
+      "relative": 0.010337108243350013,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node",
+      "baselineBytes": 1088608,
+      "candidateBytes": 1517464,
+      "deltaBytes": 428856,
+      "relative": 0.39394896969340665,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/index.d.ts",
+      "baselineBytes": 14954,
+      "candidateBytes": 15796,
+      "deltaBytes": 842,
+      "relative": 0.05630600508225224,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/index.js",
+      "baselineBytes": 30376,
+      "candidateBytes": 30690,
+      "deltaBytes": 314,
+      "relative": 0.010337108243350013,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node",
+      "baselineBytes": 829952,
+      "candidateBytes": 1261568,
+      "deltaBytes": 431616,
+      "relative": 0.5200493522516965,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/index.d.ts",
+      "baselineBytes": 14954,
+      "candidateBytes": 15796,
+      "deltaBytes": 842,
+      "relative": 0.05630600508225224,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/index.js",
+      "baselineBytes": 30376,
+      "candidateBytes": 30690,
+      "deltaBytes": 314,
+      "relative": 0.010337108243350013,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node",
+      "baselineBytes": 1169880,
+      "candidateBytes": 1628888,
+      "deltaBytes": 459008,
+      "relative": 0.39235477142954833,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/index.d.ts",
+      "baselineBytes": 14954,
+      "candidateBytes": 15796,
+      "deltaBytes": 842,
+      "relative": 0.05630600508225224,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/index.js",
+      "baselineBytes": 30376,
+      "candidateBytes": 30690,
+      "deltaBytes": 314,
+      "relative": 0.010337108243350013,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node",
+      "baselineBytes": 1176736,
+      "candidateBytes": 1635328,
+      "deltaBytes": 458592,
+      "relative": 0.38971528023277946,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz",
+      "baselineBytes": 443869,
+      "candidateBytes": 576359,
+      "deltaBytes": 132490,
+      "relative": 0.2984889685920846,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl",
+      "baselineBytes": 463968,
+      "candidateBytes": 659764,
+      "deltaBytes": 195796,
+      "relative": 0.4220032416028692,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl",
+      "baselineBytes": 361003,
+      "candidateBytes": 558920,
+      "deltaBytes": 197917,
+      "relative": 0.5482419813685759,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "baselineBytes": 496159,
+      "candidateBytes": 696593,
+      "deltaBytes": 200434,
+      "relative": 0.40397130758486693,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl",
+      "baselineBytes": 675254,
+      "candidateBytes": 875333,
+      "deltaBytes": 200079,
+      "relative": 0.296301836049842,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl",
+      "baselineBytes": 475689,
+      "candidateBytes": 684637,
+      "deltaBytes": 208948,
+      "relative": 0.43925337773208967,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl",
+      "baselineBytes": 378727,
+      "candidateBytes": 587569,
+      "deltaBytes": 208842,
+      "relative": 0.5514315060716558,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "baselineBytes": 503944,
+      "candidateBytes": 713448,
+      "deltaBytes": 209504,
+      "relative": 0.4157287317638468,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl",
+      "baselineBytes": 717115,
+      "candidateBytes": 929969,
+      "deltaBytes": 212854,
+      "relative": 0.29681989639039763,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 16384
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "browser/portable/wasm-web/redact_secret_wasm.d.ts",
+      "baselineBytes": 13366,
+      "candidateBytes": 13721,
+      "deltaBytes": 355,
+      "relative": 0.026559928175968875,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "browser/portable/wasm-web/redact_secret_wasm.js",
+      "baselineBytes": 32261,
+      "candidateBytes": 33121,
+      "deltaBytes": 860,
+      "relative": 0.02665757416075137,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "browser/portable/wasm-web/redact_secret_wasm_bg.wasm",
+      "baselineBytes": 446134,
+      "candidateBytes": 534232,
+      "deltaBytes": 88098,
+      "relative": 0.19746981848502917,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "browser/portable/wasm-web/redact_secret_wasm_bg.wasm.d.ts",
+      "baselineBytes": 2853,
+      "candidateBytes": 2941,
+      "deltaBytes": 88,
+      "relative": 0.030844724851034,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "browser-common/portable/wasm-web-common/redact_secret_wasm_common.d.ts",
+      "baselineBytes": 13366,
+      "candidateBytes": 13721,
+      "deltaBytes": 355,
+      "relative": 0.026559928175968875,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "browser-common/portable/wasm-web-common/redact_secret_wasm_common.js",
+      "baselineBytes": 32282,
+      "candidateBytes": 33142,
+      "deltaBytes": 860,
+      "relative": 0.026640232947153213,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+      "baselineBytes": 295018,
+      "candidateBytes": 348254,
+      "deltaBytes": 53236,
+      "relative": 0.180450006440285,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm.d.ts",
+      "baselineBytes": 2853,
+      "candidateBytes": 2941,
+      "deltaBytes": 88,
+      "relative": 0.030844724851034,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "crate/redact-secret/crate-package/redact-secret-<version>.crate",
+      "baselineBytes": 403841,
+      "candidateBytes": 534260,
+      "deltaBytes": 130419,
+      "relative": 0.32294640712557665,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "crate/redact-secret-cli/crate-package/redact-secret-cli-<version>.crate",
+      "baselineBytes": 30988,
+      "candidateBytes": 33401,
+      "deltaBytes": 2413,
+      "relative": 0.0778688524590164,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "within-budget"
+    }
+  ],
+  "npmPackages": [
+    {
+      "id": "core/packed",
+      "baselineBytes": 39461,
+      "candidateBytes": 41901,
+      "deltaBytes": 2440,
+      "relative": 0.06183320240237196,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "within-budget"
+    },
+    {
+      "id": "core/unpacked",
+      "baselineBytes": 151345,
+      "candidateBytes": 159878,
+      "deltaBytes": 8533,
+      "relative": 0.056381115993260435,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node/packed",
+      "baselineBytes": 481799,
+      "candidateBytes": 689828,
+      "deltaBytes": 208029,
+      "relative": 0.43177549143937616,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "node/unpacked",
+      "baselineBytes": 1170500,
+      "candidateBytes": 1629509,
+      "deltaBytes": 459009,
+      "relative": 0.3921478000854336,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "wasm/packed",
+      "baselineBytes": 274200,
+      "candidateBytes": 887160,
+      "deltaBytes": 612960,
+      "relative": 2.235448577680525,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "wasm/unpacked",
+      "baselineBytes": 839389,
+      "candidateBytes": 2537249,
+      "deltaBytes": 1697860,
+      "relative": 2.0227332023650537,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    }
+  ],
+  "wasmCompression": [
+    {
+      "id": "full/raw",
+      "baselineBytes": 446134,
+      "candidateBytes": 534232,
+      "deltaBytes": 88098,
+      "relative": 0.19746981848502917,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "full/gzip9",
+      "baselineBytes": 151363,
+      "candidateBytes": 184422,
+      "deltaBytes": 33059,
+      "relative": 0.21840872604269207,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "full/brotli11",
+      "baselineBytes": 119900,
+      "candidateBytes": 144287,
+      "deltaBytes": 24387,
+      "relative": 0.20339449541284405,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "common/raw",
+      "baselineBytes": 295018,
+      "candidateBytes": 348254,
+      "deltaBytes": 53236,
+      "relative": 0.180450006440285,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "common/gzip9",
+      "baselineBytes": 106029,
+      "candidateBytes": 125295,
+      "deltaBytes": 19266,
+      "relative": 0.181705005234417,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    },
+    {
+      "id": "common/brotli11",
+      "baselineBytes": 85572,
+      "candidateBytes": 100561,
+      "deltaBytes": 14989,
+      "relative": 0.17516243631094283,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression"
+    }
+  ],
+  "browserBundle": [
+    {
+      "id": "full/bytes",
+      "baselineBytes": 466451,
+      "candidateBytes": 1386526,
+      "deltaBytes": 920075,
+      "relative": 1.9725008628987826,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression",
+      "tool": "vite-8.3.0",
+      "entry": "@redact-secret/core",
+      "baselineBundleManifestCommitment": "5aab7a7e989a13030cba54845461464b51fe3ad962389b19d8949cf63d620468",
+      "comparisonBundleManifestCommitment": "f879bf194cb48e4a096be0fa2a68bb201dff76c8db5f93166c909aeea98047da",
+      "baselineEmittedFiles": [
+        {
+          "relativePath": "assets/index-DsL4bCI0.js",
+          "sha256": "c65931cba70368cd6e7b74bac8501607a72570d4b6f469823d94befc5220cc34",
+          "bytes": 9746
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_bg-Do_z1Se7.wasm",
+          "sha256": "e834270ee742949cded29a99606322c61c8e04b28a3b1b21ecc8c15a98ddd164",
+          "bytes": 446134
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm-CGP0_Jl4.js",
+          "sha256": "8c99e2578ca193dbda22998a9d44cf6c1c3acafe21551b7897862fbc8f387195",
+          "bytes": 10478
+        },
+        {
+          "relativePath": "index.html",
+          "sha256": "29ef0e1ac0c3cb6432f0da13cbcabbc020606ddc4d06933cfffd13ed94870cc3",
+          "bytes": 93
+        }
+      ],
+      "comparisonEmittedFiles": [
+        {
+          "relativePath": "assets/index-B-iJo-WN.js",
+          "sha256": "f526d520333b8c25cec7b3b3834ae202c4c18b346d5e5e06392b649770573705",
+          "bytes": 11083
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_bg-CLcUREH0.wasm",
+          "sha256": "650b7b5a8f0555a716b2aecf645d039579ad80c1e2c3d4a2d2f280b022b0fda3",
+          "bytes": 534232
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_pii_bg-Dlj4vqOV.wasm",
+          "sha256": "49edb63c746965e2f92eb10fcb7effcc8c4dbf3cc109feacdc7940fd5bc660e8",
+          "bytes": 819740
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_pii-ALan8G__.js",
+          "sha256": "0d1da606b444abb02f008f3cabfe9c54c8c753dfd908c4fee5d43446bdd61ecd",
+          "bytes": 10693
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm-D_7pBvtc.js",
+          "sha256": "f6c7775543f5d39b2ceea5f4dcacab827a9557c359f2eb10613f5ec16ace082c",
+          "bytes": 10685
+        },
+        {
+          "relativePath": "index.html",
+          "sha256": "de82c42a31df99d48a248720ffcab8b9b5c33b37b6516e7e50a08613cfb454c2",
+          "bytes": 93
+        }
+      ]
+    },
+    {
+      "id": "full/gzip9",
+      "baselineBytes": 157870,
+      "candidateBytes": 499519,
+      "deltaBytes": 341649,
+      "relative": 2.164116044847026,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression",
+      "tool": "vite-8.3.0",
+      "entry": "@redact-secret/core",
+      "baselineBundleManifestCommitment": "5aab7a7e989a13030cba54845461464b51fe3ad962389b19d8949cf63d620468",
+      "comparisonBundleManifestCommitment": "f879bf194cb48e4a096be0fa2a68bb201dff76c8db5f93166c909aeea98047da",
+      "baselineEmittedFiles": [
+        {
+          "relativePath": "assets/index-DsL4bCI0.js",
+          "sha256": "c65931cba70368cd6e7b74bac8501607a72570d4b6f469823d94befc5220cc34",
+          "bytes": 9746
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_bg-Do_z1Se7.wasm",
+          "sha256": "e834270ee742949cded29a99606322c61c8e04b28a3b1b21ecc8c15a98ddd164",
+          "bytes": 446134
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm-CGP0_Jl4.js",
+          "sha256": "8c99e2578ca193dbda22998a9d44cf6c1c3acafe21551b7897862fbc8f387195",
+          "bytes": 10478
+        },
+        {
+          "relativePath": "index.html",
+          "sha256": "29ef0e1ac0c3cb6432f0da13cbcabbc020606ddc4d06933cfffd13ed94870cc3",
+          "bytes": 93
+        }
+      ],
+      "comparisonEmittedFiles": [
+        {
+          "relativePath": "assets/index-B-iJo-WN.js",
+          "sha256": "f526d520333b8c25cec7b3b3834ae202c4c18b346d5e5e06392b649770573705",
+          "bytes": 11083
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_bg-CLcUREH0.wasm",
+          "sha256": "650b7b5a8f0555a716b2aecf645d039579ad80c1e2c3d4a2d2f280b022b0fda3",
+          "bytes": 534232
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_pii_bg-Dlj4vqOV.wasm",
+          "sha256": "49edb63c746965e2f92eb10fcb7effcc8c4dbf3cc109feacdc7940fd5bc660e8",
+          "bytes": 819740
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_pii-ALan8G__.js",
+          "sha256": "0d1da606b444abb02f008f3cabfe9c54c8c753dfd908c4fee5d43446bdd61ecd",
+          "bytes": 10693
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm-D_7pBvtc.js",
+          "sha256": "f6c7775543f5d39b2ceea5f4dcacab827a9557c359f2eb10613f5ec16ace082c",
+          "bytes": 10685
+        },
+        {
+          "relativePath": "index.html",
+          "sha256": "de82c42a31df99d48a248720ffcab8b9b5c33b37b6516e7e50a08613cfb454c2",
+          "bytes": 93
+        }
+      ]
+    },
+    {
+      "id": "common/bytes",
+      "baselineBytes": 315358,
+      "candidateBytes": 1014675,
+      "deltaBytes": 699317,
+      "relative": 2.2175337235776484,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression",
+      "tool": "vite-8.3.0",
+      "entry": "@redact-secret/core/common",
+      "baselineBundleManifestCommitment": "0854dae38ad412c6f60db09b14f9d5ab973bd27531c8f64de8e57a78c12cb457",
+      "comparisonBundleManifestCommitment": "c3dd03f105f30965ea42fcad965fe5cb4ee6229923f007e7b0cc3e305ef156b3",
+      "baselineEmittedFiles": [
+        {
+          "relativePath": "assets/index-B2wj6pQh.js",
+          "sha256": "2350d005e9e93bf7fdc2a0a80dcdab58c7d5cf3346359b99a3893ba86d180986",
+          "bytes": 9755
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common_bg-Cg1R55bE.wasm",
+          "sha256": "629b58cecb1fdac3785bb9fdb577ec9530a991d4988a2e4e256af078af3524e1",
+          "bytes": 295018
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common-Byr6jshK.js",
+          "sha256": "69644de74b24b3e87e8131e02c78492974161ae2c4d8387677432beb202870bd",
+          "bytes": 10492
+        },
+        {
+          "relativePath": "index.html",
+          "sha256": "e7e0c20f5f848e74d0f586276a066094e3e33c7f10babfe88f656176d16137eb",
+          "bytes": 93
+        }
+      ],
+      "comparisonEmittedFiles": [
+        {
+          "relativePath": "assets/index-DUJvL2Fc.js",
+          "sha256": "433bada33bd386393305b5a02c2c5fa27701eb75c25c41529bf82a7eaeb85e2a",
+          "bytes": 11099
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common_bg-COz6CbzH.wasm",
+          "sha256": "bb99d2ef84a366f8685cadfc8330367b79a9f2e5c19e816f956ea37777febb70",
+          "bytes": 348254
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common_pii_bg-CYz3x2yS.wasm",
+          "sha256": "792467d1dc286a7fd6490f2692737c6f6434aa639d2cdef16df8e8f7841c590f",
+          "bytes": 633823
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common_pii-E9bb0kSc.js",
+          "sha256": "a696e135298276108526ddc3e86d6c60ad15a97abc1fcab2d27890c6e0654b62",
+          "bytes": 10707
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common-CKFJPLTN.js",
+          "sha256": "2185c12272de53d3a18be43970a549847adc1814d8ef29741f39f9c888ca946c",
+          "bytes": 10699
+        },
+        {
+          "relativePath": "index.html",
+          "sha256": "0715a4fba5886fed9e1b3b2b9ef8b7071425db7c623eab4ba38461414c9b724d",
+          "bytes": 93
+        }
+      ]
+    },
+    {
+      "id": "common/gzip9",
+      "baselineBytes": 112547,
+      "candidateBytes": 379099,
+      "deltaBytes": 266552,
+      "relative": 2.368361662238887,
+      "threshold": {
+        "source": "regression-budgets-v1",
+        "relative": 0.05,
+        "absoluteFloorBytes": 4096
+      },
+      "verdict": "regression",
+      "tool": "vite-8.3.0",
+      "entry": "@redact-secret/core/common",
+      "baselineBundleManifestCommitment": "0854dae38ad412c6f60db09b14f9d5ab973bd27531c8f64de8e57a78c12cb457",
+      "comparisonBundleManifestCommitment": "c3dd03f105f30965ea42fcad965fe5cb4ee6229923f007e7b0cc3e305ef156b3",
+      "baselineEmittedFiles": [
+        {
+          "relativePath": "assets/index-B2wj6pQh.js",
+          "sha256": "2350d005e9e93bf7fdc2a0a80dcdab58c7d5cf3346359b99a3893ba86d180986",
+          "bytes": 9755
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common_bg-Cg1R55bE.wasm",
+          "sha256": "629b58cecb1fdac3785bb9fdb577ec9530a991d4988a2e4e256af078af3524e1",
+          "bytes": 295018
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common-Byr6jshK.js",
+          "sha256": "69644de74b24b3e87e8131e02c78492974161ae2c4d8387677432beb202870bd",
+          "bytes": 10492
+        },
+        {
+          "relativePath": "index.html",
+          "sha256": "e7e0c20f5f848e74d0f586276a066094e3e33c7f10babfe88f656176d16137eb",
+          "bytes": 93
+        }
+      ],
+      "comparisonEmittedFiles": [
+        {
+          "relativePath": "assets/index-DUJvL2Fc.js",
+          "sha256": "433bada33bd386393305b5a02c2c5fa27701eb75c25c41529bf82a7eaeb85e2a",
+          "bytes": 11099
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common_bg-COz6CbzH.wasm",
+          "sha256": "bb99d2ef84a366f8685cadfc8330367b79a9f2e5c19e816f956ea37777febb70",
+          "bytes": 348254
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common_pii_bg-CYz3x2yS.wasm",
+          "sha256": "792467d1dc286a7fd6490f2692737c6f6434aa639d2cdef16df8e8f7841c590f",
+          "bytes": 633823
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common_pii-E9bb0kSc.js",
+          "sha256": "a696e135298276108526ddc3e86d6c60ad15a97abc1fcab2d27890c6e0654b62",
+          "bytes": 10707
+        },
+        {
+          "relativePath": "assets/redact_secret_wasm_common-CKFJPLTN.js",
+          "sha256": "2185c12272de53d3a18be43970a549847adc1814d8ef29741f39f9c888ca946c",
+          "bytes": 10699
+        },
+        {
+          "relativePath": "index.html",
+          "sha256": "0715a4fba5886fed9e1b3b2b9ef8b7071425db7c623eab4ba38461414c9b724d",
+          "bytes": 93
+        }
+      ]
+    }
+  ],
+  "piiArtifacts": [
+    {
+      "id": "browser/portable/wasm-web/redact_secret_wasm_pii.d.ts",
+      "candidateBytes": 13721,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "browser/portable/wasm-web/redact_secret_wasm_pii.js",
+      "candidateBytes": 33133,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "browser/portable/wasm-web/redact_secret_wasm_pii_bg.wasm",
+      "candidateBytes": 819740,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "browser/portable/wasm-web/redact_secret_wasm_pii_bg.wasm.d.ts",
+      "candidateBytes": 2941,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "browser-common/portable/wasm-web-common/redact_secret_wasm_common_pii.d.ts",
+      "candidateBytes": 13721,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "browser-common/portable/wasm-web-common/redact_secret_wasm_common_pii.js",
+      "candidateBytes": 33154,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "browser-common/portable/wasm-web-common/redact_secret_wasm_common_pii_bg.wasm",
+      "candidateBytes": 633823,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "browser-common/portable/wasm-web-common/redact_secret_wasm_common_pii_bg.wasm.d.ts",
+      "candidateBytes": 2941,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "wasm/pii:full/raw",
+      "candidateBytes": 819740,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "wasm/pii:full/gzip9",
+      "candidateBytes": 305065,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "wasm/pii:full/brotli11",
+      "candidateBytes": 238306,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "wasm/pii:common/raw",
+      "candidateBytes": 633823,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "wasm/pii:common/gzip9",
+      "candidateBytes": 243752,
+      "verdict": "no-frozen-budget"
+    },
+    {
+      "id": "wasm/pii:common/brotli11",
+      "candidateBytes": 195663,
+      "verdict": "no-frozen-budget"
+    }
+  ],
+  "artifactCommitment": "7262692d827da67c9dfd4343e024f50ec3b80b04a66696bb0b738f10c9a182d9"
+}

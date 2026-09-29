@@ -1,0 +1,6105 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-profile-cost-thresholds",
+  "supportClaims": false,
+  "planCommitment": "96fc24b17e2bdd0b6fd2020409092a49edcebd1335bfc7ab0a0f5219cda5a612",
+  "workloadCommitment": "4d3f64079cd0278b2aa042bdc1bdf3f3b5357099057a886f45a1747c64d284e9",
+  "frozenAt": "2026-09-29T10:44:47.592Z",
+  "aaRunCommitments": [
+    "3b083114b7bdf5063e90e5ff0fa404ad08fce550ca436c2503de21b6c4034e6c",
+    "7f3f506f2ba6c0bd15c1a49929f58ee63306066a37b20222edf2cb51f5f735aa",
+    "83c4111fa5d27fc4bb34e06ceb87591b304388d3b09eb03a1193c5231ce50be7"
+  ],
+  "aaProvenance": {
+    "benchmarkCommit": "58a9abe5a979ece70c2859295c0adf238410f3e0",
+    "configCommitment": "f4bf52b1dcc8dca5cf1a7e854adf4a5d1c45a490a9fff2edaffb9c815db3918c",
+    "runIds": [
+      "36554838004",
+      "36554846120",
+      "36554853290"
+    ]
+  },
+  "freezeProvenance": {
+    "kind": "github-actions",
+    "runId": "36557434273",
+    "job": "freeze",
+    "event": "workflow_dispatch",
+    "workflowRef": "redact-secret/redact-secret-benchmarks/.github/workflows/pii-profile-cost-v2.yml@refs/heads/beta11/rebind-8f97f14-pii",
+    "benchmarkCommit": "58a9abe5a979ece70c2859295c0adf238410f3e0"
+  },
+  "cells": [
+    {
+      "key": "chromium-wasm/common/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 14.65,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.25,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00039374048660567595,
+      "rerunSpread": 0.00020651630998580472
+    },
+    {
+      "key": "chromium-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/global/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.2,
+      "tailRelative": 0.4,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/global/multilingual-context",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/global/multilingual-context",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0.00016286396278553106
+    },
+    {
+      "key": "chromium-wasm/common/global/multilingual-context",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/global/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.3,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.7,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.15,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/global/validator-heavy",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/global/validator-heavy",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00037939297124589544,
+      "rerunSpread": 0.00024466847421744653
+    },
+    {
+      "key": "chromium-wasm/common/global/validator-heavy",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 18.6,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.15,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.35,
+      "tailRelative": 0.55,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.35,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0014705811909312416,
+      "rerunSpread": 0.0007419356382800668
+    },
+    {
+      "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.2,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 1,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.3,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.15,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00016997960244768962,
+      "rerunSpread": 0.0003951086548801275
+    },
+    {
+      "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00023192380798731094,
+      "rerunSpread": 0
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0007171352583585922,
+      "rerunSpread": 0.0005367406070393432
+    },
+    {
+      "key": "chromium-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/global/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 27.25,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/global/multilingual-context",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/global/multilingual-context",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000030174559828566316,
+      "rerunSpread": 0.00036222587802048345
+    },
+    {
+      "key": "chromium-wasm/full/global/multilingual-context",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/global/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.15,
+      "tailRelative": 0.3,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/global/validator-heavy",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/global/validator-heavy",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.65,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.3016142400442041,
+      "rerunSpread": 0.30194824421152355
+    },
+    {
+      "key": "chromium-wasm/full/global/validator-heavy",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 2,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.3,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.15,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 1.2,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.5798103937574917,
+      "rerunSpread": 0.5785091103610533
+    },
+    {
+      "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 40,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.65,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.31677644675371797,
+      "rerunSpread": 0.3176064790067674
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 8.35,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/browserPeakJsHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/browserRetainedJsHeap",
+      "status": "frozen",
+      "relative": 0.65,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.31775284900284895,
+      "rerunSpread": 0.010632930599548507
+    },
+    {
+      "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/wasmLinearMemory",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "cli/full/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/beta10-full/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03161592505854793,
+      "rerunSpread": 0.010625737898465104
+    },
+    {
+      "key": "cli/full/beta10-full/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "cli/full/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/beta10-full/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.030828516377649384,
+      "rerunSpread": 0.012682926829268304
+    },
+    {
+      "key": "cli/full/beta10-full/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "cli/full/global/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/global/multilingual-context",
+      "metric": "incremental",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/global/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.029377203290246845,
+      "rerunSpread": 0.00574052812858783
+    },
+    {
+      "key": "cli/full/global/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "cli/full/global/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/global/validator-heavy",
+      "metric": "incremental",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/global/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.2,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.07692307692307687,
+      "rerunSpread": 0.03384615384615386
+    },
+    {
+      "key": "cli/full/global/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "cli/full/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.04122497055359253,
+      "rerunSpread": 0.010465116279069875
+    },
+    {
+      "key": "cli/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "cli/full/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.040856031128404746,
+      "rerunSpread": 0.020408163265306145
+    },
+    {
+      "key": "cli/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "cli/full/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03809523809523818,
+      "rerunSpread": 0.0059880239520957446
+    },
+    {
+      "key": "cli/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "cli/full/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 1.45,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.55,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "cli/full/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "cli/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02383531960996743,
+      "rerunSpread": 0.01538461538461533
+    },
+    {
+      "key": "cli/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0021099664887676006,
+      "rerunSpread": 0.002424769957722006
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000016145177435422653,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0022413149047442182,
+      "rerunSpread": 0.0026217228464420206
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.3,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0021106213917685412,
+      "rerunSpread": 0.0026708074534160797
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000028463152416113857,
+      "rerunSpread": 0.00008132990663334283
+    },
+    {
+      "key": "node-native/common/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0021106213917685412,
+      "rerunSpread": 0.0026708074534160797
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 1.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0026222138977336495,
+      "rerunSpread": 0.002372627372627445
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000016145655338695164,
+      "rerunSpread": 0.000016145655338695164
+    },
+    {
+      "key": "node-native/common/global/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0027562014532698242,
+      "rerunSpread": 0.002067410098985034
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.7,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 2.25,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0010052777079667674,
+      "rerunSpread": 0.0023282154543167177
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000041645496872355636,
+      "rerunSpread": 0.00005413982233815062
+    },
+    {
+      "key": "node-native/common/global/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0010052777079667674,
+      "rerunSpread": 0.0023282154543167177
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.9,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0013035381750465813,
+      "rerunSpread": 0.0023612750885477762
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000004036364957382688,
+      "rerunSpread": 0.000016145655338695164
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0017444395987789019,
+      "rerunSpread": 0.0025565878905031703
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.4,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0024201054917778464,
+      "rerunSpread": 0.0016160109391509803
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00001219900645876848,
+      "rerunSpread": 0.00001219900645876848
+    },
+    {
+      "key": "node-native/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0024201054917778464,
+      "rerunSpread": 0.0016160109391509803
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.002256770310932854,
+      "rerunSpread": 0.002319603786596458
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00001614606809607899,
+      "rerunSpread": 0.00001614606809607899
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0018235553040306662,
+      "rerunSpread": 0.0011939923333124103
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0033419509426824145,
+      "rerunSpread": 0.003911671924290205
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000012485104576631656,
+      "rerunSpread": 0.000012485104576631656
+    },
+    {
+      "key": "node-native/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0033419509426824145,
+      "rerunSpread": 0.003911671924290205
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.55,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00260820965037567,
+      "rerunSpread": 0.0025459513164431957
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000060602877424598134,
+      "rerunSpread": 0.00004444139190429297
+    },
+    {
+      "key": "node-native/full/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.001867297398232326,
+      "rerunSpread": 0.0023040039853041705
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.001803370437161833,
+      "rerunSpread": 0.000745434215430496
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000008140140661527795,
+      "rerunSpread": 0.00002713431758549767
+    },
+    {
+      "key": "node-native/full/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.001803370437161833,
+      "rerunSpread": 0.000745434215430496
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.4,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0028681880533731885,
+      "rerunSpread": 0.0017462891355868315
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00002828218074468758,
+      "rerunSpread": 0.000016161246139789753
+    },
+    {
+      "key": "node-native/full/global/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0033788011512951854,
+      "rerunSpread": 0.0011237357972280204
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.7,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.45,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0013832128261552779,
+      "rerunSpread": 0.0005025757004648579
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000018064286627428316,
+      "rerunSpread": 0.00001250597507707063
+    },
+    {
+      "key": "node-native/full/global/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0013832128261552779,
+      "rerunSpread": 0.0005025757004648579
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.55,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.003167701863354022,
+      "rerunSpread": 0.0035416925562321566
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000016161246139789753,
+      "rerunSpread": 0.000016161246139789753
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0023045780130799276,
+      "rerunSpread": 0.0024294524387964422
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00031015445691950916,
+      "rerunSpread": 0.0013665445058699266
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00002442151535508863,
+      "rerunSpread": 0.000008140372584897193
+    },
+    {
+      "key": "node-native/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00031015445691950916,
+      "rerunSpread": 0.0013665445058699266
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.35,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.002131527803899358,
+      "rerunSpread": 0.0020101765186255616
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00004040409482031215,
+      "rerunSpread": 0.00004040409482031215
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0017600100572003896,
+      "rerunSpread": 0.0018888119372915124
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.55,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0012628654416870777,
+      "rerunSpread": 0.0020854398382204042
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000004165821930524061,
+      "rerunSpread": 0.0000166634959737344
+    },
+    {
+      "key": "node-native/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0012628654416870777,
+      "rerunSpread": 0.0020854398382204042
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.15,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.007740686985969969,
+      "rerunSpread": 0.0072281722420555194
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0019067807103130274,
+      "rerunSpread": 0.0019097579916635965
+    },
+    {
+      "key": "node-wasm/common/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03659904646162482,
+      "rerunSpread": 0.04073396217560665
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.15,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.003900055715081674,
+      "rerunSpread": 0.02090074333187575
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000025198884529453736,
+      "rerunSpread": 0.0003500982142190523
+    },
+    {
+      "key": "node-wasm/common/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.15,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.05853658536585371,
+      "rerunSpread": 0.041332790076508585
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.55,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.25,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.008996752391819518,
+      "rerunSpread": 0.00830586684245227
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000008915127981623527,
+      "rerunSpread": 0.000008915127981623527
+    },
+    {
+      "key": "node-wasm/common/global/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.004060866318147838,
+      "rerunSpread": 0.013665708496300777
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.003566364456666582,
+      "rerunSpread": 0.019493604345540483
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00020289940306406073,
+      "rerunSpread": 0.00019995824401375373
+    },
+    {
+      "key": "node-wasm/common/global/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0480242881457289,
+      "rerunSpread": 0.04041464973970221
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.023880597014925398,
+      "rerunSpread": 0.02550123109391489
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000205047740463149,
+      "rerunSpread": 0.00019613087278247399
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0076548364648574285,
+      "rerunSpread": 0.013555347091932513
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.029040458442845418,
+      "rerunSpread": 0.04062472580503651
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0005349655540067833,
+      "rerunSpread": 0.00020159521547347126
+    },
+    {
+      "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.025103649368991787,
+      "rerunSpread": 0.0435508557117017
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.01596797607003042,
+      "rerunSpread": 0.03163279041593747
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00020504916227026548,
+      "rerunSpread": 0.00021693864895766524
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00728965809152049,
+      "rerunSpread": 0.020001904943327986
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.15,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.021227666725632366,
+      "rerunSpread": 0.008736676568233515
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00009810654370645544,
+      "rerunSpread": 0.00007750257279104389
+    },
+    {
+      "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02303127354935941,
+      "rerunSpread": 0.014004948415106577
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.9,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.55,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.3,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.015188994488564811,
+      "rerunSpread": 0.008362429415061046
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00018715354314324806,
+      "rerunSpread": 0.000193096072722998
+    },
+    {
+      "key": "node-wasm/full/beta10-full/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02545371008499875,
+      "rerunSpread": 0.01081477408120235
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.01579853637537676,
+      "rerunSpread": 0.030886850152905154
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000022392320926822862,
+      "rerunSpread": 0.000013995083060880376
+    },
+    {
+      "key": "node-wasm/full/beta10-full/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.018305084745762645,
+      "rerunSpread": 0.024789629292699678
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.007304317759432966,
+      "rerunSpread": 0.0194520066742776
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00018715762038490347,
+      "rerunSpread": 0.00019607163546520034
+    },
+    {
+      "key": "node-wasm/full/global/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.012030211207091579,
+      "rerunSpread": 0.019128296215329854
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.026043220664080824,
+      "rerunSpread": 0.04524533217542337
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000011758596023536683,
+      "rerunSpread": 0.000005879263445862648
+    },
+    {
+      "key": "node-wasm/full/global/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.01825067299356653,
+      "rerunSpread": 0.021653543307086576
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.017736158460277096,
+      "rerunSpread": 0.008316368519079909
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.00018418631733330137,
+      "rerunSpread": 0.00019607163546520034
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.036322360953461974,
+      "rerunSpread": 0.04524431011585839
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.04383788254756005,
+      "rerunSpread": 0.0413445670112047
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.000022392571637608327,
+      "rerunSpread": 0.0003416033704866095
+    },
+    {
+      "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.033151395848246334,
+      "rerunSpread": 0.04796696315120719
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.019532796621354098,
+      "rerunSpread": 0.017769958214207238
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0001960753246135205,
+      "rerunSpread": 0.00018716114178207732
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.007895340830846864,
+      "rerunSpread": 0.01923793553195452
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakExternal",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakHeap",
+      "status": "not-applicable",
+      "reasonCode": "surface-memory-unavailable"
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodePeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02606334048797576,
+      "rerunSpread": 0.010744336569579183
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedExternal",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0002030112352497948,
+      "rerunSpread": 0.000208896848109541
+    },
+    {
+      "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/nodeRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.01025780682643429,
+      "rerunSpread": 0.008107251234204416
+    },
+    {
+      "key": "python/full/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.75,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/beta10-full/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0041412911084044435,
+      "rerunSpread": 0.0012144765606023622
+    },
+    {
+      "key": "python/full/beta10-full/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0041412911084044435,
+      "rerunSpread": 0.0012144765606023622
+    },
+    {
+      "key": "python/full/beta10-full/multilingual-context",
+      "metric": "memory/pythonPeakHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/beta10-full/multilingual-context",
+      "metric": "memory/pythonRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 2.7,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/beta10-full/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.005013787916771095,
+      "rerunSpread": 0.0009987515605494046
+    },
+    {
+      "key": "python/full/beta10-full/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.005087763927753786,
+      "rerunSpread": 0.0010134279199391916
+    },
+    {
+      "key": "python/full/beta10-full/validator-heavy",
+      "metric": "memory/pythonPeakHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/beta10-full/validator-heavy",
+      "metric": "memory/pythonRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/global/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/global/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.003715630418627658,
+      "rerunSpread": 0.0012400793650793052
+    },
+    {
+      "key": "python/full/global/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.003715630418627658,
+      "rerunSpread": 0.0012400793650793052
+    },
+    {
+      "key": "python/full/global/multilingual-context",
+      "metric": "memory/pythonPeakHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/global/multilingual-context",
+      "metric": "memory/pythonRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/global/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.7,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.25,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/global/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0039021852237253185,
+      "rerunSpread": 0.0005205622071837723
+    },
+    {
+      "key": "python/full/global/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0039021852237253185,
+      "rerunSpread": 0.0005205622071837723
+    },
+    {
+      "key": "python/full/global/validator-heavy",
+      "metric": "memory/pythonPeakHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/global/validator-heavy",
+      "metric": "memory/pythonRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 3.2,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0036523009495983416,
+      "rerunSpread": 0.0004872107186357777
+    },
+    {
+      "key": "python/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0036523009495983416,
+      "rerunSpread": 0.0004872107186357777
+    },
+    {
+      "key": "python/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/pythonPeakHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/pythonRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.8,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.65,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.005012531328320913,
+      "rerunSpread": 0.000748689792862578
+    },
+    {
+      "key": "python/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.005059448520111198,
+      "rerunSpread": 0.0007556675062971863
+    },
+    {
+      "key": "python/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/pythonPeakHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/pythonRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.8,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.003821656050955413,
+      "rerunSpread": 0.002298263534218581
+    },
+    {
+      "key": "python/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.003821656050955413,
+      "rerunSpread": 0.002298263534218581
+    },
+    {
+      "key": "python/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/pythonPeakHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/pythonRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.8,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 2.35,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.4,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "python/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.004257583821181576,
+      "rerunSpread": 0.000798934753661884
+    },
+    {
+      "key": "python/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.004257583821181576,
+      "rerunSpread": 0.000798934753661884
+    },
+    {
+      "key": "python/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/pythonPeakHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "python/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/pythonRetainedHeap",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0,
+      "rerunSpread": 0
+    },
+    {
+      "key": "rust-native/common/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/common/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 1.1,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/beta10-full/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.034817813765182226,
+      "rerunSpread": 0.007886435331230235
+    },
+    {
+      "key": "rust-native/common/beta10-full/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.0322314049586776,
+      "rerunSpread": 0.004019292604501512
+    },
+    {
+      "key": "rust-native/common/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/common/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 1.35,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/beta10-full/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.022746419545071506,
+      "rerunSpread": 0.005922165820642977
+    },
+    {
+      "key": "rust-native/common/beta10-full/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.022746419545071506,
+      "rerunSpread": 0.005922165820642977
+    },
+    {
+      "key": "rust-native/common/global/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/common/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.9,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/global/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03402489626556027,
+      "rerunSpread": 0.01333333333333342
+    },
+    {
+      "key": "rust-native/common/global/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03231292517006801,
+      "rerunSpread": 0.007659574468085184
+    },
+    {
+      "key": "rust-native/common/global/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/common/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 2,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/global/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02512998266897748,
+      "rerunSpread": 0.0025974025974024872
+    },
+    {
+      "key": "rust-native/common/global/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02512998266897748,
+      "rerunSpread": 0.0025974025974024872
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.8,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.028823058446757477,
+      "rerunSpread": 0.014586709886547755
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.026272577996715896,
+      "rerunSpread": 0.006611570247933907
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 1.2,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.25,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02777777777777768,
+      "rerunSpread": 0.008467400508044065
+    },
+    {
+      "key": "rust-native/common/us-jurisdiction/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02777777777777768,
+      "rerunSpread": 0.008467400508044065
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.8,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03038674033149169,
+      "rerunSpread": 0.014005602240896309
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03125,
+      "rerunSpread": 0.011494252873563315
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 1.8,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.25,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.8,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.030018761726078758,
+      "rerunSpread": 0.005660377358490676
+    },
+    {
+      "key": "rust-native/common/us-ssn-exact/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.030018761726078758,
+      "rerunSpread": 0.005660377358490676
+    },
+    {
+      "key": "rust-native/full/beta10-full/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/full/beta10-full/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.7,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/beta10-full/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/beta10-full/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/beta10-full/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03646677471636961,
+      "rerunSpread": 0.006294256490952055
+    },
+    {
+      "key": "rust-native/full/beta10-full/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03289473684210531,
+      "rerunSpread": 0.0072173215717723505
+    },
+    {
+      "key": "rust-native/full/beta10-full/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/full/beta10-full/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.55,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/beta10-full/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/beta10-full/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/beta10-full/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03204047217537953,
+      "rerunSpread": 0.00410172272354381
+    },
+    {
+      "key": "rust-native/full/beta10-full/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03204047217537953,
+      "rerunSpread": 0.00410172272354381
+    },
+    {
+      "key": "rust-native/full/global/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/full/global/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/global/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/global/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/global/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02657807308970095,
+      "rerunSpread": 0.005847953216374213
+    },
+    {
+      "key": "rust-native/full/global/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.026405451448040962,
+      "rerunSpread": 0.00256191289496166
+    },
+    {
+      "key": "rust-native/full/global/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/full/global/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/global/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.2,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/global/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/global/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.026724137931034564,
+      "rerunSpread": 0.006071118820468291
+    },
+    {
+      "key": "rust-native/full/global/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.026724137931034564,
+      "rerunSpread": 0.006071118820468291
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.033117932148626794,
+      "rerunSpread": 0.0024291497975708065
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03265306122448974,
+      "rerunSpread": 0.0016246953696181787
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 1.15,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02267002518891692,
+      "rerunSpread": 0.005063291139240533
+    },
+    {
+      "key": "rust-native/full/us-jurisdiction/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.02267002518891692,
+      "rerunSpread": 0.005063291139240533
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/multilingual-context",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/multilingual-context",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.5,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/multilingual-context",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/multilingual-context",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03525046382189245,
+      "rerunSpread": 0.013071895424836555
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/multilingual-context",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03277153558052426,
+      "rerunSpread": 0.003759398496240518
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/validator-heavy",
+      "metric": "import",
+      "status": "not-applicable",
+      "reasonCode": "surface-metric-unavailable"
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/validator-heavy",
+      "metric": "initialize",
+      "status": "frozen",
+      "medianRelative": 0.25,
+      "tailRelative": 0.75,
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/validator-heavy",
+      "metric": "wholeInput",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/validator-heavy",
+      "metric": "incremental",
+      "status": "frozen",
+      "medianRelative": 0.1,
+      "tailRelative": 0.15,
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10,
+      "aaRuns": 3
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/processPeakRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03497164461247637,
+      "rerunSpread": 0.004587155963302836
+    },
+    {
+      "key": "rust-native/full/us-ssn-exact/validator-heavy",
+      "metric": "memory/processRetainedRss",
+      "status": "frozen",
+      "relative": 0.1,
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5,
+      "aaRuns": 3,
+      "ciCrossRunSpread": 0.03497164461247637,
+      "rerunSpread": 0.004587155963302836
+    }
+  ],
+  "artifactCommitment": "3f8b2f1d31fc15dd142ed65499f52b36154b677c038a47fdc364f7f8caa8281c"
+}

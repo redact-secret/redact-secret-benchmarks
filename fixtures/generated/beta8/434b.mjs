@@ -54,6 +54,15 @@ export function build434b({ fixture, synthetic }) {
     // 11 dotenv-local preview root-20.
     const body = v => v.replace(/^tr_[a-z]+_(?:sk_)?/, "");
 
+    // Issue #508: three further supported contexts, each an unpaired positive (no twin), each in a
+    // documented shape (additional, root-24, legacy root-20) from a public synthetic seed.
+    const more = [
+      { axis: "container-config", slug: "compose-env", ext: "yml", make: () => `tr_prod_sk_${synthetic(seed(T, "compose-env"), 24, ALNUM)}`, build: v => ["services:\n  worker:\n    image: registry.example.test/worker:1\n    environment:\n      TRIGGER_SECRET_KEY: ", v, "\n"] },
+      { axis: "cli", slug: "curl-trigger-task", ext: "sh", make: () => `tr_stg_${synthetic(seed(T, "curl-trigger-task"), 24, ALNUM)}`, build: v => ["curl -s -X POST https://api.trigger.dev/api/v1/tasks/example-task/trigger -H \"Authorization: Bearer ", v, "\" -H \"Content-Type: application/json\" -d '{}'\n"] },
+      { axis: "container-config", slug: "k8s-secret", ext: "yml", make: () => `tr_dev_${synthetic(seed(T, "k8s-secret"), 20, ALNUM)}`, build: v => ["apiVersion: v1\nkind: Secret\nmetadata:\n  name: trigger-dev\nstringData:\n  TRIGGER_SECRET_KEY: ", v, "\n"] },
+    ];
+    for (const x of more) c.positive(T, x.axis, x.slug, x.build({ secret: check(x.make()) }), x.ext);
+
     c.twin(T, "bare-prose", "additional-body-23", put("bare-prose", refuse(k["bare-prose"].slice(0, -1))), "length: a 23-byte additional-key body vs exactly 24", "length", "md");
     c.twin(T, "bearer-header", "additional-body-25", put("bearer-header", refuse(`${k["bearer-header"]}${synthetic(seed(T, "extra-25"), 1, ALNUM)}`)), "length: a 25-byte additional-key body vs exactly 24", "length", "http");
     c.twin(T, "dotenv", "root-body-23", put("dotenv", refuse(k.dotenv.slice(0, -1))), "length: a 23-byte root body vs exactly 24 or 20", "length", "env");

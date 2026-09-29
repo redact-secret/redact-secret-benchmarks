@@ -51,6 +51,10 @@ export function build434g({ fixture, synthetic }) {
       { axis: "container-config", slug: "mcp-config", ext: "json", build: mcp, edge: {} },
       { axis: "structured-file", slug: "csv-comma", ext: "csv", build: csv, edge: { last: "-" } },
       { axis: "env", slug: "end-of-input", ext: "env", build: eof, edge: { last: "_" } },
+      // Issue #508: three further supported contexts, each an unpaired positive (no twin).
+      { axis: "container-config", slug: "compose-env", ext: "yml", build: v => ["services:\n  agent:\n    image: registry.example.test/agent:1\n    environment:\n      " + env + ": ", v, "\n"], edge: {} },
+      { axis: "ci-config", slug: "actions-env", ext: "yml", build: v => ["jobs:\n  test:\n    runs-on: ubuntu-latest\n    env:\n      " + env + ": ", v, "\n"], edge: {} },
+      { axis: "source-code", slug: "ts-constructor", ext: "ts", build: v => ["import { Composio } from '@composio/core';\n\nconst composio = new Composio({ apiKey: '", v, "' });\n"], edge: {} },
     ];
     for (const x of extras) {
       k[x.slug] = key(x.slug, x.edge);

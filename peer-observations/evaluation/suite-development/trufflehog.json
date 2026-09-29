@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T17:17:13.180Z",
+  "observedAt": "2026-09-29T18:25:31.952Z",
   "sourceRun": {
-    "runId": "7a289b82-16d8-4970-8e35-4e2846d74ef0",
-    "benchmarkRevision": "f5754db4669de94bd2114f4f0575feb20ac3c584"
+    "runId": "8e6aaff0-245b-4d77-8c60-d614f254cebd",
+    "benchmarkRevision": "2e9ee7ad7c61fc91052b060da1a436f5de585fbe"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "d835584b1b5654fd12fdf3bf4088ecc63cebef7adc69d627914fcb7c51536bfe",
-    "fixtureCount": 38190,
-    "fixturesDigest": "93449401007b48201611e42c92550a1df7cb6d4d2c50e2c8bb5b99e56e239c9f",
+    "corpusHash": "c2eb961f9357f7ec54cce3acdad384c53a65723d728084830d43e028e9c94ecc",
+    "fixtureCount": 38640,
+    "fixturesDigest": "5197e0e9dd0669eb48b0779b7f5824936ef200a637c1522482c28d66ed103454",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1f960b1a6d21e89d76eec06536cab2865f58780e93276c12bfc8cadac4935106",
-      "fixtureCount": 4777
+      "digest": "5919a6764b77a9bb1f11925640c53ccb371a3fdacc8d9835a741eecda5689d42",
+      "fixtureCount": 4827
     }
   },
   "peer": {
@@ -17602,6 +17602,78 @@
       "family": "elevenlabs-api-key"
     },
     {
+      "path": "cases/beta8-384e--deepgram-api-key-actions-env-literal--differential/canonical.txt",
+      "start": 73,
+      "end": 113,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-actions-env-literal--metamorphic/canonical.txt",
+      "start": 73,
+      "end": 113,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-actions-env-literal--metamorphic/context.indent.txt",
+      "start": 77,
+      "end": 117,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-actions-env-literal--metamorphic/context.unicode-prefix.txt",
+      "start": 93,
+      "end": 133,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-actions-env-literal--metamorphic/encoding.crlf.txt",
+      "start": 77,
+      "end": 117,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-actions-env-literal--mutation/canonical.txt",
+      "start": 73,
+      "end": 113,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-auth-failure-log--differential/canonical.txt",
+      "start": 76,
+      "end": 116,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-auth-failure-log--metamorphic/canonical.txt",
+      "start": 76,
+      "end": 116,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-auth-failure-log--metamorphic/context.indent.txt",
+      "start": 80,
+      "end": 120,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-auth-failure-log--metamorphic/context.unicode-prefix.txt",
+      "start": 96,
+      "end": 136,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-auth-failure-log--metamorphic/encoding.crlf.txt",
+      "start": 76,
+      "end": 116,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-auth-failure-log--mutation/canonical.txt",
+      "start": 76,
+      "end": 116,
+      "family": "deepgram-api-key"
+    },
+    {
       "path": "cases/beta8-384e--deepgram-api-key-compose-env--differential/canonical.txt",
       "start": 99,
       "end": 139,
@@ -17716,6 +17788,42 @@
       "family": "deepgram-api-key"
     },
     {
+      "path": "cases/beta8-384e--deepgram-api-key-docker-run-env--differential/canonical.txt",
+      "start": 36,
+      "end": 76,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-docker-run-env--metamorphic/canonical.txt",
+      "start": 36,
+      "end": 76,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-docker-run-env--metamorphic/context.indent.txt",
+      "start": 40,
+      "end": 80,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-docker-run-env--metamorphic/context.unicode-prefix.txt",
+      "start": 56,
+      "end": 96,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-docker-run-env--metamorphic/encoding.crlf.txt",
+      "start": 36,
+      "end": 76,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-docker-run-env--mutation/canonical.txt",
+      "start": 36,
+      "end": 76,
+      "family": "deepgram-api-key"
+    },
+    {
       "path": "cases/beta8-384e--deepgram-api-key-dotenv--differential/canonical.txt",
       "start": 24,
       "end": 64,
@@ -17800,6 +17908,42 @@
       "family": "deepgram-api-key"
     },
     {
+      "path": "cases/beta8-384e--deepgram-api-key-http-request-header--differential/canonical.txt",
+      "start": 67,
+      "end": 107,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-http-request-header--metamorphic/canonical.txt",
+      "start": 67,
+      "end": 107,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-http-request-header--metamorphic/context.indent.txt",
+      "start": 71,
+      "end": 111,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-http-request-header--metamorphic/context.unicode-prefix.txt",
+      "start": 87,
+      "end": 127,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-http-request-header--metamorphic/encoding.crlf.txt",
+      "start": 69,
+      "end": 109,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-http-request-header--mutation/canonical.txt",
+      "start": 67,
+      "end": 107,
+      "family": "deepgram-api-key"
+    },
+    {
       "path": "cases/beta8-384e--deepgram-api-key-id-named-compose-twin--differential/canonical.txt",
       "start": 102,
       "end": 142,
@@ -17872,6 +18016,78 @@
       "family": "deepgram-api-key"
     },
     {
+      "path": "cases/beta8-384e--deepgram-api-key-inline-env-command--differential/canonical.txt",
+      "start": 17,
+      "end": 57,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-inline-env-command--metamorphic/canonical.txt",
+      "start": 17,
+      "end": 57,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-inline-env-command--metamorphic/context.indent.txt",
+      "start": 21,
+      "end": 61,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-inline-env-command--metamorphic/context.unicode-prefix.txt",
+      "start": 37,
+      "end": 77,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-inline-env-command--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 57,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-inline-env-command--mutation/canonical.txt",
+      "start": 17,
+      "end": 57,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-k8s-env-value--differential/canonical.txt",
+      "start": 44,
+      "end": 84,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-k8s-env-value--metamorphic/canonical.txt",
+      "start": 44,
+      "end": 84,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-k8s-env-value--metamorphic/context.indent.txt",
+      "start": 48,
+      "end": 88,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-k8s-env-value--metamorphic/context.unicode-prefix.txt",
+      "start": 64,
+      "end": 104,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-k8s-env-value--metamorphic/encoding.crlf.txt",
+      "start": 46,
+      "end": 86,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-k8s-env-value--mutation/canonical.txt",
+      "start": 44,
+      "end": 84,
+      "family": "deepgram-api-key"
+    },
+    {
       "path": "cases/beta8-384e--deepgram-api-key-long-value-twin--twin/canonical.txt",
       "start": 25,
       "end": 65,
@@ -17887,6 +18103,42 @@
       "path": "cases/beta8-384e--deepgram-api-key-other-host-log-twin--twin/canonical.txt",
       "start": 59,
       "end": 99,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-printenv-output--differential/canonical.txt",
+      "start": 47,
+      "end": 87,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-printenv-output--metamorphic/canonical.txt",
+      "start": 47,
+      "end": 87,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-printenv-output--metamorphic/context.indent.txt",
+      "start": 51,
+      "end": 91,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-printenv-output--metamorphic/context.unicode-prefix.txt",
+      "start": 67,
+      "end": 107,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-printenv-output--metamorphic/encoding.crlf.txt",
+      "start": 48,
+      "end": 88,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-printenv-output--mutation/canonical.txt",
+      "start": 47,
+      "end": 87,
       "family": "deepgram-api-key"
     },
     {
@@ -17971,6 +18223,42 @@
       "path": "cases/beta8-384e--deepgram-api-key-short-value-twin--twin/canonical.txt",
       "start": 24,
       "end": 64,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-toml-config-key--differential/canonical.txt",
+      "start": 29,
+      "end": 69,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-toml-config-key--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 69,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-toml-config-key--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 73,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-toml-config-key--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 89,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-toml-config-key--metamorphic/encoding.crlf.txt",
+      "start": 30,
+      "end": 70,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/beta8-384e--deepgram-api-key-toml-config-key--mutation/canonical.txt",
+      "start": 29,
+      "end": 69,
       "family": "deepgram-api-key"
     },
     {
@@ -23248,6 +23536,66 @@
       "family": "doppler-token"
     },
     {
+      "path": "cases/beta8-434d--posthog-token-actions-env--differential/canonical.txt",
+      "start": 83,
+      "end": 134,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--metamorphic/canonical.txt",
+      "start": 83,
+      "end": 134,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--metamorphic/context.indent.txt",
+      "start": 87,
+      "end": 138,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--metamorphic/context.unicode-prefix.txt",
+      "start": 103,
+      "end": 154,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--metamorphic/encoding.crlf.txt",
+      "start": 87,
+      "end": 138,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--mutation/canonical.txt",
+      "start": 83,
+      "end": 134,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--mutation/lexical.invalid-alphabet.txt",
+      "start": 83,
+      "end": 133,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--mutation/lexical.length-minus-one.txt",
+      "start": 83,
+      "end": 133,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--mutation/lexical.length-plus-one.txt",
+      "start": 83,
+      "end": 135,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-actions-env--mutation/lexical.replace-last.txt",
+      "start": 83,
+      "end": 134,
+      "family": "posthog-token"
+    },
+    {
       "path": "cases/beta8-434d--posthog-token-bare-prose--differential/canonical.txt",
       "start": 61,
       "end": 113,
@@ -23359,6 +23707,66 @@
       "path": "cases/beta8-434d--posthog-token-chat-paste--mutation/lexical.length-minus-one.txt",
       "start": 23,
       "end": 75,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--differential/canonical.txt",
+      "start": 105,
+      "end": 155,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--metamorphic/canonical.txt",
+      "start": 105,
+      "end": 155,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--metamorphic/context.indent.txt",
+      "start": 109,
+      "end": 159,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--metamorphic/context.unicode-prefix.txt",
+      "start": 125,
+      "end": 175,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--metamorphic/encoding.crlf.txt",
+      "start": 109,
+      "end": 159,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--mutation/canonical.txt",
+      "start": 105,
+      "end": 155,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--mutation/lexical.invalid-alphabet.txt",
+      "start": 105,
+      "end": 154,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--mutation/lexical.length-minus-one.txt",
+      "start": 105,
+      "end": 154,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--mutation/lexical.length-plus-one.txt",
+      "start": 105,
+      "end": 156,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-compose-env--mutation/lexical.replace-last.txt",
+      "start": 105,
+      "end": 155,
       "family": "posthog-token"
     },
     {
@@ -23719,6 +24127,60 @@
       "path": "cases/beta8-434d--posthog-token-x-api-key-header--mutation/lexical.replace-last.txt",
       "start": 55,
       "end": 105,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--differential/canonical.txt",
+      "start": 52,
+      "end": 104,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--metamorphic/canonical.txt",
+      "start": 52,
+      "end": 104,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--metamorphic/context.indent.txt",
+      "start": 56,
+      "end": 108,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--metamorphic/context.unicode-prefix.txt",
+      "start": 72,
+      "end": 124,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--metamorphic/encoding.crlf.txt",
+      "start": 54,
+      "end": 106,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--mutation/canonical.txt",
+      "start": 52,
+      "end": 104,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--mutation/lexical.invalid-alphabet.txt",
+      "start": 52,
+      "end": 103,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--mutation/lexical.length-minus-one.txt",
+      "start": 52,
+      "end": 103,
+      "family": "posthog-token"
+    },
+    {
+      "path": "cases/beta8-434d--posthog-token-yaml-config--mutation/lexical.replace-last.txt",
+      "start": 52,
+      "end": 104,
       "family": "posthog-token"
     },
     {
@@ -43244,5 +43706,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "0734ebdce7374e5f5d8f80552a6208f1e55e62a3958ec60a101102adf6fc0d2d"
+  "digest": "6945b28926fc2bfd44755436998fdcd3c0f46d177ed8feee8ff2450be021fea4"
 }

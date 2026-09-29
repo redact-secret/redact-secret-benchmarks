@@ -22,11 +22,13 @@ export function build434c({ fixture, synthetic }) {
   const jsSandbox = v => ["import { Sandbox } from '@e2b/code-interpreter';\n\nconst sbx = await Sandbox.create({ apiKey: '", v, "' });\n"];
   const mcp = v => ["{\n  \"mcpServers\": {\n    \"e2b\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@e2b/mcp-server\"],\n      \"env\": { \"E2B_API_KEY\": \"", v, "\" }\n    }\n  }\n}\n"];
   const curl = v => ["curl -s https://api.e2b.dev/sandboxes -H \"X-API-Key: ", v, "\"\n"];
+  const composeEnv = v => ["services:\n  agent:\n    image: example.test/agent:latest\n    environment:\n      E2B_API_KEY: ", v, "\n"];
   const all = [...contexts,
     { axis: "sdk-config", slug: "python-sandbox", ext: "py", build: pySandbox },
     { axis: "source-code", slug: "js-sandbox", ext: "ts", build: jsSandbox },
     { axis: "container-config", slug: "mcp-env", ext: "json", build: mcp },
     { axis: "cli", slug: "curl-x-api-key", ext: "sh", build: curl },
+    { axis: "container-config", slug: "compose-env", ext: "yml", build: composeEnv },
   ];
   const k = {};
   for (const x of all) {

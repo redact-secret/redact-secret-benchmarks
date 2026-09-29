@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T17:14:41.626Z",
+  "observedAt": "2026-09-29T18:23:37.158Z",
   "sourceRun": {
-    "runId": "2026-09-29T17:14:41.626Z-35440f",
-    "benchmarkRevision": "f5754db4669de94bd2114f4f0575feb20ac3c584"
+    "runId": "2026-09-29T18:23:37.158Z-c5afc6",
+    "benchmarkRevision": "2e9ee7ad7c61fc91052b060da1a436f5de585fbe"
   },
   "input": {
     "surface": "comparison/beta8-434d",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "abd7ba0d0f5247f9fe78b8666091e0fbfda3397d6c98a4bdb9c74b4ee9f8915f",
-    "fixtureCount": 66,
-    "fixturesDigest": "d482e1ddd1bb34f0729dc65545c13b872d4ab25fa4b26d9323692810b9dd59f9",
+    "corpusHash": "752af0ff059f44fb2795bf24f3e4932fcd4a00ea1f6fbaa9f4226bbf1444b590",
+    "fixtureCount": 72,
+    "fixturesDigest": "bb0000be802420cbc5caeb59a6e2871d02e3f46ed46955df27b3117f1e61903c",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1f960b1a6d21e89d76eec06536cab2865f58780e93276c12bfc8cadac4935106",
-      "fixtureCount": 4777
+      "digest": "5919a6764b77a9bb1f11925640c53ccb371a3fdacc8d9835a741eecda5689d42",
+      "fixtureCount": 4827
     }
   },
   "peer": {
@@ -61,6 +61,12 @@
   },
   "findings": [
     {
+      "path": "cases/posthog-project-secret-api-key-actions-env.yml",
+      "start": 89,
+      "end": 140,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/posthog-project-secret-api-key-body-41-twin.env",
       "start": 38,
       "end": 83,
@@ -70,6 +76,12 @@
       "path": "cases/posthog-project-secret-api-key-body-50-twin.sh",
       "start": 39,
       "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-compose-env.yml",
+      "start": 111,
+      "end": 161,
       "family": "generic-token"
     },
     {
@@ -143,6 +155,18 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/posthog-project-secret-api-key-yaml-config.yml",
+      "start": 52,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-actions-env.yml",
+      "start": 83,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/posthog-token-body-41-twin.env",
       "start": 32,
       "end": 77,
@@ -152,6 +176,12 @@
       "path": "cases/posthog-token-body-50-twin.sh",
       "start": 33,
       "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-compose-env.yml",
+      "start": 105,
+      "end": 155,
       "family": "generic-token"
     },
     {
@@ -223,7 +253,13 @@
       "start": 55,
       "end": 105,
       "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-yaml-config.yml",
+      "start": 52,
+      "end": 104,
+      "family": "generic-token"
     }
   ],
-  "digest": "d9607daeee00ed70f00706e44a3f89dbf1b99d793077dca698f5bd2bc5caadc6"
+  "digest": "fd2ea9b7ef5688f9ebaefbf127358f3d0a57eba96669896d5ade4cb761bf40ca"
 }

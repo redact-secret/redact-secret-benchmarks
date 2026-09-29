@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T17:14:41.626Z",
+  "observedAt": "2026-09-29T18:23:37.158Z",
   "sourceRun": {
-    "runId": "2026-09-29T17:14:41.626Z-35440f",
-    "benchmarkRevision": "f5754db4669de94bd2114f4f0575feb20ac3c584"
+    "runId": "2026-09-29T18:23:37.158Z-c5afc6",
+    "benchmarkRevision": "2e9ee7ad7c61fc91052b060da1a436f5de585fbe"
   },
   "input": {
     "surface": "comparison/beta8-434g",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "18a7398d1625076210c11b1a70ee7f1f7d4e590a86aa6263ebad2f07ed6e9a9c",
-    "fixtureCount": 103,
-    "fixturesDigest": "bfc2d160e13c5d06de1ef74dfd69ab9a86fb14d3d905b7c9b493a52c60b1d49a",
+    "corpusHash": "9f5807f9f4875c9968895f300d3e6e1262cf0e90783f002a0ef7557871d08029",
+    "fixtureCount": 112,
+    "fixturesDigest": "0564a754832a772be93254114eac5973a2755a9c2a4df02a3f5e0a8668c59034",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1f960b1a6d21e89d76eec06536cab2865f58780e93276c12bfc8cadac4935106",
-      "fixtureCount": 4777
+      "digest": "5919a6764b77a9bb1f11925640c53ccb371a3fdacc8d9835a741eecda5689d42",
+      "fixtureCount": 4827
     }
   },
   "peer": {
@@ -61,6 +61,12 @@
   },
   "findings": [
     {
+      "path": "cases/composio-api-key-actions-env.yml",
+      "start": 74,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/composio-api-key-all-lowercase-body-twin.env",
       "start": 24,
       "end": 47,
@@ -76,6 +82,12 @@
       "path": "cases/composio-api-key-body-short-twin.sh",
       "start": 25,
       "end": 47,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-api-key-compose-env.yml",
+      "start": 101,
+      "end": 124,
       "family": "generic-token"
     },
     {
@@ -161,6 +173,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/composio-api-key-ts-constructor.ts",
+      "start": 85,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/composio-api-key-uppercase-prefix-twin.json",
       "start": 14,
       "end": 37,
@@ -173,6 +191,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/composio-org-api-key-actions-env.yml",
+      "start": 78,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/composio-org-api-key-body-19-twin.env",
       "start": 28,
       "end": 51,
@@ -182,6 +206,12 @@
       "path": "cases/composio-org-api-key-body-short-twin.sh",
       "start": 29,
       "end": 52,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-org-api-key-compose-env.yml",
+      "start": 105,
+      "end": 129,
       "family": "generic-token"
     },
     {
@@ -268,9 +298,21 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/composio-user-api-key-actions-env.yml",
+      "start": 79,
+      "end": 126,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/composio-user-api-key-body-short-twin.sh",
       "start": 30,
       "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/composio-user-api-key-compose-env.yml",
+      "start": 106,
+      "end": 153,
       "family": "generic-token"
     },
     {
@@ -351,6 +393,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/composio-user-api-key-ts-constructor.ts",
+      "start": 85,
+      "end": 132,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/composio-user-api-key-uppercase-prefix-twin.json",
       "start": 14,
       "end": 61,
@@ -363,5 +411,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "88eaf74c223dd91471c714949214e06d8d600dff092c4ed8d2312ada72fc03d6"
+  "digest": "2da59f5d2146cf0ed5af6f2002aaae40bb88e98b1dae3dc25d97b052e327fd6a"
 }

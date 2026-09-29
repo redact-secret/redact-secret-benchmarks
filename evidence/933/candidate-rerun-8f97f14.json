@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "reportType": "candidate",
+  "runId": "74888ff3-48ed-4459-b2fe-32906a5a95cb",
+  "startedAt": "2026-09-29T10:10:45.172Z",
+  "finishedAt": "2026-09-29T10:10:47.320Z",
+  "status": "complete",
+  "candidate": {
+    "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
+    "sourceState": "clean",
+    "packageName": "@redact-secret/core",
+    "declaredVersion": "0.1.0-beta.10",
+    "artifactSha256": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c",
+    "expectedArtifactSha256": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c",
+    "artifacts": [
+      {
+        "role": "package",
+        "sha256": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c"
+      },
+      {
+        "role": "node",
+        "sha256": "b32d462b2daec575834a7287bec74b679a09f93f28717a56956f0b2169b629f8"
+      },
+      {
+        "role": "wasm",
+        "sha256": "b6819bfd95c911db056f93cb78b3341cba7bfb05a22262f8c44461c0c4e1b966"
+      }
+    ]
+  },
+  "benchmark": {
+    "sourceCommit": "005b19b85368d24910da437f31db701d670a2b8d",
+    "dirty": false,
+    "lockfileSha256": "14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939"
+  },
+  "scanner": {
+    "id": "redact-secret-candidate",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "detectors": "default",
+      "runtime": "node",
+      "installation": "isolated-npm-tarballs-with-overrides",
+      "ruleset": null
+    },
+    "configurationHash": "c1af1eee97cce08f227e7a07ef3338f8de48b9e37dd771f014c8f6cf1b79d783"
+  },
+  "runtime": {
+    "node": "v22.16.0",
+    "os": "darwin",
+    "arch": "arm64"
+  },
+  "selection": {
+    "scope": "full-suite",
+    "filter": null
+  },
+  "completeness": {
+    "selectedFixtures": 4768,
+    "scannedFixtures": 4768,
+    "writtenFixtures": 4768
+  },
+  "corpus": {
+    "protocol": "measurement-v4",
+    "hash": "a89a8d117ef2e3b80fb2a7e6b612fc5c464030bfc4d9cd05c52204aba8706d75",
+    "categories": [
+      {
+        "id": "common-formats",
+        "sha256": "225b06c87c3c974ff650f943746baad9a488febd5a33871b4894516a7244115c"
+      },
+      {
+        "id": "accuracy",
+        "sha256": "33c2a504fe7c3c200f7458b903104844d695fea8296dc6977038273358f72e33"
+      },
+      {
+        "id": "token-contexts",
+        "sha256": "1a38c702ee7fbf6febdfb4f856fccef65966812e23bfa751322c84242ec441ac"
+      },
+      {
+        "id": "credential-formats",
+        "sha256": "8a314552eea2e9db66ed49750294ad59a8b10bc4c33fcf471f2eaee059b8af4f"
+      },
+      {
+        "id": "context-edges",
+        "sha256": "091c79bc72557faa0657cafb79895e19e848a5b6dbd4f3c40d96d031f5f0e6ae"
+      },
+      {
+        "id": "negative-controls",
+        "sha256": "90cb2e615a5afa71f8d52ba70454d5d65cb9b206af78ac292f02cb0f9ee57a7b"
+      },
+      {
+        "id": "sendgrid-regressions",
+        "sha256": "bb556d9d91dda1a394c83be1cd3763e75ebf9230d5fbdb6ad5abd91368ab459d"
+      },
+      {
+        "id": "reference-syntax",
+        "sha256": "0fe3363d4e0aec300b81bb823929f73928c7e06eb9e1d43064cf7b5b7f0d977e"
+      },
+      {
+        "id": "milestone-6-closed",
+        "sha256": "388b26e3703fc5a80b1ca0cd65232873e765a0a0b59148ba0e6998fd6c8ff766"
+      },
+      {
+        "id": "detector-coverage",
+        "sha256": "8029b3b1e20ee410766126ebeaaa842bb27fbd6a96444e258489176ad6aece78"
+      },
+      {
+        "id": "real-world-shapes",
+        "sha256": "7adc76864a1a1f017f1ac3a88de933301819ffe28af154ab9b9ff7e155355de3"
+      },
+      {
+        "id": "beta8-207",
+        "sha256": "8b886af52072dcca835c672295e3d0daab273d3ed9421e41340f38720d3fc131"
+      },
+      {
+        "id": "beta8-209",
+        "sha256": "35457096ead3ba8ecf719abd121532c8d77ac33ca113a8df8c73cb006211dc42"
+      },
+      {
+        "id": "beta8-208",
+        "sha256": "34da38437df4f13693c89236967fcac5ca7f45efe417511963de4097046a494b"
+      },
+      {
+        "id": "beta8-210",
+        "sha256": "605e70510d2c2c7327dea6f76aa163dce60a693aedb0046081153d3d7a6da7ef"
+      },
+      {
+        "id": "beta8-211",
+        "sha256": "33ab0872de731e074c6b039102d4ae418b2889597ba44070720636ee6e481274"
+      },
+      {
+        "id": "beta8-212",
+        "sha256": "3ccd0a1980bf279fd3a2aa033c44734dd8a0e73a043498057c22084300cedfb4"
+      },
+      {
+        "id": "beta8-213a",
+        "sha256": "e93816b20a54ab8f2757962d95f49f271af53222716049a4a0452869aa8171ca"
+      },
+      {
+        "id": "beta8-213c",
+        "sha256": "d39630d42d62950f5c3ae2fb64d8ed767c6e737272f87536034cb0a234f0e638"
+      },
+      {
+        "id": "beta8-213b",
+        "sha256": "e976fb045d30e6f3c34849e29f264f4d0cb3267eb2b97171dd41d2961d30e681"
+      },
+      {
+        "id": "beta8-213d",
+        "sha256": "165039a8f594a04ab9a0903d8dc3834c01629545bcb830543d7aec8f7b63a2cc"
+      },
+      {
+        "id": "beta8-213e",
+        "sha256": "435c2c68cf12647acd62dcae3dca0d91c79c2b4813bc99d2c532e024daaaae40"
+      },
+      {
+        "id": "beta8-213f",
+        "sha256": "abe90d21dfa8e74ee5b2fa21ba27a4884dc6c1d1c89df91b980c8d92b5a7037f"
+      },
+      {
+        "id": "beta8-259",
+        "sha256": "0da5d62f8f385dafbe46a568105227458479b4e96391c02867a4dc9adfde9220"
+      },
+      {
+        "id": "beta8-263",
+        "sha256": "118ed8e978bc5857b2a15782efb7e83d711b0afa0f5adab75f30de1051f20843"
+      },
+      {
+        "id": "beta8-384a",
+        "sha256": "900fdce11ecc6ff3ec01093865dbccb87d7c970360ed6f1e235e9b993574670e"
+      },
+      {
+        "id": "beta8-384b",
+        "sha256": "9fd0bc1f5c8dd3d1387db266f31d290ac44f71ac1d388deb2504bc46da472cdf"
+      },
+      {
+        "id": "beta8-384c",
+        "sha256": "2a3a5be696449d4002c5396f74ba2938609c0bda16f534942734d5d32524b273"
+      },
+      {
+        "id": "beta8-384d",
+        "sha256": "8ee68c5897accba5af1b80d08c791aee7b957c3587501d2d23eed95787300e4f"
+      },
+      {
+        "id": "beta8-384e",
+        "sha256": "589d22a854c77c9bc1249d943812994c2933a5edbe26fe6c82cd25a003d3858d"
+      },
+      {
+        "id": "beta8-379",
+        "sha256": "edda588827848135829e423fe9b1c77fa2f43e6932f0232b679779e3efbb4e15"
+      },
+      {
+        "id": "beta8-436a",
+        "sha256": "e6312da5bc974ad4dfb3821eac5c63ced0b8fa9fcad839e0bb2e4dc83b4358e1"
+      },
+      {
+        "id": "beta8-436b",
+        "sha256": "a6650668ecae02afdbf19401e3c0ce259fad242afe1d7faacaeb428b5f3fa331"
+      },
+      {
+        "id": "beta8-436c",
+        "sha256": "4aed4e9db10d1140766f34455ec639253a14ff90f441267fc88320b685b69781"
+      },
+      {
+        "id": "beta8-436d",
+        "sha256": "7f349443bb7e4f4feafba6fc7235c8c988770a5b451904210f2b637e9a30b2a1"
+      },
+      {
+        "id": "beta8-436e",
+        "sha256": "2763265b6baba503d8e2b4986449f432dc8a4906e0c014464b35c8a7b5e053d9"
+      },
+      {
+        "id": "beta8-436f",
+        "sha256": "29a02f3f4aa000c7ac445870f6ca5959543295eba137cfda214a517df8c06ddf"
+      },
+      {
+        "id": "beta8-434a",
+        "sha256": "d22a6e4c76db6617a9a62b2f2f9b13c8c8419130e72bcd3373c61068f1f954c4"
+      },
+      {
+        "id": "beta8-434b",
+        "sha256": "6678bc4f0b1ead7759e15711a90925b9b08a3584cc27fb5f3eb02266abc93a0d"
+      },
+      {
+        "id": "beta8-434c",
+        "sha256": "22a98c05058d1eb2911492713eee12df936579dbb04d1db2a4241b72dbecb6fd"
+      },
+      {
+        "id": "beta8-434d",
+        "sha256": "dea667f4c7c09b4f53a82e6e08674f2d22a554f1a4287afcb4898535d956aec5"
+      },
+      {
+        "id": "beta8-434e",
+        "sha256": "a00d7fa3a07486891e7cd49db1323514a5b2c80c4b16cfd9cce55935164134fb"
+      },
+      {
+        "id": "beta8-434f",
+        "sha256": "70a9e8cfee2f0b8cc65ba753aa47aa321aa902fa3bfeb672edbc689effa58b4f"
+      },
+      {
+        "id": "beta8-434g",
+        "sha256": "5abb2e8e7433b68c459e597a566f36472c376d21bcac49cb5b5a6a28375cd0c8"
+      },
+      {
+        "id": "policy-qualified-credentials",
+        "sha256": "975cf4ff26dc6b93b9a1040fbd2a6749a7cf97b6b244bd46ebbe9b55a9e7e157"
+      }
+    ]
+  },
+  "knownGapRecord": "product-933",
+  "results": [
+    {
+      "fixtureId": "beta8-379--heroku-api-key-legacy-authorizations-info",
+      "corpusSection": "expanded-corpus",
+      "kind": "policy",
+      "tier": "T3",
+      "expectedSpans": 1,
+      "actualFindings": 1,
+      "outcome": "EXACT",
+      "baseline": {
+        "version": "0.1.0-beta.10",
+        "outcome": null
+      }
+    },
+    {
+      "fixtureId": "beta8-379--confluent-cloud-api-secret-legacy-schema-registry-user-info",
+      "corpusSection": "expanded-corpus",
+      "kind": "policy",
+      "tier": "T3",
+      "expectedSpans": 1,
+      "actualFindings": 1,
+      "outcome": "EXACT",
+      "baseline": {
+        "version": "0.1.0-beta.10",
+        "outcome": null
+      }
+    },
+    {
+      "fixtureId": "beta8-379--twilio-auth-token-profiles-auth-token",
+      "corpusSection": "expanded-corpus",
+      "kind": "policy",
+      "tier": "T3",
+      "expectedSpans": 1,
+      "actualFindings": 1,
+      "outcome": "EXACT",
+      "baseline": {
+        "version": "0.1.0-beta.10",
+        "outcome": null
+      }
+    }
+  ]
+}

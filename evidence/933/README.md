@@ -1,5 +1,28 @@
 # Evidence: redact-secret#933: fixed-candidate rerun of its benchmark fixtures
 
+## Rerun at the re-bound Beta.11 candidate 8f97f14 (current)
+
+**Result:** PASS, unchanged. The Beta.11 candidate was re-bound from `1db8ff3` to product main `8f97f14` (PR #991, the
+#980 performance backlog, and PR #992, the #990 streaming fixes). Every fixture of this record has the same outcome
+and finding count there. The record stays `verified`.
+
+| Fixture | Kind | Candidate `1db8ff3` | Candidate `8f97f14` |
+| --- | --- | --- | --- |
+| `beta8-379--heroku-api-key-legacy-authorizations-info` | policy | EXACT | EXACT |
+| `beta8-379--confluent-cloud-api-secret-legacy-schema-registry-user-info` | policy | EXACT | EXACT |
+| `beta8-379--twilio-auth-token-profiles-auth-token` | policy | EXACT | EXACT |
+
+- Candidate run `74888ff3-48ed-4459-b2fe-32906a5a95cb` (complete, full suite, 4,768 of 4,768 fixtures, `eval:validate`
+  passed), benchmarks `005b19b85368d24910da437f31db701d670a2b8d` (clean), corpus `a89a8d11…6d75` (unchanged).
+- Artifacts: core `467111e2…f74c`, node `b32d462b…29f8`, wasm `b6819bfd…e966`.
+- Product conformance at `8f97f14`: [Artifact qualification run 36553444981](https://github.com/redact-secret/redact-secret/actions/runs/36553444981) (success).
+- Raw rows: [`candidate-rerun-8f97f14.json`](candidate-rerun-8f97f14.json). Family-level summary:
+  [`../860/8f97f14/README.md`](../860/8f97f14/README.md).
+
+The `1db8ff3` rerun below is superseded by this one and kept as history.
+
+## Rerun at 1db8ff3 (superseded)
+
 **Result:** PASS. On the fixed candidate `1db8ff3` all 3 of this gap's benchmark fixtures meet their expectation (observed: missed).
 
 Gap: [redact-secret#933](https://github.com/redact-secret/redact-secret/issues/933), Context-gated legacy keys missed when the provider context is on the previous line (heroku authorizations:info, Schema Registry basic.auth.user.info, twilio profiles:list). Known-gap record

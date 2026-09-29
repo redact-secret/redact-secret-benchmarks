@@ -1,20 +1,18 @@
 # Unit-safe diagnostics — candidate @redact-secret/core@0.1.0-beta.10
 
-> **Superseded** by [`../2026-09-29/beta-11-unit-diagnostics-candidate.md`](../2026-09-29/beta-11-unit-diagnostics-candidate.md) (candidate `8f97f14`, identical rows).
-
 Diagnostics only (#380). The measurement protocol v4 headline — leaked-span rate, leaked-byte rate, collateral ratio and false-alarm rate per kind × tier — is unchanged and remains authoritative; its counts are reproduced under **v4 reference** and cross-checked. Span units and file units are never combined, and no precision, recall, F1 or scanner ranking is derived.
 
 ## Identity
 
 - Mode: **candidate**
 - Product: `@redact-secret/core` version `0.1.0-beta.10` (declared `0.1.0-beta.10`)
-- Candidate source commit: `1db8ff38b16e50c51229eb27025452952bf621e1`
-- Candidate core artifact SHA-256: `4681ad429ebe1b2c7ae9f5d72479ba996c75eb4a118049b6dbe4ea8dcfbd29a1`
-- Candidate node artifact SHA-256: `02ef4f972317cce7cf161c07a3167f126c78d4b1ceb1074d8785d4ffe71988d7`
-- Candidate wasm artifact SHA-256: `af0633663d713456a82d297f23023280cff05ad5f56489e9e72854601af2b1a1`
-- Corpus identity: `36b63ce823c38b1ae6651970c29fff2b2ec32d803f4d04f4d05746a8dfc061f5` (45 categories, pinned by `benchmarks/pin-manifest.json` @ `9353089ece78bda92734c12d3fa6a308e4f88c2b`)
-- Benchmark revision: `25ccd99f07faaa0f045e212690a16750af96e78e`
-- Report schema: unit-diagnostics v1; digest `cea56b870de969cdc69d17feb8380126ee75a8258244de04cd15490bff7bd009`
+- Candidate source commit: `8f97f14d97d73b76602e5396eea35d0a5a4f0eb3`
+- Candidate core artifact SHA-256: `467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c`
+- Candidate node artifact SHA-256: `b32d462b2daec575834a7287bec74b679a09f93f28717a56956f0b2169b629f8`
+- Candidate wasm artifact SHA-256: `b6819bfd95c911db056f93cb78b3341cba7bfb05a22262f8c44461c0c4e1b966`
+- Corpus identity: `36b63ce823c38b1ae6651970c29fff2b2ec32d803f4d04f4d05746a8dfc061f5` (45 categories, pinned by `benchmarks/pin-manifest.json` @ `e4bb1dd90f480f713ed33bbd1bd108992fe10ef0`)
+- Benchmark revision: `63a855fab948060fdbd85aa89f852fba0e9d33ec`
+- Report schema: unit-diagnostics v1; digest `b4b5196b9ab9ad1ad520d428a7332df71ec3c8c66ceefa96edeb621f9940f0d7`
 - Output verification: scanAndRedact (replayed twice) cross-checked against redact(input, scan(input)); placeholder `default:<SECRET_n>`
 - PII: not-measured — PII cases use the pii-v1 profile (sensitivity/jurisdiction expectations, PiiCase model) rather than must-redact/must-not-flag spans; they are measured by the PII domain reports and are never merged into credential units.
 

@@ -1,7 +1,11 @@
-# Beta.11 credential validation evidence: final report (#376)
+# Beta.11 credential validation evidence: final report at the re-bound candidate 8f97f14 (#376)
 
-> **Superseded** by [`../2026-09-29/beta-11-credential-evidence-final.md`](../2026-09-29/beta-11-credential-evidence-final.md):
-> the Beta.11 candidate was re-bound from `1db8ff3` to product main `8f97f14`. This report stays as history.
+> This report supersedes [`../2026-09-28/beta-11-credential-evidence-final.md`](../2026-09-28/beta-11-credential-evidence-final.md),
+> which stays as history. The Beta.11 candidate moved from `1db8ff3` to product main `8f97f14`, after PR #991 (the
+> #980 scan-path performance backlog, output byte-identical by design) and PR #992 (#990, streamed output equals the
+> whole-input scan). The maintainer decided both ship in Beta.11. Every credential measurement below was repeated at
+> `8f97f14`, except the #382 blind aggregate, which is carried over by maintainer decision (§5). No number in the v4
+> headline, the unit diagnostics, the twin tally or the support status changed.
 
 Epic: [#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376).
 Children [#377](https://github.com/redact-secret/redact-secret-benchmarks/issues/377)–[#382](https://github.com/redact-secret/redact-secret-benchmarks/issues/382)
@@ -13,7 +17,7 @@ merged through PRs [#439](https://github.com/redact-secret/redact-secret-benchma
 Machine-readable summary: [`beta-11-credential-evidence-final.json`](beta-11-credential-evidence-final.json).
 
 **Result.** On the current pinned credential corpus, the frozen Beta.11 candidate
-(product `1db8ff38b16e50c51229eb27025452952bf621e1`) leaks no `must-redact` span at T1
+(product `8f97f14d97d73b76602e5396eea35d0a5a4f0eb3`, re-bound from `1db8ff3`) leaks no `must-redact` span at T1
 or T2 under v4 (0/947 and 0/465). Every T1/T2 twin pair is discriminated (632/632 and
 217/217). v4 false-alarm rates are 0/10 (T1), 1/1,689 (T2) and 4/1,158 (T3). The
 published `@redact-secret/core@0.1.0-beta.10` leaks 151/947 T1 spans. Almost all of
@@ -31,32 +35,26 @@ detection or false-alarm rate (see [Limitations](#limitations)).
 
 | | Published | Candidate |
 | --- | --- | --- |
-| Product | `@redact-secret/core@0.1.0-beta.10` (npm, package-lock SHA-256 `14dbaa9e…3939`) | `redact-secret` [`1db8ff38b16e50c51229eb27025452952bf621e1`](https://github.com/redact-secret/redact-secret/commit/1db8ff38b16e50c51229eb27025452952bf621e1), declared `0.1.0-beta.10`, built by product `npm run benchmark:candidate` |
-| Artifacts (SHA-256) | npm registry | core `4681ad429ebe1b2c7ae9f5d72479ba996c75eb4a118049b6dbe4ea8dcfbd29a1`, node-darwin-arm64 `02ef4f972317cce7cf161c07a3167f126c78d4b1ceb1074d8785d4ffe71988d7`, wasm `af0633663d713456a82d297f23023280cff05ad5f56489e9e72854601af2b1a1` |
-| Benchmark revision | `25ccd99f07faaa0f045e212690a16750af96e78e` (develop after #454), clean | same |
-| Credential corpus | identity `36b63ce823c38b1ae6651970c29fff2b2ec32d803f4d04f4d05746a8dfc061f5`, 45 categories, 4,768 fixtures, pinned by `benchmarks/pin-manifest.json` @ `9353089e` | same |
-| Candidate suite run | n/a | `d403241f-6c75-4448-ba95-b722c8e069e2`, complete 4,768/4,768, corpus `a89a8d11…6d75`, `eval:validate` passed |
-| Unit diagnostics (schema v1) | digest `6c4e0a4d3121156cf4ecb1c38bc83570487739940be1d6df7696e62426fb27c2`, rows `0001ee4b…5594` | digest `cea56b870de969cdc69d17feb8380126ee75a8258244de04cd15490bff7bd009`, rows `c5b6c63f…fdf3` |
-| Support classification | run ``1a0cc5ba-1cb9-4191-a05a-62baf4bc1c43` (published mode, clean)` | run ``44874893-9dab-428b-b21d-e16585bed1c3` (candidate mode, clean)` |
+| Product | `@redact-secret/core@0.1.0-beta.10` (npm, package-lock SHA-256 `14dbaa9e…3939`) | `redact-secret` [`8f97f14d97d73b76602e5396eea35d0a5a4f0eb3`](https://github.com/redact-secret/redact-secret/commit/8f97f14d97d73b76602e5396eea35d0a5a4f0eb3), declared `0.1.0-beta.10`, built by product `npm run benchmark:candidate` |
+| Artifacts (SHA-256) | npm registry | core `467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c`, node-darwin-arm64 `b32d462b2daec575834a7287bec74b679a09f93f28717a56956f0b2169b629f8`, wasm `b6819bfd95c911db056f93cb78b3341cba7bfb05a22262f8c44461c0c4e1b966` |
+| Benchmark revision | published diagnostics `25ccd99f07faaa0f045e212690a16750af96e78e` (rows re-checked at `63a855fa`: identical rows digest); classification `005b19b85368d24910da437f31db701d670a2b8d` | suite run and classification `005b19b85368d24910da437f31db701d670a2b8d` (the re-pin); diagnostics `63a855fab948060fdbd85aa89f852fba0e9d33ec`; both on branch `beta11/rebind-8f97f14-credentials`, clean |
+| Credential corpus | identity `36b63ce823c38b1ae6651970c29fff2b2ec32d803f4d04f4d05746a8dfc061f5`, 45 categories, 4,768 fixtures, pinned by `benchmarks/pin-manifest.json` (`9353089e` at the published diagnostics, `e4bb1dd9` after the re-pin; corpus hashes unchanged) | same |
+| Candidate suite run | n/a | `74888ff3-48ed-4459-b2fe-32906a5a95cb`, complete 4,768/4,768, corpus `a89a8d11…6d75`, `eval:validate` passed |
+| Unit diagnostics (schema v1) | digest `6c4e0a4d3121156cf4ecb1c38bc83570487739940be1d6df7696e62426fb27c2`, rows `0001ee4b…5594` | digest `b4b5196b9ab9ad1ad520d428a7332df71ec3c8c66ceefa96edeb621f9940f0d7`, rows `c5b6c63f…fdf3` (the same rows digest as at 1db8ff3) |
+| Support classification | run `3f0c506f-97eb-469f-aa0d-9b78d04ce295` (published mode, clean) | run `d9376ea1-b015-4060-b1ea-b55a07dbb95b` (candidate mode, clean) |
 | Fixture index / taxonomy | `e893fa62…220c` / `86380e35…60dc` | same |
 | Peers | gitleaks 8.30.1, trufflehog 3.97.4 (`npm run peers:provision`, checksum-verified `.peer-bin` first on `PATH`) | same |
 | Runtime | Node v22.16.0, darwin/arm64 | same |
 
-Measurements ran at `25ccd99f`. Develop then merged
-[#455](https://github.com/redact-secret/redact-secret-benchmarks/pull/455), which splits
-a known-gap record. It changes no corpus, pin or scorer, so the corpus identity above
-still holds.
-
-The core and wasm tarballs are byte-identical to the 1db8ff3 build used by
-[#453](https://github.com/redact-secret/redact-secret-benchmarks/pull/453) and
-[#454](https://github.com/redact-secret/redact-secret-benchmarks/pull/454). The
-node-darwin-arm64 tarball differs, as it did between earlier builds of the same commit:
-the native addon build is not bit-reproducible. The core façade SHA-256 `4681ad42…` is
-the candidate identity every Beta.11 record uses.
+Compared with the 1db8ff3 report, every per-fixture outcome of the full-suite candidate run, every family record in
+both classification modes and every unit-diagnostics row is identical (the candidate rows digest `c5b6c63f…fdf3` is
+unchanged; only the identity header of the diagnostics differs). The published side is unchanged by construction; its
+diagnostics were regenerated at `63a855fa` to check this (rows digest `0001ee4b…5594`, equal) and the 2026-09-28 files
+are cited. The core façade hash changed only because `packages/javascript/README.md` changed in PR #968.
 
 Diagnostics reports:
-[published JSON](beta-11-unit-diagnostics-published.json) ·
-[published Markdown](beta-11-unit-diagnostics-published.md) ·
+[published JSON](../2026-09-28/beta-11-unit-diagnostics-published.json) ·
+[published Markdown](../2026-09-28/beta-11-unit-diagnostics-published.md) ·
 [candidate JSON](beta-11-unit-diagnostics-candidate.json) ·
 [candidate Markdown](beta-11-unit-diagnostics-candidate.md).
 Both pass `npm run eval:diagnostics:validate`, which recomputes every row.
@@ -225,7 +223,7 @@ Met in #439.
   (7 gating, 1 warn-only). The 7 gating files were recorded as product-911.
 - Per-family `benignCases`, `benignAxes`, `benignFalseAlarms` and statuses did not move.
 - Current state (tables above): published beta.10 gates on 7 of the 216 global
-  untargeted T3 files and warns on 1. Candidate 1db8ff3 gates on 0 and warns on 2.
+  untargeted T3 files and warns on 1. Candidate 8f97f14 gates on 0 and warns on 2, the same as 1db8ff3.
 
 ### 3. Selected families have independent positive and benign evidence plus reviewed one-property twins; improvements and regressions both visible (#379)
 
@@ -255,7 +253,12 @@ Met in [#442](https://github.com/redact-secret/redact-secret-benchmarks/pull/442
   `postgresql+psycopg` spans are now redacted, and the filler placeholders are silent.
   All of them were `verified` in
   [#454](https://github.com/redact-secret/redact-secret-benchmarks/pull/454) (rerun
-  `009a85fa…`; product conformance from redact-secret#961).
+  `009a85fa…`; product conformance from redact-secret#961), and product-911 in #457. At
+  8f97f14 all seven records give the same outcomes (run `74888ff3…`; product conformance
+  from Artifact qualification run
+  [36553444981](https://github.com/redact-secret/redact-secret/actions/runs/36553444981)) and stay `verified`:
+  [`evidence/931/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/b71563765ea63bb5b5150d66dae38216e28c0ade/evidence/931/README.md)
+  and its siblings.
 - **Still open.** product-936 remains `policy-decision`. The LiteLLM `masked_` Cohere
   line stays unreported by product policy, and its expectation is unchanged. It is now
   its own `policy-decision` record, `product-932-masked-key-policy`
@@ -282,10 +285,14 @@ Met.
   - Partitions and streams: every incremental partition and byte stream matches the
     whole-input result. The over-8-KiB-token document fails closed with
     `TOKEN_LIMIT_EXCEEDED`.
-  - At 1db8ff3 (core `4681ad42…`, wasm `af063366…`, node `f08aab67…`, plus wheel and
-    CLI hashes in the README), 70/71 `must-redact` and 11/12 `policy` targets are
-    redacted exactly. The exceptions are the New Relic `warn` (#936) and the Cohere
-    LiteLLM `masked_` line (#932 policy).
+  - At 1db8ff3 (core `4681ad42…`, wasm `af063366…`, node `f08aab67…`), 70/71 `must-redact` and 11/12 `policy`
+    targets are redacted exactly. The exceptions are the New Relic `warn` (#936) and the Cohere LiteLLM `masked_`
+    line (#932 policy).
+  - **Re-run at 8f97f14** (core `467111e2…`, wasm `b6819bfd…`, node `fe90a7de…`, wheel `d7075b71…`, CLI
+    `d95e9877…`, harness `005b19b8`):
+    [`evidence/860/381/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/b71563765ea63bb5b5150d66dae38216e28c0ade/evidence/860/381/README.md).
+    Cross-surface, partition and stream divergences are 0 on all six surfaces. Only the declared token limit fails
+    closed, with no leak before it. The outcomes equal 1db8ff3: 70/71 and 11/12, with the same two exceptions.
 
 ### 5. New blind aggregate recorded under its independence label, outside public and regression totals (#382)
 
@@ -306,6 +313,14 @@ Met in [#453](https://github.com/redact-secret/redact-secret-benchmarks/pull/453
 - These numbers are **not** added to any table above, to public qualification or to
   support status. A product change made in response needs a new candidate identity and
   a new epoch.
+- **Carried over to 8f97f14, not re-measured.** By maintainer decision of 2026-09-29 the
+  `beta11-e1` aggregate is carried to the re-bound candidate without a new epoch, which
+  departs from the blind-evaluation spec's one-run-per-candidate rule. The private fixtures
+  were not read or run. The basis is the product diff (PR #991 byte-identical by design,
+  PR #992 limited to the #990 layouts) and a whole-input and incremental differential of
+  the 1db8ff3 and 8f97f14 builds over all 4,992 public fixtures: 0 fixtures differ.
+  Positive controls show the harness does see the #990 layouts. Record:
+  [`2026-09-29-beta11-142-blind-carry-over.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/b71563765ea63bb5b5150d66dae38216e28c0ade/docs/reports/2026-09-29-beta11-142-blind-carry-over.md).
 
 ### 6. Final report states unit-labelled TP/TN/FP/FN diagnostics and retains the v4 headline; no unsupported real-world accuracy claim
 
@@ -315,35 +330,43 @@ Met by this report.
 
 - **#860 family graduation.** [#434](https://github.com/redact-secret/redact-secret-benchmarks/issues/434)
   and [#436](https://github.com/redact-secret/redact-secret-benchmarks/issues/436) were
-  graduated in #452. Evidence:
-  [`evidence/860/1db8ff3/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/ef34e5c3f557e1bfcc914da58ad9f7640fc67795/evidence/860/1db8ff3/README.md).
-  `eval:classify` was re-run for this report at benchmarks `25ccd99f`, with the pinned
-  peers and the candidate tarballs above:
-  - **Candidate mode (1db8ff3):** 88/110 stable (documented 63, empirical 25), 20
+  graduated in #452 at 1db8ff3. Evidence at 8f97f14:
+  [`evidence/860/8f97f14/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/b71563765ea63bb5b5150d66dae38216e28c0ade/evidence/860/8f97f14/README.md).
+  `eval:classify` ran at benchmarks `005b19b8` with the pinned peers (trufflehog 3.97.4,
+  gitleaks 8.30.1) and the candidate tarballs above:
+  - **Candidate mode (8f97f14):** 88/110 stable (documented 63, empirical 25), 20
     provisional, 2 pending. All 24 #860 families are documented-stable.
   - **Published mode (0.1.0-beta.10):** 61/110 stable (documented 38, empirical 23), 47
     provisional, 2 pending. The 24 new families are provisional because the release
     predates their detectors.
-  - Both counts match the #452 evidence exactly.
-- **Performance at 1db8ff3.** `performance-evaluation.yml` run
-  [36480959728](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36480959728)
-  is ACCEPTED against baseline 0.1.0-beta.8. Latency (10 rows), initialization (10) and
-  memory (16) are all within budget. Reports:
-  [`evidence/860/1db8ff3-verified/`](https://github.com/redact-secret/redact-secret-benchmarks/tree/ef34e5c3f557e1bfcc914da58ad9f7640fc67795/evidence/860/1db8ff3-verified).
-- **Accepted size tradeoffs.** These are maintainer decisions of 2026-09-28 for
-  candidate 1db8ff3 only, recorded in `benchmarks/accepted-regressions.json`.
+  - No family record changed in either mode against 1db8ff3.
+- **Performance at 8f97f14.** `performance-evaluation.yml` run
+  [36557682258](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36557682258)
+  concludes ACCEPTED against baseline 0.1.0-beta.8, with the size rows below applied as accepted tradeoffs. Two earlier
+  runs are kept with their roles in the evidence README. 36553832221 ran before the rows were accepted and failed on
+  size only. 36555971146 breached the browser-wasm small-whole initialization ratio (1.277). Paired 1db8ff3 → 8f97f14
+  and A/A runs measured that breach as noise (+1.0% to +2.7% against A/A spread of −1.3% to +11%). Latency (10
+  rows), initialization (10) and memory (16) are all within budget. Median processing ratios
+  drop to 0.24–0.27 on the medium workloads (about 0.79 at 1db8ff3) and to 0.22–0.77 on the
+  small ones (0.54–1.07). Reports:
+  [`evidence/860/8f97f14-verified/`](https://github.com/redact-secret/redact-secret-benchmarks/tree/b71563765ea63bb5b5150d66dae38216e28c0ade/evidence/860/8f97f14-verified).
+- **Accepted size tradeoffs.** These rows are recorded in `benchmarks/accepted-regressions.json`
+  for candidate 8f97f14 only. They carry the maintainer decisions of 2026-09-28 plus the
+  later decision that #991 and #992 ship with the #983 increment accepted.
 
-  | Trigger | Measured |
-  | --- | ---: |
-  | `size/wasm/full/gzip` | 179,388 |
-  | `size/wasm/common/gzip` | 122,544 |
-  | `size/browser-bundle/quickstart/gzip` | 186,761 fetched |
-  | `size/npm/wasm/packed` | 871,030 |
-  | `size/npm/node-darwin-arm64/packed` | 629,779 |
-  | `size/node-addon/aarch64-apple-darwin` | 1,421,552 |
+  | Trigger | At 1db8ff3 | At 8f97f14 |
+  | --- | ---: | ---: |
+  | `size/wasm/full/gzip` | 179,388 | 184,422 |
+  | `size/wasm/common/gzip` | 122,544 | 125,295 |
+  | `size/browser-bundle/quickstart/gzip` | 186,761 fetched | 191,801 fetched |
+  | `size/npm/wasm/packed` | 871,030 | 887,249 |
+  | `size/npm/node-darwin-arm64/packed` | 629,779 | 635,892 |
+  | `size/node-addon/aarch64-apple-darwin` | 1,421,552 | 1,422,800 |
 
-  The cause is the Beta.9–Beta.11 detector additions. Name-section stripping was
-  rejected to keep debuggability.
+  The base cause is the Beta.9–Beta.11 detector additions. Name-section stripping was
+  rejected to keep debuggability. The WASM increment over 1db8ff3 is +2.8% full and
+  +2.2% common, more than the +1.3%/+0.9% quoted for #983 alone. Local builds attribute
+  +2.1%/+1.7% to PR #991 as a whole and +0.7%/+0.5% to PR #992.
 
 ## Limitations
 
@@ -364,32 +387,30 @@ Met by this report.
   detectors, default `<SECRET_n>` placeholder, Node runtime. Other bindings are covered
   only by the #381 parity set.
 - **Blind epoch.** `beta11-e1` has procedural separation only. With 66 spans and 27
-  controls its intervals are wide.
-- **Stale record.** product-911 is still recorded as `observed` in
-  `benchmarks/known-gaps.json`, although redact-secret#911 is closed and the candidate
-  no longer gates on those files. Its lifecycle update belongs to a separate known-gap
-  change, and this report does not touch it.
+  controls its intervals are wide. It was measured at 1db8ff3 and is carried to 8f97f14
+  by maintainer decision, not re-measured. A blind fixture in one of the #990 layouts
+  could read differently at 8f97f14.
 - **Unmeasured targets.** Native addon, wheel and CLI size rows for targets other than
-  darwin-arm64 were not measured at 1db8ff3.
+  darwin-arm64 were not measured at 8f97f14.
 - **Scope.** PII is a separate domain and is not measured here.
 
 ## Reproduce
 
 ```sh
 npm ci && npm run peers:provision && export PATH="$PWD/.peer-bin:$PATH"   # trufflehog --version → 3.97.4
-# product worktree at 1db8ff38b16e50c51229eb27025452952bf621e1 (clean):
-npm run benchmark:candidate -- --benchmark-ref 25ccd99f07faaa0f045e212690a16750af96e78e \
+# product worktree at 8f97f14d97d73b76602e5396eea35d0a5a4f0eb3 (clean):
+npm run benchmark:candidate -- --benchmark-ref 005b19b85368d24910da437f31db701d670a2b8d \
   --benchmark-repo <redact-secret-benchmarks clone> --output-dir <dir>
-# benchmarks worktree at 25ccd99f (clean); write outside the tree, then copy .json/.md in:
+# benchmarks worktree at 63a855fa (clean); write outside the tree, then copy .json/.md in:
 npm run eval:diagnostics -- --out=<scratch>/beta-11-unit-diagnostics-published
 npm run eval:diagnostics -- --out=<scratch>/beta-11-unit-diagnostics-candidate \
   --candidate-package=<dir>/artifacts/redact-secret-core-0.1.0-beta.10.tgz \
   --candidate-node-package=<dir>/artifacts/redact-secret-node-darwin-arm64-0.1.0-beta.10.tgz \
   --candidate-wasm-package=<dir>/artifacts/redact-secret-wasm-0.1.0-beta.10.tgz \
-  --candidate-source-commit=1db8ff38b16e50c51229eb27025452952bf621e1
+  --candidate-source-commit=8f97f14d97d73b76602e5396eea35d0a5a4f0eb3
 npm run eval:diagnostics:validate -- <scratch>/beta-11-unit-diagnostics-{published,candidate}.json
 npm run eval:classify -- --candidate-package=… --candidate-node-package=… --candidate-wasm-package=… \
-  --candidate-source-commit=1db8ff38b16e50c51229eb27025452952bf621e1 --output=<scratch>/support-status-candidate.json
+  --candidate-source-commit=8f97f14d97d73b76602e5396eea35d0a5a4f0eb3 --output=<scratch>/support-status-candidate.json
 npm run eval:classify -- --output=<scratch>/support-status-published.json
 ```
 

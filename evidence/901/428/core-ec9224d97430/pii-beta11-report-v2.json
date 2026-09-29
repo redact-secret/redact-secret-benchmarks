@@ -405,7 +405,8 @@
         "candidateValue": 187248,
         "allowedIncrease": 6882,
         "delta": 49609,
-        "status": "regression"
+        "status": "regression",
+        "acceptedBy": "beta11-ec9224d-wasm-full-gzip"
       },
       {
         "id": "size/wasm/common/gzip",
@@ -414,7 +415,8 @@
         "candidateValue": 127661,
         "allowedIncrease": 5003,
         "delta": 27603,
-        "status": "regression"
+        "status": "regression",
+        "acceptedBy": "beta11-ec9224d-wasm-common-gzip"
       },
       {
         "id": "size/npm/core/packed",
@@ -432,7 +434,8 @@
         "candidateValue": 917465,
         "allowedIncrease": 12721,
         "delta": 663052,
-        "status": "regression"
+        "status": "regression",
+        "acceptedBy": "beta11-ec9224d-npm-wasm-packed"
       },
       {
         "id": "size/npm/node-darwin-arm64/packed",
@@ -441,7 +444,8 @@
         "candidateValue": 655723,
         "allowedIncrease": 21226,
         "delta": 231209,
-        "status": "regression"
+        "status": "regression",
+        "acceptedBy": "beta11-ec9224d-npm-node-darwin-arm64-packed"
       },
       {
         "id": "size/wasm/pii/redact_secret_wasm_common_pii_bg.wasm/gzip",
@@ -1429,18 +1433,18 @@
         },
         {
           "id": "runtime-and-package-cost",
-          "status": "not-met",
-          "reason": "nodePacked +66048 B over a maximum increase of 32768 B (paired local build); wasmPacked +357892 B over a maximum increase of 32768 B (paired local build)"
+          "status": "met",
+          "reason": "(nodePacked +66048 B over 32768 B accepted: beta11-ec9224d-npm-node-darwin-arm64-packed); (wasmPacked +357892 B over 32768 B accepted: beta11-ec9224d-npm-wasm-packed)"
         },
         {
           "id": "size-regression-budget",
-          "status": "not-met",
-          "reason": "size/wasm/full/gzip 187248 B vs beta.8 137639 B (+49609, allowed +6882); size/wasm/common/gzip 127661 B vs beta.8 100058 B (+27603, allowed +5003); size/npm/wasm/packed 917465 B vs beta.8 254413 B (+663052, allowed +12721); size/npm/node-darwin-arm64/packed 655723 B vs beta.8 424514 B (+231209, allowed +21226)"
+          "status": "met",
+          "reason": "every #143 size row within budget or accepted (size/wasm/full/gzip: beta11-ec9224d-wasm-full-gzip, size/wasm/common/gzip: beta11-ec9224d-wasm-common-gzip, size/npm/wasm/packed: beta11-ec9224d-npm-wasm-packed, size/npm/node-darwin-arm64/packed: beta11-ec9224d-npm-node-darwin-arm64-packed)"
         },
         {
           "id": "profile-cost",
           "status": "not-met",
-          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 3 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
           "evidence": {
             "runtimeCells": [
               "rust-native/full/global/validator-heavy/wholeInput:regression",
@@ -1806,7 +1810,7 @@
                 "key": "npmPackages:wasm/packed",
                 "deltaBytes": 643241,
                 "trigger": "size/npm/wasm/packed",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-npm-wasm-packed"
               },
               {
                 "key": "npmPackages:wasm/unpacked",
@@ -1824,7 +1828,7 @@
                 "key": "wasmCompression:full/gzip9",
                 "deltaBytes": 35885,
                 "trigger": "size/wasm/full/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-full-gzip"
               },
               {
                 "key": "wasmCompression:full/brotli11",
@@ -1842,7 +1846,7 @@
                 "key": "wasmCompression:common/gzip9",
                 "deltaBytes": 21632,
                 "trigger": "size/wasm/common/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-common-gzip"
               },
               {
                 "key": "wasmCompression:common/brotli11",
@@ -1890,7 +1894,7 @@
         {
           "id": "protected-partition",
           "status": "not-run",
-          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch da6c1c211ab0 stays unspent (0/1)."
+          "reason": "public-gates-failed: profile-cost. Epoch da6c1c211ab0 stays unspent (0/1)."
         }
       ],
       "protected": {
@@ -2869,18 +2873,18 @@
         },
         {
           "id": "runtime-and-package-cost",
-          "status": "not-met",
-          "reason": "nodePacked +66048 B over a maximum increase of 32768 B (paired local build); wasmPacked +357892 B over a maximum increase of 32768 B (paired local build)"
+          "status": "met",
+          "reason": "(nodePacked +66048 B over 32768 B accepted: beta11-ec9224d-npm-node-darwin-arm64-packed); (wasmPacked +357892 B over 32768 B accepted: beta11-ec9224d-npm-wasm-packed)"
         },
         {
           "id": "size-regression-budget",
-          "status": "not-met",
-          "reason": "size/wasm/full/gzip 187248 B vs beta.8 137639 B (+49609, allowed +6882); size/wasm/common/gzip 127661 B vs beta.8 100058 B (+27603, allowed +5003); size/npm/wasm/packed 917465 B vs beta.8 254413 B (+663052, allowed +12721); size/npm/node-darwin-arm64/packed 655723 B vs beta.8 424514 B (+231209, allowed +21226)"
+          "status": "met",
+          "reason": "every #143 size row within budget or accepted (size/wasm/full/gzip: beta11-ec9224d-wasm-full-gzip, size/wasm/common/gzip: beta11-ec9224d-wasm-common-gzip, size/npm/wasm/packed: beta11-ec9224d-npm-wasm-packed, size/npm/node-darwin-arm64/packed: beta11-ec9224d-npm-node-darwin-arm64-packed)"
         },
         {
           "id": "profile-cost",
           "status": "not-met",
-          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 3 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
           "evidence": {
             "runtimeCells": [
               "rust-native/full/global/validator-heavy/wholeInput:regression",
@@ -3246,7 +3250,7 @@
                 "key": "npmPackages:wasm/packed",
                 "deltaBytes": 643241,
                 "trigger": "size/npm/wasm/packed",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-npm-wasm-packed"
               },
               {
                 "key": "npmPackages:wasm/unpacked",
@@ -3264,7 +3268,7 @@
                 "key": "wasmCompression:full/gzip9",
                 "deltaBytes": 35885,
                 "trigger": "size/wasm/full/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-full-gzip"
               },
               {
                 "key": "wasmCompression:full/brotli11",
@@ -3282,7 +3286,7 @@
                 "key": "wasmCompression:common/gzip9",
                 "deltaBytes": 21632,
                 "trigger": "size/wasm/common/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-common-gzip"
               },
               {
                 "key": "wasmCompression:common/brotli11",
@@ -3330,7 +3334,7 @@
         {
           "id": "protected-partition",
           "status": "not-run",
-          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 8292181393fa stays unspent (0/1)."
+          "reason": "public-gates-failed: profile-cost. Epoch 8292181393fa stays unspent (0/1)."
         }
       ],
       "protected": {
@@ -4311,18 +4315,18 @@
         },
         {
           "id": "runtime-and-package-cost",
-          "status": "not-met",
-          "reason": "nodePacked +66048 B over a maximum increase of 32768 B (paired local build); wasmPacked +357892 B over a maximum increase of 32768 B (paired local build)"
+          "status": "met",
+          "reason": "(nodePacked +66048 B over 32768 B accepted: beta11-ec9224d-npm-node-darwin-arm64-packed); (wasmPacked +357892 B over 32768 B accepted: beta11-ec9224d-npm-wasm-packed)"
         },
         {
           "id": "size-regression-budget",
-          "status": "not-met",
-          "reason": "size/wasm/full/gzip 187248 B vs beta.8 137639 B (+49609, allowed +6882); size/wasm/common/gzip 127661 B vs beta.8 100058 B (+27603, allowed +5003); size/npm/wasm/packed 917465 B vs beta.8 254413 B (+663052, allowed +12721); size/npm/node-darwin-arm64/packed 655723 B vs beta.8 424514 B (+231209, allowed +21226)"
+          "status": "met",
+          "reason": "every #143 size row within budget or accepted (size/wasm/full/gzip: beta11-ec9224d-wasm-full-gzip, size/wasm/common/gzip: beta11-ec9224d-wasm-common-gzip, size/npm/wasm/packed: beta11-ec9224d-npm-wasm-packed, size/npm/node-darwin-arm64/packed: beta11-ec9224d-npm-node-darwin-arm64-packed)"
         },
         {
           "id": "profile-cost",
           "status": "not-met",
-          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 3 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
           "evidence": {
             "runtimeCells": [
               "rust-native/full/global/validator-heavy/wholeInput:regression",
@@ -4688,7 +4692,7 @@
                 "key": "npmPackages:wasm/packed",
                 "deltaBytes": 643241,
                 "trigger": "size/npm/wasm/packed",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-npm-wasm-packed"
               },
               {
                 "key": "npmPackages:wasm/unpacked",
@@ -4706,7 +4710,7 @@
                 "key": "wasmCompression:full/gzip9",
                 "deltaBytes": 35885,
                 "trigger": "size/wasm/full/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-full-gzip"
               },
               {
                 "key": "wasmCompression:full/brotli11",
@@ -4724,7 +4728,7 @@
                 "key": "wasmCompression:common/gzip9",
                 "deltaBytes": 21632,
                 "trigger": "size/wasm/common/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-common-gzip"
               },
               {
                 "key": "wasmCompression:common/brotli11",
@@ -4772,7 +4776,7 @@
         {
           "id": "protected-partition",
           "status": "not-run",
-          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 2a30b94acbab stays unspent (0/1)."
+          "reason": "public-gates-failed: profile-cost. Epoch 2a30b94acbab stays unspent (0/1)."
         }
       ],
       "protected": {
@@ -5705,18 +5709,18 @@
         },
         {
           "id": "runtime-and-package-cost",
-          "status": "not-met",
-          "reason": "nodePacked +66048 B over a maximum increase of 32768 B (paired local build); wasmPacked +357892 B over a maximum increase of 32768 B (paired local build)"
+          "status": "met",
+          "reason": "(nodePacked +66048 B over 32768 B accepted: beta11-ec9224d-npm-node-darwin-arm64-packed); (wasmPacked +357892 B over 32768 B accepted: beta11-ec9224d-npm-wasm-packed)"
         },
         {
           "id": "size-regression-budget",
-          "status": "not-met",
-          "reason": "size/wasm/full/gzip 187248 B vs beta.8 137639 B (+49609, allowed +6882); size/wasm/common/gzip 127661 B vs beta.8 100058 B (+27603, allowed +5003); size/npm/wasm/packed 917465 B vs beta.8 254413 B (+663052, allowed +12721); size/npm/node-darwin-arm64/packed 655723 B vs beta.8 424514 B (+231209, allowed +21226)"
+          "status": "met",
+          "reason": "every #143 size row within budget or accepted (size/wasm/full/gzip: beta11-ec9224d-wasm-full-gzip, size/wasm/common/gzip: beta11-ec9224d-wasm-common-gzip, size/npm/wasm/packed: beta11-ec9224d-npm-wasm-packed, size/npm/node-darwin-arm64/packed: beta11-ec9224d-npm-node-darwin-arm64-packed)"
         },
         {
           "id": "profile-cost",
           "status": "not-met",
-          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 3 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
           "evidence": {
             "runtimeCells": [
               "rust-native/full/global/validator-heavy/wholeInput:regression",
@@ -6082,7 +6086,7 @@
                 "key": "npmPackages:wasm/packed",
                 "deltaBytes": 643241,
                 "trigger": "size/npm/wasm/packed",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-npm-wasm-packed"
               },
               {
                 "key": "npmPackages:wasm/unpacked",
@@ -6100,7 +6104,7 @@
                 "key": "wasmCompression:full/gzip9",
                 "deltaBytes": 35885,
                 "trigger": "size/wasm/full/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-full-gzip"
               },
               {
                 "key": "wasmCompression:full/brotli11",
@@ -6118,7 +6122,7 @@
                 "key": "wasmCompression:common/gzip9",
                 "deltaBytes": 21632,
                 "trigger": "size/wasm/common/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-common-gzip"
               },
               {
                 "key": "wasmCompression:common/brotli11",
@@ -6166,7 +6170,7 @@
         {
           "id": "protected-partition",
           "status": "not-run",
-          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 35d903f57951 stays unspent (0/1)."
+          "reason": "public-gates-failed: profile-cost. Epoch 35d903f57951 stays unspent (0/1)."
         }
       ],
       "protected": {
@@ -7216,18 +7220,18 @@
         },
         {
           "id": "runtime-and-package-cost",
-          "status": "not-met",
-          "reason": "nodePacked +66048 B over a maximum increase of 32768 B (paired local build); wasmPacked +357892 B over a maximum increase of 32768 B (paired local build)"
+          "status": "met",
+          "reason": "(nodePacked +66048 B over 32768 B accepted: beta11-ec9224d-npm-node-darwin-arm64-packed); (wasmPacked +357892 B over 32768 B accepted: beta11-ec9224d-npm-wasm-packed)"
         },
         {
           "id": "size-regression-budget",
-          "status": "not-met",
-          "reason": "size/wasm/full/gzip 187248 B vs beta.8 137639 B (+49609, allowed +6882); size/wasm/common/gzip 127661 B vs beta.8 100058 B (+27603, allowed +5003); size/npm/wasm/packed 917465 B vs beta.8 254413 B (+663052, allowed +12721); size/npm/node-darwin-arm64/packed 655723 B vs beta.8 424514 B (+231209, allowed +21226)"
+          "status": "met",
+          "reason": "every #143 size row within budget or accepted (size/wasm/full/gzip: beta11-ec9224d-wasm-full-gzip, size/wasm/common/gzip: beta11-ec9224d-wasm-common-gzip, size/npm/wasm/packed: beta11-ec9224d-npm-wasm-packed, size/npm/node-darwin-arm64/packed: beta11-ec9224d-npm-node-darwin-arm64-packed)"
         },
         {
           "id": "profile-cost",
           "status": "not-met",
-          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 3 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
           "evidence": {
             "runtimeCells": [
               "rust-native/full/global/validator-heavy/wholeInput:regression",
@@ -7593,7 +7597,7 @@
                 "key": "npmPackages:wasm/packed",
                 "deltaBytes": 643241,
                 "trigger": "size/npm/wasm/packed",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-npm-wasm-packed"
               },
               {
                 "key": "npmPackages:wasm/unpacked",
@@ -7611,7 +7615,7 @@
                 "key": "wasmCompression:full/gzip9",
                 "deltaBytes": 35885,
                 "trigger": "size/wasm/full/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-full-gzip"
               },
               {
                 "key": "wasmCompression:full/brotli11",
@@ -7629,7 +7633,7 @@
                 "key": "wasmCompression:common/gzip9",
                 "deltaBytes": 21632,
                 "trigger": "size/wasm/common/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-common-gzip"
               },
               {
                 "key": "wasmCompression:common/brotli11",
@@ -7677,7 +7681,7 @@
         {
           "id": "protected-partition",
           "status": "not-run",
-          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 1a5aee1a1e1d stays unspent (0/1)."
+          "reason": "public-gates-failed: profile-cost. Epoch 1a5aee1a1e1d stays unspent (0/1)."
         }
       ],
       "protected": {
@@ -8651,18 +8655,18 @@
         },
         {
           "id": "runtime-and-package-cost",
-          "status": "not-met",
-          "reason": "nodePacked +66048 B over a maximum increase of 32768 B (paired local build); wasmPacked +357892 B over a maximum increase of 32768 B (paired local build)"
+          "status": "met",
+          "reason": "(nodePacked +66048 B over 32768 B accepted: beta11-ec9224d-npm-node-darwin-arm64-packed); (wasmPacked +357892 B over 32768 B accepted: beta11-ec9224d-npm-wasm-packed)"
         },
         {
           "id": "size-regression-budget",
-          "status": "not-met",
-          "reason": "size/wasm/full/gzip 187248 B vs beta.8 137639 B (+49609, allowed +6882); size/wasm/common/gzip 127661 B vs beta.8 100058 B (+27603, allowed +5003); size/npm/wasm/packed 917465 B vs beta.8 254413 B (+663052, allowed +12721); size/npm/node-darwin-arm64/packed 655723 B vs beta.8 424514 B (+231209, allowed +21226)"
+          "status": "met",
+          "reason": "every #143 size row within budget or accepted (size/wasm/full/gzip: beta11-ec9224d-wasm-full-gzip, size/wasm/common/gzip: beta11-ec9224d-wasm-common-gzip, size/npm/wasm/packed: beta11-ec9224d-npm-wasm-packed, size/npm/node-darwin-arm64/packed: beta11-ec9224d-npm-node-darwin-arm64-packed)"
         },
         {
           "id": "profile-cost",
           "status": "not-met",
-          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 3 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
           "evidence": {
             "runtimeCells": [
               "rust-native/full/global/validator-heavy/wholeInput:regression",
@@ -9028,7 +9032,7 @@
                 "key": "npmPackages:wasm/packed",
                 "deltaBytes": 643241,
                 "trigger": "size/npm/wasm/packed",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-npm-wasm-packed"
               },
               {
                 "key": "npmPackages:wasm/unpacked",
@@ -9046,7 +9050,7 @@
                 "key": "wasmCompression:full/gzip9",
                 "deltaBytes": 35885,
                 "trigger": "size/wasm/full/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-full-gzip"
               },
               {
                 "key": "wasmCompression:full/brotli11",
@@ -9064,7 +9068,7 @@
                 "key": "wasmCompression:common/gzip9",
                 "deltaBytes": 21632,
                 "trigger": "size/wasm/common/gzip",
-                "acceptedBy": null
+                "acceptedBy": "beta11-ec9224d-wasm-common-gzip"
               },
               {
                 "key": "wasmCompression:common/brotli11",
@@ -9112,7 +9116,7 @@
         {
           "id": "protected-partition",
           "status": "not-run",
-          "reason": "public-gates-failed: runtime-and-package-cost, size-regression-budget, profile-cost. Epoch 5ca76bbaaa52 stays unspent (0/1)."
+          "reason": "public-gates-failed: profile-cost. Epoch 5ca76bbaaa52 stays unspent (0/1)."
         }
       ],
       "protected": {
@@ -9131,5 +9135,5 @@
     }
   ],
   "domainAccounting": "PII only; credential findings are counted as credentialFindingCases and never enter a PII numerator or denominator",
-  "artifactCommitment": "75ad00238606089428f6cd027a856972890ea8a713591974fcf20044ad1dce50"
+  "artifactCommitment": "fe9693edd692b51d74840332ab86a375bc6ee3425cdfd5a8f1bdf7695be33e5d"
 }

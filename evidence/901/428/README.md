@@ -1,6 +1,6 @@
 # Beta.11 PII E: protected qualification and six-family disposition (benchmarks #428)
 
-**Final disposition:** see [`final-core-8f97f14d.md`](final-core-8f97f14d.md) (core `8f97f14d`, all six `pending` on `profile-cost` only; it supersedes the `1db8ff38` and `1127bf91` records). What follows is the interim record.
+**Final disposition:** see [`final-core-ec9224d9.md`](final-core-ec9224d9.md) (core `ec9224d9`, all six `pending`; `profile-cost` is `not-met` with 183 regression cells, 23 more than at `8f97f14d`; it supersedes the `8f97f14d`, `1db8ff38` and `1127bf91` records). What follows is the interim record.
 
 **Interim record.** It measures core `79c0a661`, which is not the final beta.11 candidate. [redact-secret#937](https://github.com/redact-secret/redact-secret/issues/937) (built on #929) will move the PII runtime out of the default Wasm builds, so the Wasm artifact set and its cost change after this commit. Rerun this record on the post-#937 commit before any release decision (see [Rerun](#rerun-on-a-new-core-commit)).
 

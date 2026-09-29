@@ -47,4 +47,8 @@ an inert fixture stub under `fixtures/generated/families/`;
    `redact-secret` doc). The rules are recorded in
    [the decision](../../../docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
 
+Research on a candidate whose provider is not in `taxonomy.json` has no
+dossier of its own. Until it is promoted into the taxonomy, its disposition
+lives in [`_candidates-not-yet-families.md`](_candidates-not-yet-families.md).
+
 Never place a real, live or unrevoked credential in a dossier.

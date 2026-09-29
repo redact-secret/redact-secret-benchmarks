@@ -1,5 +1,6 @@
 import type { Finding } from '../../../../types.ts';
 import type { ReviewEntry, MethodResult, Method, GeneratedVariant, ObservedRange } from '../../../../engine/types.ts';
+import { findingsForPath } from '../../../../lib/findings-by-path.ts';
 import { generate } from './common.ts';
 import { observe } from '../assertions.ts';
 
@@ -7,7 +8,7 @@ import { observe } from '../assertions.ts';
 // Ordering and duplicate adapter rows must not change disagreement identity.
 export function classifications(v: GeneratedVariant, findings: Finding[]): ObservedRange[] {
   const groups = new Map<string, { start: number; end: number; families: Set<string>; unmapped: boolean }>();
-  for (const f of findings.filter(f => f.path === v.fixture.path)) {
+  for (const f of findingsForPath(findings, v.fixture.path)) {
     const key = `${f.start}:${f.end}`;
     const row = groups.get(key) ?? { start: f.start, end: f.end, families: new Set<string>(), unmapped: false };
     if (f.family) row.families.add(f.family); else row.unmapped = true;

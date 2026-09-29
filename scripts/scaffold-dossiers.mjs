@@ -54,7 +54,7 @@ export function familyEntry(id) {
   ].join("\n");
 }
 
-function familySection(family) {
+export function familySection(family) {
   return [
     `### \`${family.id}\` — ${family.name}`,
     "",

@@ -26,7 +26,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | --- | ---: | ---: |
 | Arrival / provisional | 101 | 120 |
 | Stable / documented | 101 | 120 |
-| Stable / empirical | 33 | 120 |
+| Stable / empirical | 35 | 120 |
 | Context-constrained empirical | 19 | 120 |
 
 ## Per family
@@ -79,7 +79,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | firecrawl-api-key | T1 | stable-documented | 48 | 6 | 15 | 14 | 11 | 6 | 10 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
 | generic-token | T3 | arrival-provisional | 157 | 61 | 76 | 10 | 29 | 4 | 5 | none |
-| github-fine-grained-pat | T2 | stable-empirical | 25 | 6 | 9 | 5 | 11 | 6 | 9 | total fixtures 25/40; positive/context cases 6/10; non-twin benign controls 9/14; twin pairs 5/8 |
+| github-fine-grained-pat | T2 | stable-empirical | 40 | 12 | 15 | 8 | 13 | 6 | 9 | none |
 | github-token | T1 | stable-documented | 131 | 28 | 15 | 45 | 25 | 6 | 8 | none |
 | gitlab-runner-authentication-token | T2 | stable-empirical | 43 | 11 | 16 | 8 | 15 | 6 | 10 | none |
 | gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
@@ -133,7 +133,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
 | shopify-token | T1 | stable-documented | 27 | 9 | 8 | 6 | 4 | 6 | 8 | none |
-| slack-app-level-token | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 10 | 5 | 8 | none |
+| slack-app-level-token | T2 | arrival-provisional | 40 | 12 | 15 | 8 | 12 | 6 | 9 | none |
 | slack-token | T1 | stable-documented | 47 | 26 | 13 | 6 | 4 | 4 | 6 | none |
 | slack-user-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 9 | 6 | 9 | none |
 | stripe-token | T1 | stable-documented | 54 | 25 | 15 | 8 | 10 | 6 | 9 | none |

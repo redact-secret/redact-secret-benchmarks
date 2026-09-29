@@ -5,7 +5,7 @@
   "cellsMetByProfile": {
     "arrival-provisional": 101,
     "stable-documented": 101,
-    "stable-empirical": 33,
+    "stable-empirical": 35,
     "context-constrained-empirical": 19
   },
   "families": [
@@ -2927,17 +2927,19 @@
       "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
-        "stable-documented"
+        "stable-documented",
+        "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 25,
-        "positiveCases": 6,
-        "benignControls": 9,
-        "twinPairs": 5,
-        "positiveContextAxes": 11,
+        "totalFixtures": 40,
+        "positiveCases": 12,
+        "benignControls": 15,
+        "twinPairs": 8,
+        "positiveContextAxes": 13,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
+          "#211 · github-fine-grained-pat · basic-auth",
           "#211 · github-fine-grained-pat · ci-config",
           "#211 · github-fine-grained-pat · cli",
           "#211 · github-fine-grained-pat · container-config",
@@ -2946,6 +2948,7 @@
           "#211 · github-fine-grained-pat · log",
           "#211 · github-fine-grained-pat · sdk-config",
           "#211 · github-fine-grained-pat · shell-export",
+          "#211 · github-fine-grained-pat · source-code",
           "#211 · github-fine-grained-pat · structured-file",
           "#211 · github-fine-grained-pat · tool-output",
           "#211 · github-fine-grained-pat · url"
@@ -2979,32 +2982,7 @@
         "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 25,
-          "required": 40,
-          "shortfall": 15
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 6,
-          "required": 10,
-          "shortfall": 4
-        },
-        {
-          "cell": "benignControls",
-          "actual": 9,
-          "required": 14,
-          "shortfall": 5
-        },
-        {
-          "cell": "twinPairs",
-          "actual": 5,
-          "required": 8,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "github-token",
@@ -6346,17 +6324,19 @@
       "target": "arrival-provisional",
       "cellsMet": [
         "arrival-provisional",
-        "stable-documented"
+        "stable-documented",
+        "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 25,
-        "positiveCases": 6,
-        "benignControls": 9,
-        "twinPairs": 5,
-        "positiveContextAxes": 10,
-        "controlAxes": 5,
-        "confusionAxes": 8,
+        "totalFixtures": 40,
+        "positiveCases": 12,
+        "benignControls": 15,
+        "twinPairs": 8,
+        "positiveContextAxes": 12,
+        "controlAxes": 6,
+        "confusionAxes": 9,
         "positiveContextAxisIds": [
+          "#211 · slack-app-level-token · ci-config",
           "#211 · slack-app-level-token · cli",
           "#211 · slack-app-level-token · container-config",
           "#211 · slack-app-level-token · env",
@@ -6366,9 +6346,11 @@
           "#211 · slack-app-level-token · sdk-config",
           "#211 · slack-app-level-token · shell-export",
           "#211 · slack-app-level-token · source-code",
-          "#211 · slack-app-level-token · structured-file"
+          "#211 · slack-app-level-token · structured-file",
+          "#211 · slack-app-level-token · tool-output"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
           "ordinary-prose",
           "placeholder",
@@ -6376,6 +6358,7 @@
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
           "ordinary-prose",
           "placeholder",

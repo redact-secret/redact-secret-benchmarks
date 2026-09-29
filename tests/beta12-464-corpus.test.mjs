@@ -57,12 +57,12 @@ test('every contract traces to its #860 handoff and issuance research at the fro
   assert.match(HANDOFF_REVISION, /^[0-9a-f]{40}$/);
   const base = `https://github.com/redact-secret/redact-secret/blob/${HANDOFF_REVISION}/docs/audits/evidence/860/`;
   for (const [id, [, productIssue, file]] of Object.entries(families)) {
-    const refs = contracts[id].references;
-    assert.ok(refs.includes(`${base}${file}`), `${id}: handoff permalink`);
-    assert.ok(refs.includes(`${base}issuance-research/${file}`), `${id}: issuance research permalink`);
-    assert.ok(refs.includes('https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337'), `${id}: rulings R9-R10`);
-    assert.ok(refs.includes(`https://github.com/redact-secret/redact-secret/issues/${productIssue}`), `${id}: product issue`);
-    assert.ok(refs.includes('https://github.com/redact-secret/redact-secret-benchmarks/issues/464'), `${id}: #464`);
+    const refs = new Set(contracts[id].references);
+    assert.ok(refs.has(`${base}${file}`), `${id}: handoff permalink`);
+    assert.ok(refs.has(`${base}issuance-research/${file}`), `${id}: issuance research permalink`);
+    assert.ok(refs.has('https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337'), `${id}: rulings R9-R10`);
+    assert.ok(refs.has(`https://github.com/redact-secret/redact-secret/issues/${productIssue}`), `${id}: product issue`);
+    assert.ok(refs.has('https://github.com/redact-secret/redact-secret-benchmarks/issues/464'), `${id}: #464`);
   }
 });
 

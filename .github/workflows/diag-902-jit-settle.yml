@@ -1,0 +1,29 @@
+# DIAGNOSTIC ONLY (benchmarks #428 / redact-secret #902): not the official pii-profile-cost-v2 protocol.
+name: diag 902 wasm incremental settle
+on:
+  push:
+    branches: [diag/902-jit-settle]
+permissions:
+  contents: read
+jobs:
+  diag:
+    strategy:
+      fail-fast: false
+      matrix:
+        repeat: [1, 2, 3]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with: { node-version: 22 }
+      - name: Verify the package hashes against the #428 freezes
+        run: |
+          sha256sum pkgs/*/*.tgz
+          echo "b6819bfd95c911db056f93cb78b3341cba7bfb05a22262f8c44461c0c4e1b966  pkgs/old/redact-secret-wasm-0.1.0-beta.10.tgz" | sha256sum -c
+          echo "61d135ba611a154433be9a9a56a38bf4a5fc8747a6b9d5fdf6e4dd6891666f2d  pkgs/new/redact-secret-wasm-0.1.0-beta.10.tgz" | sha256sum -c
+      - name: Run the diagnostic
+        run: node diag.mjs 12 | tee result.tsv
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with: { name: "diag-902-${{ matrix.repeat }}", path: result.tsv }

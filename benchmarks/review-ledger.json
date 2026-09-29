@@ -136407,7 +136407,7 @@
       "firstSeenRun": "7a74c909-9438-495b-9fe3-e34449a9aab2",
       "lastSeenRun": "7a74c909-9438-495b-9fe3-e34449a9aab2",
       "lastSeenAt": "2026-09-27T06:00:00.000Z",
-      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, policy/T3): redact-secret (candidate build at the cfe2aec tree) reports no finding (labelled unmapped) while trufflehog reports [78,118) (labelled deepgram-api-key); the authored expectation is [78,118). It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-coverage-gap/deepgram-api-key."
+      "note": "Product false negative on the canonical variant of beta8-384e/deepgram-api-key-create-client (positive, policy/T3, target deepgram-api-key): trufflehog reports [78,118) as deepgram-api-key, the authored span, and redact-secret reports nothing. Filed as redact-secret/redact-secret#1017 (Deepgram JS SDK createClient and WebSocket token subprotocol), milestone v0.1.0.beta.12. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: differential-coverage-gap/deepgram-api-key."
     },
     "f5f0adcba71c7ac421d1fbbd9c8bdea646d849d4c9c60a5333eecb95a23f7ab7": {
       "status": "not-assertable",
@@ -136432,7 +136432,7 @@
       "firstSeenRun": "7a74c909-9438-495b-9fe3-e34449a9aab2",
       "lastSeenRun": "7a74c909-9438-495b-9fe3-e34449a9aab2",
       "lastSeenAt": "2026-09-27T06:00:00.000Z",
-      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, policy/T3): redact-secret (candidate build at the cfe2aec tree) reports no finding (labelled unmapped) while gitleaks reports [77,117) (labelled generic-token); the authored expectation is [77,117). It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-coverage-gap/deepgram-api-key."
+      "note": "Product false negative on the canonical variant of beta8-384e/deepgram-api-key-websocket-subprotocol (positive, policy/T3, target deepgram-api-key): gitleaks reports [77,117) as generic-token, the authored span, and redact-secret reports nothing. Filed as redact-secret/redact-secret#1017 (Deepgram JS SDK createClient and WebSocket token subprotocol), milestone v0.1.0.beta.12. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: differential-coverage-gap/deepgram-api-key."
     },
     "e8c5601720e89026ff5b72058788c80d62f3d200bf6b7cb78eadff6043ffab7c": {
       "status": "not-assertable",
@@ -136465,11 +136465,12 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's silence matches this corpus's authored must-not-flag expectation exactly (expected span(s): none). The disagreement is fully explained by trufflehog flagging this input anyway, from its own broader or unvalidated pattern matching a category this corpus does not assert as a secret here. Class: peer-only/trufflehog/range-matches-corpus."
     },
     "7febfcfef55b3115e951cbed826166beb1a5e47b8bd361e62b7b232c0c10d307": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "7a74c909-9438-495b-9fe3-e34449a9aab2",
       "lastSeenRun": "7a74c909-9438-495b-9fe3-e34449a9aab2",
       "lastSeenAt": "2026-09-27T06:00:00.000Z",
-      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T3): redact-secret (candidate build at the cfe2aec tree) reports [62,102) (labelled generic-token) while trufflehog reports [62,102) (labelled deepgram-api-key); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: classification-disagreement/deepgram-api-key."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (context: the DeepgramClient constructor replaced by an unrelated Widget constructor; the value is kept byte-for-byte) is scoped to deepgram-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no deepgram-api-key finding, so the twin's own assertion (no typed deepgram-api-key finding) holds. redact-secret attributes [62,102) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports the same range but labels it deepgram-api-key: its keyword rule fires on a provider name elsewhere in the input (it has no same-line context gate), so it still reads the value as that family — a peer rule-precision difference, not a corpus or redact-secret defect. Class: classification-disagreement/trufflehog/twin-boundary-family-reassignment.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "aca078204577ae3d06d592c9021b0b9d49641926a0623318724eeba79ad0f256": {
       "status": "resolved",
@@ -137869,25 +137870,28 @@
       "lastSeenAt": "2026-09-27T12:00:00.000Z"
     },
     "a48ac8ee3db81e7998f2771e28f6809b42a60fc6b38f05b6cd25aef01820be46": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [17,56) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 39 vs contracted 40) is scoped to deepgram-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no deepgram-api-key finding, so the twin's own assertion (no typed deepgram-api-key finding) holds. redact-secret attributes [17,56) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
       "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+      "lastSeenAt": "2026-09-27T12:00:00.000Z",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "b92fd102677e30904577a433f53cab6cc1f5dd35520c3ba512b2e753da727619": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [24,63) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 39 vs contracted 40) is scoped to deepgram-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no deepgram-api-key finding, so the twin's own assertion (no typed deepgram-api-key finding) holds. redact-secret attributes [24,63) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
       "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+      "lastSeenAt": "2026-09-27T12:00:00.000Z",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "6b21b62e6baef565f66513ecfcc6cca10190981fbb3bd50d541a3fd4554286a8": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [38,77) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/deepgram-api-key.",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 39 vs contracted 40) is scoped to deepgram-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no deepgram-api-key finding, so the twin's own assertion (no typed deepgram-api-key finding) holds. redact-secret attributes [38,77) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
       "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+      "lastSeenAt": "2026-09-27T12:00:00.000Z",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "88fb93b8c5e8b6409605eb195bb6093f4c7b1559cc03159c4b312bd5feea69b9": {
       "status": "resolved",
@@ -145899,7 +145903,7 @@
       "firstSeenRun": "f5bd102b-da71-426c-9baa-a6409ebc6ebf",
       "lastSeenRun": "9179e155-c41c-4392-846e-cbf0f9fcb595",
       "lastSeenAt": "2026-09-28T16:08:15.315Z",
-      "note": "redact-secret and trufflehog both report [83,123), the authored expected span, on the canonical variant of beta8-379/deepgram-api-key-worker-json-log. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.10) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md this row is one the decision leaves open. It is a genuine, currently-measured product attribution question for deepgram-api-key, not a detection gap. Class: differential-boundary-unconfirmed/deepgram-api-key."
+      "note": "Attribution gap on the canonical variant of beta8-379/deepgram-api-key-worker-json-log (positive, policy/T3, target deepgram-api-key): redact-secret and trufflehog both report the authored span [83,123); redact-secret labels it generic-token and trufflehog labels it deepgram-api-key. The value is covered, but the Deepgram context sits on an adjacent line or in a sibling field, so the product does not type it deepgram_api_key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md a row where the product gives the generic label and the peer the specific one stays open. Filed as redact-secret/redact-secret#1017 (form 3), milestone v0.1.0.beta.12. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: differential-boundary-unconfirmed/deepgram-api-key."
     },
     "d51f4c58ab7c484d21361432f2e41e2fb39c427cf3d75144385951b25ca1f7a5": {
       "status": "not-assertable",
@@ -145918,7 +145922,7 @@
       "firstSeenRun": "f5bd102b-da71-426c-9baa-a6409ebc6ebf",
       "lastSeenRun": "9179e155-c41c-4392-846e-cbf0f9fcb595",
       "lastSeenAt": "2026-09-28T16:08:15.315Z",
-      "note": "redact-secret and trufflehog both report [37,77), the authored expected span, on the canonical variant of beta8-379/deepgram-api-key-agent-stt-yaml. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.10) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md this row is one the decision leaves open. It is a genuine, currently-measured product attribution question for deepgram-api-key, not a detection gap. Class: differential-boundary-unconfirmed/deepgram-api-key."
+      "note": "Attribution gap on the canonical variant of beta8-379/deepgram-api-key-agent-stt-yaml (positive, policy/T3, target deepgram-api-key): redact-secret and trufflehog both report the authored span [37,77); redact-secret labels it generic-token and trufflehog labels it deepgram-api-key. The value is covered, but the Deepgram context sits on an adjacent line or in a sibling field, so the product does not type it deepgram_api_key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md a row where the product gives the generic label and the peer the specific one stays open. Filed as redact-secret/redact-secret#1017 (form 3), milestone v0.1.0.beta.12. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: differential-boundary-unconfirmed/deepgram-api-key."
     },
     "d53e1be1866c47d798058a6a55331acdadad9bf790e826c4f70e25387b484d66": {
       "status": "resolved",
@@ -160954,7 +160958,7 @@
       "firstSeenRun": "triage-508-2026-09-29",
       "lastSeenRun": "triage-508-2026-09-29",
       "lastSeenAt": "2026-09-29T00:00:00.000Z",
-      "note": "redact-secret and trufflehog both report [67,107), the authored expected span, on the canonical variant of beta8-379/deepgram-api-key-http-request-header. Here it is redact-secret's own label that is the coarser or off-target one: redact-secret (published npm package 0.1.0-beta.10) labels it generic-token; trufflehog labels it deepgram-api-key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md this row is one the decision leaves open. It is a genuine, currently-measured product attribution question for deepgram-api-key, not a detection gap. Class: differential-boundary-unconfirmed/deepgram-api-key."
+      "note": "Attribution gap on the canonical variant of beta8-384e/deepgram-api-key-http-request-header (positive, policy/T3, target deepgram-api-key): redact-secret and trufflehog both report the authored span [67,107); redact-secret labels it generic-token and trufflehog labels it deepgram-api-key. The value is covered, but the Deepgram context sits on an adjacent line or in a sibling field, so the product does not type it deepgram_api_key. Per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md a row where the product gives the generic label and the peer the specific one stays open. Filed as redact-secret/redact-secret#1017 (form 3), milestone v0.1.0.beta.12. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: differential-boundary-unconfirmed/deepgram-api-key."
     },
     "713c19a3e42fe010744415e7d010d7cbf95ade485ddebb9950249240dded6a81": {
       "status": "not-assertable",
@@ -160994,7 +160998,7 @@
       "firstSeenRun": "triage-508-2026-09-29",
       "lastSeenRun": "triage-508-2026-09-29",
       "lastSeenAt": "2026-09-29T00:00:00.000Z",
-      "note": "Differential observation on a Beta.10 fixture (#384, target deepgram-api-key, policy/T3): redact-secret (published npm package 0.1.0-beta.10) reports no finding (labelled unmapped) while trufflehog reports [44,84) (labelled deepgram-api-key); the authored expectation is [44,84). It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-coverage-gap/deepgram-api-key."
+      "note": "Product false negative on the canonical variant of beta8-384e/deepgram-api-key-k8s-env-value (positive, policy/T3, target deepgram-api-key): trufflehog reports [44,84) as deepgram-api-key, the authored span, and redact-secret reports nothing. Filed as redact-secret/redact-secret#1016 (Kubernetes env name:/value: pairs are never read as an assignment), milestone v0.1.0.beta.12. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: differential-coverage-gap/deepgram-api-key."
     },
     "5e846f9c1ceaa95e4704965f2498fa12af16bef727bc02c34dfab11ec77a83c5": {
       "status": "resolved",

@@ -11,7 +11,8 @@ import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
 import type { ReviewLedger, Scanner } from './engine/types.ts';
 import { runEvaluation } from './engine/runner.ts';
 import { evaluationInputs } from './engine/execution.ts';
-import { inputIdentity, makeSnapshot, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity, snapshotObservation,
+import { makeHandoff, removeHandoff, worktreeState, writeHandoff } from './lib/review-queue-handoff.ts';
+import { digest, inputIdentity, makeSnapshot, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity, snapshotObservation,
   snapshotPath, writeSnapshot } from './lib/peer-observations.ts';
 import type { SupportStatus } from './support/status.ts';
 import { familiesForDetector } from './support/taxonomy.ts';
@@ -122,6 +123,12 @@ async function main() {
             peer: expectedPeers.get(observation.id)!, replayCount: observation.replays.count, findings: observation.findings }));
         }
       } } : {}) });
+    // #479 P2: leave the review queue for `queue:check` in this same job. Only a published-mode
+    // run over the committed peer snapshots is the surface `queue:check` would recompute.
+    if (reuse && publishedPackage) {
+      await writeHandoff(root, makeHandoff({ ...worktreeState(root), inputDigest: digest(input), ledgerDigest: digest(ledger),
+        productVersion: publishedPackage.version }, report.runId, report.reviewQueue));
+    } else await removeHandoff(root);
     // The unit is a registered detector (issue #504's "42" at filing time; the count follows
     // `detectors.json`, 46 as of 2026-09-21), not a taxonomy sub-family, plus the arrival
     // families the product types inside a shared detector (`scoredArrivalIds`, #730): their

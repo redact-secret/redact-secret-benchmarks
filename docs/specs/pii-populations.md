@@ -228,8 +228,16 @@ the other's budget.
   - `not-met`.
 
   This route never emits `stable`. Bound to the final `8b6a5fde` record
-  (`evidence/901/428/final-core-8b6a5fde.md`), all six families stay `pending`
-  and unspent (`public-gates-failed`, always including `profile-cost`).
+  (`evidence/901/428/final-core-8b6a5fde.md`), the report scores
+  `profile-cost` `not-met`; the maintainer accepted every failing cell and
+  open size row of the bound official runs as a tradeoff
+  (`benchmarks/accepted-pii-profile-cost.json`, read by
+  `benchmarks/evaluation/domains/pii/profile-cost-acceptance.ts`). An
+  acceptance counts only when it covers every failing cell and open size row
+  of exactly those runs; the frozen report is never rescored with it. With the
+  acceptance, all six families stay `pending`, their public gates count as
+  met, and each is eligible for its protected run (`no-sealed-corpus` until the
+  custodian seals).
 
 The IBAN family binding pins family contract v1, SWIFT ISO 13616 IBAN Registry
 Release 103 (89 derived country/length rows), and the bounded `iban-mod97` v1

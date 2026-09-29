@@ -157,16 +157,21 @@ A run needs all of the following:
   them: the run compares every tarball and payload hash with the committed
   freeze and refuses a mismatch.
 
-Today every family's #428 `profile-cost` gate is `not-met` at this commit, so
-`run` refuses all six with `FAIL public-gates-failed:<gates>:budget-not-spent`
-(the list always includes `profile-cost`) and spends nothing. Sealing is still safe; run only after the #428 record for this commit
-shows every public gate `met` for the family.
+At this commit the #428 report scores `profile-cost` `not-met`, and the
+maintainer accepted those cells and size rows as a tradeoff on 2026-09-29
+(`benchmarks/accepted-pii-profile-cost.json`, entry
+`beta11-8b6a5fd-pii-profile-cost`). `run` reads that ledger, so every public
+gate of all six families counts as met and each family is eligible for its one
+protected attempt once it is sealed. The acceptance covers only this commit
+and the bound official runs. If the ledger entry is removed or stops matching,
+`run` refuses again with `FAIL public-gates-failed:<gates>:budget-not-spent`
+and spends nothing.
 
 It checks every tarball, every Wasm payload (including `_pii`), the
 identity-seam binary, the selectors and the `pii-context/v2` activation
 identities against the freeze before it reads a byte. If a #428 public gate
-for that family is already `not-met`, it refuses and does not spend the
-budget.
+for that family is `not-met` and no maintainer acceptance covers it, it refuses
+and does not spend the budget.
 
 The aggregate is written to
 `evidence/901/428/core-8b6a5fde52ec/protected/<family>-aggregate-v1.json`.

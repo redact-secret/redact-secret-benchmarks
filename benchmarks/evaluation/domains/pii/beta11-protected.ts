@@ -307,12 +307,21 @@ export type B11ProtectedPlan = {
 };
 
 /** Report gate statuses for one family, the protected partition excluded. */
-export function b11ProtectedPublicGates(report: any, family: string) {
+/**
+ * The #428 public gates of one family, protected partition excluded. A `profile-cost` gate that the report scores
+ * `not-met` counts as met only through a maintainer acceptance (`b11ProfileCostAcceptance`, the
+ * `benchmarks/accepted-pii-profile-cost.json` ledger) whose status is `accepted` for exactly this report.
+ */
+export function b11ProtectedPublicGates(report: any, family: string, costAcceptance: { status: string; reportCommitment: string; acceptedBy?: string } | null = null) {
   const row = report?.families?.find((item: any) => item.family === family);
   if (!row) throw new HoldoutError('report-family-missing');
-  const gates = (row.gates as Array<{ id: string; status: string }>).filter(gate => gate.id !== 'protected-partition');
+  if (costAcceptance && costAcceptance.reportCommitment !== report.artifactCommitment) throw new HoldoutError('cost-acceptance-not-bound-to-report');
+  const accepted = costAcceptance?.status === 'accepted';
+  const gates = (row.gates as Array<{ id: string; status: string }>).filter(gate => gate.id !== 'protected-partition')
+    .map(gate => gate.id === 'profile-cost' && gate.status === 'not-met' && accepted ? { ...gate, status: 'met' } : gate);
   return { met: gates.filter(gate => gate.status === 'met').map(gate => gate.id), notMet: gates.filter(gate => gate.status === 'not-met').map(gate => gate.id),
     unresolved: gates.filter(gate => !['met', 'not-met'].includes(gate.status)).map(gate => gate.id),
+    acceptedTradeoffs: accepted && (row.gates as any[]).some(gate => gate.id === 'profile-cost' && gate.status === 'not-met') ? [`profile-cost:${costAcceptance!.acceptedBy}`] : [],
     epochCommitment: row.protected?.epochCommitment as string };
 }
 
@@ -690,8 +699,8 @@ export type B11ProtectedState = 'met' | 'not-met' | 'unresolved' | 'unspent';
  * Bind protected runs to the committed #428 report and disposition. `provisional` requires every public gate (cost
  * included) and the protected gate to be `met`; `stable` is never produced on this route.
  */
-export function buildB11ProtectedDisposition({ report, disposition, seal, runs }: { report: any; disposition: any; seal: B11ProtectedSeal | null;
-  runs: Array<{ aggregate: B11ProtectedAggregate; trust: B11ProtectedTrust }> }) {
+export function buildB11ProtectedDisposition({ report, disposition, seal, runs, costAcceptance = null }: { report: any; disposition: any; seal: B11ProtectedSeal | null;
+  runs: Array<{ aggregate: B11ProtectedAggregate; trust: B11ProtectedTrust }>; costAcceptance?: any }) {
   if (!report || report.artifactCommitment !== b11Commitment({ ...report, artifactCommitment: undefined })) throw new HoldoutError('report-commitment-mismatch');
   if (!disposition || disposition.reportCommitment !== report.artifactCommitment ||
       disposition.artifactCommitment !== b11Commitment({ ...disposition, artifactCommitment: undefined })) throw new HoldoutError('disposition-not-bound-to-report');
@@ -699,7 +708,7 @@ export function buildB11ProtectedDisposition({ report, disposition, seal, runs }
   const sourceCommit = report.candidate.sourceCommit as string, freezeCommitment = report.freeze.freezeCommitment as string;
   if (new Set(runs.map(row => row.aggregate.family)).size !== runs.length) throw new HoldoutError('duplicate-protected-run');
   const families = B11_FAMILIES.map(family => {
-    const gates = b11ProtectedPublicGates(report, family);
+    const gates = b11ProtectedPublicGates(report, family, costAcceptance);
     const sealed = seal?.families.find(row => row.family === family) ?? null;
     const run = runs.find(row => row.aggregate.family === family) ?? null;
     let state: B11ProtectedState = 'unspent', reason: string;
@@ -718,7 +727,8 @@ export function buildB11ProtectedDisposition({ report, disposition, seal, runs }
     else if (!sealed) reason = 'no-sealed-corpus';
     else reason = gates.unresolved.length ? `not-run:public-gates-unresolved:${gates.unresolved.join(',')}` : 'not-run:eligible';
     const status = !gates.notMet.length && !gates.unresolved.length && state === 'met' ? 'provisional' as const : 'pending' as const;
-    return { family, status, publicGates: { met: gates.met.length, notMet: gates.notMet, unresolved: gates.unresolved },
+    return { family, status, publicGates: { met: gates.met.length, notMet: gates.notMet, unresolved: gates.unresolved,
+      ...(gates.acceptedTradeoffs.length ? { acceptedTradeoffs: gates.acceptedTradeoffs } : {}) },
       protected: { state, reason, runs: `${run ? 1 : 0}/1`, epochCommitment: gates.epochCommitment, sealed: !!sealed,
         ...(run ? { aggregateCommitment: run.trust.aggregateCommitment, trustCommitment: run.trust.artifactCommitment } : {}) } };
   });
@@ -727,6 +737,7 @@ export function buildB11ProtectedDisposition({ report, disposition, seal, runs }
     productIssue: 'redact-secret/redact-secret#901', route: 'pii-b11-protected-v1', maximumStatus: 'provisional',
     candidate: { sourceCommit }, freezeCommitment, reportCommitment: report.artifactCommitment, dispositionCommitment: disposition.artifactCommitment,
     sealCommitment: seal?.artifactCommitment ?? null,
+    ...(costAcceptance ? { costAcceptance } : {}),
     domainSeparation: 'PII counts only; no credential count is merged and no combined credential+PII score exists.',
     distribution: { pending: families.filter(row => row.status === 'pending').length, provisional: families.filter(row => row.status === 'provisional').length, stable: 0 },
     families, artifactCommitment: '' };

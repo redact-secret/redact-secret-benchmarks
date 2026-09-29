@@ -26,6 +26,7 @@ import { B11_CURRENT_PLAN_SET, B11_FAMILIES, B11_PLAN_SETS } from '../benchmarks
 import { B11P_BETA11_CORE_COMMIT, b11ProtectedCandidatePlan, b11ProtectedCounts, b11ProtectedFamilySlug, b11ProtectedFindingType,
   b11ProtectedPublicGates, assertB11ReportBinding, buildB11ProtectedDisposition, buildB11ProtectedTrust, readB11ProtectedInput,
   runB11ProtectedFamily, sealB11ProtectedInput, validateB11ProtectedAggregate, validateB11ProtectedSeal } from '../benchmarks/evaluation/domains/pii/beta11-protected.ts';
+import { b11ProfileCostAcceptance } from '../benchmarks/evaluation/domains/pii/profile-cost-acceptance.ts';
 import { installCandidate, removeCandidate } from '../scanners/candidate.mjs';
 
 const exec = promisify(execFile);
@@ -57,6 +58,15 @@ function evidencePaths() {
   return { commit, dir, freeze: path.join(dir, `pii-beta11-freeze-${fileVersion}.json`), report: path.join(dir, `pii-beta11-report-${fileVersion}.json`),
     disposition: path.join(dir, `pii-beta11-disposition-${fileVersion}.json`), protectedDir: path.join(dir, 'protected'),
     protectedDisposition: path.join(dir, `pii-beta11-protected-disposition-${fileVersion}.json`) };
+}
+/** Maintainer acceptance of the profile-cost gate for this report (benchmarks/accepted-pii-profile-cost.json), or null. */
+async function costAcceptanceFor(paths, report) {
+  const file = name => path.join(paths.dir, `pii-profile-cost-v2-${name}.json`);
+  const names = ['runs', 'candidate', 'size'];
+  const profileCost = names.every(name => existsSync(file(name))) ?
+    Object.fromEntries(await Promise.all(names.map(async name => [name, await readJson(file(name))]))) : null;
+  const acceptance = b11ProfileCostAcceptance({ report, profileCost });
+  return acceptance.status === 'none' ? null : acceptance;
 }
 const familyArg = () => {
   if (!B11_FAMILIES.includes(args.family)) throw new HoldoutError('family-required');
@@ -156,7 +166,7 @@ async function run() {
   const freeze = await readJson(paths.freeze), report = await readJson(paths.report), sealRecord = validateB11ProtectedSeal(await readJson(sealFile));
   assertB11ReportBinding(freeze, report);
   for (const row of sealRecord.families) if (!(await tracked(path.join(path.dirname(sealFile), row.manifest)))) throw new HoldoutError('manifest-not-committed');
-  const gates = b11ProtectedPublicGates(report, family);
+  const gates = b11ProtectedPublicGates(report, family, await costAcceptanceFor(paths, report));
   // A known public rejection is not repeated on the protected corpus (the unspent path of docs/specs/pii-populations.md).
   if (gates.notMet.length) throw new HoldoutError(`public-gates-failed:${gates.notMet.join(',')}:budget-not-spent`);
   const work = path.resolve(args.work ?? path.join(root, 'results-output/pii-beta11'), `core-${paths.commit.slice(0, 12)}`);
@@ -223,8 +233,9 @@ async function disposition() {
     if (!existsSync(files.trust)) throw new HoldoutError(`trust-resolution-missing:${family}`);
     runs.push({ aggregate: await readJson(files.aggregate), trust: await readJson(files.trust) });
   }
-  const record = buildB11ProtectedDisposition({ report, disposition: committed, seal: sealRecord, runs });
+  const record = buildB11ProtectedDisposition({ report, disposition: committed, seal: sealRecord, runs, costAcceptance: await costAcceptanceFor(paths, report) });
   await writeFile(paths.protectedDisposition, `${JSON.stringify(record, null, 2)}\n`);
+  if (record.costAcceptance) console.log(`profile-cost acceptance ${record.costAcceptance.acceptedBy}: ${record.costAcceptance.status}`);
   for (const row of record.families) console.log(`${row.family}: ${row.status} (protected ${row.protected.state}: ${row.protected.reason})`);
   console.log(`Wrote ${path.relative(root, paths.protectedDisposition)}`);
 }

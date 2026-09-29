@@ -1,0 +1,2448 @@
+[
+  {
+    "id": "beta11-8b6a5fd-pii-profile-cost",
+    "candidate": {
+      "sourceCommit": "8b6a5fde52ecb4dfce13f09c7a947062d21483c7"
+    },
+    "plan": {
+      "id": "pii-profile-cost-v2",
+      "contentCommitment": "36d408ea50ea43a2c6f9b291531680ed730eca249045370b5c7916a257f8456f"
+    },
+    "runs": {
+      "candidate": {
+        "runId": "36584501052",
+        "reportCommitment": "1856c6f9c161b11752ac65d0ee2ec43c7ea47317beffcfb503745fd9abc09472"
+      },
+      "size": {
+        "runId": "36582931734",
+        "reportCommitment": "7cb0128731e02645cbb8f32fe757e018038ae6af8b2306400194937436c04a36"
+      },
+      "notUsed": [
+        "36585713241"
+      ]
+    },
+    "cells": [
+      {
+        "key": "rust-native/full/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.920415,
+          "comparisonMedian": 8.646778000000001,
+          "medianRatio": 2.205577215677422,
+          "baselineP95": 3.9701629999999994,
+          "comparisonP95": 8.803887999999999,
+          "tailRatio": 2.217512983723842
+        }
+      },
+      {
+        "key": "rust-native/full/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 8.903344,
+          "comparisonMedian": 14.814178,
+          "medianRatio": 1.6638892083693497,
+          "baselineP95": 9.368457,
+          "comparisonP95": 15.304267,
+          "tailRatio": 1.6335952654743466
+        }
+      },
+      {
+        "key": "rust-native/full/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.320964999999999,
+          "comparisonMedian": 13.843928,
+          "medianRatio": 2.1901605213760877,
+          "baselineP95": 6.522405,
+          "comparisonP95": 14.79396,
+          "tailRatio": 2.2681756192692726
+        }
+      },
+      {
+        "key": "rust-native/full/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 11.985277,
+          "comparisonMedian": 21.217116,
+          "medianRatio": 1.7702649675931563,
+          "baselineP95": 12.441679,
+          "comparisonP95": 22.228494,
+          "tailRatio": 1.7866152952507455
+        }
+      },
+      {
+        "key": "rust-native/full/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.0740739999999995,
+          "comparisonMedian": 5.4864370000000005,
+          "medianRatio": 1.3466709244849262,
+          "baselineP95": 4.309466,
+          "comparisonP95": 6.530441,
+          "tailRatio": 1.5153712780191329
+        }
+      },
+      {
+        "key": "rust-native/full/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.224124,
+          "comparisonMedian": 11.460999,
+          "medianRatio": 1.2425027026956705,
+          "baselineP95": 10.688917,
+          "comparisonP95": 13.209906,
+          "tailRatio": 1.2358507414736217
+        }
+      },
+      {
+        "key": "rust-native/full/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.29457,
+          "comparisonMedian": 7.538869,
+          "medianRatio": 1.1976781575230715,
+          "baselineP95": 6.3757909999999995,
+          "comparisonP95": 7.621718,
+          "tailRatio": 1.1954152825900348
+        }
+      },
+      {
+        "key": "rust-native/full/us-ssn-exact/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 11.974208,
+          "comparisonMedian": 13.842922,
+          "medianRatio": 1.1560615950549713,
+          "baselineP95": 12.132354999999999,
+          "comparisonP95": 13.929832,
+          "tailRatio": 1.1481556548584344
+        }
+      },
+      {
+        "key": "rust-native/full/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.9181470000000003,
+          "comparisonMedian": 9.966384,
+          "medianRatio": 2.543647290415597,
+          "baselineP95": 4.016355999999999,
+          "comparisonP95": 10.086374000000001,
+          "tailRatio": 2.511324693328979
+        }
+      },
+      {
+        "key": "rust-native/full/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 8.888959,
+          "comparisonMedian": 16.584576,
+          "medianRatio": 1.865750083896213,
+          "baselineP95": 8.974493,
+          "comparisonP95": 17.648644,
+          "tailRatio": 1.966533819793497
+        }
+      },
+      {
+        "key": "rust-native/full/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.378354,
+          "comparisonMedian": 15.180901,
+          "medianRatio": 2.380065609403304,
+          "baselineP95": 6.593704,
+          "comparisonP95": 15.586123,
+          "tailRatio": 2.363788699037749
+        }
+      },
+      {
+        "key": "rust-native/full/us-jurisdiction/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 12.083454,
+          "comparisonMedian": 22.252543,
+          "medianRatio": 1.8415713752044738,
+          "baselineP95": 12.265982999999999,
+          "comparisonP95": 22.793687,
+          "tailRatio": 1.8582845745016932
+        }
+      },
+      {
+        "key": "rust-native/full/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.976312,
+          "comparisonMedian": 10.22461,
+          "medianRatio": 2.571380213625088,
+          "baselineP95": 4.080694,
+          "comparisonP95": 10.280023,
+          "tailRatio": 2.5191849719680035
+        }
+      },
+      {
+        "key": "rust-native/full/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.098587,
+          "comparisonMedian": 16.940120999999998,
+          "medianRatio": 1.861840855069034,
+          "baselineP95": 9.204644,
+          "comparisonP95": 17.176433000000003,
+          "tailRatio": 1.8660616314981875
+        }
+      },
+      {
+        "key": "rust-native/full/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.487301,
+          "comparisonMedian": 15.524131,
+          "medianRatio": 2.3930030377810434,
+          "baselineP95": 6.541421000000001,
+          "comparisonP95": 15.746021999999998,
+          "tailRatio": 2.407125607723459
+        }
+      },
+      {
+        "key": "rust-native/full/beta10-full/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 12.313028000000001,
+          "comparisonMedian": 23.024735,
+          "medianRatio": 1.8699490490884938,
+          "baselineP95": 12.425068,
+          "comparisonP95": 23.458679999999998,
+          "tailRatio": 1.8880122024281878
+        }
+      },
+      {
+        "key": "rust-native/common/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 1.711615,
+          "comparisonMedian": 6.540777,
+          "medianRatio": 3.821406683161809,
+          "baselineP95": 1.753939,
+          "comparisonP95": 6.664037,
+          "tailRatio": 3.7994690807377
+        }
+      },
+      {
+        "key": "rust-native/common/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.24505,
+          "comparisonMedian": 8.836416999999999,
+          "medianRatio": 2.723044945378345,
+          "baselineP95": 3.3103540000000002,
+          "comparisonP95": 8.902212,
+          "tailRatio": 2.6892024236682843
+        }
+      },
+      {
+        "key": "rust-native/common/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 2.635467,
+          "comparisonMedian": 10.105144,
+          "medianRatio": 3.8342897103245837,
+          "baselineP95": 2.714948,
+          "comparisonP95": 10.420613000000001,
+          "tailRatio": 3.8382366807762067
+        }
+      },
+      {
+        "key": "rust-native/common/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.45352,
+          "comparisonMedian": 12.73087,
+          "medianRatio": 2.8586084715011943,
+          "baselineP95": 4.6039200000000005,
+          "comparisonP95": 13.010026,
+          "tailRatio": 2.8258583989296073
+        }
+      },
+      {
+        "key": "rust-native/common/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 1.705346,
+          "comparisonMedian": 3.102604,
+          "medianRatio": 1.8193398876239777,
+          "baselineP95": 1.746781,
+          "comparisonP95": 3.1484400000000003,
+          "tailRatio": 1.8024240016350077
+        }
+      },
+      {
+        "key": "rust-native/common/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.24797,
+          "comparisonMedian": 5.276456,
+          "medianRatio": 1.62453963552619,
+          "baselineP95": 3.340066,
+          "comparisonP95": 5.354114,
+          "tailRatio": 1.60299646773447
+        }
+      },
+      {
+        "key": "rust-native/common/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 2.6746090000000002,
+          "comparisonMedian": 3.922809,
+          "medianRatio": 1.4666850369530648,
+          "baselineP95": 2.734429,
+          "comparisonP95": 4.057034,
+          "tailRatio": 1.4836859907498055
+        }
+      },
+      {
+        "key": "rust-native/common/us-ssn-exact/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.538151,
+          "comparisonMedian": 6.075139999999999,
+          "medianRatio": 1.3386817670897242,
+          "baselineP95": 4.604023,
+          "comparisonP95": 6.118646999999999,
+          "tailRatio": 1.328978373913423
+        }
+      },
+      {
+        "key": "rust-native/common/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 1.717808,
+          "comparisonMedian": 7.863713,
+          "medianRatio": 4.577760145487738,
+          "baselineP95": 2.265706,
+          "comparisonP95": 8.000817,
+          "tailRatio": 3.5312688407057222
+        }
+      },
+      {
+        "key": "rust-native/common/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.255661,
+          "comparisonMedian": 10.507486,
+          "medianRatio": 3.227450892460855,
+          "baselineP95": 3.718825,
+          "comparisonP95": 10.576757,
+          "tailRatio": 2.84411258932593
+        }
+      },
+      {
+        "key": "rust-native/common/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 2.6401839999999996,
+          "comparisonMedian": 11.634514000000001,
+          "medianRatio": 4.406705744751124,
+          "baselineP95": 2.683352,
+          "comparisonP95": 11.790541999999999,
+          "tailRatio": 4.393960240773479
+        }
+      },
+      {
+        "key": "rust-native/common/us-jurisdiction/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.5586649999999995,
+          "comparisonMedian": 14.190385,
+          "medianRatio": 3.112837859329431,
+          "baselineP95": 4.61227,
+          "comparisonP95": 14.272193000000001,
+          "tailRatio": 3.094396685363173
+        }
+      },
+      {
+        "key": "rust-native/common/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 1.704606,
+          "comparisonMedian": 7.9273050000000005,
+          "medianRatio": 4.650520413514912,
+          "baselineP95": 1.85676,
+          "comparisonP95": 8.657006,
+          "tailRatio": 4.662425946272001
+        }
+      },
+      {
+        "key": "rust-native/common/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.264228,
+          "comparisonMedian": 10.531562,
+          "medianRatio": 3.2263561246334507,
+          "baselineP95": 3.616222,
+          "comparisonP95": 11.37477,
+          "tailRatio": 3.1454844309890264
+        }
+      },
+      {
+        "key": "rust-native/common/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 2.711384,
+          "comparisonMedian": 11.998768,
+          "medianRatio": 4.4253296471469925,
+          "baselineP95": 3.280118,
+          "comparisonP95": 14.71051,
+          "tailRatio": 4.484750243741232
+        }
+      },
+      {
+        "key": "rust-native/common/beta10-full/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.7063950000000006,
+          "comparisonMedian": 14.550704,
+          "medianRatio": 3.0916877992603675,
+          "baselineP95": 6.02734,
+          "comparisonP95": 16.744781,
+          "tailRatio": 2.7781377854907805
+        }
+      },
+      {
+        "key": "node-native/full/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.106135000000002,
+          "comparisonMedian": 29.347887,
+          "medianRatio": 7.147326378699187,
+          "baselineP95": 4.255888999999996,
+          "comparisonP95": 29.810601,
+          "tailRatio": 7.004553220255516
+        }
+      },
+      {
+        "key": "node-native/full/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 10.731004000000006,
+          "comparisonMedian": 18.052076999999997,
+          "medianRatio": 1.6822356044224742,
+          "baselineP95": 11.249637000000007,
+          "comparisonP95": 18.955848000000003,
+          "tailRatio": 1.6850186366013402
+        }
+      },
+      {
+        "key": "node-native/full/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.066880000000005,
+          "comparisonMedian": 14.460476999999997,
+          "medianRatio": 2.0462321420485403,
+          "baselineP95": 8.027877999999994,
+          "comparisonP95": 17.456207,
+          "tailRatio": 2.1744484657091214
+        }
+      },
+      {
+        "key": "node-native/full/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 15.439814000000005,
+          "comparisonMedian": 24.688544000000007,
+          "medianRatio": 1.5990182265149049,
+          "baselineP95": 17.085497999999987,
+          "comparisonP95": 27.19321199999999,
+          "tailRatio": 1.5915961009740547
+        }
+      },
+      {
+        "key": "node-native/full/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.061366999999997,
+          "comparisonMedian": 25.925652000000007,
+          "medianRatio": 6.383479257107281,
+          "baselineP95": 4.294377000000004,
+          "comparisonP95": 27.251582999999997,
+          "tailRatio": 6.345875781283285
+        }
+      },
+      {
+        "key": "node-native/full/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 10.537453999999997,
+          "comparisonMedian": 14.206552000000002,
+          "medianRatio": 1.3481958735003736,
+          "baselineP95": 11.25101,
+          "comparisonP95": 14.922329000000005,
+          "tailRatio": 1.3263101712646246
+        }
+      },
+      {
+        "key": "node-native/full/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.042275999999994,
+          "comparisonMedian": 8.199215000000002,
+          "medianRatio": 1.1642848136028763,
+          "baselineP95": 7.224126999999996,
+          "comparisonP95": 8.340027000000006,
+          "tailRatio": 1.1544684914869314
+        }
+      },
+      {
+        "key": "node-native/full/us-ssn-exact/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 15.344586,
+          "comparisonMedian": 17.089653999999996,
+          "medianRatio": 1.1137253230553106,
+          "baselineP95": 15.803080999999992,
+          "comparisonP95": 17.559081,
+          "tailRatio": 1.1111175725796767
+        }
+      },
+      {
+        "key": "node-native/full/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.9778400000000005,
+          "comparisonMedian": 50.57233000000001,
+          "medianRatio": 12.713515375178488,
+          "baselineP95": 4.062166999999995,
+          "comparisonP95": 50.807601,
+          "tailRatio": 12.507511631107253
+        }
+      },
+      {
+        "key": "node-native/full/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 10.457756999999994,
+          "comparisonMedian": 20.616726,
+          "medianRatio": 1.9714290550067297,
+          "baselineP95": 10.632692000000006,
+          "comparisonP95": 21.37446100000001,
+          "tailRatio": 2.0102586438128744
+        }
+      },
+      {
+        "key": "node-native/full/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.976613,
+          "comparisonMedian": 15.332660000000004,
+          "medianRatio": 2.1977225911771234,
+          "baselineP95": 7.190860000000001,
+          "comparisonP95": 16.39069599999999,
+          "tailRatio": 2.27937910069171
+        }
+      },
+      {
+        "key": "node-native/full/us-jurisdiction/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 15.302691000000003,
+          "comparisonMedian": 25.491120999999993,
+          "medianRatio": 1.6657933562142755,
+          "baselineP95": 15.779495999999995,
+          "comparisonP95": 26.803650999999995,
+          "tailRatio": 1.698637966637211
+        }
+      },
+      {
+        "key": "node-native/full/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.066448000000001,
+          "comparisonMedian": 50.664633,
+          "medianRatio": 12.459186248047432,
+          "baselineP95": 4.941803999999998,
+          "comparisonP95": 53.331033999999995,
+          "tailRatio": 10.791814891889686
+        }
+      },
+      {
+        "key": "node-native/full/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 10.460293,
+          "comparisonMedian": 20.418995999999993,
+          "medianRatio": 1.9520481883251255,
+          "baselineP95": 13.256922999999993,
+          "comparisonP95": 22.27789200000001,
+          "tailRatio": 1.6804723086948623
+        }
+      },
+      {
+        "key": "node-native/full/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.691420000000001,
+          "comparisonMedian": 14.750487,
+          "medianRatio": 2.204388156773898,
+          "baselineP95": 7.470567000000003,
+          "comparisonP95": 15.745028999999995,
+          "tailRatio": 2.1076082980046884
+        }
+      },
+      {
+        "key": "node-native/full/beta10-full/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 14.625974,
+          "comparisonMedian": 24.675041,
+          "medianRatio": 1.6870699346245248,
+          "baselineP95": 21.313874,
+          "comparisonP95": 27.104984,
+          "tailRatio": 1.2717061196852344
+        }
+      },
+      {
+        "key": "node-native/common/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 1.5299809999999994,
+          "comparisonMedian": 25.325834,
+          "medianRatio": 16.55303824034417,
+          "baselineP95": 1.5820020000000028,
+          "comparisonP95": 26.856454999999997,
+          "tailRatio": 16.976245921307275
+        }
+      },
+      {
+        "key": "node-native/common/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.301870000000001,
+          "comparisonMedian": 10.718894000000006,
+          "medianRatio": 2.491682454374494,
+          "baselineP95": 4.455834000000003,
+          "comparisonP95": 11.141366000000005,
+          "tailRatio": 2.500399700706983
+        }
+      },
+      {
+        "key": "node-native/common/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 2.813259000000002,
+          "comparisonMedian": 9.984223,
+          "medianRatio": 3.5489882019394563,
+          "baselineP95": 3.372557999999998,
+          "comparisonP95": 10.117225000000005,
+          "tailRatio": 2.9998668666335795
+        }
+      },
+      {
+        "key": "node-native/common/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.069785000000003,
+          "comparisonMedian": 15.272800000000004,
+          "medianRatio": 2.1602920032221626,
+          "baselineP95": 7.188281999999994,
+          "comparisonP95": 15.459161999999992,
+          "tailRatio": 2.150605944508021
+        }
+      },
+      {
+        "key": "node-native/common/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 1.5941159999999996,
+          "comparisonMedian": 22.246057999999998,
+          "medianRatio": 13.955106152877208,
+          "baselineP95": 1.6372460000000046,
+          "comparisonP95": 23.32656399999999,
+          "tailRatio": 14.247439908236101
+        }
+      },
+      {
+        "key": "node-native/common/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.414968000000002,
+          "comparisonMedian": 7.376594999999995,
+          "medianRatio": 1.6708150546051503,
+          "baselineP95": 4.594805999999998,
+          "comparisonP95": 7.695362999999986,
+          "tailRatio": 1.6747960632070187
+        }
+      },
+      {
+        "key": "node-native/common/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 2.833853999999995,
+          "comparisonMedian": 4.044413999999996,
+          "medianRatio": 1.4271779703541547,
+          "baselineP95": 3.199126000000007,
+          "comparisonP95": 4.312994000000003,
+          "tailRatio": 1.3481788463474067
+        }
+      },
+      {
+        "key": "node-native/common/us-ssn-exact/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.079204000000004,
+          "comparisonMedian": 8.604951,
+          "medianRatio": 1.215525220067114,
+          "baselineP95": 7.982293999999996,
+          "comparisonP95": 9.297145999999998,
+          "tailRatio": 1.1647210689057559
+        }
+      },
+      {
+        "key": "node-native/common/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 1.5492709999999974,
+          "comparisonMedian": 46.09446100000001,
+          "medianRatio": 29.752355139933613,
+          "baselineP95": 1.6419880000000049,
+          "comparisonP95": 48.398636999999994,
+          "tailRatio": 29.47563380487546
+        }
+      },
+      {
+        "key": "node-native/common/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.330606000000003,
+          "comparisonMedian": 13.748305000000002,
+          "medianRatio": 3.174683866414999,
+          "baselineP95": 4.540875,
+          "comparisonP95": 14.495754000000005,
+          "tailRatio": 3.192282104220003
+        }
+      },
+      {
+        "key": "node-native/common/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 2.7120809999999977,
+          "comparisonMedian": 10.796665999999995,
+          "medianRatio": 3.9809526337893315,
+          "baselineP95": 2.959446,
+          "comparisonP95": 11.266261999999998,
+          "tailRatio": 3.8068820988793166
+        }
+      },
+      {
+        "key": "node-native/common/us-jurisdiction/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.799619,
+          "comparisonMedian": 15.797778999999998,
+          "medianRatio": 2.323332969097239,
+          "baselineP95": 7.427213999999999,
+          "comparisonP95": 16.296746999999996,
+          "tailRatio": 2.194193812107743
+        }
+      },
+      {
+        "key": "node-native/common/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 1.5223689999999976,
+          "comparisonMedian": 46.080979,
+          "medianRatio": 30.269257321976518,
+          "baselineP95": 1.6042009999999962,
+          "comparisonP95": 48.37145,
+          "tailRatio": 30.152985816615324
+        }
+      },
+      {
+        "key": "node-native/common/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 4.253371000000001,
+          "comparisonMedian": 13.66570800000001,
+          "medianRatio": 3.2129122994443713,
+          "baselineP95": 4.561489000000002,
+          "comparisonP95": 14.425892000000005,
+          "tailRatio": 3.162540126699856
+        }
+      },
+      {
+        "key": "node-native/common/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 2.7387939999999986,
+          "comparisonMedian": 10.804355999999999,
+          "medianRatio": 3.944931966405653,
+          "baselineP95": 2.8445430000000016,
+          "comparisonP95": 11.353214999999999,
+          "tailRatio": 3.99122635868046
+        }
+      },
+      {
+        "key": "node-native/common/beta10-full/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.838881000000001,
+          "comparisonMedian": 15.799535000000006,
+          "medianRatio": 2.310251487048832,
+          "baselineP95": 7.180473999999997,
+          "comparisonP95": 16.690769000000003,
+          "tailRatio": 2.324466184265831
+        }
+      },
+      {
+        "key": "node-wasm/full/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 26.918459,
+          "comparisonMedian": 71.55254000000001,
+          "medianRatio": 2.6581217000571993,
+          "baselineP95": 38.950911000000005,
+          "comparisonP95": 82.708497,
+          "tailRatio": 2.1234034038382306
+        }
+      },
+      {
+        "key": "node-wasm/full/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 47.878378999999995,
+          "comparisonMedian": 61.52359799999999,
+          "medianRatio": 1.2849975142224426,
+          "baselineP95": 58.700393000000005,
+          "comparisonP95": 74.187173,
+          "tailRatio": 1.2638275351921409
+        }
+      },
+      {
+        "key": "node-wasm/full/global/validator-heavy",
+        "metric": "memory/nodePeakRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 88752128,
+          "comparisonMaximum": 99364864,
+          "deltaBytes": 10612736,
+          "relative": 0.1195772567841979
+        }
+      },
+      {
+        "key": "node-wasm/full/global/validator-heavy",
+        "metric": "memory/nodeRetainedRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 81494016,
+          "comparisonMaximum": 92631040,
+          "deltaBytes": 11137024,
+          "relative": 0.1366606353035786
+        }
+      },
+      {
+        "key": "node-wasm/full/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 37.857071000000005,
+          "comparisonMedian": 73.56851700000001,
+          "medianRatio": 1.9433230056281958,
+          "baselineP95": 51.64949100000001,
+          "comparisonP95": 82.58172099999999,
+          "tailRatio": 1.598887412075367
+        }
+      },
+      {
+        "key": "node-wasm/full/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 52.204318,
+          "comparisonMedian": 64.708835,
+          "medianRatio": 1.2395303200781207,
+          "baselineP95": 60.252069000000006,
+          "comparisonP95": 76.98445699999999,
+          "tailRatio": 1.2777064468939645
+        }
+      },
+      {
+        "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 26.368073999999993,
+          "comparisonMedian": 53.54531200000001,
+          "medianRatio": 2.030687262179256,
+          "baselineP95": 34.06637400000001,
+          "comparisonP95": 67.365304,
+          "tailRatio": 1.9774720960910008
+        }
+      },
+      {
+        "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "invalid-measurement",
+        "measured": {
+          "baselineMedian": 49.605078000000006,
+          "comparisonMedian": 57.82675899999998,
+          "medianRatio": 1.1657427290004458,
+          "baselineP95": 54.46033200000001,
+          "comparisonP95": 76.960818,
+          "tailRatio": 1.4131536693533193
+        }
+      },
+      {
+        "key": "node-wasm/full/us-ssn-exact/validator-heavy",
+        "metric": "memory/nodeRetainedRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 82526208,
+          "comparisonMaximum": 91901952,
+          "deltaBytes": 9375744,
+          "relative": 0.11360929124478857
+        }
+      },
+      {
+        "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 38.192835,
+          "comparisonMedian": 44.547005999999996,
+          "medianRatio": 1.1663707603795317,
+          "baselineP95": 46.118442,
+          "comparisonP95": 63.73267800000001,
+          "tailRatio": 1.3819347583337704
+        }
+      },
+      {
+        "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+        "metric": "incremental",
+        "verdict": "invalid-measurement",
+        "measured": {
+          "baselineMedian": 54.528819999999996,
+          "comparisonMedian": 57.89191300000002,
+          "medianRatio": 1.0616755139759126,
+          "baselineP95": 61.886416999999994,
+          "comparisonP95": 75.57447100000002,
+          "tailRatio": 1.2211802631908715
+        }
+      },
+      {
+        "key": "node-wasm/full/us-ssn-exact/multilingual-context",
+        "metric": "memory/nodeRetainedRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 83582976,
+          "comparisonMaximum": 92024832,
+          "deltaBytes": 8441856,
+          "relative": 0.10099970596883269
+        }
+      },
+      {
+        "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 26.553685,
+          "comparisonMedian": 82.17864100000001,
+          "medianRatio": 3.0948111721593445,
+          "baselineP95": 43.58389,
+          "comparisonP95": 93.492464,
+          "tailRatio": 2.145115179026012
+        }
+      },
+      {
+        "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 49.775059999999996,
+          "comparisonMedian": 62.796853999999996,
+          "medianRatio": 1.2616128237715836,
+          "baselineP95": 57.824679,
+          "comparisonP95": 70.76224100000002,
+          "tailRatio": 1.2237377227809603
+        }
+      },
+      {
+        "key": "node-wasm/full/us-jurisdiction/validator-heavy",
+        "metric": "memory/nodeRetainedRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 85327872,
+          "comparisonMaximum": 94138368,
+          "deltaBytes": 8810496,
+          "relative": 0.10325460829493087
+        }
+      },
+      {
+        "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 37.71436299999999,
+          "comparisonMedian": 82.312982,
+          "medianRatio": 2.1825367168471073,
+          "baselineP95": 51.865865000000014,
+          "comparisonP95": 92.977782,
+          "tailRatio": 1.792658466218581
+        }
+      },
+      {
+        "key": "node-wasm/full/us-jurisdiction/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 55.280091999999996,
+          "comparisonMedian": 65.281205,
+          "medianRatio": 1.1809170831336533,
+          "baselineP95": 60.064959000000016,
+          "comparisonP95": 70.128229,
+          "tailRatio": 1.167539779724148
+        }
+      },
+      {
+        "key": "node-wasm/full/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 34.999972,
+          "comparisonMedian": 79.179675,
+          "medianRatio": 2.2622782383940194,
+          "baselineP95": 44.097556999999995,
+          "comparisonP95": 91.365548,
+          "tailRatio": 2.0718959102428287
+        }
+      },
+      {
+        "key": "node-wasm/full/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 45.090011000000004,
+          "comparisonMedian": 60.358092,
+          "medianRatio": 1.3386133793580133,
+          "baselineP95": 55.95098999999999,
+          "comparisonP95": 67.77991399999999,
+          "tailRatio": 1.2114158123028744
+        }
+      },
+      {
+        "key": "node-wasm/full/beta10-full/validator-heavy",
+        "metric": "memory/nodeRetainedRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 82194432,
+          "comparisonMaximum": 95621120,
+          "deltaBytes": 13426688,
+          "relative": 0.16335276822644143
+        }
+      },
+      {
+        "key": "node-wasm/full/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 39.747741000000005,
+          "comparisonMedian": 82.12429999999999,
+          "medianRatio": 2.0661375447726695,
+          "baselineP95": 59.58141499999999,
+          "comparisonP95": 88.867142,
+          "tailRatio": 1.4915245299226279
+        }
+      },
+      {
+        "key": "node-wasm/full/beta10-full/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 54.74224799999999,
+          "comparisonMedian": 68.985848,
+          "medianRatio": 1.2601939182329527,
+          "baselineP95": 61.72418599999999,
+          "comparisonP95": 82.29244,
+          "tailRatio": 1.3332284365807596
+        }
+      },
+      {
+        "key": "node-wasm/common/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 12.179010000000005,
+          "comparisonMedian": 42.684585,
+          "medianRatio": 3.504766397268742,
+          "baselineP95": 16.069568000000004,
+          "comparisonP95": 64.390941,
+          "tailRatio": 4.00701132724912
+        }
+      },
+      {
+        "key": "node-wasm/common/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 22.365950999999995,
+          "comparisonMedian": 48.086242999999996,
+          "medianRatio": 2.1499753352763764,
+          "baselineP95": 23.26379700000001,
+          "comparisonP95": 59.84123000000001,
+          "tailRatio": 2.572289897474603
+        }
+      },
+      {
+        "key": "node-wasm/common/global/validator-heavy",
+        "metric": "memory/nodePeakRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 87638016,
+          "comparisonMaximum": 97157120,
+          "deltaBytes": 9519104,
+          "relative": 0.10861843335202842
+        }
+      },
+      {
+        "key": "node-wasm/common/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 21.709604999999996,
+          "comparisonMedian": 53.19412000000001,
+          "medianRatio": 2.4502573860740453,
+          "baselineP95": 23.620013,
+          "comparisonP95": 66.34185500000001,
+          "tailRatio": 2.808713737795149
+        }
+      },
+      {
+        "key": "node-wasm/common/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 28.726786999999987,
+          "comparisonMedian": 45.93437,
+          "medianRatio": 1.5990082705733857,
+          "baselineP95": 34.962807,
+          "comparisonP95": 55.205832999999984,
+          "tailRatio": 1.57898743656366
+        }
+      },
+      {
+        "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 11.40137,
+          "comparisonMedian": 27.653757999999996,
+          "medianRatio": 2.42547676288025,
+          "baselineP95": 17.806825000000003,
+          "comparisonP95": 36.6502,
+          "tailRatio": 2.0582108264668175
+        }
+      },
+      {
+        "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 21.437197999999995,
+          "comparisonMedian": 39.299608000000006,
+          "medianRatio": 1.8332436916429105,
+          "baselineP95": 25.863079999999997,
+          "comparisonP95": 46.94566499999999,
+          "tailRatio": 1.8151614192895817
+        }
+      },
+      {
+        "key": "node-wasm/common/us-ssn-exact/validator-heavy",
+        "metric": "memory/nodePeakRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 87494656,
+          "comparisonMaximum": 96595968,
+          "deltaBytes": 9101312,
+          "relative": 0.1040213473152006
+        }
+      },
+      {
+        "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 18.859764,
+          "comparisonMedian": 30.903937,
+          "medianRatio": 1.6386173761241127,
+          "baselineP95": 21.964227000000008,
+          "comparisonP95": 37.58641,
+          "tailRatio": 1.7112557614706854
+        }
+      },
+      {
+        "key": "node-wasm/common/us-ssn-exact/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 29.727947999999998,
+          "comparisonMedian": 38.85211500000001,
+          "medianRatio": 1.3069221932169692,
+          "baselineP95": 39.421209000000005,
+          "comparisonP95": 44.67071,
+          "tailRatio": 1.1331643836697143
+        }
+      },
+      {
+        "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 14.216249999999988,
+          "comparisonMedian": 56.16080299999999,
+          "medianRatio": 3.9504653477534535,
+          "baselineP95": 21.62951299999999,
+          "comparisonP95": 71.08357899999999,
+          "tailRatio": 3.28641606493868
+        }
+      },
+      {
+        "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 21.340988999999993,
+          "comparisonMedian": 49.34258199999999,
+          "medianRatio": 2.312103811121406,
+          "baselineP95": 29.809706000000006,
+          "comparisonP95": 56.82588900000002,
+          "tailRatio": 1.906288139842775
+        }
+      },
+      {
+        "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+        "metric": "memory/nodePeakRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 87683072,
+          "comparisonMaximum": 97431552,
+          "deltaBytes": 9748480,
+          "relative": 0.11117858644368664
+        }
+      },
+      {
+        "key": "node-wasm/common/us-jurisdiction/validator-heavy",
+        "metric": "memory/nodeRetainedRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 81010688,
+          "comparisonMaximum": 90738688,
+          "deltaBytes": 9728000,
+          "relative": 0.12008292041662454
+        }
+      },
+      {
+        "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 19.997974,
+          "comparisonMedian": 61.31032400000001,
+          "medianRatio": 3.0658267682516245,
+          "baselineP95": 30.757713999999993,
+          "comparisonP95": 75.84234400000001,
+          "tailRatio": 2.465799116280229
+        }
+      },
+      {
+        "key": "node-wasm/common/us-jurisdiction/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 31.807880999999995,
+          "comparisonMedian": 50.426389,
+          "medianRatio": 1.5853426073871444,
+          "baselineP95": 37.029758,
+          "comparisonP95": 59.07075599999999,
+          "tailRatio": 1.595223927739414
+        }
+      },
+      {
+        "key": "node-wasm/common/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 12.185130000000001,
+          "comparisonMedian": 54.81465399999999,
+          "medianRatio": 4.498487418681622,
+          "baselineP95": 21.143237,
+          "comparisonP95": 61.25096099999999,
+          "tailRatio": 2.8969528648806233
+        }
+      },
+      {
+        "key": "node-wasm/common/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 21.879388000000006,
+          "comparisonMedian": 48.304911000000004,
+          "medianRatio": 2.2077816344771612,
+          "baselineP95": 30.023382999999995,
+          "comparisonP95": 56.51953900000001,
+          "tailRatio": 1.882517336570633
+        }
+      },
+      {
+        "key": "node-wasm/common/beta10-full/validator-heavy",
+        "metric": "memory/nodePeakRss",
+        "verdict": "regression",
+        "measured": {
+          "baselineMaximum": 87437312,
+          "comparisonMaximum": 97644544,
+          "deltaBytes": 10207232,
+          "relative": 0.1167377149013913
+        }
+      },
+      {
+        "key": "node-wasm/common/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 21.972935000000007,
+          "comparisonMedian": 59.86844000000001,
+          "medianRatio": 2.724644659441262,
+          "baselineP95": 26.27799900000001,
+          "comparisonP95": 65.23723799999999,
+          "tailRatio": 2.482580123395239
+        }
+      },
+      {
+        "key": "node-wasm/common/beta10-full/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 31.007526,
+          "comparisonMedian": 49.262291000000005,
+          "medianRatio": 1.588720460961639,
+          "baselineP95": 35.42971399999999,
+          "comparisonP95": 61.01398600000002,
+          "tailRatio": 1.7221134215195764
+        }
+      },
+      {
+        "key": "chromium-wasm/full/global/validator-heavy",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.700000000011642,
+          "comparisonMedian": 12.200000000011642,
+          "medianRatio": 1.2577319587625773,
+          "baselineP95": 12.599999999976717,
+          "comparisonP95": 13.299999999988358,
+          "tailRatio": 1.055555555556582
+        }
+      },
+      {
+        "key": "chromium-wasm/full/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 28.399999999965075,
+          "comparisonMedian": 57.20000000001164,
+          "medianRatio": 2.01408450704514,
+          "baselineP95": 34.100000000034925,
+          "comparisonP95": 66.89999999996508,
+          "tailRatio": 1.9618768328415412
+        }
+      },
+      {
+        "key": "chromium-wasm/full/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 46,
+          "comparisonMedian": 66.29999999998836,
+          "medianRatio": 1.4413043478258338,
+          "baselineP95": 49.199999999953434,
+          "comparisonP95": 81.59999999997672,
+          "tailRatio": 1.6585365853669503
+        }
+      },
+      {
+        "key": "chromium-wasm/full/global/multilingual-context",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.799999999988358,
+          "comparisonMedian": 12.799999999988358,
+          "medianRatio": 1.3061224489799554,
+          "baselineP95": 12.799999999988358,
+          "comparisonP95": 18.599999999976717,
+          "tailRatio": 1.4531249999995026
+        }
+      },
+      {
+        "key": "chromium-wasm/full/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 36.29999999998836,
+          "comparisonMedian": 74.29999999998836,
+          "medianRatio": 2.0468319559232007,
+          "baselineP95": 43.20000000001164,
+          "comparisonP95": 87.40000000002328,
+          "tailRatio": 2.0231481481481417
+        }
+      },
+      {
+        "key": "chromium-wasm/full/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 41,
+          "comparisonMedian": 52.40000000002328,
+          "medianRatio": 1.2780487804883727,
+          "baselineP95": 63.899999999965075,
+          "comparisonP95": 62.40000000002328,
+          "tailRatio": 0.9765258215971422
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 30.70000000001164,
+          "comparisonMedian": 41.29999999998836,
+          "medianRatio": 1.34527687296328,
+          "baselineP95": 34.90000000002328,
+          "comparisonP95": 55.5,
+          "tailRatio": 1.5902578796550995
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 47.5,
+          "comparisonMedian": 54.90000000002328,
+          "medianRatio": 1.1557894736847008,
+          "baselineP95": 56.79999999998836,
+          "comparisonP95": 68.80000000004657,
+          "tailRatio": 1.2112676056348708
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.299999999988358,
+          "comparisonMedian": 11.699999999953434,
+          "medianRatio": 1.2580645161255999,
+          "baselineP95": 11.900000000023283,
+          "comparisonP95": 19.20000000001164,
+          "tailRatio": 1.613445378149082
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 37.70000000001164,
+          "comparisonMedian": 48.800000000046566,
+          "medianRatio": 1.2944297082236471,
+          "baselineP95": 45.20000000001164,
+          "comparisonP95": 58.29999999998836,
+          "tailRatio": 1.2898230088489677
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-ssn-exact/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 50.199999999953434,
+          "comparisonMedian": 59.100000000034925,
+          "medianRatio": 1.1772908366551742,
+          "baselineP95": 63.90000000002328,
+          "comparisonP95": 68.90000000002328,
+          "tailRatio": 1.0782472613458245
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+        "metric": "import",
+        "verdict": "invalid-measurement",
+        "measured": {
+          "baselineMedian": 5.900000000023283,
+          "comparisonMedian": 6.2000000000116415,
+          "medianRatio": 1.050847457624945,
+          "baselineP95": 8.199999999953434,
+          "comparisonP95": 20,
+          "tailRatio": 2.439024390257753
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.300000000046566,
+          "comparisonMedian": 12.400000000023283,
+          "medianRatio": 1.3333333333291608,
+          "baselineP95": 13.799999999988358,
+          "comparisonP95": 15.200000000011642,
+          "tailRatio": 1.1014492753640917
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 29.900000000023283,
+          "comparisonMedian": 68.80000000004657,
+          "medianRatio": 2.301003344481371,
+          "baselineP95": 36.40000000002328,
+          "comparisonP95": 76.5,
+          "tailRatio": 2.1016483516470075
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 46,
+          "comparisonMedian": 67.80000000004657,
+          "medianRatio": 1.473913043479273,
+          "baselineP95": 55.20000000001164,
+          "comparisonP95": 78.40000000002328,
+          "tailRatio": 1.420289855072586
+        }
+      },
+      {
+        "key": "chromium-wasm/full/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 39,
+          "comparisonMedian": 79,
+          "medianRatio": 2.0256410256410255,
+          "baselineP95": 50.5,
+          "comparisonP95": 96.20000000001164,
+          "tailRatio": 1.9049504950497356
+        }
+      },
+      {
+        "key": "chromium-wasm/full/beta10-full/validator-heavy",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.900000000023283,
+          "comparisonMedian": 12.700000000011642,
+          "medianRatio": 1.2828282828264417,
+          "baselineP95": 13.600000000034925,
+          "comparisonP95": 15.700000000011642,
+          "tailRatio": 1.154411764703774
+        }
+      },
+      {
+        "key": "chromium-wasm/full/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 29.399999999965075,
+          "comparisonMedian": 67.79999999998836,
+          "medianRatio": 2.3061224489819354,
+          "baselineP95": 35.79999999998836,
+          "comparisonP95": 72.10000000003492,
+          "tailRatio": 2.0139664804485577
+        }
+      },
+      {
+        "key": "chromium-wasm/full/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 44.20000000001164,
+          "comparisonMedian": 69.79999999998836,
+          "medianRatio": 1.5791855203613117,
+          "baselineP95": 57.899999999965075,
+          "comparisonP95": 76.5,
+          "tailRatio": 1.3212435233168591
+        }
+      },
+      {
+        "key": "chromium-wasm/full/beta10-full/multilingual-context",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.5,
+          "comparisonMedian": 12.300000000046566,
+          "medianRatio": 1.2947368421101648,
+          "baselineP95": 12,
+          "comparisonP95": 14.299999999988358,
+          "tailRatio": 1.1916666666656965
+        }
+      },
+      {
+        "key": "chromium-wasm/full/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 40.5,
+          "comparisonMedian": 89.59999999997672,
+          "medianRatio": 2.212345679011771,
+          "baselineP95": 49.5,
+          "comparisonP95": 99.19999999995343,
+          "tailRatio": 2.0040404040394635
+        }
+      },
+      {
+        "key": "chromium-wasm/common/global/validator-heavy",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.7999999999883585,
+          "comparisonMedian": 11.299999999988358,
+          "medianRatio": 1.4487179487186184,
+          "baselineP95": 9.099999999976717,
+          "comparisonP95": 13.800000000046566,
+          "tailRatio": 1.5164835164925137
+        }
+      },
+      {
+        "key": "chromium-wasm/common/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 12.299999999988358,
+          "comparisonMedian": 43.20000000001164,
+          "medianRatio": 3.5121951219554903,
+          "baselineP95": 16,
+          "comparisonP95": 49.600000000034925,
+          "tailRatio": 3.100000000002183
+        }
+      },
+      {
+        "key": "chromium-wasm/common/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 19.399999999965075,
+          "comparisonMedian": 38.90000000002328,
+          "medianRatio": 2.0051546391800676,
+          "baselineP95": 22.70000000001164,
+          "comparisonP95": 52.29999999998836,
+          "tailRatio": 2.303964757707557
+        }
+      },
+      {
+        "key": "chromium-wasm/common/global/multilingual-context",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.7000000000116415,
+          "comparisonMedian": 10.700000000011642,
+          "medianRatio": 1.3896103896098007,
+          "baselineP95": 9.599999999976717,
+          "comparisonP95": 12.100000000034925,
+          "tailRatio": 1.2604166666733616
+        }
+      },
+      {
+        "key": "chromium-wasm/common/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 15.5,
+          "comparisonMedian": 58.20000000001164,
+          "medianRatio": 3.7548387096781703,
+          "baselineP95": 19,
+          "comparisonP95": 64.5,
+          "tailRatio": 3.3947368421052633
+        }
+      },
+      {
+        "key": "chromium-wasm/common/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 25.20000000001164,
+          "comparisonMedian": 43.5,
+          "medianRatio": 1.7261904761896787,
+          "baselineP95": 33.79999999998836,
+          "comparisonP95": 49.79999999998836,
+          "tailRatio": 1.4733727810652517
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.899999999965075,
+          "comparisonMedian": 10.200000000011642,
+          "medianRatio": 1.2911392405135107,
+          "baselineP95": 10.099999999976717,
+          "comparisonP95": 13.700000000011642,
+          "tailRatio": 1.356435643568636
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 12.599999999976717,
+          "comparisonMedian": 24.599999999976717,
+          "medianRatio": 1.9523809523827123,
+          "baselineP95": 16.5,
+          "comparisonP95": 30.5,
+          "tailRatio": 1.8484848484848484
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 18.899999999965075,
+          "comparisonMedian": 31.70000000001164,
+          "medianRatio": 1.6772486772523925,
+          "baselineP95": 26.900000000023283,
+          "comparisonP95": 40.5,
+          "tailRatio": 1.5055762081771356
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.800000000046566,
+          "comparisonMedian": 10.100000000093132,
+          "medianRatio": 1.2948717948760045,
+          "baselineP95": 16.79999999998836,
+          "comparisonP95": 12.900000000023283,
+          "tailRatio": 0.7678571428590608
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 16.599999999976717,
+          "comparisonMedian": 25.900000000023283,
+          "medianRatio": 1.5602409638590127,
+          "baselineP95": 18.400000000023283,
+          "comparisonP95": 29.900000000023283,
+          "tailRatio": 1.624999999999209
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 8.100000000093132,
+          "comparisonMedian": 10.699999999953434,
+          "medianRatio": 1.3209876543000503,
+          "baselineP95": 11.099999999976717,
+          "comparisonP95": 13.599999999976717,
+          "tailRatio": 1.2252252252256977
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 12.900000000023283,
+          "comparisonMedian": 51.59999999997672,
+          "medianRatio": 3.9999999999909757,
+          "baselineP95": 17.199999999953434,
+          "comparisonP95": 58.09999999997672,
+          "tailRatio": 3.3779069767519774
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 19.800000000046566,
+          "comparisonMedian": 45,
+          "medianRatio": 2.272727272721928,
+          "baselineP95": 26.20000000006985,
+          "comparisonP95": 53.59999999997672,
+          "tailRatio": 2.0458015267112146
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.699999999953434,
+          "comparisonMedian": 11,
+          "medianRatio": 1.428571428580068,
+          "baselineP95": 10.099999999976717,
+          "comparisonP95": 14.5,
+          "tailRatio": 1.4356435643597452
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 16.5,
+          "comparisonMedian": 63.800000000046566,
+          "medianRatio": 3.866666666669489,
+          "baselineP95": 19.599999999976717,
+          "comparisonP95": 73.20000000006985,
+          "tailRatio": 3.7346938775590206
+        }
+      },
+      {
+        "key": "chromium-wasm/common/us-jurisdiction/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 27.900000000023283,
+          "comparisonMedian": 42.5,
+          "medianRatio": 1.5232974910381554,
+          "baselineP95": 31.5,
+          "comparisonP95": 50.79999999993015,
+          "tailRatio": 1.6126984126961952
+        }
+      },
+      {
+        "key": "chromium-wasm/common/beta10-full/validator-heavy",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.300000000046566,
+          "comparisonMedian": 11.79999999993015,
+          "medianRatio": 1.6164383561445042,
+          "baselineP95": 9.199999999953434,
+          "comparisonP95": 13.70000000006985,
+          "tailRatio": 1.4891304347977383
+        }
+      },
+      {
+        "key": "chromium-wasm/common/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 14,
+          "comparisonMedian": 50.79999999993015,
+          "medianRatio": 3.628571428566439,
+          "baselineP95": 18.100000000093132,
+          "comparisonP95": 63.59999999997672,
+          "tailRatio": 3.513812154676766
+        }
+      },
+      {
+        "key": "chromium-wasm/common/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 21.199999999953434,
+          "comparisonMedian": 46,
+          "medianRatio": 2.169811320759483,
+          "baselineP95": 26.79999999993015,
+          "comparisonP95": 52,
+          "tailRatio": 1.9402985074677437
+        }
+      },
+      {
+        "key": "chromium-wasm/common/beta10-full/multilingual-context",
+        "metric": "initialize",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.700000000069849,
+          "comparisonMedian": 10.5,
+          "medianRatio": 1.3636363636239937,
+          "baselineP95": 9.300000000046566,
+          "comparisonP95": 12.599999999976717,
+          "tailRatio": 1.354838709668132
+        }
+      },
+      {
+        "key": "chromium-wasm/common/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 17.699999999953434,
+          "comparisonMedian": 61.300000000046566,
+          "medianRatio": 3.463276836169934,
+          "baselineP95": 20.79999999993015,
+          "comparisonP95": 65.40000000002328,
+          "tailRatio": 3.1442307692424474
+        }
+      },
+      {
+        "key": "chromium-wasm/common/beta10-full/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 28.599999999976717,
+          "comparisonMedian": 44.29999999993015,
+          "medianRatio": 1.5489510489498677,
+          "baselineP95": 33,
+          "comparisonP95": 50.20000000006985,
+          "tailRatio": 1.5212121212142378
+        }
+      },
+      {
+        "key": "python/full/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.9693619999070506,
+          "comparisonMedian": 10.589055000082226,
+          "medianRatio": 2.667696975063042,
+          "baselineP95": 4.421631000013804,
+          "comparisonP95": 11.268104999999196,
+          "tailRatio": 2.548404649769286
+        }
+      },
+      {
+        "key": "python/full/global/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.428988999957255,
+          "comparisonMedian": 15.002915000081885,
+          "medianRatio": 1.5911477890312415,
+          "baselineP95": 10.862379999935001,
+          "comparisonP95": 15.745468000091023,
+          "tailRatio": 1.449541260772063
+        }
+      },
+      {
+        "key": "python/full/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.532056999958513,
+          "comparisonMedian": 13.54269600005864,
+          "medianRatio": 2.0732666601263054,
+          "baselineP95": 6.739169999946171,
+          "comparisonP95": 13.613529000053859,
+          "tailRatio": 2.0200601854772318
+        }
+      },
+      {
+        "key": "python/full/global/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 13.495216000023902,
+          "comparisonMedian": 21.915472999921803,
+          "medianRatio": 1.6239438479445596,
+          "baselineP95": 13.907388000006904,
+          "comparisonP95": 23.03091199996743,
+          "tailRatio": 1.6560199514068348
+        }
+      },
+      {
+        "key": "python/full/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.9432910000414267,
+          "comparisonMedian": 7.496522999986155,
+          "medianRatio": 1.9010828771975994,
+          "baselineP95": 4.054628000062621,
+          "comparisonP95": 7.597724999982347,
+          "tailRatio": 1.8738402141614483
+        }
+      },
+      {
+        "key": "python/full/us-ssn-exact/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.374379999940174,
+          "comparisonMedian": 11.596945999940544,
+          "medianRatio": 1.237089386179625,
+          "baselineP95": 9.461998000006133,
+          "comparisonP95": 11.737727000081577,
+          "tailRatio": 1.2405125217817599
+        }
+      },
+      {
+        "key": "python/full/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.505601000071692,
+          "comparisonMedian": 7.708820999937416,
+          "medianRatio": 1.1849513980111082,
+          "baselineP95": 6.593009999960486,
+          "comparisonP95": 7.810615000039434,
+          "tailRatio": 1.1846812002539424
+        }
+      },
+      {
+        "key": "python/full/us-ssn-exact/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 13.475364999976591,
+          "comparisonMedian": 15.195548999940911,
+          "medianRatio": 1.1276539819119784,
+          "baselineP95": 13.647578000018257,
+          "comparisonP95": 15.269265000029009,
+          "tailRatio": 1.1188259924221413
+        }
+      },
+      {
+        "key": "python/full/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.9622790000066743,
+          "comparisonMedian": 14.232557000013912,
+          "medianRatio": 3.592012828977954,
+          "baselineP95": 4.209586999991188,
+          "comparisonP95": 14.293900000097892,
+          "tailRatio": 3.3955587567445007
+        }
+      },
+      {
+        "key": "python/full/us-jurisdiction/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.423046000051727,
+          "comparisonMedian": 16.792481000038606,
+          "medianRatio": 1.7820650562404583,
+          "baselineP95": 10.099386000092636,
+          "comparisonP95": 16.884284000070693,
+          "tailRatio": 1.6718129201038383
+        }
+      },
+      {
+        "key": "python/full/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.570487999965735,
+          "comparisonMedian": 14.778378999949382,
+          "medianRatio": 2.24920569066201,
+          "baselineP95": 7.0732519999410215,
+          "comparisonP95": 15.624210000055427,
+          "tailRatio": 2.2089146548413243
+        }
+      },
+      {
+        "key": "python/full/us-jurisdiction/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 13.53183399999125,
+          "comparisonMedian": 23.30488100005823,
+          "medianRatio": 1.7222263441949777,
+          "baselineP95": 14.890049999962685,
+          "comparisonP95": 24.652308999975503,
+          "tailRatio": 1.6556229831355358
+        }
+      },
+      {
+        "key": "python/full/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 3.965457000049355,
+          "comparisonMedian": 14.22216900004969,
+          "medianRatio": 3.586514492496748,
+          "baselineP95": 3.998192000040035,
+          "comparisonP95": 14.322999999990316,
+          "tailRatio": 3.58236923085407
+        }
+      },
+      {
+        "key": "python/full/beta10-full/validator-heavy",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 9.431298000095012,
+          "comparisonMedian": 16.87258600009045,
+          "medianRatio": 1.7889993508762498,
+          "baselineP95": 9.711037999977634,
+          "comparisonP95": 17.11490800005322,
+          "tailRatio": 1.7624179825156319
+        }
+      },
+      {
+        "key": "python/full/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 6.541456000036305,
+          "comparisonMedian": 14.795480999964639,
+          "medianRatio": 2.261802418281576,
+          "baselineP95": 6.603582000025199,
+          "comparisonP95": 15.075053000032312,
+          "tailRatio": 2.282859969025112
+        }
+      },
+      {
+        "key": "python/full/beta10-full/multilingual-context",
+        "metric": "incremental",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 13.516524000010577,
+          "comparisonMedian": 23.229323999998996,
+          "medianRatio": 1.7185871160352189,
+          "baselineP95": 13.722648999987541,
+          "comparisonP95": 23.41396799999984,
+          "tailRatio": 1.7062280030642114
+        }
+      },
+      {
+        "key": "cli/full/global/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.7075710000000015,
+          "comparisonMedian": 12.891636000000005,
+          "medianRatio": 1.672593869067181,
+          "baselineP95": 7.856159999999999,
+          "comparisonP95": 12.997691000000003,
+          "tailRatio": 1.6544585395409468
+        }
+      },
+      {
+        "key": "cli/full/global/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 10.047125000000001,
+          "comparisonMedian": 17.330627999999997,
+          "medianRatio": 1.724934048297398,
+          "baselineP95": 10.597254,
+          "comparisonP95": 18.914123999999997,
+          "tailRatio": 1.7848136885272352
+        }
+      },
+      {
+        "key": "cli/full/us-ssn-exact/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.810431999999999,
+          "comparisonMedian": 9.768432999999998,
+          "medianRatio": 1.2506904867746111,
+          "baselineP95": 7.889823000000003,
+          "comparisonP95": 10.817966000000002,
+          "tailRatio": 1.3711291115149222
+        }
+      },
+      {
+        "key": "cli/full/us-ssn-exact/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 10.336738999999994,
+          "comparisonMedian": 11.592208,
+          "medianRatio": 1.1214569701334247,
+          "baselineP95": 10.981164,
+          "comparisonP95": 12.159329999999997,
+          "tailRatio": 1.107289719013394
+        }
+      },
+      {
+        "key": "cli/full/us-jurisdiction/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.772863999999998,
+          "comparisonMedian": 14.923332999999996,
+          "medianRatio": 1.91992719800578,
+          "baselineP95": 8.444638000000001,
+          "comparisonP95": 15.080618999999999,
+          "tailRatio": 1.7858218433993258
+        }
+      },
+      {
+        "key": "cli/full/us-jurisdiction/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 10.367335000000004,
+          "comparisonMedian": 18.745805000000004,
+          "medianRatio": 1.8081604385312133,
+          "baselineP95": 11.421623999999998,
+          "comparisonP95": 19.273269,
+          "tailRatio": 1.6874368303491696
+        }
+      },
+      {
+        "key": "cli/full/beta10-full/validator-heavy",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 7.819230000000001,
+          "comparisonMedian": 14.945443000000001,
+          "medianRatio": 1.9113701732779314,
+          "baselineP95": 7.961139000000003,
+          "comparisonP95": 15.167424,
+          "tailRatio": 1.9051826629330295
+        }
+      },
+      {
+        "key": "cli/full/beta10-full/multilingual-context",
+        "metric": "wholeInput",
+        "verdict": "regression",
+        "measured": {
+          "baselineMedian": 10.36757,
+          "comparisonMedian": 18.668419999999998,
+          "medianRatio": 1.8006553126721108,
+          "baselineP95": 11.545584999999999,
+          "comparisonP95": 19.514535000000002,
+          "tailRatio": 1.6902162168482588
+        }
+      }
+    ],
+    "sizeRows": [
+      {
+        "key": "qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret",
+        "deltaBytes": 395104
+      },
+      {
+        "key": "qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe",
+        "deltaBytes": 385536
+      },
+      {
+        "key": "qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret",
+        "deltaBytes": 441960
+      },
+      {
+        "key": "qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret",
+        "deltaBytes": 422304
+      },
+      {
+        "key": "qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe",
+        "deltaBytes": 433664
+      },
+      {
+        "key": "qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret",
+        "deltaBytes": 443640
+      },
+      {
+        "key": "qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node",
+        "deltaBytes": 400848
+      },
+      {
+        "key": "qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node",
+        "deltaBytes": 400896
+      },
+      {
+        "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node",
+        "deltaBytes": 452960
+      },
+      {
+        "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node",
+        "deltaBytes": 452840
+      },
+      {
+        "key": "qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node",
+        "deltaBytes": 444496
+      },
+      {
+        "key": "qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node",
+        "deltaBytes": 450048
+      },
+      {
+        "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node",
+        "deltaBytes": 474640
+      },
+      {
+        "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node",
+        "deltaBytes": 474520
+      },
+      {
+        "key": "qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz",
+        "deltaBytes": 146784
+      },
+      {
+        "key": "qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl",
+        "deltaBytes": 205382
+      },
+      {
+        "key": "qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl",
+        "deltaBytes": 206626
+      },
+      {
+        "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+        "deltaBytes": 208822
+      },
+      {
+        "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl",
+        "deltaBytes": 208840
+      },
+      {
+        "key": "qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl",
+        "deltaBytes": 215444
+      },
+      {
+        "key": "qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl",
+        "deltaBytes": 217496
+      },
+      {
+        "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "deltaBytes": 217876
+      },
+      {
+        "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl",
+        "deltaBytes": 220795
+      },
+      {
+        "key": "qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm",
+        "deltaBytes": 96311
+      },
+      {
+        "key": "qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+        "deltaBytes": 61458
+      },
+      {
+        "key": "qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate",
+        "deltaBytes": 144336
+      },
+      {
+        "key": "npmPackages:core/unpacked",
+        "deltaBytes": 8533
+      },
+      {
+        "key": "npmPackages:node/packed",
+        "deltaBytes": 216222
+      },
+      {
+        "key": "npmPackages:node/unpacked",
+        "deltaBytes": 474641
+      },
+      {
+        "key": "npmPackages:wasm/unpacked",
+        "deltaBytes": 1742348
+      },
+      {
+        "key": "wasmCompression:full/raw",
+        "deltaBytes": 96311
+      },
+      {
+        "key": "wasmCompression:full/brotli11",
+        "deltaBytes": 26011
+      },
+      {
+        "key": "wasmCompression:common/raw",
+        "deltaBytes": 61458
+      },
+      {
+        "key": "wasmCompression:common/brotli11",
+        "deltaBytes": 16751
+      },
+      {
+        "key": "browserBundle:full/bytes",
+        "deltaBytes": 942289
+      },
+      {
+        "key": "browserBundle:full/gzip9",
+        "deltaBytes": 349468
+      },
+      {
+        "key": "browserBundle:common/bytes",
+        "deltaBytes": 721591
+      },
+      {
+        "key": "browserBundle:common/gzip9",
+        "deltaBytes": 273621
+      }
+    ],
+    "excluded": [],
+    "rationale": "PII is opt-in. Every accepted cell compares PII on against PII off in the same artifact, so the cost is paid only by a caller that enables PII. PII-on absolute time at 8b6a5fd fell to 0.05-0.17 of 8f97f14d on every surface except the CLI (0.67-0.88), and the Chromium diagnostic of benchmarks #428 (runs 36587938904 and 36589203421) found no PII-on absolute-time regression against 8f97f14d: initialize is unchanged, and the official-order incremental slowdown disappears in steady state and with the Wasm tier pinned (TurboFan-only or Liftoff-only), where 8b6a5fd is 13-42 percent faster. The size rows are the accepted Beta.11 PII payload (#937 split, #902 association). Accepted for this candidate and these official runs only (bound candidate run 36584501052; the second candidate run 36585713241 is recorded as not used); nothing is excluded. Any later breach, at another commit or run, is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 ships six opt-in PII families (network-address, email, payment-card, IBAN, US SSN, NANP phone) under pii-context/v2, with linear-time context association (#902, #996) that cut PII-on whole-input time by 6-20x against 8f97f14d.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/901",
+        "https://github.com/redact-secret/redact-secret/issues/902",
+        "https://github.com/redact-secret/redact-secret/pull/996",
+        "https://github.com/redact-secret/redact-secret-benchmarks/issues/428"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-29 accepting the remaining Beta.11 PII profile-cost cells and size rows at 8b6a5fd as a tradeoff, excluding any cell the Chromium diagnostic shows to be a real PII-on absolute-time regression; relayed by the Beta.11 orchestrator)"
+  }
+]

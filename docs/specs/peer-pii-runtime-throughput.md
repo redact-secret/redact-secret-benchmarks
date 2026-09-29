@@ -112,28 +112,33 @@ this plan requires anyway.
 ## Running a measurement
 
 ```sh
-npm run peer-pii-runtime-throughput -- --redact-secret-addon=<path-to-built-.node-file>
+scripts/run-peer-pii-runtime-throughput-docker.sh [--out=<path>] [--cpus=4]
 ```
 
-Builds the addon first if needed:
+The [`Dockerfile`](../../Dockerfile) builds `bindings/node` (`napi build --platform --release`) from the product
+commit in `benchmarks/pin-manifest.json` `pins.redactSecretRevision` (override with `REDACT_SECRET_REF=<40-hex sha>`;
+a branch or tag name is rejected), on a `linux/amd64` base image pinned by digest with Node 22.22.2, Rust 1.90.0 and
+`npm ci` from the lockfile. The wrapper runs the image with `--cpus` fixed and passes the image digest, CPU limit and
+whether the Docker host is emulated. Decisions:
+[`2026-09-29-run-peer-pii-throughput-in-a-pinned-docker-image.md`](../decisions/2026-09-29-run-peer-pii-throughput-in-a-pinned-docker-image.md).
 
-```sh
-cd <redact-secret checkout>/bindings/node && npm install && npm run build
-```
+The report is `schemaVersion: 2`. `validatePeerRuntimeThroughputReport` requires, beyond the v1 fields,
+`runner.{cpuModel, cpuLimit, emulated, imageDigest}` (`imageDigest` is the image ID, `sha256:<64 hex>`) and
+`tools[redact-secret].provenance.commit` (the 40-hex product commit the addon was built from). It is validated before
+it is written, so an invalid or incomplete report fails the run rather than publishing a partial one.
 
-The report is validated against
-`validatePeerRuntimeThroughputReport` before it is written — an invalid or
-incomplete observation matrix fails the run rather than publishing a
-partial report — and written to
-`public/results/peer-pii-runtime-throughput.json`.
+Running without the wrapper fails: `REDACT_SECRET_REF`, `IMAGE_DIGEST`, `CPU_LIMIT` and `EMULATED` are required.
+
+**Local runs are smoke checks.** On Apple Silicon the amd64 image runs under emulation, which distorts timing. The run
+records `emulated: true` and the script refuses to write under `evidence/429/` in that case, and also when the ref
+differs from the pin. Any other `--out` path (the default is gitignored `public/results/`) is never refused.
 
 ## Publishing a snapshot
 
 The script's default output, `public/results/peer-pii-runtime-throughput.json`,
-is gitignored and the publish workflow never runs this measurement (it needs
-the hand-built addon above). The site therefore reads a committed snapshot
-instead: rerun with `--out=evidence/429/peer-pii-runtime-throughput.json` and
-update `evidence/429/README.md` with the new source identities.
+is gitignored and the publish workflow never runs this measurement (a native amd64 run is not yet scheduled in CI). The site therefore reads a committed snapshot
+instead: rerun the Docker command above on a native amd64 host with
+`--out=evidence/429/peer-pii-runtime-throughput.json` and update `evidence/429/README.md` with the new source identities.
 `src/pages/peer-runtime-throughput.ts` imports that file at build time, and
 `tests/peer-runtime-section.test.mjs` fails CI if it no longer passes
 `validatePeerRuntimeThroughputReport`. Without the file, the section reads
@@ -146,9 +151,9 @@ accuracy run's `summary.scanners`.
 
 ## What this plan does not do
 
-- No CI workflow. Building `redact-secret`'s native addon from source is a
-  manual step today (see above); wiring a scheduled or PR-triggered CI run
-  is future work, not part of this plan.
+- No CI workflow. The Docker image makes the run reproducible, but a
+  `workflow_dispatch` job that runs it on a native amd64 runner is future
+  work, not part of this plan.
 - No memory measurement — only latency and throughput. `pii-profile-cost-v1`
   already owns redact-secret's own memory-regression budgets; duplicating
   that machinery for a three-tool informational comparison is out of scope.

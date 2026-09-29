@@ -110,13 +110,23 @@ const WORKLOAD_IDS = (piiProfileCostWorkloads.workloads as any[]).map(row => row
 export function validatePeerRuntimeThroughputReport(value: unknown) {
   const plan = validatePeerRuntimeThroughputPlan();
   const report = structuredClone(value) as any;
+  // schemaVersion 1 is the frozen pre-Docker snapshot (evidence/429, #429); it stays valid until that snapshot is regenerated
+  // from a native amd64 host (#513). Every new report is schemaVersion 2 and must carry the reproducibility identity.
   if (!exact(report, ['schemaVersion', 'reportType', 'supportClaims', 'planCommitment', 'generatedAt', 'runner', 'tools',
-      'methodologyNotes', 'observations', 'artifactCommitment']) || report.schemaVersion !== 1 ||
+      'methodologyNotes', 'observations', 'artifactCommitment']) || ![1, 2].includes(report.schemaVersion) ||
       report.reportType !== 'peer-pii-runtime-throughput' || report.supportClaims !== false ||
       report.planCommitment !== plan.contentCommitment || !Number.isFinite(Date.parse(report.generatedAt)) ||
-      !exact(report.runner, ['platform', 'arch', 'node']) || typeof report.runner.node !== 'string' ||
+      !exact(report.runner, report.schemaVersion === 1 ? ['platform', 'arch', 'node'] :
+        ['platform', 'arch', 'node', 'cpuModel', 'cpuLimit', 'emulated', 'imageDigest']) || typeof report.runner.node !== 'string' ||
       report.artifactCommitment !== commitment(withoutCommitment(report)))
     throw new Error('Invalid peer-pii-runtime-throughput report identity or commitment');
+  if (report.schemaVersion === 2) {
+    const redactSecret = Array.isArray(report.tools) ? report.tools.find((t: any) => t?.id === 'redact-secret') : undefined;
+    if (typeof report.runner.cpuModel !== 'string' || !report.runner.cpuModel ||
+        !(Number.isFinite(report.runner.cpuLimit) && report.runner.cpuLimit > 0) || typeof report.runner.emulated !== 'boolean' ||
+        !/^sha256:[a-f0-9]{64}$/.test(report.runner.imageDigest ?? '') || !/^[a-f0-9]{40}$/.test(redactSecret?.provenance?.commit ?? ''))
+      throw new Error('peer-pii-runtime-throughput report must record the product commit, image digest and runner details');
+  }
   if (!Array.isArray(report.tools) || JSON.stringify(report.tools.map((t: any) => t.id).sort()) !== JSON.stringify([...TOOL_IDS].sort()) ||
       report.tools.some((t: any) => !exact(t, ['id', 'version', 'provenance']) || typeof t.version !== 'string' || !t.version))
     throw new Error('Invalid peer-pii-runtime-throughput report tool roster');
@@ -146,3 +156,18 @@ export function validatePeerRuntimeThroughputReport(value: unknown) {
 }
 
 validatePeerRuntimeThroughputPlan();
+
+export type SnapshotGuardInput = { ref: string; pinRef: string; emulated: boolean; outPath: string; root: string };
+
+/**
+ * #513: a run may write the committed snapshot directory (`evidence/429/`) only when the addon was built from the
+ * commit `benchmarks/pin-manifest.json` pins and the run was not under CPU emulation. Any other output path is a smoke
+ * check and is never refused. Returns the refusal reason, or null when the write is allowed.
+ */
+export function snapshotWriteRefusal({ ref, pinRef, emulated, outPath, root }: SnapshotGuardInput): string | null {
+  const relative = outPath.startsWith(root) ? outPath.slice(root.length).replace(/^[\\/]+/, '') : outPath;
+  if (!/^evidence[\\/]429[\\/]/.test(relative)) return null;
+  if (ref !== pinRef) return `refusing to write ${relative}: product ref ${ref} differs from pin-manifest redactSecretRevision ${pinRef}`;
+  if (emulated) return `refusing to write ${relative}: the run was emulated (non-amd64 host), so timings are not comparable`;
+  return null;
+}

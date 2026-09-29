@@ -62,3 +62,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Keep the TypeScript evaluation engine; do not start a Rust or WASM kernel after the P1-P3 fixes](2026-09-29-keep-the-typescript-evaluation-engine-after-p1-p3.md) (#479 P4; CI 5m22s to 1m24s, no language-bound kernel)
 - [Keep provider research in schema-validated dossiers in this repository](2026-09-29-keep-provider-research-in-validated-dossiers.md)
 - [Relabel the provider-named near-miss controls that redact-secret#948 makes credentials](2026-09-29-relabel-provider-named-near-miss-controls-under-948.md) (twins keep their scoped expectation; 25 controls move to policy/T3 on generic-token; nine replacement controls in `beta8-948`)
+- [Run the peer PII runtime-throughput snapshot in a pinned Docker image, and refuse emulated or lagging snapshots](2026-09-29-run-peer-pii-throughput-in-a-pinned-docker-image.md) (proposed; #513)

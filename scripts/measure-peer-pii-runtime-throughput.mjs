@@ -6,9 +6,13 @@
 //
 // Usage: node --import tsx scripts/measure-peer-pii-runtime-throughput.mjs
 //   [--redact-secret-addon=<path-to-built-.node-file>] [--out=<path>]
+// Reproducible run (#513): scripts/run-peer-pii-runtime-throughput-docker.sh, which supplies the
+// REDACT_SECRET_REF / IMAGE_DIGEST / CPU_LIMIT / EMULATED environment this script requires.
 import { performance } from 'node:perf_hooks';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import os from 'node:os';
+import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { loadAdapters } from './peer-pii-runtime-throughput/adapters.mjs';
 import { hash } from '../benchmarks/evaluation/substrate/hash.ts';
@@ -16,6 +20,7 @@ import {
   TOOL_IDS,
   peerRuntimeThroughputPlan,
   renderWorkloadText,
+  snapshotWriteRefusal,
   summarizeSamples,
   validatePeerRuntimeThroughputReport,
 } from '../benchmarks/evaluation/domains/pii/peer-runtime-throughput.ts';
@@ -27,6 +32,18 @@ for (const argument of process.argv.slice(2)) {
   if (!match) throw new Error(`Unrecognized argument: ${argument}`);
   args[match[1]] = match[2];
 }
+
+const need = name => process.env[name] || (() => { throw new Error(`${name} is not set: run this through scripts/run-peer-pii-runtime-throughput-docker.sh (#513)`); })();
+const pinRef = JSON.parse(await readFile(path.join(root, 'benchmarks/pin-manifest.json'), 'utf8')).pins.redactSecretRevision;
+const productRef = need('REDACT_SECRET_REF');
+const imageDigest = need('IMAGE_DIGEST');
+const cpuLimit = Number(need('CPU_LIMIT'));
+const emulated = need('EMULATED') === 'true';
+const outPath = path.resolve(args.out ?? path.join(root, 'public/results/peer-pii-runtime-throughput.json'));
+// Fail before measuring, not after: a refused snapshot must not cost a full run.
+const refusal = snapshotWriteRefusal({ ref: productRef, pinRef, emulated, outPath, root });
+if (refusal) throw new Error(refusal);
+if (emulated) console.warn('WARNING: emulated run; timings are a smoke check only and must not be committed.');
 
 const plan = peerRuntimeThroughputPlan;
 const { piiProfileCostWorkloads } = await import('../benchmarks/evaluation/domains/pii/profile-cost.ts');
@@ -74,13 +91,14 @@ const commitment = value => hash(JSON.stringify(canonical(value)));
 
 const withoutArtifactCommitment = ({ artifactCommitment: _artifactCommitment, ...rest }) => rest;
 const report = withoutArtifactCommitment({
-  schemaVersion: 1,
+  schemaVersion: 2,
   reportType: 'peer-pii-runtime-throughput',
   supportClaims: false,
   planCommitment: plan.contentCommitment,
   generatedAt: new Date().toISOString(),
-  runner: { platform: process.platform, arch: process.arch, node: process.version },
-  tools: TOOL_IDS.map(id => ({ id, version: adapters[id].version, provenance: adapters[id].provenance })),
+  runner: { platform: process.platform, arch: process.arch, node: process.version, cpuModel: os.cpus()[0]?.model ?? 'unknown', cpuLimit, emulated, imageDigest },
+  tools: TOOL_IDS.map(id => ({ id, version: adapters[id].version,
+    provenance: id === 'redact-secret' ? { ...adapters[id].provenance, commit: productRef } : adapters[id].provenance })),
   methodologyNotes: [
     'Informational only: no pass/fail verdict, no ranking assertion (this repository measures and records; see AGENTS.md Boundary rule).',
     "OpenRedaction's detect() is Promise-returning (asynchronous); flare-redact's redact() and redact-secret's scanAndRedact() are synchronous. Each is timed with performance.now() around the actual call, awaited where applicable, so the OpenRedaction figures include at least one Node event-loop microtask tick that the other two tools' figures do not.",
@@ -93,7 +111,6 @@ report.artifactCommitment = commitment(report);
 
 validatePeerRuntimeThroughputReport(report);
 
-const outPath = path.resolve(args.out ?? path.join(root, 'public/results/peer-pii-runtime-throughput.json'));
 await mkdir(path.dirname(outPath), { recursive: true });
 await writeFile(outPath, JSON.stringify(report, null, 2) + '\n');
 console.log(`Wrote ${outPath}`);

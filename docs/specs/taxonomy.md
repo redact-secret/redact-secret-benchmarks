@@ -91,6 +91,12 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
   `inngest:signing-key`, `resend:api-key`, `apify:api-token` and `wandb:api-key`
   (`wandb_v1_` only). Each maps no detector until the product detector
   (redact-secret#912–#917) is in the pinned registry.
+- **Beta.12 #860 issuance-research credential families (#464).** Six zero-detector rows are
+  measured arrival families whose contracts and corpora live in
+  `benchmarks/lib/beta8/464a.ts`–`464f.ts` (see [beta8-evidence.md](beta8-evidence.md)):
+  `daytona:api-key`, `clickhouse-cloud:api-key`, `nvidia:ngc-api-key`, `browserbase:api-key`
+  (`bb_live_` only), `cerebras:inference-api-key` and `runpod:api-key`. Each maps no detector
+  until the product detector (redact-secret#970–#975) is in the pinned registry.
 - **`families[].provider: null`** marks a family that is not provider-specific
   at all: `private-key`, `jwt`, `bearer-token`, `connection-string`,
   `otpauth-uri` and `generic-token` are structural or protocol-level formats
@@ -136,8 +142,8 @@ without one.
 
 ## Current counts
 
-152 families total: 146 across 76 providers plus 6 non-provider-specific
-formats; 103 carry at least one detector, 49 currently do not (counts as of 2026-09-28;
+158 families total: 152 across 82 providers plus 6 non-provider-specific
+formats; 127 carry at least one detector, 31 currently do not (counts as of 2026-09-29;
 `benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or

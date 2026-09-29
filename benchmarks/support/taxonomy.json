@@ -305,6 +305,30 @@
     {
       "id": "composio",
       "name": "Composio"
+    },
+    {
+      "id": "daytona",
+      "name": "Daytona"
+    },
+    {
+      "id": "clickhouse-cloud",
+      "name": "ClickHouse Cloud"
+    },
+    {
+      "id": "nvidia",
+      "name": "NVIDIA"
+    },
+    {
+      "id": "browserbase",
+      "name": "Browserbase"
+    },
+    {
+      "id": "cerebras",
+      "name": "Cerebras"
+    },
+    {
+      "id": "runpod",
+      "name": "RunPod"
     }
   ],
   "families": [
@@ -2079,6 +2103,78 @@
         "https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md"
       ],
       "note": "Scored arrival family composio-user-api-key: the product types it inside the shared composio-api-key detector as composio_user_api_key since redact-secret#909 (registry pinned at 1127bf9; scanners/families.mjs arrivalFindingTypes). Authored as a Beta.11 arrival family (#434 slice g, #860 Tier A handoff), contract in benchmarks/lib/beta8/434g.ts. T1."
+    },
+    {
+      "id": "daytona:api-key",
+      "provider": "daytona",
+      "name": "API key (dtn_)",
+      "description": "dtn_ + exactly 64 lowercase hex, T1 as of v0.190.0 (2026-06-23) under ruling R9; the same generator mints region proxy, SSH-gateway and runner keys, which are lexically identical.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/daytonaio/daytona/blob/01c502bb1f1ff8f2885d0cd490e043736083dca8/apps/api/src/common/utils/api-key.ts#L8-L18",
+        "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/daytona.md"
+      ],
+      "note": "Beta.12 arrival family daytona-api-key (#464, product redact-secret#970), contract in benchmarks/lib/beta8/464a.ts from the #860 handoff daytona.md. T1 as of v0.190.0 (R9, dated provider code); provider code went private after that release. Neither pinned scanner has a Daytona rule."
+    },
+    {
+      "id": "clickhouse-cloud:api-key",
+      "provider": "clickhouse-cloud",
+      "name": "API key secret (4b1d)",
+      "description": "4b1d + exactly 38 [A-Za-z0-9] (42 in all), T1 as of 2025-04-16 (R3, provider staff); the key ID (Basic-auth username) is not claimed. The at-least-one-uppercase guard is product policy, not a provider fact.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/gitleaks/gitleaks/pull/1826",
+        "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/clickhouse-cloud.md"
+      ],
+      "note": "Beta.12 arrival family clickhouse-cloud-api-secret (#464, product redact-secret#971), contract in benchmarks/lib/beta8/464b.ts from the #860 handoff clickhouse-cloud.md. T1 as of 2025-04-16; gitleaks 8.30.1 clickhouse-cloud-api-secret-key (entropy 3) is mapped to this family, trufflehog 3.97.4 has no rule."
+    },
+    {
+      "id": "nvidia:ngc-api-key",
+      "provider": "nvidia",
+      "name": "API key (nvapi-)",
+      "description": "nvapi- + at least 60 [A-Za-z0-9_-], open-ended (provider-authored floor, R2); the 128-byte cap is product policy. NGC Personal, NGC Service and build.nvidia.com keys share the prefix.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/NVIDIA-NeMo/nemo-helix/blob/689f7852611b0151cee2748ca2b68e8e163e3b65/plugins/nemo-agents/src/nemo_agents_plugin/skills/agents-secure/resources/pii_scan.py#L229-L232",
+        "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/nvidia.md"
+      ],
+      "note": "Beta.12 arrival family nvidia-api-key (#464, product redact-secret#972), contract in benchmarks/lib/beta8/464c.ts from the #860 handoff nvidia.md. T1 on the prefix, alphabet and floor; the cap is policy. trufflehog 3.97.4 NVAPI (exact 64) is mapped to this family and lags on every other width; gitleaks 8.30.1 has no rule."
+    },
+    {
+      "id": "browserbase:api-key",
+      "provider": "browserbase",
+      "name": "API key (bb_live_)",
+      "description": "bb_live_ + at least 20 [A-Za-z0-9], open-ended (provider CI gate, R2); the 128-byte cap is product policy; bb_test_ is issuance-gated and excluded.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/browserbase/cookbook/blob/eff9eca8e61e16ea1635e9e75e043c7a765c5f88/scripts/verify.py#L383",
+        "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/browserbase.md"
+      ],
+      "note": "Beta.12 arrival family browserbase-api-key (#464, product redact-secret#973), contract in benchmarks/lib/beta8/464d.ts from the #860 handoff browserbase.md. T1 on the prefix, alphabet and floor; the cap is policy. Neither pinned scanner has a Browserbase rule."
+    },
+    {
+      "id": "cerebras:inference-api-key",
+      "provider": "cerebras",
+      "name": "Inference API key (csk-)",
+      "description": "csk- or csk_ + exactly 48 body bytes (52 in all): the length is the provider validator (R1) and the prefixes a dated staff statement (R3); the [A-Za-z0-9_-] alphabet is project policy under R10. Management API keys are a separate credential of unknown shape.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/Cerebras/vscode-cerebras-chat/blob/e03602fa96f3ddfc8122ea2655bfa39424a5d157/src/provider.ts#L113",
+        "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/cerebras.md"
+      ],
+      "note": "Beta.12 arrival family cerebras-api-key (#464, product redact-secret#975), contract in benchmarks/lib/beta8/464e.ts from the #860 handoff cerebras.md. T1 on length and prefixes; the alphabet is policy (R10). Neither pinned scanner has a Cerebras rule; unpinned tool rules use [a-z0-9]. The leading boundary keeps Pinecone pcsk_ out."
+    },
+    {
+      "id": "runpod:api-key",
+      "provider": "runpod",
+      "name": "API key (rpa_)",
+      "description": "rpa_ + at least 31 [A-Za-z0-9], open-ended: the provider scrubber's floor is 16 (R2), the floor of 31 is policy under R10 (it excludes Redirect.pizza rpa_ + 30), and the 128-byte cap is product policy.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/runpod/runpod-mcp/blob/09a565a6adef8932f044dfa65243e7bc41cbdf2d/src/alp/scrub.ts#L36",
+        "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/runpod.md"
+      ],
+      "note": "Beta.12 arrival family runpod-api-key (#464, product redact-secret#974), contract in benchmarks/lib/beta8/464f.ts from the #860 handoff runpod.md. T1 on the prefix and alphabet; the floor and cap are policy. Neither pinned scanner has a RunPod rule; unpinned betterleaks uses a narrower 46-byte layout."
     }
   ]
 }

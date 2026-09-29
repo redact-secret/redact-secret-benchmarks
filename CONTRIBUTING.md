@@ -73,8 +73,10 @@ and the
 3. Links: a past state is a 40-hex commit permalink, a living `redact-secret`
    doc may use `main`, and branch links are rejected. Never write a real, live
    or new secret-shaped value: describe a shape in words or as a grammar.
-4. Close a research issue with the dossier PR (`Closes #N`), including a
-   `not-found` or `rejected` verdict.
+4. Open research with the "Research a provider or family" issue form. A
+   research issue closes only via a dossier PR's `Closes #N`, including a
+   `not-found` or `rejected` verdict; never close it by hand. Iterative findings
+   stay in issue comments and the dossier links them by permalink.
 5. Run `npm run dossiers:check` (schema, taxonomy ids, permalinks, coverage).
 
 ## Recording a decision

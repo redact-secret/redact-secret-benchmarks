@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T18:25:31.952Z",
+  "observedAt": "2026-09-29T22:04:31.303Z",
   "sourceRun": {
-    "runId": "8e6aaff0-245b-4d77-8c60-d614f254cebd",
-    "benchmarkRevision": "2e9ee7ad7c61fc91052b060da1a436f5de585fbe"
+    "runId": "18344190-8884-44cc-84ba-80bb674c5174",
+    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "c2eb961f9357f7ec54cce3acdad384c53a65723d728084830d43e028e9c94ecc",
-    "fixtureCount": 38640,
-    "fixturesDigest": "5197e0e9dd0669eb48b0779b7f5824936ef200a637c1522482c28d66ed103454",
+    "corpusHash": "ba741c0a6d0cead2ae9eff8fad80eaab93c0d1fe105144ee95990d5f6be99546",
+    "fixtureCount": 40394,
+    "fixturesDigest": "51889f8c8ba845bc1f7f11b9698ebd81a15df69188feb58b3c86d491c977aa28",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "5919a6764b77a9bb1f11925640c53ccb371a3fdacc8d9835a741eecda5689d42",
-      "fixtureCount": 4827
+      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+      "fixtureCount": 5034
     }
   },
   "peer": {
@@ -48,7 +48,7 @@
       "platform": "darwin-arm64",
       "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
     },
-    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -25054,6 +25054,576 @@
       "family": "wandb-api-key"
     },
     {
+      "path": "cases/beta8-464c--nvidia-api-key-bare-prose--differential/canonical.txt",
+      "start": 60,
+      "end": 130,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bare-prose--metamorphic/canonical.txt",
+      "start": 60,
+      "end": 130,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bare-prose--metamorphic/context.indent.txt",
+      "start": 64,
+      "end": 134,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 80,
+      "end": 150,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 60,
+      "end": 130,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bare-prose--mutation/canonical.txt",
+      "start": 60,
+      "end": 130,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 60,
+      "end": 130,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bearer-header--differential/canonical.txt",
+      "start": 77,
+      "end": 147,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bearer-header--metamorphic/canonical.txt",
+      "start": 77,
+      "end": 147,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bearer-header--metamorphic/context.indent.txt",
+      "start": 81,
+      "end": 151,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 97,
+      "end": 167,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 79,
+      "end": 149,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bearer-header--mutation/canonical.txt",
+      "start": 77,
+      "end": 147,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 77,
+      "end": 147,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-body-59-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-paste--differential/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-paste--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-paste--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 96,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 112,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-paste--mutation/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-docker-login-stdin--differential/canonical.txt",
+      "start": 6,
+      "end": 76,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-docker-login-stdin--metamorphic/canonical.txt",
+      "start": 6,
+      "end": 76,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-docker-login-stdin--metamorphic/context.indent.txt",
+      "start": 10,
+      "end": 80,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-docker-login-stdin--metamorphic/context.unicode-prefix.txt",
+      "start": 26,
+      "end": 96,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-docker-login-stdin--metamorphic/encoding.crlf.txt",
+      "start": 6,
+      "end": 76,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-docker-login-stdin--mutation/canonical.txt",
+      "start": 6,
+      "end": 76,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-docker-login-stdin--mutation/lexical.replace-last.txt",
+      "start": 6,
+      "end": 76,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dot-in-body-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--differential/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 96,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 112,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 93,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--differential/canonical.txt",
+      "start": 19,
+      "end": 89,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--metamorphic/canonical.txt",
+      "start": 19,
+      "end": 89,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--metamorphic/context.indent.txt",
+      "start": 23,
+      "end": 93,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--metamorphic/context.unicode-prefix.txt",
+      "start": 39,
+      "end": 109,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--metamorphic/encoding.crlf.txt",
+      "start": 20,
+      "end": 90,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--mutation/canonical.txt",
+      "start": 19,
+      "end": 89,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--mutation/lexical.replace-last.txt",
+      "start": 19,
+      "end": 89,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--differential/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 97,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 113,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 93,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 93,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 86,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 86,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 90,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 106,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 87,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 86,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 86,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-leading-glue-twin--twin/canonical.txt",
+      "start": 60,
+      "end": 130,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-leading-underscore-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--differential/canonical.txt",
+      "start": 29,
+      "end": 99,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 99,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 103,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 119,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 99,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--mutation/canonical.txt",
+      "start": 29,
+      "end": 99,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 29,
+      "end": 99,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-underscore-prefix-twin--twin/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 77,
+      "end": 147,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--differential/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--metamorphic/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 69,
+      "end": 139,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 85,
+      "end": 155,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 67,
+      "end": 137,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 65,
+      "end": 135,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--benign/canonical.txt",
+      "start": 17,
+      "end": 92,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--differential/canonical.txt",
+      "start": 17,
+      "end": 92,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--metamorphic/canonical.txt",
+      "start": 17,
+      "end": 92,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--metamorphic/context.indent.txt",
+      "start": 21,
+      "end": 96,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--metamorphic/context.unicode-prefix.txt",
+      "start": 37,
+      "end": 112,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 92,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--mutation/canonical.txt",
+      "start": 17,
+      "end": 92,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--differential/canonical.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 103,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 119,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 100,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/canonical.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.invalid-alphabet.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.replace-last.txt",
+      "start": 24,
+      "end": 99,
+      "family": "pinecone-api-key"
+    },
+    {
       "path": "cases/common-formats--anthropic-token-api03-admin-prefix-plain-twin--differential/canonical.txt",
       "start": 0,
       "end": 110,
@@ -43706,5 +44276,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "6945b28926fc2bfd44755436998fdcd3c0f46d177ed8feee8ff2450be021fea4"
+  "digest": "08851a62dd153cbb64aed9b04264bbf80c29b18c54357a39b557dd9219b1e03a"
 }

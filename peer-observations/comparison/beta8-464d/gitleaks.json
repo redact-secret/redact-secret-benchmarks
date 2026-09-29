@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-29T22:00:46.542Z",
+  "sourceRun": {
+    "runId": "2026-09-29T22:00:46.542Z-48ba53",
+    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+  },
+  "input": {
+    "surface": "comparison/beta8-464d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "fe9c00d1755f330b4bd3f45335d1b14ecb31f6fcd283c86a2c516171a33e5cb5",
+    "fixtureCount": 31,
+    "fixturesDigest": "5bc44960995f11bfb3e01a5ba63dd741ba19370935fd9c54e82c3335dc2b9291",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+      "fixtureCount": 5034
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/browserbase-api-key-bb-test-key-near-miss.env",
+      "start": 20,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-body-19-twin.json",
+      "start": 14,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-dotenv.env",
+      "start": 27,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-export.sh",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-json-api-key.json",
+      "start": 16,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-json-token.json",
+      "start": 14,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-mcp-env.json",
+      "start": 167,
+      "end": 303,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-python-sdk.py",
+      "start": 63,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-stagehand-ts.ts",
+      "start": 118,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-trailing-hyphen-twin.sh",
+      "start": 28,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-trailing-underscore-twin.env",
+      "start": 27,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "c21683acf0f190b4c5156371d0cf81cf6fa96b8d63e346ebe34072f59daa52c4"
+}

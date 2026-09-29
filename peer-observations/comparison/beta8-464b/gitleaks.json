@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-29T22:00:46.542Z",
+  "sourceRun": {
+    "runId": "2026-09-29T22:00:46.542Z-48ba53",
+    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+  },
+  "input": {
+    "surface": "comparison/beta8-464b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "8dd87fdd8363ebdc4c4089e16ff35edba1a44631c1c81827583d147da9d032d4",
+    "fixtureCount": 37,
+    "fixturesDigest": "e728248d693bad05bfb4db11d2661be0eb7bf15440d9a3306dc8cf944779fc28",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+      "fixtureCount": 5034
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/clickhouse-cloud-api-secret-actions-env.yml",
+      "start": 118,
+      "end": 160,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-bare-prose.md",
+      "start": 70,
+      "end": 112,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-bearer-header.http",
+      "start": 73,
+      "end": 115,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-body-37-twin.env",
+      "start": 35,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-body-39-twin.sh",
+      "start": 36,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-chat-paste.txt",
+      "start": 32,
+      "end": 74,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-compose-env.yml",
+      "start": 120,
+      "end": 162,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-curl-user-literal.sh",
+      "start": 15,
+      "end": 78
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-curl-user-literal.sh",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-curl-user-var.sh",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-curl-user-var.sh",
+      "start": 23,
+      "end": 65,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-dotenv-key-id-pair.env",
+      "start": 77,
+      "end": 119,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-dotenv.env",
+      "start": 35,
+      "end": 77,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-export.sh",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-hyphen-in-body-twin.http",
+      "start": 61,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-json-api-key.json",
+      "start": 16,
+      "end": 58,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-json-token.json",
+      "start": 14,
+      "end": 56,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-knowledge-base-39-byte-total-twin.json",
+      "start": 14,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-python-requests-auth.py",
+      "start": 133,
+      "end": 175,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-sdk-kwarg.py",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-terraform-token-secret.tf",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-terraform-token-secret.tf",
+      "start": 147,
+      "end": 189,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-trailing-hyphen-twin.py",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-trailing-hyphen-twin.py",
+      "start": 34,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-trailing-underscore-twin.sh",
+      "start": 15,
+      "end": 67
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-uppercase-prefix-twin.json",
+      "start": 16,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/clickhouse-cloud-api-secret-x-api-key-header.http",
+      "start": 61,
+      "end": 103,
+      "family": "clickhouse-cloud-api-secret"
+    }
+  ],
+  "digest": "821f5eb9d681758bfc9c98529ad66605f05f831b254da46cf8513f3865837b09"
+}

@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T18:25:31.952Z",
+  "observedAt": "2026-09-29T22:04:31.303Z",
   "sourceRun": {
-    "runId": "8e6aaff0-245b-4d77-8c60-d614f254cebd",
-    "benchmarkRevision": "2e9ee7ad7c61fc91052b060da1a436f5de585fbe"
+    "runId": "18344190-8884-44cc-84ba-80bb674c5174",
+    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "c2eb961f9357f7ec54cce3acdad384c53a65723d728084830d43e028e9c94ecc",
-    "fixtureCount": 38640,
-    "fixturesDigest": "5197e0e9dd0669eb48b0779b7f5824936ef200a637c1522482c28d66ed103454",
+    "corpusHash": "ba741c0a6d0cead2ae9eff8fad80eaab93c0d1fe105144ee95990d5f6be99546",
+    "fixtureCount": 40394,
+    "fixturesDigest": "51889f8c8ba845bc1f7f11b9698ebd81a15df69188feb58b3c86d491c977aa28",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "5919a6764b77a9bb1f11925640c53ccb371a3fdacc8d9835a741eecda5689d42",
-      "fixtureCount": 4827
+      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+      "fixtureCount": 5034
     }
   },
   "peer": {
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -60432,6 +60432,5891 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--differential/canonical.txt",
+      "start": 98,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--metamorphic/canonical.txt",
+      "start": 98,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--metamorphic/context.indent.txt",
+      "start": 102,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--metamorphic/context.unicode-prefix.txt",
+      "start": 118,
+      "end": 186,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--metamorphic/encoding.crlf.txt",
+      "start": 103,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--mutation/boundary.remove-delimiter.txt",
+      "start": 98,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--mutation/canonical.txt",
+      "start": 98,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--mutation/lexical.length-minus-one.txt",
+      "start": 98,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--mutation/lexical.length-plus-one.txt",
+      "start": 98,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--mutation/lexical.prefix-change.txt",
+      "start": 98,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-actions-env--mutation/lexical.replace-last.txt",
+      "start": 98,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-body-63-twin--differential/canonical.txt",
+      "start": 23,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-body-63-twin--twin/authored.twin.txt",
+      "start": 23,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-body-63-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-body-65-twin--differential/canonical.txt",
+      "start": 24,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-body-65-twin--twin/authored.twin.txt",
+      "start": 24,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-body-65-twin--twin/canonical.txt",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--differential/canonical.txt",
+      "start": 96,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--metamorphic/canonical.txt",
+      "start": 96,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--metamorphic/context.indent.txt",
+      "start": 100,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--metamorphic/context.unicode-prefix.txt",
+      "start": 116,
+      "end": 184,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--metamorphic/encoding.crlf.txt",
+      "start": 100,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--mutation/boundary.remove-delimiter.txt",
+      "start": 96,
+      "end": 163,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--mutation/canonical.txt",
+      "start": 96,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--mutation/lexical.length-minus-one.txt",
+      "start": 96,
+      "end": 163,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--mutation/lexical.length-plus-one.txt",
+      "start": 96,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--mutation/lexical.prefix-change.txt",
+      "start": 96,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-compose-env--mutation/lexical.replace-last.txt",
+      "start": 96,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--differential/canonical.txt",
+      "start": 69,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--metamorphic/canonical.txt",
+      "start": 69,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--metamorphic/context.indent.txt",
+      "start": 73,
+      "end": 141
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--metamorphic/context.unicode-prefix.txt",
+      "start": 89,
+      "end": 157
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--metamorphic/encoding.crlf.txt",
+      "start": 69,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--mutation/authored.twin.txt",
+      "start": 69,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--mutation/boundary.remove-delimiter.txt",
+      "start": 69,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--mutation/canonical.txt",
+      "start": 69,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--mutation/lexical.length-minus-one.txt",
+      "start": 69,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--mutation/lexical.length-plus-one.txt",
+      "start": 69,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--mutation/lexical.prefix-change.txt",
+      "start": 69,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-curl-bearer--mutation/lexical.replace-last.txt",
+      "start": 69,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--differential/canonical.txt",
+      "start": 23,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--mutation/authored.twin.txt",
+      "start": 23,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 23,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--mutation/canonical.txt",
+      "start": 23,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 23,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 23,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-dotenv--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--differential/canonical.txt",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 112,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--metamorphic/encoding.crlf.txt",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--mutation/authored.twin.txt",
+      "start": 24,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--mutation/boundary.remove-delimiter.txt",
+      "start": 24,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--mutation/canonical.txt",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--mutation/lexical.length-minus-one.txt",
+      "start": 24,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--mutation/lexical.length-plus-one.txt",
+      "start": 24,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--mutation/lexical.prefix-change.txt",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-export--mutation/lexical.replace-last.txt",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-hyphen-separator-twin--differential/canonical.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-hyphen-separator-twin--twin/authored.twin.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-hyphen-separator-twin--twin/canonical.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--mutation/authored.twin.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--mutation/boundary.remove-delimiter.txt",
+      "start": 16,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--mutation/lexical.prefix-change.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--mutation/authored.twin.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--mutation/boundary.remove-delimiter.txt",
+      "start": 14,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--mutation/lexical.prefix-change.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-named-bare-hex-encoded-value--benign/canonical.txt",
+      "start": 16,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-named-bare-hex-encoded-value--differential/canonical.txt",
+      "start": 16,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-named-bare-hex-encoded-value--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-named-bare-hex-encoded-value--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-named-bare-hex-encoded-value--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-named-bare-hex-encoded-value--metamorphic/encoding.crlf.txt",
+      "start": 16,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-named-bare-hex-encoded-value--mutation/canonical.txt",
+      "start": 16,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-non-hex-letter-twin--differential/canonical.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-non-hex-letter-twin--twin/authored.twin.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-non-hex-letter-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-openapi-example-placeholder--benign/canonical.txt",
+      "start": 13,
+      "end": 27,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-openapi-example-placeholder--differential/canonical.txt",
+      "start": 13,
+      "end": 27,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-openapi-example-placeholder--metamorphic/canonical.txt",
+      "start": 13,
+      "end": 27,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-openapi-example-placeholder--metamorphic/context.indent.txt",
+      "start": 17,
+      "end": 31,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-openapi-example-placeholder--metamorphic/context.unicode-prefix.txt",
+      "start": 33,
+      "end": 47,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-openapi-example-placeholder--metamorphic/encoding.crlf.txt",
+      "start": 13,
+      "end": 27,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-openapi-example-placeholder--mutation/canonical.txt",
+      "start": 13,
+      "end": 27,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--differential/canonical.txt",
+      "start": 76,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--metamorphic/canonical.txt",
+      "start": 76,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--metamorphic/context.indent.txt",
+      "start": 80,
+      "end": 148,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--metamorphic/context.unicode-prefix.txt",
+      "start": 96,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--metamorphic/encoding.crlf.txt",
+      "start": 78,
+      "end": 146,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--mutation/boundary.remove-delimiter.txt",
+      "start": 76,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--mutation/canonical.txt",
+      "start": 76,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--mutation/lexical.length-minus-one.txt",
+      "start": 76,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--mutation/lexical.length-plus-one.txt",
+      "start": 76,
+      "end": 145,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--mutation/lexical.prefix-change.txt",
+      "start": 76,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-python-config--mutation/lexical.replace-last.txt",
+      "start": 76,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--benign/canonical.txt",
+      "start": 15,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--differential/canonical.txt",
+      "start": 15,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--metamorphic/canonical.txt",
+      "start": 15,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--metamorphic/context.indent.txt",
+      "start": 19,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--metamorphic/context.unicode-prefix.txt",
+      "start": 35,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--mutation/canonical.txt",
+      "start": 15,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--differential/canonical.txt",
+      "start": 74,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--metamorphic/canonical.txt",
+      "start": 74,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--metamorphic/context.indent.txt",
+      "start": 78,
+      "end": 146,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--metamorphic/context.unicode-prefix.txt",
+      "start": 94,
+      "end": 162,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--metamorphic/encoding.crlf.txt",
+      "start": 74,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--mutation/boundary.remove-delimiter.txt",
+      "start": 74,
+      "end": 141,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--mutation/canonical.txt",
+      "start": 74,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--mutation/lexical.length-minus-one.txt",
+      "start": 74,
+      "end": 141,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--mutation/lexical.length-plus-one.txt",
+      "start": 74,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--mutation/lexical.prefix-change.txt",
+      "start": 74,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sandbox-log--mutation/lexical.replace-last.txt",
+      "start": 74,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--differential/canonical.txt",
+      "start": 26,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 26,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 30,
+      "end": 98,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 46,
+      "end": 114,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 26,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--mutation/authored.twin.txt",
+      "start": 26,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--mutation/boundary.remove-delimiter.txt",
+      "start": 26,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--mutation/canonical.txt",
+      "start": 26,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--mutation/lexical.length-minus-one.txt",
+      "start": 26,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 26,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--mutation/lexical.prefix-change.txt",
+      "start": 26,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 26,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-secret-then-hex-near-miss--benign/canonical.txt",
+      "start": 19,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-secret-then-hex-near-miss--differential/canonical.txt",
+      "start": 19,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-secret-then-hex-near-miss--metamorphic/canonical.txt",
+      "start": 19,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-secret-then-hex-near-miss--metamorphic/context.indent.txt",
+      "start": 23,
+      "end": 98,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-secret-then-hex-near-miss--metamorphic/context.unicode-prefix.txt",
+      "start": 39,
+      "end": 114,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-secret-then-hex-near-miss--metamorphic/encoding.crlf.txt",
+      "start": 19,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-secret-then-hex-near-miss--mutation/canonical.txt",
+      "start": 19,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--differential/canonical.txt",
+      "start": 66,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--metamorphic/canonical.txt",
+      "start": 66,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--metamorphic/context.indent.txt",
+      "start": 70,
+      "end": 138,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--metamorphic/context.unicode-prefix.txt",
+      "start": 86,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--metamorphic/encoding.crlf.txt",
+      "start": 68,
+      "end": 136,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--mutation/boundary.remove-delimiter.txt",
+      "start": 66,
+      "end": 133,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--mutation/canonical.txt",
+      "start": 66,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--mutation/lexical.length-minus-one.txt",
+      "start": 66,
+      "end": 133,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--mutation/lexical.length-plus-one.txt",
+      "start": 66,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--mutation/lexical.prefix-change.txt",
+      "start": 66,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-terraform-variable--mutation/lexical.replace-last.txt",
+      "start": 66,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-trailing-hyphen-twin--differential/canonical.txt",
+      "start": 26,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-trailing-hyphen-twin--twin/authored.twin.txt",
+      "start": 26,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-trailing-hyphen-twin--twin/canonical.txt",
+      "start": 26,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-trailing-underscore-twin--differential/canonical.txt",
+      "start": 69,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-trailing-underscore-twin--twin/authored.twin.txt",
+      "start": 69,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-trailing-underscore-twin--twin/canonical.txt",
+      "start": 69,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--differential/canonical.txt",
+      "start": 82,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--metamorphic/canonical.txt",
+      "start": 82,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--metamorphic/context.indent.txt",
+      "start": 86,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--metamorphic/context.unicode-prefix.txt",
+      "start": 102,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--metamorphic/encoding.crlf.txt",
+      "start": 84,
+      "end": 152,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--mutation/boundary.remove-delimiter.txt",
+      "start": 82,
+      "end": 149,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--mutation/canonical.txt",
+      "start": 82,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--mutation/lexical.length-minus-one.txt",
+      "start": 82,
+      "end": 149,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--mutation/lexical.length-plus-one.txt",
+      "start": 82,
+      "end": 151,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--mutation/lexical.prefix-change.txt",
+      "start": 82,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-ts-client--mutation/lexical.replace-last.txt",
+      "start": 82,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-uppercase-hex-byte-twin--differential/canonical.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-uppercase-hex-byte-twin--twin/authored.twin.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-uppercase-hex-byte-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--differential/canonical.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--metamorphic/canonical.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 59,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 75,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 57,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--mutation/authored.twin.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--mutation/boundary.remove-delimiter.txt",
+      "start": 55,
+      "end": 122,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--mutation/canonical.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--mutation/lexical.length-minus-one.txt",
+      "start": 55,
+      "end": 122,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 55,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--mutation/lexical.prefix-change.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464a--daytona-api-key-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--differential/canonical.txt",
+      "start": 118,
+      "end": 160,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--metamorphic/canonical.txt",
+      "start": 118,
+      "end": 160,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--metamorphic/context.indent.txt",
+      "start": 122,
+      "end": 164,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--metamorphic/context.unicode-prefix.txt",
+      "start": 138,
+      "end": 180,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--metamorphic/encoding.crlf.txt",
+      "start": 123,
+      "end": 165,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--mutation/canonical.txt",
+      "start": 118,
+      "end": 160,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--mutation/lexical.length-minus-one.txt",
+      "start": 118,
+      "end": 159,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--mutation/lexical.length-plus-one.txt",
+      "start": 118,
+      "end": 161,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--mutation/lexical.prefix-change.txt",
+      "start": 118,
+      "end": 160,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-actions-env--mutation/lexical.replace-last.txt",
+      "start": 118,
+      "end": 160,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bare-prose--differential/canonical.txt",
+      "start": 70,
+      "end": 112,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bare-prose--metamorphic/canonical.txt",
+      "start": 70,
+      "end": 112,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bare-prose--metamorphic/context.indent.txt",
+      "start": 74,
+      "end": 116,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 90,
+      "end": 132,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 112,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bare-prose--mutation/canonical.txt",
+      "start": 70,
+      "end": 112,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 70,
+      "end": 112,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bearer-header--differential/canonical.txt",
+      "start": 73,
+      "end": 115,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bearer-header--metamorphic/canonical.txt",
+      "start": 73,
+      "end": 115,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bearer-header--metamorphic/context.indent.txt",
+      "start": 77,
+      "end": 119,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 93,
+      "end": 135,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 75,
+      "end": 117,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bearer-header--mutation/canonical.txt",
+      "start": 73,
+      "end": 115,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 73,
+      "end": 115,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-body-37-twin--differential/canonical.txt",
+      "start": 35,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-body-37-twin--twin/authored.twin.txt",
+      "start": 35,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-body-37-twin--twin/canonical.txt",
+      "start": 35,
+      "end": 77,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-body-39-twin--differential/canonical.txt",
+      "start": 36,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-body-39-twin--twin/authored.twin.txt",
+      "start": 36,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-body-39-twin--twin/canonical.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-chat-paste--differential/canonical.txt",
+      "start": 32,
+      "end": 74,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-chat-paste--metamorphic/canonical.txt",
+      "start": 32,
+      "end": 74,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-chat-paste--metamorphic/context.indent.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 52,
+      "end": 94,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 32,
+      "end": 74,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-chat-paste--mutation/canonical.txt",
+      "start": 32,
+      "end": 74,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 32,
+      "end": 74,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--differential/canonical.txt",
+      "start": 120,
+      "end": 162,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--metamorphic/canonical.txt",
+      "start": 120,
+      "end": 162,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--metamorphic/context.indent.txt",
+      "start": 124,
+      "end": 166,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--metamorphic/context.unicode-prefix.txt",
+      "start": 140,
+      "end": 182,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--metamorphic/encoding.crlf.txt",
+      "start": 124,
+      "end": 166,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--mutation/canonical.txt",
+      "start": 120,
+      "end": 162,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--mutation/lexical.length-minus-one.txt",
+      "start": 120,
+      "end": 161,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--mutation/lexical.length-plus-one.txt",
+      "start": 120,
+      "end": 163,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--mutation/lexical.prefix-change.txt",
+      "start": 120,
+      "end": 162,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-compose-env--mutation/lexical.replace-last.txt",
+      "start": 120,
+      "end": 162,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--differential/canonical.txt",
+      "start": 15,
+      "end": 78
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--differential/canonical.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--metamorphic/canonical.txt",
+      "start": 15,
+      "end": 78
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--metamorphic/canonical.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--metamorphic/context.indent.txt",
+      "start": 19,
+      "end": 82
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--metamorphic/context.indent.txt",
+      "start": 40,
+      "end": 82,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--metamorphic/context.unicode-prefix.txt",
+      "start": 35,
+      "end": 98
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--metamorphic/context.unicode-prefix.txt",
+      "start": 56,
+      "end": 98,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 78
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--metamorphic/encoding.crlf.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--mutation/canonical.txt",
+      "start": 15,
+      "end": 78
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--mutation/canonical.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--mutation/lexical.length-minus-one.txt",
+      "start": 15,
+      "end": 77
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--mutation/lexical.length-plus-one.txt",
+      "start": 15,
+      "end": 79
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--mutation/lexical.prefix-change.txt",
+      "start": 15,
+      "end": 78
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--mutation/lexical.replace-last.txt",
+      "start": 15,
+      "end": 78
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-literal--mutation/lexical.replace-last.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--differential/canonical.txt",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--differential/canonical.txt",
+      "start": 23,
+      "end": 65,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--metamorphic/canonical.txt",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 65,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--metamorphic/context.indent.txt",
+      "start": 19,
+      "end": 69
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 69,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--metamorphic/context.unicode-prefix.txt",
+      "start": 35,
+      "end": 85
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 85,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 65,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--mutation/authored.twin.txt",
+      "start": 15,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--mutation/canonical.txt",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--mutation/canonical.txt",
+      "start": 23,
+      "end": 65,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--mutation/lexical.length-minus-one.txt",
+      "start": 15,
+      "end": 64
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--mutation/lexical.length-plus-one.txt",
+      "start": 15,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--mutation/lexical.prefix-change.txt",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--mutation/lexical.replace-last.txt",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-curl-user-var--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 65,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--differential/canonical.txt",
+      "start": 35,
+      "end": 77,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--metamorphic/canonical.txt",
+      "start": 35,
+      "end": 77,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--metamorphic/context.indent.txt",
+      "start": 39,
+      "end": 81,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 55,
+      "end": 97,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--mutation/authored.twin.txt",
+      "start": 35,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--mutation/canonical.txt",
+      "start": 35,
+      "end": 77,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 35,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 35,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 35,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv--mutation/lexical.replace-last.txt",
+      "start": 35,
+      "end": 77,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--differential/canonical.txt",
+      "start": 77,
+      "end": 119,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--metamorphic/canonical.txt",
+      "start": 77,
+      "end": 119,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--metamorphic/context.indent.txt",
+      "start": 81,
+      "end": 123,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--metamorphic/context.unicode-prefix.txt",
+      "start": 97,
+      "end": 139,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--metamorphic/encoding.crlf.txt",
+      "start": 78,
+      "end": 120,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--mutation/canonical.txt",
+      "start": 77,
+      "end": 119,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--mutation/lexical.length-minus-one.txt",
+      "start": 77,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--mutation/lexical.length-plus-one.txt",
+      "start": 77,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--mutation/lexical.prefix-change.txt",
+      "start": 77,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair--mutation/lexical.replace-last.txt",
+      "start": 77,
+      "end": 119,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--differential/canonical.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--metamorphic/canonical.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--metamorphic/context.indent.txt",
+      "start": 40,
+      "end": 82,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--metamorphic/context.unicode-prefix.txt",
+      "start": 56,
+      "end": 98,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--metamorphic/encoding.crlf.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--mutation/authored.twin.txt",
+      "start": 36,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--mutation/canonical.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--mutation/lexical.length-minus-one.txt",
+      "start": 36,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--mutation/lexical.length-plus-one.txt",
+      "start": 36,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--mutation/lexical.prefix-change.txt",
+      "start": 36,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-export--mutation/lexical.replace-last.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-hyphen-in-body-twin--differential/canonical.txt",
+      "start": 61,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-hyphen-in-body-twin--twin/authored.twin.txt",
+      "start": 61,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-hyphen-in-body-twin--twin/canonical.txt",
+      "start": 61,
+      "end": 103,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 58,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 58,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 62,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 78,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 59,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--mutation/authored.twin.txt",
+      "start": 16,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 58,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 59,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--mutation/lexical.prefix-change.txt",
+      "start": 16,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 58,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 56,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 56,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 60,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 57,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--mutation/authored.twin.txt",
+      "start": 14,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 56,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--mutation/lexical.prefix-change.txt",
+      "start": 14,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 56,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-knowledge-base-39-byte-total-twin--differential/canonical.txt",
+      "start": 14,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-knowledge-base-39-byte-total-twin--twin/authored.twin.txt",
+      "start": 14,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-knowledge-base-39-byte-total-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 56,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-leading-glue-twin--twin/canonical.txt",
+      "start": 70,
+      "end": 112,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-leading-underscore-twin--twin/canonical.txt",
+      "start": 32,
+      "end": 74,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-python-requests-auth--differential/canonical.txt",
+      "start": 133,
+      "end": 175,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-python-requests-auth--metamorphic/canonical.txt",
+      "start": 133,
+      "end": 175,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-python-requests-auth--metamorphic/context.indent.txt",
+      "start": 137,
+      "end": 179,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-python-requests-auth--metamorphic/context.unicode-prefix.txt",
+      "start": 153,
+      "end": 195,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-python-requests-auth--metamorphic/encoding.crlf.txt",
+      "start": 136,
+      "end": 178,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-python-requests-auth--mutation/canonical.txt",
+      "start": 133,
+      "end": 175,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-python-requests-auth--mutation/lexical.replace-last.txt",
+      "start": 133,
+      "end": 175,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--differential/canonical.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 38,
+      "end": 80,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 54,
+      "end": 96,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--mutation/authored.twin.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--mutation/authored.twin.txt",
+      "start": 34,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--mutation/canonical.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--mutation/lexical.length-minus-one.txt",
+      "start": 34,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 34,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--mutation/lexical.prefix-change.txt",
+      "start": 34,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--differential/canonical.txt",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--differential/canonical.txt",
+      "start": 147,
+      "end": 189,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--metamorphic/canonical.txt",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--metamorphic/canonical.txt",
+      "start": 147,
+      "end": 189,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--metamorphic/context.indent.txt",
+      "start": 108,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--metamorphic/context.indent.txt",
+      "start": 151,
+      "end": 193,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--metamorphic/context.unicode-prefix.txt",
+      "start": 124,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--metamorphic/context.unicode-prefix.txt",
+      "start": 167,
+      "end": 209,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--metamorphic/encoding.crlf.txt",
+      "start": 106,
+      "end": 126,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--metamorphic/encoding.crlf.txt",
+      "start": 150,
+      "end": 192,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/canonical.txt",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/canonical.txt",
+      "start": 147,
+      "end": 189,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.invalid-alphabet.txt",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.length-minus-one.txt",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.length-minus-one.txt",
+      "start": 147,
+      "end": 188,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.length-plus-one.txt",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.length-plus-one.txt",
+      "start": 147,
+      "end": 190,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.prefix-change.txt",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.prefix-change.txt",
+      "start": 147,
+      "end": 189,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.replace-last.txt",
+      "start": 104,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret--mutation/lexical.replace-last.txt",
+      "start": 147,
+      "end": 189,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-hyphen-twin--differential/canonical.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-hyphen-twin--differential/canonical.txt",
+      "start": 34,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-hyphen-twin--twin/authored.twin.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-hyphen-twin--twin/authored.twin.txt",
+      "start": 34,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-hyphen-twin--twin/canonical.txt",
+      "start": 34,
+      "end": 76,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-underscore-twin--differential/canonical.txt",
+      "start": 15,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-underscore-twin--twin/authored.twin.txt",
+      "start": 15,
+      "end": 67
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-underscore-twin--twin/canonical.txt",
+      "start": 15,
+      "end": 65
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-trailing-underscore-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 65,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-uppercase-prefix-twin--differential/canonical.txt",
+      "start": 16,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-uppercase-prefix-twin--twin/authored.twin.txt",
+      "start": 16,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 58,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-wrong-prefix-4b1c-twin--twin/canonical.txt",
+      "start": 73,
+      "end": 115,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--differential/canonical.txt",
+      "start": 61,
+      "end": 103,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 103,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 107,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 123,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 63,
+      "end": 105,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--mutation/authored.twin.txt",
+      "start": 61,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--mutation/canonical.txt",
+      "start": 61,
+      "end": 103,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--mutation/lexical.length-minus-one.txt",
+      "start": 61,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 61,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--mutation/lexical.prefix-change.txt",
+      "start": 61,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464b--clickhouse-cloud-api-secret-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 103,
+      "family": "clickhouse-cloud-api-secret"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-body-59-twin--differential/canonical.txt",
+      "start": 22,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-body-59-twin--twin/authored.twin.txt",
+      "start": 22,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-body-59-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--differential/canonical.txt",
+      "start": 117,
+      "end": 193,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--metamorphic/canonical.txt",
+      "start": 117,
+      "end": 193,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--metamorphic/context.indent.txt",
+      "start": 121,
+      "end": 197,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--metamorphic/context.unicode-prefix.txt",
+      "start": 137,
+      "end": 213,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--metamorphic/encoding.crlf.txt",
+      "start": 119,
+      "end": 195,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--mutation/boundary.remove-delimiter.txt",
+      "start": 117,
+      "end": 192,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--mutation/canonical.txt",
+      "start": 117,
+      "end": 193,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--mutation/lexical.length-minus-one.txt",
+      "start": 117,
+      "end": 192,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--mutation/lexical.length-plus-one.txt",
+      "start": 117,
+      "end": 194,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--mutation/lexical.prefix-change.txt",
+      "start": 117,
+      "end": 193,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-chat-nvidia--mutation/lexical.replace-last.txt",
+      "start": 117,
+      "end": 193,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--differential/canonical.txt",
+      "start": 87,
+      "end": 221
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--metamorphic/canonical.txt",
+      "start": 87,
+      "end": 221
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--metamorphic/context.indent.txt",
+      "start": 91,
+      "end": 225
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--metamorphic/context.unicode-prefix.txt",
+      "start": 107,
+      "end": 241
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--metamorphic/encoding.crlf.txt",
+      "start": 87,
+      "end": 221
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--mutation/boundary.remove-delimiter.txt",
+      "start": 87,
+      "end": 220
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--mutation/canonical.txt",
+      "start": 87,
+      "end": 221
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--mutation/lexical.length-minus-one.txt",
+      "start": 87,
+      "end": 220
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--mutation/lexical.length-plus-one.txt",
+      "start": 87,
+      "end": 222
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--mutation/lexical.prefix-change.txt",
+      "start": 87,
+      "end": 221
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-curl-bearer--mutation/lexical.replace-last.txt",
+      "start": 87,
+      "end": 221
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dot-in-body-twin--differential/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dot-in-body-twin--twin/authored.twin.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dot-in-body-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--differential/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 112,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/authored.twin.txt",
+      "start": 22,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 22,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/canonical.txt",
+      "start": 22,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 22,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 22,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--differential/canonical.txt",
+      "start": 19,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--metamorphic/canonical.txt",
+      "start": 19,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--metamorphic/context.indent.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--metamorphic/context.unicode-prefix.txt",
+      "start": 39,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--metamorphic/encoding.crlf.txt",
+      "start": 20,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--mutation/boundary.remove-delimiter.txt",
+      "start": 19,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--mutation/canonical.txt",
+      "start": 19,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--mutation/lexical.length-minus-one.txt",
+      "start": 19,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--mutation/lexical.length-plus-one.txt",
+      "start": 19,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--mutation/lexical.prefix-change.txt",
+      "start": 19,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-dotenv-ngc--mutation/lexical.replace-last.txt",
+      "start": 19,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--differential/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 113,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/authored.twin.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/boundary.remove-delimiter.txt",
+      "start": 23,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/canonical.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/lexical.length-plus-one.txt",
+      "start": 23,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/lexical.prefix-change.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-export--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--mutation/boundary.remove-delimiter.txt",
+      "start": 16,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--mutation/lexical.prefix-change.txt",
+      "start": 16,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--mutation/boundary.remove-delimiter.txt",
+      "start": 14,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--mutation/lexical.prefix-change.txt",
+      "start": 14,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--differential/canonical.txt",
+      "start": 100,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--metamorphic/canonical.txt",
+      "start": 100,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--metamorphic/context.indent.txt",
+      "start": 104,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--metamorphic/context.unicode-prefix.txt",
+      "start": 120,
+      "end": 186,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--metamorphic/encoding.crlf.txt",
+      "start": 102,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--mutation/boundary.remove-delimiter.txt",
+      "start": 100,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--mutation/canonical.txt",
+      "start": 100,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--mutation/lexical.length-minus-one.txt",
+      "start": 100,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--mutation/lexical.length-plus-one.txt",
+      "start": 100,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--mutation/lexical.prefix-change.txt",
+      "start": 100,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-openai-compat--mutation/lexical.replace-last.txt",
+      "start": 100,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--differential/canonical.txt",
+      "start": 29,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 29,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 33,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 49,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--mutation/boundary.remove-delimiter.txt",
+      "start": 29,
+      "end": 98,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--mutation/canonical.txt",
+      "start": 29,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--mutation/lexical.length-minus-one.txt",
+      "start": 29,
+      "end": 98,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 29,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--mutation/lexical.prefix-change.txt",
+      "start": 29,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 29,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-underscore-prefix-twin--differential/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-underscore-prefix-twin--twin/authored.twin.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-underscore-prefix-twin--twin/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--differential/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--metamorphic/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 69,
+      "end": 139,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 85,
+      "end": 155,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 67,
+      "end": 137,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/authored.twin.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/boundary.remove-delimiter.txt",
+      "start": 65,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/canonical.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/lexical.length-minus-one.txt",
+      "start": 65,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 65,
+      "end": 136,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/lexical.prefix-change.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464c--nvidia-api-key-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-bb-test-key-near-miss--benign/canonical.txt",
+      "start": 20,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-bb-test-key-near-miss--differential/canonical.txt",
+      "start": 20,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-bb-test-key-near-miss--metamorphic/canonical.txt",
+      "start": 20,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-bb-test-key-near-miss--metamorphic/context.indent.txt",
+      "start": 24,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-bb-test-key-near-miss--metamorphic/context.unicode-prefix.txt",
+      "start": 40,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-bb-test-key-near-miss--metamorphic/encoding.crlf.txt",
+      "start": 20,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-bb-test-key-near-miss--mutation/canonical.txt",
+      "start": 20,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-body-19-twin--differential/canonical.txt",
+      "start": 14,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-body-19-twin--twin/authored.twin.txt",
+      "start": 14,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-body-19-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--differential/canonical.txt",
+      "start": 27,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--metamorphic/canonical.txt",
+      "start": 27,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--metamorphic/context.indent.txt",
+      "start": 31,
+      "end": 71,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 47,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--mutation/authored.twin.txt",
+      "start": 27,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 27,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--mutation/canonical.txt",
+      "start": 27,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 27,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 27,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 27,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-dotenv--mutation/lexical.replace-last.txt",
+      "start": 27,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--differential/canonical.txt",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--metamorphic/canonical.txt",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--metamorphic/context.indent.txt",
+      "start": 32,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--metamorphic/context.unicode-prefix.txt",
+      "start": 48,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--metamorphic/encoding.crlf.txt",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--mutation/authored.twin.txt",
+      "start": 28,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--mutation/boundary.remove-delimiter.txt",
+      "start": 28,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--mutation/canonical.txt",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--mutation/lexical.length-minus-one.txt",
+      "start": 28,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--mutation/lexical.length-plus-one.txt",
+      "start": 28,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--mutation/lexical.prefix-change.txt",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-export--mutation/lexical.replace-last.txt",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-hyphen-prefix-twin--differential/canonical.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-hyphen-prefix-twin--twin/authored.twin.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-hyphen-prefix-twin--twin/canonical.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--mutation/boundary.remove-delimiter.txt",
+      "start": 16,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 57,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--mutation/lexical.prefix-change.txt",
+      "start": 16,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 46,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 43,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--mutation/authored.twin.txt",
+      "start": 14,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--mutation/boundary.remove-delimiter.txt",
+      "start": 14,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 43,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--mutation/lexical.prefix-change.txt",
+      "start": 14,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--differential/canonical.txt",
+      "start": 167,
+      "end": 303,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--metamorphic/canonical.txt",
+      "start": 167,
+      "end": 303,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--metamorphic/context.indent.txt",
+      "start": 171,
+      "end": 307,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--metamorphic/context.unicode-prefix.txt",
+      "start": 187,
+      "end": 323,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--metamorphic/encoding.crlf.txt",
+      "start": 172,
+      "end": 308,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--mutation/boundary.remove-delimiter.txt",
+      "start": 167,
+      "end": 302,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--mutation/canonical.txt",
+      "start": 167,
+      "end": 303,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--mutation/lexical.length-minus-one.txt",
+      "start": 167,
+      "end": 302,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--mutation/lexical.length-plus-one.txt",
+      "start": 167,
+      "end": 304,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--mutation/lexical.prefix-change.txt",
+      "start": 167,
+      "end": 303,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-mcp-env--mutation/lexical.replace-last.txt",
+      "start": 167,
+      "end": 303,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--differential/canonical.txt",
+      "start": 63,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--metamorphic/canonical.txt",
+      "start": 63,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--metamorphic/context.indent.txt",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--metamorphic/context.unicode-prefix.txt",
+      "start": 83,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--metamorphic/encoding.crlf.txt",
+      "start": 65,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--mutation/boundary.remove-delimiter.txt",
+      "start": 63,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--mutation/canonical.txt",
+      "start": 63,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--mutation/lexical.length-minus-one.txt",
+      "start": 63,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--mutation/lexical.length-plus-one.txt",
+      "start": 63,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--mutation/lexical.prefix-change.txt",
+      "start": 63,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-python-sdk--mutation/lexical.replace-last.txt",
+      "start": 63,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--differential/canonical.txt",
+      "start": 118,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--metamorphic/canonical.txt",
+      "start": 118,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--metamorphic/context.indent.txt",
+      "start": 122,
+      "end": 162,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--metamorphic/context.unicode-prefix.txt",
+      "start": 138,
+      "end": 178,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--metamorphic/encoding.crlf.txt",
+      "start": 120,
+      "end": 160,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--mutation/boundary.remove-delimiter.txt",
+      "start": 118,
+      "end": 157,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--mutation/canonical.txt",
+      "start": 118,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--mutation/lexical.length-minus-one.txt",
+      "start": 118,
+      "end": 157,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--mutation/lexical.length-plus-one.txt",
+      "start": 118,
+      "end": 159,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--mutation/lexical.prefix-change.txt",
+      "start": 118,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-stagehand-ts--mutation/lexical.replace-last.txt",
+      "start": 118,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-trailing-hyphen-twin--differential/canonical.txt",
+      "start": 28,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-trailing-hyphen-twin--twin/authored.twin.txt",
+      "start": 28,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-trailing-hyphen-twin--twin/canonical.txt",
+      "start": 28,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-trailing-underscore-twin--differential/canonical.txt",
+      "start": 27,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-trailing-underscore-twin--twin/authored.twin.txt",
+      "start": 27,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-trailing-underscore-twin--twin/canonical.txt",
+      "start": 27,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--differential/canonical.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--metamorphic/canonical.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 64,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 80,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 62,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--mutation/authored.twin.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--mutation/boundary.remove-delimiter.txt",
+      "start": 60,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--mutation/canonical.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--mutation/lexical.length-minus-one.txt",
+      "start": 60,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 60,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--mutation/lexical.prefix-change.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--differential/canonical.txt",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--metamorphic/canonical.txt",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--metamorphic/context.indent.txt",
+      "start": 71,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 87,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 69,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--mutation/boundary.remove-delimiter.txt",
+      "start": 67,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--mutation/canonical.txt",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--mutation/lexical.length-minus-one.txt",
+      "start": 67,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 67,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--mutation/lexical.prefix-change.txt",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464d--browserbase-api-key-x-bb-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-body-47-twin--differential/canonical.txt",
+      "start": 24,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-body-47-twin--twin/authored.twin.txt",
+      "start": 24,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-body-47-twin--twin/canonical.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-body-49-twin--differential/canonical.txt",
+      "start": 25,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-body-49-twin--twin/authored.twin.txt",
+      "start": 25,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-body-49-twin--twin/canonical.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dot-separator-twin--differential/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dot-separator-twin--twin/authored.twin.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dot-separator-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--differential/canonical.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--mutation/authored.twin.txt",
+      "start": 24,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 24,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--mutation/canonical.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 24,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 24,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv--mutation/lexical.replace-last.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--differential/canonical.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--mutation/boundary.remove-delimiter.txt",
+      "start": 24,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--mutation/canonical.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--mutation/lexical.length-minus-one.txt",
+      "start": 24,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--mutation/lexical.length-plus-one.txt",
+      "start": 24,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--mutation/lexical.prefix-change.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-dotenv-underscore--mutation/lexical.replace-last.txt",
+      "start": 24,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--differential/canonical.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--mutation/authored.twin.txt",
+      "start": 25,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--mutation/boundary.remove-delimiter.txt",
+      "start": 25,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--mutation/canonical.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--mutation/lexical.length-minus-one.txt",
+      "start": 25,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--mutation/lexical.prefix-change.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--differential/canonical.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--mutation/boundary.remove-delimiter.txt",
+      "start": 25,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--mutation/canonical.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--mutation/lexical.length-minus-one.txt",
+      "start": 25,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--mutation/lexical.prefix-change.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-export-underscore--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--mutation/authored.twin.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--mutation/boundary.remove-delimiter.txt",
+      "start": 16,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--mutation/lexical.prefix-change.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--differential/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--mutation/boundary.remove-delimiter.txt",
+      "start": 16,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--mutation/canonical.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--mutation/lexical.prefix-change.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-api-key-underscore--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--mutation/authored.twin.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--mutation/boundary.remove-delimiter.txt",
+      "start": 14,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--mutation/lexical.prefix-change.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--differential/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--mutation/boundary.remove-delimiter.txt",
+      "start": 14,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--mutation/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--mutation/lexical.prefix-change.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-json-token-underscore--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--differential/canonical.txt",
+      "start": 91,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--metamorphic/canonical.txt",
+      "start": 91,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--metamorphic/context.indent.txt",
+      "start": 95,
+      "end": 147,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--metamorphic/context.unicode-prefix.txt",
+      "start": 111,
+      "end": 163,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--metamorphic/encoding.crlf.txt",
+      "start": 93,
+      "end": 145,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--mutation/boundary.remove-delimiter.txt",
+      "start": 91,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--mutation/canonical.txt",
+      "start": 91,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--mutation/lexical.length-minus-one.txt",
+      "start": 91,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--mutation/lexical.length-plus-one.txt",
+      "start": 91,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--mutation/lexical.prefix-change.txt",
+      "start": 91,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-openai-compat-underscore--mutation/lexical.replace-last.txt",
+      "start": 91,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-glue-twin--differential/canonical.txt",
+      "start": 56,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-glue-twin--twin/authored.twin.txt",
+      "start": 56,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-glue-twin--twin/canonical.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--benign/canonical.txt",
+      "start": 26,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--differential/canonical.txt",
+      "start": 26,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--metamorphic/canonical.txt",
+      "start": 26,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--metamorphic/context.indent.txt",
+      "start": 30,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--metamorphic/context.unicode-prefix.txt",
+      "start": 46,
+      "end": 121,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--metamorphic/encoding.crlf.txt",
+      "start": 26,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--mutation/canonical.txt",
+      "start": 26,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--benign/canonical.txt",
+      "start": 17,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--differential/canonical.txt",
+      "start": 17,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--metamorphic/canonical.txt",
+      "start": 17,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--metamorphic/context.indent.txt",
+      "start": 21,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--metamorphic/context.unicode-prefix.txt",
+      "start": 37,
+      "end": 112,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--mutation/canonical.txt",
+      "start": 17,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--differential/canonical.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--differential/canonical.txt",
+      "start": 117,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/canonical.txt",
+      "start": 117,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/context.indent.txt",
+      "start": 121,
+      "end": 173,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 137,
+      "end": 189,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 119,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 117,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/canonical.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/canonical.txt",
+      "start": 117,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.invalid-alphabet.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 117,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 117,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 117,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.replace-last.txt",
+      "start": 24,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv--mutation/lexical.replace-last.txt",
+      "start": 117,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--differential/canonical.txt",
+      "start": 68,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--metamorphic/canonical.txt",
+      "start": 68,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--metamorphic/context.indent.txt",
+      "start": 72,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--metamorphic/context.unicode-prefix.txt",
+      "start": 88,
+      "end": 140,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--metamorphic/encoding.crlf.txt",
+      "start": 70,
+      "end": 122,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--mutation/boundary.remove-delimiter.txt",
+      "start": 68,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--mutation/canonical.txt",
+      "start": 68,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--mutation/lexical.length-minus-one.txt",
+      "start": 68,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--mutation/lexical.length-plus-one.txt",
+      "start": 68,
+      "end": 121,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--mutation/lexical.prefix-change.txt",
+      "start": 68,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-python-sdk--mutation/lexical.replace-last.txt",
+      "start": 68,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--differential/canonical.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 31,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 47,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--mutation/boundary.remove-delimiter.txt",
+      "start": 27,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--mutation/canonical.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--mutation/lexical.length-minus-one.txt",
+      "start": 27,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 27,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--mutation/lexical.prefix-change.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--differential/canonical.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--metamorphic/canonical.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--metamorphic/context.indent.txt",
+      "start": 31,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--metamorphic/context.unicode-prefix.txt",
+      "start": 47,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--metamorphic/encoding.crlf.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--mutation/boundary.remove-delimiter.txt",
+      "start": 27,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--mutation/canonical.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--mutation/lexical.length-minus-one.txt",
+      "start": 27,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--mutation/lexical.length-plus-one.txt",
+      "start": 27,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--mutation/lexical.prefix-change.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-sdk-kwarg-underscore--mutation/lexical.replace-last.txt",
+      "start": 27,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-uppercase-prefix-twin--differential/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-uppercase-prefix-twin--twin/authored.twin.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--differential/canonical.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 112,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 58,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--mutation/authored.twin.txt",
+      "start": 56,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--mutation/boundary.remove-delimiter.txt",
+      "start": 56,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--mutation/canonical.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--mutation/lexical.length-minus-one.txt",
+      "start": 56,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--mutation/lexical.prefix-change.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--differential/canonical.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 112,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--metamorphic/encoding.crlf.txt",
+      "start": 58,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--mutation/boundary.remove-delimiter.txt",
+      "start": 56,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--mutation/canonical.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--mutation/lexical.length-minus-one.txt",
+      "start": 56,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--mutation/lexical.prefix-change.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464e--cerebras-api-key-x-api-key-header-underscore--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-body-30-policy-floor-twin--differential/canonical.txt",
+      "start": 22,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-body-30-policy-floor-twin--twin/authored.twin.txt",
+      "start": 22,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-body-30-policy-floor-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--differential/canonical.txt",
+      "start": 64,
+      "end": 114
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--metamorphic/canonical.txt",
+      "start": 64,
+      "end": 114
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--metamorphic/context.indent.txt",
+      "start": 68,
+      "end": 118
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--metamorphic/context.unicode-prefix.txt",
+      "start": 84,
+      "end": 134
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--metamorphic/encoding.crlf.txt",
+      "start": 64,
+      "end": 114
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--mutation/boundary.remove-delimiter.txt",
+      "start": 64,
+      "end": 113
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--mutation/canonical.txt",
+      "start": 64,
+      "end": 114
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--mutation/lexical.length-minus-one.txt",
+      "start": 64,
+      "end": 113
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--mutation/lexical.length-plus-one.txt",
+      "start": 64,
+      "end": 115
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--mutation/lexical.prefix-change.txt",
+      "start": 64,
+      "end": 114
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-curl-graphql-bearer--mutation/lexical.replace-last.txt",
+      "start": 64,
+      "end": 114
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--differential/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--mutation/authored.twin.txt",
+      "start": 22,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 22,
+      "end": 71,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--mutation/canonical.txt",
+      "start": 22,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--mutation/lexical.length-minus-one.txt",
+      "start": 22,
+      "end": 71,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--mutation/lexical.length-plus-one.txt",
+      "start": 22,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--mutation/lexical.prefix-change.txt",
+      "start": 22,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-dotenv--mutation/lexical.replace-last.txt",
+      "start": 22,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--differential/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--metamorphic/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--metamorphic/context.indent.txt",
+      "start": 27,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--metamorphic/context.unicode-prefix.txt",
+      "start": 43,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--metamorphic/encoding.crlf.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--mutation/authored.twin.txt",
+      "start": 23,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--mutation/boundary.remove-delimiter.txt",
+      "start": 23,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--mutation/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--mutation/lexical.length-minus-one.txt",
+      "start": 23,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--mutation/lexical.length-plus-one.txt",
+      "start": 23,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--mutation/lexical.prefix-change.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-export--mutation/lexical.replace-last.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-hyphen-prefix-twin--differential/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-hyphen-prefix-twin--twin/authored.twin.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-hyphen-prefix-twin--twin/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--mutation/boundary.remove-delimiter.txt",
+      "start": 16,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--mutation/lexical.length-minus-one.txt",
+      "start": 16,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--mutation/lexical.length-plus-one.txt",
+      "start": 16,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--mutation/lexical.prefix-change.txt",
+      "start": 16,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 50,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--mutation/authored.twin.txt",
+      "start": 14,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--mutation/boundary.remove-delimiter.txt",
+      "start": 14,
+      "end": 48,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--mutation/lexical.length-minus-one.txt",
+      "start": 14,
+      "end": 48,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--mutation/lexical.length-plus-one.txt",
+      "start": 14,
+      "end": 50,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--mutation/lexical.prefix-change.txt",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--differential/canonical.txt",
+      "start": 138,
+      "end": 270,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--metamorphic/canonical.txt",
+      "start": 138,
+      "end": 270,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--metamorphic/context.indent.txt",
+      "start": 142,
+      "end": 274,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--metamorphic/context.unicode-prefix.txt",
+      "start": 158,
+      "end": 290,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--metamorphic/encoding.crlf.txt",
+      "start": 143,
+      "end": 275,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--mutation/boundary.remove-delimiter.txt",
+      "start": 138,
+      "end": 269,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--mutation/canonical.txt",
+      "start": 138,
+      "end": 270,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--mutation/lexical.length-minus-one.txt",
+      "start": 138,
+      "end": 269,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--mutation/lexical.length-plus-one.txt",
+      "start": 138,
+      "end": 271,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--mutation/lexical.prefix-change.txt",
+      "start": 138,
+      "end": 270,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-mcp-env--mutation/lexical.replace-last.txt",
+      "start": 138,
+      "end": 270,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--differential/canonical.txt",
+      "start": 33,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--metamorphic/canonical.txt",
+      "start": 33,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--metamorphic/context.indent.txt",
+      "start": 37,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--metamorphic/context.unicode-prefix.txt",
+      "start": 53,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--metamorphic/encoding.crlf.txt",
+      "start": 35,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--mutation/boundary.remove-delimiter.txt",
+      "start": 33,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--mutation/canonical.txt",
+      "start": 33,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--mutation/lexical.length-minus-one.txt",
+      "start": 33,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--mutation/lexical.length-plus-one.txt",
+      "start": 33,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--mutation/lexical.prefix-change.txt",
+      "start": 33,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-python-module--mutation/lexical.replace-last.txt",
+      "start": 33,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-redirect-pizza-30-near-miss--benign/canonical.txt",
+      "start": 24,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-redirect-pizza-30-near-miss--differential/canonical.txt",
+      "start": 24,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-redirect-pizza-30-near-miss--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-redirect-pizza-30-near-miss--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-redirect-pizza-30-near-miss--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-redirect-pizza-30-near-miss--metamorphic/encoding.crlf.txt",
+      "start": 24,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-redirect-pizza-30-near-miss--mutation/canonical.txt",
+      "start": 24,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-s3-secret-rps-near-miss--benign/canonical.txt",
+      "start": 21,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-s3-secret-rps-near-miss--differential/canonical.txt",
+      "start": 21,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-s3-secret-rps-near-miss--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-s3-secret-rps-near-miss--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-s3-secret-rps-near-miss--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-s3-secret-rps-near-miss--metamorphic/encoding.crlf.txt",
+      "start": 21,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-s3-secret-rps-near-miss--mutation/canonical.txt",
+      "start": 21,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--differential/canonical.txt",
+      "start": 25,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--mutation/boundary.remove-delimiter.txt",
+      "start": 25,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--mutation/canonical.txt",
+      "start": 25,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--mutation/lexical.length-minus-one.txt",
+      "start": 25,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--mutation/lexical.length-plus-one.txt",
+      "start": 25,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--mutation/lexical.prefix-change.txt",
+      "start": 25,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-trailing-hyphen-twin--differential/canonical.txt",
+      "start": 14,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-trailing-hyphen-twin--twin/authored.twin.txt",
+      "start": 14,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-trailing-hyphen-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-trailing-underscore-twin--differential/canonical.txt",
+      "start": 23,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-trailing-underscore-twin--twin/authored.twin.txt",
+      "start": 23,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-trailing-underscore-twin--twin/canonical.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--differential/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--metamorphic/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 59,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 75,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 57,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--mutation/authored.twin.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--mutation/boundary.remove-delimiter.txt",
+      "start": 55,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--mutation/canonical.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--mutation/lexical.length-minus-one.txt",
+      "start": 55,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--mutation/lexical.length-plus-one.txt",
+      "start": 55,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--mutation/lexical.prefix-change.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-464f--runpod-api-key-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/common-formats--anthropic-token-api03-admin-prefix-plain-twin--differential/canonical.txt",
       "start": 0,
       "end": 110
@@ -87722,5 +93607,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "0ecf0a49c06855aa42e927b747449cb4613861d833aba7064191116444e9121b"
+  "digest": "cecd9fd85e18e01c9ee1be400e1168f3ce45f8c1b724c4836be99ab7d21433f3"
 }

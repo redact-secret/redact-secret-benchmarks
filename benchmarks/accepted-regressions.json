@@ -381,5 +381,131 @@
     },
     "decidedAt": "2026-09-28",
     "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-28 relayed by the Beta.11 orchestrator: npm Node addon tarball size accepted for the Beta.9 to Beta.11 detector additions; native builds keep the PII runtime by design)"
+  },
+  {
+    "id": "beta11-8f97f14-wasm-full-gzip",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3" },
+    "measured": { "baseline": 137639, "candidate": 184422, "unit": "bytes" },
+    "rationale": "The 1db8ff3 row for this trigger (maintainer decision of 2026-09-28) carries over to the Beta.11 candidate re-bound to redact-secret 8f97f14 (main after PR #991, the #980 scan-path performance backlog, and PR #992, the #990 streaming-equals-whole-input fixes), which the maintainer decided ship in Beta.11. Full-profile WASM gzip 184,422 bytes against the 0.1.0-beta.8 baseline of 137,639 (1db8ff3: 179,388), measured by performance-evaluation.yml run 36553832221 (scripts/measure-wasm-sizes.mjs in the candidate checkout). Local builds with the product recipe split the increment over 1db8ff3 (179,383 gzip in the 1db8ff3 candidate tarball): 183,196 after PR #991 (37a1dcd, +3,813, +2.1%) and 184,453 after PR #992 (+1,257, +0.7%). Evidence: evidence/860/8f97f14-verified/wasm-sizes.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) and, at 8f97f14, cuts median processing time on every measured surface (the #980 backlog, PR #991) and makes streamed output equal the whole-input scan on the #985 partition gaps, removing generic-token and bearer streaming false negatives (PR #992).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/991",
+        "https://github.com/redact-secret/redact-secret/pull/992",
+        "https://github.com/redact-secret/redact-secret/issues/980",
+        "https://github.com/redact-secret/redact-secret/issues/990"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split, and the later decision that #991 and #992 ship in Beta.11 with the #983 WASM size increment accepted on top of those rows; relayed by the Beta.11 orchestrator for the 8f97f14 re-bind on 2026-09-29)"
+  },
+  {
+    "id": "beta11-8f97f14-wasm-common-gzip",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3" },
+    "measured": { "baseline": 100058, "candidate": 125295, "unit": "bytes" },
+    "rationale": "The 1db8ff3 row for this trigger (maintainer decision of 2026-09-28) carries over to the Beta.11 candidate re-bound to redact-secret 8f97f14 (main after PR #991, the #980 scan-path performance backlog, and PR #992, the #990 streaming-equals-whole-input fixes), which the maintainer decided ship in Beta.11. Common-profile WASM gzip 125,295 bytes against the 0.1.0-beta.8 baseline of 100,058 (1db8ff3: 122,544), measured by performance-evaluation.yml run 36553832221. Local builds with the product recipe split the increment over 1db8ff3 (122,572 gzip in the 1db8ff3 candidate tarball): 124,714 after PR #991 (37a1dcd, +2,142, +1.7%) and 125,307 after PR #992 (+593, +0.5%). Evidence: evidence/860/8f97f14-verified/wasm-sizes.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) and, at 8f97f14, cuts median processing time on every measured surface (the #980 backlog, PR #991) and makes streamed output equal the whole-input scan on the #985 partition gaps, removing generic-token and bearer streaming false negatives (PR #992).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/991",
+        "https://github.com/redact-secret/redact-secret/pull/992",
+        "https://github.com/redact-secret/redact-secret/issues/980",
+        "https://github.com/redact-secret/redact-secret/issues/990"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split, and the later decision that #991 and #992 ship in Beta.11 with the #983 WASM size increment accepted on top of those rows; relayed by the Beta.11 orchestrator for the 8f97f14 re-bind on 2026-09-29)"
+  },
+  {
+    "id": "beta11-8f97f14-quickstart-bundle-gzip",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3" },
+    "measured": { "baseline": 144501, "candidate": 191801, "unit": "bytes" },
+    "rationale": "The 1db8ff3 row for this trigger (maintainer decision of 2026-09-28) carries over to the Beta.11 candidate re-bound to redact-secret 8f97f14 (main after PR #991, the #980 scan-path performance backlog, and PR #992, the #990 streaming-equals-whole-input fixes), which the maintainer decided ship in Beta.11. The quickstart browser bundle fetched by a default initialize() is 191,801 gzip bytes against the 0.1.0-beta.8 baseline of 144,501 (1db8ff3: 186,761); the growth over 1db8ff3 (+5,040) is the full-profile WASM increment above. Measured by performance-evaluation.yml run 36553832221 with the redact-secret#937 quickstart method; the lazy pii files are emitted but never fetched (499,981 gzip bytes emitted in all, a diagnostic). Evidence: evidence/860/8f97f14-verified/quickstart-bundle.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) and, at 8f97f14, cuts median processing time on every measured surface (the #980 backlog, PR #991) and makes streamed output equal the whole-input scan on the #985 partition gaps, removing generic-token and bearer streaming false negatives (PR #992).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/991",
+        "https://github.com/redact-secret/redact-secret/pull/992",
+        "https://github.com/redact-secret/redact-secret/issues/980",
+        "https://github.com/redact-secret/redact-secret/issues/990"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split, and the later decision that #991 and #992 ship in Beta.11 with the #983 WASM size increment accepted on top of those rows; relayed by the Beta.11 orchestrator for the 8f97f14 re-bind on 2026-09-29)"
+  },
+  {
+    "id": "beta11-8f97f14-npm-wasm-packed",
+    "triggerId": "size/npm/wasm/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3" },
+    "measured": { "baseline": 254413, "candidate": 887249, "unit": "bytes" },
+    "rationale": "The 1db8ff3 row for this trigger (maintainer decision of 2026-09-28) carries over to the Beta.11 candidate re-bound to redact-secret 8f97f14 (main after PR #991, the #980 scan-path performance backlog, and PR #992, the #990 streaming-equals-whole-input fixes), which the maintainer decided ship in Beta.11. The @redact-secret/wasm tarball ships four WASM builds (full, common and their _pii builds, redact-secret#937); packed with the product benchmark:candidate recipe at 8f97f14 it is 887,249 bytes against the 0.1.0-beta.8 baseline of 254,413 (1db8ff3: 871,030, +1.9%). Evidence: evidence/860/8f97f14-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) and, at 8f97f14, cuts median processing time on every measured surface (the #980 backlog, PR #991) and makes streamed output equal the whole-input scan on the #985 partition gaps, removing generic-token and bearer streaming false negatives (PR #992).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/991",
+        "https://github.com/redact-secret/redact-secret/pull/992",
+        "https://github.com/redact-secret/redact-secret/issues/980",
+        "https://github.com/redact-secret/redact-secret/issues/990"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split, and the later decision that #991 and #992 ship in Beta.11 with the #983 WASM size increment accepted on top of those rows; relayed by the Beta.11 orchestrator for the 8f97f14 re-bind on 2026-09-29)"
+  },
+  {
+    "id": "beta11-8f97f14-npm-node-darwin-arm64-packed",
+    "triggerId": "size/npm/node-darwin-arm64/packed",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3" },
+    "measured": { "baseline": 424514, "candidate": 635892, "unit": "bytes" },
+    "rationale": "The 1db8ff3 row for this trigger (maintainer decision of 2026-09-28) carries over to the Beta.11 candidate re-bound to redact-secret 8f97f14 (main after PR #991, the #980 scan-path performance backlog, and PR #992, the #990 streaming-equals-whole-input fixes), which the maintainer decided ship in Beta.11. The @redact-secret/node-darwin-arm64 tarball is 635,892 bytes against the 0.1.0-beta.8 baseline of 424,514 (1db8ff3: 629,779, +1.0%); native builds keep the PII runtime by design. Measured on the product benchmark:candidate build at 8f97f14 (darwin-arm64 host); evidence/860/8f97f14-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) and, at 8f97f14, cuts median processing time on every measured surface (the #980 backlog, PR #991) and makes streamed output equal the whole-input scan on the #985 partition gaps, removing generic-token and bearer streaming false negatives (PR #992).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/991",
+        "https://github.com/redact-secret/redact-secret/pull/992",
+        "https://github.com/redact-secret/redact-secret/issues/980",
+        "https://github.com/redact-secret/redact-secret/issues/990"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split, and the later decision that #991 and #992 ship in Beta.11 with the #983 WASM size increment accepted on top of those rows; relayed by the Beta.11 orchestrator for the 8f97f14 re-bind on 2026-09-29)"
+  },
+  {
+    "id": "beta11-8f97f14-node-addon-aarch64-apple-darwin",
+    "triggerId": "size/node-addon/aarch64-apple-darwin",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": { "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3" },
+    "measured": { "baseline": 1004128, "candidate": 1422800, "unit": "bytes" },
+    "rationale": "The 1db8ff3 row for this trigger (maintainer decision of 2026-09-28) carries over to the Beta.11 candidate re-bound to redact-secret 8f97f14 (main after PR #991, the #980 scan-path performance backlog, and PR #992, the #990 streaming-equals-whole-input fixes), which the maintainer decided ship in Beta.11. The redact-secret.darwin-arm64.node binary inside that tarball is 1,422,800 bytes against the 0.1.0-beta.8 baseline of 1,004,128 (1db8ff3: 1,421,552, +0.1%). Measured on the product benchmark:candidate build at 8f97f14 (darwin-arm64 host); evidence/860/8f97f14-verified/npm-packed-sizes.json. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.11 keeps the 13 provider credential detectors (24 scored families, 22 documented-stable in benchmark candidate mode) and, at 8f97f14, cuts median processing time on every measured surface (the #980 backlog, PR #991) and makes streamed output equal the whole-input scan on the #985 partition gaps, removing generic-token and bearer streaming false negatives (PR #992).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/issues/860",
+        "https://github.com/redact-secret/redact-secret/pull/991",
+        "https://github.com/redact-secret/redact-secret/pull/992",
+        "https://github.com/redact-secret/redact-secret/issues/980",
+        "https://github.com/redact-secret/redact-secret/issues/990"
+      ]
+    },
+    "decidedAt": "2026-09-29",
+    "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28, size rows accepted for the Beta.11 detector additions and the #937 pii split, and the later decision that #991 and #992 ship in Beta.11 with the #983 WASM size increment accepted on top of those rows; relayed by the Beta.11 orchestrator for the 8f97f14 re-bind on 2026-09-29)"
   }
 ]

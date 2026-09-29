@@ -1,5 +1,8 @@
 # Beta.11 credential validation evidence: final report (#376)
 
+> **Superseded** by [`../2026-09-29/beta-11-credential-evidence-final.md`](../2026-09-29/beta-11-credential-evidence-final.md):
+> the Beta.11 candidate was re-bound from `1db8ff3` to product main `8f97f14`. This report stays as history.
+
 Epic: [#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376).
 Children [#377](https://github.com/redact-secret/redact-secret-benchmarks/issues/377)–[#382](https://github.com/redact-secret/redact-secret-benchmarks/issues/382)
 merged through PRs [#439](https://github.com/redact-secret/redact-secret-benchmarks/pull/439),

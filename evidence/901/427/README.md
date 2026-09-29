@@ -4,6 +4,8 @@ On the published beta.10 release, all six surfaces agree: Node addon, Node Wasm,
 
 **Update (exact repaired core, plan v2).** On core `79c0a661` (redact-secret#930, which fixes #922 and #924–#927 and ships `pii-context/v2`), all six surfaces meet every expectation of the new plan v2 in both selections. That is 36 of 36 required PII targets and 11 of 11 credential targets. Cross-surface disagreements, leaked values and range-unit errors are all zero, and the PII-off credential behaviour is unchanged. No new product defect was found. See [Exact repaired core](#exact-repaired-core-79c0a661-plan-v2).
 
+**Update (final Beta.11 candidate `8f97f14d`, plan v2).** On core `8f97f14d` all six surfaces again agree and meet every plan v2 expectation in both selections (16/16 per operation, 574/574 partitions, 606/606 output bytes, 0 values left, 0 range-unit errors); PII-off credential output is unchanged. The report is identical to the `1db8ff38` one apart from commits and artifact hashes, and it supersedes the `1db8ff38` and `1127bf91` reports for the release decision: [`mixed-parity-core-8f97f14d97d7-plan-v2-report-v1.json`](mixed-parity-core-8f97f14d97d7-plan-v2-report-v1.json).
+
 This is baseline development evidence for
 [redact-secret#901](https://github.com/redact-secret/redact-secret/issues/901)
 (benchmark issue [#427](https://github.com/redact-secret/redact-secret-benchmarks/issues/427),

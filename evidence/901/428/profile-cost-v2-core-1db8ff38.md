@@ -1,5 +1,7 @@
 # #428 official profile-cost v2 result for core `1db8ff38`
 
+> **Superseded** for the release decision by [`final-core-8f97f14d.md`](final-core-8f97f14d.md): the Beta.11 candidate moved to core `8f97f14d` (redact-secret #991 and #992). This record stays as history.
+
 **All six PII families stay `pending`.** The official `pii-profile-cost-v2` workflow now has a complete result for this candidate, so `profile-cost` is no longer `unresolved`. It is `not-met`. The package-budget overrun is accepted ([`package-budget-acceptance-core-1db8ff38.md`](package-budget-acceptance-core-1db8ff38.md)), so `runtime-and-package-cost` is `met`. The protected partition is unspent and is not eligible.
 
 This record adds files next to [`final-core-1db8ff38.md`](final-core-1db8ff38.md) and edits no earlier evidence except the regenerated report and disposition, which are re-derived byte for byte by `tests/pii-beta11.test.mjs`. It makes no support claim. Mode: candidate build (qualified product run 36480272622), Linux x86_64 GitHub-hosted runner, not the published package.

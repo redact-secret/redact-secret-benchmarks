@@ -1,0 +1,1912 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-mixed-parity-report",
+  "supportClaims": false,
+  "statusPromotion": false,
+  "issue": "redact-secret/redact-secret-benchmarks#427",
+  "plan": {
+    "path": "benchmarks/evaluation/domains/pii/mixed-parity/mixed-parity-v2.json",
+    "frozenAt": "d65073997a1c5507e254135a28d97a1d4c1d6f25",
+    "commitment": "f2f999a3cf9a5c0a35aaee9faa6c64c1395e6faa0c76288ac7290f44e9c45271"
+  },
+  "benchmark": {
+    "commit": "e4bb1dd90f480f713ed33bbd1bd108992fe10ef0",
+    "harnessDirty": false
+  },
+  "target": {
+    "kind": "core-commit",
+    "version": "0.1.0-beta.10",
+    "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
+    "coreCrateTree": "161046dac5e5ffc45049c9f8c2287f61a91ccd30",
+    "components": {
+      "core": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c",
+      "node": "c0cee14e0a294d43f36604fd82dfa51a4716a910ab29a3b577bd949d854f1091",
+      "wasm": "b6819bfd95c911db056f93cb78b3341cba7bfb05a22262f8c44461c0c4e1b966",
+      "wheel": "1717dae4b2daa432c233c0db9690d6bf4c3eaa116925f0a81e7d25b432dd70d2",
+      "cli": "036b7c98b3e3f27a232a5ac1452808649b516d7722991c3781293e5bdb1d25db"
+    }
+  },
+  "platform": "darwin-arm64",
+  "node": "v22.16.0",
+  "independentUnits": {
+    "documents": 8,
+    "requiredPiiTargets": 36,
+    "warnPiiTargets": 1,
+    "optionalPiiTargets": 0,
+    "credentialTargets": 11,
+    "piiLinesWithoutTarget": 15,
+    "knownDefectTargets": 2
+  },
+  "checks": {
+    "note": "checks on the same units; never independent cases",
+    "surfacesObserved": 6,
+    "selections": 2,
+    "variants": 2,
+    "operationsScored": 6348,
+    "incrementalPartitionsScored": 5804
+  },
+  "surfaces": [
+    {
+      "surface": "node-addon",
+      "status": "observed",
+      "reason": null,
+      "unit": "utf16-code-units",
+      "runtime": null
+    },
+    {
+      "surface": "node-wasm",
+      "status": "observed",
+      "reason": null,
+      "unit": "utf16-code-units",
+      "runtime": null
+    },
+    {
+      "surface": "browser-wasm",
+      "status": "observed",
+      "reason": null,
+      "unit": "utf16-code-units",
+      "runtime": "Google Chrome 154.0.8037.58"
+    },
+    {
+      "surface": "python",
+      "status": "observed",
+      "reason": null,
+      "unit": "unicode-code-points",
+      "runtime": "Python 3.14.7"
+    },
+    {
+      "surface": "rust",
+      "status": "observed",
+      "reason": null,
+      "unit": "utf8-bytes",
+      "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)"
+    },
+    {
+      "surface": "cli",
+      "status": "observed",
+      "reason": null,
+      "unit": "utf8-bytes",
+      "runtime": null
+    }
+  ],
+  "surfaceSummary": [
+    {
+      "surface": "node-addon",
+      "selection": "pii-on",
+      "status": "observed",
+      "runtime": null,
+      "rangeUnit": {
+        "declared": "utf16-code-units",
+        "expected": "utf16-code-units",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "addon",
+      "piiActivation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 529,
+        "warnRetainedOperations": 77,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 192,
+        "total": 192
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "node-addon",
+      "selection": "pii-off",
+      "status": "observed",
+      "runtime": null,
+      "rangeUnit": {
+        "declared": "utf16-code-units",
+        "expected": "utf16-code-units",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "addon",
+      "piiActivation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 606,
+        "warnRetainedOperations": 0,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 156,
+        "total": 156
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "node-wasm",
+      "selection": "pii-on",
+      "status": "observed",
+      "runtime": null,
+      "rangeUnit": {
+        "declared": "utf16-code-units",
+        "expected": "utf16-code-units",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "wasm",
+      "piiActivation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 529,
+        "warnRetainedOperations": 77,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 192,
+        "total": 192
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "node-wasm",
+      "selection": "pii-off",
+      "status": "observed",
+      "runtime": null,
+      "rangeUnit": {
+        "declared": "utf16-code-units",
+        "expected": "utf16-code-units",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "wasm",
+      "piiActivation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 606,
+        "warnRetainedOperations": 0,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 156,
+        "total": 156
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "browser-wasm",
+      "selection": "pii-on",
+      "status": "observed",
+      "runtime": "Google Chrome 154.0.8037.58",
+      "rangeUnit": {
+        "declared": "utf16-code-units",
+        "expected": "utf16-code-units",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "wasm",
+      "piiActivation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 529,
+        "warnRetainedOperations": 77,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 192,
+        "total": 192
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "browser-wasm",
+      "selection": "pii-off",
+      "status": "observed",
+      "runtime": "Google Chrome 154.0.8037.58",
+      "rangeUnit": {
+        "declared": "utf16-code-units",
+        "expected": "utf16-code-units",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "wasm",
+      "piiActivation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 606,
+        "warnRetainedOperations": 0,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 156,
+        "total": 156
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "python",
+      "selection": "pii-on",
+      "status": "observed",
+      "runtime": "Python 3.14.7",
+      "rangeUnit": {
+        "declared": "unicode-code-points",
+        "expected": "unicode-code-points",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "python-extension",
+      "piiActivation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 529,
+        "warnRetainedOperations": 77,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 192,
+        "total": 192
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "python",
+      "selection": "pii-off",
+      "status": "observed",
+      "runtime": "Python 3.14.7",
+      "rangeUnit": {
+        "declared": "unicode-code-points",
+        "expected": "unicode-code-points",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "python-extension",
+      "piiActivation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 606,
+        "warnRetainedOperations": 0,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 156,
+        "total": 156
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "rust",
+      "selection": "pii-on",
+      "status": "observed",
+      "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
+      "rangeUnit": {
+        "declared": "utf8-bytes",
+        "expected": "utf8-bytes",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "rust-crate",
+      "piiActivation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 529,
+        "warnRetainedOperations": 77,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 192,
+        "total": 192
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "rust",
+      "selection": "pii-off",
+      "status": "observed",
+      "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
+      "rangeUnit": {
+        "declared": "utf8-bytes",
+        "expected": "utf8-bytes",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "rust-crate",
+      "piiActivation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "passed": 16,
+        "total": 16
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 574,
+        "expectationMet": 574
+      },
+      "output": {
+        "correct": 606,
+        "total": 606,
+        "sanitizedSuccess": 606,
+        "warnRetainedOperations": 0,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "passed": 156,
+        "total": 156
+      },
+      "incrementalLimitFailure": {
+        "passed": 16,
+        "total": 16
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "cli",
+      "selection": "pii-on",
+      "status": "observed",
+      "runtime": null,
+      "rangeUnit": {
+        "declared": "utf8-bytes",
+        "expected": "utf8-bytes",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "cli-binary",
+      "piiActivation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "notApplicable": "the CLI has no separate redact(findings) operation"
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 32,
+        "expectationMet": 32,
+        "scope": "chunking is the CLI read loop; only a single stdin write and a paced write are driven"
+      },
+      "output": {
+        "correct": 48,
+        "total": 48,
+        "sanitizedSuccess": 42,
+        "warnRetainedOperations": 6,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "notApplicable": "the CLI declares fixed limits; no caller-supplied whole-input limit"
+      },
+      "incrementalLimitFailure": {
+        "notApplicable": "the CLI declares fixed incremental limits"
+      },
+      "rangeUnitErrors": 0
+    },
+    {
+      "surface": "cli",
+      "selection": "pii-off",
+      "status": "observed",
+      "runtime": null,
+      "rangeUnit": {
+        "declared": "utf8-bytes",
+        "expected": "utf8-bytes",
+        "agrees": true
+      },
+      "version": "0.1.0-beta.10",
+      "artifact": "cli-binary",
+      "piiActivation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2",
+      "scan": {
+        "passed": 16,
+        "total": 16
+      },
+      "redact": {
+        "notApplicable": "the CLI has no separate redact(findings) operation"
+      },
+      "scanAndRedact": {
+        "passed": 16,
+        "total": 16
+      },
+      "incremental": {
+        "partitionsRun": 32,
+        "expectationMet": 32,
+        "scope": "chunking is the CLI read loop; only a single stdin write and a paced write are driven"
+      },
+      "output": {
+        "correct": 48,
+        "total": 48,
+        "sanitizedSuccess": 48,
+        "warnRetainedOperations": 0,
+        "valueLeftAfterReplacement": 0
+      },
+      "wholeInputLimits": {
+        "notApplicable": "the CLI declares fixed limits; no caller-supplied whole-input limit"
+      },
+      "incrementalLimitFailure": {
+        "notApplicable": "the CLI declares fixed incremental limits"
+      },
+      "rangeUnitErrors": 0
+    }
+  ],
+  "accounting": [
+    {
+      "surface": "node-addon",
+      "selection": "pii-on",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 72,
+        "matched": 72,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "node-addon",
+      "selection": "pii-off",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 0,
+        "matched": 0,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "selection": "pii-on",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 72,
+        "matched": 72,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "selection": "pii-off",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 0,
+        "matched": 0,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "browser-wasm",
+      "selection": "pii-on",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 72,
+        "matched": 72,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "browser-wasm",
+      "selection": "pii-off",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 0,
+        "matched": 0,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "python",
+      "selection": "pii-on",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 72,
+        "matched": 72,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "python",
+      "selection": "pii-off",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 0,
+        "matched": 0,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "rust",
+      "selection": "pii-on",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 72,
+        "matched": 72,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "rust",
+      "selection": "pii-off",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 0,
+        "matched": 0,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "cli",
+      "selection": "pii-on",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 72,
+        "matched": 72,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    },
+    {
+      "surface": "cli",
+      "selection": "pii-off",
+      "operation": "scan",
+      "variants": [
+        "lf",
+        "crlf"
+      ],
+      "pii": {
+        "required": 0,
+        "matched": 0,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      },
+      "credential": {
+        "required": 22,
+        "matched": 22,
+        "missing": [],
+        "wrong": [],
+        "unexpected": 0
+      }
+    }
+  ],
+  "piiOffInvariance": [
+    {
+      "surface": "node-addon",
+      "credentialOnlyControlIdentical": true,
+      "credentialFindingsEqualToPiiOn": "16/16",
+      "piiFindingsWhileOff": 0,
+      "piiOffExpectationMet": "622/622"
+    },
+    {
+      "surface": "node-wasm",
+      "credentialOnlyControlIdentical": true,
+      "credentialFindingsEqualToPiiOn": "16/16",
+      "piiFindingsWhileOff": 0,
+      "piiOffExpectationMet": "622/622"
+    },
+    {
+      "surface": "browser-wasm",
+      "credentialOnlyControlIdentical": true,
+      "credentialFindingsEqualToPiiOn": "16/16",
+      "piiFindingsWhileOff": 0,
+      "piiOffExpectationMet": "622/622"
+    },
+    {
+      "surface": "python",
+      "credentialOnlyControlIdentical": true,
+      "credentialFindingsEqualToPiiOn": "16/16",
+      "piiFindingsWhileOff": 0,
+      "piiOffExpectationMet": "622/622"
+    },
+    {
+      "surface": "rust",
+      "credentialOnlyControlIdentical": true,
+      "credentialFindingsEqualToPiiOn": "16/16",
+      "piiFindingsWhileOff": 0,
+      "piiOffExpectationMet": "622/622"
+    },
+    {
+      "surface": "cli",
+      "credentialOnlyControlIdentical": true,
+      "credentialFindingsEqualToPiiOn": "16/16",
+      "piiFindingsWhileOff": 0,
+      "piiOffExpectationMet": "64/64"
+    }
+  ],
+  "parity": {
+    "casesCompared": 32,
+    "casesWithDisagreement": 0,
+    "disagreements": []
+  },
+  "expectationFailures": [],
+  "knownDefects": [
+    {
+      "id": "payment-form/L08/P1",
+      "knownDefect": "redact-secret/redact-secret#922",
+      "outcomes": {
+        "matched": 437
+      }
+    },
+    {
+      "id": "hr-record/L10/P1",
+      "knownDefect": "redact-secret/redact-secret#922",
+      "outcomes": {
+        "matched": 437
+      }
+    }
+  ],
+  "targets": [
+    {
+      "id": "support-ticket-en/L03/P1",
+      "domain": "pii",
+      "family": "pii:global:email",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 387
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "support-ticket-en/L04/P1",
+      "domain": "pii",
+      "family": "pii:global:phone",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 387
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "support-ticket-en/L07/P1",
+      "domain": "pii",
+      "family": "pii:global:phone",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "warn",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 387
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "support-ticket-en/L09/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 387
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 387
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "support-ticket-en/L11/P1",
+      "domain": "pii",
+      "family": "pii:global:email",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 387
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "support-ticket-en/L12/P1",
+      "domain": "pii",
+      "family": "pii:global:phone",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 387
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L01/P1",
+      "domain": "pii",
+      "family": "pii:global:network-address",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L03/P1",
+      "domain": "pii",
+      "family": "pii:global:email",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L04/O1",
+      "domain": "pii",
+      "family": "pii:global:email",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L05/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L05/C2",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L07/O1",
+      "domain": "pii",
+      "family": "pii:global:network-address",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L08/O1",
+      "domain": "pii",
+      "family": "pii:global:network-address",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L09/O1",
+      "domain": "pii",
+      "family": "pii:global:network-address",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L10/P1",
+      "domain": "pii",
+      "family": "pii:global:network-address",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "app-log-logfmt/L11/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 587
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "payment-form/L02/P1",
+      "domain": "pii",
+      "family": "pii:global:payment-card",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "payment-form/L05/P1",
+      "domain": "pii",
+      "family": "pii:global:iban",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "payment-form/L06/P1",
+      "domain": "pii",
+      "family": "pii:global:iban",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "payment-form/L08/P1",
+      "domain": "pii",
+      "family": "pii:global:payment-card",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": "redact-secret/redact-secret#922",
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "payment-form/L09/P1",
+      "domain": "pii",
+      "family": "pii:global:payment-card",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "payment-form/L10/O1",
+      "domain": "pii",
+      "family": "pii:global:payment-card",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "payment-form/L11/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "hr-record/L02/P1",
+      "domain": "pii",
+      "family": "pii:us:ssn",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "hr-record/L03/P1",
+      "domain": "pii",
+      "family": "pii:us:ssn",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "hr-record/L06/P1",
+      "domain": "pii",
+      "family": "pii:us:ssn",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "hr-record/L07/P1",
+      "domain": "pii",
+      "family": "pii:global:phone",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "hr-record/L09/P1",
+      "domain": "pii",
+      "family": "pii:global:phone",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "hr-record/L10/P1",
+      "domain": "pii",
+      "family": "pii:global:phone",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": "redact-secret/redact-secret#922",
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "hr-record/L11/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 437
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "config-export/L02/P1",
+      "domain": "pii",
+      "family": "pii:global:network-address",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 337
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "config-export/L03/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 337
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 337
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "config-export/L04/P1",
+      "domain": "pii",
+      "family": "pii:global:email",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 337
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "config-export/L05/P1",
+      "domain": "pii",
+      "family": "pii:global:payment-card",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 337
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "config-export/L06/P1",
+      "domain": "pii",
+      "family": "pii:global:iban",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 337
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "unicode-ko-record/L02/P1",
+      "domain": "pii",
+      "family": "pii:global:iban",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "unicode-ko-record/L03/P1",
+      "domain": "pii",
+      "family": "pii:global:network-address",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "unicode-ko-record/L04/P1",
+      "domain": "pii",
+      "family": "pii:global:phone",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "unicode-ko-record/L05/P1",
+      "domain": "pii",
+      "family": "pii:us:ssn",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "unicode-ko-record/L06/P1",
+      "domain": "pii",
+      "family": "pii:global:payment-card",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "unicode-ko-record/L07/P1",
+      "domain": "pii",
+      "family": "pii:global:email",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "unicode-ko-record/L08/P1",
+      "domain": "pii",
+      "family": "pii:global:email",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "unicode-ko-record/L11/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 487
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "ai-tool-results/L01/P1",
+      "domain": "pii",
+      "family": "pii:global:email",
+      "role": "pii-sensitive",
+      "optional": false,
+      "action": "redact",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 187
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "ai-tool-results/L06/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 187
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 187
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "ci-log-credentials-only/L03/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 187
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 187
+          },
+          "consistent": true
+        }
+      }
+    },
+    {
+      "id": "ci-log-credentials-only/L04/C1",
+      "domain": "credential",
+      "family": null,
+      "role": "credential",
+      "optional": false,
+      "action": "replacing",
+      "knownDefect": null,
+      "envelope": null,
+      "bySelection": {
+        "pii-on": {
+          "outcomes": {
+            "matched": 187
+          },
+          "consistent": true
+        },
+        "pii-off": {
+          "outcomes": {
+            "matched": 187
+          },
+          "consistent": true
+        }
+      }
+    }
+  ],
+  "acceptance": {
+    "declaredSurfacesAgree": true,
+    "surfacesMeetExpectation": true,
+    "credentialOnlyUnchangedWhenPiiOff": true,
+    "unsupportedPaths": [
+      "cli:redact:not-applicable",
+      "cli:wholeLimits:not-applicable",
+      "cli:incrementalFailures:not-applicable",
+      "cli:partitions:not-applicable"
+    ],
+    "combinedCredentialPiiScore": false
+  }
+}

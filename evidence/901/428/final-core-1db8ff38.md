@@ -1,5 +1,7 @@
 # #428 final public-gate record: core `1db8ff38`
 
+> **Superseded** for the release decision by [`final-core-8f97f14d.md`](final-core-8f97f14d.md): the Beta.11 candidate moved to core `8f97f14d` (redact-secret #991 and #992). This record stays as history.
+
 **All six PII families stay `pending`.** Every public gate that is not about cost passes on the exact final candidate, including the #451 `net-p-port-suffix` case in the network-address populations. Two cost gates block promotion, and the protected partition is unspent.
 
 This record adds files next to [`final-core-1127bf91.md`](final-core-1127bf91.md), which it supersedes for the release decision, and edits no earlier evidence. It makes no support claim. PII numerators and denominators are the only counts in it, and no credential count is merged into them. Mode: candidate build (isolated tarballs from the commit), not the published package.

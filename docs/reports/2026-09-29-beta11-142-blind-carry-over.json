@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "reportType": "blind-aggregate-carry-over",
+  "evidenceClass": "custodian-blind",
+  "includedInTotals": false,
+  "decision": {
+    "by": "maintainer",
+    "at": "2026-09-29",
+    "summary": "Carry the beta11-e1 blind aggregate over to the re-bound Beta.11 candidate; no new epoch and no blind run against it.",
+    "departsFrom": "docs/specs/blind-evaluation.md section 2 rule 2 (a new product change needs a new candidate identity and a new run)"
+  },
+  "carriedAggregate": {
+    "file": "docs/reports/2026-09-28-beta11-142-blind-aggregate.json",
+    "runId": "1604909b-bd5f-4c2d-b3ab-3eb1bc7d0d61",
+    "epoch": "beta11-e1",
+    "measuredAt": {
+      "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1",
+      "coreArtifactSha256": "4681ad429ebe1b2c7ae9f5d72479ba996c75eb4a118049b6dbe4ea8dcfbd29a1"
+    },
+    "leakedSpans": { "count": 3, "of": 66, "wilson95": [0.0156, 0.1253] },
+    "falseAlarms": { "count": 0, "of": 27, "wilson95": [0, 0.1246] },
+    "unstable": { "count": 0, "of": 84 }
+  },
+  "carriedTo": {
+    "sourceCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
+    "coreArtifactSha256": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c",
+    "measuredOnBlindFixtures": false
+  },
+  "privateFixturesAccessed": false,
+  "basis": {
+    "productDiff": {
+      "range": "1db8ff38b16e50c51229eb27025452952bf621e1..8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
+      "merges": [
+        { "pr": [960, 961, 959, 966, 967, 969, 976], "detectorSource": false, "scope": "CI, manifests, issue forms, conformance records, docs" },
+        { "pr": 968, "detectorSource": false, "scope": "crate, package and binding READMEs" },
+        { "pr": 991, "merge": "37a1dcd763b1c4bab52090defb28965154cad996", "detectorSource": true, "intendedOutputChange": false, "scope": "#980 performance backlog (#981, #982, #983, #984, #985, #986, #989)" },
+        { "pr": 992, "merge": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3", "detectorSource": true, "intendedOutputChange": true, "scope": "#990 streaming equals whole-input" }
+      ],
+      "layoutClasses990": [
+        "generic-token streaming false negatives on name forms joined to an operator on a later line (incremental only)",
+        "bearer-token Proxy-Authorization with a 12-15 byte Bearer value on the next line (incremental only); X-Authorization: Bearer <16+ bytes> reported whole-input",
+        "lone CR as a line end for every line-reading detector (LF and CRLF unchanged), including the Twilio CLI table",
+        "PII phone ext marker at a line end is an empty extension (PII only)"
+      ]
+    },
+    "publicDifferential": {
+      "benchmarkRevision": "63a855fab948060fdbd85aa89f852fba0e9d33ec",
+      "fixtures": 4992,
+      "categories": 46,
+      "scoredCorpusHash": "a89a8d117ef2e3b80fb2a7e6b612fc5c464030bfc4d9cd05c52204aba8706d75",
+      "surface": "@redact-secret/core default entry (Node addon), Node v22.16.0, darwin-arm64, default detectors and policy",
+      "sides": {
+        "1db8ff3": { "candidateRun": "e56cd9b2-cedc-4e2f-ad93-70062bc3990d", "core": "4681ad429ebe1b2c7ae9f5d72479ba996c75eb4a118049b6dbe4ea8dcfbd29a1", "node": "63f98456a49dd96c7fc75b5e29080e757bd987dc516bda459696e48185b6ab60", "wasm": "af0633663d713456a82d297f23023280cff05ad5f56489e9e72854601af2b1a1" },
+        "8f97f14": { "candidateRun": "74888ff3-48ed-4459-b2fe-32906a5a95cb", "core": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c", "node": "b32d462b2daec575834a7287bec74b679a09f93f28717a56956f0b2169b629f8", "wasm": "b6819bfd95c911db056f93cb78b3341cba7bfb05a22262f8c44461c0c4e1b966" }
+      },
+      "checks": ["whole-input scanAndRedact", "incremental one append per line", "incremental 64-unit chunks", "incremental 7-unit chunks"],
+      "incrementalLimits": { "input": 1048576, "buffered": 65536, "token": 8192, "multiline": 16384 },
+      "differingFixtures": 0,
+      "differingOutside990Classes": 0,
+      "digestFileSha256": { "1db8ff3": "f8cb201e9cb644c9ded6832827b0e7471613dabf0711e1f525d94186005b2317", "8f97f14": "f8cb201e9cb644c9ded6832827b0e7471613dabf0711e1f525d94186005b2317" },
+      "incrementalNotEqualWhole": { "1db8ff3": ["context-edges--long-prefix", "context-edges--long-prefix-twin"], "8f97f14": ["context-edges--long-prefix", "context-edges--long-prefix-twin"], "reason": "TOKEN_LIMIT_EXCEEDED (declared token limit), every partition" },
+      "layoutsInPublicCorpus": { "xAuthorization": 0, "loneCarriageReturn": 0, "proxyAuthorization": 1, "proxyAuthorizationNextLine": 0 },
+      "positiveControls": [
+        { "layout": "X-Authorization: Bearer <synthetic 29 bytes>", "1db8ff3": { "whole": 0, "incrementalLines": 0 }, "8f97f14": { "whole": 1, "incrementalLines": 1 } },
+        { "layout": "Proxy-Authorization: then Bearer <synthetic 14 bytes> on the next line", "1db8ff3": { "whole": 1, "incrementalLines": 0 }, "8f97f14": { "whole": 1, "incrementalLines": 1 } }
+      ]
+    }
+  }
+}

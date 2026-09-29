@@ -32,10 +32,10 @@ and `pr-review` Claude Code skills instead of a repo-local copy; the local
 
 `develop` is the default and integration branch: open feature and workbench PRs
 against it. A push to `develop` publishes `staging.benchmarks.redactsecret.dev`;
-a push to `main` publishes `benchmarks.redactsecret.dev`. Promote `develop` to
-`main` only when the measurement is ready to be public, and keep `main` always
-publishable. Promote with `npm run promote`: it fast-forwards `main` to `develop` (never a merge
-or squash PR, which leaves `main` ahead of `develop`) and refuses unless `develop`'s staging publish succeeded.
+a push to `main` publishes `benchmarks.redactsecret.dev`. Go to production only when the measurement is ready to be public, and keep `main` always
+publishable. Go to production with `npm run go-production`: it opens the develop-to-main PR, watches CI, and lands it
+by fast-forwarding `main` to `develop` (never a merge or squash PR, which leaves `main` ahead of `develop`).
+It refuses unless every run on `develop`'s tip succeeded.
 
 ## Peer scanner version
 

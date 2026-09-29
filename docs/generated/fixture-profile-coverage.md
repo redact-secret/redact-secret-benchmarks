@@ -79,7 +79,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | firecrawl-api-key | T1 | stable-documented | 48 | 6 | 15 | 14 | 11 | 6 | 10 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
 | generic-token | T3 | arrival-provisional | 157 | 61 | 76 | 10 | 29 | 4 | 5 | none |
-| github-fine-grained-pat | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 11 | 6 | 9 | none |
+| github-fine-grained-pat | T2 | stable-empirical | 25 | 6 | 9 | 5 | 11 | 6 | 9 | total fixtures 25/40; positive/context cases 6/10; non-twin benign controls 9/14; twin pairs 5/8 |
 | github-token | T1 | stable-documented | 131 | 28 | 15 | 45 | 25 | 6 | 8 | none |
 | gitlab-runner-authentication-token | T2 | stable-empirical | 43 | 11 | 16 | 8 | 15 | 6 | 10 | none |
 | gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
@@ -112,7 +112,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | nvidia-api-key | T1 | stable-documented | 31 | 8 | 11 | 6 | 7 | 5 | 9 | none |
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
 | onepassword-service-account-token | T1 | stable-documented | 39 | 7 | 14 | 9 | 11 | 6 | 10 | none |
-| openai-admin-api-key | T2 | arrival-provisional | 41 | 5 | 15 | 11 | 15 | 6 | 10 | positive/context cases 5/6 |
+| openai-admin-api-key | T2 | stable-empirical | 41 | 5 | 15 | 11 | 15 | 6 | 10 | positive/context cases 5/10 |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
 | otpauth-uri | T3 | arrival-provisional | 24 | 2 | 8 | 7 | 1 | 3 | 4 | positive/context cases 2/6; positive-context axes 1/4; control axes 3/4 |

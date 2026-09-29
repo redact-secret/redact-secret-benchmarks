@@ -2922,9 +2922,9 @@
       "family": "github-fine-grained-pat",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented"
@@ -2971,15 +2971,40 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": []
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 25,
+          "required": 40,
+          "shortfall": 15
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "benignControls",
+          "actual": 9,
+          "required": 14,
+          "shortfall": 5
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 5,
+          "required": 8,
+          "shortfall": 3
+        }
+      ]
     },
     {
       "family": "github-token",
@@ -5002,9 +5027,9 @@
       "family": "openai-admin-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 41,
@@ -5053,20 +5078,20 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
       "debt": [
         {
           "cell": "positiveCases",
           "actual": 5,
-          "required": 6,
-          "shortfall": 1
+          "required": 10,
+          "shortfall": 5
         }
       ]
     },

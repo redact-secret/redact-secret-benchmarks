@@ -7,11 +7,11 @@
     "benchmarkRevision": "af180a5abc28e64b456aa431455de66da016d061"
   },
   "input": {
-    "surface": "comparison/negative-controls",
+    "surface": "comparison/beta8-948",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "940819438179b0ba047e427a1d3d9b565c605f4f983957c900b743c3d0466341",
-    "fixtureCount": 24,
-    "fixturesDigest": "f68c70e35890a5b54fa1c612089a10f5084713fcb3c200d1bd3e5c0310d33819",
+    "corpusHash": "0763ebadffd50c0e6bd08c4146f6600a8aa426d80ba7cbb5f0752177ca63d356",
+    "fixtureCount": 9,
+    "fixturesDigest": "c2badd48f9a6b409fc557e595c8825eb362646c8ed102539360832f87d9c6d77",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
@@ -20,37 +20,33 @@
     }
   },
   "peer": {
-    "id": "gitleaks",
-    "version": "8.30.1",
-    "mode": "Directory scan · default rules",
-    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
     "configuration": {
       "adapterVersion": 2,
       "familyMappingVersion": 2,
-      "binary": "gitleaks",
+      "binary": "trufflehog",
       "arguments": [
-        "dir",
+        "filesystem",
         "<input-root>",
-        "--no-banner",
-        "--no-color",
-        "--exit-code",
-        "0",
-        "--report-format",
-        "json",
-        "--report-path",
-        "-"
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
       ],
       "processLimits": {
         "timeout": 120000,
         "maxBuffer": 16777216
       },
-      "rules": "default",
-      "environmentRuleOverrides": false
+      "verification": false,
+      "update": false
     },
-    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
     "observedArtifact": {
       "platform": "darwin-arm64",
-      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
     },
     "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
   },
@@ -60,5 +56,5 @@
     "agreed": true
   },
   "findings": [],
-  "digest": "88b6bb8a90695802e07a1b1a2ab9004deb661fb869133f2986b5e11ce4d6fc85"
+  "digest": "a7243fe1ba27813bf78d3cdbc163bf3b6b4bc7cd426708baa98f83c37a66e16f"
 }

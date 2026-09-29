@@ -127451,14 +127451,16 @@
       "note": "redact-secret and trufflehog both report [77,128), the authored expected span, on the canonical variant of beta8-212--slack-user-token-legacy-short-secret. redact-secret labels it slack-user-token (the fixture's assigned arrival family): the product reports it with the slack_user_token finding type inside its shared slack-token detector on candidate 10263e5 (product main), and the adapter maps that finding type to the arrival family (#251, scanners/families.mjs). trufflehog labels it slack-token (its one Slack detector covers every Slack token kind). Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
     },
     "f2b78b3cffcb23ade84bdf054b98db1ba955462eadc61336ae092019558d453b": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This differential occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: differential-beta9-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [67,142), the authored expected span, on the canonical variant of beta8-212/slack-user-token-python-scim-client. redact-secret labels it slack-user-token (the fixture's assigned family); trufflehog labels it slack-token, its single Slack rule for every xox- token class. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "3f479a42640d5307c1826dca4c7f4a7f64d456b9d4b8944d1665f5bfbe9fc0c2": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.invalid-alphabet."
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "d9c49439b17230e717cd307f4c7e55538eb30f0b404ecbc0e3ca2486ca2c41ae": {
       "status": "open",
@@ -127471,14 +127473,16 @@
       "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=boundary.remove-delimiter."
     },
     "9203ace3a0edf2d5ded3790628e4010fc952238c48a52cf26a798d26198bad5a": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This differential occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: differential-beta9-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [19,93), the authored expected span, on the canonical variant of beta8-212/slack-user-token-curl-form-token. redact-secret labels it slack-user-token (the fixture's assigned family); trufflehog labels it slack-token, its single Slack rule for every xox- token class. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "c96d16b9e8cb621fe4b31e22c10bdfbd464984f143667dd3a985d859b5b44cd7": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.invalid-alphabet."
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "5fbf443064e93ba6b237f1681e43076cfe128fdce781464d3120df3232d5b1a7": {
       "status": "open",
@@ -127486,19 +127490,22 @@
       "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.prefix-change."
     },
     "c04155f56eebc7b0505ac378e14b4bc841a7c92bcd28441d77ca8786058aea5d": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=boundary.remove-delimiter."
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "f3938e761b44b5274f281523dc9a697a44598b47462341f077f7a82b64c32e0a": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This differential occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: differential-beta9-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [97,173), the authored expected span, on the canonical variant of beta8-212/slack-user-token-bolt-installation-store. redact-secret labels it slack-user-token (the fixture's assigned family); trufflehog labels it slack-token, its single Slack rule for every xox- token class. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "33537d5b0c4c941f65b9707ecd01d97ffad30c7d30c353ca41baa52e0097a0e0": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.invalid-alphabet."
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "167129d6a58e2aa9e5be3d6fdc1822a4038ad1d7de7e87f0312b21def9b9b019": {
       "status": "open",
@@ -127675,29 +127682,34 @@
       "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=boundary.remove-delimiter."
     },
     "53230c6663e373dc67ec040e1fefd98809c82a929cd3386c0d5365be64ed79bf": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "556a902e-b557-47d9-aa86-44b4fc4e6064",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.prefix-change."
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "3d28d12e9d09f275157f2de479ed90f151b104a334e3c780b51ed6595d1138a2": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "556a902e-b557-47d9-aa86-44b4fc4e6064",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=boundary.remove-delimiter."
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "a1c8b170509971bb5ff5646022b372705a2f719177b4f46b8ed56c142b837748": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "556a902e-b557-47d9-aa86-44b4fc4e6064",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.prefix-change."
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "10778e389cac5191fd6f37647ab5fc2fc2f347ac27d5c0233ee6b825906d1180": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "556a902e-b557-47d9-aa86-44b4fc4e6064",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.prefix-change."
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "a103fc96cbe75c849242b5dcee4d04a46bb1d347d865fd8a3335ae275484f097": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "556a902e-b557-47d9-aa86-44b4fc4e6064",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=boundary.remove-delimiter."
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "52886a533c87fc74bf6f7e3c6ea2cb303790ee5654230291c8dce2113ed4d728": {
       "status": "not-assertable",

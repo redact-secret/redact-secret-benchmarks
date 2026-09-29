@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28",
+  "method": "npm pack output of the product benchmark:candidate recipe at 94fc18a (darwin-arm64 host), candidate run 4bbdef59-dda4-4745-9d52-3faa68821e5c (benchmarks 0050c10, 4,777 fixtures, every outcome equal to the 8b6a5fd run e795030e). Packed bytes are the tarball file size.",
+  "packages": [
+    {
+      "label": "core",
+      "file": "redact-secret-core-0.1.0-beta.11.tgz",
+      "sha256": "3e70490584e529be5097fc8a9a3655cb57a3d2f31b58ef173bf614aab4134b05",
+      "packedBytes": 41944,
+      "at8b6a5fd": 41901,
+      "trigger": "size/npm/core/packed",
+      "baseline": 39461,
+      "allowedIncrease": 4096,
+      "verdict": "within-budget"
+    },
+    {
+      "label": "node-darwin-arm64",
+      "file": "redact-secret-node-darwin-arm64-0.1.0-beta.11.tgz",
+      "sha256": "153db1df73e5190b643cd3d34e9f73ff16c902acd72e40c52bc936f2fce76baa",
+      "packedBytes": 649380,
+      "at8b6a5fd": 649386,
+      "trigger": "size/npm/node-darwin-arm64/packed",
+      "baseline": 424514,
+      "verdict": "accepted-tradeoff (beta11-94fc18a-npm-node-darwin-arm64-packed)"
+    },
+    {
+      "label": "wasm",
+      "file": "redact-secret-wasm-0.1.0-beta.11.tgz",
+      "sha256": "d89e0e6b31aa2900dab9c70aa74b0ad7a8822344b741c4a57212761065f0bcf9",
+      "packedBytes": 900773,
+      "at8b6a5fd": 900829,
+      "trigger": "size/npm/wasm/packed",
+      "baseline": 254413,
+      "verdict": "accepted-tradeoff (beta11-94fc18a-npm-wasm-packed)"
+    }
+  ],
+  "nativeAddons": [
+    {
+      "target": "aarch64-apple-darwin",
+      "bytes": 1442736,
+      "at8b6a5fd": 1442736,
+      "trigger": "size/node-addon/aarch64-apple-darwin",
+      "baseline": 1004128,
+      "verdict": "accepted-tradeoff (beta11-94fc18a-node-addon-aarch64-apple-darwin)"
+    }
+  ],
+  "notMeasured": "Native addon, wheel and CLI rows for other targets were not built on this host. These tarballs are a local build of the release source, not the published registry artifacts."
+}

@@ -34,7 +34,8 @@ and `pr-review` Claude Code skills instead of a repo-local copy; the local
 against it. A push to `develop` publishes `staging.benchmarks.redactsecret.dev`;
 a push to `main` publishes `benchmarks.redactsecret.dev`. Promote `develop` to
 `main` only when the measurement is ready to be public, and keep `main` always
-publishable.
+publishable. Promote with `npm run promote`: it fast-forwards `main` to `develop` (never a merge
+or squash PR, which leaves `main` ahead of `develop`) and refuses unless `develop`'s staging publish succeeded.
 
 ## Peer scanner version
 

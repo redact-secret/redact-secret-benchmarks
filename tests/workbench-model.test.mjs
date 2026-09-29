@@ -179,8 +179,8 @@ test('floors show met, watch or not-met plus the actual value, and absent eviden
   assert.deepEqual(evidence.accounting.reasons, ['unreviewed-queue']);
   assert.deepEqual(
     qualificationGates(suite.accounting, qualified, null).find(g => g.id === 'ledger'),
-    { id: 'ledger', label: 'Ledger rows for every entry', status: 'watch', value: '6,873 · 114 open', detail: 'open is a valid state' },
-    'the checked-in run keeps acknowledged beta.10 observations visible without treating them as unknown',
+    { id: 'ledger', label: 'Ledger rows for every entry', status: 'watch', value: '9,945 · 127 open', detail: 'open is a valid state' },
+    'the checked-in run keeps acknowledged beta.11 observations visible without treating them as unknown',
   );
   assert.equal(get('ledger').status, 'not-met');
   assert.match(get('ledger').detail, new RegExp(`${evidence.accounting.review.unknown} queue entries have no ledger row`));

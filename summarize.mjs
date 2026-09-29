@@ -7,7 +7,7 @@ for (const file of process.argv.slice(2)) {
   const d = JSON.parse(readFileSync(file)); console.log(`# ${file}: ${d.cpu}, ${d.rounds} rounds`);
   const keys = [...new Set(d.samples.map(s => `${s.profile}|${s.variant}`))];
   for (const k of keys) for (const m of ['initializeMs', 'instantiateMs', 'initCallMs', 'wholeMs', 'incrementalMs']) {
-    const [p, v] = k.split('|'); if (m !== 'incrementalMs' && m !== 'wholeMs' && v !== 'official') continue; if (m === 'wholeMs' && v !== 'official') continue;
+    const [p, v] = k.split('|'); if (m !== 'incrementalMs' && m !== 'wholeMs' && v !== 'official') continue; if (m === 'wholeMs' && !v.startsWith('official')) continue;
     const g = ver => d.samples.filter(s => s.profile === p && s.variant === v && s.version === ver).map(s => s[m]).filter(Number.isFinite);
     const o = g('old'), n = g('new'); if (!o.length) continue; const [lo, hi] = boot(n, o);
     console.log([p, v, m, med(o).toFixed(2), med(n).toFixed(2), (med(n) / med(o)).toFixed(3), `[${lo.toFixed(3)}, ${hi.toFixed(3)}]`, `n=${o.length}/${n.length}`].join('\t'));

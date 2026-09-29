@@ -26,8 +26,10 @@ const serve = root => new Promise(resolve => { const s = http.createServer(async
     res.writeHead(200, { 'content-type': mime(f), 'content-length': info.size, 'cache-control': 'no-store' }); createReadStream(f).pipe(res);
   } catch { res.writeHead(404).end(); } }); s.listen(0, '127.0.0.1', () => resolve(s)); });
 const servers = { old: await serve(path.join(here, 'web/old')), new: await serve(path.join(here, 'web/new')) };
+const PHASE = process.env.PHASE ?? '1';
+const jsFlags = variant => variant.endsWith('-turbofan') ? ['--js-flags=--no-liftoff --no-wasm-lazy-compilation'] : variant.endsWith('-liftoff') ? ['--js-flags=--liftoff-only --no-wasm-lazy-compilation'] : [];
 async function sample(version, selectors, variant) {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: jsFlags(variant) });
   try {
     const page = await browser.newPage();
     await page.goto(`http://127.0.0.1:${servers[version].address().port}/`);
@@ -45,15 +47,22 @@ async function sample(version, selectors, variant) {
       if (variant === 'settle10') await new Promise(r => setTimeout(r, 10));
       let incrementalMs = session();
       if (variant === 'warm') incrementalMs = session();
+      // steady: five more sessions, each after a 100 ms pause, report the last (tier-up given time to finish).
+      if (variant === 'steady') for (let i = 0; i < 5; i++) { await new Promise(r => setTimeout(r, 100)); incrementalMs = session(); }
       return { importMs, instantiateMs, initCallMs, initializeMs, wholeMs, incrementalMs, activation: core.piiActivation() };
     }, { entry: selectors.length ? 'redact_secret_wasm_pii.js' : 'redact_secret_wasm.js', selectors, variant, text, chunks });
   } finally { await browser.close(); }
 }
-const configs = [
+const configs1 = [
   ['global', ['pii:global'], 'official'], ['global', ['pii:global'], 'settle10'], ['global', ['pii:global'], 'warm'], ['global', ['pii:global'], 'cold'],
   ['us-ssn-exact', ['pii:family:us:ssn'], 'official'], ['us-ssn-exact', ['pii:family:us:ssn'], 'settle10'], ['us-ssn-exact', ['pii:family:us:ssn'], 'warm'], ['us-ssn-exact', ['pii:family:us:ssn'], 'cold'],
   ['us-jurisdiction', ['pii:us'], 'official'], ['off', [], 'official'], ['off', [], 'cold'],
 ];
+// Phase 2 (second diagnostic run): steady state and tier-pinned code, which separate code speed from tier-up timing.
+const configs2 = [];
+for (const [profile, selectors] of [['global', ['pii:global']], ['us-ssn-exact', ['pii:family:us:ssn']], ['off', []]])
+  for (const variant of ['official', 'steady', 'official-turbofan', 'official-liftoff']) configs2.push([profile, selectors, variant]);
+const configs = PHASE === '2' ? configs2 : configs1;
 const out = { cpu: os.cpus()[0].model, chromium: chromium.executablePath(), rounds, samples: [] };
 for (let i = 0; i < rounds; i++) for (const [profile, selectors, variant] of configs)
   for (const v of i % 2 ? ['old', 'new', 'new', 'old'] : ['new', 'old', 'old', 'new']) out.samples.push({ round: i, version: v, profile, variant, ...(await sample(v, selectors, variant)) });

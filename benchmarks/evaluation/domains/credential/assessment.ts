@@ -616,7 +616,88 @@ const DISPUTED_BY_ID = new Map(Object.values(DISPUTED_PROPERTIES).flatMap(d => d
 /** The disputed property a fixture's expectation rests on, or undefined when it asserts nothing disputed. */
 export const disputedProperty = (category: string, fixtureId: string) => DISPUTED_BY_ID.get(`${category}--${fixtureId}`);
 
+/**
+ * redact-secret#948 (product ec9224d, PR #994) amended the product decision
+ * `decision-redact-provider-named-credential-assignments`: a provider prefix no longer disqualifies a
+ * high-signal credential name, so `generic-token` claims an off-grammar value under the provider's own
+ * credential variable at the generic floors (8 bytes; redact at 16 bytes and Shannon entropy 3.0, else warn).
+ * These near-miss controls are exactly that input: `<PROVIDER>_..._KEY|TOKEN|SECRET=<random near miss>`.
+ * Their authored must-not-flag expectation contradicts the amended project policy, so each is relabelled
+ * (docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md) from
+ * must-not-flag/T2 on its provider family to policy/T3 on generic-token: the value after `=` is the
+ * authored secret span and `expectedAction` is authored from those floors (never from scanner output).
+ * Negative twins are not listed: a twin's reading is scoped to its own contract family, so its assertion
+ * (no typed provider finding) is unchanged and the generic finding is recorded as co-detection.
+ * Keyed `<category>--<fixture id>`; `name` is the credential variable the input is built on.
+ */
+export const PROVIDER_NAMED_FALLBACK_948: Record<string, { from: string; name: string; expectedAction: 'redact' | 'warn' }> = {
+  'detector-coverage--datadog-api-key-short-key': { from: 'datadog-api-key', name: 'DD_API_KEY', expectedAction: 'redact' },
+  'detector-coverage--heroku-api-key-legacy-short-token': { from: 'heroku-api-key-legacy', name: 'HEROKU_API_KEY', expectedAction: 'redact' },
+  'detector-coverage--mailchimp-api-key-missing-marker': { from: 'mailchimp-api-key', name: 'MAILCHIMP_API_KEY', expectedAction: 'redact' },
+  'detector-coverage--mailchimp-api-key-short-key': { from: 'mailchimp-api-key', name: 'MAILCHIMP_API_KEY', expectedAction: 'redact' },
+  'detector-coverage--mailgun-api-key-short-body': { from: 'mailgun-api-key', name: 'MAILGUN_API_KEY', expectedAction: 'warn' },
+  'detector-coverage--travisci-api-token-short-token': { from: 'travisci-api-token', name: 'TRAVIS_API_TOKEN', expectedAction: 'redact' },
+  'beta8-207--sentry-org-auth-token-missing-secret-near-miss': { from: 'sentry-org-auth-token', name: 'SENTRY_AUTH_TOKEN', expectedAction: 'redact' },
+  'beta8-207--sentry-org-auth-token-missing-payload-near-miss': { from: 'sentry-org-auth-token', name: 'SENTRY_AUTH_TOKEN', expectedAction: 'redact' },
+  'beta8-207--sentry-user-auth-token-half-body-near-miss': { from: 'sentry-user-auth-token', name: 'SENTRY_AUTH_TOKEN', expectedAction: 'redact' },
+  'beta8-207--sentry-user-auth-token-org-prefix-hex-near-miss': { from: 'sentry-user-auth-token', name: 'SENTRY_AUTH_TOKEN', expectedAction: 'redact' },
+  'beta8-207--telegram-bot-token-short-secret-near-miss': { from: 'telegram-bot-token', name: 'TELEGRAM_BOT_TOKEN', expectedAction: 'redact' },
+  'beta8-207--discord-bot-token-two-segments-near-miss': { from: 'discord-bot-token', name: 'DISCORD_TOKEN', expectedAction: 'redact' },
+  'beta8-207--twilio-auth-token-long-value-near-miss': { from: 'twilio-auth-token', name: 'TWILIO_AUTH_TOKEN', expectedAction: 'redact' },
+  'beta8-207--twilio-auth-token-split-value-near-miss': { from: 'twilio-auth-token', name: 'TWILIO_AUTH_TOKEN', expectedAction: 'redact' },
+  'beta8-207--twilio-api-key-secret-short-value-near-miss': { from: 'twilio-api-key-secret', name: 'TWILIO_API_SECRET', expectedAction: 'redact' },
+  'beta8-207--heroku-api-key-legacy-non-hex-uuid-near-miss': { from: 'heroku-api-key-legacy', name: 'HEROKU_API_KEY', expectedAction: 'redact' },
+  'beta8-207--heroku-api-key-legacy-missing-group-near-miss': { from: 'heroku-api-key-legacy', name: 'HEROKU_API_KEY', expectedAction: 'redact' },
+  'beta8-207--confluent-cloud-api-secret-legacy-overlong-value-near-miss': { from: 'confluent-cloud-api-secret-legacy', name: 'CONFLUENT_CLOUD_API_SECRET', expectedAction: 'redact' },
+  'beta8-213d--mailchimp-api-key-short-body-suffix-near-miss': { from: 'mailchimp-api-key', name: 'MAILCHIMP_API_KEY', expectedAction: 'redact' },
+  'beta8-213d--mailgun-api-key-short-body-near-miss': { from: 'mailgun-api-key', name: 'MAILGUN_API_KEY', expectedAction: 'redact' },
+  'beta8-213d--postman-api-key-short-key-near-miss': { from: 'postman-api-key', name: 'POSTMAN_API_KEY', expectedAction: 'redact' },
+  'beta8-259--mailgun-api-key-triplet-short-first-segment-near-miss': { from: 'mailgun-api-key-triplet', name: 'MAILGUN_API_KEY', expectedAction: 'redact' },
+  'beta8-259--mailgun-api-key-triplet-short-last-segment-near-miss': { from: 'mailgun-api-key-triplet', name: 'MAILGUN_API_KEY', expectedAction: 'redact' },
+  'beta8-259--mailgun-api-key-triplet-uppercase-hex-near-miss': { from: 'mailgun-api-key-triplet', name: 'MAILGUN_API_KEY', expectedAction: 'redact' },
+  'beta8-259--mailgun-api-key-triplet-two-segments-near-miss': { from: 'mailgun-api-key-triplet', name: 'MAILGUN_API_KEY', expectedAction: 'redact' },
+};
+const PRODUCT_948_ADR = 'https://github.com/redact-secret/redact-secret/blob/ec9224d9743066fe73d6e61e9843ef52bd853833/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md#amendment-a-provider-named-high-signal-name-falls-back-to-generic-token-948';
+const PRODUCT_948 = 'https://github.com/redact-secret/redact-secret/issues/948';
+const shannon = (value: string) => {
+  const counts = new Map<string, number>();
+  for (const c of value) counts.set(c, (counts.get(c) ?? 0) + 1);
+  return [...counts.values()].reduce((h, n) => h - (n / value.length) * Math.log2(n / value.length), 0);
+};
+/** The generic floors of the amended product decision: 8 bytes; redact at 16 bytes and entropy 3.0, else warn. */
+const utf8Length = (text: string) => new TextEncoder().encode(text).length;
+export const genericFloorAction = (value: string): 'redact' | 'warn' | null =>
+  utf8Length(value) < 8 ? null : utf8Length(value) >= 16 && shannon(value) >= 3 ? 'redact' : 'warn';
+
+/**
+ * Applies a PROVIDER_NAMED_FALLBACK_948 relabel to a freshly built fixture, before classification: the
+ * value after `<name>=` up to the line end becomes the authored secret span, the target becomes
+ * generic-token, and `expectedAction` is checked against the floors. Construction-derived only.
+ */
+export function applyProviderNamedFallback948(category: string, f: Fixture) {
+  const relabel = PROVIDER_NAMED_FALLBACK_948[`${category}--${f.id}`];
+  if (!relabel) return;
+  const match = /^([A-Z0-9_]+)=([^\r\n]+)\n?$/.exec(f.content);
+  if (!match || match[1] !== relabel.name) throw new Error(`#948 relabel ${category}--${f.id}: input is not ${relabel.name}=<value>`);
+  if (f.expected.length || f.twinOf) throw new Error(`#948 relabel ${category}--${f.id}: only a spanless non-twin control can be relabelled`);
+  if ((f.detectors?.[0] ?? f.arrivalTargets?.[0]) !== relabel.from) throw new Error(`#948 relabel ${category}--${f.id}: target is not ${relabel.from}`);
+  const action = genericFloorAction(match[2]);
+  if (action !== relabel.expectedAction) throw new Error(`#948 relabel ${category}--${f.id}: floors give ${action}, the record says ${relabel.expectedAction}`);
+  const start = utf8Length(`${relabel.name}=`);
+  f.expected = [{ start, end: start + utf8Length(match[2]), role: 'secret',
+    note: `Relabelled under redact-secret#948 (was a must-not-flag near-miss control of ${relabel.from}): random near-miss material under the provider's own credential variable is a credential under the amended project policy.` } as Fixture['expected'][number]];
+  f.expectedAction = relabel.expectedAction;
+  f.detectors = ['generic-token'];
+  delete f.arrivalTargets;
+}
+
 export function classifyFixture(category: string, f: Fixture): Assessment {
+  const relabel948 = PROVIDER_NAMED_FALLBACK_948[`${category}--${f.id}`];
+  if (relabel948) {
+    if (!f.expected.length) throw new Error(`#948 relabel ${category}--${f.id} was not applied before classification`);
+    return { kind: 'policy', tier: 'T3', contract: 'generic-token', sources: [PRODUCT_948_ADR, PRODUCT_948],
+      reason: `Relabelled by docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md: was must-not-flag/T2 on ${relabel948.from} (a malformed-by-construction near miss, expected silence); is policy/T3 on generic-token with the value after ${relabel948.name}= as the secret span, expected action ${relabel948.expectedAction}. Random or secret-shaped material under the provider's own credential variable is a credential under the amended project policy (redact-secret#948, amendment of decision-redact-provider-named-credential-assignments, 2026-09-29): generic-token claims it at the generic floors (redact at 16 bytes and entropy 3.0, else warn). No ${relabel948.from} provider-format claim is made.` };
+  }
   const disputed = disputedProperty(category, f.id);
   if (disputed) {
     const positive = f.expected.some(r => (r.role ?? 'secret') === 'secret');

@@ -123,6 +123,10 @@ contamination and must be recorded before the next run. See
 Gitignore and access modes do not make a public generator an independent
 holdout, and consensus between scanners never changes authored expectations.
 
+The six-family beta.11 PII protected corpus uses this same storage and lifecycle
+through its own input, seal and run commands: see
+[the PII custodian guide](PII-CUSTODIAN.md).
+
 A custodian-held blind evaluation of exact candidate tarballs, with fixtures
 outside every repository, is a separate lifecycle: see
 [blind evaluation](../docs/specs/blind-evaluation.md).

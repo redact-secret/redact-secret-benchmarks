@@ -2061,7 +2061,7 @@
     "new-relic-license-key"
   ],
   "detector-coverage--datadog-api-key-short-key": [
-    "datadog-api-key"
+    "generic-token"
   ],
   "detector-coverage--new-relic-license-key-short-key": [
     "new-relic-license-key"
@@ -4089,7 +4089,7 @@
     "heroku-api-key-legacy"
   ],
   "detector-coverage--heroku-api-key-legacy-short-token": [
-    "heroku-api-key-legacy"
+    "generic-token"
   ],
   "detector-coverage--heroku-api-key-legacy-mask": [
     "heroku-api-key-legacy"
@@ -4140,10 +4140,10 @@
     "mailchimp-api-key"
   ],
   "detector-coverage--mailchimp-api-key-missing-marker": [
-    "mailchimp-api-key"
+    "generic-token"
   ],
   "detector-coverage--mailchimp-api-key-short-key": [
-    "mailchimp-api-key"
+    "generic-token"
   ],
   "detector-coverage--mailchimp-api-key-mask": [
     "mailchimp-api-key"
@@ -4206,7 +4206,7 @@
     "mailgun-api-key"
   ],
   "detector-coverage--mailgun-api-key-short-body": [
-    "mailgun-api-key"
+    "generic-token"
   ],
   "detector-coverage--mailgun-api-key-mask": [
     "mailgun-api-key"
@@ -4722,10 +4722,10 @@
     "sentry-org-auth-token"
   ],
   "beta8-207--sentry-org-auth-token-missing-secret-near-miss": [
-    "sentry-org-auth-token"
+    "generic-token"
   ],
   "beta8-207--sentry-org-auth-token-missing-payload-near-miss": [
-    "sentry-org-auth-token"
+    "generic-token"
   ],
   "beta8-207--sentry-org-auth-token-your-token-here-placeholder": [
     "sentry-org-auth-token"
@@ -4794,10 +4794,10 @@
     "sentry-user-auth-token"
   ],
   "beta8-207--sentry-user-auth-token-half-body-near-miss": [
-    "sentry-user-auth-token"
+    "generic-token"
   ],
   "beta8-207--sentry-user-auth-token-org-prefix-hex-near-miss": [
-    "sentry-user-auth-token"
+    "generic-token"
   ],
   "beta8-207--sentry-user-auth-token-last-four-placeholder": [
     "sentry-user-auth-token"
@@ -4866,7 +4866,7 @@
     "telegram-bot-token"
   ],
   "beta8-207--telegram-bot-token-short-secret-near-miss": [
-    "telegram-bot-token"
+    "generic-token"
   ],
   "beta8-207--telegram-bot-token-timestamp-colon-near-miss": [
     "telegram-bot-token"
@@ -4953,7 +4953,7 @@
     "discord-bot-token"
   ],
   "beta8-207--discord-bot-token-two-segments-near-miss": [
-    "discord-bot-token"
+    "generic-token"
   ],
   "beta8-207--twilio-auth-token-env": [
     "twilio-auth-token"
@@ -5031,10 +5031,10 @@
     "twilio-auth-token"
   ],
   "beta8-207--twilio-auth-token-long-value-near-miss": [
-    "twilio-auth-token"
+    "generic-token"
   ],
   "beta8-207--twilio-auth-token-split-value-near-miss": [
-    "twilio-auth-token"
+    "generic-token"
   ],
   "beta8-207--twilio-auth-token-your-token-placeholder": [
     "twilio-auth-token"
@@ -5133,7 +5133,7 @@
     "twilio-api-key-secret"
   ],
   "beta8-207--twilio-api-key-secret-short-value-near-miss": [
-    "twilio-api-key-secret"
+    "generic-token"
   ],
   "beta8-207--twilio-api-key-secret-your-secret-placeholder": [
     "twilio-api-key-secret"
@@ -5244,10 +5244,10 @@
     "heroku-api-key-legacy"
   ],
   "beta8-207--heroku-api-key-legacy-non-hex-uuid-near-miss": [
-    "heroku-api-key-legacy"
+    "generic-token"
   ],
   "beta8-207--heroku-api-key-legacy-missing-group-near-miss": [
-    "heroku-api-key-legacy"
+    "generic-token"
   ],
   "beta8-207--heroku-api-key-legacy-your-key-placeholder": [
     "heroku-api-key-legacy"
@@ -5352,7 +5352,7 @@
     "confluent-cloud-api-secret-legacy"
   ],
   "beta8-207--confluent-cloud-api-secret-legacy-overlong-value-near-miss": [
-    "confluent-cloud-api-secret-legacy"
+    "generic-token"
   ],
   "beta8-207--confluent-cloud-api-secret-legacy-key-id-twice-near-miss": [
     "confluent-cloud-api-secret-legacy"
@@ -7327,7 +7327,7 @@
     "mailchimp-api-key"
   ],
   "beta8-213d--mailchimp-api-key-short-body-suffix-near-miss": [
-    "mailchimp-api-key"
+    "generic-token"
   ],
   "beta8-213d--mailchimp-api-key-vault-lookup-reference": [
     "mailchimp-api-key"
@@ -7375,7 +7375,7 @@
     "mailgun-api-key"
   ],
   "beta8-213d--mailgun-api-key-short-body-near-miss": [
-    "mailgun-api-key"
+    "generic-token"
   ],
   "beta8-213d--mailgun-api-key-setting-name-near-miss": [
     "mailgun-api-key"
@@ -7540,7 +7540,7 @@
     "postman-api-key"
   ],
   "beta8-213d--postman-api-key-short-key-near-miss": [
-    "postman-api-key"
+    "generic-token"
   ],
   "beta8-213d--postman-api-key-identifier-near-miss": [
     "postman-api-key"
@@ -7948,7 +7948,7 @@
     "travisci-api-token"
   ],
   "detector-coverage--travisci-api-token-short-token": [
-    "travisci-api-token"
+    "generic-token"
   ],
   "detector-coverage--travisci-api-token-mask": [
     "travisci-api-token"
@@ -8259,10 +8259,18 @@
   "beta8-259--mailgun-api-key-triplet-actions-secret-reference": [],
   "beta8-259--mailgun-api-key-triplet-python-environ-reference": [],
   "beta8-259--mailgun-api-key-triplet-vault-path-reference": [],
-  "beta8-259--mailgun-api-key-triplet-short-first-segment-near-miss": [],
-  "beta8-259--mailgun-api-key-triplet-short-last-segment-near-miss": [],
-  "beta8-259--mailgun-api-key-triplet-uppercase-hex-near-miss": [],
-  "beta8-259--mailgun-api-key-triplet-two-segments-near-miss": [],
+  "beta8-259--mailgun-api-key-triplet-short-first-segment-near-miss": [
+    "generic-token"
+  ],
+  "beta8-259--mailgun-api-key-triplet-short-last-segment-near-miss": [
+    "generic-token"
+  ],
+  "beta8-259--mailgun-api-key-triplet-uppercase-hex-near-miss": [
+    "generic-token"
+  ],
+  "beta8-259--mailgun-api-key-triplet-two-segments-near-miss": [
+    "generic-token"
+  ],
   "beta8-259--mailgun-api-key-triplet-webhook-signature-encoded-value": [],
   "beta8-259--mailgun-api-key-triplet-base64-domain-encoded-value": [],
   "beta8-259--mailgun-api-key-triplet-sha256-template-encoded-value": [],
@@ -12537,5 +12545,32 @@
   ],
   "detector-coverage--wandb-api-key-label-prose": [
     "wandb-api-key"
+  ],
+  "beta8-948--datadog-api-key-truncated-in-prose-near-miss": [
+    "datadog-api-key"
+  ],
+  "beta8-948--mailgun-api-key-short-body-in-prose-near-miss": [
+    "mailgun-api-key"
+  ],
+  "beta8-948--mailgun-api-key-short-body-in-log-near-miss": [
+    "mailgun-api-key"
+  ],
+  "beta8-948--postman-api-key-short-tail-in-prose-near-miss": [
+    "postman-api-key"
+  ],
+  "beta8-948--sentry-org-auth-token-missing-secret-in-log-near-miss": [
+    "sentry-org-auth-token"
+  ],
+  "beta8-948--sentry-org-auth-token-missing-payload-in-prose-near-miss": [
+    "sentry-org-auth-token"
+  ],
+  "beta8-948--sentry-user-auth-token-half-body-in-prose-near-miss": [
+    "sentry-user-auth-token"
+  ],
+  "beta8-948--sentry-user-auth-token-org-prefix-hex-in-log-near-miss": [
+    "sentry-user-auth-token"
+  ],
+  "beta8-948--travisci-api-token-short-in-prose-near-miss": [
+    "travisci-api-token"
   ]
 }

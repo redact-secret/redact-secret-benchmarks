@@ -173,7 +173,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #259 (registry pin 3144bb3): travisci-api-token's keyword-gated coverage positive in its
   // three detector-coverage contexts (+3).
   // #384 graduation: the four keyword-gated families (mistral, cohere, deepgram, ai21) each carry a coverage positive in three contexts, scored as policy (+12).
-  assert.deepEqual(tally['policy/T3'], { files: 229, spans: 229 });
+  // redact-secret#948 (docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md): six
+  // detector-coverage near-miss controls under the provider's own credential variable move from must-not-flag/T2
+  // to policy/T3 on generic-token (+6 files/+6 spans).
+  assert.deepEqual(tally['policy/T3'], { files: 235, spans: 235 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -236,7 +239,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // length twins of key-shape each (netted out via -twins.length): -3.
   // The #434/#436 re-pin (1127bf9) adds 65 for the thirteen new registry detectors (prefix-only, short-body, mask,
   // reference, label-prose each).
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 592);
+  // redact-secret#948 relabels six detector-coverage near-miss controls under the provider's own credential
+  // variable to policy/T3 on generic-token (docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md): -6.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 586);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

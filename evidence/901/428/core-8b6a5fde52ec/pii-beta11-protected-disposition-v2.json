@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-beta11-protected-disposition",
+  "supportClaims": false,
+  "issue": "redact-secret/redact-secret-benchmarks#428",
+  "productIssue": "redact-secret/redact-secret#901",
+  "route": "pii-b11-protected-v1",
+  "maximumStatus": "provisional",
+  "candidate": {
+    "sourceCommit": "8b6a5fde52ecb4dfce13f09c7a947062d21483c7"
+  },
+  "freezeCommitment": "f79278aeb40c06cacaab5c91bd63aedddaadf1b8d3d68761c9a2dc5f78dce412",
+  "reportCommitment": "530879bc6db9f3bc497164c936f56718262d94953cf068021255f730c09088bd",
+  "dispositionCommitment": "50c2268060b48d852ff8510c61a713ef13e4dd537cf17d55ee71146c3dd4b518",
+  "sealCommitment": null,
+  "costAcceptance": {
+    "sourceCommit": "8b6a5fde52ecb4dfce13f09c7a947062d21483c7",
+    "reportCommitment": "530879bc6db9f3bc497164c936f56718262d94953cf068021255f730c09088bd",
+    "status": "accepted",
+    "acceptedBy": "beta11-8b6a5fd-pii-profile-cost",
+    "entryCommitment": "086647b4fbb0154e8ed8c3b8076123ebdd3eb174c8a8ceb259bda98a581bce82",
+    "accepted": {
+      "cells": 175,
+      "sizeRows": 38
+    },
+    "excluded": [],
+    "uncovered": []
+  },
+  "domainSeparation": "PII counts only; no credential count is merged and no combined credential+PII score exists.",
+  "distribution": {
+    "pending": 6,
+    "provisional": 0,
+    "stable": 0
+  },
+  "families": [
+    {
+      "family": "pii:global:network-address",
+      "status": "pending",
+      "publicGates": {
+        "met": 20,
+        "notMet": [],
+        "unresolved": [],
+        "acceptedTradeoffs": [
+          "profile-cost:beta11-8b6a5fd-pii-profile-cost"
+        ]
+      },
+      "protected": {
+        "state": "unspent",
+        "reason": "no-sealed-corpus",
+        "runs": "0/1",
+        "epochCommitment": "f3acc8eb4a33377c8d3ed5d2b4d913e5bbdfd01dc6cd0c5c427ee90f5a3ffc47",
+        "sealed": false
+      }
+    },
+    {
+      "family": "pii:global:email",
+      "status": "pending",
+      "publicGates": {
+        "met": 20,
+        "notMet": [],
+        "unresolved": [],
+        "acceptedTradeoffs": [
+          "profile-cost:beta11-8b6a5fd-pii-profile-cost"
+        ]
+      },
+      "protected": {
+        "state": "unspent",
+        "reason": "no-sealed-corpus",
+        "runs": "0/1",
+        "epochCommitment": "04d02d9f6b1aa593aff609045cf1479ddea5d042e71cb7e00af480c724d7c515",
+        "sealed": false
+      }
+    },
+    {
+      "family": "pii:global:payment-card",
+      "status": "pending",
+      "publicGates": {
+        "met": 20,
+        "notMet": [],
+        "unresolved": [],
+        "acceptedTradeoffs": [
+          "profile-cost:beta11-8b6a5fd-pii-profile-cost"
+        ]
+      },
+      "protected": {
+        "state": "unspent",
+        "reason": "no-sealed-corpus",
+        "runs": "0/1",
+        "epochCommitment": "77ec7334e5883cae9b0427b5009a252abbb47f48e8a7836956c95fff511d3dc9",
+        "sealed": false
+      }
+    },
+    {
+      "family": "pii:global:iban",
+      "status": "pending",
+      "publicGates": {
+        "met": 20,
+        "notMet": [],
+        "unresolved": [],
+        "acceptedTradeoffs": [
+          "profile-cost:beta11-8b6a5fd-pii-profile-cost"
+        ]
+      },
+      "protected": {
+        "state": "unspent",
+        "reason": "no-sealed-corpus",
+        "runs": "0/1",
+        "epochCommitment": "ab045b20028f1e3952ee4a730e5015b94df444f915c96b410348dd7014bcc4fc",
+        "sealed": false
+      }
+    },
+    {
+      "family": "pii:us:ssn",
+      "status": "pending",
+      "publicGates": {
+        "met": 20,
+        "notMet": [],
+        "unresolved": [],
+        "acceptedTradeoffs": [
+          "profile-cost:beta11-8b6a5fd-pii-profile-cost"
+        ]
+      },
+      "protected": {
+        "state": "unspent",
+        "reason": "no-sealed-corpus",
+        "runs": "0/1",
+        "epochCommitment": "0269a49341fcb8071014785769e28759766fe2f98512e14e7d078cada3d17452",
+        "sealed": false
+      }
+    },
+    {
+      "family": "pii:global:phone",
+      "status": "pending",
+      "publicGates": {
+        "met": 20,
+        "notMet": [],
+        "unresolved": [],
+        "acceptedTradeoffs": [
+          "profile-cost:beta11-8b6a5fd-pii-profile-cost"
+        ]
+      },
+      "protected": {
+        "state": "unspent",
+        "reason": "no-sealed-corpus",
+        "runs": "0/1",
+        "epochCommitment": "63de326f17eeda45ed214ba86fe4110d95521f51900825a503bcea8234ae7fbb",
+        "sealed": false
+      }
+    }
+  ],
+  "artifactCommitment": "ab2141416cc2ab92d21e96778ebddf48a3be55025808ffc5180625c6ed3148c8"
+}

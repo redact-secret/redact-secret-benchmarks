@@ -308,6 +308,13 @@
     "corpus": "fixtures/generated/beta8-434g.json"
   },
   {
+    "id": "beta8-948",
+    "title": "Beta.11 replacement near-miss controls for the redact-secret#948 relabel (948)",
+    "description": "Synthetic near-miss controls that replace the 25 provider-named near-miss controls docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md relabelled to policy/T3 on generic-token, so datadog-api-key, mailgun-api-key, postman-api-key, sentry-org-auth-token, sentry-user-auth-token and travisci-api-token keep their #206 cells. Each keeps its family's near-miss value shape in prose or a log line, never under a credential-named assignment. Values are synthetic, never provider-issued; no observation record is implied.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-948.json"
+  },
+  {
     "id": "policy-qualified-credentials",
     "title": "Public policy qualification controls for bounded T3 credentials (#365)",
     "description": "Independent deterministic action, exact-span, benign and context-twin controls for bearer credentials, connection-string passwords, OTP seeds and supported assignment literals. These public rows exercise the frozen project-policy contracts and remain separate from protected holdout evidence and PII claims.",

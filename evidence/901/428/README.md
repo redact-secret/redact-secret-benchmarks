@@ -192,6 +192,8 @@ The official A/A, freeze, candidate and size phases have not been dispatched. Th
   - The US SSN arrival path needs a custodian-attested protected epoch.
 
   The projection was therefore not regenerated for this interim commit. It still says `pending` for all six, which agrees with this record, so no site copy changes.
+
+  The v1 path still cannot bind a v2 candidate. The final commit's protected disposition now reaches the projection through a separate reviewed v2 binding path (`benchmarks/evaluation/domains/pii/protected-support-bindings-v1.json`), described in [final-core-8b6a5fde.md](final-core-8b6a5fde.md#support-projection-and-site-copy).
 - **Browser Wasm, Python, Rust and CLI output.** These surfaces are covered by #427 on the same source commit, not re-run here.
 
 ## Rerun on a new core commit

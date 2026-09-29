@@ -33,7 +33,7 @@ None recorded.
 
 ## Open questions
 
-1. **The API key family is unresearched.** Searched: core and benchmarks issue titles for SendGrid, core `docs/specs`, evidence and decisions, benchmarks `docs/` and `benchmarks/support`. The SendGrid issues (core #285 coverage gap, #402 and #404 candidate regressions and a partial-match bug, #553 twin policy) are false-negative, regression and fixture-policy records, not grammar research.
+1. **The API key family is unresearched.** Searched: core and benchmarks issue titles for SendGrid, core `docs/specs`, evidence and decisions, benchmarks `docs/` and `benchmarks/support`. The SendGrid issues (core #285 coverage gap, #402 and #404 candidate regressions (the #404 fixture-ID collision is a benchmark issue, not a product defect, per the #402 evidence record), #553 twin policy) are false-negative, regression and fixture-policy records, not grammar research.
 2. **Lead, not a verdict.** The benchmarks contract for `sendgrid-token` cites a SendGrid support article (https://support.sendgrid.com/hc/en-us/articles/44146758703387-Can-I-Use-a-Reduced-Shorter-API-Key-Size-in-SendGrid) for a fixed total length of 69 characters, and says the `SG.` prefix, the dot-separated 22 and 43 character segments and the alphabet are tool-corroborated, not stated by that page (checked 2026-09-20). Decide whether that row counts as a research record.
 
 ## Research log

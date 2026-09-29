@@ -34,7 +34,8 @@ families:
       verdict: unresearched
       tier: null
       sources: []
-      issues: []
+      issues:
+        - redact-secret/redact-secret#857
       evidence: null
       researchedAt: null
     blockedBy: null
@@ -46,6 +47,7 @@ families:
         - https://www.rfc-editor.org/rfc/rfc3986
       issues:
         - redact-secret/redact-secret#651
+        - redact-secret/redact-secret#857
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/651/README.md
       researchedAt: 2026-09-23
     blockedBy: null
@@ -54,7 +56,8 @@ families:
       verdict: unresearched
       tier: null
       sources: []
-      issues: []
+      issues:
+        - redact-secret/redact-secret#857
       evidence: null
       researchedAt: null
     blockedBy: null
@@ -66,6 +69,7 @@ families:
         - https://www.rfc-editor.org/rfc/rfc6749.txt
       issues:
         - redact-secret/redact-secret#653
+        - redact-secret/redact-secret#857
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/653/README.md
       researchedAt: 2026-09-23
     blockedBy: null
@@ -79,7 +83,7 @@ These six families have no issuing provider. Their only possible "provider" is a
 
 ### `generic:private-key` — PEM-encoded private key
 
-- **Shape:** RFC 7468 textual encoding: a `-----BEGIN <label>-----` line, base64 body lines, a matching `-----END <label>-----` line. The BEGIN and END lines fall inside the secret span. JSON exports (GCP and Firebase service-account keys) embed the PEM as a string with literal `\n` escapes; that variant was handled in [redact-secret#163](https://github.com/redact-secret/redact-secret/issues/163).
+- **Shape:** RFC 7468 textual encoding: a `-----BEGIN <label>-----` line, base64 body lines, a matching `-----END <label>-----` line. The BEGIN and END lines fall inside the secret span. JSON exports (GCP and Firebase service-account keys) embed the PEM as a string with literal `\n` escapes; that variant was already detected, as [redact-secret#163](https://github.com/redact-secret/redact-secret/issues/163) proved with two regression fixtures (PR #169).
 - **Sources:** T1, RFC 7468 §2. The #650 record names it as one of the two accepted RFC-backed T1 contracts, with the reviewed control parsed as PKCS#8 offline; legacy PEM bodies in the corpus decode to public prose, so only the parseable Ed25519 control is a positive.
 - **Issuance:** synthetic keys can be generated locally; no provider is involved.
 - **Collisions:** PEM certificates and public keys share the envelope and are negatives; the label decides.
@@ -90,12 +94,12 @@ These six families have no issuing provider. Their only possible "provider" is a
 - **Shape:** RFC 7519 §3 compact serialization: URL-safe parts separated by `.`; header decodes to a JSON object (§7.2). Every segment is base64url, so `+` and `/` are out of grammar (re-checked 2026-09-20 in the benchmarks work). The span is the whole compact serialization.
 - **Sources:** T1, RFC 7519. The reviewed control is signature-verified offline. TruffleHog skips HMAC JWTs, a policy difference, not a grammar one.
 - **Issuance:** synthetic tokens can be generated locally.
-- **Collisions:** ordinary dotted identifiers and missing-signature forms are negatives. Supabase legacy `anon` and `service_role` keys are JWTs too (see [redact-secret#472](https://github.com/redact-secret/redact-secret/issues/472) for the discrimination problem).
+- **Collisions:** ordinary dotted identifiers and missing-signature forms are negatives. Supabase legacy `anon` and `service_role` keys are JWTs too (see [redact-secret#472](https://github.com/redact-secret/redact-secret/issues/472#issuecomment-5749844717): resolved 2026-09-20 with a scoped exclusion that skips a legacy Supabase `anon` JWT only when the payload has `iss=supabase` and `role=anon`; `service_role` is still reported).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); [#650 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/650/README.md). False-positive controls were added in [redact-secret#323](https://github.com/redact-secret/redact-secret/issues/323).
 
 ### `generic:bearer-token` — Bearer credential
 
-- **Shape:** RFC 6750 §2.1: scheme keyword `Bearer` (case-insensitive per RFC 9110), one or more spaces, then `b64token` = letters, digits and `-._~+/` followed by trailing `=` padding. The keyword sits outside the secret span. §5.2 leaves the token's contents unspecified and no RFC states a length; core's 16-byte floor, cap of two `=` and HTAB acceptance are project policy.
+- **Shape:** RFC 6750 §2.1: scheme keyword `Bearer` (case-insensitive per RFC 9110), one or more spaces, then `b64token` = letters, digits and `-._~+/` followed by trailing `=` padding. The keyword sits outside the secret span. §5.2 leaves the token's contents unspecified and no RFC states a length; core's 16-byte floor (12 under an explicit `Authorization:` or `Proxy-Authorization:` header), cap of two `=` and HTAB acceptance are project policy.
 - **Sources:** carrier grammar only (RFC 6750, RFC 9110 §11.1, RFC 6749 §5.1). The #650 issue closed as NOT FOUND, exhaustive: no identifying element lies inside the span. The evidence record reads the same RFC text as FOUND-partial (carrier grammar) and leaves the choice to the maintainer; the two readings differ and no ruling was found, so the verdict is left `unresearched` (recorded as a conflict).
 - **Issuance:** not applicable.
 - **Collisions:** the value may be a JWT, a provider-prefixed key or an opaque string; providers' own families win when a prefix matches.
@@ -142,9 +146,10 @@ These six families have no issuing provider. Their only possible "provider" is a
 ## Research log
 
 - [redact-secret#107](https://github.com/redact-secret/redact-secret/issues/107) — grammar depth for private-key and JWT (fixtures, boundaries); coverage work, closed 2026-09-10.
-- [redact-secret#163](https://github.com/redact-secret/redact-secret/issues/163) — JSON-escaped PEM bodies (GCP and Firebase key exports); detector extension.
+- [redact-secret#163](https://github.com/redact-secret/redact-secret/issues/163) — JSON-escaped PEM bodies (GCP and Firebase key exports); closed by PR #169, which added two regression fixtures and no detector change.
 - [redact-secret#323](https://github.com/redact-secret/redact-secret/issues/323) — JWT and Bearer false-positive controls.
 - [redact-secret#650](https://github.com/redact-secret/redact-secret/issues/650) — bearer T1 hunt: NOT FOUND, exhaustive; carrier grammar only; also states the RFC-backed T1 status of jwt and private-key.
 - [redact-secret#651](https://github.com/redact-secret/redact-secret/issues/651) — connection-string password: NOT FOUND, exhaustive (2026-09-23).
 - [redact-secret#652](https://github.com/redact-secret/redact-secret/issues/652) — OTP seed: found-partial, conditional on the provider attribution (2026-09-23).
 - [redact-secret#653](https://github.com/redact-secret/redact-secret/issues/653) — unclassified assignment literal: NOT FOUND, exhaustive (2026-09-23).
+- [redact-secret#857](https://github.com/redact-secret/redact-secret/issues/857) — Beta.10 hardening of the four supported-context generic families; its evidence record keeps all four at T3 project policy (bearer stays provisional after one protected-holdout failure). It rules on neither the RFC-carrier reading of #650 nor the provider attribution of #652.

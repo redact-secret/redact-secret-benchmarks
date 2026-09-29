@@ -5,13 +5,15 @@ provider: gitlab
 families:
   - id: gitlab:legacy-personal-access-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
-    blockedBy: null
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.gitlab.com/security/tokens/
+      issues:
+        - redact-secret/redact-secret#518
+      evidence: https://github.com/redact-secret/redact-secret/blob/54c9ab35cb693e0cd3aedc8f858ca19ab77e4363/docs/decisions/2026-09-20-inventory-gitlab-token-families.md
+      researchedAt: 2026-09-20
+    blockedBy: "Only the glpat- prefix is provider-documented (T1); the 20-character body is tool-corroborated, and an administrator-configured personal access token prefix is unsupported."
   - id: gitlab:routable-personal-access-token
     research:
       verdict: unresearched
@@ -45,18 +47,19 @@ GitLab documents a prefix table for its tokens on the
 [token overview](https://docs.gitlab.com/security/tokens/) page. Personal
 access tokens use `glpat-`; runner authentication tokens use `glrt-`, or
 `glrtr-` when created through a registration token. Only the runner
-authentication family has research recorded for this batch; the two personal
-access token families were not in the sources reviewed.
+authentication family has research recorded for this batch; the two legacy
+personal access token family was inventoried in #518 (T1 on the prefix), and the
+routable one is recorded there as pending.
 
 ## Families
 
 ### `gitlab:legacy-personal-access-token` — Legacy personal access token
 
-- **Sources:** none reviewed in this batch. Unresearched.
+- **Sources:** T1 for the `glpat-` prefix (token overview, observed 2026-09-20). The prefix also covers impersonation, project and group access tokens. Inventoried per family in #518, whose decision records the administrator-customized prefix as unsupported (T3 policy).
 
 ### `gitlab:routable-personal-access-token` — Routable personal access token
 
-- **Sources:** none reviewed in this batch. Unresearched. The #230 pass notes
+- **Sources:** none reviewed in this batch. Unresearched; #518 records the routable form as pending until a source states the payload length or alphabet. The #230 pass notes
   that GitLab's routable-token generator is shared with `glpat-` (versioned and
   unversioned routable forms exist); that is context, not a verdict for this
   family.
@@ -97,7 +100,7 @@ access token families were not in the sources reviewed.
 - **`glrtr-` runner tokens.** Documented prefix; current shape unverified.
 - **Other prefixes** (`gldt-`, `glcbt-`, `glptt-`, `glft-`, `glimt-`, `glagent-`,
   `glwt-`, `glsoat-`, `glffct-`, `gloas-`). Listed on the token overview page;
-  no research here.
+  inventoried in #518: all supported except the routable runner form and the unprefixed runner registration token; `glsoat-` and `glffct-` were added there.
 
 ## Open questions
 
@@ -106,12 +109,13 @@ access token families were not in the sources reviewed.
    token issued through a registration token.
 3. Was the unversioned single-dot routable form ever issued for runners?
 4. Version window in which the partition-prefixed shape was minted.
-5. The two personal access token families need their own passes.
+5. The routable personal access token family has no source stating its payload length or alphabet (#518 records it as pending).
 
 ## Research log
 
 - redact-secret-benchmarks#230 — broad-discovery pass (25 sources); closed
   2026-09-24, routed to #212.
+- redact-secret#518 — inventory of GitLab's 13 documented token prefixes (decided 2026-09-20).
 - redact-secret#726 — freezes the wave-2 contract (T2, empirical route).
 - redact-secret#730 — implementation record; moved `glrt-` out of the
   personal access token detector.

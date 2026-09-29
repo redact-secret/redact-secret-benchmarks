@@ -14,6 +14,7 @@ families:
       issues:
         - redact-secret/redact-secret#646
         - redact-secret/redact-secret#670
+        - redact-secret/redact-secret-benchmarks#159
         - redact-secret/redact-secret-benchmarks#128
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/646/README.md
       researchedAt: 2026-09-24
@@ -48,5 +49,6 @@ Discord issues bot tokens from the Developer Portal bot page and uses them as `A
 ## Research log
 
 - [redact-secret#646](https://github.com/redact-secret/redact-secret/issues/646) — T1 hunt: NOT FOUND, exhaustive (2026-09-23); nearest miss is the API-reference example. T2 corroboration recorded 2026-09-24 in the benchmarks decision.
+- [redact-secret-benchmarks#159](https://github.com/redact-secret/redact-secret-benchmarks/issues/159) — benchmarks promotion intake.
 - [redact-secret#670](https://github.com/redact-secret/redact-secret/issues/670) — product fix for the 26/6/38 and 24/6/38 shapes.
 - [redact-secret-benchmarks#128](https://github.com/redact-secret/redact-secret-benchmarks/issues/128) — corpus regeneration for two ground-truth conflicts (docker-token shape 1, discord same-detection).

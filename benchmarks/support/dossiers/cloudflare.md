@@ -57,7 +57,7 @@ family is not recorded here.
   and `cfat_`. Adopted alongside `cfut_` under #481; no taxonomy entry exists.
 - **`cfk_` scannable global key.** Provider-documented to exist with the same
   format cell, but no tool corroborates its checksum shape. #481 split it into
-  #486, which re-checked every source and left it pending, not adopted.
+  #486, which re-checked every source and was closed as won't-fix: `cfk_` stays unsupported until Cloudflare states the checksum shape or a tool ships a rule ([comment](https://github.com/redact-secret/redact-secret/issues/486#issuecomment-5750665630)).
 - **Legacy unprefixed token and 37 to 45 character hex global key.** Excluded as
   indistinguishable from opaque values.
 
@@ -79,7 +79,7 @@ family is not recorded here.
   against that contract.
 - redact-secret#408 (2026-09-18) — release-candidate triage of the shape-1
   misses; traced to the benchmark fixture generator.
-- redact-secret#481 and #486 (2026-09-20) — adopted `cfat_`, and left `cfk_`
-  pending for lack of a checksum corroboration.
+- redact-secret#481 and #486 (2026-09-20) — adopted `cfat_`, and closed `cfk_`
+  as won't-fix (unsupported) for lack of a checksum corroboration.
 - redact-secret#566 (2026-09-21) — re-fetched the provider pages and found no
   evidence that supports widening the grammar; the `cfut_` freeze stands.

@@ -102,8 +102,6 @@ page. Older secrets keep working unprefixed.
 3. Is the last character of an issued secret always one of the four derived
    values? One issued secret would confirm it (#234 checklist).
 4. Real length of the unprefixed form (64 versus the 60-character example).
-5. The product module doc gave the cut-over as 2026-07-30 while every provider
-   source says 2025-07-30; check whether it was corrected.
 
 ## Research log
 

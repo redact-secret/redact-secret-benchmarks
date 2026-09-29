@@ -51,7 +51,7 @@ Whether and how core detects a family is not recorded here.
   display.
 - **Collisions:** the `tvly` command-line tool, key names such as
   `development-...-#1`, `request_id` values and the doc placeholder are benign.
-  `Bearer tvly-YOUR_API_KEY` was a `bearer-token` false alarm fixed by #774.
+  `Bearer tvly-YOUR_API_KEY` was a `bearer-token` false alarm fixed by #870 (Beta.10 epic #774).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md),
   section Together AI and Tavily (#867). `tvly-prod-` and other widths stay
   unclaimed.

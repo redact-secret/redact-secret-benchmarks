@@ -13,6 +13,7 @@ families:
       issues:
         - redact-secret/redact-secret#582
         - redact-secret/redact-secret#697
+        - redact-secret/redact-secret#698
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
     blockedBy: No Databricks page states the dapi prefix, length or alphabet; uppercase hex and the optional -<digit> suffix are disputed between sources. Needs one issued token (recorded in #697).
@@ -68,5 +69,6 @@ candidates ranked in #582.
 - redact-secret#582 — Beta.7 ranking; the evidence record shows the provider
   documentation is silent on format (2026-09-23) and includes the Databricks
   broad-discovery pass.
+- redact-secret#698 — suffix digit-count dispute between sources (closed 2026-09-25 with no comment; no provider source found).
 - redact-secret#697 — records the uppercase-hex dispute for this family and
   Mailchimp; closed 2026-09-25 without a real-key check.

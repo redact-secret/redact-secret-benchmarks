@@ -151,8 +151,8 @@ prefix is unknown.
 
 ### `vercel:api-key` — API key
 
-- **Shape:** `vck_`, used by Vercel's public CLI source when masking and
-  labelling an AI Gateway API key (pinned permalink above). That establishes
+- **Shape:** `vck_`, appears in Vercel's public CLI unit-test fixtures for masking
+  and labelling an AI Gateway API key (pinned permalink above). That establishes
   the marker only.
 - **Current contract in core:** same pending, T0 row.
 

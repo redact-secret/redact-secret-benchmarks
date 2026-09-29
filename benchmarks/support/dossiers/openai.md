@@ -28,6 +28,7 @@ families:
         - redact-secret/redact-secret#777
         - redact-secret/redact-secret#774
         - redact-secret/redact-secret#863
+        - redact-secret/redact-secret#882
         - redact-secret/redact-secret-benchmarks#384
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/863/README.md
       researchedAt: 2026-09-27
@@ -107,11 +108,16 @@ Whether and how core detects a family is not recorded here.
    it 58/58 only or also 74/74? One issued key settles it (#777 checklist).
 2. **Provider evidence class.** Does a staff forum post or provider code on
    github.com count as T1? #657 follows the written bar (no) and leaves the
-   decision to a maintainer; no ruling was found for OpenAI.
+   decision to a maintainer; no ruling was found for OpenAI. The maintainer
+   did accept provider SDK code as T1 for ElevenLabs on 2026-09-27
+   ([#788](https://github.com/redact-secret/redact-secret/issues/788#issuecomment-5852853663)),
+   following the Hugging Face precedent, while #863's evidence keeps admin at
+   T2 because `openai/codex` is a credential-broker allow-list, not a
+   grammar statement. Whether that distinction holds is a maintainer call.
 3. **Older generations.** No contract covers 20/20 `sk-proj-` keys; whether
    they still exist in the wild is unmeasured.
 4. **Trufflehog disagreement.** 3.97.4 excludes admin keys while gitleaks
-   accepts them; nothing resolves which is current.
+   accepts them; nothing resolves which is current. The trufflehog request for admin support (trufflehog#4698) is now closed with no comments, outcome unstated.
 5. **Reddit.** Not readable in either research pass, so absence there is weak.
 
 ## Research log

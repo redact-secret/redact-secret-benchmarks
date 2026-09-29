@@ -58,6 +58,7 @@ families:
         - https://docs.stripe.com/api/webhook_endpoints/object
         - https://docs.stripe.com/keys
       issues:
+        - redact-secret/redact-secret#513
         - redact-secret/redact-secret-benchmarks#224
         - redact-secret/redact-secret-benchmarks#367
         - redact-secret/redact-secret-benchmarks#372

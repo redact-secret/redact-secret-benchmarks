@@ -12,6 +12,7 @@ families:
       issues:
         - redact-secret/redact-secret#582
         - redact-secret/redact-secret#697
+        - redact-secret/redact-secret#698
         - redact-secret/redact-secret#699
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
@@ -61,6 +62,7 @@ separate product. The family was a Beta.7 candidate ranked in #582.
 
 - redact-secret#582 — Beta.7 ranking; the Mailchimp broad-discovery pass is
   linked from the evidence record (2026-09-23).
+- redact-secret#698 — suffix digit-count dispute between sources (closed 2026-09-25 with no comment; no provider source found).
 - redact-secret#697 — uppercase hex dispute; closed 2026-09-25.
 - redact-secret#699 — provider example has a 31-character body versus the
   32-character grammar; closed 2026-09-25.

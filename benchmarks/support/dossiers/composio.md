@@ -85,12 +85,12 @@ Composio is an agent tool platform whose keys authorize tool calls against a use
 
 ## Open questions
 
-1. Is the `uak_` body 43 characters on a key issued today? The maintainer was asked to confirm lifting the gate; no explicit confirmation comment was read for this dossier, though the family was later implemented (#909).
+1. Is the `uak_` body 43 characters on a key issued today? The maintainer was asked to [confirm or keep the gate](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871361534); no separate confirming comment exists, but #909 (merged, opened by the same account 84 seconds later) specifies `uak_` + 43 as READY per R6, and the later scheduling comments list no Composio gate. Only an issuance check remains.
 2. Did an older `uak_` + 20 format ever exist? Would need a dated provider source.
 3. `ck_` body length and alphabet, so it could become a family.
 
 ## Research log
 
-- redact-secret#860 — epic (open); [research table #31](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852386808); [Tier A handoffs](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871361534) (this family READY, `uak_` gate lifted under R6); [rulings R2 to R8](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275).
+- redact-secret#860 — epic (open); [research table #31](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852386808); [Tier A handoffs](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871361534) (this family READY, `uak_` gate lifted under R6); [rulings R1, R3](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851), [rulings R2 to R8](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275).
 - redact-secret#909 — implementation issue for the three keys (closed).
 - [Final disposition record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/disposition.md) lists it READY, 2026-09-28.

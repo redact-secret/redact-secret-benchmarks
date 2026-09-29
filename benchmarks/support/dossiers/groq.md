@@ -13,6 +13,7 @@ families:
       issues:
         - redact-secret/redact-secret-benchmarks#218
         - redact-secret/redact-secret#726
+        - redact-secret/redact-secret#727
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
     blockedBy: No provider source states length or alphabet; the 52-character body is tool-corroborated plus a four-sample maintainer observation (checklist in benchmarks#218).
@@ -65,5 +66,6 @@ and scoped to a project. Not to be confused with xAI's Grok (`xai:api-key`).
 
 - redact-secret-benchmarks#218 — broad-discovery pass (2026-09-24). No provider
   staff statement found; the forum is retired.
+- redact-secret#727 — implementation of the committed AI inference credential families for Beta.8 (closed 2026-09-24).
 - redact-secret#726 — freeze of the Beta.8 contracts (this family: 52
   alphanumeric, empirical route).

@@ -5,49 +5,59 @@ provider: github
 families:
   - id: github:classic-personal-access-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
-    blockedBy: null
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats
+      issues:
+        - redact-secret/redact-secret#517
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
+      researchedAt: 2026-09-20
+    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
   - id: github:oauth-access-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
-    blockedBy: null
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats
+      issues:
+        - redact-secret/redact-secret#517
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
+      researchedAt: 2026-09-20
+    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
   - id: github:app-user-to-server-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
-    blockedBy: null
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats
+      issues:
+        - redact-secret/redact-secret#517
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
+      researchedAt: 2026-09-20
+    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
   - id: github:app-server-to-server-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
-    blockedBy: null
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats
+      issues:
+        - redact-secret/redact-secret#517
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
+      researchedAt: 2026-09-20
+    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
   - id: github:oauth-refresh-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
-    blockedBy: null
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats
+      issues:
+        - redact-secret/redact-secret#517
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
+      researchedAt: 2026-09-20
+    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
   - id: github:fine-grained-personal-access-token
     research:
       verdict: ready
@@ -57,6 +67,8 @@ families:
       issues:
         - redact-secret/redact-secret-benchmarks#223
         - redact-secret/redact-secret-benchmarks#367
+        - redact-secret/redact-secret-benchmarks#371
+        - redact-secret/redact-secret#517
         - redact-secret/redact-secret#726
         - redact-secret/redact-secret#729
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
@@ -70,34 +82,35 @@ GitHub issues several token classes that share one prefix table on its
 [token formats](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github#githubs-token-formats)
 page: classic personal access tokens (`ghp_`), OAuth access and refresh tokens
 (`gho_`, `ghr_`), GitHub App user-to-server (`ghu_`) and server-to-server
-(`ghs_`) tokens, and fine-grained personal access tokens (`github_pat_`). Only
-the fine-grained family has research recorded for this batch. The other five
-were not part of the sources reviewed and stay unresearched.
+(`ghs_`) tokens, and fine-grained personal access tokens (`github_pat_`). Core #517
+audited all six families per family (decided 2026-09-20; the ADR is linked in each
+family's frontmatter): prefixes and roles are T1 from the token-formats page, and the
+five classic-format families carry the 36-byte body of GitHub's 2021 post.
 
 ## Families
 
 ### `github:classic-personal-access-token` — Classic personal access token
 
-- **Sources:** none reviewed in this batch. Unresearched.
+- **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated).
 
 ### `github:oauth-access-token` — OAuth access token
 
-- **Sources:** none reviewed in this batch. Unresearched.
+- **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated).
 
 ### `github:app-user-to-server-token` — GitHub App user-to-server token
 
-- **Sources:** none reviewed in this batch. Unresearched.
+- **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated).
 
 ### `github:app-server-to-server-token` — GitHub App server-to-server token
 
-- **Sources:** none reviewed in this batch. Unresearched. The #223 pass notes
+- **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated). The #223 pass notes
   that GitHub announced a new `ghs_APPID_JWT` installation-token format
   (variable length, about 520 characters, rollout from 2026-04-27), which
   belongs to this family and not to the fine-grained one.
 
 ### `github:oauth-refresh-token` — OAuth refresh token
 
-- **Sources:** none reviewed in this batch. Unresearched.
+- **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated).
 
 ### `github:fine-grained-personal-access-token` — Fine-grained personal access token
 
@@ -138,13 +151,13 @@ were not part of the sources reviewed and stay unresearched.
    words and the 2021 `gh?_` engineering post (CRC32 in the last six
    characters) cover a different scheme.
 3. Do GHES and GHE.com issue the same shape as github.com?
-4. Which of the five other GitHub families have provider sources? They need
-   their own research before any verdict.
 
 ## Research log
 
 - redact-secret-benchmarks#223 — broad-discovery pass for the family (33
   sources graded); closed 2026-09-24 after routing to #211.
+- redact-secret#517 — per-family audit of all six GitHub families (decided 2026-09-20): the five classic-format families are contracted at T1, and the fine-grained token gets `github_pat_` 22 + 59 (93 bytes).
+- redact-secret-benchmarks#371 — follow-up of #367 for the fine-grained family.
 - redact-secret#726 — freezes the wave-1 contract (T2, empirical route).
 - redact-secret#729 — wave-1 implementation record.
 - redact-secret-benchmarks#367 — 2026-09-26 reconciliation of fixture debt for

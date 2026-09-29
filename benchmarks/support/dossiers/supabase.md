@@ -98,8 +98,8 @@ tokens (`sbp_`) are a separate class.
 
 ## Research log
 
-- redact-secret#515 — split the credential classes and lifted the family out of T0
-  (2026-09-21).
+- redact-secret#515 — split the credential classes and lifted the management token
+  (`sbp_`) out of T0 (2026-09-21); `sb_secret_` stayed open-floor T0 until #742.
 - redact-secret-benchmarks#81 — backfilled the management-token contract at T1.
 - redact-secret-benchmarks#231 — broad-discovery pass for `sb_secret_`
   (2026-09-24); found the self-hosting grammar.

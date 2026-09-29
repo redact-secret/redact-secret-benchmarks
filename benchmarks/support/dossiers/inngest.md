@@ -40,7 +40,7 @@ Inngest is a durable-function and event platform. A signing key (`INNGEST_SIGNIN
 ## Open questions
 
 1. Are there environment labels beyond `prod`, `test` and `branch`? A future label is an accepted gap.
-2. `INNGEST_SIGNING_KEY=` by name only reads medium in the coverage probe because `signing_key` is ambiguous in generic vocabulary; that is a generic-detection question, not a family question.
+2. `INNGEST_SIGNING_KEY=` by name only read medium in the coverage probe because `signing_key` is ambiguous in generic vocabulary; closed by #914, whose provider finding (high, redact) wins the overlap under `INNGEST_SIGNING_KEY=`.
 
 ## Research log
 

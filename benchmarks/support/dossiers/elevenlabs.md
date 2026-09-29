@@ -83,8 +83,8 @@ Whether and how core detects a family is not recorded here.
 
 ## Research log
 
-- redact-secret#788 — discovery pass, Reddit supplement via archive, and the
-  T1 ruling of 2026-09-27 on SDK code.
+- redact-secret#788 — discovery pass (Reddit via the Pullpush archive), the
+  T1 ruling of 2026-09-27 on SDK code, and the disposition.
 - redact-secret#865 — implementation (`sk_` plus hex, residency suffix).
 - redact-secret#866 — generic-token SDK-call gap, measured for this family.
 - redact-secret#774 — Beta.10 epic close-out; stable at T1 in the benchmarks

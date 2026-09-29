@@ -32,7 +32,7 @@ The disposition for this candidate is a split: READY for hex-body keys, ISSUANCE
 - **Shape (GATED part):** the current cloud deploy-key body starts `eyJ2` (a truncated docs example, prefix only under R4). The issuance research (frozen 2026-09-28) narrowed the structure to the Base64 of a JSON object tagged `v2`, but the length and exact Base64 flavour are not T1 because the issuer is closed source, and the maintainer left it gated.
 - **Sources:** T1 for the type lead, separator and hex body from provider code in `get-convex/convex-backend` (key format, keybroker encryptor with version byte 1, nonce and tag, CLI regexes); the hex length band is derived from the generator (R1), not stated. The docs page shows truncated typed examples.
 - **Issuance:** not attempted; structure-only check for the cloud body is the highest-value one named in the Tier B re-rank.
-- **Collisions:** `CONVEX_DEPLOYMENT=dev:<name>` and `*.convex.cloud` URLs are public selectors with no `|`. The pre-0.16.0 bare legacy key has no anchor. The name-only `bearer-token` partial span was a generic defect, fixed under #918.
+- **Collisions:** `CONVEX_DEPLOYMENT=dev:<name>` and `*.convex.cloud` URLs are public selectors with no `|`. The pre-0.16.0 bare legacy key has no anchor. The name-only `bearer-token` partial span was a generic defect, fixed under #918. #919 later made the exact names `CONVEX_DEPLOY_KEY` and `CONVEX_SELF_HOSTED_ADMIN_KEY` a contextual finding, so a gated `eyJ2` body under those names is redacted. A preview deployment key can also read `preview:<branch-name>|` with a name up to 40 characters (`:` and `|` mapped to `_`); that can fall outside the bounded class and is an accepted false negative ([issuance research](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/convex.md)).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); handoff and issuance research linked below.
 
 ## Candidates that are not families yet
@@ -43,7 +43,7 @@ The disposition for this candidate is a split: READY for hex-body keys, ISSUANCE
 ## Open questions
 
 1. What are the alphabet (standard or URL-safe Base64), padding and length of the cloud `eyJ2` body, and does scope change the length? Needs one issued key checked for structure only.
-2. Team and project slug grammar for `preview:` and `project:` keys: no source states it; the handoff uses a bounded policy class.
+2. Team and project slug grammar for `preview:` and `project:` keys: no source states it; the handoff uses a bounded policy class (the issuance research also found a wider `preview:<branch-name>|` form, see Collisions).
 
 ## Research log
 

@@ -1,0 +1,35 @@
+# DIAGNOSTIC ONLY (benchmarks #428 / redact-secret #902, #996): not the official pii-profile-cost-v2 protocol.
+name: diag 902 chromium wasm
+on:
+  push:
+    branches: [diag/902-chromium]
+permissions:
+  contents: read
+jobs:
+  diag:
+    strategy:
+      fail-fast: false
+      matrix:
+        repeat: [1, 2, 3]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with: { node-version: 22 }
+      - name: Verify the CI-qualified wasm-web payloads against the #428 freezes
+        run: |
+          printf '%s\n' \
+            "650b7b5a8f0555a716b2aecf645d039579ad80c1e2c3d4a2d2f280b022b0fda3  web/old/redact_secret_wasm_bg.wasm" \
+            "49edb63c746965e2f92eb10fcb7effcc8c4dbf3cc109feacdc7940fd5bc660e8  web/old/redact_secret_wasm_pii_bg.wasm" \
+            "31341087d9fa5cb33b6a259e719e8b657088de544e114c6c5aa16ae38190b189  web/new/redact_secret_wasm_bg.wasm" \
+            "a7831fd5dea11601cddbf22bc897b69ea1032cb38b116eb844753e9ef06885b1  web/new/redact_secret_wasm_pii_bg.wasm" | sha256sum -c
+      - name: Install Playwright 1.55.0 and Chromium (as the official workflow)
+        run: |
+          npm install --prefix "$RUNNER_TEMP/playwright" --no-save playwright@1.55.0
+          "$RUNNER_TEMP/playwright/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Run the diagnostic
+        run: OUT=samples.json node diag-chromium.mjs "$RUNNER_TEMP/playwright/node_modules/playwright/index.mjs" 20 && node summarize.mjs samples.json | tee summary.tsv
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with: { name: "diag-902-chromium-${{ matrix.repeat }}", path: "samples.json\nsummary.tsv" }

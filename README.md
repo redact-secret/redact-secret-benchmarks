@@ -1,0 +1,1 @@
+Diagnostic only, not evidence of record and not the official profile-cost protocol. Paired Chromium Wasm check of the CI-qualified wasm-web builds of redact-secret 8f97f14d (web/old, run 36553444981) and 8b6a5fde (web/new, run 36581019627).

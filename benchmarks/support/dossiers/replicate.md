@@ -11,6 +11,7 @@ families:
         - https://replicate.com/docs/topics/security/api-tokens
         - https://replicate.com/changelog/2024-04-03-bearer-tokens
       issues:
+        - redact-secret/redact-secret-benchmarks#215
         - redact-secret/redact-secret-benchmarks#217
         - redact-secret/redact-secret#726
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
@@ -66,6 +67,8 @@ it is not recorded here.
 
 ## Research log
 
+- redact-secret-benchmarks#215 — epic for the Beta.8 contract research (#216-#235);
+  each family has its own research issue.
 - redact-secret-benchmarks#217 — broad-discovery pass (2026-09-24): provider
   docs, SDK sources, scanner rules; hands-on checklist left unexecuted.
 - redact-secret#726 — freeze of the 15 Beta.8 arrival contracts; records the

@@ -46,6 +46,15 @@ export function build434d({ fixture, synthetic }) {
     const put = (slug, v) => all.find(x => x.slug === slug).build(v);
     const body = v => v.slice(4);
 
+    // Issue #508: three further supported contexts, each an unpaired positive (no twin), in the documented
+    // 42-49 band from a public synthetic seed.
+    const more = [
+      { axis: "container-config", slug: "compose-env", ext: "yml", build: v => ["services:\n  app:\n    image: registry.example.test/app:1\n    environment:\n      " + env + ": ", v, "\n"] },
+      { axis: "ci-config", slug: "actions-env", ext: "yml", build: v => ["jobs:\n  build:\n    runs-on: ubuntu-latest\n    env:\n      " + env + ": ", v, "\n"] },
+      { axis: "structured-file", slug: "yaml-config", ext: "yml", build: v => ["posthog:\n  host: https://us.posthog.com\n  api_key: \"", v, "\"\n"] },
+    ];
+    for (const x of more) c.positive(T, x.axis, x.slug, x.build({ secret: key(x.slug) }), x.ext);
+
     c.twin(T, "dotenv", "body-41", put("dotenv", refuse(`${prefix}${synthetic(seed(T, "body-41"), 41, ALNUM)}`)), "length: a 41-byte body vs the 42–49 band", "length", "env");
     c.twin(T, "export", "body-50", put("export", refuse(`${prefix}${synthetic(seed(T, "body-50"), 50, ALNUM)}`)), "length: a 50-byte body vs the 42–49 band (rejected, never truncated)", "length", "sh");
     c.twin(T, "json-token", "underscore-in-body", put("json-token", refuse(at(k["json-token"], 20, "_"))), "alphabet: one body byte replaced by _, outside every era's alphabet", "alphabet", "json");

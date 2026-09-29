@@ -2,10 +2,11 @@ import type { Finding, ScoredRow } from '../../../types.ts';
 import type { GeneratedVariant, Assertion, Relation, EvaluationContext, ScannerResult } from '../../../engine/types.ts';
 import { score } from '../../../lib/scoring.ts';
 import { scoreRow } from '../../../lib/lattice.ts';
+import { findingsForPath } from '../../../lib/findings-by-path.ts';
 import { secrets } from '../../../engine/model.ts';
 
 export function observe(variant: GeneratedVariant, findings: Finding[]) {
-  const row = score([variant.fixture], findings.filter(f => f.path === variant.fixture.path)).rows[0];
+  const row = score([variant.fixture], findingsForPath(findings, variant.fixture.path)).rows[0];
   // A generated variant's fixture never carries `twinOf` (the engine gives every variant its
   // own id space, so a corpus-relative `twinOf` would dangle); `transformation.relation ===
   // 'must-flip'` is the engine-native twin signal instead (only `authored.twin` sets it).

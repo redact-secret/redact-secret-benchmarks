@@ -12,6 +12,31 @@ and holds the #948 analysis: the 177 changed fixtures, the 55-stable reading bef
 decision [`docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md`](../../../docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md).
 Against `8f97f14`, the changes are the same ones recorded there. Parity: [`../381/README.md`](../381/README.md).
 
+## Feed-safe re-classification (current)
+
+The two classification files below are superseded by
+[`support-status-candidate-feed-safe.json`](support-status-candidate-feed-safe.json) and
+[`support-status-published-feed-safe.json`](support-status-published-feed-safe.json). The old files stay as history.
+
+Why: the product's public site feed (redact-secret `docs/contracts/site-feed/v1`) bounds every family display name to
+`^[A-Za-z0-9][A-Za-z0-9 ()/,._+-]{0,79}$`. `trigger-dev:secret-api-key` was named `… (tr_<env>_ / tr_<env>_sk_)`, so the
+product could not project this matrix into its feed. The name is now `Environment secret key (tr_ENV_ / tr_ENV_sk_)`,
+and `tests/taxonomy.test.mjs` holds every family name to that pattern. The rename changes the taxonomy digest
+(`86380e35…60dc` → `c6a52802…518c`) and so the fixture semantic index (`085358df…c29e` → `1f960b1a…5106`), which
+invalidates peer snapshot reuse; the snapshots were recaptured on the pinned peers with byte-identical findings.
+
+| Item | Identity |
+| --- | --- |
+| Benchmarks revision | `ec9ffbecb06a9411ec5e9e4490cd0d59511043e0` (branch `beta11/feed-safe-family-names`, clean) |
+| Candidate artifacts | the same three tarballs as candidate run `e795030e` (core `467111e2…`, node `19f41652…`, wasm `61d135ba…`), product `8b6a5fde52ecb4dfce13f09c7a947062d21483c7` |
+| Classification | candidate `02b5a600-3120-4cb4-a544-2729a08228ce`; published (`@redact-secret/core` 0.1.0-beta.10) `5681f040-dcff-4f20-a5c3-385d5b3e041a` |
+| Peers | trufflehog 3.97.4, gitleaks 8.30.1 (`.peer-bin` first on `PATH`), snapshots from refresh run `7a289b82-16d8-4970-8e35-4e2846d74ef0` |
+
+Result: the `families` array is byte-identical to the superseded file in both modes (candidate 88 stable of 110,
+published 61), and so are `distribution` and `stableDistribution`. Only `runId`, `generatedAt`, `revision`,
+`taxonomyDigest`, `fixtureIndex` and `scannerObservations` differ. The support matrix generated from the candidate file
+differs from the one generated from the superseded file only in `sourceReport` and in that one family's `familyName`.
+
 ## Why the candidate moved
 
 Product PR #996 (merge `8b6a5fde`), the #902 Wasm follow-up: the PII vocabulary is shared per process and the #902 PII
@@ -26,7 +51,7 @@ maintainer decided it ships in Beta.11.
 | `redact-secret-benchmarks` | re-pin `405892a5ba40b6eeef919d2fb818470ee495092c` (branch `beta11/rebind-ec9224d-credentials`, clean; the #948 relabel of `5b03068` is included) |
 | Candidate artifacts (`benchmark:candidate`, darwin-arm64) | core `467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c`, node `19f41652389a9234c2648b058d3a05f60a305114a016c656e93fa35f23ee05ea`, wasm `61d135ba611a154433be9a9a56a38bf4a5fc8747a6b9d5fdf6e4dd6891666f2d` |
 | Candidate run | `e795030e-478e-4d21-9775-57456d832143`: complete, full suite, 4,777 fixtures, corpus `d88c19f7…3e2f` ([`candidate-evidence-v1.json`](candidate-evidence-v1.json), `eval:validate` passed) |
-| Classification | candidate `556b1d9f-ff6b-42ed-812b-57ddb41216c2` ([`support-status-candidate.json`](support-status-candidate.json)); published `ad05c435-212b-4dab-9ed1-3aa137f0e29e` ([`support-status-published.json`](support-status-published.json)); fixture index `085358df…c29e`, taxonomy `86380e35…60dc` (both unchanged) |
+| Classification (superseded, see above) | candidate `556b1d9f-ff6b-42ed-812b-57ddb41216c2` ([`support-status-candidate.json`](support-status-candidate.json)); published `ad05c435-212b-4dab-9ed1-3aa137f0e29e` ([`support-status-published.json`](support-status-published.json)); fixture index `085358df…c29e`, taxonomy `86380e35…60dc` (both unchanged) |
 | Pinned peers | trufflehog 3.97.4, gitleaks 8.30.1 (`npm run peers:provision`, read-only `.peer-bin` first on `PATH`) |
 
 ## Changes since ec9224d
@@ -84,6 +109,20 @@ equal, and none grows. `size/npm/core/packed` is within budget and unchanged (41
 Native addon, wheel and CLI rows for other targets were not built on this host.
 
 ## Commands
+
+Feed-safe re-classification, at `ec9ffbe`:
+
+```sh
+npm run peers:provision && export PATH="$PWD/.peer-bin:$PATH"   # trufflehog 3.97.4, gitleaks 8.30.1
+npm run fixture-index:generate && npm run peers:snapshots:refresh && npm run queue:check
+npm run eval:classify -- --candidate-package=<run e795030e artifacts>/redact-secret-core-0.1.0-beta.10.tgz \
+  --candidate-node-package=<…>/redact-secret-node-darwin-arm64-0.1.0-beta.10.tgz \
+  --candidate-wasm-package=<…>/redact-secret-wasm-0.1.0-beta.10.tgz \
+  --candidate-source-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7 --output=<dir>/support-status-candidate.json
+npm run eval:classify -- --output=<dir>/support-status-published.json
+```
+
+Before it:
 
 The same as [`../ec9224d/README.md`](../ec9224d/README.md#commands), with `--benchmark-ref 405892a5ba40b6eeef919d2fb818470ee495092c`
 and `--candidate-source-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7`.

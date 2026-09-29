@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "014b69741e17c438d69fd4b638cc0f65f0f04ea3ae451c127b9c889e41b1e4b3"
+      "digest": "a5382c042c4d47caee7b67319f02b205a9b5a28519ba3660ac92954896815318"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -34572,7 +34572,7 @@
         "milestone": "beta.11"
       },
       "relations": {
-        "twinOf": "beta8-379--openai-admin-api-key-go-const-74"
+        "twinOf": "beta8-379--openai-admin-api-key-go-const"
       }
     },
     {
@@ -34618,12 +34618,12 @@
       }
     },
     {
-      "slug": "beta8-379--openai-admin-api-key-go-const-74",
+      "slug": "beta8-379--openai-admin-api-key-go-const",
       "source": {
         "categoryId": "beta8-379",
-        "fixtureId": "openai-admin-api-key-go-const-74",
+        "fixtureId": "openai-admin-api-key-go-const",
         "corpus": "fixtures/generated/beta8-379.json",
-        "path": "cases/openai-admin-api-key-go-const-74.go"
+        "path": "cases/openai-admin-api-key-go-const.go"
       },
       "familyIds": [
         "openai:admin-api-key"
@@ -36746,6 +36746,26 @@
       }
     },
     {
+      "slug": "beta8-384a--openai-admin-api-key-config-toml",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "openai-admin-api-key-config-toml",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/openai-admin-api-key-config-toml.toml"
+      },
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384a--openai-admin-api-key-curl-bearer",
       "source": {
         "categoryId": "beta8-384a",
@@ -36850,12 +36870,32 @@
       }
     },
     {
-      "slug": "beta8-384a--openai-admin-api-key-export-74",
+      "slug": "beta8-384a--openai-admin-api-key-export",
       "source": {
         "categoryId": "beta8-384a",
-        "fixtureId": "openai-admin-api-key-export-74",
+        "fixtureId": "openai-admin-api-key-export",
         "corpus": "fixtures/generated/beta8-384a.json",
-        "path": "cases/openai-admin-api-key-export-74.sh"
+        "path": "cases/openai-admin-api-key-export.sh"
+      },
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-gitlab-ci-variables",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "openai-admin-api-key-gitlab-ci-variables",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/openai-admin-api-key-gitlab-ci-variables.yml"
       },
       "familyIds": [
         "openai:admin-api-key"
@@ -37058,6 +37098,26 @@
       }
     },
     {
+      "slug": "beta8-384a--openai-admin-api-key-python-requests-headers",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "openai-admin-api-key-python-requests-headers",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/openai-admin-api-key-python-requests-headers.py"
+      },
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384a--openai-admin-api-key-python-sdk",
       "source": {
         "categoryId": "beta8-384a",
@@ -37075,30 +37135,6 @@
       "provenance": {
         "categoryId": "beta8-384a",
         "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384a--openai-admin-api-key-short-first-segment-74-twin",
-      "source": {
-        "categoryId": "beta8-384a",
-        "fixtureId": "openai-admin-api-key-short-first-segment-74-twin",
-        "corpus": "fixtures/generated/beta8-384a.json",
-        "path": "cases/openai-admin-api-key-short-first-segment-74-twin.sh"
-      },
-      "familyIds": [
-        "openai:admin-api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384a",
-        "milestone": "beta.10"
-      },
-      "relations": {
-        "twinOf": "beta8-384a--openai-admin-api-key-export-74"
       }
     },
     {
@@ -37123,30 +37159,6 @@
       },
       "relations": {
         "twinOf": "beta8-384a--openai-admin-api-key-dotenv"
-      }
-    },
-    {
-      "slug": "beta8-384a--openai-admin-api-key-short-second-segment-74-twin",
-      "source": {
-        "categoryId": "beta8-384a",
-        "fixtureId": "openai-admin-api-key-short-second-segment-74-twin",
-        "corpus": "fixtures/generated/beta8-384a.json",
-        "path": "cases/openai-admin-api-key-short-second-segment-74-twin.sh"
-      },
-      "familyIds": [
-        "openai:admin-api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384a",
-        "milestone": "beta.10"
-      },
-      "relations": {
-        "twinOf": "beta8-384a--openai-admin-api-key-export-74"
       }
     },
     {
@@ -37235,6 +37247,26 @@
       },
       "relations": {
         "twinOf": "beta8-384a--openai-admin-api-key-python-sdk"
+      }
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-usage-cli-flag",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "openai-admin-api-key-usage-cli-flag",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/openai-admin-api-key-usage-cli-flag.sh"
+      },
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
       }
     },
     {
@@ -103978,7 +104010,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
-    "fixtureCount": 5034
+    "digest": "3d0c8fd2b5501dec3ccdeae0ee23d63bfdc67533a5aebe29bfee1bd7caf69703",
+    "fixtureCount": 5036
   }
 }

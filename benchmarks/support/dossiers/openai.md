@@ -106,7 +106,7 @@ Whether and how core detects a family is not recorded here.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
   #863 reconciled the precision contract (previously `pending`, T0) with the
   detector. Product PR #882 gave admin keys their own finding type.
-- **Open caveat:** No provider page states an admin-key length or alphabet, so T1 is unreachable. 58/58 rests on four peer owners; no source anywhere shows a 74/74 admin value, which the contract admits only through the width union gitleaks shares with `sk-proj-`/`sk-svcacct-`. #1013 recommends taking 74/74 out of the benchmark's positive set (the detector may keep accepting it); until the corpus does, the ledger records it as an unresolved contradiction.
+- **Open caveat:** No provider page states an admin-key length or alphabet, so T1 is unreachable. 58/58 rests on four peer owners; no source anywhere shows a 74/74 admin value, which gitleaks admits only through the width union it shares with `sk-proj-`/`sk-svcacct-`. As #1013 recommends, the benchmark claim is 58/58 only and no fixture asserts 74/74 either way (bounded in the ledger); the product keeps accepting 74/74.
 
 ## Candidates that are not families yet
 
@@ -132,8 +132,7 @@ Whether and how core detects a family is not recorded here.
 4. **Trufflehog disagreement (resolved: a misreading).** trufflehog 3.97.4
    ships the dedicated `openaiadmin` detector (marker + 58/58); the generic
    `openai` detector skips `sk-admin-` because of that move. The benchmark
-   does not yet map the `openaiadmin` detector's label in `scanners/families.mjs`, so the
-   peer snapshot still reads trufflehog as silent on admin positives.
+   maps the `OpenAIAdmin` label to this family in `scanners/families.mjs`.
    trufflehog#4698 (a marker-less 124-character request) is out of contract.
 5. **Reddit.** Not readable in either research pass, so absence there is weak.
 

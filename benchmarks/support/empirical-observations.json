@@ -2411,15 +2411,16 @@
       "family": "openai-admin-api-key",
       "mode": "shape",
       "supportsBareValues": true,
-      "uncertainty": "No OpenAI page states a length or alphabet for sk-admin- keys; OpenAI's OpenAPI spec shows only short placeholders. openai/codex (provider code, a recognizer that neither generates nor validates a width) fixes the sk-admin- prefix and the T3BlbkFJ watermark. The 58 + T3BlbkFJ + 58 width (133 characters) rests on four peer owners: trufflehog 3.97.4's dedicated openaiadmin detector, gitleaks 8.30.1 (whose three admin vectors are 58/58), nuclei-templates and poltergeist. No source anywhere shows a 74/74 admin value; the contract admits it through the gitleaks union shared with sk-proj-/sk-svcacct-, which is recorded as an unresolved contradiction below. A marker-less body is out of contract. No provider-issued key has been measured.",
+      "uncertainty": "No OpenAI page states a length or alphabet for sk-admin- keys; OpenAI's OpenAPI spec shows only short placeholders. openai/codex (provider code, a recognizer that neither generates nor validates a width) fixes the sk-admin- prefix and the T3BlbkFJ watermark. The 58 + T3BlbkFJ + 58 width (133 characters) rests on four peer owners: trufflehog 3.97.4's dedicated openaiadmin detector, gitleaks 8.30.1 (whose three admin vectors are 58/58), nuclei-templates and poltergeist. No source anywhere shows a 74/74 admin value, which gitleaks admits only through the width union shared with sk-proj-/sk-svcacct-; the benchmark claim is 58/58 and 74/74 is outside it (bounded below), while the product keeps accepting 74/74. A marker-less body is out of contract. No provider-issued key has been measured.",
       "supportedContexts": [
         "bare sk-admin- value with the T3BlbkFJ marker anywhere on a line (the prefix and marker are the markers)",
         ".env / shell export / compose environment assignment (OPENAI_ADMIN_KEY)",
         "Authorization: Bearer header on a curl command line",
-        "JSON config value and tool-call JSON argument",
+        "JSON / TOML / tfvars config value, CI variables (GitHub Actions, GitLab) and tool-call JSON argument",
+        "CLI flag argument and a Python requests Authorization header dict",
         "OpenAI SDK constructor argument (Python admin_api_key=, TypeScript adminAPIKey)",
         "application log line",
-        "58 + T3BlbkFJ + 58 bodies (the 74/74 positive is the open contradiction below)"
+        "58 + T3BlbkFJ + 58 bodies only; a 74/74 body is outside the claim and not asserted either way"
       ],
       "observations": [],
       "corroboration": [
@@ -2474,7 +2475,8 @@
         },
         {
           "statement": "The contract admits a 74 + T3BlbkFJ + 74 admin body and a positive (export-74) plus two 74-width twins assert it, but no source shows a 74/74 admin value: gitleaks admits it only through the width union it shares with sk-proj-/sk-svcacct-, while trufflehog openaiadmin, nuclei-templates and poltergeist admit 58/58 only.",
-          "status": "unresolved"
+          "status": "bounded",
+          "bound": "Bounded 2026-09-29 as redact-secret#1013 recommends: the benchmark contract claims 58 + T3BlbkFJ + 58 only, the export-74, powershell, handoff and go-const positives were re-authored at 58/58 and the two 74-width twins removed, so no positive, twin or control is 74/74 and nothing asserts it either way. The shipped detector keeps accepting 74/74 (security-first over-redaction, not measured)."
         }
       ]
     }

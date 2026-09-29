@@ -24,9 +24,9 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 100 | 120 |
-| Stable / documented | 100 | 120 |
-| Stable / empirical | 32 | 120 |
+| Arrival / provisional | 101 | 120 |
+| Stable / documented | 101 | 120 |
+| Stable / empirical | 33 | 120 |
 | Context-constrained empirical | 19 | 120 |
 
 ## Per family
@@ -112,7 +112,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | nvidia-api-key | T1 | stable-documented | 31 | 8 | 11 | 6 | 7 | 5 | 9 | none |
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
 | onepassword-service-account-token | T1 | stable-documented | 39 | 7 | 14 | 9 | 11 | 6 | 10 | none |
-| openai-admin-api-key | T2 | stable-empirical | 41 | 5 | 15 | 11 | 15 | 6 | 10 | positive/context cases 5/10 |
+| openai-admin-api-key | T2 | stable-empirical | 43 | 10 | 15 | 9 | 17 | 6 | 10 | none |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
 | otpauth-uri | T3 | arrival-provisional | 24 | 2 | 8 | 7 | 1 | 3 | 4 | positive/context cases 2/6; positive-context axes 1/4; control axes 3/4 |

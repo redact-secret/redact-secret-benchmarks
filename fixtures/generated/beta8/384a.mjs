@@ -126,10 +126,9 @@ export function build384a({ fixture, synthetic }) {
     const T = "openai-admin-api-key";
     const seg = (slug, n) => synthetic(seed(T, slug), n, URLSAFE);
     const key58 = slug => check(T, `sk-admin-${seg(`${slug}:a`, 58)}T3BlbkFJ${seg(`${slug}:b`, 58)}`);
-    const key74 = slug => check(T, `sk-admin-${seg(`${slug}:a`, 74)}T3BlbkFJ${seg(`${slug}:b`, 74)}`);
-    const k = { dotenv: key58("dotenv"), export: key74("export"), curl: key58("curl"), json: key58("json"), compose: key58("compose"), python: key58("python"), ts: key58("ts"), tool: key58("tool"), log: key58("log") };
+    // redact-secret#1013: the claim is 58/58 only; no source shows a 74/74 admin value, so none is authored either way.
+    const k = { dotenv: key58("dotenv"), export: key58("export"), curl: key58("curl"), json: key58("json"), compose: key58("compose"), python: key58("python"), ts: key58("ts"), tool: key58("tool"), log: key58("log") };
     const [a58, b58] = ["dotenv", "curl"].map(s => [seg(`${s}:a`, 58), seg(`${s}:b`, 58)]);
-    const [a74, b74] = [seg("export:a", 74), seg("export:b", 74)];
 
     const dotenv = v => ["# .env\nOPENAI_ADMIN_KEY=", v, "\nOPENAI_ORG_ID=org-acme-example\n"];
     const exportLine = v => ["export OPENAI_ADMIN_KEY=\"", v, "\"\n"];
@@ -142,7 +141,7 @@ export function build384a({ fixture, synthetic }) {
     const log = v => ["2026-09-26T10:09:31Z usage-report: admin key ", v, " loaded for org acme\n"];
 
     c.positive(T, "env", "dotenv", dotenv({ secret: k.dotenv }), "env");
-    c.positive(T, "shell-export", "export-74", exportLine({ secret: k.export }), "sh");
+    c.positive(T, "shell-export", "export", exportLine({ secret: k.export }), "sh");
     c.positive(T, "header", "curl-bearer", curl({ secret: k.curl }), "sh");
     c.positive(T, "structured-file", "json-config", json({ secret: k.json }), "json");
     c.positive(T, "container-config", "compose-env", compose({ secret: k.compose }), "yml");
@@ -151,14 +150,19 @@ export function build384a({ fixture, synthetic }) {
     c.positive(T, "tool-output", "tool-call", tool({ secret: k.tool }), "json");
     c.positive(T, "log", "usage-log", log({ secret: k.log }), "log");
 
-    c.twin(T, "dotenv", "short-first-segment", dotenv(refuse(T, `sk-admin-${a58[0].slice(0, 57)}T3BlbkFJ${b58[0]}`)), "length: 57 bytes before the marker vs the 58 (or 74) the contract requires", "length", "env");
-    c.twin(T, "curl-bearer", "short-second-segment", curl(refuse(T, `sk-admin-${a58[1]}T3BlbkFJ${b58[1].slice(0, 57)}`)), "length: 57 bytes after the marker vs the 58 (or 74) the contract requires", "length", "sh");
-    c.twin(T, "export-74", "short-first-segment-74", exportLine(refuse(T, `sk-admin-${a74.slice(0, 73)}T3BlbkFJ${b74}`)), "length: 73 bytes before the marker vs the 74 the 74/74 shape requires", "length", "sh");
-    c.twin(T, "export-74", "short-second-segment-74", exportLine(refuse(T, `sk-admin-${a74}T3BlbkFJ${b74.slice(0, 73)}`)), "length: 73 bytes after the marker vs the 74 the 74/74 shape requires", "length", "sh");
+    c.twin(T, "dotenv", "short-first-segment", dotenv(refuse(T, `sk-admin-${a58[0].slice(0, 57)}T3BlbkFJ${b58[0]}`)), "length: 57 bytes before the marker vs the 58 the contract requires", "length", "env");
+    c.twin(T, "curl-bearer", "short-second-segment", curl(refuse(T, `sk-admin-${a58[1]}T3BlbkFJ${b58[1].slice(0, 57)}`)), "length: 57 bytes after the marker vs the 58 the contract requires", "length", "sh");
     c.twin(T, "json-config", "marker-less-body", json(refuse(T, `sk-admin-${seg("json:a", 58)}${seg("json:marker", 8)}${seg("json:b", 58)}`)), "alphabet: the T3BlbkFJ marker replaced by eight body bytes, a marker-less 124-byte body that the product decision (redact-secret#863) puts out of contract", "alphabet", "json");
     c.twin(T, "compose-env", "lowercase-marker", compose(refuse(T, k.compose.replace("T3BlbkFJ", "t3blbkfj"))), "alphabet: the marker replaced by its lower-case spelling", "alphabet", "yml");
     c.twin(T, "python-sdk", "underscore-delimiter", python(refuse(T, `sk-admin_${k.python.slice(9)}`)), "boundary: sk-admin_ in place of the sk-admin- delimiter", "boundary", "py");
     c.twin(T, "ts-client", "embedded-leading", ts(refuse(T, `x${k.ts}`)), "boundary: one identifier character before the prefix, so the key is embedded in a longer token", "boundary", "ts");
+
+    // redact-secret#1013 profile floor: four more independent 58/58 contexts, each a fresh seed and left unpaired.
+    const more = { gitlab: key58("gitlab-ci"), cli: key58("cli-flag"), requests: key58("python-requests"), toml: key58("config-toml") };
+    c.positive(T, "ci-config", "gitlab-ci-variables", ["variables:\n  OPENAI_ADMIN_KEY: \"", { secret: more.gitlab }, "\"\nusage:\n  script: ./usage.sh --org acme\n"], "yml");
+    c.positive(T, "cli", "usage-cli-flag", ["$ openai-usage-export --org org-acme --admin-key ", { secret: more.cli }, " --since 2026-09-01\n"], "sh");
+    c.positive(T, "source-code", "python-requests-headers", ["import requests\n\nheaders = {\"Authorization\": \"Bearer ", { secret: more.requests }, "\"}\nrequests.get(\"https://api.openai.com/v1/organization/projects\", headers=headers)\n"], "py");
+    c.positive(T, "structured-file", "config-toml", ["[openai]\norganization = \"org-acme\"\nadmin_key = \"", { secret: more.toml }, "\"\n"], "toml");
 
     c.control(T, "placeholder", "docs-ellipsis", ["export OPENAI_ADMIN_KEY=sk-admin-...\n"], "sh");
     c.control(T, "placeholder", "your-key-here", ["OPENAI_ADMIN_KEY=sk-admin-your-key-here\n"], "env");

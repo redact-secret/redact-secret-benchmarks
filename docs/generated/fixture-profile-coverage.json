@@ -3,9 +3,9 @@
   "profilesVersion": 1,
   "familyCount": 120,
   "cellsMetByProfile": {
-    "arrival-provisional": 100,
-    "stable-documented": 100,
-    "stable-empirical": 32,
+    "arrival-provisional": 101,
+    "stable-documented": 101,
+    "stable-empirical": 33,
     "context-constrained-empirical": 19
   },
   "families": [
@@ -5030,13 +5030,17 @@
       "claimed": "stable-empirical",
       "explicit": false,
       "target": "stable-empirical",
-      "cellsMet": [],
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented",
+        "stable-empirical"
+      ],
       "cells": {
-        "totalFixtures": 41,
-        "positiveCases": 5,
+        "totalFixtures": 43,
+        "positiveCases": 10,
         "benignControls": 15,
-        "twinPairs": 11,
-        "positiveContextAxes": 15,
+        "twinPairs": 9,
+        "positiveContextAxes": 17,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -5046,6 +5050,8 @@
           "#379 · openai-admin-api-key · shell-export",
           "#379 · openai-admin-api-key · source-code",
           "#379 · openai-admin-api-key · structured-file",
+          "#384a · openai-admin-api-key · ci-config",
+          "#384a · openai-admin-api-key · cli",
           "#384a · openai-admin-api-key · container-config",
           "#384a · openai-admin-api-key · env",
           "#384a · openai-admin-api-key · header",
@@ -5086,14 +5092,7 @@
         "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 5,
-          "required": 10,
-          "shortfall": 5
-        }
-      ]
+      "debt": []
     },
     {
       "family": "openai-token",

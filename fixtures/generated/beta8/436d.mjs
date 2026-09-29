@@ -35,6 +35,7 @@ export function build436d({ fixture, synthetic }) {
     { axis: "sdk-config", slug: "python-module", ext: "py", build: pyModule },
     { axis: "tool-output", slug: "mcp-env", ext: "json", build: mcp },
     { axis: "cli", slug: "curl-bearer", ext: "sh", build: curl },
+    { axis: "container-config", slug: "compose-env", ext: "yml", build: v => ["services:\n  mailer:\n    image: example.test/mailer:latest\n    environment:\n      RESEND_API_KEY: ", v, "\n"] },
   ];
   const { k, put } = authorPositives(c, T, contexts, key);
   const seg1 = v => v.slice(3, 11), seg2 = v => v.slice(12);

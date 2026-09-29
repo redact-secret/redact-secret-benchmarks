@@ -30,11 +30,17 @@ export function build434f({ fixture, synthetic }) {
   const jsApp = v => ["import Firecrawl from '@mendable/firecrawl-js';\n\nconst firecrawl = new Firecrawl({ apiKey: '", v, "' });\n"];
   const mcp = v => ["{\n  \"mcpServers\": {\n    \"firecrawl-mcp\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"firecrawl-mcp\"],\n      \"env\": { \"FIRECRAWL_API_KEY\": \"", v, "\" }\n    }\n  }\n}\n"];
   const curl = v => ["curl -s -X POST https://api.firecrawl.dev/v2/scrape -H \"Authorization: Bearer ", v, "\" -d '{\"url\": \"https://example.test\"}'\n"];
+  const composeEnv = v => ["services:\n  crawler:\n    image: example.test/crawler:latest\n    environment:\n      FIRECRAWL_API_KEY: ", v, "\n"];
+  const actionsEnv = v => ["jobs:\n  scrape:\n    runs-on: ubuntu-latest\n    env:\n      FIRECRAWL_API_KEY: ", v, "\n"];
+  const goHttp = v => ["req, _ := http.NewRequest(\"POST\", \"https://api.firecrawl.dev/v2/scrape\", body)\nreq.Header.Set(\"Authorization\", \"Bearer ", v, "\")\n"];
   const all = [...contexts,
     { axis: "sdk-config", slug: "python-app", ext: "py", build: pyApp },
     { axis: "source-code", slug: "js-client", ext: "ts", build: jsApp },
     { axis: "container-config", slug: "mcp-env", ext: "json", build: mcp },
     { axis: "cli", slug: "curl-bearer", ext: "sh", build: curl },
+    { axis: "container-config", slug: "compose-env", ext: "yml", build: composeEnv },
+    { axis: "ci-config", slug: "actions-env", ext: "yml", build: actionsEnv },
+    { axis: "source-code", slug: "go-http", ext: "go", build: goHttp },
   ];
   const k = {};
   for (const x of all) {

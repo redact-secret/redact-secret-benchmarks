@@ -80,6 +80,34 @@ export function build384e({ fixture, synthetic }) {
     }
   };
 
+  /**
+   * Unpaired positives (#508): further same-line-gated carriers of the same value, each with no twin, so a
+   * family reaches the stable.empirical positive-case floor (counted over positives that are not paired).
+   * Every carrier keeps a name the contract already names (env name, host, SDK argument or camel-case field)
+   * on the value's own line; no shape, alphabet or case property beyond the frozen contract is asserted.
+   */
+  const unpaired = (cfg, count) => {
+    const T = cfg.T;
+    const pattern = contracts[T].pattern ? new RegExp(contracts[T].pattern) : null;
+    const all = [
+      ["ci-config", "actions-env-literal", "yml", `jobs:\n  eval:\n    runs-on: ubuntu-24.04\n    env:\n      ${cfg.env}: `, "\n    steps:\n      - run: ./run-eval.sh\n"],
+      ["container-config", "docker-run-env", "sh", `docker run --rm -e ${cfg.env}=`, " registry.example.test/worker:2.4\n"],
+      ["container-config", "k8s-env-value", "yml", `env:\n  - name: ${cfg.env}\n    value: "`, "\"\n"],
+      ["cli", "inline-env-command", "sh", `${cfg.env}=`, ` ./run-eval.sh --model ${cfg.model}\n`],
+      ["header", "http-request-header", "http", `POST /v1/chat HTTP/1.1\nHost: ${cfg.host}\nAuthorization: ${cfg.scheme} `, "\nContent-Type: application/json\n"],
+      ["structured-file", "toml-config-key", "toml", `[client]\n${cfg.lcKw} = "`, "\"\ntimeout = 30\n"],
+      ["tool-output", "printenv-output", "txt", `$ env | grep ${cfg.env}\n${cfg.env}=`, "\n"],
+      ["log", "auth-failure-log", "log", `2026-09-29T09:12:44Z level=warn msg="upstream auth failed" ${cfg.env}=`, " attempt=2\n"],
+      ["source-code", "camel-const", "ts", `export const ${cfg.camel} = "`, "\";\n"],
+      ["sdk-config", "python-environ-assign", "py", `import os\n\nos.environ["${cfg.env}"] = "`, "\"\n"],
+    ];
+    for (const [axis, slug, ext, pre, post] of all.slice(0, count)) {
+      const value = cfg.value(seed(T, `unpaired:${slug}`));
+      if (pattern && !pattern.test(value)) throw new Error(`beta8-384e: authored ${T} value fails its own contract`);
+      c.positive(T, axis, slug, [pre, { secret: value }, post], ext);
+    }
+  };
+
   /** Independent benign controls: gate-free values, identifiers, placeholders, references and prose. */
   const controls = (cfg, { count }) => {
     const T = cfg.T;
@@ -125,6 +153,7 @@ export function build384e({ fixture, synthetic }) {
     const s = shared(cfg);
     family(cfg, [s.dotenv, s.dotenvAlt, s.export, s.compose, s.ctor, s.langchain, s.js, s.curl, s.yaml, s.json, s.tool, s.log]);
     controls(cfg, { count: 22 });
+    unpaired(cfg, 10);
   }
 
   // --------------------------------------------------------------------- Cohere
@@ -138,6 +167,7 @@ export function build384e({ fixture, synthetic }) {
     const s = shared(cfg);
     family(cfg, [s.dotenv, s.dotenvAlt, s.export, s.compose, s.ctor, s.langchain, s.js, s.curl, s.yaml, s.json, s.tool, s.log]);
     controls(cfg, { count: 22 });
+    unpaired(cfg, 7);
   }
 
   // ------------------------------------------------------------------- Deepgram
@@ -155,6 +185,7 @@ export function build384e({ fixture, synthetic }) {
     const createClient = ctx("source-code", "create-client", "ts", "import { createClient } from '@deepgram/sdk';\n\nconst deepgram = createClient(\"", "\");\n", { slug: "unrelated-factory", pre: "import { createWidget } from 'widget-sdk';\n\nconst widget = createWidget(\"", post: "\");\n", mutation: "context: the Deepgram createClient factory replaced by an unrelated one, so no Deepgram name remains; the value is kept byte-for-byte" });
     family(cfg, [s.dotenv, s.dotenvAlt, s.export, s.compose, s.ctor, createClient, s.js, s.curl, headerJson, subprotocol, s.tool, s.log]);
     controls(cfg, { count: 22 });
+    unpaired(cfg, 8);
   }
 
   // ----------------------------------------------------------------------- AI21

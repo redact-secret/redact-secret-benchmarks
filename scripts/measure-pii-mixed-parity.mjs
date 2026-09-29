@@ -16,6 +16,10 @@
  * own process because PII activation is process-wide. No input or output text is written: findings carry type,
  * detector, action, confidence and ranges; outputs are SHA-256 digests plus booleans computed here.
  *
+ * Address with a port (#451): the network-address span is the address literal only; `:port` (and the brackets of a bracketed IPv6
+ * address) stay outside it, the finding is the network-address family, and a range covering the port is a span mismatch. See
+ * docs/decisions/2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span.md.
+ *
  * Run: node --import tsx scripts/measure-pii-mixed-parity.mjs [--target=published|core-commit] [--core-commit=<sha>]
  *        [--core-repo=<path>] [--surfaces=a,b] [--observation=<file>] [--report=<file>] [--keep-scratch]
  */

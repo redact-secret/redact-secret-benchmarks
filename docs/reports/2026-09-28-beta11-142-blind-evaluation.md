@@ -1,8 +1,9 @@
 # Beta.11 custodian-held blind evaluation
 
-> **Carried over, not re-measured.** This aggregate was measured at `1db8ff3`. By maintainer decision of 2026-09-29 it is
-> carried to the re-bound Beta.11 candidate `8f97f14` without a new epoch; the basis is
-> [`2026-09-29-beta11-142-blind-carry-over.md`](2026-09-29-beta11-142-blind-carry-over.md).
+> **Carried over, not re-measured.** This aggregate was measured at `1db8ff3`. By maintainer decision it is carried to
+> the re-bound Beta.11 candidate `ec9224d` without a new epoch; the basis, and the #948 policy change the epoch did not
+> measure, are in [`2026-09-29-beta11-142-blind-carry-over-ec9224d.md`](2026-09-29-beta11-142-blind-carry-over-ec9224d.md).
+> The earlier carry-over to `8f97f14` is [`2026-09-29-beta11-142-blind-carry-over.md`](2026-09-29-beta11-142-blind-carry-over.md).
 
 Issue: [#382](https://github.com/redact-secret/redact-secret-benchmarks/issues/382)
 (parent [#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376)),

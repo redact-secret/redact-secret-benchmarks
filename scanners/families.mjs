@@ -97,6 +97,10 @@ const trufflehog = {
   // detectors report under one label: v2 (wandb_v1_ keys, the wandb-api-key family) and v1 (the legacy keyword-gated
   // 40-hex key, which the family does not claim) -- the same one-label, two-shape case as ElevenLabs above.
   Apify: 'apify-api-token', WeightsAndBiases: 'wandb-api-key',
+  // redact-secret#1013: trufflehog 3.97.4's openaiadmin detector (label OpenAIAdmin, PR #4689) reads exactly
+  // sk-admin- + 58 [A-Za-z0-9_-] + T3BlbkFJ + 58, the openai-admin-api-key arrival family's corroborated width. The
+  // generic OpenAI detector skips sk-admin- because of this move, so an admin key is attributed here, not to openai-token.
+  OpenAIAdmin: 'openai-admin-api-key',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;

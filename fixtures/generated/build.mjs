@@ -6,7 +6,7 @@ import { buildCommonFormats } from "./common-formats.mjs";
 import { buildContextFamilies } from "./context-families.mjs";
 import { buildBeta8 } from "./beta8/index.mjs";
 import { buildPolicyQualifiedCredentials } from "./policy-qualified-credentials.mjs";
-import { classifyFixture } from "../../benchmarks/lib/assessment.ts";
+import { applyProviderNamedFallback948, classifyFixture } from "../../benchmarks/lib/assessment.ts";
 
 // Public, deterministic benchmark seed. These values were never provider-issued.
 const alphabet =
@@ -284,6 +284,9 @@ export function buildCorpora() {
     ...buildBeta8({ fixture, synthetic, wrap }),
     "policy-qualified-credentials": buildPolicyQualifiedCredentials({ fixture, synthetic, wrap, ENVELOPES }),
   };
+  // redact-secret#948 relabels (docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md).
+  for (const [category, corpus] of Object.entries(corpora))
+    for (const f of corpus.fixtures) applyProviderNamedFallback948(category, f);
   for (const [category, corpus] of Object.entries(corpora))
     for (const f of corpus.fixtures) f.assessment = classifyFixture(category, f);
   return corpora;

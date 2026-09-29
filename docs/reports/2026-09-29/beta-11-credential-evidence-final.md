@@ -1,5 +1,7 @@
 # Beta.11 credential validation evidence: final report at the re-bound candidate 8f97f14 (#376)
 
+> **Superseded** by [`beta-11-credential-evidence-final-ec9224d.md`](beta-11-credential-evidence-final-ec9224d.md): the Beta.11 candidate was re-bound to product main `ec9224d` (PR #994). Kept as history.
+
 > This report supersedes [`../2026-09-28/beta-11-credential-evidence-final.md`](../2026-09-28/beta-11-credential-evidence-final.md),
 > which stays as history. The Beta.11 candidate moved from `1db8ff3` to product main `8f97f14`, after PR #991 (the
 > #980 scan-path performance backlog, output byte-identical by design) and PR #992 (#990, streamed output equals the

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833",
+  "method": "npm pack output of the product benchmark:candidate recipe at the exact commit (darwin-arm64 host), from the candidate run of record 589527ab-8df1-4ae7-a517-26f7567ffb3b; packed bytes are the tarball file size. Baselines and thresholds from benchmarks/regression-budgets.json (0.1.0-beta.8, 5% relative, 4096-byte floor). The 8f97f14 values are from ../8f97f14-verified/npm-packed-sizes.json.",
+  "packages": [
+    {
+      "label": "core",
+      "file": "redact-secret-core-0.1.0-beta.10.tgz",
+      "sha256": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c",
+      "packedBytes": 41901,
+      "at8f97f14": 41901,
+      "trigger": "size/npm/core/packed",
+      "baseline": 39461,
+      "allowedIncrease": 4096,
+      "verdict": "within-budget"
+    },
+    {
+      "label": "node-darwin-arm64",
+      "file": "redact-secret-node-darwin-arm64-0.1.0-beta.10.tgz",
+      "sha256": "9ceabe011fb58b259fe79bc9b25a0ba3b96b6cfc028d9257844207aaf0a083d6",
+      "packedBytes": 655692,
+      "at8f97f14": 635892,
+      "trigger": "size/npm/node-darwin-arm64/packed",
+      "baseline": 424514,
+      "allowedIncrease": 21225.7,
+      "verdict": "accepted-tradeoff (beta11-ec9224d-npm-node-darwin-arm64-packed)"
+    },
+    {
+      "label": "wasm",
+      "file": "redact-secret-wasm-0.1.0-beta.10.tgz",
+      "sha256": "c3f5478881e3cac1d038543a331e5d4b3c47bceb076ab71d99f2c43f8d2c7d78",
+      "packedBytes": 917465,
+      "at8f97f14": 887249,
+      "trigger": "size/npm/wasm/packed",
+      "baseline": 254413,
+      "allowedIncrease": 12720.650000000001,
+      "verdict": "accepted-tradeoff (beta11-ec9224d-npm-wasm-packed)"
+    }
+  ],
+  "nativeAddons": [
+    {
+      "target": "aarch64-apple-darwin",
+      "file": "package/redact-secret.darwin-arm64.node (inside the node-darwin-arm64 tarball above)",
+      "bytes": 1460896,
+      "at8f97f14": 1422800,
+      "trigger": "size/node-addon/aarch64-apple-darwin",
+      "baseline": 1004128,
+      "allowedIncrease": 50206.4,
+      "verdict": "accepted-tradeoff (beta11-ec9224d-node-addon-aarch64-apple-darwin)"
+    }
+  ],
+  "wasmInTarball": {
+    "method": "gzip level 9 of the wasm files inside the ec9224d candidate wasm tarball (darwin-arm64); CI measured 187,248 (full) and 127,661 (common) in run 36570952406.",
+    "full": 186585,
+    "common": 126764,
+    "fullPii": 314806,
+    "commonPii": 253442
+  },
+  "reproducibility": "An earlier benchmark:candidate build of the same commit (run 2852d0eb-fcce-4025-864d-597636210c4d) packed the node-darwin-arm64 tarball at 655,695 bytes (sha256 ac74fb15…7d02); the core and wasm tarballs were byte-identical. The native tarball is not byte-reproducible on this host; the run of record is used.",
+  "notMeasured": "Native addon, wheel and CLI rows for other targets were not built on this host and are not recorded."
+}

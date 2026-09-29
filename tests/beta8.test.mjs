@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { contracts, controlAxis, arrivalIds, disputedProperty } from '../benchmarks/lib/assessment.ts';
+import { contracts, controlAxis, arrivalIds, disputedProperty, PROVIDER_NAMED_FALLBACK_948 } from '../benchmarks/lib/assessment.ts';
 import { BETA8_MODULES, arrivalFamilies, validateBeta8 } from '../benchmarks/lib/beta8/index.ts';
 import { POSITIVE_AXES, countProfile } from '../benchmarks/lib/beta8/profiles.ts';
 import { CONTROL_SUFFIXES } from '../fixtures/generated/beta8/helpers.mjs';
@@ -44,10 +44,14 @@ test('every beta8-<issue> corpus is registered, and its fixtures follow the targ
     for (const f of corpus.fixtures) {
       const targets = [...(f.detectors ?? []), ...(f.arrivalTargets ?? [])];
       assert.equal(targets.length, 1, f.id);
-      assert.ok(f.id.startsWith(`${targets[0]}-`), f.id);
+      // A near-miss control relabelled under redact-secret#948 (lib/assessment.ts PROVIDER_NAMED_FALLBACK_948) keeps its
+      // historical id and axis suffix; its target is generic-token and it carries no positive context axis.
+      const relabel948 = PROVIDER_NAMED_FALLBACK_948[`${category}--${f.id}`];
+      assert.ok(f.id.startsWith(`${relabel948 ? relabel948.from : targets[0]}-`), f.id);
       assert.deepEqual(assignments[`${category}--${f.id}`], f.detectors ?? [], f.id);
       const secret = f.expected.some(r => r.role === 'secret');
-      if (secret) assert.ok(POSITIVE_AXES.includes(f.contextAxis), `${f.id}: positive names its context axis`);
+      if (relabel948) assert.ok(targets[0] === 'generic-token' && secret && f.id.endsWith('-near-miss') && f.assessment.kind === 'policy', f.id);
+      else if (secret) assert.ok(POSITIVE_AXES.includes(f.contextAxis), `${f.id}: positive names its context axis`);
       else if (!f.twinOf) assert.ok(CONTROL_SUFFIXES.some(s => f.id.endsWith(`-${s}`)) && controlAxis(category, f), `${f.id}: control carries an axis`);
       // Only a fixture re-scoped off a provider-undecided property (lib/assessment.ts DISPUTED_PROPERTIES) may read T0.
       if (!disputedProperty(category, f.id)) assert.notEqual(f.assessment.tier, 'T0', `${f.id}: ${f.assessment.reason}`);

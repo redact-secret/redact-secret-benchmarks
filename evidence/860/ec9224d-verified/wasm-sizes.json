@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "kind": "wasm-artifact-sizes",
+  "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833",
+  "piiBuilds": "present",
+  "artifacts": [
+    {
+      "profile": "full",
+      "artifact": "wasm-web",
+      "file": "redact_secret_wasm_bg.wasm",
+      "path": "bindings/wasm/pkg/redact_secret_wasm_bg.wasm",
+      "sha256": "755e54945864988c5d5efe1eef7e3c573e33e13c10044c96b202021fa6a655cc",
+      "rawBytes": 542375,
+      "gzipBytes": 187248,
+      "brotliBytes": 145820
+    },
+    {
+      "profile": "common",
+      "artifact": "wasm-web-common",
+      "file": "redact_secret_wasm_common_bg.wasm",
+      "path": "bindings/wasm/pkg-common/redact_secret_wasm_common_bg.wasm",
+      "sha256": "587c97576971bc292537886c01d1b92cf6b7657a365c6cf4d749a437a96a056a",
+      "rawBytes": 356406,
+      "gzipBytes": 127661,
+      "brotliBytes": 102415
+    },
+    {
+      "profile": "full-pii",
+      "artifact": "wasm-web",
+      "file": "redact_secret_wasm_pii_bg.wasm",
+      "path": "bindings/wasm/pkg/redact_secret_wasm_pii_bg.wasm",
+      "sha256": "fba443d4ad4d10f1991f38eacd7cb88842f1a355b55dadd65f0635904b611c22",
+      "rawBytes": 860700,
+      "gzipBytes": 318323,
+      "brotliBytes": 247322
+    },
+    {
+      "profile": "common-pii",
+      "artifact": "wasm-web-common",
+      "file": "redact_secret_wasm_common_pii_bg.wasm",
+      "path": "bindings/wasm/pkg-common/redact_secret_wasm_common_pii_bg.wasm",
+      "sha256": "3cea06de4935511fe4b0bcfdf8686460f3050c2c4ab14c2622c75c430ad83d86",
+      "rawBytes": 674876,
+      "gzipBytes": 256694,
+      "brotliBytes": 204880
+    }
+  ]
+}

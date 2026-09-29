@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-29T13:14:04.588Z",
+  "sourceRun": {
+    "runId": "2026-09-29T13:14:04.588Z-322d2f",
+    "benchmarkRevision": "af180a5abc28e64b456aa431455de66da016d061"
+  },
+  "input": {
+    "surface": "comparison/beta8-948",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "0763ebadffd50c0e6bd08c4146f6600a8aa426d80ba7cbb5f0752177ca63d356",
+    "fixtureCount": 9,
+    "fixturesDigest": "c2badd48f9a6b409fc557e595c8825eb362646c8ed102539360832f87d9c6d77",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "085358df1778e4a0f644036bf5157f1dd17f0c3a5c56447a4cf06d4bb8d5c29e",
+      "fixtureCount": 4777
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [],
+  "digest": "ff2441016a8fc56ea4aeb4f9e9c0ed03ccd0eef44c81ee56ad0fa9999e4cd95a"
+}

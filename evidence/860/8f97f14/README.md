@@ -1,5 +1,9 @@
 # Evidence: redact-secret#860 families and the Beta.11 candidate re-bound to product main 8f97f14
 
+> **Superseded** by [`../ec9224d/README.md`](../ec9224d/README.md): the Beta.11 candidate was re-bound to product main
+> `ec9224d` (PR #994). #948 changes 177 fixture outcomes by design; with the relabel recorded, the same 88 families are
+> stable in candidate mode. This file stays as history.
+
 **Result:** candidate mode (product `8f97f14`, the re-bound Beta.11 candidate) reads 88 stable of 110 families
 (documented 63, empirical 25; 20 provisional, 2 pending), the same as at `1db8ff3`. Published mode
 (`@redact-secret/core` 0.1.0-beta.10) reads 61 stable of 110 (documented 38, empirical 23; 47 provisional, 2 pending),

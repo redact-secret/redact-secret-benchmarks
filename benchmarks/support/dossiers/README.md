@@ -63,4 +63,8 @@ links are read from the dossier; the stages are derived, so the page answers
 a forecast date in `blockedBy`. `npm run support:check:ui` keeps the page in
 step with the taxonomy and both schemas.
 
+Research on a candidate whose provider is not in `taxonomy.json` has no
+dossier of its own. Until it is promoted into the taxonomy, its disposition
+lives in [`_candidates-not-yet-families.md`](_candidates-not-yet-families.md).
+
 Never place a real, live or unrevoked credential in a dossier.

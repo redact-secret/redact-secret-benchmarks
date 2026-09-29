@@ -109,7 +109,11 @@ table uses the research name and names detector `mistral-api-key`.
 2. **Verdict history.** #781 and #868 both say generic coverage is enough or
    no T1 exists, yet the family was landed as a contextual T2 row and is
    `provisional` in the benchmarks ledger (#774 close-out). This dossier
-   records the landed state; a maintainer may prefer `rejected`.
+   records the landed state. Benchmarks#384's
+   [2026-09-27 scope comment](https://github.com/redact-secret/redact-secret-benchmarks/issues/384#issuecomment-5852472147)
+   records the maintainer direction to author contracts and corpus for the
+   keyword-gated contextual rows (Mistral, Cohere, AI21, Exa, Deepgram), so
+   the maintainer treats these rows as live, not `rejected`.
 3. **Realtime token body.** Length, alphabet and checksum are unknown until a
    token is minted.
 4. **Lifetime.** 900 versus 60 seconds is unresolved doc drift.

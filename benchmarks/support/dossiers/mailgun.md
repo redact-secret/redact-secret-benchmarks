@@ -33,6 +33,7 @@ families:
       issues:
         - redact-secret/redact-secret#582
         - redact-secret/redact-secret#701
+        - redact-secret/redact-secret-benchmarks#259
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
     blockedBy: No provider source shows the 32-8-8 shape and its role is unresolved (current private API key or superseded signing key); two scanner rules and three prose sources describe it. Needs one issued key.
@@ -111,3 +112,4 @@ in #582.
   Mailgun broad-discovery pass linked from the evidence record (2026-09-23).
 - redact-secret#701 — the triplet may be the current private API key while the
   matrix marked it unsupported; closed 2026-09-25.
+- redact-secret-benchmarks#259 — Beta.8 arrival contracts and arrival-24 fixtures for the Travis CI, Neon, Postman collection key and Mailgun triplet families (redact-secret#773); closed 2026-09-25.

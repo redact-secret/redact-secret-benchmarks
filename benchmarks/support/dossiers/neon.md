@@ -13,6 +13,7 @@ families:
         - https://github.com/koki-develop/mask-go/blob/3ff232051d4d224314b400d9e973c5a8c7d405d5/builtin_neon_api_key.go
       issues:
         - redact-secret/redact-secret#524
+        - redact-secret/redact-secret-benchmarks#259
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/524/README.md
       researchedAt: 2026-09-25
     blockedBy: Prefix is T1; the 64-character body floor is T2 (betterleaks exactly 64, mask-go at least 64) and Neon calls a key a "64-bit token". Legacy unprefixed keys are outside the claim. No issued key observed.
@@ -73,3 +74,4 @@ None is in the taxonomy.
 - redact-secret#524 — assesses Neon, ranks PlanetScale, CockroachDB Cloud and
   MongoDB Atlas, and freezes the Neon grammar; closed 2026-09-25. Deferred from
   beta.6 on 2026-09-21 because neither pinned peer had a Neon rule.
+- redact-secret-benchmarks#259 — Beta.8 arrival contracts and arrival-24 fixtures for the Travis CI, Neon, Postman collection key and Mailgun triplet families (redact-secret#773); closed 2026-09-25.

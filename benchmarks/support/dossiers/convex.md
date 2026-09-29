@@ -13,6 +13,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#912
+        - redact-secret/redact-secret-benchmarks#436
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/convex.md
       researchedAt: 2026-09-28
     blockedBy: "Hex-body keys only. The cloud eyJ2 body (Base64 alphabet, padding, length) is ISSUANCE-GATED (R4; still gated after the 2026-09-28 issuance research); needs a structure-only issuance check."
@@ -51,3 +52,4 @@ The disposition for this candidate is a split: READY for hex-body keys, ISSUANCE
 - redact-secret#912 — implementation issue for the hex-body detector (closed).
 - [Issuance research for the cloud body](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/convex.md).
 - [Final disposition record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/disposition.md) lists the split, 2026-09-28.
+- redact-secret-benchmarks#436 — Beta.11 contracts and synthetic corpus for the #860 Tier B READY families; closed 2026-09-28. Corpus work only, no change to the research verdict.

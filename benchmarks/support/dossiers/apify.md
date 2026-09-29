@@ -12,6 +12,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#916
+        - redact-secret/redact-secret-benchmarks#436
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/apify.md
       researchedAt: 2026-09-28
     blockedBy: "Length is open-ended by construction (floor of 20); an issuance check could narrow it but nothing requires one. The upper cap of 128 is project policy."
@@ -47,3 +48,4 @@ Apify is a web scraping and automation platform. Its API token (`APIFY_TOKEN`, s
 - redact-secret#860 — epic (open); [research table #13](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852386571); rulings R2, R4 and R6 in the [rulings comment](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275) drive this family.
 - redact-secret#916 — implementation issue for the detector (closed).
 - [Final disposition record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/disposition.md) lists it READY, 2026-09-28.
+- redact-secret-benchmarks#436 — Beta.11 contracts and synthetic corpus for the #860 Tier B READY families; closed 2026-09-28. Corpus work only, no change to the research verdict.

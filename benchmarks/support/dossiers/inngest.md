@@ -13,6 +13,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#914
+        - redact-secret/redact-secret-benchmarks#436
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/inngest.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -47,3 +48,4 @@ Inngest is a durable-function and event platform. A signing key (`INNGEST_SIGNIN
 - redact-secret#860 — epic (open); [research table #50](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852387196); [Tier B re-rank](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871765611) (READY); [rulings R5](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275).
 - redact-secret#914 — implementation issue (closed).
 - [Final disposition record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/disposition.md) lists it READY, 2026-09-28.
+- redact-secret-benchmarks#436 — Beta.11 contracts and synthetic corpus for the #860 Tier B READY families; closed 2026-09-28. Corpus work only, no change to the research verdict.

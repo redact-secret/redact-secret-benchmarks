@@ -21,6 +21,7 @@ families:
       sources:
         - https://docs.slack.dev/authentication/tokens
         - https://docs.slack.dev/changelog/2016/08/23/token-lengthening
+        - https://docs.slack.dev/authentication/using-token-rotation/
       issues:
         - redact-secret/redact-secret-benchmarks#229
         - redact-secret/redact-secret-benchmarks#367
@@ -48,8 +49,12 @@ families:
     research:
       verdict: unresearched
       tier: null
-      sources: []
-      issues: []
+      sources:
+        - https://docs.slack.dev/authentication/tokens
+      issues:
+        - redact-secret/redact-secret-benchmarks#45
+        - redact-secret/redact-secret-benchmarks#127
+        - redact-secret/redact-secret#512
       evidence: null
       researchedAt: null
     blockedBy: null
@@ -117,8 +122,20 @@ here; the workflow-webhook family was not in the sources reviewed.
 
 ### `slack:workflow-webhook-token` — Workflow webhook token
 
-- **Sources:** none reviewed in this batch. Unresearched. The tokens page lists
-  the `xwfp-` prefix.
+- **Sources:** no research pass, so the verdict stays unresearched. The tokens
+  page lists the `xwfp-` prefix and no section widths or alphabet. Two
+  benchmark reviews recorded the same limit without researching the family:
+  [#45](https://github.com/redact-secret/redact-secret-benchmarks/issues/45)
+  (2026-09-20: "prefix is documented but body isn't", found a stale review
+  note, retained pending) and
+  [#127](https://github.com/redact-secret/redact-secret-benchmarks/issues/127)
+  (2026-09-22: the tokens page states workflow tokens begin `xwfp-` with no
+  section widths, no tool source, and the corpus keeps the shape T0 pending
+  because it asserts no ground truth without a documented body grammar). Core
+  [#512](https://github.com/redact-secret/redact-secret/issues/512) shipped an
+  open-floor rule for it that its module doc says clears neither the
+  two-source nor the provider-plus-tool bar. A research pass could record
+  `not-found` T0, as for the Vercel classes.
 
 ## Candidates that are not families yet
 
@@ -152,3 +169,6 @@ here; the workflow-webhook family was not in the sources reviewed.
   contracts.
 - redact-secret-benchmarks#367 — 2026-09-26 fixture-debt reconciliation for
   both families; no grammar change.
+- redact-secret-benchmarks#45 and #127 — pending-fixture reviews (2026-09-20 and
+  2026-09-22) that kept the `xwfp-` shape T0 pending: prefix documented, body
+  not; redact-secret#512 is the core counterpart.

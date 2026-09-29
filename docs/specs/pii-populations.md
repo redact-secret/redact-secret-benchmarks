@@ -142,6 +142,95 @@ budget. The protected ledger therefore remains 0/1. The immutable artifacts
 and exact reason codes are recorded under `evidence/879/`; neither
 `provisional` nor `stable` is claimed.
 
+The beta.11 protected partition (#428) generalizes the SSN lifecycle to all six
+families: network address, email, payment card, IBAN, US SSN and phone. It is
+implemented in `benchmarks/evaluation/domains/pii/beta11-protected.ts` and run
+with `npm run pii:beta11:protected`. The custodian procedure is
+[`holdout/PII-CUSTODIAN.md`](../../holdout/PII-CUSTODIAN.md). It reuses the
+generic holdout storage and lifecycle unchanged:
+
+- 0700/0600 modes, with symlinks rejected;
+- an exclusive lock;
+- a reservation that is persisted before any protected byte is read;
+- aggregate-only output;
+- nothing under `holdout/generated/` in Git.
+
+The SSN runner, its manifest identity and the evidence/879 records are
+unchanged. The two lifecycles use distinct manifest evaluation identities
+(`pii-b11-protected-v1` and `pii-observation-v1`), so neither runner can spend
+the other's budget.
+
+- **Input.** A single custodian input (`pii-b11-protected-input`) holds each
+  case with these fields:
+  - family and selector;
+  - text;
+  - authored UTF-8 candidate range, or none;
+  - #423 oracle identity and sensitivity labels, with their bases;
+  - expected action;
+  - view and axis tags;
+  - optional one-property twin.
+
+  Labels pass the shared oracle label rules and the family's reference
+  validator. Context is English or Korean only (`pii-context/v2`).
+- **Minimums.** Validation enforces per-view minimums so that every required
+  `pii-v1` metric is measured, never `not-applicable`:
+  - `minDenominator` (4) sensitive cases;
+  - `minBenignCases` (6) benign cases over `minBenignAxes` (3) axes;
+  - 4 twin pairs;
+  - 4 non-sensitive cases for the four families with an authority-reserved
+    control (IBAN and SSN: 0 or at least 4);
+  - a benign-dominant stress view.
+
+  The floor is 20 cases per family.
+- **Seal.** Sealing binds the whole-input hash, the seed commitment and the
+  custodian review attestation in a public seal record. Each present family is
+  sealed as its own corpus with `maxRuns: 1`, which gives one attempt per
+  family per epoch. A family left out is recorded as `no-sealed-corpus`.
+- **Run.** A run names the candidate explicitly (`--core-commit`). The beta.11
+  value is `1db8ff38b16e50c51229eb27025452952bf621e1`. Before any protected
+  byte is read, the run freezes:
+  - the committed #428 freeze and report for that commit;
+  - the core, node and Wasm tarballs and every Wasm payload, including
+    `_pii` (redact-secret#937);
+  - the identity-seam binary;
+  - the family selectors and their `pii-context/v2` activation identities;
+  - the lockfile;
+  - the clean benchmark revision;
+  - the family's epoch commitment.
+
+  A family whose #428 public gates are already `not-met` is refused without
+  spending the budget.
+- **Scoring.** Each case is observed on the Node addon and forced-Wasm
+  surfaces under:
+  - its own selector;
+  - the exact family;
+  - PII off;
+  - for SSN, `pii:global`.
+
+  The run then applies `b11ScoreTable` / `b11ViewGate` to both views, and the
+  identity seam applies the #428 named-negative reconciliation and
+  source/artifact equivalence. A candidate change during the run makes it
+  incomplete.
+- **Output.** The aggregate has only allowlisted per-family counts: view
+  outcome counts, metric numerators and denominators, identity-seam tallies,
+  surface disagreement counts and gate statuses. It has no ids, text, ranges,
+  axis tags or seed. A reviewed trust-resolution record
+  (`pii-b11-protected-trust-resolution`) binds the aggregate commitment, run,
+  corpus, seal, freeze and epoch.
+- **Disposition.** `pii-beta11-protected-disposition` binds the committed #428
+  report and disposition by commitment. A family is `provisional` only when
+  every public gate (cost included) is `met` and an accepted trust resolution
+  binds a complete run whose protected gates are all `met`. Otherwise the
+  family stays `pending`, and its protected state is one of:
+  - `unspent`, with reason `public-gates-failed:<gates>`, `no-sealed-corpus`
+    or `not-run:…`;
+  - `unresolved` (trust rejected or run incomplete);
+  - `not-met`.
+
+  This route never emits `stable`. Bound to the final `1127bf91` record, all
+  six families stay `pending` and unspent (`public-gates-failed`: runtime and
+  package cost, size regression budget).
+
 The IBAN family binding pins family contract v1, SWIFT ISO 13616 IBAN Registry
 Release 103 (89 derived country/length rows), and the bounded `iban-mod97` v1
 validator. Its safe plan uses only the recorded `SYNX`-marked issue-878

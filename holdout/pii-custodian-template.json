@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "kind": "pii-b11-protected-input",
+  "seed": "<CUSTODIAN: private random string, 32 to 256 characters, never reused>",
+  "attestation": {
+    "custodian": "<CUSTODIAN: your name or handle>",
+    "reviewer": "<CUSTODIAN: name or handle of the person who reviewed every label>",
+    "reviewedAt": "<CUSTODIAN: UTC time of the review, YYYY-MM-DDTHH:MM:SSZ>",
+    "statements": {
+      "syntheticOrReservedValuesOnly": "<CUSTODIAN: true once confirmed>",
+      "noRealPersonData": "<CUSTODIAN: true once confirmed>",
+      "noLiveCredentials": "<CUSTODIAN: true once confirmed>",
+      "independentOfDevelopmentPlans": "<CUSTODIAN: true once confirmed>",
+      "contextLanguagesEnglishOrKoreanOnly": "<CUSTODIAN: true once confirmed>"
+    }
+  },
+  "cases": [
+    {
+      "id": "<CUSTODIAN: unique id, lowercase letters, digits and hyphens>",
+      "family": "<CUSTODIAN: pii:global:network-address | pii:global:email | pii:global:payment-card | pii:global:iban | pii:us:ssn | pii:global:phone>",
+      "selector": "<CUSTODIAN: pii:family:<family without the pii: prefix> | pii:global (global families only) | pii:us>",
+      "view": "<CUSTODIAN: diagnostic-balanced | benign-heavy-stress>",
+      "axis": "<CUSTODIAN: short tag for the evidence class, lowercase letters, digits and hyphens>",
+      "twinOf": "<CUSTODIAN: id of the one-property twin in the same family and view, or null>",
+      "language": "<CUSTODIAN: en | ko>",
+      "text": "<CUSTODIAN: synthetic or authority-reserved text>",
+      "candidate": {
+        "start": "<CUSTODIAN: UTF-8 byte offset where the value starts>",
+        "end": "<CUSTODIAN: UTF-8 byte offset where the value ends>"
+      },
+      "identity": "<CUSTODIAN: valid | invalid | not-established>",
+      "identityBasis": ["<CUSTODIAN: contract-grammar | reference-validator | authority-published-value>"],
+      "sensitivity": "<CUSTODIAN: sensitive | non-sensitive | not-established>",
+      "sensitivityBasis": ["<CUSTODIAN: contract-context-rule | authority-reserved-value>"],
+      "action": "<CUSTODIAN: redact | none>"
+    }
+  ]
+}

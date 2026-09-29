@@ -198,7 +198,7 @@ test('the authored tuning partition covers every applicable family and needs no 
   const { draftNotes, ...manifest } = draft;
   assert.deepEqual(calibrationPartitionProblems(partition, dataset), []);
   const coverage = calibrationPartitionCoverage(partition, dataset);
-  assert.equal(coverage.length, 114);
+  assert.equal(coverage.length, 120);
   assert.ok(coverage.every(row => row.mustRedact + row.policy > 0 && row.controls > 0));
   assert.ok(coverage.every(row => row.authored > 0 && row.generated === 0));
   assert.equal(draftNotes.tuningGeneratedShare, 0);

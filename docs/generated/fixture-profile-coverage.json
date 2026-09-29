@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "profilesVersion": 1,
-  "familyCount": 114,
+  "familyCount": 120,
   "cellsMetByProfile": {
-    "arrival-provisional": 94,
-    "stable-documented": 94,
+    "arrival-provisional": 100,
+    "stable-documented": 100,
     "stable-empirical": 32,
     "context-constrained-empirical": 19
   },
@@ -701,6 +701,183 @@
           "shortfall": 1
         }
       ]
+    },
+    {
+      "family": "browserbase-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 31,
+        "positiveCases": 6,
+        "benignControls": 11,
+        "twinPairs": 7,
+        "positiveContextAxes": 8,
+        "controlAxes": 5,
+        "confusionAxes": 8,
+        "positiveContextAxisIds": [
+          "#464d · browserbase-api-key · env",
+          "#464d · browserbase-api-key · header",
+          "#464d · browserbase-api-key · prose",
+          "#464d · browserbase-api-key · sdk-config",
+          "#464d · browserbase-api-key · shell-export",
+          "#464d · browserbase-api-key · source-code",
+          "#464d · browserbase-api-key · structured-file",
+          "#464d · browserbase-api-key · tool-output"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": []
+    },
+    {
+      "family": "cerebras-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 40,
+        "positiveCases": 13,
+        "benignControls": 11,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5,
+        "confusionAxes": 8,
+        "positiveContextAxisIds": [
+          "#464e · cerebras-api-key · env",
+          "#464e · cerebras-api-key · header",
+          "#464e · cerebras-api-key · prose",
+          "#464e · cerebras-api-key · sdk-config",
+          "#464e · cerebras-api-key · shell-export",
+          "#464e · cerebras-api-key · structured-file"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": []
+    },
+    {
+      "family": "clickhouse-cloud-api-secret",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 37,
+        "positiveCases": 6,
+        "benignControls": 11,
+        "twinPairs": 10,
+        "positiveContextAxes": 10,
+        "controlAxes": 6,
+        "confusionAxes": 10,
+        "positiveContextAxisIds": [
+          "#464b · clickhouse-cloud-api-secret · basic-auth",
+          "#464b · clickhouse-cloud-api-secret · ci-config",
+          "#464b · clickhouse-cloud-api-secret · container-config",
+          "#464b · clickhouse-cloud-api-secret · env",
+          "#464b · clickhouse-cloud-api-secret · header",
+          "#464b · clickhouse-cloud-api-secret · prose",
+          "#464b · clickhouse-cloud-api-secret · sdk-config",
+          "#464b · clickhouse-cloud-api-secret · shell-export",
+          "#464b · clickhouse-cloud-api-secret · source-code",
+          "#464b · clickhouse-cloud-api-secret · structured-file"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": []
     },
     {
       "family": "cloudflare-token",
@@ -1525,6 +1702,68 @@
         "benignControls": 1,
         "twinPairs": 10,
         "confusionAxes": 6
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": []
+    },
+    {
+      "family": "daytona-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 38,
+        "positiveCases": 6,
+        "benignControls": 12,
+        "twinPairs": 10,
+        "positiveContextAxes": 11,
+        "controlAxes": 5,
+        "confusionAxes": 9,
+        "positiveContextAxisIds": [
+          "#464a · daytona-api-key · ci-config",
+          "#464a · daytona-api-key · cli",
+          "#464a · daytona-api-key · container-config",
+          "#464a · daytona-api-key · env",
+          "#464a · daytona-api-key · header",
+          "#464a · daytona-api-key · log",
+          "#464a · daytona-api-key · prose",
+          "#464a · daytona-api-key · sdk-config",
+          "#464a · daytona-api-key · shell-export",
+          "#464a · daytona-api-key · source-code",
+          "#464a · daytona-api-key · structured-file"
+        ],
+        "controlAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "encoded-value",
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
       },
       "requiredButEmptyAxisIds": [],
       "debt": []
@@ -4574,6 +4813,64 @@
       "debt": []
     },
     {
+      "family": "nvidia-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 31,
+        "positiveCases": 8,
+        "benignControls": 11,
+        "twinPairs": 6,
+        "positiveContextAxes": 7,
+        "controlAxes": 5,
+        "confusionAxes": 9,
+        "positiveContextAxisIds": [
+          "#464c · nvidia-api-key · cli",
+          "#464c · nvidia-api-key · env",
+          "#464c · nvidia-api-key · header",
+          "#464c · nvidia-api-key · prose",
+          "#464c · nvidia-api-key · sdk-config",
+          "#464c · nvidia-api-key · shell-export",
+          "#464c · nvidia-api-key · structured-file"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "public-identifier",
+          "reference",
+          "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": []
+    },
+    {
       "family": "okta-api-token",
       "tier": "T2",
       "profilesVersion": 1,
@@ -5696,6 +5993,63 @@
           "public-identifier",
           "reference",
           "twin:alphabet",
+          "twin:boundary",
+          "twin:length",
+          "twin:prefix"
+        ]
+      },
+      "requiredCells": {
+        "totalFixtures": 24,
+        "positiveCases": 6,
+        "benignControls": 8,
+        "twinPairs": 5,
+        "positiveContextAxes": 4,
+        "controlAxes": 4
+      },
+      "requiredButEmptyAxisIds": [],
+      "debt": []
+    },
+    {
+      "family": "runpod-api-key",
+      "tier": "T1",
+      "profilesVersion": 1,
+      "claimed": "stable-documented",
+      "explicit": false,
+      "target": "stable-documented",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented"
+      ],
+      "cells": {
+        "totalFixtures": 30,
+        "positiveCases": 6,
+        "benignControls": 10,
+        "twinPairs": 7,
+        "positiveContextAxes": 9,
+        "controlAxes": 4,
+        "confusionAxes": 7,
+        "positiveContextAxisIds": [
+          "#464f · runpod-api-key · cli",
+          "#464f · runpod-api-key · env",
+          "#464f · runpod-api-key · header",
+          "#464f · runpod-api-key · prose",
+          "#464f · runpod-api-key · sdk-config",
+          "#464f · runpod-api-key · shell-export",
+          "#464f · runpod-api-key · source-code",
+          "#464f · runpod-api-key · structured-file",
+          "#464f · runpod-api-key · tool-output"
+        ],
+        "controlAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference"
+        ],
+        "confusionAxisIds": [
+          "near-miss",
+          "ordinary-prose",
+          "placeholder",
+          "reference",
           "twin:boundary",
           "twin:length",
           "twin:prefix"

@@ -364,6 +364,65 @@ The corpus adds one authored calibration row pair per family to
 `corpora/development/shadow-scoring-authored.json` and lists the six categories as development-evaluation
 in `tuning/shadow-scoring-development-v1.json`.
 
+## Beta.12 issuance-research slices (#464)
+
+The same layout carries the six #860 issuance-research READY credential families
+([#464](https://github.com/redact-secret/redact-secret-benchmarks/issues/464); product parent
+[redact-secret#860](https://github.com/redact-secret/redact-secret/issues/860), rulings
+[R9 and R10](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337)). The fixture index
+labels these corpora `beta.12`. One corpus key per product issue, one family per key. Each contract is authored from
+the step-3 handoff and its issuance research frozen at product `8b6a5fd`, and the provider sources they cite, never
+from product detector code; `benchmarks/lib/beta8/464-sources.ts` carries the shared citations and
+`fixtures/generated/beta8/464-shared.mjs` the shared contract guard and the nine re-rank probe contexts.
+
+| Key | Category | Family (arrival id) | Handoff | Product issue | Positives / twins / controls |
+| --- | --- | --- | --- | --- | --- |
+| `464a` | `beta8-464a` | `daytona-api-key` | [daytona.md](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/daytona.md) | [#970](https://github.com/redact-secret/redact-secret/issues/970) | 16 / 10 / 12 |
+| `464b` | `beta8-464b` | `clickhouse-cloud-api-secret` | [clickhouse-cloud.md](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/clickhouse-cloud.md) | [#971](https://github.com/redact-secret/redact-secret/issues/971) | 16 / 10 / 11 |
+| `464c` | `beta8-464c` | `nvidia-api-key` | [nvidia.md](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/nvidia.md) | [#972](https://github.com/redact-secret/redact-secret/issues/972) | 14 / 6 / 11 |
+| `464d` | `beta8-464d` | `browserbase-api-key` | [browserbase.md](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/browserbase.md) | [#973](https://github.com/redact-secret/redact-secret/issues/973) | 13 / 7 / 11 |
+| `464e` | `beta8-464e` | `cerebras-api-key` | [cerebras.md](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/cerebras.md) | [#975](https://github.com/redact-secret/redact-secret/issues/975) | 21 / 8 / 11 |
+| `464f` | `beta8-464f` | `runpod-api-key` | [runpod.md](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/runpod.md) | [#974](https://github.com/redact-secret/redact-secret/issues/974) | 13 / 7 / 10 |
+
+All six are T1 arrival families declared `documented-24` and unscored until the product detector with the same id is
+in the pinned registry (then they graduate as the #434 and #436 families did). No detector code for these families
+merges to product `main` before `0.1.0-beta.11` is released, so no candidate-mode measurement exists yet. No support
+status moves and none is hand-edited. Conventions specific to these slices:
+
+- **Policy is marked, never read as T1.** Each contract records what a provider source states (T1) and what the
+  handoff sets as project policy, and every policy part is a `policy-*` field whose basis is `research-hypothesis`
+  and whose claim starts `POLICY`: the 128-byte caps (NVIDIA, Browserbase, RunPod), the RunPod floor of 31 (ruling
+  R10; the provider floor is 16), the Cerebras alphabet `[A-Za-z0-9_-]` (R10; the provider states only the length)
+  and ClickHouse's at-least-one-uppercase guard. Daytona is dated instead: T1 as of v0.190.0 (2026-06-23) under R9.
+- **Policy is not asserted against a provider rule.** No fixture asserts silence on a 129-byte run (the provider rules
+  are open-ended), on a lowercase-only ClickHouse body (the staff regex admits it), or on a dot or plus in a Cerebras
+  body (the validator accepts any 48 code units). Positives reach the caps (128) and include lowercase-only
+  Cerebras bodies (the tool class) and `_`/`-` bodies. Every ClickHouse positive and twin body is mixed case, so the
+  guard is never what a fixture measures. The one policy boundary asserted is RunPod's 30-byte twin, because the
+  handoff decides the floor (as for the 1Password 250 floor); its mutation text says `POLICY`.
+- **Every positive in every probe context.** Each family has a positive in the nine contexts of the Tier B re-rank
+  probe plus the handoff's own contexts (Terraform, Basic auth, `X-BB-API-Key`, `docker login`, `runpodctl`, MCP `env`,
+  SDK clients). Cerebras carries both prefixes (`csk-`, `csk_`) in every probe context.
+- **Context confusion.** A ClickHouse key ID sits beside the secret (unmarked, only the secret expected); a real-shape
+  Pinecone `pcsk_` key (built at run time) is a Cerebras control and a `pcsk_`/`pcsk-` leading-glue twin; `dtn_secret_`,
+  `dtn_artifact_`, `bb_live_session_`, `bb_test_`, `rps_`, Redirect.pizza `rpa_` + 30, NVAPI SDK names and bare
+  64-hex, `4b1d` digests and UUIDs are controls.
+- **Not authored either way:** the legacy 84-character NGC key, bare `bb_test_` positives, Cerebras Management API keys,
+  RunPod bodies of 16 to 30 other than the 30 boundary, ClickHouse `hashData` secrets and the key ID as a positive.
+- **Lexical separability (#84).** A twin whose broken part leaves a contract-valid remainder is not authored: no
+  trailing-glue twin for the NVIDIA and Cerebras bodies (their class contains `_` and `-`, so a trailing byte only
+  lengthens the run), and no leading `-` twin for NVIDIA or Browserbase (the provider `\b` still matches after it).
+- **Peer lag and overreach** is recorded per contract as a `peer-lag` field: trufflehog 3.97.4 `NVAPI` (exact 64) lags
+  every other NVIDIA width, gitleaks 8.30.1 `clickhouse-cloud-api-secret-key` (`\b(4b1d[A-Za-z0-9]{38})\b`, entropy 3)
+  agrees with the grammar but misses low-entropy bodies, and neither pinned peer has a Daytona, Browserbase, Cerebras
+  or RunPod rule. betterleaks (unpinned, not measured here) uses `rpa_[A-Z0-9]{40}[A-Za-z0-9]{6}` for RunPod and
+  `{60,70}` after `nvapi-`, and tool rules use `[a-z0-9]` for the Cerebras body, where the contract takes
+  `[A-Za-z0-9_-]` by policy. The two mapped peer labels are in `scanners/families.mjs`.
+
+The corpus adds one authored calibration row pair per family to
+`corpora/development/shadow-scoring-authored.json` and lists the six categories as development-evaluation
+in `tuning/shadow-scoring-development-v1.json`.
+
 ## Beta.11 family evidence (#379)
 
 [#379](https://github.com/redact-secret/redact-secret-benchmarks/issues/379) (parent

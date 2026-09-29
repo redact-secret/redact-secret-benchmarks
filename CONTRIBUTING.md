@@ -57,9 +57,14 @@ in [`benchmarks/support/dossiers/README.md`](benchmarks/support/dossiers/README.
 and the
 [decision](docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
 
-1. New provider or family: add it to `taxonomy.json`, then run
-   `npm run dossiers:scaffold`. It creates a stub and prints the entry to add
-   for a new family in an existing dossier.
+0. Finding work: `npm run family:status -- <provider>[:<family>]` is offline
+   and prints each family's dossier verdict, detector mapping, fixture
+   shortfall against `status-criteria.json` and one next step (counts only,
+   never fixture values).
+1. New provider or family: `npm run family:new -- <provider> <family>` adds the
+   `taxonomy.json` draft, the dossier entry and an inert fixture stub, prints
+   the seven-item evidence checklist, and refuses to overwrite anything. (By
+   hand: edit `taxonomy.json`, then run `npm run dossiers:scaffold`.)
 2. Researching: hand-write only the provider facts (verdict, tier, `sources`,
    `issues`, `evidence`, `researchedAt`, `blockedBy`, prose). Status, fixture
    counts and detector presence are derived and have no field. Verdicts are

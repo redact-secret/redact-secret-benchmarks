@@ -31,6 +31,10 @@ A research issue is closed by the PR that records its verdict here
 
 ## Adding a provider or family
 
+Shortcut: `npm run family:new -- <provider> <family>` does steps 1-2 and adds
+an inert fixture stub under `fixtures/generated/families/`;
+`npm run family:status -- <provider>[:<family>]` shows what a family needs next.
+
 1. Add the provider/family to `taxonomy.json`.
 2. Run `npm run dossiers:scaffold` — it creates a stub for every provider that
    has no dossier yet from [`_TEMPLATE.md`](_TEMPLATE.md). It never overwrites

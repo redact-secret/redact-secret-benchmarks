@@ -2082,7 +2082,7 @@
       "family": "mistral-api-key",
       "mode": "context-constrained",
       "supportsBareValues": false,
-      "uncertainty": "No Mistral page or SDK code states a prefix, length or alphabet. Three tool rules (osv-scalibr, betterleaks, pleno-dlp) read as one assertion of 32 alphanumerics beside a Mistral name, and the value has no marker of its own, so it is claimed only beside a same-line Mistral name, host or constructor. No pinned scanner has a Mistral rule. No provider-issued key has been captured through #205 intake.",
+      "uncertainty": "Mistral states no prefix, length or alphabet in prose and its SDK does no validation. Its own Admin API OpenAPI schema (APIKeyExtendedOUT, synced to the docs 2026-07-24) shows one full-length example key: 32 alphanumeric characters, no prefix. Three tool rules (osv-scalibr, betterleaks, pleno-dlp) read as one assertion of 32 alphanumerics beside a Mistral name, and three independent client validators (GitLens, GPTPortal, NeuroLink) accept exactly ^[A-Za-z0-9]{32}$. The value has no marker of its own, so it is claimed only beside a same-line Mistral name, host or constructor. GitGuardian lists a second, prefixed 'Mistral AI API Key v2' with an undisclosed prefix that no Mistral source mentions. No pinned scanner has a Mistral rule. No provider-issued key has been captured through #205 intake.",
       "supportedContexts": [
         "same line as the word mistral, e.g. MISTRAL_API_KEY=, api.mistral.ai, Mistral(api_key=...)",
         "Authorization: Bearer on a line naming the Mistral API host"
@@ -2104,11 +2104,46 @@
           "supports": "mistral-api-key: mistral keyword + [A-Z0-9]{32}, case-insensitive"
         },
         {
+          "class": "provider-example",
+          "owner": "mistral",
+          "reference": "https://github.com/mistralai/platform-docs-public/blob/ecac75b617af/openapi-public-doc.yaml#L33436-L33455",
+          "observedAt": "2026-09-29",
+          "supports": "Admin API schema APIKeyExtendedOUT (commit 220f18c8, 'sync docs to v1.3.0', 2026-07-24; rendered at docs.mistral.ai api/endpoint/beta/admin/api-keys): field key, 'Plaintext API key value. Only returned at creation time.', example one full-length value of 32 [A-Za-z0-9] with upper, lower and digits, no prefix; hidden_key shows 4 + '...' + 4. Value not reproduced"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "gitkraken",
+          "reference": "https://github.com/gitkraken/vscode-gitlens/blob/6492b560fd70/packages/plus/ai/src/providers/mistralProvider.ts#L156-L159",
+          "observedAt": "2026-09-29",
+          "supports": "GitLens Mistral provider (2025-05-27, 'Adds Mistral support'): keyValidator /^[a-zA-Z0-9]{32}$/, enforced on key entry in openAICompatibleProviderBase.ts L85-L92"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "zaki-1052",
+          "reference": "https://github.com/Zaki-1052/GPTPortal/blob/eb320cd2763a/src/server/utils/ValidationUtils.js#L150",
+          "observedAt": "2026-09-29",
+          "supports": "GPTPortal key validation (2025-05-23): Mistral key /^[A-Za-z0-9]{32}$/"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "juspay",
+          "reference": "https://github.com/juspay/neurolink/blob/4d034813e71e/src/lib/utils/providerConfig.ts#L51",
+          "observedAt": "2026-09-29",
+          "supports": "NeuroLink provider config (2025-07-30): Mistral key /^[A-Za-z0-9]{32}$/"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/781",
           "observedAt": "2026-09-27",
           "supports": "2026-09-26 broad-discovery pass: the SDK does no validation; the three rules are one assertion"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/1013",
+          "observedAt": "2026-09-29",
+          "supports": "redact-secret#1013 T1/T2 pass (2026-09-29; frozen record docs/audits/evidence/1013/mistral-api-key.md at redact-secret add1188f): 7 references, 7 owners, 3 non-summary classes (peer-scanner-rule, provider-example, independent-implementation)"
         }
       ],
       "contradictions": [
@@ -2116,6 +2151,11 @@
           "statement": "The Codestral key and the realtime rt_ token are separate credentials of undecided shape.",
           "status": "bounded",
           "bound": "The contract covers the Studio API key only; no fixture asserts silence on a Codestral key or an rt_ token."
+        },
+        {
+          "statement": "GitGuardian's mistralai_apikey page (updated 2026-09-28) lists a second type, 'Mistral AI API Key v2', Prefixed: True, prefix undisclosed; no Mistral source mentions a prefixed key.",
+          "status": "bounded",
+          "bound": "The contract covers only the unprefixed, context-gated 32-alphanumeric key and asserts nothing on a prefixed one: no fixture is a prefixed Mistral key, positive or control."
         }
       ]
     },

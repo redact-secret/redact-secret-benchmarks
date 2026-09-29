@@ -1998,7 +1998,7 @@
       "family": "together-ai-api-key",
       "mode": "shape",
       "supportsBareValues": true,
-      "uncertainty": "No Together page, staff statement or SDK code states the tgp_v1_ prefix, a length or an alphabet. The shape rests on one scanner rule (betterleaks; Kingfisher aliases it, so it is one lineage, not two) and a four-sample maintainer observation (#783). No pinned scanner (trufflehog 3.97.4, gitleaks 8.30.1) has a Together rule. No provider-issued key has been captured through #205 intake. A 2026-09-27 re-check of the broad-discovery sources for #783 (Reddit, Stack Overflow, GitHub code and issue search, Hacker News, and the scanner repos trufflehog main, gitleaks master, GitGuardian ggshield, osv-scalibr, secretlint, pleno-dlp and two general leak-scanner projects) found no new source for the tgp_v1_ shape itself; betterleaks/Kingfisher and #783 remain the only two owners. It did find that pleno-dlp (github.com/plenoai/pleno-dlp, tag v0.66.4, commit b3cd17fa41953a98aaafaa61aa8ab3e05882bf66) ships a Together detector for a different, sibling shape (a bare 64-character lowercase-hex string, keyword-gated on 'together'), which the corroboration decision's own rule ('a rule for a sibling shape does not count') excludes from this family's corroboration count; it is recorded below as evidence toward the open legacy-key contradiction instead.",
+      "uncertainty": "No Together page, staff statement or SDK code states the tgp_v1_ prefix, a length or an alphabet. The exact width rests on three peer scanner rules from three owners (betterleaks; Kingfisher's native rule, added 2025-08-27 and replaced by a betterleaks alias only on 2026-08-21, so its own lineage, not an alias as recorded earlier; CredSweeper since 2026-05-11, per redact-secret#1013) and a four-sample maintainer observation (#783). Together's own CLI redactor (together-py, 2026-04-27) confirms the tgp_ prefix and a [A-Za-z0-9_-] body but states no length; whether provider code that corroborates prefix and alphabet but not the width may supply the second corroboration class is maintainer ruling Q-TG (redact-secret#1013), pending, so it is not recorded as a reference here. No pinned scanner (trufflehog 3.97.4, gitleaks 8.30.1) has a Together rule. No provider-issued key has been captured through #205 intake. A 2026-09-27 re-check of the broad-discovery sources for #783 (Reddit, Stack Overflow, GitHub code and issue search, Hacker News, and the scanner repos trufflehog main, gitleaks master, GitGuardian ggshield, osv-scalibr, secretlint, pleno-dlp and two general leak-scanner projects) found no new source for the tgp_v1_ shape itself; betterleaks/Kingfisher and #783 remained the only two owners at that date (the 2026-09-29 #1013 pass found the Kingfisher native rule and CredSweeper). It did find that pleno-dlp (github.com/plenoai/pleno-dlp, tag v0.66.4, commit b3cd17fa41953a98aaafaa61aa8ab3e05882bf66) ships a Together detector for a different, sibling shape (a bare 64-character lowercase-hex string, keyword-gated on 'together'), which the corroboration decision's own rule ('a rule for a sibling shape does not count') excludes from this family's corroboration count; it is recorded below as evidence toward the open legacy-key contradiction instead.",
       "supportedContexts": [
         "bare value (the tgp_v1_ prefix plus exactly 43 base64url characters is the only marker)",
         "double-quoted assignment value",
@@ -2012,6 +2012,20 @@
           "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad42/cmd/generate/config/rules/togetherai.go",
           "observedAt": "2026-09-27",
           "supports": "togetherai-api-key: tgp_v1_ + [A-Za-z0-9_-]{43}, entropy filter 3.0"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "mongodb",
+          "reference": "https://github.com/mongodb/kingfisher/blob/82d050530cdef9af070b8f9a75701c9c27a948c3/crates/kingfisher-rules/data/rules/togetherai.yml#L8",
+          "observedAt": "2026-09-29",
+          "supports": "Kingfisher native togetherai rule (v1.113.0; added 2025-08-27, replaced by a betterleaks alias 2026-08-21): tgp_v1_ + [A-Za-z0-9_-]{43}; predates the betterleaks rule, so its own lineage"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "samsung",
+          "reference": "https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L1814-L1827",
+          "observedAt": "2026-09-29",
+          "supports": "CredSweeper Together rule (commit 2e9aeef4, 2026-05-11): tgp_v1_ + [0-9A-Za-z_-]{43}, min_line_len 50; its three samples are 43-character bodies"
         },
         {
           "class": "independent-research",

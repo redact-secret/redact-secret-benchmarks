@@ -1,6 +1,30 @@
 # Evidence: redact-secret#932: fixed-candidate rerun of its benchmark fixtures
 
-## Rerun at the re-bound Beta.11 candidate ec9224d (current)
+## Rerun at the re-bound Beta.11 candidate 8b6a5fd (current)
+
+**Result:** PASS, unchanged. The Beta.11 candidate moved from `ec9224d` to product main `8b6a5fd` (PR #996, the #902
+Wasm follow-up; PII-only code, output byte-identical). Every fixture of this record has the same outcome and finding
+count there. The record stays `verified`.
+
+| Fixture | Kind | Candidate `ec9224d` | Candidate `8b6a5fd` |
+| --- | --- | --- | --- |
+| `beta8-379--deepgram-api-key-httpie-token` | policy | EXACT | EXACT |
+| `beta8-379--deepgram-api-key-go-client-literal` | policy | EXACT | EXACT |
+| `beta8-379--cohere-api-key-java-builder-token` | policy | EXACT | EXACT |
+
+The split policy record `product-932-masked-key-policy` (`beta8-379--cohere-api-key-litellm-proxy-debug`) is still
+not reported (MISS), by product policy.
+
+- Candidate run `e795030e-478e-4d21-9775-57456d832143` (complete, full suite, 4,777 of 4,777 fixtures, `eval:validate`
+  passed), benchmarks `405892a5ba40b6eeef919d2fb818470ee495092c` (clean, the re-pin), corpus `d88c19f7…3e2f` (unchanged).
+- Artifacts: core `467111e2…f74c`, node `19f41652…05ea`, wasm `61d135ba…6f2d`.
+- Product conformance at `8b6a5fd`: [Artifact qualification run 36581019627](https://github.com/redact-secret/redact-secret/actions/runs/36581019627) (success).
+- Raw rows: [`candidate-rerun-8b6a5fd.json`](candidate-rerun-8b6a5fd.json). Family-level summary:
+  [`../860/8b6a5fd/README.md`](../860/8b6a5fd/README.md).
+
+The `ec9224d` rerun below is superseded by this one and kept as history.
+
+## Rerun at the re-bound Beta.11 candidate ec9224d (superseded)
 
 **Result:** PASS, unchanged. The Beta.11 candidate was re-bound from `8f97f14` to product main `ec9224d` (PR #994: the
 #948 provider-named generic-token fallback, the #993 non-secret value exclusions and the #902 linear PII context

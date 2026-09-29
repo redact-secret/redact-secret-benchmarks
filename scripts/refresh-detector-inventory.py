@@ -179,7 +179,18 @@ def inventory(gitleaks, trufflehog, flare_redact, sources):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Fetch pinned sources and reject snapshot drift")
+    parser.add_argument("--release-revision", help="40-hex peeled commit of the v<version> tag the pinned package was "
+                        "published from; defaults to the snapshot's current value (#446, #511)")
+    parser.add_argument("--reviewed-at", help="YYYY-MM-DD the mapping was re-reviewed; defaults to the snapshot's current value")
     args = parser.parse_args()
+    target = ROOT / "benchmarks/detector-inventory.json"
+    current = json.loads(target.read_text()) if target.exists() else {}
+    release_revision = args.release_revision or current.get("redactSecretReleaseRevision")
+    reviewed_at = args.reviewed_at or current.get("reviewedAt")
+    if not (isinstance(release_revision, str) and re.fullmatch(r"[0-9a-f]{40}", release_revision)):
+        raise SystemExit("A 40-hex --release-revision is required (the peeled release tag commit).")
+    if not (isinstance(reviewed_at, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", reviewed_at)):
+        raise SystemExit("A YYYY-MM-DD --reviewed-at is required.")
     sources, contents = {}, {}
     for tool, (repo, tag, path) in SOURCES.items():
         revision = gh(f"repos/{repo}/commits/{tag}")["sha"]
@@ -192,12 +203,12 @@ def main():
     version = json.loads((ROOT / "package.json").read_text())["dependencies"]["@redact-secret/core"]
     release = version.rsplit("-", 1)[-1]
     rows = inventory(contents["gitleaks"], contents["trufflehog"], contents["flare-redact"], sources)
-    snapshot = {"schemaVersion": 1, "reviewedAt": "2026-09-22",
+    snapshot = {"schemaVersion": 1, "reviewedAt": reviewed_at,
                 "redactSecretVersion": version,
                 "redactSecretRevision": registry["sourceRevision"],
+                "redactSecretReleaseRevision": release_revision,
                 "method": f"Explicit provider-family mapping against the {len(registry['detectors'])} registered {release} detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
                 "sources": sources, "entries": rows}
-    target = ROOT / "benchmarks/detector-inventory.json"
     serialized = json.dumps(snapshot, indent=2) + "\n"
     if args.check:
         if target.read_text() != serialized:
